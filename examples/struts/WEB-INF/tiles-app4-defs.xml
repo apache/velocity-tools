@@ -5,7 +5,7 @@
     <put name="title" value="TilesTool Demo!" />
   </definition>
   <definition extends=".common" name=".frontpage" path="/examples/struts_app4/layout/masterLayout.vm">
-    <put name="some.attribute">some.value</put>
+    <put name="someAttribute" value="some.value" />
     <put name="menu" value=".frontpage.menu" />
     <put name="footer" value="/examples/struts_app4/footer.vm" />
     <put name="body" value=".frontpage.body" />
@@ -24,6 +24,7 @@
     <put name="title" value="TilesTool Demo (JSP)!" />
   </definition>
   <definition extends=".common.jsp" name=".frontpage.jsp" path="/examples/struts_app4/layout/masterLayout.jsp">
+    <put name="someAttribute" value="some.value" />
     <put name="body" value=".frontpage.body.jsp" />
     <put name="menu" value=".frontpage.menu.jsp" />
     <put name="footer" value="/examples/struts_app4/footer.jsp" />
@@ -42,6 +43,7 @@
     <put name="title" value="TilesTool Demo (Mixed)!" />
   </definition>
   <definition extends=".common.mixed" name=".frontpage.mixed" path="/examples/struts_app4/layout/masterLayout.vm">
+    <put name="someAttribute" value="some.value" />
     <put name="body" value=".frontpage.body.jsp" />
     <put name="menu" value=".frontpage.menu" />
     <put name="footer" value="/examples/struts_app4/footer.jsp" />
