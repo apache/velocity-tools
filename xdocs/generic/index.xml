@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+
+<document>
+
+    <properties>
+        <title>Generic Tools</title>
+        <author email="sidler@apache.org">Gabriel Sidler</author>
+        <projectfile>xdocs/generic/menu.xml</projectfile>
+    </properties>
+
+    <body> 
+
+    <section name="Overview">
+
+        <p>Generic Tools contain a collection of reusable and well 
+        documented tools of general interest..</p>
+
+        <p>Emphasis is being put on providing tool documentation that is 
+        suitable for template designers. To achive this goal, a documentation
+        format has been defined that captures all information relevant to the
+        template designer. It is being supplied in addition to the customary
+        Javadoc. This should help to achieve what we always claim for Velocity:
+        "Decouple the work of template designers from the work of software
+        developers". Look at the Struts <a href="../struts/MessageTool.html">MessageTool</a>
+        for a good example of the new documentation format. </p>
+        <p>We are interested in Designer and Developer feedback on the format. </p>
+        
+        <p>Contributions of generic tools are welcome, see <a href="#Contributions">below</a> for more details.</p>
+          
+        <p><strong>Generic Tools:</strong></p>
+
+        <dl>
+            <dt><a href="DateTool.html"><strong>DateTool</strong></a></dt>
+            <dd>A tool for manipulating and formating dates.</dd>
+                
+            <dt><a href="MathTool.html"><strong>MathTool</strong></a></dt>
+            <dd>A tool for performing floating point math.</dd>
+
+            <dt><strong>IteratorTool</strong></dt>
+            <dd>A convenience tool to use with #foreach loops. It wraps a list
+            to let the designer specify a condition to terminate the loop, 
+            and reuse the same list in different loops.</dd>
+
+            <dt><strong>RenderTool</strong></dt>
+            <dd>A tool to evaluate and render arbitrary strings of VTL (Velocity
+            Template Language).</dd>
+        </dl>
+        <br clear="all" />
+
+    </section>
+
+    <section name="Download">
+
+        <p>There is no release available at this point in time.</p>
+        <br clear="all" />
+
+    </section>
+
+
+    <section name="Contributions">
+        <p>We welcome your contributions to this library. Please post your offer
+        to contribute a tool to the 
+        <a href="mailto:velocity-user@jakarta.apache.org">Velocity mailing list</a>.</p>
+
+        <p><strong>Checklist for Contributions</strong></p>
+        <ul>
+            <li><a href="http://jakarta.apache.org/velocity/code-standards.html">Velocity coding conventions</a></li>
+            <li>JavaDoc included (the more detailed the better)</li>
+            <li>Examples included (in JavaDoc or as stand-alone template example)</li>
+        </ul>
+    </section>
+
+ </body>
+</document>

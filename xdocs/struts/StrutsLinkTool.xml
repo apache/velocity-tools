@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+
+<document>
+
+    <properties>
+        <title>StrutsLinkTool</title>
+        <author email="sidler@apache.org">Gabriel Sidler</author>
+        <projectfile>xdocs/struts/menu.xml</projectfile>
+     </properties>
+
+    <body>
+
+    <section name="StrutsLinkTool Reference Documentation">
+
+        <p>The StrutsLinkTool extends the standard 
+        <a href="../view/LinkTool.html">LinkTool</a> to add methods 
+        for working with Struts' Actions and Forwards:</p>
+        <ul>
+            <li>translate logical names (Struts forwards, actions ) to URI references, see
+              methods <a href="#setAction()">setAction()</a> and <a href="#setForward()">
+              setForward()</a></li>
+        </ul>
+        
+        <toolinfo>
+            <version>@@@version@@@, @@@date@@@</version>
+            <clazz>org.apache.velocity.tools.struts.StrutsLinkTool</clazz>
+            <name>$link</name>
+            <author email="sidler@teamup.com">Gabriel Sidler</author>
+            <author email="nathan@esha.com">Nathan Bubna</author>
+            <config-example>&lt;tool&gt;
+  &lt;key&gt;link&lt;/key&gt;
+  &lt;scope&gt;request&lt;/scope&gt;
+  &lt;class&gt;org.apache.velocity.tools.struts.StrutsLinkTool&lt;/class&gt;
+&lt;/tool&gt;</config-example>
+        </toolinfo>
+
+        <methods/>
+
+    </section>
+
+    <section name="setAction()">
+        <method name="setAction()">
+    
+            <abstract>
+                Returns a copy of this StrutsLinkTool instance with the given action path
+                converted into a server-relative URI reference.
+            </abstract>
+    
+            <signature>
+                StrutsLinkTool setAction(String action)
+            </signature>
+            
+            <parameters>
+                <parameter name="action">
+                    An action path as defined in struts-config.xml, e.g. <code>/logon</code>.
+                </parameter>
+            </parameters>
+    
+            <returns>
+                A new instance of <code>StrutsLinkTool</code>.  
+            </returns>
+    
+            <description>
+                <p>The action name is translated into a server-relative URI reference. The method does 
+                not check if the specified action has been defined. It will overwrite any 
+                previously set URI reference but will copy the query string.</p>
+            </description>
+
+<sourcecode>## a form tag
+&lt;form name="form1" action="$link.setAction("demo")"&gt;</sourcecode>
+
+<p>Produces something like:</p>
+
+<sourcecode>&lt;form name="form1" action="/myapp/demo.do"&gt;</sourcecode>
+    
+        </method>
+    </section>
+
+
+    <section name="setForward()">
+        <method name="setForward()">
+    
+            <abstract>
+                Returns a copy of this StrutsLinkTool instance with the given global 
+                forward name converted into a server-relative URI reference.
+            </abstract>
+    
+            <signature>
+                StrutsLinkTool setForward(String forward)
+            </signature>
+            
+            <parameters>
+                <parameter name="forward">
+                    The name of a global forward as defined in struts-config.xml.
+                </parameter>
+            </parameters>
+    
+            <returns>
+                A new instance of <code>StrutsLinkTool</code> or <code>null</code> if the 
+                parameter does not map to a valid forward.
+            </returns>
+    
+            <description>
+                <p>The global forward name is translated into a server-relative 
+                URI reference. This method will overwrite any previously set URI 
+                reference but will copy the query string.</p>
+            </description>
+
+<sourcecode>## a forward
+&lt;a href="$link.setForward("start").addQueryData("key1","val 1")"&gt;
+My Link&lt;/a&gt;</sourcecode>
+
+<p>Produces something like:</p>
+
+<sourcecode>&lt;a href="/myapp/templates/index.vm?key=val+1"&gt;My Link&lt;/a&gt;</sourcecode>
+
+    
+        </method>
+    </section>
+
+ </body>
+</document>
+

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<project href="index.html">
+
+  <title>VelocityStruts</title>
+  <logo href="../images/velocitystruts.png">&lt; Velocity Tools - Struts &gt;</logo>
+
+  <body> 
+
+    <uplink name="Velocity Tools"       href="../" alt="top"/>
+
+    <menu name="VelocityStruts">
+        <item name="Overview"                href="index.html"/>
+        <item name="Benefits"                href="index.html#Benefits"/>
+        <item name="Download"                href="index.html#Download"/>
+        <item name="User Guide"              href="userguide.html"/>
+        <item name="Installation"            href="userguide.html#Installation"/>
+        <item name="Examples"                href="userguide.html#Examples"/>
+        <item name="Javadoc"                 href="../javadoc/index.html"/>
+    </menu>
+
+    <menu name="VelocityStruts Tools" href="StrutsTools.html">
+        <item name="MessageTool"              href="MessageTool.html"/>
+        <item name="FormTool"                 href="FormTool.html"/>
+        <item name="ErrorsTool"               href="ErrorsTool.html"/>
+        <item name="StrutsLinkTool"           href="StrutsLinkTool.html"/>
+    </menu>
+
+    <printerversion/>
+
+
+  </body>
+</project>
+
