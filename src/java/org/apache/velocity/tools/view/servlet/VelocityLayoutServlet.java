@@ -82,7 +82,7 @@ import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
  * somewhere.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Id: VelocityLayoutServlet.java,v 1.3 2003/10/02 00:14:08 nbubna Exp $
+ * @version $Id: VelocityLayoutServlet.java,v 1.4 2003/10/07 00:13:08 nbubna Exp $
  */
 
 public class VelocityLayoutServlet extends VelocityViewServlet 
@@ -235,7 +235,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
 
 
     /**
-     * Overrides VelocityServlet.mergeTemplate to do a two-pass 
+     * Overrides VelocityViewServlet.mergeTemplate to do a two-pass 
      * render for handling layouts
      */
     protected void mergeTemplate(Template template, 
@@ -296,7 +296,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
 
 
     /**
-     * Overrides VelocityServlet to display user's custom error template
+     * Overrides VelocityViewServlet to display user's custom error template
      */
     protected void error(HttpServletRequest request, 
                          HttpServletResponse response, 
