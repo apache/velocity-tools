@@ -88,18 +88,13 @@ import org.apache.velocity.tools.view.context.ToolboxContext;
  * <p><strong>Configuration</strong></p>
  * <p>The toolbox manager is configured through an XML-based configuration
  * file. The configuration file is passed to the {@link #load(java.io.InputStream input)}
- * method. The required format is shown in the following example:</p>
+ * method. The format is shown in the following example:</p>
  * <pre> 
  * &lt;?xml version="1.0"?&gt;
- * 
  * &lt;toolbox&gt;
  *   &lt;tool&gt;
- *      &lt;key&gt;toolLoader&lt;/key&gt;
- *      &lt;class&gt;org.apache.velocity.tools.tools.ToolLoader&lt;/class&gt;
- *   &lt;/tool&gt;
- *   &lt;tool&gt;
- *      &lt;key&gt;math&lt;/key&gt;
- *      &lt;class&gt;org.apache.velocity.tools.tools.MathTool&lt;/class&gt;
+ *      &lt;key&gt;date&lt;/key&gt;
+ *      &lt;class&gt;org.apache.velocity.tools.generic.DateTool&lt;/class&gt;
  *   &lt;/tool&gt;
  *   &lt;data type="Number"&gt;
  *      &lt;key&gt;luckynumber&lt;/key&gt;
@@ -116,7 +111,7 @@ import org.apache.velocity.tools.view.context.ToolboxContext;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: XMLToolboxManager.java,v 1.5 2003/09/08 19:15:25 nbubna Exp $
+ * @version $Id: XMLToolboxManager.java,v 1.6 2003/11/06 00:26:54 nbubna Exp $
  */
 public abstract class XMLToolboxManager implements ToolboxManager
 {
@@ -193,6 +188,11 @@ public abstract class XMLToolboxManager implements ToolboxManager
     }
 
 
+    /**
+     * For subclassing convienence.
+     *
+     * @since VelocityTools 1.1
+     */
     protected RuleSet getRuleSet()
     {
         return ruleSet;

@@ -62,7 +62,7 @@ import org.apache.velocity.context.Context;
 
 
 /**
- * This tool expose static methods to evaluate the given
+ * This tool exposes methods to evaluate the given
  * strings as VTL (Velocity Template Language)
  * using the given context.<br>
  * 
@@ -102,7 +102,7 @@ import org.apache.velocity.context.Context;
  * scope of a servlet environment.</p>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.2 $ $Date: 2003/05/28 00:17:15 $
+ * @version $Revision: 1.3 $ $Date: 2003/11/06 00:26:54 $
  */
 
 public class RenderTool

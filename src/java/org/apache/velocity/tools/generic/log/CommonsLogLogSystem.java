@@ -78,8 +78,8 @@ import org.apache.velocity.runtime.log.LogSystem;
  * </p>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- *
- * @version $Id: CommonsLogLogSystem.java,v 1.1 2003/07/22 18:26:45 nbubna Exp $
+ * @since VelocityTools 1.1
+ * @version $Id: CommonsLogLogSystem.java,v 1.2 2003/11/06 00:26:54 nbubna Exp $
  */
 public class CommonsLogLogSystem implements LogSystem
 {

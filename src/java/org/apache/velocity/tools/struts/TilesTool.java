@@ -78,18 +78,28 @@ import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
- * <p>Title: TilesTool</p>
- * <p>Description: A tool to use struts-tiles with Velocity</p>
- * <p>Usage:
+ * <p>View tool to use struts-tiles with Velocity</p>
+ * <p><pre>
+ * Template example(s):
+ *  &lt;!-- insert a tile --&gt; 
+ *  $tiles.myTileDefinition
  *
- * Just call $tiles.name_of_tile_definition from the template to insert
- * the tile.
+ *  &lt;!-- get named attribute value from the current tiles' context --&gt;
+ *  $tiles.getString("myTileAttribute")
  *
- * $tiles.getString("name_of_tile_attribute") fetches a named attribute-value
- * from the current tiles-context.
+ * Toolbox configuration:
+ * &lt;tool&gt;
+ *   &lt;key&gt;tiles&lt;/key&gt;
+ *   &lt;scope&gt;request&lt;/scope&gt;
+ *   &lt;class&gt;org.apache.velocity.tools.struts.TilesTool&lt;/class&gt;
+ * &lt;/tool&gt;
+ * </pre></p>
+ *
+ * <p>This tool should only be used in the request scope.</p>
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @version $Revision: 1.3 $ $Date: 2003/10/30 01:02:26 $
+ * @since VelocityTools 1.1
+ * @version $Revision: 1.4 $ $Date: 2003/11/06 00:26:54 $
  */
 public class TilesTool extends ImportSupport
     implements ViewTool {

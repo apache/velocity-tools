@@ -63,7 +63,7 @@ import java.lang.Math;
  *
  * <p>Several things should be noted here:</p>
  *
- * <ol>
+ * <ul>
  * <li>This class does not have methods that take
  * primitives.  This is simply because Velocity
  * wraps all primitives for us automagically.</li>
@@ -82,9 +82,17 @@ import java.lang.Math;
  * debugging feedback that Velocity will render the reference
  * literally. (e.g. $math.div(1, 0) renders as '$math.div(1, 0)')</li>
  * </ul>
+ * <p><pre>
+ * Example toolbox.xml config (if you want to use this with VelocityView):
+ * &lt;tool&gt;
+ *   &lt;key&gt;math&lt;/key&gt;
+ *   &lt;scope&gt;application&lt;/scope&gt;
+ *   &lt;class&gt;org.apache.velocity.tools.generic.MathTool&lt;/class&gt;
+ * &lt;/tool&gt;
+ * </pre></p>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.2 $ $Date: 2003/05/28 00:17:15 $
+ * @version $Revision: 1.3 $ $Date: 2003/11/06 00:26:54 $
  */
 
 public class MathTool

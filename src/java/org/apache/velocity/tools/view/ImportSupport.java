@@ -83,12 +83,12 @@ import java.net.URLConnection;
 import java.net.HttpURLConnection;
 
 /**
- * <p>Title: ImportSupport</p>
- * <p>Description: provides methods to import arbitrary resources as String</p>
+ * <p>Provides methods to import arbitrary local or remote resources as strings.</p>
  * <p>Based on ImportSupport from the JSTL taglib by Shawn Bayern</p>
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @version $Revision: 1.4 $ $Date: 2003/11/05 20:15:55 $
+ * @since VelocityTools 1.1
+ * @version $Revision: 1.5 $ $Date: 2003/11/06 00:26:54 $
  */
 public abstract class ImportSupport {
 

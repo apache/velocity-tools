@@ -64,7 +64,7 @@ import javax.servlet.ServletContext;
 /**
  * <p>Objects implementing this interface are passed to view tools
  * upon initialization by the 
- *{@link org.apache.velocity.tools.view.servlet.ServletToolboxManager}.</p> 
+ * {@link org.apache.velocity.tools.view.servlet.ServletToolboxManager}.</p> 
  * 
  * <p>The interface provides view tools in a servlet environment 
  * access to relevant context information, like servlet request, servlet 
@@ -73,7 +73,7 @@ import javax.servlet.ServletContext;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  *
- * @version $Id: ViewContext.java,v 1.4 2003/08/02 20:42:04 nbubna Exp $ 
+ * @version $Id: ViewContext.java,v 1.5 2003/11/06 00:26:54 nbubna Exp $ 
  */
 public interface ViewContext
 {
@@ -115,6 +115,8 @@ public interface ViewContext
      * <p>Searches for the named attribute in request, session (if valid), 
      * and application scope(s) in order and returns the value associated 
      * or null.</p>
+     *
+     * @since VelocityTools 1.1
      */
     public Object getAttribute(String key);
 

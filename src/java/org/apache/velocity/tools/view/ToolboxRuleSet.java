@@ -65,7 +65,8 @@ import org.apache.velocity.tools.view.ViewToolInfo;
  * XMLToolboxManager class.</p> 
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Id: ToolboxRuleSet.java,v 1.1 2003/07/22 18:32:29 nbubna Exp $
+ * @since VelocityTools 1.1
+ * @version $Id: ToolboxRuleSet.java,v 1.2 2003/11/06 00:26:54 nbubna Exp $
  */
 public class ToolboxRuleSet extends RuleSetBase
 {

@@ -62,13 +62,25 @@ import org.apache.velocity.tools.view.context.ViewContext;
 
 /**
  * <p>View tool for convenient cookie access and creation.</p>
+ * <p><pre>
+ * Template example(s):
+ *  $cookie.foo.value
+ *  $cookie.add("bar",'woogie')
+ *
+ * Toolbox configuration:
+ * &lt;tool&gt;
+ *   &lt;key&gt;cookie&lt;/key&gt;
+ *   &lt;scope&gt;request&lt;/scope&gt;
+ *   &lt;class&gt;org.apache.velocity.tools.view.tools.CookieTool&lt;/class&gt;
+ * &lt;/tool&gt;
+ * </pre></p>
  *
  * <p>This class is only designed for use as a request-scope tool.</p>
  *
  * @author <a href="mailto:dim@colebatch.com">Dmitri Colebatch</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- *
- * @version $Id: CookieTool.java,v 1.1 2003/07/22 21:05:34 nbubna Exp $
+ * @since VelocityTools 1.1
+ * @version $Id: CookieTool.java,v 1.2 2003/11/06 00:26:54 nbubna Exp $
  */
 public class CookieTool implements ViewTool
 {

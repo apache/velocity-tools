@@ -73,20 +73,26 @@ import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
  * <p>View tool to make building URIs pleasant and fun! :)</p>
- * 
- * <p>This class is equipped to be used with a toolbox manager, for example
- * the ServletToolboxManager included with VelocityViewServlet. This class 
- * implements interface ViewTool, which allows a toolbox manager to pass the
- * required context information.</p>
+ * <p><pre>
+ * Template example(s):
+ *   #set( $base = $link.setRelative('MyPage.vm').setAnchor('view') )
+ *   &lt;a href="$base.addQueryData('select','this')"&gt;this&lt;/a&gt;
+ *   &lt;a href="$base.addQueryData('select','that')"&gt;that&lt;/a&gt;
  *
- * <p>This class is not thread-safe by design. A new instance is needed for
- * the processing of every template request.  This means this tool should
- * only be used in the request scope, not application or session scopes.</p>
+ * Toolbox configuration:
+ * &lt;tool&gt;
+ *   &lt;key&gt;link&lt;/key&gt;
+ *   &lt;scope&gt;request&lt;/scope&gt;
+ *   &lt;class&gt;org.apache.velocity.tools.view.tools.LinkTool&lt;/class&gt;
+ * &lt;/tool&gt;
+ * </pre></p>
+ *
+ * <p>This tool should only be used in the request scope.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- *
- * @version $Id: LinkTool.java,v 1.10 2003/09/22 23:07:38 nbubna Exp $
+ * @since VelocityTools 1.0
+ * @version $Id: LinkTool.java,v 1.11 2003/11/06 00:26:54 nbubna Exp $
  */
 public class LinkTool implements ViewTool, Cloneable
 {

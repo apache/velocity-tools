@@ -64,17 +64,27 @@ import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
  * <p>Utility class for easy parsing of {@link ServletRequest} parameters.</p>
- * 
- * <p>This class implements the ViewTool interface to allow it
- * to be used as a request scoped tool.</p>
- * 
- * <p>It should be noted that this class is not thread-safe.  As it 
- * is wholly dependent upon the current ServletRequest, therefore each
- * ServletRequest should have its own instance.  This tool should not
- * be used in the session or application scopes of your webapp.</p>
+ * <p><pre>
+ * Template example(s):
+ *   $pp.foo                ->  bar
+ *   $pp.getNumber('baz')   ->  12.6
+ *   $pp.getInt('baz')      ->  12
+ *   $pp.getNumbers('foo')  ->  [12.6]
+ *
+ * Toolbox configuration:
+ * &lt;tool&gt;
+ *   &lt;key&gt;pp&lt;/key&gt;
+ *   &lt;scope&gt;request&lt;/scope&gt;
+ *   &lt;class&gt;org.apache.velocity.tools.view.tools.ParameterParser&lt;/class&gt;
+ * &lt;/tool&gt;
+ * </pre></p>
+ *
+ * <p>When used as a view tool, this should only be used in the request scope.
+ * This class is, however, quite useful in your application's controller, filter,
+ * or action code as well as in templates.</p>
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.5 $ $Date: 2003/05/28 00:17:16 $
+ * @version $Revision: 1.6 $ $Date: 2003/11/06 00:26:54 $
  */
 
 public class ParameterParser implements ViewTool

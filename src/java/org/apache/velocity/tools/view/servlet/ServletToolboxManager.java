@@ -99,20 +99,20 @@ import org.apache.velocity.tools.view.servlet.ServletToolboxRuleSet;
  * <p><strong>Configuration</strong></p>
  * <p>The toolbox manager is configured through an XML-based configuration
  * file. The configuration file is passed to the {@link #load(java.io.InputStream input)}
- * method. The required format is shown in the following example:</p>
+ * method. The format is shown in the following example:</p>
  * <pre> 
  * &lt;?xml version="1.0"?&gt;
  * 
  * &lt;toolbox&gt;
  *   &lt;tool&gt;
- *      &lt;key&gt;toolLoader&lt;/key&gt;
- *      &lt;scope&gt;application&lt;/scope&gt;
- *      &lt;class&gt;org.apache.velocity.tools.tools.ToolLoader&lt;/class&gt;
+ *      &lt;key&gt;link&lt;/key&gt;
+ *      &lt;scope&gt;request&lt;/scope&gt;
+ *      &lt;class&gt;org.apache.velocity.tools.view.tools.LinkTool&lt;/class&gt;
  *   &lt;/tool&gt;
  *   &lt;tool&gt;
- *      &lt;key&gt;math&lt;/key&gt;
+ *      &lt;key&gt;date&lt;/key&gt;
  *      &lt;scope&gt;application&lt;/scope&gt;
- *      &lt;class&gt;org.apache.velocity.tools.tools.MathTool&lt;/class&gt;
+ *      &lt;class&gt;org.apache.velocity.tools.generic.DateTool&lt;/class&gt;
  *   &lt;/tool&gt;
  *   &lt;data type="number"&gt;
  *      &lt;key&gt;luckynumber&lt;/key&gt;
@@ -122,6 +122,7 @@ import org.apache.velocity.tools.view.servlet.ServletToolboxRuleSet;
  *      &lt;key&gt;greeting&lt;/key&gt;
  *      &lt;value&gt;Hello World!&lt;/value&gt;
  *   &lt;/data&gt;
+ *   &lt;xhtml&gt;true&lt;/xhtml&gt;
  * &lt;/toolbox&gt;    
  * </pre>
  * <p>The recommended location for the configuration file is the WEB-INF directory of the
@@ -131,8 +132,7 @@ import org.apache.velocity.tools.view.servlet.ServletToolboxRuleSet;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ServletToolboxManager.java,v 1.8 2003/09/08 19:15:25 nbubna Exp $
- * 
+ * @version $Id: ServletToolboxManager.java,v 1.9 2003/11/06 00:26:54 nbubna Exp $
  */
 public class ServletToolboxManager extends XMLToolboxManager
 {
@@ -269,7 +269,8 @@ public class ServletToolboxManager extends XMLToolboxManager
      * <p>Sets an application attribute to tell velocimacros and tools 
      * (especially the LinkTool) whether they should output XHTML or HTML.</p>
      *
-     * @see ViewContext.XHTML
+     * @see ViewContext#XHTML
+     * @since VelocityTools 1.1
      */
     public void setXhtml(Boolean value)
     {
@@ -281,6 +282,10 @@ public class ServletToolboxManager extends XMLToolboxManager
 
     // ------------------------------ XMLToolboxManager Overrides -------------
 
+    /**
+     * For subclassing convienence.
+     * @since VelocityTools 1.1
+     */
     protected RuleSet getRuleSet()
     {
         return servletRuleSet;

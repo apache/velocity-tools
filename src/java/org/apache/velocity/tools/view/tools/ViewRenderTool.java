@@ -93,6 +93,13 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *      ------
  *      hello world!
  *
+ *
+ * Toolbox configuration:
+ * &lt;tool&gt;
+ *   &lt;key&gt;render&lt;/key&gt;
+ *   &lt;scope&gt;request&lt;/scope&gt;
+ *   &lt;class&gt;org.apache.velocity.tools.view.tools.ViewRenderTool&lt;/class&gt;
+ * &lt;/tool&gt;
  * </pre>
  *
  * <p>Ok, so these examples are really lame.  But, it seems like
@@ -104,7 +111,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * session scopes of a servlet environment.</p>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.2 $ $Date: 2003/05/28 00:17:17 $
+ * @version $Revision: 1.3 $ $Date: 2003/11/06 00:26:54 $
  */
 
 public class ViewRenderTool extends RenderTool implements ViewTool
@@ -152,7 +159,7 @@ public class ViewRenderTool extends RenderTool implements ViewTool
      * evaluation until an evaluation returns the same code
      * that was fed into it.</p>
      *
-     * FIXME? add a parse-depth to prevent infinite recursion?
+     * TODO? add a parse-depth to prevent infinite recursion?
      * 
      * @param vtl the code to be evaluated
      * @return the evaluated code as a String

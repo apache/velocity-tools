@@ -63,7 +63,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
 
 import org.apache.struts.util.MessageResources;
-import org.apache.struts.action.*;
+import org.apache.struts.action.ActionError;
+import org.apache.struts.action.ActionErrors;
 
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.tools.view.context.ViewContext;
@@ -72,58 +73,56 @@ import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
  * <p>View tool to work with the Struts error messages.</p>
+ * <p><pre>
+ * Template example(s):
+ *   #if( $errors.exist() )
+ *     &lt;div class="errors"&gt;
+ *     #foreach( $e in $errors.all )
+ *       $e &lt;br&gt;
+ *     #end
+ *     &lt;/div&gt;
+ *   #end
  *
- * <p>This class is equipped to be used with a toolbox manager, for example
- * the ServletToolboxManager included with VelServlet. This class implements 
- * interface ViewTool, which allows a toolbox manager to pass the required
- * context information.</p>
+ * Toolbox configuration:
+ * &lt;tool&gt;
+ *   &lt;key&gt;errors&lt;/key&gt;
+ *   &lt;scope&gt;request&lt;/scope&gt;
+ *   &lt;class&gt;org.apache.velocity.tools.struts.ErrorsTool&lt;/class&gt;
+ * &lt;/tool&gt;
+ * </pre></p>
  *
- * <p>This class is not thread-safe by design. A new instance is needed for
- * the processing of every template request.  This means this tool should
- * only be used in the request scope, not application or session scopes.</p>
+ * <p>This tool should only be used in the request scope.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
- *
- * @version $Id: ErrorsTool.java,v 1.6 2003/10/20 02:23:25 nbubna Exp $
+ * @since VelocityTools 1.0
+ * @version $Id: ErrorsTool.java,v 1.7 2003/11/06 00:26:54 nbubna Exp $
  */
 public class ErrorsTool implements ViewTool
 {
 
     // --------------------------------------------- Properties ---------------
 
-    /**
-     * A reference to the ServletContext
-     */ 
+    /** A reference to the ServletContext */ 
     protected ServletContext application;
 
 
-    /**
-     * A reference to the HttpServletRequest.
-     */ 
+    /** A reference to the HttpServletRequest. */ 
     protected HttpServletRequest request;
     
 
-    /**
-     * A reference to the HttpSession.
-     */ 
+    /** A reference to the HttpSession. */ 
     protected HttpSession session;
 
 
-    /**
-     * A reference to the Struts message resources.
-     */
+    /** A reference to the Struts message resources. */
     protected MessageResources resources;
 
 
-    /**
-     * A reference to the user's locale.
-     */
+    /** A reference to the user's locale. */
     protected Locale locale;
 
 
-    /**
-     * A reference to the queued action messages.
-     */
+    /** A reference to the queued action messages. */
     protected ActionErrors errors;
 
 
@@ -164,6 +163,7 @@ public class ErrorsTool implements ViewTool
     /**
      * Retrieves the specified {@link MessageResources} bundle, or the
      * application's default MessageResources if no bundle is specified.
+     * @since VelocityTools 1.1
      */
     protected MessageResources getResources(String bundle)
     {
@@ -312,6 +312,7 @@ public class ErrorsTool implements ViewTool
      *
      * @param property the category of errors to operate on
      * @param bundle the message resource bundle to use
+     * @since VelocityTools 1.1
      */
     public ArrayList get(String property, String bundle) 
     {
@@ -411,6 +412,7 @@ public class ErrorsTool implements ViewTool
      * 
      * @return The formatted error messages. If no error messages are queued, 
      * an empty string is returned. 
+     * @since VelocityTools 1.1
      */
     public String getMsgs(String property, String bundle)
     {

@@ -71,19 +71,25 @@ import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
  * <p>View tool that provides methods to render Struts message resources.</p>
+ * <p><pre>
+ * Template example(s):
+ *   #if( $msg.exists('greeting') )
+ *     $msg.greeting
+ *   #end
  *
- * <p>This class is equipped to be used with a toolbox manager, for example
- * the ServletToolboxManager included with VelServlet. This class implements
- * interface ViewTool, which allows a toolbox manager to pass the
- * required context information.</p>
+ * Toolbox configuration:
+ * &lt;tool&gt;
+ *   &lt;key&gt;msg&lt;/key&gt;
+ *   &lt;scope&gt;request&lt;/scope&gt;
+ *   &lt;class&gt;org.apache.velocity.tools.struts.MessageTool&lt;/class&gt;
+ * &lt;/tool&gt;
+ * </pre></p>
  *
- * <p>This class is not thread-safe by design. A new instance is needed for
- * the processing of every template request.  This means this tool should
- * only be used in the request scope, not application or session scopes.</p>
+ * <p>This tool should only be used in the request scope.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
- *
- * @version $Id: MessageTool.java,v 1.7 2003/10/20 02:33:48 nbubna Exp $
+ * @since VelocityTools 1.0
+ * @version $Id: MessageTool.java,v 1.8 2003/11/06 00:26:54 nbubna Exp $
  */
 public class MessageTool implements ViewTool
 {
@@ -98,9 +104,7 @@ public class MessageTool implements ViewTool
     protected HttpServletRequest request;
 
 
-    /**
-     * A reference to the Struts message resources.
-     */
+    /** A reference to the Struts message resources. */
     protected MessageResources resources;
 
 
@@ -146,6 +150,7 @@ public class MessageTool implements ViewTool
     /**
      * Retrieves the specified {@link MessageResources} bundle, or the
      * application's default MessageResources if no bundle is specified.
+     * @since VelocityTools 1.1
      */
     protected MessageResources getResources(String bundle)
     {
@@ -153,7 +158,7 @@ public class MessageTool implements ViewTool
         {
             if (resources == null) 
             {
-                Velocity.error("Message resources are not available.");
+                Velocity.error("MessageTool: Message resources are not available.");
             }
             return resources;
         }
@@ -162,7 +167,7 @@ public class MessageTool implements ViewTool
             StrutsUtils.getMessageResources(request, app, bundle);
         if (res == null)
         {
-            Velocity.error("MessageResources bundle '" + bundle + 
+            Velocity.error("MessageTool: MessageResources bundle '" + bundle + 
                            "' is not available.");
         }
         return res;
@@ -197,6 +202,7 @@ public class MessageTool implements ViewTool
      *
      * @return the localized message for the specified key or
      * <code>null</code> if no such message exists
+     * @since VelocityTools 1.1
      */
     public String get(String key, String bundle)
     {
@@ -230,7 +236,7 @@ public class MessageTool implements ViewTool
      * @param key message key
      * @param bundle The bundle name to look for.
      * @param args replacement parameters for this message
-     *
+     * @since VelocityTools 1.1
      * @return the localized message for the specified key or
      * <code>null</code> if no such message exists
      */
@@ -277,7 +283,7 @@ public class MessageTool implements ViewTool
      * @param key message key
      * @param bundle The bundle name to look for.
      * @param args replacement parameters for this message
-     *
+     * @since VelocityTools 1.1
      * @return the localized message for the specified key or
      * <code>null</code> if no such message exists
      */
@@ -307,7 +313,7 @@ public class MessageTool implements ViewTool
      *
      * @param key message key
      * @param bundle The bundle name to look for.
-     *
+     * @since VelocityTools 1.1
      * @return <code>true</code> if a message strings exists,
      * <code>false</code> otherwise
      */

@@ -66,31 +66,30 @@ import org.apache.struts.action.SecurePlugIn;
 import org.apache.struts.Globals;
 
 /**
- * <p>Title: SecureLinkTool</p>
- * <p>Description: Tool to be able to use Struts SSL Extensions with Velocity</p>
+ * <p>Tool to be able to use Struts SSL Extensions with Velocity</p>
  * <p>It has the same interface as StrutsLinkTool and can function as a substitute if Struts 1.1 and SSL Ext are installed. </p>
  * <p>Usage:
  * <pre>
  * Template example:
- *
- * <!-- Use just like a regular StrutsLinkTool -->
+ * &lt;!-- Use just like a regular StrutsLinkTool --&gt;
  * $link.setAction("nameOfAction")
  * $link.setForward("nameOfForward")
  *
- * If the action or forward is marked as secure, or not, in your struts-config then the link will be rendered
+ * If the action or forward is marked as secure, or not, 
+ * in your struts-config then the link will be rendered
  * with https or http accordingly.
  *
  * Toolbox configuration:
- *
- * <tool>
- *   <key>link</key>
- *   <scope>request</scope>
- *   <class>org.apache.velocity.tools.struts.SecureLinkTool</class>
- * </tool>
+ * &lt;tool&gt;
+ *   &lt;key&gt;link&lt;/key&gt;
+ *   &lt;scope&gt;request&lt;/scope&gt;
+ *   &lt;class&gt;org.apache.velocity.tools.struts.SecureLinkTool&lt;/class&gt;
+ * &lt;/tool&gt;
  * </pre>
  * </p>
+ * @since VelocityTools 1.1
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @version $Revision: 1.5 $ $Date: 2003/11/05 15:39:09 $
+ * @version $Revision: 1.6 $ $Date: 2003/11/06 00:26:54 $
  */
 public class SecureLinkTool extends LinkTool
 {

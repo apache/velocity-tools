@@ -107,7 +107,7 @@ import org.apache.struts.action.ActionMappings;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * based on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class StrutsUtils
 {
@@ -135,7 +135,7 @@ public class StrutsUtils
      *  <code><message-resources></code> element for the
      *  requested bundle
      *
-     * @since Struts 1.1
+     * @since VelocityTools 1.1
      */
     public static DataSource getDataSource(HttpServletRequest request,
                                            ServletContext app)
@@ -166,6 +166,7 @@ public class StrutsUtils
      * array for this application or <code>null</code> if not found.
      *
      * @param application the servlet context
+     * @since VelocityTools 1.1
      */
     public static FormBeanConfig[] getFormBeanConfigs(HttpServletRequest request,
                                                       ServletContext app)
@@ -202,6 +203,7 @@ public class StrutsUtils
      *
      * @param name logical name of the requested form bean definition
      * @param application the servlet context
+     * @since VelocityTools 1.1
      */
     public static FormBeanConfig getFormBeanConfig(String name,
                                                    HttpServletRequest request,
@@ -231,6 +233,7 @@ public class StrutsUtils
      * array for this application or <code>null</code> if not found.
      *
      * @param application the servlet context
+     * @since VelocityTools 1.1
      */
     public static ForwardConfig[] getForwardConfigs(HttpServletRequest request,
                                                     ServletContext app)
@@ -267,6 +270,7 @@ public class StrutsUtils
      *
      * @param name Logical name of the requested forwarding
      * @param application the servlet context
+     * @since VelocityTools 1.1
      */
     public static ForwardConfig getForwardConfig(String name,
                                                  HttpServletRequest request,
@@ -296,6 +300,7 @@ public class StrutsUtils
      * array for this application or <code>null</code> if not found.
      *
      * @param application the servlet context
+     * @since VelocityTools 1.1
      */
     public static ActionConfig[] getActionConfigs(HttpServletRequest request,
                                                   ServletContext app)
@@ -332,6 +337,7 @@ public class StrutsUtils
      *
      * @param path Request path for which a mapping is requested
      * @param application the servlet context
+     * @since VelocityTools 1.1
      */
     public static ActionConfig getActionConfig(String path,
                                                HttpServletRequest request,
@@ -361,6 +367,7 @@ public class StrutsUtils
      * if not found.
      *
      * @param application the servlet context
+     * @since VelocityTools 1.1
      */
     public static MessageResources getMessageResources(HttpServletRequest request,
                                                        ServletContext app)
@@ -378,7 +385,8 @@ public class StrutsUtils
      *
      * @param application the servlet context
      * @param bundle The bundle name to look for.  If this is <code>null</code>, the
-     * default bundle name is used.
+     *               default bundle name is used.
+     * @since VelocityTools 1.1
      */
     public static MessageResources getMessageResources(HttpServletRequest request,
                                                        ServletContext app,
@@ -412,6 +420,7 @@ public class StrutsUtils
      * @param urlPath The requested URL
      * @param app The ServletContext for this web application
      * @return The ModuleConfig for the given URL path
+     * @since VelocityTools 1.1
      */
     public static ModuleConfig selectModule(String urlPath,
                                             ServletContext app)
@@ -503,6 +512,7 @@ public class StrutsUtils
      * object for this request or <code>null</code> if none exists.
      *
      * @param request the servlet request
+     * @since VelocityTools 1.1
      */
     public static ActionMessages getActionMessages(HttpServletRequest request)
     {
@@ -540,6 +550,7 @@ public class StrutsUtils
      * for this request or <code>null</code> if none exists.
      *
      * @param request the servlet request
+     * @since VelocityTools 1.1
      */
     public static ActionConfig getActionConfig(HttpServletRequest request)
     {
@@ -773,7 +784,7 @@ public class StrutsUtils
      * @param request the servlet request
      * @param session the HTTP session
      * @param application the servlet context
-     *
+     * @since VelocityTools 1.1
      * @return The formatted error message. If no error messages are queued,
      * an empty string is returned.
      */
