@@ -13,7 +13,7 @@
     <servlet-class>org.apache.velocity.tools.view.servlet.VelocityViewServlet</servlet-class>
 
     <init-param>
-      <param-name>toolbox</param-name>
+      <param-name>org.apache.velocity.toolbox</param-name>
       <param-value>/WEB-INF/toolbox.xml</param-value>
    </init-param>
 
