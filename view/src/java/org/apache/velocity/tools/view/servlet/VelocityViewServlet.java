@@ -54,6 +54,7 @@
 
 package org.apache.velocity.tools.view.servlet;
 
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -71,17 +72,17 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import org.apache.velocity.servlet.VelocityServlet;
-
 import org.apache.velocity.app.Velocity;
-
 import org.apache.velocity.Template;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.runtime.RuntimeConstants;
+
 
 import org.apache.velocity.tools.view.context.ToolboxContext;
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.context.ChainedContext;
 import org.apache.velocity.tools.view.tools.ToolboxManager;
+
 
 /**
  *  <p>
@@ -93,44 +94,49 @@ import org.apache.velocity.tools.view.tools.ToolboxManager;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author  <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.1 2002/01/03 20:21:55 geirm Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.2 2002/01/04 03:29:39 geirm Exp $
  */
+
 public class VelocityViewServlet extends VelocityServlet
 {
     public static final String TOOLBOX_PARAM = "toolbox";
-
     protected ToolboxManager toolboxManager = null;
 
     /**
      *  we want to see if there is a magickey as a context
      *  param
      */
+
     public void init( ServletConfig config )
         throws ServletException
     {
         super.init( config );
 
-       /*
-        *  setup the toolbox if there is one
-        */
+       	/*
+   		 *  setup the toolbox if there is one
+         */
 
-       String key = config.getInitParameter( TOOLBOX_PARAM );
+	    String key = config.getInitParameter( TOOLBOX_PARAM );
 
-       if ( key != null )
-       {
-           InputStream is = null;
+        if ( key != null )
+        {
+            InputStream is = null;
 
-           try
-           {
-               /*
-                *  little fix up
-                */
-               if ( !key.startsWith("/") )
-                   key = "/" + key;
+            try
+            {
+                /*
+                 *  little fix up
+                 */
+
+                if ( !key.startsWith("/") )
+                {
+            	   key = "/" + key;
+            	}
 
                /*
                 *  get the bits
                 */
+
                is = getServletContext().getResourceAsStream( key );
 
                if ( is != null)
@@ -147,9 +153,11 @@ public class VelocityViewServlet extends VelocityServlet
            {
                Velocity.error("Problem reading toolbox file properties file '" + key +"' : " + e );
            }
+
            finally
            {
-               try{
+               try
+               {
                    if ( is != null)
                        is.close();
                }
@@ -169,10 +177,12 @@ public class VelocityViewServlet extends VelocityServlet
     protected void initVelocity( ServletConfig config )
          throws ServletException
     {
+
         /*
          *  start with our servletlogger, which logs to the servlet
          *  engines log
          */
+
         ServletLogger sl = new ServletLogger( getServletContext() );
         Velocity.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, sl );
 
@@ -199,7 +209,6 @@ public class VelocityViewServlet extends VelocityServlet
             getServletContext().log("VELOCITY PANIC : unable to init() : " + e );
             throw new ServletException ( e );
         }
-
     }
 
     /**
@@ -213,7 +222,7 @@ public class VelocityViewServlet extends VelocityServlet
      *  @param ctx  VelocityContext to fill
      *  @return Velocity Template object or null
      */
-    protected Template handleRequest( HttpServletRequest request, HttpServletResponse response, Context ctx ) 
+    protected Template handleRequest( HttpServletRequest request, HttpServletResponse response, Context ctx )
         throws Exception
     {
         return getTemplate(request.getServletPath() );
@@ -221,7 +230,7 @@ public class VelocityViewServlet extends VelocityServlet
 
     /**
      *  <p>Returns a Velocity context. A new context of class
-     *  {@link ChainedContext} is created and returned. This method overwrites 
+     *  {@link ChainedContext} is created and returned. This method overwrites
      *  {@link org.apache.velocity.servlet.VelocityServlet#createContext(
      *  HttpServletRequest request, HttpServletResponse response)}.
      *  </p>
@@ -242,16 +251,15 @@ public class VelocityViewServlet extends VelocityServlet
         /*
          *  if we have a toolbox manager, let it make a context for us
          */
+
         if (toolboxManager != null)
         {
             ToolboxContext tc = toolboxManager.getToolboxContext( ctx );
-
             ctx.setToolbox(  tc);
         }
 
         return ctx;
     }
-
 
     /**
      *  little wrapper class to safely pass the ServletContext to the loader
@@ -267,10 +275,7 @@ public class VelocityViewServlet extends VelocityServlet
 
         public ServletContext getServletContext()
         {
-            return servletContext;
+           return servletContext;
         }
-    }
+   }
 }
-
-
-
