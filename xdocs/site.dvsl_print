@@ -68,14 +68,14 @@
       <tr>
 
         ## LEFT SIDE NAVIGATION
-        <td width="20%" valign="top" nowrap="true">
+        #*<td width="20%" valign="top" nowrap="true">
           $context.applyTemplates( $project, "body/toplink" )
           $context.applyTemplates( $project, "body/uplink" )
           $context.applyTemplates( $project, "body/menu" )
-        </td>
+        </td>*#
 
         <!-- RIGHT SIDE MAIN BODY -->
-        <td colspan="1" width="80%" valign="top" align="left">
+        <td colspan="2" width="80%" valign="top" align="left">
           $context.applyTemplates("body/section")
         </td>
 
