@@ -573,7 +573,7 @@ http://myserver.org/myapp/index.vm?key1=val+1
     <dd>
         <returns>
                 Returns the current URI reference as set by one of the methods 
-                setURI(), setAction(), setForward() or setRelative(). Any conversions 
+                setURI() or setRelative(). Any conversions 
                 have been applied. The returned URI reference does not included query data that was
                 added with method addQueryData().
             </returns>
@@ -752,7 +752,7 @@ $l.getQueryData()</sourcecode></pre>
     <dd>
         <returns>
                 The context path that addresses this web application, e.g. 
-                <code>/myapp"</code>. This string starts with a "/" but does 
+                <code>"/myapp"</code>. This string starts with a "/" but does 
                 not end with a "/".
             </returns>
     </dd>
@@ -878,7 +878,7 @@ $l.getQueryData()</sourcecode></pre>
                 obtain a representable version of objects.</p>
 <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>&lt;a href="$link.setAction("demo").addQueryString("key1", "val 1")"&gt;
+    <pre><sourcecode>&lt;a href="$link.setRelative("demo").addQueryString("key1", "val 1")"&gt;
 My Link&lt;/a&gt;</sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
@@ -936,24 +936,24 @@ is able to work properly with or without cookie support of the client.</p>
 cookies are enabled and disabled.</p>
 <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>&lt;a href="$link.setURI("MyAction.do).addQueryData("key1","val 1")"&gt;
+    <pre><sourcecode>&lt;a href="$link.setURI("MyPage.vm").addQueryData("key1","val 1")"&gt;
 My Link&lt;/a&gt;
 
-&lt;form name="MyForm" method="post" action="$link.setURI("myAction.do")"&gt;</sourcecode></pre>
+&lt;form name="MyForm" method="post" action="$link.setURI("MyPage.vm")"&gt;</sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
 <p>Produces this if cookies are enabled:</p>
 <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>&lt;a href="MyAction.do?key1=val+1"&gt;My Link&lt;/a&gt;
+    <pre><sourcecode>&lt;a href="MyPage.vm?key1=val+1"&gt;My Link&lt;/a&gt;
 
-&lt;form name="MyForm" method="post" action="MyAction.do"&gt;</sourcecode></pre>
+&lt;form name="MyForm" method="post" action="MyPage.vm"&gt;</sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
 <p>Produces something like this if cookies are diabled:</p>
 <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>&lt;a href="MyAction.do;jsessionid=E9833012F7B2F8570963B137?key1=val+1"&gt;
+    <pre><sourcecode>&lt;a href="MyPage.vm;jsessionid=E9833012F7B2F8570963B137?key1=val+1"&gt;
 My Link&lt;/a&gt;
 
 &lt;form name="MyForm" method="post" 
