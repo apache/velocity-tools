@@ -85,14 +85,11 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *  &lt;!-- insert a tile --&gt;
  *  $tiles.myTileDefinition
  *
- *  &lt;!-- get named attribute value from the current tiles' context --&gt;
- *  $tiles.getString("myTileAttribute")
+ *  &lt;!-- get named attribute value from the current tiles-context --&gt;
+ *  $tiles.getAttribute("myTileAttribute")
  *
- *  &lt;!-- import all attributes in the current tiles-context into the velocity-context. --&gt;
- *  $tiles.importAttribute()
- *
- *  &lt;!-- import a named attribute in the current tiles-context into the velocity-context. --&gt;
- *  $tiles.importAttribute("myTileAttribute")
+ *  &lt;!-- import all attributes of the current tiles-context into the velocity-context. --&gt;
+ *  $tiles.importAttributes()
  *
  * Toolbox configuration:
  * &lt;tool&gt;
@@ -106,7 +103,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.6 $ $Date: 2003/12/01 19:29:43 $
+ * @version $Revision: 1.7 $ $Date: 2003/12/02 12:47:48 $
  */
 public class TilesTool extends ImportSupport
         implements ViewTool
@@ -150,72 +147,47 @@ public class TilesTool extends ImportSupport
     /***************************** View Helpers ******************************/
 
     /**
-     * Fetches a named attribute value from the current tiles-context.
-     *
-     * <p>This is functionally equivalent to
-     * <code>&lt;tiles:getAsString name="title" /&gt;</code>.</p>
-     *
-     * @param name the name of the tiles-attribute to fetch
-     * @return the attribute value as String
-     */
-    public String getString(String name)
-    {
-        ComponentContext context = ComponentContext.getContext(request);
-        Object attrValue = context.getAttribute(name);
-        if (attrValue == null)
-        {
-            return null;
-        }
-        return attrValue.toString();
-    }
-
-    /**
      * Imports all attributes in the current tiles-context into the velocity-context.
      *
      * <p>This is functionally equivalent to
      * <code><tiles:importAttribute /></code>.</p>
      */
-    public void importAttribute()
+    public void importAttributes()
     {
-        this.importAttribute(null);
+        ComponentContext currentContext = ComponentContext.getContext(request);
+        Iterator names = currentContext.getAttributeNames();
+        while (names.hasNext())
+        {
+            String name = (String)names.next();
+            context.getVelocityContext().put(name,
+                                             currentContext.
+                                             getAttribute(name));
+        }
     }
 
     /**
-     * Imports a named attribute-value from the current tiles-context into the
-     * velocity context. If attribute name is null, all attributes in the current
-     * tiles-context are imported into the velocity-context.
+     * Fetches a named attribute-value from the current tiles-context.
      *
      * <p>This is functionally equivalent to
-     * <code><tiles:importAttribute name="attributeName" /></code>.</p>
+     * <code><tiles:importAttribute name="attributeName" /></code>
+     * as well as
+     * <code>&lt;tiles:getAsString name="attributeName" /&gt;</code>.</p>
      *
      * @param attributeName the name of the tiles-attribute to import
+     * @return attribute value for the named attribute
      */
-    public void importAttribute(String attributeName)
+    public Object getAttribute(String attributeName)
     {
         ComponentContext currentContext = ComponentContext.getContext(request);
-        if (attributeName != null)
+        Object value = currentContext.getAttribute(attributeName);
+        if (value == null)
         {
-            Object value = currentContext.getAttribute(attributeName);
-            if (value == null)
-            {
-                Velocity.error("Error while importing Tile attribute '"
-                               + attributeName
-                               + "' - attribute not found in context.");
-            }
+            Velocity.error("Error while importing Tile attribute '"
+                           + attributeName
+                           + "' - attribute not found in context.");
+        }
 
-            context.getVelocityContext().put(attributeName, value);
-        }
-        else
-        { // set all attributes
-            Iterator names = currentContext.getAttributeNames();
-            while (names.hasNext())
-            {
-                String name = (String)names.next();
-                context.getVelocityContext().put(name,
-                                                 currentContext.
-                                                 getAttribute(name));
-            }
-        }
+        return value;
     }
 
     /**
