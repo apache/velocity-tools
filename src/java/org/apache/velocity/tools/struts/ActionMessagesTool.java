@@ -51,7 +51,7 @@ import org.apache.velocity.tools.struts.StrutsUtils;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.1
- * @version $Id: ActionMessagesTool.java,v 1.8 2004/02/18 20:09:51 nbubna Exp $
+ * @version $Id: ActionMessagesTool.java,v 1.8.2.1 2004/03/12 23:36:19 nbubna Exp $
  */
 public class ActionMessagesTool extends MessageResourcesTool
 {
@@ -78,7 +78,7 @@ public class ActionMessagesTool extends MessageResourcesTool
         //setup superclass instance members
         super.init(obj);
 
-        this.actionMsgs = StrutsUtils.getActionMessages(this.request);
+        this.actionMsgs = StrutsUtils.getMessages(this.request);
     }
 
 
