@@ -42,7 +42,7 @@ import org.apache.struts.util.MessageResources;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @since VelocityTools 1.0
- * @version $Id: MessageTool.java,v 1.13 2004/03/12 20:50:38 nbubna Exp $
+ * @version $Id: MessageTool.java,v 1.14 2004/05/28 18:51:16 nbubna Exp $
  */
 public class MessageTool extends MessageResourcesTool
 {
@@ -50,8 +50,7 @@ public class MessageTool extends MessageResourcesTool
     /**
      * Default constructor. Tool must be initialized before use.
      */
-    public MessageTool()
-    {}
+    public MessageTool() {}
 
 
     /**
@@ -59,15 +58,15 @@ public class MessageTool extends MessageResourcesTool
      * The user's locale is consulted to determine the language of the
      * message.
      *
-     * @param key message key
+     * <p><pre>Example use: $text.forms.profile.title</pre></p>
      *
-     * @return the localized message for the specified key or
-     * <code>null</code> if no such message exists
+     * @param key message key
      */
-    public String get(String key)
+    public TextKey get(String key)
     {
-        return get(key, (Object[])null);
+        return new TextKey(this, key);
     }
+
 
     /**
      * Looks up and returns the localized message for the specified key.
@@ -204,6 +203,55 @@ public class MessageTool extends MessageResourcesTool
 
         // Return the requested message presence indicator
         return res.isPresent(this.locale, key);
+    }
+
+
+    /**
+     * Helper class to simplify tool usage when retrieving
+     * no-arg messages from the default bundle that have periods
+     * in their key.
+     *
+     * <p>So instead of <code>$text.get("forms.profile.title")</code>,1
+     * you can just type <code>$text.forms.profile.title</code>. Also,
+     * this lets you do things like:
+     * <pre>
+     *   #set( $profiletext = $text.forms.profile )
+     *   <h1>$profiletext.title</h1>
+     *   <h3>$profiletext.subtitle</h3>
+     * </pre>
+     * </p>
+     *
+     * @since VelocityTools 1.2
+     */
+    public class TextKey
+    {
+        private MessageTool tool;
+        private String key;
+
+        public TextKey(MessageTool tool, String key)
+        {
+            this.tool = tool;
+            this.key = key;
+        }
+
+        /**
+         * Appends a period and the new key to the current
+         * key and returns a new TextKey instance with the
+         * combined result as its key.
+         */
+        public TextKey get(String key)
+        {
+            StringBuffer sb = new StringBuffer(this.key);
+            sb.append('.');
+            sb.append(key);
+            return new TextKey(this.tool, sb.toString());
+        }
+
+        public String toString()
+        {
+            // don't recurse infinitely
+            return tool.get(key, (Object[])null);
+        }
     }
 
 }
