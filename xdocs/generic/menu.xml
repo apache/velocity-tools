@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  Copyright 2003-2004 The Apache Software Foundation.
+  Copyright 2003-2005 The Apache Software Foundation.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -38,6 +38,7 @@
       <item name="MathTool"     href="MathTool.html"/>
       <item name="NumberTool"   href="../javadoc/org/apache/velocity/tools/generic/NumberTool.html"/>
       <item name="RenderTool"   href="RenderTool.html"/>
+      <item name="EscapeTool"   href="EscapeTool.html"/>
     </menu>
 
     <menu name="Other Subprojects">
