@@ -89,93 +89,17 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @since VelocityTools 1.0
- * @version $Id: MessageTool.java,v 1.8 2003/11/06 00:26:54 nbubna Exp $
+ * @version $Id: MessageTool.java,v 1.9 2003/11/06 06:19:44 nbubna Exp $
  */
-public class MessageTool implements ViewTool
+public class MessageTool extends MessageResourcesTool
 {
-
-    // --------------------------------------------- Properties -------
-
-    /** A reference to the ServletContext */
-    protected ServletContext app;
-
-
-    /** A reference to the HttpServletRequest. */
-    protected HttpServletRequest request;
-
-
-    /** A reference to the Struts message resources. */
-    protected MessageResources resources;
-
-
-    /**
-     * A reference to the user's locale.
-     */
-    protected Locale locale;
-
-
-    // --------------------------------------------- Constructors -------------
 
     /**
      * Default constructor. Tool must be initialized before use.
      */
     public MessageTool()
-    {
-    }
+    {}
 
-
-    /**
-     * Initializes this tool.
-     *
-     * @param obj the current ViewContext
-     * @throws IllegalArgumentException if the param is not a ViewContext
-     */
-    public void init(Object obj)
-    {
-        if (!(obj instanceof ViewContext))
-        {
-            throw new IllegalArgumentException("Tool can only be initialized with a ViewContext");
-        }
-
-        ViewContext context = (ViewContext)obj;
-        this.request = context.getRequest();
-        HttpSession session = request.getSession(false);
-        this.app = context.getServletContext();
-
-        this.resources = StrutsUtils.getMessageResources(request, app);
-        this.locale = StrutsUtils.getLocale(request, session);
-    }
-
-
-    /**
-     * Retrieves the specified {@link MessageResources} bundle, or the
-     * application's default MessageResources if no bundle is specified.
-     * @since VelocityTools 1.1
-     */
-    protected MessageResources getResources(String bundle)
-    {
-        if (bundle == null)
-        {
-            if (resources == null) 
-            {
-                Velocity.error("MessageTool: Message resources are not available.");
-            }
-            return resources;
-        }
-        
-        MessageResources res = 
-            StrutsUtils.getMessageResources(request, app, bundle);
-        if (res == null)
-        {
-            Velocity.error("MessageTool: MessageResources bundle '" + bundle + 
-                           "' is not available.");
-        }
-        return res;
-    }
-
-
-
-    // --------------------------------------------- View Helpers -------------
 
     /**
      * Looks up and returns the localized message for the specified key.
@@ -251,11 +175,11 @@ public class MessageTool implements ViewTool
         // return the requested message
         if (args == null)
         {
-            return res.getMessage(locale, key);
+            return res.getMessage(this.locale, key);
         }
         else
         {
-            return res.getMessage(locale, key, args);
+            return res.getMessage(this.locale, key, args);
         }
     }
 
@@ -326,7 +250,7 @@ public class MessageTool implements ViewTool
         }
 
         // Return the requested message presence indicator
-        return res.isPresent(locale, key);
+        return res.isPresent(this.locale, key);
     }
 
 
@@ -336,7 +260,7 @@ public class MessageTool implements ViewTool
      */
     public Locale getLocale()
     {
-        return locale;
+        return this.locale;
     }
 
 }

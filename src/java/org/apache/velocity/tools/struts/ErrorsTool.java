@@ -56,20 +56,10 @@ package org.apache.velocity.tools.struts;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.servlet.ServletContext;
-
 import org.apache.struts.util.MessageResources;
 import org.apache.struts.action.ActionError;
 import org.apache.struts.action.ActionErrors;
-
 import org.apache.velocity.app.Velocity;
-import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ViewTool;
-
 
 /**
  * <p>View tool to work with the Struts error messages.</p>
@@ -95,39 +85,14 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @since VelocityTools 1.0
- * @version $Id: ErrorsTool.java,v 1.7 2003/11/06 00:26:54 nbubna Exp $
+ * @version $Id: ErrorsTool.java,v 1.8 2003/11/06 06:19:44 nbubna Exp $
  */
-public class ErrorsTool implements ViewTool
+public class ErrorsTool extends MessageResourcesTool
 {
-
-    // --------------------------------------------- Properties ---------------
-
-    /** A reference to the ServletContext */ 
-    protected ServletContext application;
-
-
-    /** A reference to the HttpServletRequest. */ 
-    protected HttpServletRequest request;
-    
-
-    /** A reference to the HttpSession. */ 
-    protected HttpSession session;
-
-
-    /** A reference to the Struts message resources. */
-    protected MessageResources resources;
-
-
-    /** A reference to the user's locale. */
-    protected Locale locale;
-
 
     /** A reference to the queued action messages. */
     protected ActionErrors errors;
 
-
-
-    // --------------------------------------------- Constructors -------------
 
     /**
      * Default constructor. Tool must be initialized before use.
@@ -144,48 +109,11 @@ public class ErrorsTool implements ViewTool
      */
     public void init(Object obj)
     {
-        if (!(obj instanceof ViewContext))
-        {
-            throw new IllegalArgumentException("Tool can only be initialized with a ViewContext");
-        }
+        //setup superclass instance members
+        super.init(obj);
 
-        ViewContext context = (ViewContext)obj;
-        this.request = context.getRequest();
-        this.session = request.getSession(false);
-        this.application = context.getServletContext();    
-
-        resources = StrutsUtils.getMessageResources(request, application);
-        locale = StrutsUtils.getLocale(request, session);
-        errors = StrutsUtils.getActionErrors(request);
+        this.errors = StrutsUtils.getActionErrors(this.request);
     }
-
-
-    /**
-     * Retrieves the specified {@link MessageResources} bundle, or the
-     * application's default MessageResources if no bundle is specified.
-     * @since VelocityTools 1.1
-     */
-    protected MessageResources getResources(String bundle)
-    {
-        if (bundle == null)
-        {
-            if (resources == null) 
-            {
-                Velocity.error("Message resources are not available.");
-            }
-            return resources;
-        }
-        
-        MessageResources res = 
-            StrutsUtils.getMessageResources(request, application, bundle);
-        if (res == null)
-        {
-            Velocity.error("MessageResources bundle '" + bundle + 
-                           "' is not available.");
-        }
-        return res;
-    }
-        
 
 
     // --------------------------------------------- View Helpers -------------
@@ -200,7 +128,6 @@ public class ErrorsTool implements ViewTool
         {
             return false;
         }
-
         return !errors.isEmpty();
     }
 
@@ -229,8 +156,7 @@ public class ErrorsTool implements ViewTool
         if (errors == null)
         {
             return 0;
-        }
-        
+        }        
         return errors.size();
     }
 
@@ -246,7 +172,6 @@ public class ErrorsTool implements ViewTool
         {
             return 0;
         }
-
         return errors.size(property);
     }
 
@@ -304,7 +229,7 @@ public class ErrorsTool implements ViewTool
 
     /**
      * Returns the set of localized error messages as an 
-     * <code>java.util.ArrayList</code> of <code> java.lang.String</code> 
+     * <code>java.util.ArrayList</code> of <code>java.lang.String</code> 
      * for all errors queued of the specified category or <code>null</code> 
      * if no error are queued for the specified category. If the message 
      * resources don't contain an error message for a particular error key, 
@@ -347,7 +272,7 @@ public class ErrorsTool implements ViewTool
         while (errormsgs.hasNext())
         {
             ActionError errormsg = (ActionError)errormsgs.next();
-            String message = res.getMessage(locale, 
+            String message = res.getMessage(this.locale, 
                                             errormsg.getKey(), 
                                             errormsg.getValues());
             if (message != null)
@@ -417,7 +342,7 @@ public class ErrorsTool implements ViewTool
     public String getMsgs(String property, String bundle)
     {
         return StrutsUtils.errorMarkup(property, bundle, request, 
-                                       session, application);    
+                                       request.getSession(false), application);
     }
 
 
