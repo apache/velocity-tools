@@ -7,7 +7,7 @@
   </tool>
   <tool>
      <key>link</key>
-     <class>org.apache.velocity.tools.struts.LinkTool</class>
+     <class>org.apache.velocity.tools.struts.StrutsLinkTool</class>
   </tool>
   <tool>
      <key>msg</key>

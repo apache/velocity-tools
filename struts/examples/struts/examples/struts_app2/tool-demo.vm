@@ -153,8 +153,8 @@
                 <td>$link.setForward("start") &nbsp;</td>
             </tr>
             <tr>
-                <td>\$link.setAbsolute("examples/index.html")</td>
-                <td>$link.setAbsolute("examples/index.html")</td>
+                <td>\$link.setRelative("examples/index.html")</td>
+                <td>$link.setRelative("examples/index.html")</td>
             </tr>
             <tr>
                 <td>\$link.setURI("index.html").addQueryData("key1", "val 1")</td>             
