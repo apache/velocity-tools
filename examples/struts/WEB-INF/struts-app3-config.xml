@@ -50,7 +50,12 @@
         name="logoff_jsp"
         path="/logoff_jsp.do"/>
 
-    <!-- Forward to source -->
+    <!-- Forward to sources -->
+     <forward
+        name="index_jsp_src"
+        path="/examples/struts_app3/index_jsp.txt"
+        contextRelative="true"/>
+
      <forward
         name="logon_jsp_src"
         path="/examples/struts_app3/logon_jsp.txt"
@@ -73,7 +78,12 @@
         name="logoff_vm"
         path="/logoff_vm.do"/>
 
-    <!-- Forward to source -->
+    <!-- Forward to sources -->
+     <forward
+        name="index_vm_src"
+        path="/examples/struts_app3/index_vm.txt"
+        contextRelative="true"/>
+
      <forward
         name="logon_vm_src"
         path="/examples/struts_app3/logon_vm.txt"

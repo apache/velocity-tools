@@ -10,7 +10,7 @@ Else display "Welcome World!"
 Display link to log in page; maintain session id if needed.
 If user is logged in, display a link to the sign-out page.
 
-Note: Only the minimum required html or Sruts custom tags 
+Note: Only the minimum required html or Sruts custom tags
 are used in this example.
 
 --%>
@@ -25,13 +25,13 @@ are used in this example.
         <logic:present name="user">
         <h3>Welcome <bean:write name="user" property="username"/>! (JSP Version)</h3>
         </logic:present>
-        
+
         <logic:notPresent scope="session" name="user">
         <h3>Welcome World! (JSP Version)</h3>
         </logic:notPresent>
-        
+
         <html:errors/>
-        
+
         <ul>
             <li><html:link forward="logon_jsp">Sign in</html:link></li>
             <logic:present name="user">
@@ -40,8 +40,8 @@ are used in this example.
         </ul>
 
         <html:link forward="welcome_vm">Switch to Velocity</html:link><br>
-        <a href="index_jsp.txt">View Template</a><br>
-        
+        <html:link forward="index_jsp_src">View Template</html:link><br>
+
     </body>
 
 </html>
