@@ -138,7 +138,7 @@
         </table>
 
 
-        <h3>LinkTool</h3>
+        <h3>StrutsLinkTool</h3>
         <table border="1" cellspacing="0" cellpadding="4">
             <tr>
                 <td>\$link.setURI("template/login.vm")</td>
@@ -149,8 +149,8 @@
                 <td>$link.setAction("demo") &nbsp;</td>
             </tr>
             <tr>
-                <td>\$link.setForward("start")</td>
-                <td>$link.setForward("start") &nbsp;</td>
+                <td>\$link.setForward("src")</td>
+                <td>$link.setForward("src") &nbsp;</td>
             </tr>
             <tr>
                 <td>\$link.setRelative("examples/index.html")</td>
@@ -195,7 +195,66 @@
         <h3>ActionMessagesTool</h3>
         <table border="1" cellspacing="0" cellpadding="4">
             <tr>
-                <td>Pending. Depends on upcoming Struts 1.1 release.</td><td>&nbsp;</td>
+                <td>\$actionmsgs.exist()</td>
+                <td>$actionmsgs.exist()</td>
+            </tr>
+            <tr>
+                <td>\$actionmsgs.exist("foobar")</td>
+                <td>$actionmsgs.exist("foobar")</td>
+            </tr>
+            <tr>
+                <td>\$actionmsgs.getSize()<br>
+                    \$actionmsgs.size</td>
+                <td>$actionmsgs.getSize()</td>
+            </tr>
+            <tr>
+                <td>\$actionmsgs.getSize("foobar")</td>
+                <td>$actionmsgs.getSize("foobar")</td>
+            </tr>
+            <tr>
+                <td>\$actionmsgs.getAll()<br>
+                    \$actionmsgs.all</td>
+                <td>[This is a String representation of the ArrayList that is returned]<br>
+                    $actionmsgs.getAll()</td>
+            </tr>
+            <tr>
+                <td>\$actionmsgs.get("foobar")<br>
+                    \$actionmsgs.language</td>
+                <td>[This is a String representation of the ArrayList that is returned]<br>
+                    $actionmsgs.get("foobar")</td>
+            </tr>
+            <tr>
+                <td>A Velocity macro to render all actionmsg messages:<br>
+<pre><code>&#35;macro (messageMarkup)
+  &#35;if (&#36;actionmsgs.exist() )
+    &lt;ul&gt;
+    &#35;foreach (&#36;m in &#36;actionmsgs.all )
+      &#36;m
+    &#35;end
+    &lt;/ul&gt;
+  &#35;end
+&#35;end</code></pre>
+                </td>
+                <td>
+                    #messageMarkup()
+                </td>
+            </tr>
+            <tr>
+                <td>A Velocity macro to render actionmsg messages specific<br>
+                    to a property:<br>
+<pre><code>&#35;macro (messageMarkup &#36;property)
+  &#35;if (&#36;actionmsgs.exist(&#36;property))
+    &lt;ul&gt;
+    &#35;foreach (&#36;m in &#36;actionmsgs.get(&#36;property))
+      &#36;m
+    &#35;end
+    &lt;/ul&gt;
+  &#35;end
+&#35;end</code></pre>
+                </td>
+                <td>
+                    #messageMarkupForProperty("foobar")
+                </td>
             </tr>
         </table>
 
