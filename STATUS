@@ -1,6 +1,6 @@
 S T A T U S
 ===========
-$Id: STATUS,v 1.1 2003/02/10 18:31:34 nbubna Exp $
+$Id: STATUS,v 1.2 2003/02/12 03:11:31 nbubna Exp $
 
 
 Known Issues/Bugs:
@@ -16,6 +16,8 @@ Known Issues/Bugs:
 
 Documentation:
    - Fix current tools documentation. Several files are out of sync.
+   - Drop the non-existent 'Utilities' package
+   - Update plan for Velocimacro libraries
    - Complete user guide.
    - Create a developer's guide?
 
@@ -28,12 +30,14 @@ Proposed Features/Upgrades:
         - Pluggable toolbox manager in VelocityViewServlet
 
     VelocityTools:
+        - Fold this library into VelocityView
         - add a library of velocimacros for use with these tools
         - Tool pooling support (use commons-pool probably)
         - Search/paging tool (from nathan)
         - Improved ToolLoader? (from Bill?)
         - Render/evaluate tool? (for perl or php prone people)
         - Template debugging tool(s)/support
+        - add Denis' FisherMill for #foreach support (better name?)
 
     VelocityStruts:
         - add a library of velocimacros for use with struts tools
