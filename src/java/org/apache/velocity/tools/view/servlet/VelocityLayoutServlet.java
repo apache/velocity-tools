@@ -26,12 +26,11 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 
 import org.apache.velocity.Template;
-import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
-import org.apache.velocity.runtime.RuntimeSingleton;
 import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
 
 
@@ -44,7 +43,7 @@ import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
  * somewhere.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Id: VelocityLayoutServlet.java,v 1.8 2004/07/30 17:14:19 nbubna Exp $
+ * @version $Id: VelocityLayoutServlet.java,v 1.9 2004/11/11 04:50:45 nbubna Exp $
  */
 
 public class VelocityLayoutServlet extends VelocityViewServlet 
@@ -134,6 +133,8 @@ public class VelocityLayoutServlet extends VelocityViewServlet
     protected String layoutDir;
     protected String defaultLayout;
 
+    // keep a local reference for convenience
+    private VelocityEngine velocity = super.getVelocityEngine();
 
     /**
      * Initializes Velocity, the view servlet and checks for changes to 
@@ -148,11 +149,11 @@ public class VelocityLayoutServlet extends VelocityViewServlet
         
         // check for default template path overrides
         errorTemplate = 
-            RuntimeSingleton.getString(PROPERTY_ERROR_TEMPLATE, DEFAULT_ERROR_TEMPLATE);
+            getVelocityProperty(PROPERTY_ERROR_TEMPLATE, DEFAULT_ERROR_TEMPLATE);
         layoutDir = 
-            RuntimeSingleton.getString(PROPERTY_LAYOUT_DIR, DEFAULT_LAYOUT_DIR);
+            getVelocityProperty(PROPERTY_LAYOUT_DIR, DEFAULT_LAYOUT_DIR);
         defaultLayout = 
-            RuntimeSingleton.getString(PROPERTY_DEFAULT_LAYOUT, DEFAULT_DEFAULT_LAYOUT);
+            getVelocityProperty(PROPERTY_DEFAULT_LAYOUT, DEFAULT_DEFAULT_LAYOUT);
 
         // preventive error checking! directory must end in /
         if (!layoutDir.endsWith("/")) 
@@ -161,9 +162,9 @@ public class VelocityLayoutServlet extends VelocityViewServlet
         }
 
         // log the current settings
-        Velocity.info("VelocityLayoutServlet: Error screen is '"+errorTemplate+"'");
-        Velocity.info("VelocityLayoutServlet: Layout directory is '"+layoutDir+"'");
-        Velocity.info("VelocityLayoutServlet: Default layout template is '"+defaultLayout+"'");
+        velocity.info("VelocityLayoutServlet: Error screen is '"+errorTemplate+"'");
+        velocity.info("VelocityLayoutServlet: Layout directory is '"+layoutDir+"'");
+        velocity.info("VelocityLayoutServlet: Default layout template is '"+defaultLayout+"'");
 
         // for efficiency's sake, make defaultLayout a full path now
         defaultLayout = layoutDir + defaultLayout;
@@ -241,7 +242,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
         } 
         catch (Exception e) 
         {
-            Velocity.error("VelocityLayoutServlet: Can't load layout \"" + 
+            velocity.error("VelocityLayoutServlet: Can't load layout \"" + 
                            layout + "\": " + e);
 
             // if it was an alternate layout we couldn't get...
@@ -298,7 +299,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
         catch (Exception e2) 
         {
             // d'oh! log this
-            Velocity.error("VelocityLayoutServlet: " + 
+            velocity.error("VelocityLayoutServlet: " + 
                            " Error during error template rendering - " + e2);
             // then punt the original to a higher authority
             super.error(request, response, e);
