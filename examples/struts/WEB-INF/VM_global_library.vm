@@ -20,3 +20,25 @@
         </ul>
     #end
 #end                    
+
+## Display all queued Struts errors
+#macro (messageMarkup)
+    #if ($actionmsgs.exist() )
+        <ul>
+        #foreach ($m in $actionmsgs.all )
+            $m
+        #end
+        </ul>
+    #end
+#end                    
+
+## Display all queued Struts action messages for a particular property
+#macro (messageMarkupForProperty $property)
+    #if ($actionmsgs.exist($property) )
+        <ul>
+        #foreach ($m in $actionmsgs.get($property))
+            $m
+        #end
+        </ul>
+    #end
+#end                    
