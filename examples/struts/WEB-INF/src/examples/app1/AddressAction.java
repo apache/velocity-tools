@@ -1,9 +1,18 @@
 /*
- * Struts Example Application 1
- *  
- * This demonstrates the use of Velocity templates with the Struts framework.
+ * Copyright 2003 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 
 package examples.app1;
 
@@ -40,12 +49,12 @@ import org.apache.struts.util.MessageResources;
  *   <li>edit - edit address record
  *   <li>save - save address record
  * </ul>
- * 
+ *
  *
  * @author <a href="mailto:sidler@teamup.com"/>Gabe Sidler</a>
- * @version $Id: AddressAction.java,v 1.2 2003/07/22 05:16:40 nbubna Exp $
+ * @version $Id: AddressAction.java,v 1.3 2004/02/20 12:42:47 marino Exp $
  */
-public class AddressAction extends Action 
+public class AddressAction extends Action
 {
 
     // --------------------------------------------------------- Public Methods
@@ -75,7 +84,7 @@ public class AddressAction extends Action
         try
         {
             session = request.getSession();
-    
+
             // fetch action from form
             action = ((AddressForm)form).getAction();
 
@@ -86,19 +95,19 @@ public class AddressAction extends Action
             {
                 // forward to edit formular
                 return (mapping.findForward("editAddress"));
-    
+
             }
             else if (action.equals("save"))
             {
                 // check if an address bean exits already
                 AddressBean bean = (AddressBean)session.getAttribute("address");
-                
+
                 if (bean == null)
                 {
                     bean = new AddressBean();
                     session.setAttribute("address", bean);
                 }
-                 
+
                 // update bean with the new values submitted
                 bean.setFirstname( ((AddressForm)form).getFirstname() );
                 bean.setLastname( ((AddressForm)form).getLastname() );
@@ -110,7 +119,7 @@ public class AddressAction extends Action
 
                 // forward to list
                 return (mapping.findForward("showAddress"));
-    
+
             }
             else
             {
@@ -119,9 +128,9 @@ public class AddressAction extends Action
                     session.setAttribute(Globals.LOCALE_KEY, new Locale("de", ""));
                 else
                     session.setAttribute(Globals.LOCALE_KEY, new Locale("en", ""));
-                
+
                 // forward to edit formular
-                return (mapping.findForward("showAddress"));                
+                return (mapping.findForward("showAddress"));
             }
         }
         catch (Exception e)

@@ -1,9 +1,18 @@
 /*
- * Struts Example Application 2
- *  
- * This demonstrates the use of Velocity templates with the Struts framework.
+ * Copyright 2003-2004 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 
 package examples.app2;
 
@@ -19,24 +28,24 @@ import org.apache.struts.action.ActionMapping;
  * <p>A simple form for demo purposes.</p>
  *
  * @author <a href="mailto:sidler@teamup.com"/>Gabe Sidler</a>
- * @version $Id: DemoForm.java,v 1.1 2003/03/06 00:05:18 nbubna Exp $
+ * @version $Id: DemoForm.java,v 1.2 2004/02/20 12:42:52 marino Exp $
  */
 
-public final class DemoForm extends ActionForm 
+public final class DemoForm extends ActionForm
 {
 
     // ---- Form fields -------------------------------------------------
- 
+
     private String language = "";
-    
+
 
     // ---- Accessor Methods --------------------------------------------
-    
+
     public String getLanguage()
     {
         return language;
     }
-    
+
     public void setLanguage(String s)
     {
         language = s;
@@ -51,7 +60,7 @@ public final class DemoForm extends ActionForm
      * @param mapping The mapping used to select this instance
      * @param request The servlet request we are processing
      */
-    public void reset(ActionMapping mapping, HttpServletRequest request) 
+    public void reset(ActionMapping mapping, HttpServletRequest request)
     {
 
         language = "";
