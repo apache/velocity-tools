@@ -138,10 +138,6 @@
     <delete>
       <fileset dir="${docs.dest}" includes="**/*.html"/>
     </delete>
-    <delete    dir="${examples.home}/velstruts"/>
-    <delete>
-      <fileset dir="${examples.home}" includes="*.war"/>
-    </delete>
     <delete>
       <fileset dir="${basedir}" includes="**/*.bak"/>
     </delete>
