@@ -82,6 +82,13 @@ import java.util.TimeZone;
  * 
  *  $myDate                        -> Tue Oct 07 03:14:50 PDT 2003
  *  $date.format('medium',$myDate) -> Oct 7, 2003 3:14:50 AM 
+ *
+ * Example toolbox.xml config (if you want to use this with VelocityView):
+ * &lt;tool&gt;
+ *   &lt;key&gt;date&lt;/key&gt;
+ *   &lt;scope&gt;application&lt;/scope&gt;
+ *   &lt;class&gt;org.apache.velocity.tools.generic.DateTool&lt;/class&gt;
+ * &lt;/tool&gt;
  * </pre></p>
  *
  * <p>This tool is entirely threadsafe, and has no instance members.
@@ -91,12 +98,17 @@ import java.util.TimeZone;
  * a non-default format, calendar, locale, or timezone.</p>
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.4 $ $Date: 2003/10/20 05:15:03 $
+ * @since VelocityTools 1.0
+ * @version $Revision: 1.5 $ $Date: 2003/11/06 00:26:54 $
  */
 public class DateTool
 {
 
-    /** The default format to be used when none is specified. */
+    /** 
+     * The default format to be used when none is specified. 
+     *
+     * @since VelocityTools 1.1
+     */
     public static final String DEFAULT_FORMAT = "default";
 
     /**
@@ -196,6 +208,8 @@ public class DateTool
      * this value via the toolbox definition, but at present, it is not possible
      * to specify custom tool configurations there.  For now you should just 
      * override this in a subclass to have a different default.</p>
+     *
+     * @since VelocityTools 1.1
      */
     public String getFormat()
     {
@@ -206,7 +220,8 @@ public class DateTool
     // ------------------------- formatting methods ---------------------------
 
     /**
-     * @deprecated use {@link #get(String format)} instead
+     * @deprecated use {@link #get(String format)} instead. This will be
+     *             removed in VelocityTools 1.2
      */
     public String getFormattedDate(String format)
     {
@@ -228,6 +243,7 @@ public class DateTool
      * @return a formatted representation of the date returned by
      *         {@link #getDate()}
      * @see #format(String format, Object obj, Locale locale, TimeZone timezone)
+     * @since VelocityTools 1.1
      */
     public String get(String format)
     {
@@ -244,6 +260,7 @@ public class DateTool
      *         {@link #getDate()}
      * @see DateFormat
      * @see #format(String dateStyle, String timeStyle, Object obj, Locale locale, TimeZone timezone)
+     * @since VelocityTools 1.1
      */
     public String get(String dateStyle, String timeStyle)
     {
@@ -258,6 +275,7 @@ public class DateTool
      * @param obj the date object to be formatted
      * @return the specified date formatted as a string
      * @see #format(String format, Object obj, Locale locale, TimeZone timezone)
+     * @since VelocityTools 1.1
      */
     public String format(Object obj)
     {
@@ -348,6 +366,7 @@ public class DateTool
      * @param timezone the {@link TimeZone} to be used when formatting
      * @return a formatted string representing the specified date or
      *         <code>null</code> if the parameters are invalid
+     * @since VelocityTools 1.1
      */
     public String format(String format, Object obj, 
                          Locale locale, TimeZone timezone)
@@ -371,6 +390,7 @@ public class DateTool
      * @param obj the date to be formatted
      * @return a formatted representation of the given date 
      * @see #format(String dateStyle, String timeStyle, Object obj, Locale locale, TimeZone timezone)
+     * @since VelocityTools 1.1
      */
     public String format(String dateStyle, String timeStyle, Object obj)
     {
@@ -387,6 +407,7 @@ public class DateTool
      * @param locale the {@link Locale} to be used for formatting the date
      * @return a formatted representation of the given date 
      * @see #format(String dateStyle, String timeStyle, Object obj, Locale locale, TimeZone timezone)
+     * @since VelocityTools 1.1
      */
     public String format(String dateStyle, String timeStyle,
                          Object obj, Locale locale)
@@ -406,6 +427,7 @@ public class DateTool
      * @return a formatted representation of the given date 
      * @see java.text.DateFormat
      * @see #format(String dateStyle, String timeStyle, Object obj, Locale locale, TimeZone timezone)
+     * @since VelocityTools 1.1
      */
     public String format(String dateStyle, String timeStyle,
                          Object obj, Locale locale, TimeZone timezone)
@@ -436,6 +458,7 @@ public class DateTool
      * @return an instance of {@link DateFormat}
      * @see SimpleDateFormat
      * @see DateFormat
+     * @since VelocityTools 1.1
      */
     public DateFormat getDateFormat(String format, Locale locale, 
                                     TimeZone timezone)
@@ -489,6 +512,7 @@ public class DateTool
      * @param timezone the {@link TimeZone} to be used
      * @return an instance of {@link DateFormat}
      * @see #getDateFormat(int timeStyle, int dateStyle, Locale locale, TimeZone timezone)
+     * @since VelocityTools 1.1
      */
     public DateFormat getDateFormat(String dateStyle, String timeStyle,
                                     Locale locale, TimeZone timezone)
@@ -511,6 +535,7 @@ public class DateTool
      * @return an instance of {@link DateFormat} or <code>null</code>
      *         if an instance cannot be constructed with the given
      *         parameters
+     * @since VelocityTools 1.1
      */
     protected DateFormat getDateFormat(int dateStyle, int timeStyle, 
                                        Locale locale, TimeZone timezone)
@@ -554,6 +579,7 @@ public class DateTool
      * @see DateFormat
      * @param style the string to be checked
      * @return the int identifying the style pattern
+     * @since VelocityTools 1.1
      */
     protected int getStyleAsInt(String style)
     {

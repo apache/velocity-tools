@@ -83,15 +83,13 @@ import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
- * <p>Title: ValidatorTool</p>
- * <p>Description: View tool to work with the Struts Validator to
- *    produce client side javascript validation.</p>
+ * <p>View tool that works with Struts Validator to
+ *    produce client side javascript validation for your forms.</p>
  * <p>Usage:
  * <pre>
  * Template example:
- *
- * <!-- javascript form validation -->
- * #set ($foo = $validator.setFormName("nameofyourform"))
+ * &lt;!-- javascript form validation --&gt;
+ * $validator.setFormName("myForm")
  * $validator.javascript <-- spits out the dynamic javascript
  *
  * or simply
@@ -99,23 +97,22 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * $validator.getJavascript("nameOfYourForm")
  *
  * Toolbox configuration:
- *
  * &lt;tool&gt;
  *   &lt;key&gt;validator&lt;/key&gt;
  *   &lt;scope&gt;request&lt;/scope&gt;
  *   &lt;class&gt;package org.apache.velocity.tools.struts.ValidatorTool&lt;/class&gt;
  * &lt;/tool&gt;
  * </pre>
- *
- * <p>This is an adaptation of the JavascriptValidator Tag
+ * </p>
+ * <p>This is an adaptation of the JavascriptValidatorTag
  * from the Struts 1.1 validator library.</p>
  *
  * @author David Winterfeldt
  * @author David Graham
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- *
- * @version $Revision: 1.3 $ $Date: 2003/10/30 01:02:26 $
+ * @since VelocityTools 1.1
+ * @version $Revision: 1.4 $ $Date: 2003/11/06 00:26:54 $
  */
 public class ValidatorTool implements ViewTool {
 

@@ -65,15 +65,23 @@ import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
- * <p>Title: ImportTool</p>
- * <p>Description: a general-purpose text-importing mechanism for templates</p>
- * <p>Usage:
- *
+ * <p>General-purpose text-importing view tool for templates</p>
+ * <p>Usage:<br>
  * Just call $import.read("http://www.foo.com/bleh.jsp?sneh=bar") to insert the contents of the named
  * resource into the template.
+ * </p>
+ * <p><pre>
+ * Toolbox configuration:
+ * &lt;tool&gt;
+ *   &lt;key&gt;import&lt;/key&gt;
+ *   &lt;scope&gt;request&lt;/scope&gt;
+ *   &lt;class&gt;org.apache.velocity.tools.view.tools.ImportTool&lt;/class&gt;
+ * &lt;/tool&gt;
+ * </pre></p>
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @version $Revision: 1.2 $ $Date: 2003/10/30 01:00:57 $
+ * @since VelocityTools 1.1
+ * @version $Revision: 1.3 $ $Date: 2003/11/06 00:26:54 $
  */
 public class ImportTool extends ImportSupport
     implements ViewTool {
@@ -109,14 +117,14 @@ public class ImportTool extends ImportSupport
         try {
             // check the URL
             if (url == null || url.equals("")) {
-                Velocity.warn("import URL is null or empty");
+                Velocity.warn("ImportTool: import URL is null or empty");
                 return null;
             }
 
             return acquireString(url);
         }
         catch (Exception ex) {
-            Velocity.error("Exeption importing URL: " + ex.getMessage());
+            Velocity.error("Exception while importing URL: " + ex.getMessage());
             return null;
         }
     }

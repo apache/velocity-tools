@@ -73,18 +73,29 @@ import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
  * <p>View tool to work with the Struts action messages.</p>
+ * <p><pre>
+ * Template example(s):
+ *   #if( $actionmsgs.exist() )
+ *     #foreach( $e in $actionmsgs.all )
+ *       $e &lt;br&gt;
+ *     #end
+ *   #end
  *
- * <p>This class is equipped to be used with a toolbox manager, for example
- * the ServletToolboxManager included with VelocityViewServlet. This class 
- * implements interface ViewTool, which allows a toolbox manager to pass the
- * required context information.</p>
+ * Toolbox configuration:
  *
- * <p>This means this tool should only be used in the request scope.</p>
+ * &lt;tool&gt;
+ *   &lt;key&gt;actionmsgs&lt;/key&gt;
+ *   &lt;scope&gt;request&lt;/scope&gt;
+ *   &lt;class&gt;org.apache.velocity.tools.struts.ActionMessagesTool&lt;/class&gt;
+ * &lt;/tool&gt;
+ * </pre></p>
+ *
+ * <p>This tool should only be used in the request scope.</p>
  * 
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- *
- * @version $Id: ActionMessagesTool.java,v 1.2 2003/07/25 16:54:40 nbubna Exp $
+ * @since VelocityTools 1.1
+ * @version $Id: ActionMessagesTool.java,v 1.3 2003/11/06 00:26:54 nbubna Exp $
  */
 public class ActionMessagesTool implements ViewTool
 {

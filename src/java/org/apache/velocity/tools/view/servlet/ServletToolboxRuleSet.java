@@ -65,8 +65,9 @@ import org.apache.velocity.tools.view.servlet.ServletToolInfo;
  * configuration file (<code>toolbox.xml</code>) for the
  * ServletToolboxManager class.</p> 
  *
+ * @since VelocityTools 1.1
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Id: ServletToolboxRuleSet.java,v 1.2 2003/08/02 20:43:10 nbubna Exp $
+ * @version $Id: ServletToolboxRuleSet.java,v 1.3 2003/11/06 00:26:54 nbubna Exp $
  */
 public class ServletToolboxRuleSet extends ToolboxRuleSet
 {

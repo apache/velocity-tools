@@ -68,13 +68,14 @@ import org.apache.velocity.tools.view.tools.ViewTool;
 
 
 /**
- * Abstract context tool for doing "searching" and robust
+ * <p>Abstract view tool for doing "searching" and robust
  * pagination of search results.  The goal here is to provide a simple
  * and uniform API for "search tools" that can be used in velocity
  * templates (or even a standard Search.vm template).  In particular,
  * this class provides good support for result pagination and some
  * very simple result caching.
- * <p>
+ * </p>
+ * <p><b>Usage:</b><br>
  * To use this class, you must extend it and implement
  * the setup(HttpServletRequest) and executeQuery(Object)
  * methods.
@@ -109,11 +110,71 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *     return MyDbUtils.getFooBarsMatching((String)crit);
  * }
  * </pre>
+ * <p>
+ * Here's an example of how your subclass would be used in a template:
+ * <pre>
+ *   &lt;form name="search" method="get" action="$link.setRelative('search.vm')"&gt;
+ *     &lt;input type="text"name="find" value="$!search.criteria"&gt;
+ *     &lt;input type="submit" value="Find"&gt;
+ *   &lt;/form&gt;
+ *   #if( $search.hasResults() )
+ *   Showing $!search.pageDescription&lt;br&gt;
+ *     #set( $i = $search.index )
+ *     #foreach( $result in $search.page )
+ *       ${i}. $!result &lt;br&gt;
+ *       #set( $i = $i + 1 )
+ *     #end
+ *     &lt;br&gt;
+ *     #if ( $search.pagesAvailable &gt; 1 )
+ *       #set( $searchlink = $link.setRelative('search.vm').addQueryData("find",$!search.criteria).addQueryData("show",$!search.itemsPerPage) )
+ *       #if( $search.prevIndex )
+ *           &lt;a href="$searchlink.addQueryData('index',$!search.prevIndex)"&gt;Prev&lt;/a&gt;
+ *       #end
+ *       #foreach( $index in $search.slip )
+ *         #if( $index == $search.index )
+ *           &lt;b&gt;$search.pageNumber&lt;/b&gt;
+ *         #else
+ *           &lt;a href="$searchlink.addQueryData('index',$!index)"&gt;$!search.getPageNumber($index)&lt;/a&gt;
+ *         #end
+ *       #end
+ *       #if( $search.nextIndex )
+ *           &lt;a href="$searchlink.addQueryData('index',$!search.nextIndex)"&gt;Next&lt;/a&gt;
+ *       #end
+ *     #end
+ *   #elseif( $search.criteria )
+ *   Sorry, no matches were found for "$!search.criteria".
+ *   #else
+ *   Please enter a search term
+ *   #end
+ * </pre>
+ *
+ * The output of this might look like:<br><br>
+ *   <form method="get" action="">
+ *    <input type="text" value="foo">
+ *    <input type="submit" value="Find">
+ *   </form>
+ *   Showing 1-5 of 8<br>
+ *   1. foo<br>
+ *   2. bar<br>
+ *   3. blah<br>
+ *   4. woogie<br>
+ *   5. baz<br><br>
+ *   <b>1</b> <a href="">2</a> <a href="">Next</a>
+ * </p>
+ * <p>
+ * <b>Example toolbox.xml configuration:</b>
+ * <pre>&lt;tool&gt;
+ *   &lt;key&gt;search&lt;/key&gt;
+ *   &lt;scope&gt;request&lt;/scope&gt;
+ *   &lt;class&gt;com.foo.tools.MyAbstractSearchTool&lt;/class&gt;
+ * &lt;/tool&gt;
+ * </pre>
+ * </p>
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.4 $ $Date: 2003/05/28 00:17:16 $
+ * @since VelocityTools 1.0
+ * @version $Revision: 1.5 $ $Date: 2003/11/06 00:26:54 $
  */
-
 public abstract class AbstractSearchTool implements ViewTool
 {
 
@@ -615,14 +676,14 @@ public abstract class AbstractSearchTool implements ViewTool
 
 
     /**
-     * Simple utility class to hold a
-     * criteria and its result list
-     * <br><br>
+     * Simple utility class to hold a criterion and its result list.
+     * <p>
      * This class is by default stored in a user's session,
      * so it implements Serializable, but its members are
      * transient. So functionally, it is not serialized and
      * the last results/criteria will not be persisted if
      * the session is serialized.
+     * </p>
      */
     public class StoredResults implements java.io.Serializable
     {

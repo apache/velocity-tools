@@ -95,15 +95,22 @@ import org.apache.velocity.util.EnumerationIterator;
  *  
  *   1 2 3 5
  *  8
+ *
+ * Example toolbox.xml config (if you want to use this with VelocityView):
+ * &lt;tool&gt;
+ *   &lt;key&gt;mill&lt;/key&gt;
+ *   &lt;scope&gt;request&lt;/scope&gt;
+ *   &lt;class&gt;org.apache.velocity.tools.generic.IteratorTool&lt;/class&gt;
+ * &lt;/tool&gt;
  * </pre>
  * </p>
  * <p>
  * <b>Warning:</b> It is not recommended to use hasNext() with this
  * tool as it is used to control the #foreach. Use hasMore() instead.
  * </p>
- * @author <a href="mailto:jido@respublica.fr">Denis Bredelet</a>
  *
- * @version $Id: IteratorTool.java,v 1.1 2003/03/10 21:37:04 nbubna Exp $
+ * @author <a href="mailto:jido@respublica.fr">Denis Bredelet</a>
+ * @version $Id: IteratorTool.java,v 1.2 2003/11/06 00:26:54 nbubna Exp $
  */
 
 public class IteratorTool implements Iterator {

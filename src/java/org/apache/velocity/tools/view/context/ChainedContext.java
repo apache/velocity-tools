@@ -99,7 +99,7 @@ import javax.servlet.ServletContext;
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ChainedContext.java,v 1.4 2003/07/30 22:02:54 nbubna Exp $ 
+ * @version $Id: ChainedContext.java,v 1.5 2003/11/06 00:26:54 nbubna Exp $ 
  */
 public class ChainedContext extends VelocityContext implements ViewContext
 {
@@ -219,6 +219,8 @@ public class ChainedContext extends VelocityContext implements ViewContext
      * <p>Searches for the named attribute in request, session (if valid), 
      * and application scope(s) in order and returns the value associated 
      * or null.</p>
+     *
+     * @since VelocityTools 1.1
      */
     public Object getAttribute(String key)
     {

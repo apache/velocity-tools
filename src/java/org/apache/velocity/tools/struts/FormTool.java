@@ -67,19 +67,25 @@ import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
  * <p>View tool to work with HTML forms in Struts.</p> 
+ * <p><pre>
+ * Template example(s):
+ *  &lt;input type="hidden" name="$form.tokenName" value="$form.token"&gt;
+ *  &lt;input type="submit" name="$form.cancelName" value="Cancel"&gt;
  *
- * <p>This class is equipped to be used with a toolbox manager, for example
- * the ServletToolboxManager included with VelServlet. This class implements 
- * interface ViewTool, which allows a toolbox manager to pass the required
- * context information.</p>
+ * Toolbox configuration:
  *
- * <p>This class is not thread-safe by design. A new instance is needed for
- * the processing of every template request.  This means this tool should
- * only be used in the request scope, not application or session scopes.</p>
+ * &lt;tool&gt;
+ *   &lt;key&gt;form&lt;/key&gt;
+ *   &lt;scope&gt;request&lt;/scope&gt;
+ *   &lt;class&gt;org.apache.velocity.tools.struts.FormTool&lt;/class&gt;
+ * &lt;/tool&gt;
+ * </pre></p>
+ *
+ * <p>This tool should only be used in the request scope.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
- *
- * @version $Id: FormTool.java,v 1.3 2003/05/28 00:17:15 nbubna Exp $
+ * @since VelocityTools 1.0
+ * @version $Id: FormTool.java,v 1.4 2003/11/06 00:26:54 nbubna Exp $
  */
 public class FormTool implements ViewTool
 {
