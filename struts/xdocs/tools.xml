@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<project href="http://jakarta.apache.org/velocity">
+
+  <title>Struts</title>
+  <logo href="http://jakarta.apache.org/velocity/images/logo.gif"> &lt;  :)  /&gt;</logo>
+
+  <body>
+
+    <menu name="Velocity for Struts" href="index.html">
+        <item name="MessageTool"               href="/tool-MessageTool.html"/>
+        <item name="ErrorsTool"                href="/tool-ErrorsTool.html"/>
+        <item name="FormTool"                  href="/tool-FormTool.html"/>
+        <item name="LinkTool"                  href="/tool-LinkTool.html"/>
+    </menu>
+
+  </body>
+</project>
