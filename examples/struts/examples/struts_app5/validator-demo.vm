@@ -17,5 +17,5 @@
 
     </body>
     ## if this line is commented out, the form will be validated server-side ... go ahead, try it :)
-    $validator.getJavascript("emailForm")
+    $validator.getJavascript()
 </html>
