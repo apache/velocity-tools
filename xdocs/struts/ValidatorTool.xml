@@ -1,0 +1,441 @@
+<?xml version="1.0"?>
+
+<document>
+
+    <properties>
+        <title>ValidatorTool</title>
+        <author email="marino@apache.org">Marino A. Jonsson</author>
+        <projectfile>xdocs/struts/menu.xml</projectfile>
+        </properties>
+
+    <body>
+
+    <section name="ValidatorTool Reference Documentation">
+
+        <p>
+        The ValidatorTool is used to interact with the Validator framework to generate
+        dynamic javascript for form validation.
+        </p>
+
+        <toolinfo>
+            <version>@@@version@@@, @@@date@@@</version>
+            <clazz>org.apache.velocity.tools.struts.ValidatorTool</clazz>
+            <name>$validator</name>
+            <author email="marinoj@centrum.is">Marino A. Jonsson</author>
+            <config-example>&lt;tool&gt;
+  &lt;key&gt;validator&lt;/key&gt;
+  &lt;scope&gt;request&lt;/scope&gt;
+  &lt;class&gt;org.apache.velocity.tools.struts.ValidatorTool&lt;/class&gt;
+&lt;/tool&gt;</config-example>
+        </toolinfo>
+
+        <methods/>
+
+    </section>
+
+    <section name="getPage()">
+        <method name="getPage()">
+
+            <abstract>
+                Gets the current page number of a multi-part form.
+            </abstract>
+
+            <signature>
+                int getPage()
+            </signature>
+
+            <description>
+                <p>Gets the current page number of a multi-part form.
+                    Only field validations with a matching page number
+                    will be generated that match the current page number.</p>
+            </description>
+        </method>
+    </section>
+
+    <section name="setPage()">
+        <method name="setPage()">
+
+            <abstract>
+                Sets the current page number of a multi-part form.
+            </abstract>
+
+            <signature>
+                void setPage(int page)
+            </signature>
+
+            <parameters>
+                <parameter name="page">
+                    the current page number of a multi-part form.
+                </parameter>
+            </parameters>
+
+            <description>
+                <p>Sets the current page number of a multi-part form.
+                    Only field validations with a matching page number
+                    will be generated that match the current page number.</p>
+            </description>
+        </method>
+    </section>
+
+    <section name="getMethod()">
+        <method name="getMethod()">
+
+            <abstract>
+                Gets the method name that will be used for the javascript
+                validation method name if it has a value.
+            </abstract>
+
+            <signature>
+                String getMethod()
+            </signature>
+
+            <description>
+                <p>Gets the method name that will be used for the javascript
+                    validation method name if it has a value.  This overrides
+                    the auto-generated method name based on the key (form name)
+                    passed in.</p>
+            </description>
+        </method>
+    </section>
+
+    <section name="setMethod()">
+        <method name="setMethod()">
+
+            <abstract>
+                Sets the method name that will be used for the javascript
+                validation method name if it has a value.
+            </abstract>
+
+            <signature>
+                void setMethod(String methodName)
+            </signature>
+
+            <parameters>
+                <parameter name="methodName">
+                    the method name that will be used for the javascript validation
+                    method name.
+                </parameter>
+            </parameters>
+
+            <description>
+                <p>Sets the method name that will be used for the javascript
+                    validation method name if it has a value.  This overrides
+                    the auto-generated method name based on the key (form name)
+                    passed in.</p>
+            </description>
+        </method>
+    </section>
+
+    <section name="getHtmlComment()">
+        <method name="getHtmlComment()">
+
+            <abstract>
+                Gets whether or not to delimit the javascript with html comments.
+            </abstract>
+
+            <signature>
+                boolean getHtmlComment()
+            </signature>
+
+            <description>
+                <p>Gets whether or not to delimit the
+                    javascript with html comments.  If this is set to 'true', which
+                    is the default, html comments will surround the javascript.</p>
+            </description>
+        </method>
+    </section>
+
+    <section name="setHtmlComment()">
+        <method name="setHtmlComment()">
+
+            <abstract>
+                Sets whether or not to delimit the javascript with html comments.
+            </abstract>
+
+            <signature>
+                void setHtmlComment(boolean htmlComment)
+            </signature>
+
+            <parameters>
+                <parameter name="htmlComment">
+                    whether or not to delimit the javascript with html comments.
+                </parameter>
+            </parameters>
+
+            <description>
+                <p>Sets whether or not to delimit the
+                    javascript with html comments.  If this is set to 'true', which
+                    is the default, html comments will surround the javascript.</p>
+            </description>
+        </method>
+    </section>
+
+    <section name="getSrc()">
+        <method name="getSrc()">
+
+            <abstract>
+                Gets the src attribute's value when defining the html script element.
+            </abstract>
+
+            <signature>
+                String getSrc()
+            </signature>
+
+            <description>
+                <p>Gets the src attribute's value when defining the html script element.</p>
+            </description>
+        </method>
+    </section>
+
+    <section name="setSrc()">
+        <method name="setSrc()">
+
+            <abstract>
+                Sets the src attribute's value (used to include
+                an external script resource) when defining
+                the html script element.
+            </abstract>
+
+            <signature>
+                void setSrc(String src)
+            </signature>
+
+            <parameters>
+                <parameter name="src">
+                    the src attribute's value.
+                </parameter>
+            </parameters>
+
+            <description>
+                <p>Sets the src attribute's value (used to include
+                    an external script resource) when defining
+                    the html script element.</p>
+            </description>
+        </method>
+    </section>
+
+    <section name="getCdata()">
+        <method name="getCdata()">
+
+            <abstract>
+                Returns the cdata setting "true" or "false".
+            </abstract>
+
+            <signature>
+                boolean getCdata()
+            </signature>
+
+            <description>
+                <p>Returns the cdata setting "true" or "false".</p>
+            </description>
+        </method>
+    </section>
+
+    <section name="setCdata()">
+        <method name="setCdata()">
+
+            <abstract>
+                Sets the cdata status.
+            </abstract>
+
+            <signature>
+                void setCdata(boolean cdata)
+            </signature>
+
+            <parameters>
+                <parameter name="cdata">
+                    The cdata to set
+                </parameter>
+            </parameters>
+
+            <description>
+                <p>Sets the cdata status.</p>
+            </description>
+        </method>
+    </section>
+
+
+
+    <section name="getJavascript()">
+        <method name="getJavascript()">
+
+            <abstract>
+                Generates javascript to perform validations on a struts-defined
+                form.
+            </abstract>
+
+            <signature>
+                String getJavascript()
+            </signature>
+
+            <signature>
+                String getJavascript(String formName)
+            </signature>
+
+            <parameters>
+                <parameter name="formName">
+                    The name of a struts-defined form.
+                </parameter>
+            </parameters>
+
+            <description>
+                <p>Generates both dynamic and static javascript to perform
+                    validations on a struts-defined form. By default it
+                    uses the form associated with the action. A form name can
+                    also be supplied as a parameter to generate javascript
+                    for a struts-defined form that is not associated with this
+                    particular action.</p>
+
+<p>Assuming that the name of a form associated with a given action is myForm, the
+    following Velocity script:</p>
+<sourcecode>&lt;form action="/someAction.do" onsubmit="return validateMyForm(this)"&gt;
+...
+...
+&lt;/form&gt;
+
+$validator.getJavascript()</sourcecode>
+
+<p>produces something like this output (heavily abbreviated):</p>
+<sourcecode>&lt;form action="/someAction.do" onsubmit="return validateMyForm(this)"&gt;
+...
+...
+&lt;/form&gt;
+
+&lt;script type="text/javascript" language="Javascript1.1"&gt;
+&lt;!-- Begin
+
+var bCancel = false;
+
+function validateMyForm(form) {
+	// call the relevant static methods to validate this form
+	...
+}
+
+// some more dynamic functions dependent on which validations to perform.
+...
+...
+
+// finally come all the static validator methods defined in validator-rules.xml
+...
+...
+
+//End --&gt;
+&lt;/script&gt;</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="getDynamicJavascript()">
+        <method name="getDynamicJavascript()">
+
+            <abstract>
+                Generates the dynamic javascript methods to perform validation
+                on a struts-defined form.
+            </abstract>
+
+            <signature>
+                String getDynamicJavascript()
+            </signature>
+
+            <signature>
+                String getDynamicJavascript(String formName)
+            </signature>
+
+            <parameters>
+                <parameter name="formName">
+                    The name of a struts-defined form.
+                </parameter>
+            </parameters>
+
+            <description>
+                <p>Generates the dynamic javascript to perform validations on
+                    a struts-defined form. By default it uses the form associated
+                    with the action. A form name can also be supplied as a parameter
+                    to generate javascript for a struts-defined form that is not
+                    associated with this particular action. This method does not
+                    work by itself - it requires that the relevant static methods
+                    be accessible i.e. in a seperate .js file.</p>
+
+<p>Assuming that the name of a form associated with a given action is myForm, the
+    following Velocity script:</p>
+<sourcecode>&lt;form action="/someAction.do" onsubmit="return validateMyForm(this)"&gt;
+...
+...
+&lt;/form&gt;
+
+$validator.getDynamicJavascript()</sourcecode>
+
+<p>produces something like this output (heavily abbreviated):</p>
+<sourcecode>&lt;form action="/someAction.do" onsubmit="return validateMyForm(this)"&gt;
+...
+...
+&lt;/form&gt;
+
+&lt;script type="text/javascript" language="Javascript1.1"&gt;
+&lt;!-- Begin
+
+var bCancel = false;
+
+function validateMyForm(form) {
+	// call the relevant static methods to validate this form
+	...
+}
+
+// some more dynamic functions dependent on which validations to perform.
+...
+...
+
+//End --&gt;
+&lt;/script&gt;</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="getStaticJavascript()">
+        <method name="getStaticJavascript()">
+
+            <abstract>
+                Generates all the static javascript methods from validator-rules.xml.
+            </abstract>
+
+            <signature>
+                String getStaticJavascript()
+            </signature>
+
+            <description>
+                <p>Generates the static javascript methods from validator-rules.xml
+                    to perform validations on a any form. Useful i.e. if the static
+                    methods should be located in a seperate .js file.</p>
+
+<p>The following Velocity script:</p>
+<sourcecode>$validator.getStaticJavascript()</sourcecode>
+
+<p>produces something like this output (heavily abbreviated):</p>
+<sourcecode>&lt;script type="text/javascript" language="Javascript1.1"&gt;
+&lt;!-- Begin
+
+function validateFloatRange(form) {
+	...
+    	...
+}
+
+function validateByte(form) {
+	...
+    	...
+}
+
+// and a bunch more ...
+...
+
+//End --&gt;
+&lt;/script&gt;</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+ </body>
+</document>
+
