@@ -52,7 +52,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Id: LinkTool.java,v 1.15 2004/03/12 20:30:32 nbubna Exp $
+ * @version $Id: LinkTool.java,v 1.16 2004/11/11 03:54:55 nbubna Exp $
  */
 public class LinkTool implements ViewTool, Cloneable
 {
@@ -311,14 +311,21 @@ public class LinkTool implements ViewTool, Cloneable
      */
     public LinkTool setRelative(String uri)
     {
+        String ctxPath = request.getContextPath();
+        /* if the context path is the webapp root */
+        if (ctxPath.equals("/"))
+        {
+            /* then don't append anything for it */
+            ctxPath = "";
+        }
         if (uri.startsWith("/"))
         {
-            return copyWith(request.getContextPath() + uri);
+            return copyWith(ctxPath + uri);
         }
         else
         {
-            return copyWith(request.getContextPath() + '/' + uri);
-        }        
+            return copyWith(ctxPath + '/' + uri);
+        }
     }
 
 
