@@ -71,7 +71,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.8 $ $Date: 2004/02/18 20:09:51 $
+ * @version $Revision: 1.9 $ $Date: 2004/02/18 23:34:50 $
  */
 public class ValidatorTool implements ViewTool {
 
@@ -96,8 +96,6 @@ public class ValidatorTool implements ViewTool {
 
     private boolean xhtml = false;
 
-    //private boolean staticJavascript = true;
-    //private boolean dynamicJavascript = true;
     private boolean htmlComment = true;
     private boolean cdata = true;
     private String formName = null;
@@ -157,34 +155,8 @@ public class ValidatorTool implements ViewTool {
     /****************** get/set accessors ***************/
 
     /**
-     * Gets the key (form name) that will be used
-     * to retrieve a set of validation rules to be
-     * performed on the bean passed in for validation.
-     *
-     * @return the key (form name)
-     */
-    /*public String getFormName()
-    {
-        return formName;
-    }*/
-
-    /**
-     * Sets the key (form name) that will be used
-     * to retrieve a set of validation rules to be
-     * performed on the bean passed in for validation.
-     * Specifying a form name places a
-     * <script> </script> tag around the javascript.
-     *
-     * @param formName the key (form name)
-     */
-    /*public void setFormName(String formName)
-    {
-        this.formName = formName;
-    }*/
-
-    /**
      * Gets the current page number of a multi-part form.
-     * Only field validations with a matching page numer
+     * Only field validations with a matching page number
      * will be generated that match the current page number.
      * Only valid when the formName attribute is set.
      *
@@ -197,9 +169,8 @@ public class ValidatorTool implements ViewTool {
 
     /**
      * Sets the current page number of a multi-part form.
-     * Only field validations with a matching page numer
+     * Only field validations with a matching page number
      * will be generated that match the current page number.
-     * Only valid when the formName attribute is set.
      *
      * @param page the current page number of a multi-part form
      */
@@ -233,54 +204,6 @@ public class ValidatorTool implements ViewTool {
     {
         this.methodName = methodName;
     }
-
-    /**
-     * Gets whether or not to generate the static
-     * JavaScript.  If this is set to 'true', which
-     * is the default, the static JavaScript will be generated.
-     *
-     * @return true to generate the static JavaScript.
-     */
-    /*public boolean getStaticJavascript()
-    {
-        return this.staticJavascript;
-    }*/
-
-    /**
-     * Sets whether or not to generate the static
-     * JavaScript.  If this is set to 'true', which
-     * is the default, the static JavaScript will be generated.
-     *
-     * @param staticJavascript whether or not to generate the static JavaScript
-     */
-    /*public void setStaticJavascript(boolean staticJavascript)
-    {
-        this.staticJavascript = staticJavascript;
-    }*/
-
-    /**
-     * Gets whether or not to generate the dynamic
-     * JavaScript.  If this is set to 'true', which
-     * is the default, the dynamic JavaScript will be generated.
-     *
-     * @return true to generate the dynamic JavaScript
-     */
-    /*public boolean getDynamicJavascript()
-    {
-        return this.dynamicJavascript;
-    }*/
-
-    /**
-     * Sets whether or not to generate the dynamic
-     * JavaScript.  If this is set to 'true', which
-     * is the default, the dynamic JavaScript will be generated.
-     *
-     * @param dynamicJavascript whether or not to generate the dynamic JavaScript
-     */
-    /*public void setDynamicJavascript(boolean dynamicJavascript)
-    {
-        this.dynamicJavascript = dynamicJavascript;
-    }*/
 
     /**
      * Gets whether or not to delimit the
@@ -701,8 +624,9 @@ public class ValidatorTool implements ViewTool {
     protected String getJavascriptBegin(String methods)
     {
         StringBuffer sb = new StringBuffer();
-        String name = formName.substring(0, 1).toUpperCase() +
-                      formName.substring(1, formName.length());
+        String name = formName.replace('/', '_'); // remove any '/' characters
+        name = name.substring(0, 1).toUpperCase() +
+                      name.substring(1, name.length());
 
         sb.append(getStartElement());
 
