@@ -45,7 +45,7 @@ import org.apache.struts.action.ActionErrors;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Id: ErrorsTool.java,v 1.12 2004/02/18 20:09:51 nbubna Exp $
+ * @version $Id: ErrorsTool.java,v 1.13 2004/03/12 20:50:38 nbubna Exp $
  */
 public class ErrorsTool extends ActionMessagesTool
 {
@@ -117,19 +117,6 @@ public class ErrorsTool extends ActionMessagesTool
     {
         return StrutsUtils.errorMarkup(property, bundle, request, 
                                        request.getSession(false), application);
-    }
-
-
-    /**
-     * Overrides {@link ActionMessagesTool#getGlobalName()}
-     * to return the "global" key for action errors.
-     *
-     * @see org.apache.struts.action.ActionErrors.GLOBAL_ERROR
-     * @deprecated This will be removed after VelocityTools 1.1.
-     */
-    public String getGlobalName()
-    {
-        return ActionErrors.GLOBAL_ERROR;
     }
 
 }

@@ -41,7 +41,7 @@ package org.apache.velocity.tools.generic;
  * </pre></p>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.7 $ $Date: 2004/03/12 20:30:31 $
+ * @version $Revision: 1.8 $ $Date: 2004/03/12 20:50:38 $
  */
 public class MathTool
 {
@@ -289,22 +289,6 @@ public class MathTool
             value = value / shift;
         }
         return new Double(value);
-    }
-
-
-    /**
-     * Rounds a number to the nearest whole Integer
-     *
-     * @param num the number to round
-     * @return the number rounded to the nearest whole Integer
-     *         or <code>null</code> if it's invalid
-     * @see #toDouble
-     * @deprecated This will be removed in VelocityTools 1.2.
-     *             Use #round(Object num) instead.
-     */
-    public Integer roundToInt(Object num)
-    {
-        return round(num);
     }
 
 
