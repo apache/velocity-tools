@@ -90,7 +90,7 @@ import org.apache.struts.Globals;
  * </p>
  * @since VelocityTools 1.1
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @version $Revision: 1.7 $ $Date: 2004/01/23 16:18:24 $
+ * @version $Revision: 1.8 $ $Date: 2004/01/27 19:37:55 $
  */
 public class SecureLinkTool extends LinkTool
 {
@@ -136,7 +136,7 @@ public class SecureLinkTool extends LinkTool
         {
             return null;
         }
-        return (SecureLinkTool)copyWith(computeURL(request, application, url));
+        return (SecureLinkTool)copyWith(url);
     }
 
     /**
