@@ -116,9 +116,9 @@ $errors.exist("password")
                 number of queued action messages. The <code>property</code> parameter can be used to
                 obtain the number of queued action messages for a specific category.</p>
 
-<sourcecode>$errors.getSize()
-$errors.size
-$errors.getSize("password")</sourcecode>
+<sourcecode>$actionmsgs.getSize()
+$actionmsgs.size
+$actionmsgs.getSize("password")</sourcecode>
             </description>
 
         </method>
@@ -166,6 +166,7 @@ $errors.getSize("password")</sourcecode>
                     The (non-default) message-resources bundle that holds the action messages.
                 </parameter>
             </parameters>
+
             <returns>
                 If the message resources are lacking an action message message for a
                 particular message key, the key itself is used as action message
