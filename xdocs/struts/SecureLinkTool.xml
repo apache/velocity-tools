@@ -14,8 +14,8 @@
 
         <p>The SecureLinkTool extends the standard
         <a href="../view/LinkTool.html">LinkTool</a> and has the exact same interface as
-        <a href="StrutsLinkTool.html">StrutsLinkTool</a>.  It should substitute the
-        <a href="StrutsLinkTool.html">StrutsLinkTool</a> in the toolbox if
+        <a href="StrutsLinkTool.html">StrutsLinkTool</a> and the same function.  It should
+        substitute the <a href="StrutsLinkTool.html">StrutsLinkTool</a> in the toolbox if
         <a href="http://sslext.sourceforge.net">SSL Ext</a> is installed.
         It's functionality is a subset of the functionality provided by the
         sslext tag library for JSP.</p>
@@ -54,8 +54,7 @@
                 controller so there is no need to specify the custom controller.</li>
         </ul>
 
-        <p>Check out the SSL Ext. <a href="http://sslext.sourceforge.net">project home</a>
-        for more information.</p>
+        <see>SSL Ext. <a href="http://sslext.sourceforge.net">project home</a></see>
 
         <toolinfo>
             <version>@@@version@@@, @@@date@@@</version>
