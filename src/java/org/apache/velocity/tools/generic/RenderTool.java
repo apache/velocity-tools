@@ -69,7 +69,7 @@ import org.apache.velocity.context.Context;
  * scope of a servlet environment.</p>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.6 $ $Date: 2004/02/18 20:11:07 $
+ * @version $Revision: 1.7 $ $Date: 2004/06/09 01:30:58 $
  */
 
 public class RenderTool
@@ -121,7 +121,7 @@ public class RenderTool
     public String recurse(Context ctx, String vtl) throws Exception
     {
         String result = eval(ctx, vtl);
-        if (result.equals(vtl))
+        if (result == null || result.equals(vtl))
         {
             return result;
         }
