@@ -57,10 +57,6 @@ package org.apache.velocity.tools.struts;
 import java.util.Stack;
 import java.util.Map;
 import java.util.Iterator;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.ServletContext;
 
 import org.apache.struts.tiles.ComponentContext;
 import org.apache.struts.tiles.ComponentDefinition;
@@ -74,6 +70,7 @@ import org.apache.struts.tiles.DefinitionsFactoryException;
 import org.apache.struts.tiles.Controller;
 
 import org.apache.velocity.app.Velocity;
+import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.view.ImportSupport;
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
@@ -103,7 +100,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.7 $ $Date: 2003/12/02 12:47:48 $
+ * @version $Revision: 1.8 $ $Date: 2003/12/02 19:20:14 $
  */
 public class TilesTool extends ImportSupport
         implements ViewTool
@@ -150,18 +147,18 @@ public class TilesTool extends ImportSupport
      * Imports all attributes in the current tiles-context into the velocity-context.
      *
      * <p>This is functionally equivalent to
-     * <code><tiles:importAttribute /></code>.</p>
+     * <code>&lt;tiles:importAttribute /&gt;</code>.</p>
      */
     public void importAttributes()
     {
-        ComponentContext currentContext = ComponentContext.getContext(request);
+        ComponentContext currentContext = 
+            ComponentContext.getContext(this.request);
         Iterator names = currentContext.getAttributeNames();
+        Context velocityContext = this.context.getVelocityContext();
         while (names.hasNext())
         {
             String name = (String)names.next();
-            context.getVelocityContext().put(name,
-                                             currentContext.
-                                             getAttribute(name));
+            velocityContext.put(name, currentContext.getAttribute(name));
         }
     }
 
@@ -169,7 +166,7 @@ public class TilesTool extends ImportSupport
      * Fetches a named attribute-value from the current tiles-context.
      *
      * <p>This is functionally equivalent to
-     * <code><tiles:importAttribute name="attributeName" /></code>
+     * <code>&lt;tiles:importAttribute name="attributeName" /&gt;</code>
      * as well as
      * <code>&lt;tiles:getAsString name="attributeName" /&gt;</code>.</p>
      *
@@ -178,15 +175,15 @@ public class TilesTool extends ImportSupport
      */
     public Object getAttribute(String attributeName)
     {
-        ComponentContext currentContext = ComponentContext.getContext(request);
+        ComponentContext currentContext = 
+            ComponentContext.getContext(this.request);
         Object value = currentContext.getAttribute(attributeName);
         if (value == null)
         {
-            Velocity.error("Error while importing Tile attribute '"
+            Velocity.warn("TilesTool: Tile attribute '"
                            + attributeName
-                           + "' - attribute not found in context.");
+                           + "' was not found in context.");
         }
-
         return value;
     }
 
@@ -209,8 +206,8 @@ public class TilesTool extends ImportSupport
     {
         try
         {
-            ComponentContext currentContext = ComponentContext.getContext(
-                    request);
+            ComponentContext currentContext = 
+                ComponentContext.getContext(this.request);
             Object attrValue = currentContext.getAttribute(attr.toString());
             if (attrValue != null)
             {
@@ -220,8 +217,8 @@ public class TilesTool extends ImportSupport
         }
         catch (Exception e)
         {
-            Velocity.error("Exeption while rendering Tile " + attr.toString()
-                           + ": " + e.getMessage());
+            Velocity.error("TilesTool: Exeption while rendering Tile " 
+                           + attr + ": " + e.getMessage());
             return null;
         }
     }
@@ -245,13 +242,11 @@ public class TilesTool extends ImportSupport
         {
             /* We have a type => return appropriate IncludeType */
             return processTypedAttribute((AttributeDefinition)value);
-
         }
         else if (value instanceof ComponentDefinition)
         {
             return processDefinition((ComponentDefinition)value);
         }
-
         /* Value must denote a valid String */
         return processAsDefinitionOrURL(value.toString());
     }
@@ -269,12 +264,10 @@ public class TilesTool extends ImportSupport
         if (value instanceof DirectStringAttribute)
         {
             return (String)value.getValue();
-
         }
         else if (value instanceof DefinitionAttribute)
         {
             return processDefinition((ComponentDefinition)value.getValue());
-
         }
         else if (value instanceof DefinitionNameAttribute)
         {
@@ -296,7 +289,7 @@ public class TilesTool extends ImportSupport
         try
         {
             ComponentDefinition definition =
-                    TilesUtil.getDefinition(name, request, application);
+                    TilesUtil.getDefinition(name, this.request, this.application);
             if (definition != null)
             {
                 return processDefinition(definition);
@@ -321,7 +314,6 @@ public class TilesTool extends ImportSupport
             Exception
     {
         Controller controller = null;
-
         try
         {
             controller = definition.getOrCreateController();
@@ -364,7 +356,7 @@ public class TilesTool extends ImportSupport
     protected String doInsert(String page, String role, Controller controller) throws
             Exception
     {
-        if (role != null && !request.isUserInRole(role))
+        if (role != null && !this.request.isUserInRole(role))
         {
             return null;
         }
@@ -388,7 +380,7 @@ public class TilesTool extends ImportSupport
                               String role,
                               Controller controller) throws Exception
     {
-        if (role != null && !request.isUserInRole(role))
+        if (role != null && !this.request.isUserInRole(role))
         {
             return null;
         }
@@ -416,16 +408,17 @@ public class TilesTool extends ImportSupport
         pushTilesContext();
         try
         {
-            ComponentContext.setContext(subCompContext, request);
+            ComponentContext.setContext(subCompContext, this.request);
 
             /* Call controller if any */
             if (controller != null)
             {
                 controller.perform(subCompContext,
-                                   request,
-                                   response,
-                                   application);
+                                   this.request,
+                                   this.response,
+                                   this.application);
             }
+            /* pass things off to ImportSupport */
             return this.acquireString(page);
         }
         finally
@@ -441,21 +434,21 @@ public class TilesTool extends ImportSupport
      */
     protected void pushTilesContext()
     {
-        if (contextStack == null)
+        if (this.contextStack == null)
         {
-            contextStack = new Stack();
+            this.contextStack = new Stack();
         }
-        contextStack.push(ComponentContext.getContext(request));
+        contextStack.push(ComponentContext.getContext(this.request));
     }
 
     /**
-             * <p>pops the tiles sub-context off the context-stack after the lower level
+     * <p>pops the tiles sub-context off the context-stack after the lower level
      * tiles have been rendered</p>
      */
     protected void popTilesContext()
     {
-        ComponentContext.setContext((ComponentContext)contextStack.pop(),
-                                    request);
+        ComponentContext.setContext((ComponentContext)this.contextStack.pop(),
+                                    this.request);
     }
 
 }
