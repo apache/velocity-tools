@@ -103,11 +103,11 @@ import org.apache.velocity.tools.view.context.ToolboxContext;
  *   &lt;/tool&gt;
  *   &lt;data type="Number"&gt;
  *      &lt;key&gt;luckynumber&lt;/key&gt;
- *      &lt;value&gt;1.37&lt;/class&gt;
+ *      &lt;value&gt;1.37&lt;/value&gt;
  *   &lt;/data&gt;
  *   &lt;data type="String"&gt;
  *      &lt;key&gt;greeting&lt;/key&gt;
- *      &lt;value&gt;Hello World!&lt;/class&gt;
+ *      &lt;value&gt;Hello World!&lt;/value&gt;
  *   &lt;/data&gt;
  * &lt;/toolbox&gt;    
  * </pre>
@@ -116,7 +116,7 @@ import org.apache.velocity.tools.view.context.ToolboxContext;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: XMLToolboxManager.java,v 1.4 2003/07/22 18:34:27 nbubna Exp $
+ * @version $Id: XMLToolboxManager.java,v 1.5 2003/09/08 19:15:25 nbubna Exp $
  */
 public abstract class XMLToolboxManager implements ToolboxManager
 {
