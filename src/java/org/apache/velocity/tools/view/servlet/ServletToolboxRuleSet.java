@@ -66,7 +66,7 @@ import org.apache.velocity.tools.view.servlet.ServletToolInfo;
  * ServletToolboxManager class.</p> 
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Id: ServletToolboxRuleSet.java,v 1.1 2003/07/22 18:32:29 nbubna Exp $
+ * @version $Id: ServletToolboxRuleSet.java,v 1.2 2003/08/02 20:43:10 nbubna Exp $
  */
 public class ServletToolboxRuleSet extends ToolboxRuleSet
 {
@@ -84,6 +84,7 @@ public class ServletToolboxRuleSet extends ToolboxRuleSet
     public void addRuleInstances(Digester digester)
     {
         digester.addRule("toolbox/create-session", new CreateSessionRule());
+        digester.addRule("toolbox/xhtml", new XhtmlRule());
         super.addRuleInstances(digester);
     }
 
@@ -107,30 +108,64 @@ public class ServletToolboxRuleSet extends ToolboxRuleSet
     }
 
 
+    /****************************** Custom Rules *****************************/
+
+    /**
+     * Abstract rule for configuring boolean options on the parent 
+     * object/element of the matching element.
+     */
+    protected abstract class BooleanConfigRule extends Rule
+    {
+        public void body(String ns, String name, String text) throws Exception
+        {
+            Object parent = digester.peek();
+            if ("yes".equalsIgnoreCase(text))
+            {
+                setBoolean(parent, Boolean.TRUE);
+            }
+            else
+            {
+                setBoolean(parent, Boolean.valueOf(text));
+            }
+        }
+
+        /**
+         * Takes the parent object and boolean value in order to
+         * call the appropriate method on the parent for the
+         * implementing rule.
+         *
+         * @param parent the parent object/element in the digester's stack
+         * @param value the boolean value contained in the current element
+         */
+        public abstract void setBoolean(Object parent, Boolean value) 
+            throws Exception;
+    }
+
+
     /**
      * Rule that sets <code>setCreateSession()</code> for the top object
      * on the stack, which must be a
      * <code>org.apache.velocity.tools.ServletToolboxManager</code>.
      */
-    protected final class CreateSessionRule extends Rule {
-
-        public CreateSessionRule() {
-            super();
-        }
-
-        public void body(String ns, String name, String text) throws Exception
+    protected final class CreateSessionRule extends BooleanConfigRule
+    {
+        public void setBoolean(Object obj, Boolean b) throws Exception
         {
-            ServletToolboxManager stm = (ServletToolboxManager)digester.peek();
-            if ("yes".equalsIgnoreCase(text))
-            {
-                stm.setCreateSession(true);
-            }
-            else
-            {
-                /* follow java rules for boolean value parsing 
-                 * (equivalent to "true".equalsIgnoreCase(text) )*/
-                stm.setCreateSession(Boolean.valueOf(text).booleanValue());
-            }
+            ((ServletToolboxManager)obj).setCreateSession(b.booleanValue());
+        }
+    }
+
+
+    /**
+     * Rule that sets <code>setCreateSession()</code> for the top object
+     * on the stack, which must be a
+     * <code>org.apache.velocity.tools.ServletToolboxManager</code>.
+     */
+    protected final class XhtmlRule extends BooleanConfigRule
+    {
+        public void setBoolean(Object obj, Boolean b) throws Exception
+        {
+            ((ServletToolboxManager)obj).setXhtml(b);
         }
     }
 
