@@ -70,7 +70,7 @@
             </parameters>
 
             <returns>
-                <code>true</code> if there are action message queued. <code>false</code> otherwise.
+                <code>true</code> if there are action messages queued. <code>false</code> otherwise.
             </returns>
 
             <description>
@@ -169,7 +169,7 @@ $actionmsgs.getSize("password")</sourcecode>
 
             <returns>
                 If the message resources are lacking an action message message for a
-                particular message key, the key itself is used as action message
+                particular message key, the key itself is used as an action message
                 and a warning is logged.
             </returns>
 
@@ -210,12 +210,6 @@ $actionmsgs.getSize("password")</sourcecode>
                 List get(String property)
             </signature>
 
-            <parameters>
-                <parameter name="property">
-                    The category of action messages to return.
-                </parameter>
-            </parameters>
-
             <signature>
                 List get(String property, String bundle)
             </signature>
@@ -235,7 +229,7 @@ $actionmsgs.getSize("password")</sourcecode>
                 If no action messages exist for the specified category,
                 <code>null</code> is returned.
                 If the message resources are lacking an error message for a
-                particular message key, the key itself is used as action message
+                particular message key, the key itself is used as an action message
                 and a warning is logged.
             </returns>
 

@@ -72,7 +72,7 @@
             </parameters>
 
             <returns>
-                <code>true</code> if there error messages queued. <code>false</code> otherwise.
+                <code>true</code> if there are error messages queued. <code>false</code> otherwise.
             </returns>
 
             <description>
@@ -171,7 +171,7 @@ $errors.getSize("password")</sourcecode>
 
             <returns>
                 If the message resources are lacking an error message for a
-                particular message key, the key itself is used as error message
+                particular message key, the key itself is used as an error message
                 and a warning is logged.
             </returns>
 
@@ -212,12 +212,6 @@ $errors.getSize("password")</sourcecode>
                 List get(String property)
             </signature>
 
-            <parameters>
-                <parameter name="property">
-                    The category of errors to return.
-                </parameter>
-            </parameters>
-
             <signature>
                 List get(String property, String bundle)
             </signature>
@@ -237,7 +231,7 @@ $errors.getSize("password")</sourcecode>
                 If no error messages exist for the specified category,
                 <code>null</code> is returned.
                 If the message resources are lacking an error message for a
-                particular message key, the key itself is used as error message
+                particular message key, the key itself is used as an error message
                 and a warning is logged.
             </returns>
 
@@ -281,12 +275,6 @@ $errors.getSize("password")</sourcecode>
             <signature>
                 String getMsgs(String property)
             </signature>
-
-            <parameters>
-                <parameter name="property">
-                    The category of errors messages to render.
-                </parameter>
-            </parameters>
 
             <signature>
                 String getMsgs(String property, String bundle)
