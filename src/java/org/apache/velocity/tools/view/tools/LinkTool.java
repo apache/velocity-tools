@@ -54,7 +54,6 @@
 
 package org.apache.velocity.tools.view.tools;
 
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLEncoder;
@@ -69,7 +68,6 @@ import javax.servlet.ServletContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
-
 
 /**
  * <p>View tool to make building URIs pleasant and fun! :)</p>
@@ -92,7 +90,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Id: LinkTool.java,v 1.12 2003/12/06 05:54:39 nbubna Exp $
+ * @version $Id: LinkTool.java,v 1.13 2003/12/09 20:25:56 nbubna Exp $
  */
 public class LinkTool implements ViewTool, Cloneable
 {
@@ -143,7 +141,7 @@ public class LinkTool implements ViewTool, Cloneable
         }
         catch (NoSuchMethodException e)
         {
-            Velocity.debug("Could not find Java 1.4 encode method. Using deprecated version.");
+            Velocity.debug("LinkTool: Can't find JDK 1.4 encode method. Using JDK 1.3 version.");
         }
     }
 
@@ -544,24 +542,27 @@ public class LinkTool implements ViewTool, Cloneable
      */
     public String encodeURL(String url)
     {
-        /* this code was adapted from org.apache.struts.utils.RequestUtils */
-        /* encode url with new 1.4 method and UTF-8 encoding */
+        /* first try encoding with new 1.4 method */
         if (encode != null)
         {
             try
             {
-                //TODO? use response.getCharacterEncoding() instead of UTF-8?
-                return (String)encode.invoke(null, new Object[] { url, "UTF-8" });
+                Object[] args = 
+                    new Object[] { url, this.response.getCharacterEncoding() };
+                return (String)encode.invoke(null, args);
             }
             catch (IllegalAccessException e)
             {
-                Velocity.debug("Could not find Java 1.4 encode method (" + e + 
-                               "). Using deprecated version.");
+                // don't keep trying if we get one of these
+                encode = null;
+
+                Velocity.debug("LinkTool: Can't access JDK 1.4 encode method ("
+                               + e + "). Using deprecated version from now on.");
             }
             catch (InvocationTargetException e)
             {
-                Velocity.debug("Could not find Java 1.4 encode method (" + e + 
-                               "). Using deprecated version.");
+                Velocity.debug("LinkTool: Error using JDK 1.4 encode method ("
+                               + e + "). Using deprecated version.");
             }
         }
         return URLEncoder.encode(url);
