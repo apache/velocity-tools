@@ -86,6 +86,31 @@
   <tr>
     <td colspan="2" bgcolor="#828DA6">
       <font color="#ffffff" face="arial,helvetica.sanserif">
+      <a name="1.1-dev">
+      <strong>1.1-dev</strong></a></font>
+    </td>
+  </tr>
+  <tr>
+    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td>
+      <p>This section describes changes after the 1.1-beta release.</p>
+<ul>
+      <li>Made XMLToolboxManager not abstract (#24840). (ndb)</li>
+      <li>De-staticized non-private methods in RenderTool and LinkTool. (ndb)</li>
+      <li>Added NumberTool for formatting numbers (contributed by Mike Kienenberger). (ndb)</li>
+      <li>Filled out and cleaned up DateTool's toDate(...) methods. (ndb)</li>
+      <li>Changed VelocityViewServlet's error method to print the stack trace of the root cause when it encounters a MethodInvocationException. (ndb)</li>
+      <li>Added importAttributes() method to TilesTool to automatically put all attributes of the current Tiles context into the Velocity context. (maj)</li>
+      <li>Replaced TilesTool's getString(String) method with getAttribute(String) in order to support "put lists." (maj)</li>
+      </ul>
+
+    </td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+  <tr>
+    <td colspan="2" bgcolor="#828DA6">
+      <font color="#ffffff" face="arial,helvetica.sanserif">
       <a name="1.1-beta1">
       <strong>1.1-beta1</strong></a></font>
     </td>
