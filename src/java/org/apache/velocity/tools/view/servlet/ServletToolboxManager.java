@@ -131,7 +131,7 @@ import org.apache.velocity.tools.view.context.ViewContext;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ServletToolboxManager.java,v 1.2 2003/03/22 20:33:09 nbubna Exp $
+ * @version $Id: ServletToolboxManager.java,v 1.3 2003/04/08 02:16:00 nbubna Exp $
  * 
  */
 public class ServletToolboxManager extends XMLToolboxManager
@@ -218,7 +218,7 @@ public class ServletToolboxManager extends XMLToolboxManager
             }
             catch(Exception e)
             {
-                Velocity.error("Problem reading toolbox file properties file '" + toolboxFile +"' : " + e );
+                Velocity.error("Problem loading toolbox '" + toolboxFile +"' : " + e);
 
                 // if this happens, it probably deserves
                 // to have the stack trace logged
@@ -300,7 +300,7 @@ public class ServletToolboxManager extends XMLToolboxManager
         }
         else
         {
-            log("Could not read element: "+name);
+            log("Unreadable element: "+name);
             return false;
         }
 
