@@ -26,10 +26,11 @@ import org.apache.struts.action.*;
 
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
+import org.apache.struts.util.ModuleUtils;
 
 
 /**
- * <p>View tool to work with HTML forms in Struts.</p> 
+ * <p>View tool to work with HTML forms in Struts.</p>
  * <p><pre>
  * Template example(s):
  *  &lt;input type="hidden" name="$form.tokenName" value="$form.token"&gt;
@@ -48,27 +49,27 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @since VelocityTools 1.0
- * @version $Id: FormTool.java,v 1.6 2004/02/18 20:09:51 nbubna Exp $
+ * @version $Id$
  */
 public class FormTool implements ViewTool
 {
 
     // --------------------------------------------- Properties ---------------
 
-    
+
     /**
      * A reference to the HtttpServletRequest.
-     */ 
+     */
     protected HttpServletRequest request;
-    
+
 
     /**
      * A reference to the HtttpSession.
-     */ 
+     */
     protected HttpSession session;
 
 
-    
+
     // --------------------------------------------- Constructors -------------
 
     /**
@@ -77,8 +78,8 @@ public class FormTool implements ViewTool
     public FormTool()
     {
     }
-    
-    
+
+
     /**
      * Initializes this tool.
      *
@@ -104,44 +105,56 @@ public class FormTool implements ViewTool
     /**
      * <p>Returns the form bean associated with this action mapping.</p>
      *
-     * <p>This is a convenience method. The form bean is automatically 
-     * available in the Velocity context under the name defined in the 
-     * Struts configuration.</p> 
-     * 
-     * <p>If the form bean is used repeatedly, it is recommended to create a 
+     * <p>This is a convenience method. The form bean is automatically
+     * available in the Velocity context under the name defined in the
+     * Struts configuration.</p>
+     *
+     * <p>If the form bean is used repeatedly, it is recommended to create a
      * local variable referencing the bean rather than calling getBean()
      * multiple times.</p>
-     * 
-     * <pre>   
+     *
+     * <pre>
      * Example:
-     * #set ($defaults = $form.bean) 
+     * #set ($defaults = $form.bean)
      * &lt;input type="text" name="username" value="$defaults.username"&gt;
      * </pre>
      *
-     * @return the {@link ActionForm} associated with this request or 
+     * @return the {@link ActionForm} associated with this request or
      * <code>null</code> if there is no form bean associated with this mapping
      */
     public ActionForm getBean()
     {
-        return StrutsUtils.getActionForm(request, session);    
+        return StrutsUtils.getActionForm(request, session);
     }
-    
 
     /**
-     * <p>Returns the query parameter name under which a cancel button press 
-     * must be reported if form validation is to be skipped.</p> 
+     * <p>Returns the form bean name associated with this action mapping.</p>
      *
-     * <p>This is the value of 
+     * @return the name of the ActionForm associated with this request or
+     * <code>null</code> if there is no form bean associated with this mapping
+     */
+    public String getName()
+    {
+        return StrutsUtils.getActionFormName(request, session);
+    }
+
+
+
+    /**
+     * <p>Returns the query parameter name under which a cancel button press
+     * must be reported if form validation is to be skipped.</p>
+     *
+     * <p>This is the value of
      * <code>org.apache.struts.taglib.html.Constants.CANCEL_PROPERTY</code></p>
      */
     public String getCancelName()
     {
         return org.apache.struts.taglib.html.Constants.CANCEL_PROPERTY;
     }
-    
+
 
     /**
-     * Returns the transaction control token for this session or 
+     * Returns the transaction control token for this session or
      * <code>null</code> if no token exists.
      */
     public String getToken()
@@ -152,7 +165,7 @@ public class FormTool implements ViewTool
 
     /**
      * <p>Returns the query parameter name under which a transaction token
-     * must be reported. This is the value of 
+     * must be reported. This is the value of
      * <code>org.apache.struts.taglib.html.Constants.TOKEN_KEY</code></p>
      */
     public String getTokenName()

@@ -53,7 +53,7 @@ import org.apache.struts.Globals;
  * </p>
  * @since VelocityTools 1.1
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @version $Revision: 1.10 $ $Date: 2004/03/12 20:30:31 $
+ * @version $Revision$ $Date$
  */
 public class SecureLinkTool extends LinkTool
 {
@@ -183,7 +183,7 @@ public class SecureLinkTool extends LinkTool
     {
         ModuleConfig moduleConfig = StrutsUtils.selectModule(linkString, app);
 
-        // Strip off the subapp path, if any
+        // Strip off the module path, if any
         linkString = linkString.substring(moduleConfig.getPrefix().length());
 
         // Use our servlet mapping, if one is specified

@@ -45,6 +45,7 @@ import org.apache.struts.validator.ValidatorPlugIn;
 
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
+import java.util.StringTokenizer;
 
 /**
  * <p>View tool that works with Struts Validator to
@@ -71,7 +72,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.10 $ $Date: 2004/04/14 20:08:28 $
+ * @version $Revision$ $Date$
  */
 public class ValidatorTool implements ViewTool {
 
@@ -102,6 +103,46 @@ public class ValidatorTool implements ViewTool {
     private String methodName = null;
     private String src = null;
     private int page = 0;
+    /**
+     * formName is used for both Javascript and non-javascript validations.
+     * For the javascript validations, there is the possibility that we will
+     * be rewriting the formName (if it is a ValidatorActionForm instead of just
+     * a ValidatorForm) so we need another variable to hold the formName just for
+     * javascript usage.
+     */
+    protected String jsFormName = null;
+
+
+
+
+    /**
+     * A Comparator to use when sorting ValidatorAction objects.
+     */
+    private static final Comparator actionComparator = new Comparator() {
+        public int compare(Object o1, Object o2) {
+
+            ValidatorAction va1 = (ValidatorAction) o1;
+            ValidatorAction va2 = (ValidatorAction) o2;
+
+            if ((va1.getDepends() == null || va1.getDepends().length() == 0)
+                && (va2.getDepends() == null || va2.getDepends().length() == 0)) {
+                return 0;
+
+            } else if (
+                (va1.getDepends() != null && va1.getDepends().length() > 0)
+                    && (va2.getDepends() == null || va2.getDepends().length() == 0)) {
+                return 1;
+
+            } else if (
+                (va1.getDepends() == null || va1.getDepends().length() == 0)
+                    && (va2.getDepends() != null && va2.getDepends().length() > 0)) {
+                return -1;
+
+            } else {
+                return va1.getDependencyList().size() - va2.getDependencyList().size();
+            }
+        }
+    };
 
 
     /**
@@ -150,7 +191,6 @@ public class ValidatorTool implements ViewTool {
                 mconfig.getPrefix());
 
     }
-
 
     /****************** get/set accessors ***************/
 
@@ -410,13 +450,28 @@ public class ValidatorTool implements ViewTool {
 
         List actions = createActionList(resources, form);
 
-        String methods = createMethods(actions);
+        final String methods = createMethods(actions);
+
+        String formName = form.getName();
+
+        jsFormName = formName;
+        if(jsFormName.charAt(0) == '/') {
+            String mappingName = StrutsUtils.getActionMappingName(jsFormName);
+            ModuleConfig mconfig = ModuleUtils.getInstance().getModuleConfig(request, app);
+
+            ActionConfig mapping = (ActionConfig) mconfig.findActionConfig(mappingName);
+            if (mapping == null) {
+                throw new NullPointerException("Cannot retrieve mapping for action " + mappingName);
+            }
+            jsFormName = mapping.getAttribute();
+        }
+
         results.append(getJavascriptBegin(methods));
 
         for (Iterator i = actions.iterator(); i.hasNext();)
         {
             ValidatorAction va = (ValidatorAction)i.next();
-            String jscriptVar = null;
+            int jscriptVar = 0;
             String functionName = null;
 
             if (va.getJsFunctionName() != null && va.getJsFunctionName().length() > 0)
@@ -429,6 +484,8 @@ public class ValidatorTool implements ViewTool {
             }
 
             results.append("    function ");
+            results.append(jsFormName);
+            results.append("_");
             results.append(functionName);
             results.append(" () { \n");
 
@@ -449,19 +506,16 @@ public class ValidatorTool implements ViewTool {
                 String message =
                     Resources.getMessage(messages, locale, va, field);
 
-                if (message == null)
-                {
-                    message = "";
-                }
+                message = (message != null) ? message : "";
 
-                jscriptVar = this.getNextVar(jscriptVar);
+                //jscriptVar = this.getNextVar(jscriptVar);
 
-                results.append("     this.");
-                results.append(jscriptVar);
+                results.append("     this.a");
+                results.append(jscriptVar++);
                 results.append(" = new Array(\"");
                 results.append(field.getKey());
                 results.append("\", \"");
-                results.append(message);
+                results.append(escapeQuotes(message));
                 results.append("\", ");
                 results.append("new Function (\"varName\", \"");
 
@@ -526,6 +580,29 @@ public class ValidatorTool implements ViewTool {
             results.append("    } \n\n");
         }
         return results.toString();
+    }
+
+
+    private String escapeQuotes(String in)
+    {
+        if (in == null || in.indexOf("\"") == -1)
+        {
+            return in;
+        }
+        StringBuffer buffer = new StringBuffer();
+        StringTokenizer tokenizer = new StringTokenizer(in, "\"", true);
+
+        while (tokenizer.hasMoreTokens())
+        {
+            String token = tokenizer.nextToken();
+            if (token.equals("\""))
+            {
+                buffer.append("\\");
+            }
+            buffer.append(token);
+        }
+
+        return buffer.toString();
     }
 
 
@@ -608,9 +685,7 @@ public class ValidatorTool implements ViewTool {
             }
         }
 
-        //TODO? make an instance of this class a static member
-        Comparator comp = new ValidatorActionComparator();
-        Collections.sort(actions, comp);
+        Collections.sort(actions, actionComparator);
         return actions;
     }
 
@@ -624,11 +699,11 @@ public class ValidatorTool implements ViewTool {
     protected String getJavascriptBegin(String methods)
     {
         StringBuffer sb = new StringBuffer();
-        String name = formName.replace('/', '_'); // remove any '/' characters
-        name = name.substring(0, 1).toUpperCase() +
-                      name.substring(1, name.length());
+        String name = jsFormName.replace('/', '_'); // remove any '/' characters
+        name = jsFormName.substring(0, 1).toUpperCase() +
+                      jsFormName.substring(1, jsFormName.length());
 
-        sb.append(getStartElement());
+        sb.append(this.getStartElement());
 
         if (this.xhtml && this.cdata)
         {
@@ -665,9 +740,11 @@ public class ValidatorTool implements ViewTool {
         }
         else
         {
-            sb.append("       return ");
-            sb.append(methods);
-            sb.append("; \n");
+            //Making Sure that Bitwise operator works:
+            sb.append(" var formValidationResult;\n");
+            sb.append("       formValidationResult = " + methods + "; \n");
+            sb.append("     return (formValidationResult == 1);\n");
+
         }
         sb.append("   } \n\n");
 
@@ -726,54 +803,6 @@ public class ValidatorTool implements ViewTool {
 
 
     /**
-     * The value <code>null</code> will be returned at the end of the sequence.
-     *     ex: "zz" will return <code>null</code>
-     *
-     * @param input the string to process
-     * @return the next var
-     */
-    private String getNextVar(String input)
-    {
-        if (input == null)
-        {
-            return "aa";
-        }
-
-        input = input.toLowerCase();
-
-        for (int i = input.length(); i > 0; i--)
-        {
-            int pos = i - 1;
-
-            char c = input.charAt(pos);
-            c++;
-
-            if (c <= 'z')
-            {
-                if (i == 0)
-                {
-                    return c + input.substring(pos, input.length());
-                }
-                else if (i == input.length())
-                {
-                    return input.substring(0, pos) + c;
-                }
-                else
-                {
-                    return input.substring(0, pos) + c +
-                           input.substring(pos, input.length() - 1);
-                }
-            }
-            else
-            {
-                input = replaceChar(input, pos, 'a');
-            }
-        }
-        return null;
-     }
-
-
-    /**
      * Replaces a single character in a <code>String</code>
      *
      * @param input the string to process
@@ -821,48 +850,6 @@ public class ValidatorTool implements ViewTool {
 
         start.append("> \n");
         return start.toString();
-    }
-
-
-    /**
-     * Inner class for use when creating dynamic javascript
-     */
-    protected class ValidatorActionComparator implements Comparator
-    {
-        /**
-         *
-         * @param o1 the first object to compare with regard to depends
-         * @param o2 the second object to compare with regard to depends
-         * @return -1, 0 or 1
-         */
-        public int compare(Object o1, Object o2)
-        {
-            ValidatorAction va1 = (ValidatorAction)o1;
-            ValidatorAction va2 = (ValidatorAction)o2;
-
-            String vad1 = va1.getDepends();
-            String vad2 = va2.getDepends();
-
-            if ((vad1 == null || vad1.length() == 0)
-                && (vad2 == null || vad2.length() == 0))
-            {
-                return 0;
-            }
-            else if ((vad1 != null && vad1.length() > 0)
-                     && (vad2 == null || vad2.length() == 0))
-            {
-                return 1;
-            }
-            else if ((vad1 == null || vad1.length() == 0)
-                     && (vad2 != null && vad2.length() > 0))
-            {
-                return -1;
-            }
-            else
-            {
-                return va1.getDependencyList().size() - va2.getDependencyList().size();
-            }
-        }
     }
 
 }
