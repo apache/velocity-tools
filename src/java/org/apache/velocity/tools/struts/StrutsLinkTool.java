@@ -54,21 +54,10 @@
 
 package org.apache.velocity.tools.struts;
 
-import java.util.ArrayList;
-
-import java.net.URLEncoder;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.ServletContext;
-
-import org.apache.struts.action.ActionForward;
-
+import org.apache.struts.config.ForwardConfig;
 import org.apache.velocity.app.Velocity;
-import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.LinkTool;
-
+import org.apache.velocity.tools.struts.StrutsUtils;
 
 /**
  * <p>View tool to work with URI links in Struts.</p> 
@@ -85,7 +74,7 @@ import org.apache.velocity.tools.view.tools.LinkTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: StrutsLinkTool.java,v 1.3 2003/05/28 00:17:15 nbubna Exp $
+ * @version $Id: StrutsLinkTool.java,v 1.4 2003/07/25 16:54:02 nbubna Exp $
  */
 public class StrutsLinkTool extends LinkTool
 {
@@ -122,7 +111,7 @@ public class StrutsLinkTool extends LinkTool
      */
     public StrutsLinkTool setForward(String forward)
     {
-        ActionForward mapping = StrutsUtils.getActionForward(forward, application);
+        ForwardConfig mapping = StrutsUtils.getForwardConfig(forward, request, application);
         
         if (mapping == null)
         {
