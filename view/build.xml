@@ -234,16 +234,36 @@
 
       </taskdef>
 
+      <!-- create browser version of documentaiton -->
       <dvsl
            basedir="${docs.src}"
            destdir="${docs.dest}/"
     	   toolboxfile="${basedir}/../xdocs/toolbox.props"
            extension=".html"
            style="${basedir}/../xdocs/site.dvsl"
-           excludes="**/*menue.xml"
+           excludes="*menue.xml"
            includes="**/*.xml">
+         <tool name="toolbox.string.LinkToPrinterFriendlyVersion" value="yes" />
          <tool name="toolbox.string.basedir" value="${basedir}" />
       </dvsl>
+
+      <!-- create printer version of documentation -->
+      <dvsl
+           basedir="${docs.src}"
+           destdir="${docs.dest}/"
+    	   toolboxfile="${basedir}/../xdocs/toolbox.props"
+           extension="-printer.html"
+           style="${basedir}/../xdocs/site.dvsl"
+           excludes="*menue.xml"
+           includes="**/*.xml">
+         <tool name="toolbox.string.PrinterFriendlyVersion" value="yes" />
+         <tool name="toolbox.string.basedir" value="${basedir}" />
+      </dvsl>
+
+      <replace dir="${docs.dest}">
+          <replacefilter token="@@@version@@@" value="${project.version}"/>
+          <replacefilter token="@@@date@@@" value="${project.date}"/>
+      </replace>
 
   </target>
 

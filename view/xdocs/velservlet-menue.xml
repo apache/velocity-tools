@@ -7,16 +7,18 @@
 
   <body>
 
-    <uplink name="Velocity Tools Home"            href="docs/index.html" alt="top"/>
+    <uplink name="Velocity Tools Home"        href="../../docs/index.html" alt="top"/>
 
     <menu name="About VelocityServlet">
-        <item name="Overview"               href="view/docs/velservlet.html"/>
+        <item name="Overview"                 href="velservlet.html"/>
         <item name="Examples"/>
         <item name="Servlet Configuration"/>
         <item name="Toolbox Configuration"/>
         <item name="Download"/>
-        <item name="Javadoc"                href="view/docs/javadoc-velservlet/index.html"/>
+        <item name="Javadoc"                  href="javadoc-velservlet/index.html"/>
     </menu>
+
+    <printerversion/>
 
   </body>
 </project>

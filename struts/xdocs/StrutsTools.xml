@@ -3,9 +3,9 @@
 <document>
 
     <properties>
-        <title>Velocity for Struts</title>
+        <title>Tools Reference</title>
         <author email="sidler@apache.org">Gabriel Sidler</author>
-        <projectfile>../xdocs/vellibrary-menue.xml</projectfile>
+        <projectfile>xdocs/menue.xml</projectfile>
     </properties>
 
     <body>
@@ -23,23 +23,23 @@
         </p>
         
         <p>
-        <strong><a href="tool-MessageTool.html">MessageTool</a></strong><br />
+        <strong><a href="MessageTool.html">MessageTool</a></strong><br />
         Provides access to the Struts message resources for internationalized output.
         </p>
 
         <p>
-        <strong><a href="tool-ErrorsTool.html">ErrorsTool</a></strong><br />
+        <strong><a href="ErrorsTool.html">ErrorsTool</a></strong><br />
         Provides methods to work with Struts error messages.
         </p>
 
         <p>
-        <strong><a href="tool-FormTool.html">FormTool</a></strong><br />
+        <strong><a href="FormTool.html">FormTool</a></strong><br />
         Provides miscellaneous methods to work with forms and form beans in the context 
         of Struts applications.
         </p>
 
         <p>
-        <strong><a href="tool-LinkTool.html">LinkTool</a></strong><br />
+        <strong><a href="LinkTool.html">LinkTool</a></strong><br />
         Provides methods to work with URIs.
         </p>
         

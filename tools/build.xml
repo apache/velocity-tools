@@ -3,9 +3,9 @@
 
 <!-- ========== Initialize Properties ===================================== -->
 
-  <property file="${basedir}/build/build.properties"/> <!-- Component local   -->
-  <property file="${basedir}/../build.properties"/>    <!-- Commons local     -->
-  <property file="${user.home}/.build.properties"/>    <!-- User local        -->
+  <property file="${basedir}/build/build.properties"/> <!-- Component local -->
+  <property file="${basedir}/../build.properties"/>    <!-- Commons local   -->
+  <property file="${user.home}/.build.properties"/>    <!-- User local      -->
 
 <!-- ========== External Dependencies ===================================== -->
 
@@ -106,24 +106,13 @@
     </copy>
   </target>
 
+
   <!-- ================================================================== -->
-  <!-- C O M P I L E                                                      -->
+  <!-- A L L                                                              -->
   <!-- ================================================================== -->
-  <target name="compile" depends="static" description="Compile">
+  <target name="all" depends="clean,jar,install-jar,docs,javadocs"
+   description="Build entire project"/>
 
-    <javac  srcdir="${source.home}/java"
-            destdir="${build.home}/classes"
-            debug="${compile.debug}"
-            deprecation="${compile.deprecation}"
-            optimize="${compile.optimize}">
-        <classpath refid="classpath"/>
-    </javac>
-
-    <copy    todir="${build.home}/classes" filtering="on">
-      <fileset dir="${source.home}/java" excludes="**/*.java"/>
-    </copy>
-
-  </target>
 
   <!-- ================================================================== -->
   <!-- C L E A N                                                          -->
@@ -155,27 +144,52 @@
 
 
   <!-- ================================================================== -->
-  <!-- A L L                                                              -->
+  <!-- C O M P I L E                                                      -->
   <!-- ================================================================== -->
-  <target name="all" depends="clean,jar,install-jar,docs,javadocs"
-   description="Build entire project"/>
+  <target name="compile" depends="static" description="Compile">
+
+    <javac  srcdir="${source.home}/java"
+            destdir="${build.home}/classes"
+            debug="${compile.debug}"
+            deprecation="${compile.deprecation}"
+            optimize="${compile.optimize}">
+        <classpath refid="classpath"/>
+    </javac>
+
+    <copy    todir="${build.home}/classes" filtering="on">
+      <fileset dir="${source.home}/java" excludes="**/*.java"/>
+    </copy>
+
+  </target>
 
 
   <!-- ================================================================== -->
   <!-- J A V A D O C S                                                    -->
   <!-- ================================================================== -->
-  <target name="javadocs" depends="compile"
-   description="Create Javadoc documentation">
+  <target name="javadocs" depends="static"
+   description="Create Javadoc documentation, public members only">
 
-    <javadoc sourcepath="${source.home}/java"
-                destdir="${build.home}/javadoc"
-           packagenames="org.apache.velocity.tools.tools.*"
-                 author="true"
-                private="true"
-                version="true"
-               doctitle="&lt;h1&gt;${project.title}&lt;/h1&gt;"
-            windowtitle="${project.title} (Version ${project.version})"
-                 bottom="Copyright (c) 2002 Apache Software Foundation" >
+    <!-- Construct compile classpath -->
+    <path id="sourcepath">
+      <pathelement path="${basedir}/../view/src/java/"/>
+      <pathelement path="${basedir}/src/java/"/>
+    </path>
+
+    <javadoc sourcepathref="sourcepath"
+                   destdir="${docs.dest}/javadoc"
+                    author="true"
+                    public="true"
+                   version="true"
+                  doctitle="&lt;h1&gt;${project.title}&lt;/h1&gt;"
+               windowtitle="${project.title} (Version ${project.version})"
+                    bottom="Copyright (c) 2002 Apache Software Foundation" >
+
+      <package name="org.apache.velocity.tools.tools"/>
+      <package name="org.apache.velocity.tools.view.tools"/>
+      <package name="org.apache.velocity.tools.view.context"/>
+
+      <group title="View Tools" packages="org.apache.velocity.tools.tools"/>
+      <group title="View Tools Infrastructure" packages="org.apache.velocity.tools.view.tools:org.apache.velocity.tools.view.context"/>
 
       <classpath refid="classpath"/>
 
@@ -190,6 +204,21 @@
     <jar    jarfile="${project.name}-${project.version}.jar"
             basedir="${build.home}/classes"
             manifest="${conf.home}/MANIFEST.MF"/>
+  </target>
+
+
+  <!-- ================================================================== -->
+  <!-- I N S T A L L  J A R                                               -->
+  <!-- ================================================================== -->
+  <target name="install-jar" depends="jar"
+          description="--> Installs .jar file in ${project.repository}">
+
+    <copy todir="${project.repository}" filtering="no">
+      <fileset dir="${basedir}">
+        <include name="${project.name}-${project.version}.jar"/>
+      </fileset>
+    </copy>
+
   </target>
 
 
@@ -214,6 +243,20 @@
            style="${basedir}/../xdocs/site.dvsl"
            excludes="*menue.xml"
            includes="**/*.xml">
+        <tool name="toolbox.string.LinkToPrinterFriendlyVersion" value="yes" />
+        <tool name="toolbox.string.basedir" value="${basedir}" />
+      </dvsl>
+
+      <!-- create printer version of documentation -->
+      <dvsl
+           basedir="${docs.src}"
+           destdir="${docs.dest}/"
+    	   toolboxfile="${basedir}/../xdocs/toolbox.props"
+           extension="-printer.html"
+           style="${basedir}/../xdocs/site.dvsl"
+           excludes="*menue.xml"
+           includes="**/*.xml">
+         <tool name="toolbox.string.PrinterFriendlyVersion" value="yes" />
          <tool name="toolbox.string.basedir" value="${basedir}" />
       </dvsl>
 
@@ -222,24 +265,7 @@
           <replacefilter token="@@@date@@@" value="${project.date}"/>
       </replace>
 
-
   </target>
-
-
-  <!-- ================================================================== -->
-  <!-- I N S T A L L  J A R                                               -->
-  <!-- ================================================================== -->
-  <target name="install-jar" depends="jar"
-          description="--> Installs .jar file in ${project.repository}">
-
-    <copy todir="${project.repository}" filtering="no">
-      <fileset dir="${basedir}">
-        <include name="${project.name}-${project.version}.jar"/>
-      </fileset>
-    </copy>
-
-  </target>
-
 
 </project>
 
