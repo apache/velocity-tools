@@ -107,7 +107,7 @@ import org.apache.struts.action.ActionMappings;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * based on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class StrutsUtils
 {
@@ -137,13 +137,13 @@ public class StrutsUtils
      *
      * @since Struts 1.1
      */
-    public static DataSource getDataSource(HttpServletRequest request, 
+    public static DataSource getDataSource(HttpServletRequest request,
                                            ServletContext app)
     {
         /* Identify the current module */
         ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
         /* Return the requested data source instance */
-        return (DataSource)app.getAttribute(Globals.DATA_SOURCE_KEY + 
+        return (DataSource)app.getAttribute(Globals.DATA_SOURCE_KEY +
                                             moduleConfig.getPrefix());
     }
 
@@ -167,7 +167,7 @@ public class StrutsUtils
      *
      * @param application the servlet context
      */
-    public static FormBeanConfig[] getFormBeanConfigs(HttpServletRequest request, 
+    public static FormBeanConfig[] getFormBeanConfigs(HttpServletRequest request,
                                                       ServletContext app)
     {
         /* Identify the current module */
@@ -203,8 +203,8 @@ public class StrutsUtils
      * @param name logical name of the requested form bean definition
      * @param application the servlet context
      */
-    public static FormBeanConfig getFormBeanConfig(String name, 
-                                                   HttpServletRequest request, 
+    public static FormBeanConfig getFormBeanConfig(String name,
+                                                   HttpServletRequest request,
                                                    ServletContext app)
     {
         /* Identify the current module */
@@ -232,7 +232,7 @@ public class StrutsUtils
      *
      * @param application the servlet context
      */
-    public static ForwardConfig[] getForwardConfigs(HttpServletRequest request, 
+    public static ForwardConfig[] getForwardConfigs(HttpServletRequest request,
                                                     ServletContext app)
     {
         /* Identify the current module */
@@ -249,7 +249,7 @@ public class StrutsUtils
      * @param appplication the servlet context
      * @deprecated
      */
-    public static ActionForward getActionForward(String name, 
+    public static ActionForward getActionForward(String name,
                                                  ServletContext app)
     {
         ActionForwards forwards = getActionForwards(app);
@@ -268,8 +268,8 @@ public class StrutsUtils
      * @param name Logical name of the requested forwarding
      * @param application the servlet context
      */
-    public static ForwardConfig getForwardConfig(String name, 
-                                                 HttpServletRequest request, 
+    public static ForwardConfig getForwardConfig(String name,
+                                                 HttpServletRequest request,
                                                  ServletContext app)
     {
         /* Identify the current module */
@@ -297,7 +297,7 @@ public class StrutsUtils
      *
      * @param application the servlet context
      */
-    public static ActionConfig[] getActionConfigs(HttpServletRequest request, 
+    public static ActionConfig[] getActionConfigs(HttpServletRequest request,
                                                   ServletContext app)
     {
         /* Identify the current module */
@@ -314,7 +314,7 @@ public class StrutsUtils
      * @param application the servlet context
      * @deprecated
      */
-    public static ActionMapping getActionMapping(String path, 
+    public static ActionMapping getActionMapping(String path,
                                                  ServletContext app)
     {
         ActionMappings mappings = getActionMappings(app);
@@ -333,8 +333,8 @@ public class StrutsUtils
      * @param path Request path for which a mapping is requested
      * @param application the servlet context
      */
-    public static ActionConfig getActionConfig(String path, 
-                                               HttpServletRequest request, 
+    public static ActionConfig getActionConfig(String path,
+                                               HttpServletRequest request,
                                                ServletContext app)
     {
         /* Identify the current module */
@@ -362,13 +362,46 @@ public class StrutsUtils
      *
      * @param application the servlet context
      */
-    public static MessageResources getMessageResources(HttpServletRequest request, 
+    public static MessageResources getMessageResources(HttpServletRequest request,
                                                        ServletContext app)
     {
         /* Identify the current module */
         ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
-        return (MessageResources)app.getAttribute(Globals.MESSAGES_KEY + 
+        return (MessageResources)app.getAttribute(Globals.MESSAGES_KEY +
                                                   moduleConfig.getPrefix());
+    }
+
+
+    /**
+     * Returns the message resources with the specified bundle name for this application
+     * or <code>null</code> if not found.
+     *
+     * @param application the servlet context
+     * @param bundle The bundle name to look for.  If this is <code>null</code>, the
+     * default bundle name is used.
+     */
+    public static MessageResources getMessageResources(HttpServletRequest request,
+                                                       ServletContext app,
+                                                       String bundle)
+    {
+        MessageResources resources = null;
+
+        /* Identify the current module */
+        ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
+
+
+        if (bundle == null) {
+            bundle = Globals.MESSAGES_KEY;
+        }
+
+        // First check request scope
+        resources = (MessageResources) request.getAttribute(bundle + moduleConfig.getPrefix());
+
+        if (resources == null) {
+            resources = (MessageResources) app.getAttribute(bundle + moduleConfig.getPrefix());
+        }
+
+        return resources;
     }
 
 
@@ -680,8 +713,8 @@ public class StrutsUtils
      * @param request the servlet request
      * @param forward the name of a forward as per struts-config.xml
      */
-    public static String getForwardURL(HttpServletRequest request, 
-                                       ServletContext app, 
+    public static String getForwardURL(HttpServletRequest request,
+                                       ServletContext app,
                                        String forward)
     {
         ForwardConfig fc = StrutsUtils.getForwardConfig(forward, request, app);
@@ -708,7 +741,7 @@ public class StrutsUtils
      * Returns a formatted error message. The error message is assembled from
      * the following three pieces: First, value of message resource
      * "errors.header" is prepended. Then, the list of error messages is
-     * rendered. Finally, the value of message resource "errors.footer" 
+     * rendered. Finally, the value of message resource "errors.footer"
      * is appended.
      *
      * @param property the category of errors to markup and return
