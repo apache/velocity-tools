@@ -60,6 +60,7 @@ import javax.servlet.ServletContext;
 import org.apache.velocity.runtime.log.LogSystem;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeServices;
+import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
 
 /**
  *  Simple wrapper for the servlet log
@@ -72,21 +73,31 @@ public class ServletLogger implements LogSystem
 
     public static final String PREFIX = " Velocity ";
 
-    public ServletLogger( ServletContext sc )
-    {
-        servletContext = sc;
-    }
-
-    private ServletLogger()
+    /**
+     * Construct a logger for VelocityViewServlets. Instances of this class
+     * assume that the ServletContext will be available through the 
+     * Application Attributes of Velocity, under the
+     * VelocityViewServlet.SERVLET_CONTEXT_KEY.
+     */
+    public ServletLogger()
     {
     }
 
     /**
-     *  init()
+     * init()
+     * 
+     * @throws IllegalStateException if the ServletContext is not available
+     *         in the application attributes under the appropriate key.
      */
     public void init( RuntimeServices rs ) 
         throws Exception
     {
+        Object obj = rs.getApplicationAttribute(VelocityViewServlet.SERVLET_CONTEXT_KEY);
+        if (obj == null)
+        {
+            throw new IllegalStateException("Could not retrieve ServletContext from application attributes!");
+        }
+        servletContext = (ServletContext)obj;
     }
 
     /**

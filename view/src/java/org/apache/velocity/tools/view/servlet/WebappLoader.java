@@ -64,12 +64,14 @@ import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 
 import org.apache.velocity.exception.ResourceNotFoundException;
 
+import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
+
 import org.apache.commons.collections.ExtendedProperties;
 
 /**
  *  
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
- * @version $Id: WebappLoader.java,v 1.1 2002/01/03 20:21:55 geirm Exp $
+ * @version $Id: WebappLoader.java,v 1.2 2003/02/19 19:59:02 nbubna Exp $
  */
 public class WebappLoader extends ResourceLoader
 {
@@ -82,11 +84,11 @@ public class WebappLoader extends ResourceLoader
     {
         rsvc.info("WebappLoader : initialization starting.");
 
-        Object o = rsvc.getApplicationAttribute( "org.apache.velocity.tools.view.servlet.WebappLoader" );
+        Object obj = rsvc.getApplicationAttribute(VelocityViewServlet.SERVLET_CONTEXT_KEY);
 
-        if ( o instanceof WebappLoaderAppContext)
+        if (obj instanceof ServletContext)
         {
-            servletContext = ( (WebappLoaderAppContext) o ).getServletContext();
+            servletContext = (ServletContext)obj;
         }
         else
             rsvc.error("WebappLoader : unable to retrieve ServletContext");
