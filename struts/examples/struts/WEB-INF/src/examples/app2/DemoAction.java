@@ -27,10 +27,10 @@ import org.apache.struts.util.MessageResources;
 
 
 /**
- * <p>A simple action used to demonstrate the context tools.</p>
+ * <p>A simple action used to demonstrate the view tools.</p>
  *
  * @author <a href="mailto:sidler@teamup.com"/>Gabe Sidler</a>
- * @version $Id: DemoAction.java,v 1.1 2002/03/12 11:36:48 sidler Exp $
+ * @version $Id: DemoAction.java,v 1.2 2002/04/15 18:30:27 sidler Exp $
  */
 public class DemoAction extends Action 
 {

@@ -59,19 +59,19 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
 
 /**
- * <p>Read-only context used to carry a set of context tools.</p>
+ * <p>Read-only context used to carry a set of view tools.</p>
  *
  * <p>Writes get dropped.</p>
  *
  * @author <a href="mailto:sidler@apache.org">Gabriel Sidler</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ToolboxContext.java,v 1.4 2002/04/02 17:48:05 dlr Exp $ 
+ * @version $Id: ToolboxContext.java,v 1.5 2002/04/15 18:30:29 sidler Exp $ 
  */
 public class ToolboxContext extends VelocityContext
 {
     /**
-     * The collection of context tools in this toolbox.
+     * The collection of view tools in this toolbox.
      */
     private Map toolbox;
 

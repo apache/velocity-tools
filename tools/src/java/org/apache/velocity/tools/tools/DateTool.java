@@ -62,7 +62,7 @@ import java.util.Date;
 import java.util.Calendar;
 import java.util.Locale;
 
-import org.apache.velocity.tools.view.tools.ThreadSafeContextTool;
+import org.apache.velocity.tools.view.tools.ThreadSafeViewTool;
 
 
 /**
@@ -70,17 +70,17 @@ import org.apache.velocity.tools.view.tools.ThreadSafeContextTool;
  * objects in Velocity templates.</p> 
  * 
  * <p>The tool is tread-safe and implements interface 
- * ThreadSafeContextTool. This allows a compatible toolbox 
+ * ThreadSafeViewTool. This allows a compatible toolbox 
  * manager like {@link org.apache.velocity.tools.view.servlet.ServletToolboxManager}
  * to automatically load the tool into the context and reuse
  * the same instance for the entire runtime.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabriel Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
-public class DateTool implements ThreadSafeContextTool
+public class DateTool implements ThreadSafeViewTool
 {
 
 

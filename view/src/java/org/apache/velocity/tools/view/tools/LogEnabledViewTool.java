@@ -56,101 +56,43 @@ package org.apache.velocity.tools.view.tools;
 
 
 /**
- * <p>An implementation of the {@link LogEnabledContextTool} interface. </p> 
+ * <p>An interface that marks a view tool class as capable of logging.</p>
  * 
- * <p>This class is intended to be extended by context tools that need
- * logging. It implements logging to a logger object passed passed using
- * the {@link #setLogger} method. The implementation support three log 
- * levels ERROR, WARN and INFO and takes care of formatting the log message
- * appropriately.</p>
+ * <p>The only method defined by this interface is 
+ * <code>{@link #setLogger(ViewToolLogger logger)}</code>. This method allows 
+ * a toolbox manager to pass an instance of a logger object to the context 
+ * tool. This logger can be used subsequently to log messages.</p>
+ * 
+ * <p>The following implementation guidelines are to be noted:</p>
+ * <ul>
+ *   <li>Implementing this interface by a view tool does not garantuee
+ *       that a logger will be passed. It is up to the implementation of the
+ *       toolbox manager if a logger is passed or not.</li>
+ *   <li>If a logger is passed using setLogger(), it will be passed only
+ *       to one instance of a view tool class. It has to be made sure, that
+ *       a reference to the logger is stored in a static variable, such that
+ *       the logger is available to all instances of the class.</li>
+ *   <li>Logging in view tools typically should be used only for serious 
+ *       errors. Most application environments already implement usage
+ *       logging, etc.</li>
+ * </ul>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabriel Sidler</a>
  *
- * @version $Id: LogEnabledContextToolImpl.java,v 1.1 2002/04/02 16:46:31 sidler Exp $
+ * @version $Id: LogEnabledViewTool.java,v 1.1 2002/04/15 18:30:29 sidler Exp $
  * 
  */
-public abstract class LogEnabledContextToolImpl implements LogEnabledContextTool
+public interface LogEnabledViewTool 
 {
 
     /**
-     * Constant for error log messages.
-     */
-    public static final int ERROR = 10;  
-
-
-    /**
-     * Constant for warning log messages.
-     */
-    public static final int WARN = 20;
-    
-
-    /**
-     * Constant for informational log messages.
-     */
-    public static final int INFO = 30;
-
-    
-    /**
-     * A reference to the logger.
-     */
-    protected static ContextToolLogger logger;
-
-
-    /**
-     * <p>Sets a logger instance for this class of context tools. </p>
+     * <p>Sets a logger instance for this class of view tools.</p>
      *
-     * <p>This logger can be used subsequently by instances to log 
-     * messages to the logging infrastructor of the underlying framework.
-     * If a logger is never set, the {@link #log(int level, String msg)} 
-     * method will simply do nothing.</p>
+     * <p>This logger can be used subsequently by instances to to log 
+     * messages to the logging infrastructor of th underlying framework.</p>
      *
      * @param logger the logger instance to be set
      */
-    public void setLogger(ContextToolLogger logger)
-    {
-        this.logger = logger;    
-    }
-    
-
-    /**
-     * <p>Writes a message to the log. </p>
-     *
-     * <p>The message is modified in the following ways before it is 
-     * sent to the logger:</p>
-     * <ul>
-     *   <li>the class name is prepended</li>
-     *   <li>one of <code>[ERROR]</code>, <code>[WARN]</code>, or 
-     *     <code>[INFO]</code> is prepended</li>
-     * </ul>
-     * <p>For example, the log message "File not found." would be 
-     * written to the log as:
-     * <pre>
-     *      org.apache.velocity.tools.tools.toolXY [ERROR] File not found.
-     * </pre>
-     * <p>If no logger has been set previously, the method will do nothing.</p>
-     *
-     * @param level log level, one of {@link #ERROR}, {@link #WARN} or 
-     *     {@link #INFO}
-     * @param msg log message
-     */
-    public void log(int level, String msg)
-    {
-        if (logger != null)
-        {
-            if (level == ERROR)
-            {
-                logger.log(this.getClass() + ": [ERROR] " + msg);
-            }
-            else if (level == WARN)
-            {
-                logger.log(this.getClass() + ": [WARN] " + msg);    
-            }
-            else
-            {
-                logger.log(this.getClass() + ": [INFO] " + msg);
-            }
-        }
-        
-    }
+    public void setLogger(ViewToolLogger logger);
 
 }

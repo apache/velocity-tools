@@ -1,7 +1,7 @@
 /*
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2002 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,52 +52,33 @@
  * <http://www.apache.org/>.
  */
 
-
 package org.apache.velocity.tools.view.tools;
 
-import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.context.Context;
 
 /**
- * <p>An interface for Velocity context tools that need access to the Velocity
- * context.</p>
+ * <p>Defines the interface of a logger object that can be used by context
+ * tools to log messages to an underlying logging facility. </p> 
  * 
- * <p>Context tools that implement this interface receive special treatment
- * by a compatible toolbox manager, e.g. 
- * {@link org.apache.velocity.tools.view.servlet.ServletToolboxManager}:</p>
- * <ul>
- *   <li>Upon creation of a new instance, the toolbox manager passes
- *       to the context tool a reference to the Velocity context.</li>
- * </ul>
+ * <p>Implementation of this interface can be thought of as adapters 
+ * between view tools and the logging facilities of a specific 
+ * environment. For example, in servlet environments a logger instance 
+ * would accept log messages from a view tool and write them to the 
+ * Servlet API's logging facility.</p>
  * 
- * <p>Unlike some other tools, tools that implement this interface do not
- * support multiple different life cycles. All implementations of this 
- * interface are assigned a life cycle of 'request', meaning that the 
- * tool is valid only for the processing of the currently requested template.
- * A new instance is created for every request. The life cycle cannot be 
- * configured.</p>
- *
- * <p>Examples of context tools that typically would implement this 
- * interface are tools like a context tool loader or a context inspector. 
- *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ContextContextTool.java,v 1.1 2002/04/02 16:46:31 sidler Exp $
+ * @version $Id: ViewToolLogger.java,v 1.1 2002/04/15 18:30:29 sidler Exp $
  * 
  */
-public interface ContextContextTool
+public interface ViewToolLogger 
 {
 
     /**
-     * <p>Returns a new instance.</p>
+     * <p>Log a message to the logging infrastructure of the environment. </p>
      *
-     * <p>This is effectively a factory method used to create
-     * object instances for use in templates. It is important 
-     * that only instances obtained from this method are used 
-     * in templates.</p>
-     *
-     * @param context a reference to the Velocity context 
+     * @param msg Message to be logged. The message is passed on as is. No
+     *            formatting, etc. is applied.
      */
-    public Object getInstance(Context context);
+    public void log(String msg);
 
 }

@@ -22,7 +22,7 @@
         <ul>
             <li>Velocity enforces a clear separation of the view aspects of an application from the model and control aspects. This leads to clean application designs and a clear separation of the work of view designers and server developers.</li>
             <li>The <a href="http://jakarta.apache.org/velocity/vtl-reference-guide.html">Velocity Template Language</a> (VTL) is a simple and easy to learn scripting language. With less than ten language directives, most people are up and running within a day.</li>
-            <li>Velocity is easy to extend with so called <i>Context Tools</i>. Context tools are easier to develop than customer tag libraries in JSP. Any class with public methods can serve as a context tool.</li>
+            <li>Velocity is easy to extend with so called <i>View Tools</i>. View tools are easier to develop than customer tag libraries in JSP. Any class with public methods can serve as a view tool.</li>
             <li>Velocity really shines when it comes to access to application data from within the templates. It handles access to objects and their methods very much like in scripting languages such as JavaScript and will feel familiar to template designers.</li>
             <li>Velocity is an interpreted language. This leads to a simple development cycle. Template error can easily be localized and debugged.</li>
             <li>Many users of Velocity have reported that the performance of Velocity is comparable if not sligthly better than JSP.</li>

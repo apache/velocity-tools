@@ -79,7 +79,7 @@ import org.apache.struts.action.*;
  * <p>A package-internal utility class to expose the Struts shared 
  * resources. All methods are static.</p>
  *
- * <p>This class is provided for use by Velocity context tools
+ * <p>This class is provided for use by Velocity view tools
  * that need access to Struts resources. By having all Struts-
  * specific code in this utility class, maintenance is simplified
  * and reuse fostered.</p>
@@ -90,7 +90,7 @@ import org.apache.struts.action.*;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>, based
  * on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 class StrutsUtils
 {

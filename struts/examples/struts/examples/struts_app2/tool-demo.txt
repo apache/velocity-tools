@@ -1,13 +1,13 @@
 <html>
     <head>
-	    <title>Struts App2: Struts Context Tool Demo</title>
+	    <title>Struts App2: Struts View Tools Demo</title>
 	    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 	    <base href="$link.baseRef">
     </head>
 
     <body>
-        <h2>Struts App2: Struts Context Tool Demo</h2>
-        <p>A demonstration of the Velocity context tools provided for Struts support. 
+        <h2>Struts App2: Struts View Tools Demo</h2>
+        <p>A demonstration of the Velocity view tools provided for Struts support. 
         Where available, the Velocity shorthand notation to method calls is shown 
         as well.</p>
 

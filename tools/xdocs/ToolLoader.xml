@@ -13,7 +13,7 @@
     <section name="ToolLoader Reference Documentation">
 
         <p>
-        A context tool that allows template designers to load context tools 
+        A view tool that allows template designers to load view tools 
         from within the template. Any object with a public constructor without 
         parameters can be loaded into the context.
         </p>
@@ -44,7 +44,7 @@
         <method name="load()">
     
             <abstract>
-                Loads a context tool and inserts it into the Velocity context.
+                Loads a view tool and inserts it into the Velocity context.
             </abstract>
     
             <signature>
@@ -63,11 +63,11 @@
             </parameters>
             
             <description>
-                <p>Loads a context tool of class <i>class</i> and inserts it
+                <p>Loads a view tool of class <i>class</i> and inserts it
                 into the Velocity context with key <i>key</i>. On order to be
-                loadable, context tools must provide a public constructor with no 
+                loadable, view tools must provide a public constructor with no 
                 parameters.</p> 
-                <p>The life cycle of a context tool loaded using this method is 
+                <p>The life cycle of a view tool loaded using this method is 
                 the current template request. The instance is processing of the
                 current template has been completet.</p>
                 <p>If the specified class cannot be found or does not have a 

@@ -73,7 +73,7 @@ import javax.servlet.ServletContext;
  *   <li>puts the request, response, session, and servlet context objects
  *       into the Velocity context for direct access, and keeps them 
  *       read-only</li>
- *   <li>supports a read-only toolbox of context tools</li>
+ *   <li>supports a read-only toolbox of view tools</li>
  *   <li>auto-searches servlet request attributes, session attributes and
  *       servlet context attribues for objects</li>
  * </ul>
@@ -99,7 +99,7 @@ import javax.servlet.ServletContext;
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ChainedContext.java,v 1.4 2002/04/15 10:45:32 sidler Exp $ 
+ * @version $Id: ChainedContext.java,v 1.5 2002/04/15 18:30:29 sidler Exp $ 
  */
 public class ChainedContext extends VelocityContext implements ViewContext
 {
@@ -168,9 +168,9 @@ public class ChainedContext extends VelocityContext implements ViewContext
 
 
     /**
-     * <p>Sets the toolbox of context tools.</p>
+     * <p>Sets the toolbox of view tools.</p>
      *
-     * @param box toolbox of context tools
+     * @param box toolbox of view tools
      */
     public void setToolbox(ToolboxContext box)
     {

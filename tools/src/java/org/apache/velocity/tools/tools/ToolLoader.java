@@ -55,16 +55,16 @@
 package org.apache.velocity.tools.tools;
 
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ContextContextTool;
-import org.apache.velocity.tools.view.tools.LogEnabledContextToolImpl;
+import org.apache.velocity.tools.view.tools.ContextViewTool;
+import org.apache.velocity.tools.view.tools.LogEnabledViewToolImpl;
 import org.apache.velocity.context.Context;
 
 
 /**
- * <p>A context tool that allows template designers to load
- * other context tools from within the template. Any object
+ * <p>A view tool that allows template designers to load
+ * other view tools from within the template. Any object
  * with a public constructor without parameters can be used
- * as a context tool.</p>
+ * as a view tool.</p>
  *
  * <p>Example: Assuming that an instance of this class has
  * been loaded into the Velocity context under key "toolloader",
@@ -84,12 +84,12 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ToolLoader.java,v 1.1 2002/04/03 09:10:03 sidler Exp $
+ * @version $Id: ToolLoader.java,v 1.2 2002/04/15 18:30:28 sidler Exp $
  * 
  */
 
-public class ToolLoader extends LogEnabledContextToolImpl 
-    implements ContextContextTool
+public class ToolLoader extends LogEnabledViewToolImpl 
+    implements ContextViewTool
 {
 
     // -------------------------------------------- Properties ----------------
@@ -124,10 +124,10 @@ public class ToolLoader extends LogEnabledContextToolImpl
 
     
 
-    // --------------------------------------- Interface ContextContextTool ---
+    // --------------------------------------- Interface ContextViewTool ---
     
     /**
-     * Returns an initialized instance of this context tool.
+     * Returns an initialized instance of this view tool.
      */
     public Object getInstance(Context context)
     {
@@ -139,10 +139,10 @@ public class ToolLoader extends LogEnabledContextToolImpl
     // -------------------------------------------- Public Utility Methods ----
 
     /**
-     * <p>Loads a context tool of class <i>clazz</i> and inserts it
+     * <p>Loads a view tool of class <i>clazz</i> and inserts it
      * into the Velocity context with key <i>key</i>. On order to be
-     * loadable, context tools must provide a constructor with no 
-     * parameters. The life cycle of a context tool loaded using
+     * loadable, view tools must provide a constructor with no 
+     * parameters. The life cycle of a view tool loaded using
      * this method is the current request.</p>
      *
      * @param key the key used to add the tool to the context
@@ -159,7 +159,7 @@ public class ToolLoader extends LogEnabledContextToolImpl
         }
         catch (Exception e)
         {
-            log(ERROR, "Error loading context tool: " + clazz + " with key: " + key + ". " + e);            
+            log(ERROR, "Error loading view tool: " + clazz + " with key: " + key + ". " + e);            
         }
     }
 

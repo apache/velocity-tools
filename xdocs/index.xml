@@ -24,11 +24,11 @@
         <dl>
             <dt><strong><a href="vellibrary.html">VelocityLibrary</a></strong></dt> 
             <dd>VelocityLibrary is an effort to setup a library of reuseable and well documented
-                context tools. Most tools are optimized for use with an automatically managed
+                view tools. Most tools are optimized for use with an automatically managed
                 toolbox (see VelocityServlet).</dd>
 
             <dt><strong><a href="../struts/docs/index.html">VelocityStruts</a></strong></dt>
-            <dd>The VelocityStruts package is a set of context tools, examples and documentation for 
+            <dd>The VelocityStruts package is a set of view tools, examples and documentation for 
                 using the Velocity template engine as a view layer technology for the 
                 <a href="http://jakarta.apache.org/struts/">Jakarta Struts</a> web 
                 application framework. It is based on the VelocityServlet project.</dd> 
@@ -36,10 +36,10 @@
             <dt><strong><a href="../view/docs/velservlet.html">VelocityServlet</a></strong></dt>
             <dd>VelocityServlet is a standalone servlet that can be used for template 
                 rendering in Web applications. It offers automatic population of the 
-                Velocity context and automatic, configurable management of context tools. 
+                Velocity context and automatic, configurable management of view tools. 
                 Other efforts within this project are the development of a toolbox manager
-                and the definition of a set of interfaces for context tools, thereby enabling the
-                efficient handling and reuse of context tools.</dd>
+                and the definition of a set of interfaces for view tools, thereby enabling the
+                efficient handling and reuse of view tools.</dd>
 
             <dt><strong>Utilities</strong></dt> 
             <dd>When in place, this will be a library of Velocity-related utilities.</dd>

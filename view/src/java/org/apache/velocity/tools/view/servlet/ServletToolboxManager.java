@@ -76,26 +76,26 @@ import org.apache.velocity.context.Context;
 
 import org.apache.velocity.tools.view.context.ToolboxContext;
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ServletContextTool;
-import org.apache.velocity.tools.view.tools.LogEnabledContextTool;
-import org.apache.velocity.tools.view.tools.ContextContextTool;
-import org.apache.velocity.tools.view.tools.ThreadSafeContextTool;
+import org.apache.velocity.tools.view.tools.ServletViewTool;
+import org.apache.velocity.tools.view.tools.LogEnabledViewTool;
+import org.apache.velocity.tools.view.tools.ContextViewTool;
+import org.apache.velocity.tools.view.tools.ThreadSafeViewTool;
 
 
 /**
  * <p>A toolbox manager for the servlet environment.</p>
  *
  * <p>A toolbox manager is responsible for automatically filling the Velocity
- * context with a set of context tools. This class provides the following 
+ * context with a set of view tools. This class provides the following 
  * features:</p>
  * <ul>
  *   <li>configurable through an XML-based configuration file</li>   
- *   <li>assembles a set of context tools (the toolbox) on request</li>
- *   <li>handles context tools with different life cycles</li>
- *   <li>efficiently reuses context tool instances where possible</li>
- *   <li>provides special handling to known classes of context tools</li>
+ *   <li>assembles a set of view tools (the toolbox) on request</li>
+ *   <li>handles view tools with different life cycles</li>
+ *   <li>efficiently reuses view tool instances where possible</li>
+ *   <li>provides special handling to known classes of view tools</li>
  *   <li>supports any class with a public constructor without parameters 
- *     to be used as a context tool</li>
+ *     to be used as a view tool</li>
  * </ul>
  * 
  *
@@ -118,26 +118,26 @@ import org.apache.velocity.tools.view.tools.ThreadSafeContextTool;
  * &lt;/toolbox&gt;    
  * </pre>
  * <p>The recommended location for the configuration file is the WEB-INF directory of the
- * web application. Note that some classes of context tools may allow or
+ * web application. Note that some classes of view tools may allow or
  * require additional configuration attributes. Please consult the documentation 
- * of the context tools for more details.
+ * of the view tools for more details.
  * 
  *
- * <p><strong>Recognized Classes of Context Tools</strong></p>
+ * <p><strong>Recognized Classes of View Tools</strong></p>
  * <p>ServletToolboxManager provides special support for the following classes
- * of context tools:
+ * of view tools:
  * <dl>
- *   <dt>{@link LogEnabledContextTool}</dt>
+ *   <dt>{@link LogEnabledViewTool}</dt>
  *   <dd>Receive a reference to a logger object that enables them to log error 
  *     conditions.</dd>
  *
- *   <dt>{@link ThreadSafeContextTool}</dt>
+ *   <dt>{@link ThreadSafeViewTool}</dt>
  *   <dd>Instances are considered to be thread-safe. One single instance of 
  *     the tool is re-used the entire runtime. This is much more efficient 
  *     than the default handling (see below)</dd>
  *
- *   <dt>{@link ServletContextTool}</dt>
- *   <dd>Context tools that implement this interface support the additional 
+ *   <dt>{@link ServletViewTool}</dt>
+ *   <dd>View tools that implement this interface support the additional 
  *     configuration attribute <i>lifecycle</i>. This allows an
  *     application developer to explicitely assign a <i>lifecycle</i> to the tool.
  *     Supported are the values <code>request</code>, <code>session</code> and 
@@ -152,18 +152,18 @@ import org.apache.velocity.tools.view.tools.ThreadSafeContextTool;
  *          &lt;scope&gt;session&lt;/scope&gt;
  *       &lt;/tool&gt;
  *     </pre>    
- *     Furthermore, context tools of this class get access to the current 
+ *     Furthermore, view tools of this class get access to the current 
  *     servlet request, the current session and the servlet context.</dd>
  *
- *   <dt>{@link ContextContextTool}</dt>
- *   <dd>Context tools of this class receive a reference to the Velocity
+ *   <dt>{@link ContextViewTool}</dt>
+ *   <dd>View tools of this class receive a reference to the Velocity
  *     context.</dd>
  * </dl>
  *
  *
  * <p><strong>Default Handling</strong></p>
  * <p>Any object with a public constructor without parameters can be used
- * as a context tool. For classes of context tools that are not listed above,
+ * as a view tool. For classes of view tools that are not listed above,
  * the following default handling is applied:</p>
  * <ul>
  *   <li>instances are created using a constructor without parameters</li>
@@ -185,7 +185,7 @@ import org.apache.velocity.tools.view.tools.ThreadSafeContextTool;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ServletToolboxManager.java,v 1.1 2002/04/02 16:46:31 sidler Exp $
+ * @version $Id: ServletToolboxManager.java,v 1.2 2002/04/15 18:30:29 sidler Exp $
  * 
  */
 public class ServletToolboxManager
@@ -199,7 +199,7 @@ public class ServletToolboxManager
 
     public static final String SESSION_TOOLS_KEY = "org.apache.velocity.tools.view.tools.ServletToolboxManager.SessionTools";
 
-    private ServletContextToolLogger logger;
+    private ServletViewToolLogger logger;
     private ServletContext scontext;
  
     private SAXReader saxReader;
@@ -223,7 +223,7 @@ public class ServletToolboxManager
         applicationToolsNotInitialized = new ArrayList();
         sessionTools = new ArrayList();
         requestTools = new ArrayList();
-        logger = new ServletContextToolLogger(scontext);
+        logger = new ServletViewToolLogger(scontext);
     }
 
 
@@ -297,7 +297,7 @@ public class ServletToolboxManager
                 continue;
             }
 
-            // Try to read the tool's lifecycle (specific to ServletContextTool)
+            // Try to read the tool's lifecycle (specific to ServletViewTool)
             
             // First, check of a lifecycle has been configured. 
             n = e.selectSingleNode(TOOL_LIFECYCLE);
@@ -311,7 +311,7 @@ public class ServletToolboxManager
                 // Secondly, try to read default lifecycle
                 try 
                 {
-                    lifecycle = ((ServletContextTool)obj).getDefaultLifecycle();
+                    lifecycle = ((ServletViewTool)obj).getDefaultLifecycle();
                 }
                 catch (ClassCastException cce)
                 {
@@ -321,34 +321,34 @@ public class ServletToolboxManager
             log("  Life cycle: " + lifecycle);
             
             //
-            // Pass a logger to the tools that implement interface LogEnabledContextTool
+            // Pass a logger to the tools that implement interface LogEnabledViewTool
             //
-            if (obj instanceof LogEnabledContextTool)
+            if (obj instanceof LogEnabledViewTool)
             {
-                ((LogEnabledContextTool)obj).setLogger(logger);
-                log("  Known interface: LogEnabledContextTool");
+                ((LogEnabledViewTool)obj).setLogger(logger);
+                log("  Known interface: LogEnabledViewTool");
             }
             
             //
             // Store the tool instance in the appropriate list
             //
             
-            // First, handle tools that implement interface ServletContextTool
-            // (the interface ThreadSafeContextTool is not considered in this
+            // First, handle tools that implement interface ServletViewTool
+            // (the interface ThreadSafeViewTool is not considered in this
             // case because the 'lifecycle' attribute takes precedence over the 
             // 'thread safe' attribute)
-            if (obj instanceof ServletContextTool)
+            if (obj instanceof ServletViewTool)
             {
-                log("  Known interface: ServletContextTool");
-                if (lifecycle.equalsIgnoreCase(ServletContextTool.REQUEST))
+                log("  Known interface: ServletViewTool");
+                if (lifecycle.equalsIgnoreCase(ServletViewTool.REQUEST))
                 {
                     requestTools.add(new ToolInfo(key, obj, classname));
                 }
-                else if (lifecycle.equalsIgnoreCase(ServletContextTool.SESSION))
+                else if (lifecycle.equalsIgnoreCase(ServletViewTool.SESSION))
                 {
                     sessionTools.add(new ToolInfo(key, obj, classname));
                 }
-                else if (lifecycle.equalsIgnoreCase(ServletContextTool.APPLICATION))
+                else if (lifecycle.equalsIgnoreCase(ServletViewTool.APPLICATION))
                 {
                     applicationToolsNotInitialized.add(new ToolInfo(key, obj, classname));
                 }
@@ -360,30 +360,30 @@ public class ServletToolboxManager
                 continue;
             }
 
-            // Secondly, handle tools that implement interface ContextContextTool
-            // (The interface ThreadSafeContextTool is not considered in this case
+            // Secondly, handle tools that implement interface ContextViewTool
+            // (The interface ThreadSafeViewTool is not considered in this case
             // because it doesn't matter. A new tool instance is created for every 
             // request anyway since the Velocity context needs to be passed.)
-            if (obj instanceof ContextContextTool)
+            if (obj instanceof ContextViewTool)
             {
-                log("  Known interface: ContextContextTool");
+                log("  Known interface: ContextViewTool");
                 // These tools always have a life cycle of 'request'
                 requestTools.add(new ToolInfo(key, obj, classname));
                 continue;
             }
             
-            // Third, handle tools that implement interface ThreadSafeContextTool.
+            // Third, handle tools that implement interface ThreadSafeViewTool.
             // In this case, the one and only instance of the tool is reused the 
             // entire runtime.
-            if (obj instanceof ThreadSafeContextTool)
+            if (obj instanceof ThreadSafeViewTool)
             {
-                log("  Known interface: ThreadSafeContextTool");
+                log("  Known interface: ThreadSafeViewTool");
                 applicationToolsNotInitialized.add(new ToolInfo(key, obj, classname));
                 continue;
             }
             
             // Fourth, handle tools that implement no known interface.
-            // Unknown context tools are considered not thread-safe and 
+            // Unknown view tools are considered not thread-safe and 
             // therefore a new instance is created for every template processing
             // request. 
             log("  Known interface: None. Apply default handling.");
@@ -424,20 +424,20 @@ public class ServletToolboxManager
                         ToolInfo info = (ToolInfo)i.next();
                         Object tool = info.getTool();
 
-                        // First, handle tools that implement ServletContextTool and have
+                        // First, handle tools that implement ServletViewTool and have
                         // a defined life cycle of 'application'
-                        if (tool instanceof ServletContextTool)
+                        if (tool instanceof ServletViewTool)
                         {
                             applicationTools.put(info.getKey(), 
-                                ((ServletContextTool)tool).getInstance(vcontext));
+                                ((ServletViewTool)tool).getInstance(vcontext));
                             continue;
                         }
 
-                        // Secondly, handle ContextContextTools
+                        // Secondly, handle ContextViewTools
                         // => they never have an 'application' life cycle, => skip
 
-                        // Third, handle tools that implement ThreadSafeContextTool
-                        if (tool instanceof ThreadSafeContextTool)
+                        // Third, handle tools that implement ThreadSafeViewTool
+                        if (tool instanceof ThreadSafeViewTool)
                         {
                             applicationTools.put(info.getKey(), tool);
                             continue;
@@ -482,12 +482,12 @@ public class ServletToolboxManager
                             ToolInfo info = (ToolInfo)i.next();
                             Object tool = info.getTool();
 
-                            // Only tools of class ServletContextTool can
+                            // Only tools of class ServletViewTool can
                             // have a life cycle of session.
                             try
                             {
                             stmap.put(info.getKey(), 
-                                ((ServletContextTool)tool).getInstance(vcontext));
+                                ((ServletViewTool)tool).getInstance(vcontext));
                             }
                             catch(ClassCastException cce)
                             {
@@ -513,21 +513,21 @@ public class ServletToolboxManager
             ToolInfo info = (ToolInfo)i.next();
             Object tool = info.getTool();
 
-            // First, handle tools that implement ServletContextTool.
+            // First, handle tools that implement ServletViewTool.
             // They are initialized with an instance of ViewContext.
-            if (tool instanceof ServletContextTool)
+            if (tool instanceof ServletViewTool)
             {
                 toolbox.put(info.getKey(), 
-                        ((ServletContextTool)(info.getTool())).getInstance(vcontext));
+                        ((ServletViewTool)(info.getTool())).getInstance(vcontext));
                 continue;
             }
             
-            // Secondly, handle tools that implement ContextContextTool.
+            // Secondly, handle tools that implement ContextViewTool.
             // They are initialized with an instance of Context.
-            if (tool instanceof ContextContextTool)
+            if (tool instanceof ContextViewTool)
             {
                 toolbox.put(info.getKey(), 
-                        ((ContextContextTool)(info.getTool())).getInstance((Context)vcontext));
+                        ((ContextViewTool)(info.getTool())).getInstance((Context)vcontext));
                 continue;
             }
             
@@ -553,7 +553,7 @@ public class ServletToolboxManager
 
 
     /**
-     * This class holds a context tool's key and original instance.
+     * This class holds a view tool's key and original instance.
      */
     protected final class ToolInfo
     {

@@ -30,8 +30,8 @@
           request/session and application attributes, how to pass data from model to 
           view.</li>
 
-          <li><strong>Context Tools</strong> How to load context tools, how to access 
-          context tools, the toolbox.</li>
+          <li><strong>View Tools</strong> How to load view tools, how to access 
+          view tools, the toolbox.</li>
 
           <li><strong>Velocity Configuration</strong> Logging, log details, debugging.</li>
 
@@ -56,7 +56,7 @@
         <ul>
             <li><a href="http://jakarta.apache.org/velocity/user-guide.html">Velocity User's Guide</a></li>
             <li><a href="http://jakarta.apache.org/velocity/vtl-reference-guide.html">Velocity Template Language Reference Guide</a></li>
-            <li><a href=".......struts/docs/index.html">Velocity Context Tools for Struts</a></li>
+            <li><a href=".......struts/docs/index.html">Velocity View Tools for Struts</a></li>
         </ul>            
 
     </section>
@@ -196,7 +196,7 @@
 
 
 
-    <section name="Context Tools">
+    <section name="View Tools">
     
     </section>
 

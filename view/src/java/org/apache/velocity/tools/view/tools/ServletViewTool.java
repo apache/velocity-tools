@@ -59,14 +59,14 @@ import org.apache.velocity.tools.view.context.ViewContext;
 
 
 /**
- * <p>An interface for Velocity context tools in a servlet environment.</p>
+ * <p>An interface for Velocity view tools in a servlet environment.</p>
  * 
- * <p>Context tools that implement this interface receive special treatment
+ * <p>View tools that implement this interface receive special treatment
  * by a compatible toolbox manager, e.g. 
  * {@link org.apache.velocity.tools.view.servlet.ServletToolboxManager}:</p>
  * <ul>
  *   <li>The toolbox manager supports three different life cycle models for
- *       context tools: <i>request</i>, <i>session</i> and <i>application</i>. 
+ *       view tools: <i>request</i>, <i>session</i> and <i>application</i>. 
  *       An application developer can choose through configuration of the 
  *       toolbox which of the three life cycle models should be applied to a 
  *       particular tool class. Since not every tool class is capable to be used 
@@ -74,9 +74,9 @@ import org.apache.velocity.tools.view.context.ViewContext;
  *       tool documentation. See also 
  *       {@link org.apache.velocity.tools.view.servlet.ServletToolboxManager} for 
  *       more information.</li>
- *   <li>Upon instantiation of a new context tool, the toolbox manager passes
- *       to the context tool an object of class {@link ViewContext}. This
- *       gives the context tool access to HttpServletRequest, HttpSession and 
+ *   <li>Upon instantiation of a new view tool, the toolbox manager passes
+ *       to the view tool an object of class {@link ViewContext}. This
+ *       gives the view tool access to HttpServletRequest, HttpSession and 
  *       ServletContext.</li>
  * </ul>
  * 
@@ -85,18 +85,18 @@ import org.apache.velocity.tools.view.context.ViewContext;
  * three life cycle models. These constants are used in the toolbox 
  * configuration file.</p>
  * 
- * <p>Note that context tools that do not need any of the special treatment 
+ * <p>Note that view tools that do not need any of the special treatment 
  * described above, do not need to implement this interface. Please refer to 
  * the documentation of 
  * {@link org.apache.velocity.tools.view.servlet.ServletToolboxManager} for 
- * more information on the default treatment of context tools.</p>
+ * more information on the default treatment of view tools.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ServletContextTool.java,v 1.1 2002/04/02 16:46:31 sidler Exp $
+ * @version $Id: ServletViewTool.java,v 1.1 2002/04/15 18:30:29 sidler Exp $
  * 
  */
-public interface ServletContextTool
+public interface ServletViewTool
 {
 
     /**
@@ -117,20 +117,20 @@ public interface ServletContextTool
 
     /**
      * A new tool object will be instantiated per-request by calling 
-     * this method. A ContextTool is effectively a factory used to 
+     * this method. A ViewTool is effectively a factory used to 
      * create objects for use in templates. Some tools may simply return
      * themselves from this method, others may instantiate new objects
      * to hold the per-request state.
      *
      * @param context A reference to the Velocity context. Through this
-     *     object, context tools gain access to HttpServletRequest,
+     *     object, view tools gain access to HttpServletRequest,
      *     HttpSession and ServletContext.
      */
     public Object getInstance(ViewContext context);
 
     
     /**
-     * <p>Returns the default life cycle for the context tool. Some
+     * <p>Returns the default life cycle for the view tool. Some
      * toolbox managers may allow an application developer to overwrite
      * this default life cycle by defining a life cycle attribute in 
      * the toolbox configuration. An implementation of this interface

@@ -32,7 +32,7 @@
             through the Velocity context. It is not necessary to explicitely
             populate the Velocity context.</li>
         <li>VelocityViewServlet offers toolbox support. It is possible to define a set
-            of context tools (view helpers) that are made available to the template
+            of view tools (view helpers) that are made available to the template
             designer automatically through the Velcity context.</li>
         <li>Velocity log output can be redirected to the log infrastructure 
             of the Web application. By default, the log is directed to the

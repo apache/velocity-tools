@@ -55,26 +55,49 @@
 
 package org.apache.velocity.tools.view.tools;
 
+import org.apache.velocity.tools.view.context.ViewContext;
+import org.apache.velocity.context.Context;
 
 /**
- * <p>A marker interface that indicates that a context tool is thread-safe. </p>
+ * <p>An interface for Velocity view tools that need access to the Velocity
+ * context.</p>
+ * 
+ * <p>View tools that implement this interface receive special treatment
+ * by a compatible toolbox manager, e.g. 
+ * {@link org.apache.velocity.tools.view.servlet.ServletToolboxManager}:</p>
+ * <ul>
+ *   <li>Upon creation of a new instance, the toolbox manager passes
+ *       to the view tool a reference to the Velocity context.</li>
+ * </ul>
+ * 
+ * <p>Unlike some other tools, tools that implement this interface do not
+ * support multiple different life cycles. All implementations of this 
+ * interface are assigned a life cycle of 'request', meaning that the 
+ * tool is valid only for the processing of the currently requested template.
+ * A new instance is created for every request. The life cycle cannot be 
+ * configured.</p>
  *
- * <p>The handling of thread-safe context tools can be optimized by 
- * compatible toolbox managers like 
- * {@link org.apache.velocity.tools.view.servlet.ServletToolboxManager}. 
- * The same instance of the context tool can be reused for the entire runtime.
- * </p>
- *
- * <p>This class does not define any methods or fields. Thread-safe context
- * tools should simply add the 'implements ThreadSafeContextTool' statement
- * to the class definition to signal the toolbox manager that it is 
- * safe to reuse the same instance for multiple template processing requests.
- * </p>
+ * <p>Examples of view tools that typically would implement this 
+ * interface are tools like a view tool loader or a context inspector. 
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ThreadSafeContextTool.java,v 1.1 2002/04/02 16:46:31 sidler Exp $
+ * @version $Id: ContextViewTool.java,v 1.1 2002/04/15 18:30:29 sidler Exp $
  * 
  */
-public interface ThreadSafeContextTool
-{}
+public interface ContextViewTool
+{
+
+    /**
+     * <p>Returns a new instance.</p>
+     *
+     * <p>This is effectively a factory method used to create
+     * object instances for use in templates. It is important 
+     * that only instances obtained from this method are used 
+     * in templates.</p>
+     *
+     * @param context a reference to the Velocity context 
+     */
+    public Object getInstance(Context context);
+
+}
