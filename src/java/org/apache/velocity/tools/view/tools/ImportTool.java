@@ -27,8 +27,8 @@ import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
- * <p>General-purpose text-importing view tool for templates</p>
- * <p>Usage:<br>
+ * General-purpose text-importing view tool for templates.
+ * <p>Usage:<br />
  * Just call $import.read("http://www.foo.com/bleh.jsp?sneh=bar") to insert the contents of the named
  * resource into the template.
  * </p>
@@ -43,7 +43,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.5 $ $Date: 2004/03/12 01:33:02 $
+ * @version $Revision: 1.5.2.1 $ $Date: 2004/03/12 20:16:28 $
  */
 public class ImportTool extends ImportSupport
     implements ViewTool {
