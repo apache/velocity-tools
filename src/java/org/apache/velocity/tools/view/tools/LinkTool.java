@@ -86,7 +86,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: LinkTool.java,v 1.8 2003/07/26 23:02:42 nbubna Exp $
+ * @version $Id: LinkTool.java,v 1.9 2003/08/02 20:43:37 nbubna Exp $
  */
 public class LinkTool implements ViewTool, Cloneable
 {
@@ -289,6 +289,11 @@ public class LinkTool implements ViewTool, Cloneable
         this.request = context.getRequest();
         this.response = context.getResponse();
         this.application = context.getServletContext();
+        Boolean b = (Boolean)context.getAttribute(ViewContext.XHTML);
+        if (b != null)
+        {
+            setXhtml(b.booleanValue());
+        }
     }
 
 
