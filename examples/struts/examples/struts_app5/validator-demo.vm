@@ -1,0 +1,21 @@
+<html>
+    <head>
+	    <title>Struts App5: Struts ValidatorTool Demo</title>
+	    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    </head>
+
+    <body>
+        <h2>Struts App5: Struts ValidatorTool Demo</h2>
+        <p>A demonstration of the Velocity ValidatorTool provided for Struts support.</p>
+
+	#errorMarkup()
+
+        <form name="emailForm" action='$link.setAction("do_submit")' method="post" onsubmit="return validateEmailForm(this)">
+            <input type="text" name="email" value="$!emailForm.email"/>&nbsp;
+            <input type="submit" name="submit"/>
+	</form>
+
+    </body>
+    ## if this line is commented out, the form will be validated server-side ... go ahead, try it :)
+    $validator.getJavascript("emailForm")
+</html>
