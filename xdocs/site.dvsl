@@ -1,6 +1,41 @@
+##
+## DVSL style sheet for velocity-tools project
+##
+##
+## The style sheet looks for the following configuration parameters:
+##
+## $context.toolbox.basedir
+##     Its value is expected to be the path to the base directory of 
+##     this documentation set. It can be used to reference other files,
+##     for example a menue file that is to be loaded.
+##
+## $context.toolbox.PrinterFriendlyVersion
+##     If its value is "yes", the generated page has no left-hand menue.
+##     This facilitates the printing of documentation.
+##
+## $context.toolbox.LinkToPrinterFriendlyVersion
+##     If its value is "yes", a link to a printer-friendly version of
+##     the same document is added to the end of the left-hand menue.
+##     The file name of the printer-frienly document is derived from the
+##     the name of the current template in the following way:
+##     filename.html becomes filename-printer.html
+##  
+##
+## Shown below is a configuration example of an ant task:
+##     <!-- create printer version of documentation -->
+##     <dvsl
+##          basedir="${docs.src}"
+##          destdir="${docs.dest}/"
+##   	    toolboxfile="${basedir}/../xdocs/toolbox.props"
+##          extension="-printer.html"
+##          style="${basedir}/../xdocs/site.dvsl"
+##          excludes="*menue.xml"
+##          includes="**/*.xml">
+##        <tool name="toolbox.string.PrinterFriendlyVersion" value="yes" />
+##        <tool name="toolbox.string.basedir" value="${basedir}" />
+##     </dvsl>
+##
 
-
-#set( $relative-path = "file://C:/Users/Sidler/VelTools/jakarta-velocity-tools/" )
 
 #set( $body-bg = '#ffffff' )
 #set( $body-fg = '#000000' )
@@ -31,7 +66,7 @@
         <meta name="author" value="$n"/>
         <meta name="email" value="$n.attribute("email")" />
        #end
-       
+        
     
     </head>
 
@@ -73,14 +108,19 @@
       <tr>
 
         ## LEFT SIDE NAVIGATION
+        #if ($context.toolbox.PrinterFriendlyVersion.equals("yes"))            
+        <td>&nbsp;</td>
+        #else
         <td width="20%" valign="top" nowrap="true">
-          $context.applyTemplates( $project, "body/toplink" )
-          $context.applyTemplates( $project, "body/uplink" )
-          $context.applyTemplates( $project, "body/menu" )
+            $context.applyTemplates( $project, "body/toplink" )
+            $context.applyTemplates( $project, "body/uplink" )
+            $context.applyTemplates( $project, "body/menu" )
+            $context.applyTemplates( $project, "body/printerversion" )
         </td>
+        #end
 
         <!-- RIGHT SIDE MAIN BODY -->
-        <td colspan="1" width="80%" valign="top" align="left">
+        <td colspan="1" valign="top" align="left">
           $context.applyTemplates("body/section")
         </td>
 
@@ -110,16 +150,16 @@
  *   Process a menu for the navigation bar
  *#
 #match( "menu" )
-    <p>
-    #if ($attrib.href)
-        <a href="${relative-path}$attrib.href"><strong>$attrib.name</strong></a>
-    #else
-        <strong>$attrib.name</strong>
-    #end    
-    </p>
-    <ul>
-        $context.applyTemplates()
-    </ul>
+<p>
+#if ($attrib.href)
+    <a href="$attrib.href"><strong>$attrib.name</strong></a>
+#else
+    <strong>$attrib.name</strong>
+#end    
+</p>
+<ul>
+    $context.applyTemplates()
+</ul>
 #end
 
 
@@ -127,16 +167,15 @@
  *   Process a submenu for the navigation bar
  *#
 #match( "submenu" )
-
-    #if ($attrib.href)
-        <li><a href="${relative-path}$attrib.href">$attrib.name</a>
-    #else
-        <li>$attrib.name
-    #end    
-        <ul>
-            $context.applyTemplates("item")
-        </ul>
-    </li>
+#if ($attrib.href)
+    <li><a href="$attrib.href">$attrib.name</a>
+#else
+    <li>$attrib.name
+#end    
+    <ul>
+        $context.applyTemplates("item")
+    </ul>
+</li>
 #end
 
 
@@ -144,11 +183,11 @@
  *   Process a menu item for the navigation bar
  *#
 #match( "item" )
-    #if ($attrib.href)
-        <li><a href="${relative-path}$attrib.href">$attrib.name</a></li>
-    #else
-        <li>$attrib.name</li>
-    #end
+#if ($attrib.href)
+    <li><a href="$attrib.href">$attrib.name</a></li>
+#else
+    <li>$attrib.name</li>
+#end
 #end
 
 
@@ -156,7 +195,19 @@
  *   Process a link to one layer above in the navigation hierarchy
  *#
 #match( "uplink" )
-    <p><strong><a href="${relative-path}$attrib.href">$attrib.name</a></strong></p>
+    <p><strong><a href="$attrib.href">$attrib.name</a></strong></p>
+#end
+
+
+#*
+ *   Insert a link to a printerfriendly version of the document
+ *#
+#match( "printerversion" )
+<p>
+#if ($context.toolbox.LinkToPrinterFriendlyVersion.equals("yes"))
+<strong><a href="$context.getAppValue('infilename').substring(0, $context.getAppValue('infilename').lastIndexOf("."))-printer.html">Printer-friendly Version</a></strong>
+#end    
+</p>
 #end
 
 
@@ -164,37 +215,43 @@
  *  process a documentation section
  *#
 #match( "section" )
-
-    <table border="0" cellspacing="0" cellpadding="2" width="100%">
-
-      <tr><td bgcolor="$banner-bg">
-          <font color="$banner-fg" face="arial,helvetica.sanserif">
-          <a name="$attrib.name">
-          <strong>$attrib.name</strong></a></font>
-      </td></tr>
-
-      <tr><td><blockquote>
-        $context.applyTemplates("*")
-      </blockquote></td></tr>
-
-    </table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+  <tr>
+    <td colspan="2" bgcolor="$banner-bg">
+      <font color="$banner-fg" face="arial,helvetica.sanserif">
+      <a name="$attrib.name">
+      <strong>$attrib.name</strong></a></font>
+    </td>
+  </tr>
+  <tr>
+    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td>
+      $context.applyTemplates("*")
+    </td>
+  </tr>
+</table>
 #end
 
+
+#*
+ *  process a documentation subsection
+ *#
 #match( "subsection" )
-
-    <table border="0" cellspacing="0" cellpadding="2" width="100%">
-      <!-- Subsection heading -->
-      <tr><td bgcolor="$sub-banner-bg">
-          <font color="$sub-banner-fg" face="arial,helvetica.sanserif">
-          <a name="$attrib.name">
-          <strong>$attrib.name</strong></a></font>
-      </td></tr>
-      <!-- Subsection body -->
-      <tr><td><blockquote>
-        $context.applyTemplates("*")
-      </blockquote></td></tr>
-    </table>
-
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+  <tr>
+    <td colspan="2" bgcolor="$sub-banner-bg">
+      <font color="$sub-banner-fg" face="arial,helvetica.sanserif">
+      <a name="$attrib.name">
+      <strong>$attrib.name</strong></a></font>
+    </td>
+  </tr>
+  <tr>
+    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td>
+      $context.applyTemplates("*")
+    </td>
+  </tr>
+</table>
 #end
 
 
@@ -205,7 +262,7 @@
 #match( "method" )
 
     $context.applyTemplates("*")
-    <p></p>
+    <br clear="all">
 #end
 
 #*
@@ -272,13 +329,12 @@
  *  process a 'see' tag of a method documentation
  *#
 #match( "see" )
-    <dl>
-    <dt><strong>See Also</strong></dt>
-    <dd>
-        $node.copy()
-    </dd>
-    </dl>
-
+<dl>
+  <dt><strong>See Also</strong></dt>
+  <dd>
+    $node.copy()
+  </dd>
+</dl>
 #end
 
 #*
@@ -293,27 +349,26 @@
  *  process a 'toolinfo' block
  *#
 #match( "toolinfo" )
-    <table cellpadding="0" cellspacing="0">
-        <tr><td colspan="2"><strong>Version</strong></td></tr>
-        <tr><td>&nbsp; &nbsp; &nbsp; &nbsp; </td><td>$node.version.value()</td></tr>
+<table cellpadding="0" cellspacing="0">
+  <tr><td colspan="2"><strong>Version</strong></td></tr>
+  <tr><td>&nbsp; &nbsp; &nbsp; &nbsp; </td><td>$node.version.value()</td></tr>
 
-        <tr><td colspan="2"><strong>JAR</strong></td></tr>
-        <tr><td>&nbsp;</td><td>$node.jar.value()</td></tr>
+  <tr><td colspan="2"><strong>JAR</strong></td></tr>
+  <tr><td>&nbsp;</td><td>$node.jar.value()</td></tr>
 
-        <tr><td colspan="2"><strong>Class</strong></td></tr>
-        <tr><td>&nbsp;</td><td>$node.clazz.value()</td></tr>
+  <tr><td colspan="2"><strong>Class</strong></td></tr>
+  <tr><td>&nbsp;</td><td>$node.clazz.value()</td></tr>
 
-        <tr><td colspan="2"><strong>Name</strong></td></tr>
-        <tr><td>&nbsp;</td><td>$node.name.value() (this is the recommended name of the tool in 
-            the Velocity context)</td></tr>
+  <tr><td colspan="2"><strong>Name</strong></td></tr>
+  <tr><td>&nbsp;</td><td>$node.name.value() (this is the recommended name of the tool in 
+      the Velocity context)</td></tr>
 
-        <tr><td colspan="2"><strong>Toolbox Configuration Example</strong></td></tr>
-        <tr><td>&nbsp;</td><td><pre>$node.copy($node.config-example.children())</pre></td></tr>
+  <tr><td colspan="2"><strong>Toolbox Configuration Example</strong></td></tr>
+  <tr><td>&nbsp;</td><td><pre>$node.copy($node.config-example.children())</pre></td></tr>
 
-        <tr><td colspan="2"><strong>Author(s)</strong></td></tr>
-        <tr><td>&nbsp;</td><td>#foreach($n in $node.selectNodes("author"))<a href="mailto:$n.attribute("email")">$n</a><br>#end</td></tr>
-    </table>
-    
+  <tr><td colspan="2"><strong>Author(s)</strong></td></tr>
+  <tr><td>&nbsp;</td><td>#foreach($n in $node.selectNodes("author"))<a href="mailto:$n.attribute("email")">$n</a><br>#end</td></tr>
+</table>
 #end
 
 
@@ -322,7 +377,9 @@
  *  process a 'methods' block. Generates a list of methods.
  *#
 #match( "methods" )
-    <strong>Method Overview</strong>
+<dl>
+  <dt><strong>Method Overview</strong></dt>
+  <dd>
     <table cellpadding="2" cellspacing="2" border="0">
     #foreach ($s in $document.body.selectNodes("section") )
       #if ($s.method)
@@ -336,35 +393,27 @@
       #end
     #end
     </table>
+  </dd>
+</dl>
 #end
 
 
 #*
- *  process a 'atest' block. 
+ *  process a 'sourcecode' block.
  *#
-#match( "atest" )
-  <p>Beginning of List</p>
-  #foreach ($i in [1, 2, 3, 4, 5])
-    Current index is: $i<br/>
-  #end
-  <p>End of list</p>
-#end
-
-
-
-
 #match( "sourcecode" )
-  <table width="80%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
-    <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-      <pre>$node.copy()</pre>
-    </td></tr></table>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre>$node.copy()</pre>
   </td></tr></table>
+</td></tr></table>
 #end
 
 
-
+#*
+ *  process a 'source' block.
+ *#
 #match( "source" )
-
     <div align="left">
       <table cellspacing="4" cellpadding="0" border="0">
         <tr>

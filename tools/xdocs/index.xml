@@ -5,7 +5,7 @@
     <properties>
         <title>Project VelocityLibrary</title>
         <author email="sidler@apache.org">Gabriel Sidler</author>
-        <projectfile>xdocs/vellibrary-menue.xml</projectfile>
+        <projectfile>xdocs/menue.xml</projectfile>
     </properties>
 
     <body>
@@ -21,7 +21,7 @@
         template designer. It is being supplied in addition to the customary
         Javadoc. This should help to achive what we always claim for Velocity:
         "Decouple the work of template designers from the work of software
-        developers". Look at the <a href="../struts/docs/MessageTool.html">Struts MessageTool</a> for a good example of the
+        developers". Look at the <a href="../../struts/docs/MessageTool.html">Struts MessageTool</a> for a good example of the
         new documentation format. We are keen on your feedback. </p>
         
         <p>Your contribution of useful view tools to the VelocityLibrary
@@ -39,11 +39,6 @@
             <dt><a href="../tools/docs/ParameterParser.html"><strong>ParameterParser</strong></a></dt>
             <dd>A tool for easy parsing of servlet request parameters.</dd>
                 
-            <dt><a href="../struts/docs/tools.html"><strong>StrutsTools</strong></a></dt>
-            <dd>This includes four tools that integrate Velocity with
-            Struts. Velocity is now a real alternative view layer technology
-            for Struts applications.</dd>
-                
             <dt><a href="../tools/docs/ToolLoader.html"><strong>ToolLoader</strong></a></dt>
             <dd>A tool allowing template designers to load view tools 
             from within the template.</dd>
@@ -54,7 +49,7 @@
 
     <section name="Download">
 
-        <p>The is no release available at this point in time.</p>
+        <p>There is no release available at this point in time.</p>
         
         <pre> </pre>
 

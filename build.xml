@@ -9,7 +9,7 @@
 <!-- ========== External Dependencies ===================================== -->
 
  <!-- the local repository -->
- <property name="project.repository"          value="./lib" />
+ <property name="project.repository"     value="./lib" />
 
 <!-- ========== Component Declarations ==================================== -->
 
@@ -72,7 +72,6 @@
   <target name="prepare" depends="init">
     <!-- Prepare build directory -->
     <mkdir dir="${docs.dest}/javadoc"/>
-    <mkdir dir="${docs.dest}/javadoc-vellibrary"/>
   </target>
 
   <!-- ================================================================== -->
@@ -96,8 +95,6 @@
  
     <delete    dir="${docs.dest}/javadoc"/>
  
-    <delete    dir="${docs.dest}/javadoc-vellibrary"/>
- 
     <delete>
       <fileset dir="${basedir}" includes="**/*.bak"/>
     </delete>
@@ -118,14 +115,41 @@
   <!-- ================================================================== -->
   <!-- A L L                                                              -->
   <!-- ================================================================== -->
-  <target name="all" depends="clean,docs,javadocs,javadocs-vellibrary"
+  <target name="all" depends="clean,view,library,struts,docs,javadocs"
     description="Build entire project, including all subprojects">
+
+  </target>
+
+
+  <!-- ================================================================== -->
+  <!-- V I E W                                                            -->
+  <!-- ================================================================== -->
+  <target name="view" depends=""
+    description="Build the 'view' subproject">
    
       <!-- Build view package -->
       <ant dir="view" target="all" inheritAll="false"/>
+
+  </target>
+
+
+  <!-- ================================================================== -->
+  <!-- L I B R A R Y                                                      -->
+  <!-- ================================================================== -->
+  <target name="library" depends="view"
+    description="Build the 'library' subproject">
    
       <!-- Build library package -->
       <ant dir="tools" target="all" inheritAll="false"/>
+
+  </target>
+
+
+  <!-- ================================================================== -->
+  <!-- S T R U T S                                                        -->
+  <!-- ================================================================== -->
+  <target name="struts" depends="view,library"
+    description="Build the 'struts' subproject">
    
       <!-- Build struts package -->
       <ant dir="struts" target="all" inheritAll="false"/> 
@@ -134,7 +158,6 @@
       <ant dir="struts/examples/struts" target="all" inheritAll="false"/> 
 
   </target>
-
 
 
   <!-- ================================================================== -->
@@ -168,49 +191,10 @@
   </target>
 
 
-
-  <!-- ================================================================== -->
-  <!-- J A V A D O C S   V E L L I B R A R Y                              -->
-  <!-- ================================================================== -->
-  <target name="javadocs-vellibrary" depends="static"
-   description="Create Javadoc documentation for VelocityLibrary subproject, only public members">
-
-
-    <!-- Construct compile classpath -->
-    <path id="sourcepath">
-      <pathelement path="view/src/java/"/>
-      <pathelement path="struts/src/java/"/>
-      <pathelement path="tools/src/java/"/>
-    </path>
-
-    <javadoc sourcepathref="sourcepath"
-                   destdir="${docs.dest}/javadoc-vellibrary"
-                    author="true"
-                    public="true"
-                   version="true"
-                  doctitle="&lt;h1&gt;${project.title}&lt;/h1&gt;"
-               windowtitle="${project.title} (Version ${project.version})"
-                    bottom="Copyright (c) 2002 Apache Software Foundation" >
-
-      <package name="org.apache.velocity.tools.tools"/>
-      <package name="org.apache.velocity.tools.struts"/>
-      <package name="org.apache.velocity.tools.view.tools"/>
-      <package name="org.apache.velocity.tools.view.context"/>
-
-      <group title="View Tools" packages="org.apache.velocity.tools.tools:org.apache.velocity.tools.struts"/>
-      <group title="View Tools Infrastructure" packages="org.apache.velocity.tools.view.tools:org.apache.velocity.tools.view.context"/>
-
-      <classpath refid="classpath"/>
-
-     </javadoc>
-  </target>
-
-
-
   <!-- ================================================================== -->
   <!-- D O C S                                                            -->
   <!-- ================================================================== -->
-  <target name="docs"
+  <target name="docs" depends="static"
     description="Generate documentation into ${docs.dest}">
 
       <taskdef name="dvsl" classname="org.apache.tools.dvsl.DVSLTask">
@@ -228,15 +212,11 @@
            extension=".html"
            style="xdocs/site.dvsl"
            excludes="*menue.xml"
-           includes="**/*.xml"
+           includes="*.xml"
       />
 
-      <replace dir="${docs.dest}">
-          <replacefilter token="@@@version@@@" value="${project.version}"/>
-          <replacefilter token="@@@date@@@" value="${project.date}"/>
-      </replace>
-
   </target>
+
 
 </project>
 

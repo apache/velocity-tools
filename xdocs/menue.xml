@@ -8,14 +8,14 @@
   <body>
 
     <menu name="About">
-        <item name="Overview"               href="docs/index.html"/>
-        <item name="CVS Repository"         href="docs/index.html#CVS Repository"/>
+        <item name="Overview"               href="index.html"/>
+        <item name="CVS Repository"         href="index.html#CVS Repository"/>
     </menu>
 
     <menu name="Subprojects">
-        <item name="VelocityLibrary"        href="docs/vellibrary.html"/>
-        <item name="VelocityStruts"         href="struts/docs/index.html"/>
-        <item name="VelocityServlet"        href="view/docs/velservlet.html"/>
+        <item name="VelocityLibrary"        href="../tools/docs/index.html"/>
+        <item name="VelocityStruts"         href="../struts/docs/index.html"/>
+        <item name="VelocityServlet"        href="../view/docs/velservlet.html"/>
     </menu>
 
   </body>

@@ -5,7 +5,7 @@
     <properties>
         <title>FormTool</title>
         <author email="sidler@apache.org">Gabriel Sidler</author>
-        <projectfile>../xdocs/vellibrary-menue.xml</projectfile>
+        <projectfile>xdocs/menue.xml</projectfile>
     </properties>
 
     <body>
@@ -110,7 +110,8 @@
 
 <p>This produces the following output:</p>
 
-<sourcecode>&lt;input type="submit" name="org.apache.struts.taglib.html.CANCEL" value="Cancel"&gt;</sourcecode>
+<sourcecode>&lt;input type="submit" name="org.apache.struts.taglib.html.CANCEL"
+value="Cancel"&gt;</sourcecode>
 
             </description>
 
@@ -165,10 +166,12 @@
        
             <description>
 <sourcecode>## A hidden form field with the transaction token
-&lt;input type="hidden" name="$form.getTokenName()" value="$form.getToken()"&gt;
+&lt;input type="hidden" name="$form.getTokenName()"
+value="$form.getToken()"&gt;
 
 ## Can also be written as
-&lt;input type="hidden" name="$form.tokenName()" value="$form.token()"&gt;</sourcecode>
+&lt;input type="hidden" name="$form.tokenName()"
+value="$form.token()"&gt;</sourcecode>
 
 <p>This produces output similar to:</p>
 

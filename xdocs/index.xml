@@ -22,7 +22,7 @@
         <p><strong>Subprojects</strong></p>
 
         <dl>
-            <dt><strong><a href="vellibrary.html">VelocityLibrary</a></strong></dt> 
+            <dt><strong><a href="../tools/docs/index.html">VelocityLibrary</a></strong></dt> 
             <dd>VelocityLibrary is an effort to setup a library of reuseable and well documented
                 view tools. Most tools are optimized for use with an automatically managed
                 toolbox (see VelocityServlet).</dd>
