@@ -143,7 +143,7 @@
             <a href="#exist()">exist()</a></td>
           <td bgcolor="EEEEEE">
             
-                Returns  if there are errors queued, otherwise .
+                Returns <code>true</code> if there are errors queued, otherwise <code>false</code>.
             
           </td>
         </tr>
@@ -162,7 +162,7 @@
           <td bgcolor="EEEEEE">
             
                 This a convenience method and the equivalent of
-                
+                <code>$errors.get($errors.globalName)</code>
             
           </td>
         </tr>
@@ -462,7 +462,7 @@ $errors.getSize("password")</sourcecode></pre>
 <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
     <pre><sourcecode>#macro (errorMarkup)
-    #if ($errors.exist)
+    #if ($errors.exist())
         &lt;ul&gt;
         #foreach ($e in $errors.all )
             &lt;li&gt;$e&lt;/li&gt;
