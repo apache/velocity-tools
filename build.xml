@@ -1,5 +1,5 @@
 <!--
-  $Id: build.xml,v 1.13 2003/04/26 01:31:01 nbubna Exp $ 
+  $Id: build.xml,v 1.14 2003/04/26 16:50:16 nbubna Exp $ 
 -->
 <project name="velocity-tools" default="all" basedir=".">
 
@@ -217,6 +217,18 @@
     </copy>
   </target>
 
+
+  <!-- Make documentation tar ball -->
+  <target name="tardocs" depends="javadoc,docs"
+          description="Combine all xdocs and docs into a tar ball.">
+
+    <!-- make sure the dist directory exists -->
+    <mkdir dir="${dist.dir}" />
+    <tar destfile="${dist.dir}/docs.tar.gz"
+         basedir="${basedir}"
+         includes="docs/**,xdocs/**"
+         compression="gzip" />
+  </target>
 
 
   <!-- Build all example applications -->
