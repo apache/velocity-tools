@@ -69,16 +69,14 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * <p>Description: a general-purpose text-importing mechanism for templates</p>
  * <p>Usage:
  *
- * Just call $import.getString("http://www.foo.com/bleh.jsp?sneh=bar") to insert the contents of the named
+ * Just call $import.read("http://www.foo.com/bleh.jsp?sneh=bar") to insert the contents of the named
  * resource into the template.
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @version $Revision: 1.1 $ $Date: 2003/10/30 00:11:56 $
+ * @version $Revision: 1.2 $ $Date: 2003/10/30 01:00:57 $
  */
 public class ImportTool extends ImportSupport
     implements ViewTool {
-
-    protected ViewContext context;
 
     /**
      * Default constructor. Tool must be initialized before use.
@@ -96,7 +94,7 @@ public class ImportTool extends ImportSupport
             throw new IllegalArgumentException("Tool can only be initialized with a ViewContext");
         }
 
-        this.context = (ViewContext) obj;
+        ViewContext context = (ViewContext) obj;
         this.request = context.getRequest();
         this.response = context.getResponse();
         this.application = context.getServletContext();
@@ -122,6 +120,5 @@ public class ImportTool extends ImportSupport
             return null;
         }
     }
-
 
 }
