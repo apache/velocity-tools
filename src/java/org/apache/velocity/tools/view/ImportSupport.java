@@ -83,7 +83,7 @@ import java.net.HttpURLConnection;
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.6 $ $Date: 2003/12/09 18:24:01 $
+ * @version $Revision: 1.7 $ $Date: 2003/12/09 18:43:34 $
  */
 public abstract class ImportSupport {
 
@@ -308,19 +308,10 @@ public abstract class ImportSupport {
          */
 
         /** The Writer we convey. */
-        private StringWriter sw = new StringWriter();
+        private StringWriter sw;
 
         /** A buffer, alternatively, to accumulate bytes. */
-        private ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-        /** A ServletOutputStream we convey, tied to this Writer. */
-        private ServletOutputStream sos = new ServletOutputStream()
-            {
-                public void write(int b) throws IOException
-                {
-                    bos.write(b);
-                }
-            };
+        private ByteArrayOutputStream bos;
 
         /** 'True' if getWriter() was called; false otherwise. */
         private boolean isWriterUsed;
@@ -354,6 +345,7 @@ public abstract class ImportSupport {
                                                 + "Target servlet called getWriter(), then getOutputStream()");
             }
             isWriterUsed = true;
+            sw = new StringWriter();
             return new PrintWriter(sw);
         }
 
@@ -368,22 +360,24 @@ public abstract class ImportSupport {
                                                 + "Target servlet called getOutputStream(), then getWriter()");
             }
             isStreamUsed = true;
+            bos = new ByteArrayOutputStream();
+            ServletOutputStream sos = new ServletOutputStream() 
+                {
+                    public void write(int b) throws IOException
+                    {
+                        bos.write(b);
+                    }
+                };
             return sos;
         }
 
-        /** 
-         * Has no effect.
-         * @param x never mind :)
-         */
+        /** Has no effect. */
         public void setContentType(String x)
         {
             // ignore
         }
 
-        /** 
-         * Has no effect.
-         * @param x never mind :)
-         */
+        /** Has no effect. */
         public void setLocale(Locale x)
         {
             // ignore
