@@ -12,6 +12,9 @@
     <subsection name="1.1-dev">
       <p>This section describes changes after the 1.1-beta release.</p>
       <ul>
+      <li>Upgraded/refactored MathTool to add floor() and ceil(), make type-handling more intuitive and flexible, and improve number parsing. (ndb)</li>
+      <li>Improved resource bundle support in ActionMessagesTool. (ndb)</li>
+      <li>ErrorsTool now extends ActionMessagesTool. (ndb)</li>
       <li>LinkTool now encodes URLs using the response's character encoding. (ndb)</li>
       <li>Removed inadvertant JDK 1.4 dependencies from ImportSupport. (ndb)</li>
       <li>Made XMLToolboxManager not abstract (#24840). (ndb)</li>
