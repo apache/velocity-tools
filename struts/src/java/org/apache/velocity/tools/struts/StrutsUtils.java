@@ -90,7 +90,7 @@ import org.apache.struts.action.*;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>, based
  * on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 class StrutsUtils
 {
@@ -581,7 +581,7 @@ class StrutsUtils
      * @param session the HTTP session
      * @param application the servlet context
      *
-     * @returns The formatted error message. If no error messages are queued, 
+     * @return The formatted error message. If no error messages are queued, 
      * an empty string is returned. 
      */
     static String errorMarkup(String property, 
