@@ -42,7 +42,7 @@ are used in this example.
         </ul>
 
         <a href="$link.setAction('welcome_jsp')">Switch to JSP</a><br>
-        <a href="$link.setAction('index_vm_src')">View Template</a><br>
+        <a href="$link.setForward('index_vm_src')">View Template</a><br>
 
     </body>
 
