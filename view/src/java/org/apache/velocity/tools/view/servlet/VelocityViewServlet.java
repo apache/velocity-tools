@@ -116,7 +116,7 @@ import org.apache.velocity.tools.view.servlet.ServletToolboxManager;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author  <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.4 2002/04/04 13:05:56 sidler Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.5 2002/05/07 10:23:33 sidler Exp $
  */
 
 public class VelocityViewServlet extends VelocityServlet
@@ -269,7 +269,17 @@ public class VelocityViewServlet extends VelocityServlet
                                      Context ctx )
         throws Exception
     {
-        return getTemplate(request.getServletPath() );
+        // If we get here from RequestDispatcher.include(), getServletPath()
+        // will return the original (wrong) URI requested.  The following special
+        // attribute holds the correct path.  See section 8.3 of the Servlet
+        // 2.3 specification.
+        String path = (String)request.getAttribute("javax.servlet.include.servlet_path");
+        if (path == null)
+        {
+            path = request.getServletPath();
+        }
+
+        return getTemplate(path);
     }
 
 
