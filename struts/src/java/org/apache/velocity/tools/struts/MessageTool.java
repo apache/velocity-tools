@@ -64,6 +64,7 @@ import javax.servlet.ServletContext;
 import org.apache.struts.util.MessageResources;
 import org.apache.struts.action.*;
 
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
 
@@ -81,31 +82,13 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: MessageTool.java,v 1.5 2002/05/10 05:42:17 sidler Exp $
+ * @version $Id: MessageTool.java,v 1.6 2003/02/13 00:24:30 nbubna Exp $
  * 
  */
 public class MessageTool implements ViewTool
 {
 
     // --------------------------------------------- Properties -------
-
-    /**
-     * A reference to the ServletContext
-     */ 
-    protected ServletContext application;
-
-
-    /**
-     * A reference to the HttpServletRequest.
-     */ 
-    protected HttpServletRequest request;
-    
-
-    /**
-     * A reference to the HtttpSession.
-     */ 
-    protected HttpSession session;
-
 
     /**
      * A reference to the Struts message resources.
@@ -144,20 +127,12 @@ public class MessageTool implements ViewTool
         }
 
         ViewContext context = (ViewContext)obj;
-        this.request = context.getRequest();
-        this.session = request.getSession(false);
-        this.application = context.getServletContext();    
+        HttpServletRequest request = context.getRequest();
+        HttpSession session = request.getSession(false);
+        ServletContext application = context.getServletContext();    
 
-        resources = StrutsUtils.getMessageResources(application);
-        locale = StrutsUtils.getLocale(request, session);
-    }
-    
-    
-    /**
-     * Log messages are sent to the servlet context
-     */
-    private void log(String s) {
-        application.log(s);
+        this.resources = StrutsUtils.getMessageResources(application);
+        this.locale = StrutsUtils.getLocale(request, session);
     }
 
 
@@ -178,7 +153,7 @@ public class MessageTool implements ViewTool
     {
         if (resources == null)
         {
-            log("[ERROR] Message resources are not available.");
+            Velocity.error("Message resources are not available.");
             return null;
         }
         return resources.getMessage(locale, key);
@@ -201,7 +176,7 @@ public class MessageTool implements ViewTool
     {
         if (resources == null)
         {
-            log("[ERROR] Message resources are not available.");
+            Velocity.error("Message resources are not available.");
             return null;
         }
         
@@ -247,7 +222,7 @@ public class MessageTool implements ViewTool
     {
         if (resources == null)
         {
-            log("[ERROR] Message resources are not available.");
+            Velocity.error("Message resources are not available.");
             return false;
         }
 
