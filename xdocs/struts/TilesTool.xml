@@ -1,0 +1,234 @@
+<?xml version="1.0"?>
+
+<document>
+
+    <properties>
+        <title>TilesTool</title>
+        <author email="marino@apache.org">Marino A. Jonsson</author>
+        <projectfile>xdocs/struts/menu.xml</projectfile>
+        </properties>
+
+    <body>
+
+    <section name="TilesTool Reference Documentation">
+
+        <p>
+        The TilesTool is used to interact with the Tiles framework that is now part
+        of Struts (since v. 1.1).
+        </p>
+
+        <toolinfo>
+            <version>@@@version@@@, @@@date@@@</version>
+            <clazz>org.apache.velocity.tools.struts.TilesTool</clazz>
+            <name>$tiles</name>
+            <author email="marinoj@centrum.is">Marino A. Jonsson</author>
+            <config-example>&lt;tool&gt;
+  &lt;key&gt;tiles&lt;/key&gt;
+  &lt;scope&gt;request&lt;/scope&gt;
+  &lt;class&gt;org.apache.velocity.tools.struts.TilesTool&lt;/class&gt;
+&lt;/tool&gt;</config-example>
+        </toolinfo>
+
+        <methods/>
+
+    </section>
+
+    <section name="importAttributes()">
+        <method name="importAttributes()">
+
+            <abstract>
+                Imports all attributes in the current tiles definition into the named context
+            </abstract>
+
+            <signature>
+                void importAttributes()
+            </signature>
+
+            <signature>
+                void importAttributes(String scope)
+            </signature>
+
+            <parameters>
+                <parameter name="scope">
+                    The named context scope to put the attributes into. Possible values
+                    are <code>page</code> (velocity-context), <code>request</code>,
+                    <code>session</code>, and <code>application</code>.
+                </parameter>
+            </parameters>
+
+            <description>
+                <p>This method makes it possible to import all attributes, defined in the
+                current tiles definition, into any scope, to be accessed i.e. by
+                other tiles.</p>
+
+<p>Assuming that the tiles config contains the following definition(and ".tilename"
+is the current tiles definition):</p>
+<sourcecode>&lt;definition name=".tilename" path="/layout.vm"&gt;
+    &lt;put name="attr1" value="This is one attribute."/&gt;
+    &lt;put name="attr2" value="and this is a another."/&gt;
+&lt;/definition&gt;</sourcecode>
+
+<p>then the following Velocity script:</p>
+<sourcecode>$tiles.importAttributes()
+$attr1
+$attr2</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>This is one attribute
+and this is another one</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="getAttribute()">
+        <method name="getAttribute()">
+
+            <abstract>
+                Returns a named tiles attribute from the current tiles definition
+            </abstract>
+
+            <signature>
+                String getAttribute(String attributeName)
+            </signature>
+
+            <parameters>
+                <parameter name="attributeName">
+                    The name of the tiles-definition attribute.
+                </parameter>
+            </parameters>
+
+            <returns>
+                Returns the named tiles attribute from the current tiles definition
+            </returns>
+
+            <description>
+                <p>This method makes it possible to fetch any attribute defined in the
+                current tiles definition.</p>
+
+<p>Assuming that the tiles config contains the following definition (and ".tilename"
+is the current tiles definition):</p>
+<sourcecode>&lt;definition name=".tilename" path="/layout.vm"&gt;
+    &lt;put name="attr1" value="This is one attribute."/&gt;
+    &lt;put name="attr2" value="and this is a another."/&gt;
+&lt;/definition&gt;</sourcecode>
+
+<p>then the following Velocity script:</p>
+<sourcecode>$tiles.getAttribute("attr1")</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>This is one attribute</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="importAttribute()">
+        <method name="importAttribute()">
+
+            <abstract>
+                Imports a named attribute in the current tiles definition into the
+                named context.
+            </abstract>
+
+            <signature>
+                void importAttribute(String attributeName)
+            </signature>
+
+            <signature>
+                void importAttribute(String attributeName, String scope)
+            </signature>
+
+            <parameters>
+                <parameter name="attributeName">
+                    The name of the tiles-definition attribute.
+                </parameter>
+                <parameter name="scope">
+                    The named context scope to put the attributes into. Possible values
+                    are <code>page</code> (velocity-context), <code>request</code>,
+                    <code>session</code>, and <code>application</code>.
+                </parameter>
+            </parameters>
+
+            <description>
+                <p>This method makes it possible to import a named attribute, defined
+                in the current tiles definition, into any scope, to be accessed i.e. by
+                other tiles.</p>
+
+<p>Assuming that the tiles config contains the following definition(and ".tilename"
+is the current tiles definition):</p>
+<sourcecode>&lt;definition name=".tilename" path="/layout.vm"&gt;
+    &lt;put name="attr1" value="This is one attribute."/&gt;
+    &lt;put name="attr2" value="and this is a another."/&gt;
+&lt;/definition&gt;</sourcecode>
+
+<p>then the following Velocity script:</p>
+<sourcecode>$tiles.importAttribute("attr1")
+$attr1</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>This is one attribute</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="get()">
+        <method name="get()">
+
+            <abstract>
+                Inserts the named tile into the current tile.
+            </abstract>
+
+            <signature>
+                void get(Object attr)
+            </signature>
+
+            <parameters>
+                <parameter name="attr">
+                    The name of the tile to insert.
+                </parameter>
+            </parameters>
+
+            <description>
+                <p>This method makes it possible to insert a named tile, defined
+                in the current tiles definition, into the velocity template.</p>
+
+<p>Assuming that the tiles config contains the following definition(and ".tilename"
+is the current tiles definition):</p>
+<sourcecode>&lt;definition name=".tilename" path="/layout.vm"&gt;
+    &lt;put name="header" value="/header.vm"/&gt;
+&lt;/definition&gt;</sourcecode>
+
+<p>then the following two Velocity scripts:</p>
+
+<sourcecode>&lt;!-- layout.vm --&gt;
+&lt;html&gt;
+$tiles.header
+&lt;body&gt;
+    World
+&lt;/body&gt;
+&lt;/html&gt;</sourcecode>
+<p/>
+<sourcecode>&lt;!-- header.vm --&gt;
+&lt;head&gt;
+    &lt;title&gt;Hello&lt;/title&gt;
+&lt;/head&gt;</sourcecode>
+
+<p>produce this output:</p>
+<sourcecode>&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Hello&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    World
+&lt;/body&gt;
+&lt;/html&gt;</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+ </body>
+</document>
+
