@@ -109,7 +109,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.6 $ $Date: 2003/11/19 19:35:16 $
+ * @version $Revision: 1.7 $ $Date: 2004/02/13 01:54:39 $
  */
 public class ValidatorTool implements ViewTool {
 
@@ -125,15 +125,19 @@ public class ValidatorTool implements ViewTool {
     /** A reference to the HttpSession. */
     protected HttpSession session;
 
+    /** A reference to the HttpSession. */
+    protected ValidatorResources resources;
+
 
     private static final String HTML_BEGIN_COMMENT = "\n<!-- Begin \n";
     private static final String HTML_END_COMMENT = "//End --> \n";
 
-    private boolean staticJavascript = true;
-    private boolean dynamicJavascript = true;
+    private boolean xhtml = false;
+
+    //private boolean staticJavascript = true;
+    //private boolean dynamicJavascript = true;
     private boolean htmlComment = true;
     private boolean cdata = true;
-    private boolean xhtml = false;
     private String formName = null;
     private String methodName = null;
     private String src = null;
@@ -156,7 +160,8 @@ public class ValidatorTool implements ViewTool {
     {
         if (!(obj instanceof ViewContext))
         {
-            throw new IllegalArgumentException("Tool can only be initialized with a ViewContext");
+            throw new IllegalArgumentException(
+                    "Tool can only be initialized with a ViewContext");
         }
 
         this.context = (ViewContext)obj;
@@ -171,13 +176,19 @@ public class ValidatorTool implements ViewTool {
         }
 
         /* Is there a mapping associated with this request? */
-        ActionConfig config = 
-            (ActionConfig)request.getAttribute(Globals.MAPPING_KEY);
+        ActionConfig config =
+                (ActionConfig)request.getAttribute(Globals.MAPPING_KEY);
         if (config != null)
         {
             /* Is there a form bean associated with this mapping? */
             this.formName = config.getAttribute();
         }
+
+        ModuleConfig mconfig = RequestUtils.getModuleConfig(request, app);
+        this.resources = (ValidatorResources)app.getAttribute(ValidatorPlugIn.
+                VALIDATOR_KEY +
+                mconfig.getPrefix());
+
     }
 
 
@@ -190,10 +201,10 @@ public class ValidatorTool implements ViewTool {
      *
      * @return the key (form name)
      */
-    public String getFormName()
+    /*public String getFormName()
     {
         return formName;
-    }
+    }*/
 
     /**
      * Sets the key (form name) that will be used
@@ -204,10 +215,10 @@ public class ValidatorTool implements ViewTool {
      *
      * @param formName the key (form name)
      */
-    public void setFormName(String formName)
+    /*public void setFormName(String formName)
     {
         this.formName = formName;
-    }
+    }*/
 
     /**
      * Gets the current page number of a multi-part form.
@@ -268,10 +279,10 @@ public class ValidatorTool implements ViewTool {
      *
      * @return true to generate the static JavaScript.
      */
-    public boolean getStaticJavascript()
+    /*public boolean getStaticJavascript()
     {
         return this.staticJavascript;
-    }
+    }*/
 
     /**
      * Sets whether or not to generate the static
@@ -280,10 +291,10 @@ public class ValidatorTool implements ViewTool {
      *
      * @param staticJavascript whether or not to generate the static JavaScript
      */
-    public void setStaticJavascript(boolean staticJavascript)
+    /*public void setStaticJavascript(boolean staticJavascript)
     {
         this.staticJavascript = staticJavascript;
-    }
+    }*/
 
     /**
      * Gets whether or not to generate the dynamic
@@ -292,10 +303,10 @@ public class ValidatorTool implements ViewTool {
      *
      * @return true to generate the dynamic JavaScript
      */
-    public boolean getDynamicJavascript()
+    /*public boolean getDynamicJavascript()
     {
         return this.dynamicJavascript;
-    }
+    }*/
 
     /**
      * Sets whether or not to generate the dynamic
@@ -304,10 +315,10 @@ public class ValidatorTool implements ViewTool {
      *
      * @param dynamicJavascript whether or not to generate the dynamic JavaScript
      */
-    public void setDynamicJavascript(boolean dynamicJavascript)
+    /*public void setDynamicJavascript(boolean dynamicJavascript)
     {
         this.dynamicJavascript = dynamicJavascript;
-    }
+    }*/
 
     /**
      * Gets whether or not to delimit the
@@ -380,21 +391,22 @@ public class ValidatorTool implements ViewTool {
     /****************** methods that aren't just accessors ***************/
 
     /**
-     * Render the JavaScript for to perform validations based on 
-     * the form name already set the form name via {@link #setFormName} 
-     * or the form name attribute of the action mapping associated
-     * with the current request (if such exists).
+     * Render both dynamic and static JavaScript to perform
+     * validations based on the form name already set the form name
+     * via {@link #setFormName} or the form name attribute of the action
+     * mapping associated with the current request (if such exists).
      *
      * @return the javascript for the current form
      * @throws Exception
      */
     public String getJavascript() throws Exception
     {
-        return getJavascript(getFormName());
+        return getJavascript(this.formName);
     }
 
     /**
-     * Render the JavaScript for to perform validations based on the form name.
+     * Render both dynamic and static JavaScript to perform
+     * validations based on the supplied form name.
      *
      * @param formName the key (form name)
      * @return the Javascript for the specified form
@@ -402,47 +414,98 @@ public class ValidatorTool implements ViewTool {
      */
     public String getJavascript(String formName) throws Exception
     {
-        // set the form name
-        setFormName(formName);
+        this.formName = formName;
+        return getJavascript(formName, true);
+    }
 
+    /**
+     * Render just the dynamic JavaScript to perform validations based
+     * on the form name already set the form name via {@link #setFormName}
+     * or the form name attribute of the action mapping associated
+     * with the current request (if such exists). Useful i.e. if the static
+     * parts are located in a seperate .js file.
+     *
+     * @return the javascript for the current form
+     * @throws Exception
+     */
+    public String getDynamicJavascript() throws Exception
+    {
+        return getDynamicJavascript(this.formName);
+    }
+
+
+    /**
+     * Render just the static JavaScript methods. Useful i.e. if the static
+     * parts should be located in a seperate .js file.
+     *
+     * @return all static Javascript methods
+     * @throws Exception
+     */
+    public String getStaticJavascript() throws Exception
+    {
         StringBuffer results = new StringBuffer();
 
-        ModuleConfig config = RequestUtils.getModuleConfig(request, app);
-        ValidatorResources resources =
-            (ValidatorResources)app.getAttribute(ValidatorPlugIn.VALIDATOR_KEY +
-                                                 config.getPrefix());
+        results.append(getStartElement());
+        if (this.htmlComment)
+        {
+            results.append(HTML_BEGIN_COMMENT);
+        }
+        results.append(getJavascriptStaticMethods(resources));
+        results.append(getJavascriptEnd());
+
+        return results.toString();
+    }
+
+
+    /**
+     * Render just the dynamic JavaScript to perform validations based
+     * on the supplied form name. Useful i.e. if the static
+     * parts are located in a seperate .js file.
+     *
+     * @param formName the key (form name)
+     * @return the dynamic Javascript for the specified form
+     * @throws Exception
+     */
+    public String getDynamicJavascript(String formName) throws Exception
+    {
+        this.formName = formName;
+        return getJavascript(formName, false);
+    }
+
+    /**
+     * Render both dynamic and static JavaScript to perform
+     * validations based on the supplied form name.
+     *
+     * @param formName the key (form name)
+     * @param getStatic indicates if the static methods should be rendered
+     * @return the Javascript for the specified form
+     * @throws Exception
+     */
+    protected String getJavascript(String formName, boolean getStatic) throws Exception
+    {
+        StringBuffer results = new StringBuffer();
 
         Locale locale = StrutsUtils.getLocale(request, session);
 
         Form form = resources.get(locale, formName);
         if (form != null)
         {
-            if(this.dynamicJavascript)
-            {
-                results.append(getDynamicJavascript(resources, locale, form));
-            }
-            else if (this.staticJavascript)
-            {
-                results.append(getStartElement());
-                if (this.htmlComment)
-                {
-                    results.append(HTML_BEGIN_COMMENT);
-                }
-            }
+            results.append(getDynamicJavascript(resources, locale, form));
         }
 
-        if (this.staticJavascript)
+        if(getStatic)
         {
             results.append(getJavascriptStaticMethods(resources));
         }
 
-        if (form != null && (this.dynamicJavascript || this.staticJavascript))
+        if (form != null)
         {
             results.append(getJavascriptEnd());
         }
 
         return results.toString();
     }
+
 
 
     /**
