@@ -66,20 +66,38 @@ import java.util.TimeZone;
 
 /**
  * Tool for working with {@link Date} and {@link Calendar}
- * in Velocity templates.  
+ * in Velocity templates.  It is useful for accessing and
+ * formatting the "current" date as well as for formatting
+ * arbitrary {@link Date} and {@link Calendar} objects. Also
+ * the tool can be used to retrieve {@link DateFormat} instances
+ * or make conversions to and from various date types.
+ * <p><pre>
+ * Example uses:
+ *  $date                         -> Oct 19, 2003 9:54:50 PM
+ *  $date.long                    -> October 19, 2003 9:54:50 PM PDT
+ *  $date.medium_time             -> 9:54:50 PM
+ *  $date.full_date               -> Sunday, October 19, 2003
+ *  $date.get('default','short')  -> Oct 19, 2003 9:54 PM
+ *  $date.get('yyyy-M-d H:m:s')   -> 2003-10-19 21:54:50
  * 
- * This tool is entirely threadsafe, and has no instance members.  
+ *  $myDate                        -> Tue Oct 07 03:14:50 PDT 2003
+ *  $date.format('medium',$myDate) -> Oct 7, 2003 3:14:50 AM 
+ * </pre></p>
+ *
+ * <p>This tool is entirely threadsafe, and has no instance members.
+ * It may be used in any scope (request, session, or application).
  * As such, the methods are highly interconnected, and overriding 
  * key methods provides an easy way to create subclasses that use 
- * a non-default calendar, locale, or timezone.
+ * a non-default format, calendar, locale, or timezone.</p>
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.3 $ $Date: 2003/07/04 05:13:10 $
+ * @version $Revision: 1.4 $ $Date: 2003/10/20 05:15:03 $
  */
-
 public class DateTool
 {
 
+    /** The default format to be used when none is specified. */
+    public static final String DEFAULT_FORMAT = "default";
 
     /**
      * Default constructor.
@@ -110,10 +128,14 @@ public class DateTool
     }
 
 
-    // ------------------------- locale/timezone/date access ----------------
-
+    // ------------------------- default parameter access ----------------
 
     /**
+     * This implementation returns the default locale. Subclasses
+     * may override this to return alternate locales. Please note that
+     * doing so will affect all formatting methods where no locale is
+     * specified in the parameters.
+     *
      * @return the default {@link Locale}
      */
     public Locale getLocale()
@@ -121,15 +143,18 @@ public class DateTool
         return Locale.getDefault();
     }
 
-
     /**
+     * This implementation returns the default TimeZone. Subclasses
+     * may override this to return alternate timezones. Please note that
+     * doing so will affect all formatting methods where no timezone is
+     * specified in the parameters.
+     *
      * @return the default {@link TimeZone}
      */
     public TimeZone getTimeZone()
     {
         return TimeZone.getDefault();
     }
-
 
     /**
      * Returns a {@link Date} derived from the result of {@link #getCalendar}
@@ -141,18 +166,17 @@ public class DateTool
         return getCalendar().getTime();
     }
 
-
     /**
      * Returns a {@link Calendar} instance created using the timezone and
      * locale returned by getTimeZone() and getLocale().  This allows subclasses
      * to easily override the default locale and timezone used by this tool.
      *
-     * Sub-classes may override this method to return a Calendar instance
+     * <p>Sub-classes may override this method to return a Calendar instance
      * not based on the system date.
-     * Doing so will also cause the getDate(), getNormalDate(), 
-     * getFormattedDate(), and toString() methods to return dates equivalent 
-     * to the Calendar returned by this method, because those methods return
-     * values derived from the result of this method.
+     * Doing so will also cause the getDate(), get(String), get(String,String), 
+     * and toString() methods to return dates equivalent to the Calendar 
+     * returned by this method, because those methods return values derived 
+     * from the result of this method.</p>
      *
      * @return a {@link Calendar} instance created using the results of 
      *         {@link #getTimeZone()} and {@link #getLocale()}.
@@ -163,53 +187,131 @@ public class DateTool
         return Calendar.getInstance(getTimeZone(), getLocale());
     }
 
+    /**
+     * Return the pattern or style to be used for formatting dates when none
+     * is specified. This implementation gives a 'default' date-time format. 
+     * Subclasses may override this to provide a different default format.
+     *
+     * <p>NOTE: At some point in the future it may be feasible to configure
+     * this value via the toolbox definition, but at present, it is not possible
+     * to specify custom tool configurations there.  For now you should just 
+     * override this in a subclass to have a different default.</p>
+     */
+    public String getFormat()
+    {
+        return DEFAULT_FORMAT;
+    }
+
 
     // ------------------------- formatting methods ---------------------------
 
     /**
-     * Returns a formatted string representing the date as returned by
-     * {@link #getDate()}.
-     *
-     * This method uses the same formatting instructions as
-     * {@link SimpleDateFormat}:
-     *
-     * @param format the formatting instructions
-     * @return a formatted string representing the date returned by
-     *         {@link #getDate()} or <code>null</code> if the parameters
-     *         are invalid
-     * @see #format(String format, Object obj, Locale locale)
+     * @deprecated use {@link #get(String format)} instead
      */
     public String getFormattedDate(String format)
     {
         return format(format, getDate());
     }
 
+    /**
+     * Returns a formatted string representing the date returned by
+     * {@link #getDate()}.  In its default implementation, this method 
+     * allows you to retrieve the current date in standard formats by
+     * simply doing things like <code>$date.medium</code> or 
+     * <code>$date.full</code>.  If you want only the date or time portion
+     * you can specify that along with the standard formats. (e.g. 
+     * <code>$date.medium_date</code> or <code>$date.short_time</code>)
+     * More complex or custom formats can be retrieved
+     * by using the full method syntax. (e.g. $date.get('E, MMMM d'))
+     *
+     * @param format the formatting instructions
+     * @return a formatted representation of the date returned by
+     *         {@link #getDate()}
+     * @see #format(String format, Object obj, Locale locale, TimeZone timezone)
+     */
+    public String get(String format)
+    {
+        return format(format, getDate());
+    }
+
+    /**
+     * Returns a formatted string representing the date and/or time given by
+     * {@link #getDate()} in standard, localized patterns.
+     *
+     * @param dateStyle the style pattern for the date
+     * @param timeStyle the style pattern for the time
+     * @return a formatted representation of the date returned by
+     *         {@link #getDate()}
+     * @see DateFormat
+     * @see #format(String dateStyle, String timeStyle, Object obj, Locale locale, TimeZone timezone)
+     */
+    public String get(String dateStyle, String timeStyle)
+    {
+        return format(dateStyle, timeStyle, getDate(), getLocale());
+    }
+
+
+    /**
+     * Converts the specified object to a date and formats it according to
+     * the pattern or style returned by {@link #getFormat()}.
+     * 
+     * @param obj the date object to be formatted
+     * @return the specified date formatted as a string
+     * @see #format(String format, Object obj, Locale locale, TimeZone timezone)
+     */
+    public String format(Object obj)
+    {
+        return format(getFormat(), obj);
+    }
 
     /**
      * Converts the specified object to a date and returns
-     * a formatted string representing that date using the locale
+     * a formatted string representing that date in the locale
      * returned by {@link #getLocale()}.
-     *
-     * This method uses the same formatting instructions as
-     * {@link SimpleDateFormat}:
      *
      * @param format the formatting instructions
      * @param obj the date object to be formatted
      * @return a formatted string for this locale representing the specified
      *         date or <code>null</code> if the parameters are invalid
-     * @see #format(String format, Object obj, Locale locale)
+     * @see #format(String format, Object obj, Locale locale, TimeZone timezone)
      */
     public String format(String format, Object obj)
     {
         return format(format, obj, getLocale());
     }
 
+    /**
+     * Converts the specified object to a date and returns
+     * a formatted string representing that date in the specified
+     * {@link Locale}.
+     *
+     * @param format the formatting instructions
+     * @param obj the date object to be formatted
+     * @param locale the locale to be used when formatting
+     * @return the given date as a formatted string
+     * @see #format(String format, Object obj, Locale locale, TimeZone timezone)
+     */
+    public String format(String format, Object obj, Locale locale)
+    {
+        return format(format, obj, locale, getTimeZone());
+    }
 
     /**
-     * Returns a formatted string representing the specified date and locale.
+     * Returns a formatted string representing the specified date,
+     * {@link Locale}, and {@link TimeZone}.
      *
      * <p>
-     * This method uses the same formatting instructions as
+     * The specified format may be a standard style pattern ('full', 'long',
+     * 'medium', 'short', or 'default').
+     * </p>
+     * <p>
+     * You may also specify that you want only the date or time portion be
+     * appending '_date' or '_time' respectively to the standard style pattern.
+     * (e.g. 'full_date' or 'long_time')
+     * </p>
+     * <p>
+     * If the format fits neither of these patterns, then the output 
+     * will be formatted according to the symbols defined by 
      * {@link SimpleDateFormat}:
      * <pre>
      *   Symbol   Meaning                 Presentation        Example
@@ -238,22 +340,249 @@ public class DateTool
      *   Examples: "E, MMMM d" will result in "Tue, July 24"
      *             "EEE, M-d (H:m)" will result in "Tuesday, 7-24 (14:12)"
      * </pre>
-     *
-     * @param format the formatting instructions
+     * </p>
+     * 
+     * @param format the custom or standard pattern to be used
      * @param obj the date to format
      * @param locale the {@link Locale} to format the date for
+     * @param timezone the {@link TimeZone} to be used when formatting
      * @return a formatted string representing the specified date or
      *         <code>null</code> if the parameters are invalid
      */
-    public static String format(String format, Object obj, Locale locale)
+    public String format(String format, Object obj, 
+                         Locale locale, TimeZone timezone)
     {
         Date date = toDate(obj);
-        if (date == null || format == null || locale == null)
+        DateFormat df = getDateFormat(format, locale, timezone);
+        if (date == null || df == null)
         {
             return null;
         }
-        SimpleDateFormat formatter = new SimpleDateFormat(format, locale);
-        return formatter.format(date);
+        return df.format(date);
+    }
+
+
+    /**
+     * Returns the specified date as a string formatted according to the
+     * specified date and/or time styles.
+     *
+     * @param dateStyle the style pattern for the date
+     * @param timeStyle the style pattern for the time
+     * @param obj the date to be formatted
+     * @return a formatted representation of the given date 
+     * @see #format(String dateStyle, String timeStyle, Object obj, Locale locale, TimeZone timezone)
+     */
+    public String format(String dateStyle, String timeStyle, Object obj)
+    {
+        return format(dateStyle, timeStyle, obj, getLocale());
+    }
+
+    /**
+     * Returns the specified date as a string formatted according to the
+     * specified {@link Locale} and date and/or time styles.
+     *
+     * @param dateStyle the style pattern for the date
+     * @param timeStyle the style pattern for the time
+     * @param obj the date to be formatted
+     * @param locale the {@link Locale} to be used for formatting the date
+     * @return a formatted representation of the given date 
+     * @see #format(String dateStyle, String timeStyle, Object obj, Locale locale, TimeZone timezone)
+     */
+    public String format(String dateStyle, String timeStyle,
+                         Object obj, Locale locale)
+    {
+        return format(dateStyle, timeStyle, obj, locale, getTimeZone());
+    }
+
+    /**
+     * Returns the specified date as a string formatted according to the
+     * specified {@link Locale} and date and/or time styles.
+     *
+     * @param dateStyle the style pattern for the date
+     * @param timeStyle the style pattern for the time
+     * @param obj the date to be formatted
+     * @param locale the {@link Locale} to be used for formatting the date
+     * @param timezone the {@link TimeZone} the date should be formatted for
+     * @return a formatted representation of the given date 
+     * @see java.text.DateFormat
+     * @see #format(String dateStyle, String timeStyle, Object obj, Locale locale, TimeZone timezone)
+     */
+    public String format(String dateStyle, String timeStyle,
+                         Object obj, Locale locale, TimeZone timezone)
+    {
+        Date date = toDate(obj);
+        DateFormat df = getDateFormat(dateStyle, timeStyle, locale, timezone);
+        if (date == null || df == null)
+        {
+            return null;
+        }
+        return df.format(date);
+    }
+
+
+    // -------------------------- DateFormat creation methods --------------
+
+    /**
+     * Returns a {@link DateFormat} instance for the specified
+     * format, {@link Locale}, and {@link TimeZone}.  If the format
+     * specified is a standard style pattern, then a date-time instance
+     * will be returned with both the date and time styles set to the 
+     * specified style.  If it is a custom format, then a customized
+     * {@link SimpleDateFormat} will be returned.
+     * 
+     * @param format the custom or standard formatting pattern to be used
+     * @param locale the {@link Locale} to be used
+     * @param timezone the {@link TimeZone} to be used
+     * @return an instance of {@link DateFormat}
+     * @see SimpleDateFormat
+     * @see DateFormat
+     */
+    public DateFormat getDateFormat(String format, Locale locale, 
+                                    TimeZone timezone)
+    {
+        if (format == null)
+        {
+            return null;
+        }
+
+        DateFormat df = null;
+        // do they want a date instance
+        if (format.endsWith("_date"))
+        {
+            String fmt = format.substring(0, format.length() - 5);
+            int style = getStyleAsInt(fmt);
+            df = getDateFormat(style, -1, locale, timezone);
+        }
+        // do they want a time instance?
+        else if (format.endsWith("_time"))
+        {
+            String fmt = format.substring(0, format.length() - 5);
+            int style = getStyleAsInt(fmt);
+            df = getDateFormat(-1, style, locale, timezone);
+        }
+        // ok, they either want a custom or date-time instance
+        else
+        {
+            int style = getStyleAsInt(format);
+            if (style < 0)
+            {
+                // we have a custom format
+                df = new SimpleDateFormat(format, locale);
+                df.setTimeZone(timezone);
+            }
+            else
+            {
+                // they want a date-time instance
+                df = getDateFormat(style, style, locale, timezone);
+            }
+        }
+        return df;
+    }
+
+    /**
+     * Returns a {@link DateFormat} instance for the specified
+     * date style, time style, {@link Locale}, and {@link TimeZone}.
+     * 
+     * @param dateStyle the date style 
+     * @param timeStyle the time style 
+     * @param locale the {@link Locale} to be used
+     * @param timezone the {@link TimeZone} to be used
+     * @return an instance of {@link DateFormat}
+     * @see #getDateFormat(int timeStyle, int dateStyle, Locale locale, TimeZone timezone)
+     */
+    public DateFormat getDateFormat(String dateStyle, String timeStyle,
+                                    Locale locale, TimeZone timezone)
+    {
+        int ds = getStyleAsInt(dateStyle);
+        int ts = getStyleAsInt(timeStyle);
+        return getDateFormat(ds, ts, locale, timezone);
+    }
+
+    /**
+     * Returns a {@link DateFormat} instance for the specified
+     * time style, date style, {@link Locale}, and {@link TimeZone}.
+     * 
+     * @param dateStyle the date style (date will be ignored if this is
+     *        less than zero and the date style is not)
+     * @param timeStyle the time style (time will be ignored if this is
+     *        less than zero and the date style is not)
+     * @param locale the {@link Locale} to be used
+     * @param timezone the {@link TimeZone} to be used
+     * @return an instance of {@link DateFormat} or <code>null</code>
+     *         if an instance cannot be constructed with the given
+     *         parameters
+     */
+    protected DateFormat getDateFormat(int dateStyle, int timeStyle, 
+                                       Locale locale, TimeZone timezone)
+    {
+        DateFormat df = null;
+        try
+        {
+            if (dateStyle < 0 && timeStyle < 0)
+            {
+                // no style was specified, use default instance
+                df = DateFormat.getInstance();
+            }
+            else if (timeStyle < 0)
+            {
+                // only a date style was specified
+                df = DateFormat.getDateInstance(dateStyle, locale);
+            }
+            else if (dateStyle < 0)
+            {
+                // only a time style was specified
+                df = DateFormat.getTimeInstance(timeStyle, locale);
+            }
+            else
+            {
+                df = DateFormat.getDateTimeInstance(dateStyle, timeStyle, 
+                                                    locale);
+            }
+            df.setTimeZone(timezone);
+        }
+        finally
+        {
+            return df;
+        }
+    }
+
+    /**
+     * Checks a string to see if it matches one of the standard DateFormat
+     * style patterns: FULL, LONG, MEDIUM, SHORT, or DEFAULT. if it does it will return
+     * the integer constant for that pattern.  if not, it will return -1.
+     *
+     * @see DateFormat
+     * @param style the string to be checked
+     * @return the int identifying the style pattern
+     */
+    protected int getStyleAsInt(String style)
+    {
+        // avoid needlessly running through all the string comparisons
+        if (style == null || style.length() < 4 || style.length() > 7) {
+            return -1;
+        }
+        if (style.equalsIgnoreCase("full"))
+        {
+            return DateFormat.FULL;
+        }
+        if (style.equalsIgnoreCase("long"))
+        {
+            return DateFormat.LONG;
+        }
+        if (style.equalsIgnoreCase("medium"))
+        {
+            return DateFormat.MEDIUM;
+        }
+        if (style.equalsIgnoreCase("short"))
+        {
+            return DateFormat.SHORT;
+        }
+        if (style.equalsIgnoreCase("default"))
+        {
+            return DateFormat.DEFAULT;
+        }
+        // ok, it's not any of the standard patterns
+        return -1;
     }
 
 
@@ -268,7 +597,7 @@ public class DateTool
      * @return the object as a {@link Date} or <code>null</code> if no
      *         conversion is possible
      */
-    public static Date toDate(Object obj)
+    public Date toDate(Object obj)
     {
         if (obj == null)
         {
@@ -290,6 +619,7 @@ public class DateTool
         }
         try
         {
+            //TODO? add better parsing support?
             //try parsing the obj as String w/a DateFormat
             DateFormat parser = DateFormat.getInstance();
             return parser.parse(String.valueOf(obj));
@@ -299,7 +629,6 @@ public class DateTool
             return null;
         }
     }
-
 
     /**
      * Converts an object to an instance of {@link Date} using the
@@ -317,8 +646,7 @@ public class DateTool
     {
         return toDate(format, obj, getLocale());
     }
-    
-    
+
     /**
      * Converts an object to an instance of {@link Date} using the
      * specified format and {@link Locale}if the object is not already
@@ -331,7 +659,7 @@ public class DateTool
      *         conversion is possible
      * @see SimpleDateFormat#parse
      */
-    public static Date toDate(String format, Object obj, Locale locale)
+    public Date toDate(String format, Object obj, Locale locale)
     {
         //first try the easiest conversions
         Date date = toDate(obj);
@@ -341,6 +669,7 @@ public class DateTool
         }
         try
         {
+            //TODO? add better parsing support?
             //try parsing w/a customized SimpleDateFormat
             SimpleDateFormat parser = new SimpleDateFormat(format, locale);
             return parser.parse(String.valueOf(obj));
@@ -350,7 +679,6 @@ public class DateTool
             return null;
         }
     }
-
 
     /**
      * Converts an object to an instance of {@link Calendar} using the
@@ -365,7 +693,6 @@ public class DateTool
         return toCalendar(obj, getLocale());
     }
 
-
     /**
      * Converts an object to an instance of {@link Calendar} using the
      * locale returned by {@link #getLocale()} if necessary.
@@ -376,7 +703,7 @@ public class DateTool
      * @see #toDate(String format, Object obj, Locale locale)
      * @see Calendar
      */
-    public static Calendar toCalendar(Object obj, Locale locale)
+    public Calendar toCalendar(Object obj, Locale locale)
     {
         if (obj == null)
         {
@@ -406,11 +733,13 @@ public class DateTool
     // ------------------------- default toString() implementation ------------
 
     /**
-     * @return the result of {@link #getDate()} as a string
+     * @return the result of {@link #getDate()} formatted according to the result
+     *         of {@link #getFormat()}.
+     * @see #format(String format, Object obj)
      */
     public String toString()
     {
-        return getDate().toString();
+        return format(getFormat(), getDate());
     }
 
 
