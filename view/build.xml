@@ -184,7 +184,7 @@
       <dvsl
            basedir="${docs.src}"
            destdir="${docs.dest}/"
-    	   toolbox="${docs.src}/toolbox.props"
+    	   toolbox="../xdocs/toolbox.props"
            extension=".html"
            style="../xdocs/site.dvsl"
            excludes="**/project.xml"
