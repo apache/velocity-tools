@@ -83,7 +83,7 @@ import java.lang.Math;
  * </ul>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.3 $ $Date: 2002/05/10 05:42:17 $
+ * @version $Revision: 1.4 $ $Date: 2002/06/23 09:40:14 $
  */
 
 public class MathTool
@@ -349,7 +349,7 @@ public class MathTool
 
 
     /**
-     * @returns a pseudo-random {@link Double} greater 
+     * @return a pseudo-random {@link Double} greater 
      *          than or equal to 0.0 and less than 1.0
      * @see Math#random()
      */

@@ -74,7 +74,7 @@ import java.util.TimeZone;
  * a non-default calendar, locale, or timezone.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.5 $ $Date: 2002/06/03 10:24:37 $
+ * @version $Revision: 1.6 $ $Date: 2002/06/23 09:40:14 $
  */
 
 public class DateTool
@@ -206,7 +206,7 @@ public class DateTool
 
 
     /**
-     * Returns a formatted string representing the specified date and locale
+     * Returns a formatted string representing the specified date and locale.
      *
      * <p>
      * This method uses the same formatting instructions as
@@ -367,7 +367,7 @@ public class DateTool
      * @param obj the date to convert
      * @param locale the locale used
      * @return the converted date
-     * @see #toDate(Object obj, Locale locale)
+     * @see #toDate(String format, Object obj, Locale locale)
      * @see Calendar
      */
     public static Calendar toCalendar(Object obj, Locale locale)
