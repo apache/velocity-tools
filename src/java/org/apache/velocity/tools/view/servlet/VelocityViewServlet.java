@@ -139,7 +139,7 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.12 2003/08/07 03:16:41 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.13 2003/10/01 23:38:14 nbubna Exp $
  */
 
 public class VelocityViewServlet extends HttpServlet
@@ -191,7 +191,7 @@ public class VelocityViewServlet extends HttpServlet
      * Cache of writers
      */
     private static SimplePool writerPool = new SimplePool(40);
- 
+
     /**
      * The encoding to use when generating outputing.
      */
@@ -414,10 +414,11 @@ public class VelocityViewServlet extends HttpServlet
                              HttpServletResponse response)
          throws ServletException, IOException
     {
+        Context context = null;
         try
         {
             // first, get a context
-            Context context = createContext(request, response);
+            context = createContext(request, response);
             
             // set the content type 
             setContentType(request, response);
@@ -433,15 +434,17 @@ public class VelocityViewServlet extends HttpServlet
 
             // merge the template and context
             mergeTemplate(template, context, response);
-
-            // call cleanup routine to let a derived class do some cleanup
-            requestCleanup(request, response, context);
         }
         catch (Exception e)
         {
             // call the error handler to let the derived class
             // do something useful with this failure.
             error(request, response, e);
+        }
+        finally
+        {
+            // call cleanup routine to let a derived class do some cleanup
+            requestCleanup(request, response, context);
         }
     }
 
