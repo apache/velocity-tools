@@ -107,7 +107,7 @@ import org.apache.struts.action.ActionMappings;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * based on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class StrutsUtils
 {
@@ -119,7 +119,7 @@ public class StrutsUtils
      * <code>javax.sql.DataSource</code>) or <code>null</code> if not found.
      *
      * @param application the servlet context
-     * @deprecated
+     * @deprecated This will be removed in VelocityTools 1.2
      */
     public static DataSource getDataSource(ServletContext app)
     {
@@ -128,52 +128,15 @@ public class StrutsUtils
 
 
     /**
-     * Return the specified data source for the current module.
-     *
-     * @param request The servlet request we are processing
-     * @param key The key specified in the
-     *  <code><message-resources></code> element for the
-     *  requested bundle
-     *
-     * @since VelocityTools 1.1
-     */
-    public static DataSource getDataSource(HttpServletRequest request,
-                                           ServletContext app)
-    {
-        /* Identify the current module */
-        ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
-        /* Return the requested data source instance */
-        return (DataSource)app.getAttribute(Globals.DATA_SOURCE_KEY +
-                                            moduleConfig.getPrefix());
-    }
-
-
-    /**
      * Returns the <code>org.apache.struts.action.ActionFormBeans</code>
      * collection for this application or <code>null</code> if not found.
      *
      * @param application the servlet context
-     * @deprecated
+     * @deprecated This will be removed in VelocityTools 1.2
      */
     public static ActionFormBeans getActionFormBeans(ServletContext app)
     {
         return (ActionFormBeans)app.getAttribute(Globals.FORM_BEANS_KEY);
-    }
-
-
-    /**
-     * Returns the <code>org.apache.struts.config.FormBeanConfig</code>
-     * array for this application or <code>null</code> if not found.
-     *
-     * @param application the servlet context
-     * @since VelocityTools 1.1
-     */
-    public static FormBeanConfig[] getFormBeanConfigs(HttpServletRequest request,
-                                                      ServletContext app)
-    {
-        /* Identify the current module */
-        ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
-        return moduleConfig.findFormBeanConfigs();
     }
 
 
@@ -183,7 +146,7 @@ public class StrutsUtils
      *
      * @param name logical name of the requested form bean definition
      * @param application the servlet context
-     * @deprecated
+     * @deprecated This will be removed in VelocityTools 1.2
      */
     public static FormBeanConfig getFormBean(String name, ServletContext app)
     {
@@ -198,49 +161,15 @@ public class StrutsUtils
 
 
     /**
-     * Returns the form bean definition associated with the specified
-     * logical name or <code>null</code> if not found.
-     *
-     * @param name logical name of the requested form bean definition
-     * @param application the servlet context
-     * @since VelocityTools 1.1
-     */
-    public static FormBeanConfig getFormBeanConfig(String name,
-                                                   HttpServletRequest request,
-                                                   ServletContext app)
-    {
-        /* Identify the current module */
-        ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
-        return moduleConfig.findFormBeanConfig(name);
-    }
-
-
-    /**
      * Returns the <code>org.apache.struts.action.ActionForwards</code>
      * collection for this application or <code>null</code> if not found.
      *
      * @param application the servlet context
-     * @deprecated
+     * @deprecated This will be removed in VelocityTools 1.2
      */
     public static ActionForwards getActionForwards(ServletContext app)
     {
         return (ActionForwards)app.getAttribute(Globals.FORWARDS_KEY);
-    }
-
-
-    /**
-     * Returns the <code>org.apache.struts.config.ForwardConfig</code>
-     * array for this application or <code>null</code> if not found.
-     *
-     * @param application the servlet context
-     * @since VelocityTools 1.1
-     */
-    public static ForwardConfig[] getForwardConfigs(HttpServletRequest request,
-                                                    ServletContext app)
-    {
-        /* Identify the current module */
-        ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
-        return moduleConfig.findForwardConfigs();
     }
 
 
@@ -250,7 +179,7 @@ public class StrutsUtils
      *
      * @param name Logical name of the requested forwarding
      * @param appplication the servlet context
-     * @deprecated
+     * @deprecated This will be removed in VelocityTools 1.2
      */
     public static ActionForward getActionForward(String name,
                                                  ServletContext app)
@@ -265,49 +194,15 @@ public class StrutsUtils
 
 
     /**
-     * Returns the forwarding associated with the specified logical name
-     * or <code>null</code> if not found.
-     *
-     * @param name Logical name of the requested forwarding
-     * @param application the servlet context
-     * @since VelocityTools 1.1
-     */
-    public static ForwardConfig getForwardConfig(String name,
-                                                 HttpServletRequest request,
-                                                 ServletContext app)
-    {
-        /* Identify the current module */
-        ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
-        return moduleConfig.findForwardConfig(name);
-    }
-
-
-    /**
      * Returns the <code>org.apache.struts.action.ActionMappings</code>
      * collection for this application or <code>null</code> if not found.
      *
      * @param application the servlet context
-     * @deprecated
+     * @deprecated This will be removed in VelocityTools 1.2
      */
     public static ActionMappings getActionMappings(ServletContext app)
     {
         return (ActionMappings)app.getAttribute(Globals.MAPPINGS_KEY);
-    }
-
-
-    /**
-     * Returns the <code>org.apache.struts.config.ActionConfig</code>
-     * array for this application or <code>null</code> if not found.
-     *
-     * @param application the servlet context
-     * @since VelocityTools 1.1
-     */
-    public static ActionConfig[] getActionConfigs(HttpServletRequest request,
-                                                  ServletContext app)
-    {
-        /* Identify the current module */
-        ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
-        return moduleConfig.findActionConfigs();
     }
 
 
@@ -317,7 +212,7 @@ public class StrutsUtils
      *
      * @param path Request path for which a mapping is requested
      * @param application the servlet context
-     * @deprecated
+     * @deprecated This will be removed in VelocityTools 1.2
      */
     public static ActionMapping getActionMapping(String path,
                                                  ServletContext app)
@@ -332,29 +227,11 @@ public class StrutsUtils
 
 
     /**
-     * Returns the mapping associated with the specified request path,
-     * or <code>null</code> if not found.
-     *
-     * @param path Request path for which a mapping is requested
-     * @param application the servlet context
-     * @since VelocityTools 1.1
-     */
-    public static ActionConfig getActionConfig(String path,
-                                               HttpServletRequest request,
-                                               ServletContext app)
-    {
-        /* Identify the current module */
-        ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
-        return moduleConfig.findActionConfig(path);
-    }
-
-
-    /**
      * Returns the message resources for this application or <code>null</code>
      * if not found.
      *
      * @param application the servlet context
-     * @deprecated
+     * @deprecated This will be removed in VelocityTools 1.2
      */
     public static MessageResources getMessageResources(ServletContext app)
     {
@@ -443,6 +320,7 @@ public class StrutsUtils
      * extension mapped pattern (<code>*.do</code>).
      *
      * @param application the servlet context
+     * @deprecated This will be removed in VelocityTools 1.2
      */
     public static String getServletMapping(ServletContext app)
     {
@@ -526,6 +404,7 @@ public class StrutsUtils
      * placed in the request. Returns <code>null</code> if none found.
      *
      * @param request the servlet request
+     * @deprecated This will be removed in VelocityTools 1.2
      */
     public static Throwable getException(HttpServletRequest request)
     {
@@ -538,23 +417,11 @@ public class StrutsUtils
      * if none exists.
      *
      * @param request the servlet request
+     * @deprecated This will be removed in VelocityTools 1.2
      */
     public static MultipartRequestWrapper getMultipartRequestWrapper(HttpServletRequest request)
     {
         return (MultipartRequestWrapper)request.getAttribute(Globals.MULTIPART_KEY);
-    }
-
-
-    /**
-     * Returns the <code>org.apache.struts.config.ActionConfig</code> instance
-     * for this request or <code>null</code> if none exists.
-     *
-     * @param request the servlet request
-     * @since VelocityTools 1.1
-     */
-    public static ActionConfig getActionConfig(HttpServletRequest request)
-    {
-        return (ActionConfig)request.getAttribute(Globals.MAPPING_KEY);
     }
 
 
@@ -569,7 +436,8 @@ public class StrutsUtils
                                            HttpSession session)
     {
         /* Is there a mapping associated with this request? */
-        ActionConfig mapping = getActionConfig(request);
+        ActionConfig mapping = 
+            (ActionConfig)request.getAttribute(Globals.MAPPING_KEY);
         if (mapping == null)
         {
             return null;
@@ -600,6 +468,8 @@ public class StrutsUtils
     /**
      * Returns the query parameter name under which a cancel button press
      * must be reported if form validation is to be skipped.
+     *
+     * @deprecated This will be removed in VelocityTools 1.2
      */
     public static String getCancelName()
     {
@@ -610,6 +480,8 @@ public class StrutsUtils
     /**
      * Returns the default "GLOBAL" category name that can be used with
      * messages that are not associated with a particular property.
+     *
+     * @deprecated This will be removed in VelocityTools 1.2
      */
     public static String getGlobalErrorName()
     {
@@ -620,6 +492,8 @@ public class StrutsUtils
     /**
      * Returns the query parameter name under which a transaction token
      * must be reported.
+     *
+     * @deprecated This will be removed in VelocityTools 1.2
      */
     public static String getTokenName()
     {
@@ -641,6 +515,7 @@ public class StrutsUtils
      * </ul>
      *
      * @param action the name of an action as per struts-config.xml
+     * @deprecated This will be removed in VelocityTools 1.2
      */
     public static String getActionMappingName(String action)
     {
@@ -669,7 +544,8 @@ public class StrutsUtils
         }
 
         /* Use our servlet mapping, if one is specified */
-        String servletMapping = getServletMapping(application);
+        String servletMapping = 
+            (String)application.getAttribute(Globals.SERVLET_KEY);
 
         if (servletMapping != null)
         {
@@ -681,7 +557,7 @@ public class StrutsUtils
                 queryString = action.substring(question);
             }
 
-            String actionMapping = getActionMappingName(action);
+            String actionMapping = RequestUtils.getActionMappingName(action);
 
             if (servletMapping.startsWith("*."))
             {
@@ -728,7 +604,8 @@ public class StrutsUtils
                                        ServletContext app,
                                        String forward)
     {
-        ForwardConfig fc = StrutsUtils.getForwardConfig(forward, request, app);
+        ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
+        ForwardConfig fc = moduleConfig.findForwardConfig(forward);
         if (fc == null)
         {
             return null;
