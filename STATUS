@@ -1,12 +1,10 @@
 S T A T U S
 ===========
-$Id: STATUS,v 1.3 2003/02/13 04:16:25 nbubna Exp $
+$Id: STATUS,v 1.4 2003/02/19 20:06:19 nbubna Exp $
 
 
 Known Issues/Bugs:
-    - Configuration issues. Currently, the resource loader and the logger
-        are hard-coded in VVS and overwrite the configuration in 
-        Velocity.properties.  This is inflexible and confusing.
+    - Nothing of note! :)
 
 
 
