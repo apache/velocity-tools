@@ -44,17 +44,17 @@ import org.apache.commons.beanutils.PropertyUtils;
  *   &lt;class&gt;org.apache.velocity.tools.generic.MathTool&lt;/class&gt;
  * &lt;/tool&gt;
  * </pre></p>
- * 
+ *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author Leon Messerschmidt
- * @version $Revision: 1.10 $ $Date: 2004/07/21 21:57:59 $
+ * @version $Revision: 1.11 $ $Date: 2004/10/04 01:55:17 $
  */
 public class MathTool
 {
     /**
      * @param num1 the first number
      * @param num2 the second number
-     * @return the sum of the numbers or 
+     * @return the sum of the numbers or
      *         <code>null</code> if they're invalid
      * @see #toNumber
      */
@@ -74,7 +74,7 @@ public class MathTool
     /**
      * @param num1 the first number
      * @param num2 the second number
-     * @return the difference of the numbers or 
+     * @return the difference of the numbers or
      *         <code>null</code> if they're invalid
      * @see #toNumber
      */
@@ -94,7 +94,7 @@ public class MathTool
     /**
      * @param num1 the first number
      * @param num2 the second number
-     * @return the product of the numbers or 
+     * @return the product of the numbers or
      *         <code>null</code> if they're invalid
      * @see #toNumber
      */
@@ -114,7 +114,7 @@ public class MathTool
     /**
      * @param num1 the first number
      * @param num2 the second number
-     * @return the quotient of the numbers or 
+     * @return the quotient of the numbers or
      *         <code>null</code> if they're invalid
      * @see #toNumber
      */
@@ -153,8 +153,8 @@ public class MathTool
 
     /**
      * Does integer division on the int values of the specified numbers.
-     * 
-     * <p>So, $math.idiv('5.1',3) will return '1', 
+     *
+     * <p>So, $math.idiv('5.1',3) will return '1',
      *    and $math.idiv(6,'3.9') will return '2'.</p>
      *
      * @param num1 the first number
@@ -204,7 +204,7 @@ public class MathTool
     /**
      * @param num1 the first number
      * @param num2 the second number
-     * @return the largest of the numbers or 
+     * @return the largest of the numbers or
      *         <code>null</code> if they're invalid
      * @see #toNumber
      */
@@ -224,7 +224,7 @@ public class MathTool
     /**
      * @param num1 the first number
      * @param num2 the second number
-     * @return the smallest of the numbers or 
+     * @return the smallest of the numbers or
      *         <code>null</code> if they're invalid
      * @see #toNumber
      */
@@ -261,7 +261,7 @@ public class MathTool
 
     /**
      * @param num the number
-     * @return the smallest integer that is not 
+     * @return the smallest integer that is not
      *         less than the given number
      */
     public Integer ceil(Object num)
@@ -277,7 +277,7 @@ public class MathTool
 
     /**
      * @param num the number
-     * @return the integer portion of the number 
+     * @return the integer portion of the number
      */
     public Integer floor(Object num)
     {
@@ -349,7 +349,7 @@ public class MathTool
 
 
     /**
-     * @return a pseudo-random {@link Double} greater 
+     * @return a pseudo-random {@link Double} greater
      *          than or equal to 0.0 and less than 1.0
      * @see Math#random()
      */
@@ -385,7 +385,7 @@ public class MathTool
         }
 
         double diff = n2.doubleValue() - n1.doubleValue();
-        // multiply the difference by a pseudo-random double from 
+        // multiply the difference by a pseudo-random double from
         // 0.0 to 1.0, round to the nearest int, and add the first
         // value to the random int and return as an Integer
         double random = (diff * Math.random()) + n1.doubleValue();
@@ -444,7 +444,7 @@ public class MathTool
         return new Double(n.intValue());
     }
 
-        
+
     /**
      * Converts an object with a numeric value into a Number
      * Valid formats are {@link Number} or a {@link String}
@@ -492,8 +492,8 @@ public class MathTool
      * Takes the original argument(s) and returns the resulting value as
      * an instance of the best matching type (Integer, Long, or Double).
      * If either an argument or the result is not an integer (i.e. has no
-     * decimal when rendered) the result will be returned as a Double.  
-     * If not and the result is < -2147483648 or > 2147483647, then a 
+     * decimal when rendered) the result will be returned as a Double.
+     * If not and the result is < -2147483648 or > 2147483647, then a
      * Long will be returned.  Otherwise, an Integer will be returned.
      */
     protected Number matchType(Number in1, Number in2, double out)
@@ -562,7 +562,7 @@ public class MathTool
                 return new Integer((int)i);
             }
         }
-        else 
+        else
         {
             return new Double(value);
         }
@@ -574,11 +574,11 @@ public class MathTool
 
     /**
      * Get the sum of the values from a list
-     * 
+     *
      * @param collection  A collection containing Java beans
      * @param field A Java Bean field for the objects in <i>collection</i> that
      *              will return a number.
-     * @return The sum of the values in <i>collection</i>. 
+     * @return The sum of the values in <i>collection</i>.
      */
     public Number getTotal(Collection collection, String field)
     {
@@ -609,14 +609,14 @@ public class MathTool
             return null;
         }
     }
-  
+
     /**
      * Get the average of the values from a list
-     * 
+     *
      * @param collection  A collection containing Java beans
      * @param field A Java Bean field for the objects in <i>collection</i> that
      *              will return a number.
-     * @return The average of the values in <i>collection</i>. 
+     * @return The average of the values in <i>collection</i>.
      */
     public Number getAverage(Collection collection, String field)
     {
@@ -628,14 +628,14 @@ public class MathTool
         double avg = result.doubleValue() / collection.size();
         return matchType(result, avg);
     }
-  
+
     /**
      * Get the sum of the values from a list
-     * 
-     * @param collection  A collection containing Java beans
+     *
+     * @param array  An array containing Java beans
      * @param field A Java Bean field for the objects in <i>array</i> that
      *              will return a number.
-     * @return The sum of the values in <i>array</i>. 
+     * @return The sum of the values in <i>array</i>.
      */
     public Number getTotal(Object[] array, String field)
     {
@@ -644,11 +644,11 @@ public class MathTool
 
     /**
      * Get the sum of the values from a list
-     * 
+     *
      * @param array  A collection containing Java beans
      * @param field A Java Bean field for the objects in <i>array</i> that
      *      will return a number.
-     * @return The sum of the values in <i>array</i>. 
+     * @return The sum of the values in <i>array</i>.
      */
     public Number getAverage(Object[] array, String field)
     {
@@ -657,9 +657,9 @@ public class MathTool
 
     /**
      * Get the sum of the values
-     * 
+     *
      * @param collection  A collection containing numeric values
-     * @return The sum of the values in <i>collection</i>. 
+     * @return The sum of the values in <i>collection</i>.
      */
     public Number getTotal(Collection collection)
     {
@@ -687,12 +687,12 @@ public class MathTool
         }
         return matchType(first, result);
     }
-  
+
     /**
      * Get the average of the values
-     * 
+     *
      * @param collection  A collection containing number values
-     * @return The average of the values in <i>collection</i>. 
+     * @return The average of the values in <i>collection</i>.
      */
     public Number getAverage(Collection collection)
     {
@@ -707,9 +707,9 @@ public class MathTool
 
     /**
      * Get the sum of the values
-     * 
+     *
      * @param array  An array containing number values
-     * @return The sum of the values in <i>array</i>. 
+     * @return The sum of the values in <i>array</i>.
      */
     public Number getTotal(Object[] array)
     {
@@ -718,9 +718,9 @@ public class MathTool
 
     /**
      * Get the average of the values
-     * 
+     *
      * @param array  An array containing number values
-     * @return The sum of the values in <i>array</i>. 
+     * @return The sum of the values in <i>array</i>.
      */
     public Number getAverage(Object[] array)
     {
@@ -729,7 +729,7 @@ public class MathTool
 
     /**
      * Get the sum of the values
-     * 
+     *
      * @param values The list of double values to add up.
      * @return The sum of the arrays
      */
@@ -750,7 +750,7 @@ public class MathTool
 
     /**
      * Get the average of the values in an array of double values
-     * 
+     *
      * @param values The list of double values
      * @return The average of the array of values
      */
@@ -766,7 +766,7 @@ public class MathTool
 
     /**
      * Get the sum of the values
-     * 
+     *
      * @param values The list of long values to add up.
      * @return The sum of the arrays
      */
@@ -787,7 +787,7 @@ public class MathTool
 
     /**
      * Get the average of the values in an array of long values
-     * 
+     *
      * @param values The list of long values
      * @return The average of the array of values
      */
