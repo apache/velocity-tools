@@ -107,7 +107,7 @@ import org.apache.struts.action.ActionMappings;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * based on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class StrutsUtils
 {
@@ -123,10 +123,6 @@ public class StrutsUtils
      */
     public static DataSource getDataSource(ServletContext app)
     {
-        if (app == null)
-        {
-           return null;
-        }
         return (DataSource)app.getAttribute(Globals.DATA_SOURCE_KEY);
     }
 
@@ -144,11 +140,6 @@ public class StrutsUtils
     public static DataSource getDataSource(HttpServletRequest request, 
                                            ServletContext app)
     {
-        if (app == null)
-        {
-            return null;
-        }
-
         /* Identify the current module */
         ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
         /* Return the requested data source instance */
@@ -166,10 +157,6 @@ public class StrutsUtils
      */
     public static ActionFormBeans getActionFormBeans(ServletContext app)
     {
-        if (app == null)
-        {
-            return null;
-        }
         return (ActionFormBeans)app.getAttribute(Globals.FORM_BEANS_KEY);
     }
 
@@ -183,11 +170,6 @@ public class StrutsUtils
     public static FormBeanConfig[] getFormBeanConfigs(HttpServletRequest request, 
                                                       ServletContext app)
     {
-        if (app == null)
-        {
-            return null;
-        }
-
         /* Identify the current module */
         ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
         return moduleConfig.findFormBeanConfigs();
@@ -240,10 +222,6 @@ public class StrutsUtils
      */
     public static ActionForwards getActionForwards(ServletContext app)
     {
-        if (app == null)
-        {
-            return null;
-        }
         return (ActionForwards)app.getAttribute(Globals.FORWARDS_KEY);
     }
 
@@ -257,11 +235,6 @@ public class StrutsUtils
     public static ForwardConfig[] getForwardConfigs(HttpServletRequest request, 
                                                     ServletContext app)
     {
-        if (app == null)
-        {
-            return null;
-        }
-
         /* Identify the current module */
         ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
         return moduleConfig.findForwardConfigs();
@@ -299,11 +272,6 @@ public class StrutsUtils
                                                  HttpServletRequest request, 
                                                  ServletContext app)
     {
-        if (app == null)
-        {
-            return null;
-        }
-
         /* Identify the current module */
         ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
         return moduleConfig.findForwardConfig(name);
@@ -319,10 +287,6 @@ public class StrutsUtils
      */
     public static ActionMappings getActionMappings(ServletContext app)
     {
-        if (app == null)
-        {
-            return null;
-        }
         return (ActionMappings)app.getAttribute(Globals.MAPPINGS_KEY);
     }
 
@@ -336,11 +300,6 @@ public class StrutsUtils
     public static ActionConfig[] getActionConfigs(HttpServletRequest request, 
                                                   ServletContext app)
     {
-        if (app == null)
-        {
-            return null;
-        }
-
         /* Identify the current module */
         ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
         return moduleConfig.findActionConfigs();
@@ -378,11 +337,6 @@ public class StrutsUtils
                                                HttpServletRequest request, 
                                                ServletContext app)
     {
-        if (app == null)
-        {
-            return null;
-        }
-
         /* Identify the current module */
         ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
         return moduleConfig.findActionConfig(path);
@@ -398,10 +352,6 @@ public class StrutsUtils
      */
     public static MessageResources getMessageResources(ServletContext app)
     {
-        if (app == null)
-        {
-            return null;
-        }
         return (MessageResources)app.getAttribute(Globals.MESSAGES_KEY);
     }
 
@@ -415,11 +365,6 @@ public class StrutsUtils
     public static MessageResources getMessageResources(HttpServletRequest request, 
                                                        ServletContext app)
     {
-        if (app == null)
-        {
-            return null;
-        }
-
         /* Identify the current module */
         ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
         return (MessageResources)app.getAttribute(Globals.MESSAGES_KEY + 
@@ -437,10 +382,6 @@ public class StrutsUtils
      */
     public static String getServletMapping(ServletContext app)
     {
-        if (app == null)
-        {
-            return null;
-        }
         return (String)app.getAttribute(Globals.SERVLET_KEY);
     }
 
@@ -464,7 +405,7 @@ public class StrutsUtils
         {
             locale = (Locale)session.getAttribute(Globals.LOCALE_KEY);
         }
-        if (locale == null && request != null)
+        if (locale == null)
         {
             locale = request.getLocale();
         }
@@ -498,10 +439,6 @@ public class StrutsUtils
      */
     public static ActionErrors getActionErrors(HttpServletRequest request)
     {
-        if (request == null)
-        {
-            return null;
-        }
         return (ActionErrors)request.getAttribute(Globals.ERROR_KEY);
     }
 
@@ -514,10 +451,6 @@ public class StrutsUtils
      */
     public static ActionMessages getActionMessages(HttpServletRequest request)
     {
-        if (request == null)
-        {
-            return null;
-        }
         return (ActionMessages)request.getAttribute(Globals.MESSAGE_KEY);
     }
 
@@ -531,10 +464,6 @@ public class StrutsUtils
      */
     public static Throwable getException(HttpServletRequest request)
     {
-        if (request == null)
-        {
-            return null;
-        }
         return (Throwable)request.getAttribute(Globals.EXCEPTION_KEY);
     }
 
@@ -547,10 +476,6 @@ public class StrutsUtils
      */
     public static MultipartRequestWrapper getMultipartRequestWrapper(HttpServletRequest request)
     {
-        if (request == null)
-        {
-            return null;
-        }
         return (MultipartRequestWrapper)request.getAttribute(Globals.MULTIPART_KEY);
     }
 
@@ -563,10 +488,6 @@ public class StrutsUtils
      */
     public static ActionConfig getActionConfig(HttpServletRequest request)
     {
-        if (request == null)
-        {
-           return null;
-        }
         return (ActionConfig)request.getAttribute(Globals.MAPPING_KEY);
     }
 
