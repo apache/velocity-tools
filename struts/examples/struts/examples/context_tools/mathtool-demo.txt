@@ -29,7 +29,7 @@
                 <td>\$math.random(0, 999)</td><td>$math.random(0, 999)</td>
             </tr>
             <tr>
-                <td>\$math.pow(2, 2)</td><td>$math.pow(2, 2) (?)</td>
+                <td>\$math.pow(2, 8)</td><td>$math.pow(2, 8)</td>
             </tr>
             <tr>
                 <td>\$math.abs(-123)</td><td>$math.abs(-123)</td>
