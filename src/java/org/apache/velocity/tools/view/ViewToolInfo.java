@@ -18,9 +18,10 @@ package org.apache.velocity.tools.view;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.view.tools.Configurable;
 import org.apache.velocity.tools.view.tools.ViewTool;
-import org.apache.velocity.app.Velocity;
 
 /**
  * ToolInfo implementation for view tools. New instances
@@ -30,10 +31,11 @@ import org.apache.velocity.app.Velocity;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: ViewToolInfo.java,v 1.9 2004/04/16 20:36:12 nbubna Exp $
+ * @version $Id: ViewToolInfo.java,v 1.10 2004/11/11 06:26:27 nbubna Exp $
  */
 public class ViewToolInfo implements ToolInfo
 {
+    protected static final Log LOG = LogFactory.getLog(ViewToolInfo.class);
 
     private String key;
     private Class clazz;
@@ -162,13 +164,13 @@ public class ViewToolInfo implements ToolInfo
          * notice of them, and let other exceptions slip by. */
         catch (IllegalAccessException e)
         {
-            Velocity.error("Exception while instantiating instance of \"" +
-                           getClassname() + "\": " + e);
+            LOG.error("Exception while instantiating instance of \"" +
+                      getClassname() + "\": " + e);
         }
         catch (InstantiationException e)
         {
-            Velocity.error("Exception while instantiating instance of \"" +
-                           getClassname() + "\": " + e);
+            LOG.error("Exception while instantiating instance of \"" +
+                      getClassname() + "\": " + e);
         }
         if (configurable)
         {

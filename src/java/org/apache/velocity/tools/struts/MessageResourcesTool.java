@@ -19,8 +19,9 @@ package org.apache.velocity.tools.struts;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.struts.util.MessageResources;
-import org.apache.velocity.app.Velocity;
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
 
@@ -29,10 +30,12 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:nbubna@apache.org">Nathan Bubna</a>
  * @since VelocityTools 1.1
- * @version $Id: MessageResourcesTool.java,v 1.3 2004/02/18 20:09:51 nbubna Exp $
+ * @version $Id: MessageResourcesTool.java,v 1.4 2004/11/11 06:26:27 nbubna Exp $
  */
 public abstract class MessageResourcesTool implements ViewTool
 {
+
+    protected static final Log LOG = LogFactory.getLog(MessageResourcesTool.class);
 
     protected ServletContext application;
     protected HttpServletRequest request;
@@ -74,7 +77,7 @@ public abstract class MessageResourcesTool implements ViewTool
         {
             if (resources == null) 
             {
-                Velocity.error("MessageResourcesTool: Message resources are not available.");
+                LOG.error("Message resources are not available.");
             }
             return resources;
         }
@@ -83,8 +86,7 @@ public abstract class MessageResourcesTool implements ViewTool
             StrutsUtils.getMessageResources(request, application, bundle);
         if (res == null)
         {
-            Velocity.error("MessageResourcesTool: MessageResources bundle '"
-                           + bundle + "' is not available.");
+            LOG.error("MessageResources bundle '" + bundle + "' is not available.");
         }
         return res;
     }

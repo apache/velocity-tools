@@ -16,7 +16,8 @@
 
 package org.apache.velocity.tools.struts;
 
-import org.apache.velocity.app.Velocity;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.view.tools.LinkTool;
 import org.apache.velocity.tools.struts.StrutsUtils;
 
@@ -42,10 +43,12 @@ import org.apache.velocity.tools.struts.StrutsUtils;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: StrutsLinkTool.java,v 1.7 2004/02/18 20:09:51 nbubna Exp $
+ * @version $Id: StrutsLinkTool.java,v 1.8 2004/11/11 06:26:27 nbubna Exp $
  */
 public class StrutsLinkTool extends LinkTool
 {
+
+    protected static final Log LOG = LogFactory.getLog(StrutsLinkTool.class);
 
 
     /**
@@ -82,8 +85,8 @@ public class StrutsLinkTool extends LinkTool
         String url = StrutsUtils.getForwardURL(request, application, forward);
         if (url == null)
         {
-            Velocity.warn("StrutsLinkTool: In method setForward(" + forward +
-                          "): Parameter does not map to a valid forward.");
+            LOG.warn("In method setForward(" + forward +
+                     "): Parameter does not map to a valid forward.");
             return null;
         }
         return (StrutsLinkTool)copyWith(url);

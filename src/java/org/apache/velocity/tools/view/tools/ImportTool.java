@@ -20,8 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
-
-import org.apache.velocity.app.Velocity;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.view.ImportSupport;
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
@@ -43,10 +43,11 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.6 $ $Date: 2004/03/12 20:30:32 $
+ * @version $Revision: 1.7 $ $Date: 2004/11/11 06:26:27 $
  */
-public class ImportTool extends ImportSupport
-    implements ViewTool {
+public class ImportTool extends ImportSupport implements ViewTool {
+
+    protected static final Log LOG = LogFactory.getLog(ImportTool.class);
 
     /**
      * Default constructor. Tool must be initialized before use.
@@ -80,14 +81,14 @@ public class ImportTool extends ImportSupport
         try {
             // check the URL
             if (url == null || url.equals("")) {
-                Velocity.warn("ImportTool: import URL is null or empty");
+                LOG.warn("Import URL is null or empty");
                 return null;
             }
 
             return acquireString(url);
         }
         catch (Exception ex) {
-            Velocity.error("Exception while importing URL: " + ex.getMessage());
+            LOG.error("Exception while importing URL: " + ex.getMessage());
             return null;
         }
     }

@@ -21,13 +21,12 @@ import java.lang.reflect.Method;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
-
-import org.apache.velocity.app.Velocity;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
 
@@ -52,11 +51,11 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Id: LinkTool.java,v 1.16 2004/11/11 03:54:55 nbubna Exp $
+ * @version $Id: LinkTool.java,v 1.17 2004/11/11 06:26:27 nbubna Exp $
  */
 public class LinkTool implements ViewTool, Cloneable
 {
-
+    protected static final Log LOG = LogFactory.getLog(LinkTool.class);
 
     /** Standard HTML delimiter for query data ('&') */ 
     public static final String HTML_QUERY_DELIMITER = "&";
@@ -103,7 +102,7 @@ public class LinkTool implements ViewTool, Cloneable
         }
         catch (NoSuchMethodException e)
         {
-            Velocity.debug("LinkTool: Can't find JDK 1.4 encode method. Using JDK 1.3 version.");
+            LOG.debug("Can't find JDK 1.4 encode method. Using JDK 1.3 version.");
         }
     }
 
@@ -209,8 +208,7 @@ public class LinkTool implements ViewTool, Cloneable
         }
         catch (CloneNotSupportedException e)
         {
-            Velocity.warn("LinkTool: could not properly clone " + getClass() + 
-                          " - " + e);
+            LOG.warn("Could not properly clone " + getClass() + " - " + e);
 
             // "clone" manually
             LinkTool copy;
@@ -525,13 +523,13 @@ public class LinkTool implements ViewTool, Cloneable
                 // don't keep trying if we get one of these
                 encode = null;
 
-                Velocity.debug("LinkTool: Can't access JDK 1.4 encode method ("
-                               + e + "). Using deprecated version from now on.");
+                LOG.debug("Can't access JDK 1.4 encode method ("
+                          + e + "). Using deprecated version from now on.");
             }
             catch (InvocationTargetException e)
             {
-                Velocity.debug("LinkTool: Error using JDK 1.4 encode method ("
-                               + e + "). Using deprecated version.");
+                LOG.debug("Error using JDK 1.4 encode method ("
+                          + e + "). Using deprecated version.");
             }
         }
         return URLEncoder.encode(url);

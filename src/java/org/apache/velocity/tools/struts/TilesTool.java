@@ -22,6 +22,9 @@ import java.util.Iterator;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.struts.tiles.ComponentContext;
 import org.apache.struts.tiles.ComponentDefinition;
 import org.apache.struts.tiles.AttributeDefinition;
@@ -33,7 +36,6 @@ import org.apache.struts.tiles.TilesUtil;
 import org.apache.struts.tiles.DefinitionsFactoryException;
 import org.apache.struts.tiles.Controller;
 
-import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.view.ImportSupport;
 import org.apache.velocity.tools.view.context.ViewContext;
@@ -64,10 +66,12 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.13 $ $Date: 2004/04/14 20:08:28 $
+ * @version $Revision: 1.14 $ $Date: 2004/11/11 06:26:27 $
  */
 public class TilesTool extends ImportSupport implements ViewTool
 {
+    protected static final Log LOG = LogFactory.getLog(TilesTool.class);
+
     static final String PAGE_SCOPE = "page";
     static final String REQUEST_SCOPE = "request";
     static final String SESSION_SCOPE = "session";
@@ -138,8 +142,8 @@ public class TilesTool extends ImportSupport implements ViewTool
         }
         catch (Exception e)
         {
-            Velocity.error("TilesTool: Exeption while rendering Tile "
-                           + obj + ": " + e.getMessage());
+            LOG.error("Exeption while rendering Tile "
+                      + obj + ": " + e.getMessage());
             return null;
         }
     }
@@ -158,8 +162,7 @@ public class TilesTool extends ImportSupport implements ViewTool
         Object value = getCurrentContext().getAttribute(name);
         if (value == null)
         {
-            Velocity.warn("TilesTool: Tile attribute '"
-                           + name + "' was not found in context.");
+            LOG.warn("Tile attribute '" + name + "' wasn't found in context.");
         }
         return value;
     }
@@ -193,8 +196,7 @@ public class TilesTool extends ImportSupport implements ViewTool
         Object value = getCurrentContext().getAttribute(name);
         if (value == null)
         {
-            Velocity.warn("TilesTool: Tile attribute '"
-                           + name + "' was not found in context.");
+            LOG.warn("Tile attribute '" + name + "' wasn't found in context.");
         }
 
         if (scope.equals(PAGE_SCOPE))
