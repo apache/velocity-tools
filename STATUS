@@ -1,6 +1,6 @@
 S T A T U S
 ===========
-$Id: STATUS,v 1.14 2003/11/19 22:05:12 nbubna Exp $
+$Id: STATUS,v 1.15 2004/02/18 20:26:59 nbubna Exp $
 
 
 Known Issues/Bugs:
@@ -10,10 +10,8 @@ Known Issues/Bugs:
 
 Documentation:
    - Complete user guide.
-   - Improve documention of RenderTool, ViewRenderTool, IteratorTool, 
-     AbstractSearchTool, TilesTool, CookieTool, ActionMessagesTool, 
-     MultiViewsTool, ValidatorTool, SecureLinkTool, ImportTool and 
-     the commons-logging/LogSystem bridges (either xml/dvsl or javadoc)
+   - Improve documention of any or all of the view tools and the 
+     commons-logging/LogSystem bridges (either xml/dvsl or javadoc)
    - Create a developer's guide (how to write tools, tips on extending VVS, etc.)
 
 
@@ -33,11 +31,12 @@ Proposed Features/Upgrades:
           from the toolbox config file (pooling support might help here)
         - add chooseCharacterEncoding(req) to VVS to make dynamic encoding
           selection easier
+        - look into supporting arbitrary layout depth (sort of a "tiles lite")
+          for the VelocityLayoutServlet (cf. Niall's work with Simple)
 
     Generic tools:
         - add a library of general-use velocimacros
         - Template debugging tool(s)/support
-        - number formatting tool
 
     VelocityStruts:
         - add a library of velocimacros for use with struts tools
