@@ -48,7 +48,6 @@
 <ul>
         <li><a href="index.html">Overview</a></li>
     <li><a href="index.html#Benefits">Benefits</a></li>
-    <li><a href="index.html#What About Struts 1.1?">What About 1.1?</a></li>
     <li><a href="../index.html#Download">Download</a></li>
     <li><a href="userguide.html">User Guide</a></li>
     <li><a href="userguide.html#Installation">Installation</a></li>
@@ -60,10 +59,22 @@
     <a href="StrutsTools.html"><strong>VelocityStruts Tools</strong></a>
 </p>
 <ul>
-        <li><a href="MessageTool.html">MessageTool</a></li>
-    <li><a href="FormTool.html">FormTool</a></li>
+        <li><a href="ActionMessagesTool.html">ActionMessagesTool</a></li>
     <li><a href="ErrorsTool.html">ErrorsTool</a></li>
+    <li><a href="FormTool.html">FormTool</a></li>
+    <li><a href="MessageTool.html">MessageTool</a></li>
     <li><a href="StrutsLinkTool.html">StrutsLinkTool</a></li>
+    <li><a href="SecureLinkTool.html">SecureLinkTool</a></li>
+    <li><a href="TilesTool.html">TilesTool</a></li>
+    <li><a href="ValidatorTool.html">ValidatorTool</a></li>
+
+</ul>
+<p>
+    <strong>Other Subprojects</strong>
+</p>
+<ul>
+        <li><a href="../generic/">GenericTools</a></li>
+    <li><a href="../view/">VelocityView</a></li>
 
 </ul>
 
@@ -87,7 +98,7 @@
     <td>
       <p>
         The MessageTool is used to render internationalized message strings. Source
-        of the strings are the message resource bundles of the Struts framework. The 
+        of the strings are the message resource bundles of the Struts framework. The
         following methods operate on these message resources.
         </p>
 <table cellpadding="0" cellspacing="0">
@@ -95,12 +106,12 @@
   <tr><td>&nbsp;</td><td>org.apache.velocity.tools.struts.MessageTool</td></tr>
 
   <tr><td colspan="2"><strong>Name</strong></td></tr>
-  <tr><td>&nbsp;</td><td>$msg (this is the recommended name of the tool in 
+  <tr><td>&nbsp;</td><td>$text (this is the recommended name of the tool in 
       the Velocity context)</td></tr>
 
   <tr><td colspan="2"><strong>Toolbox Configuration Example</strong></td></tr>
   <tr><td>&nbsp;</td><td><pre>&lt;tool&gt;
-  &lt;key&gt;msg&lt;/key&gt;
+  &lt;key&gt;text&lt;/key&gt;
   &lt;scope&gt;request&lt;/scope&gt;
   &lt;class&gt;org.apache.velocity.tools.struts.MessageTool&lt;/class&gt;
 &lt;/tool&gt;</pre></td></tr>
@@ -136,8 +147,8 @@
             <a href="#getLocale()">getLocale()</a></td>
           <td bgcolor="EEEEEE">
             
-                Returns the user's locale. If a locale is not found, the default 
-                locale is returned.
+                Returns the user's locale. If a locale is not found, the default
+                locale is returned (deprecated - will be removed in VelocityTools 1.2).
             
           </td>
         </tr>
@@ -178,7 +189,25 @@
     <table width="100%"><tr><td bgcolor="EEEEEE">
     <font size="+1"><code>
         <signature>
+                String get(String key, String bundle)
+            </signature>
+    </code></font>
+    </td></tr></table>
+    </p>
+    <p>
+    <table width="100%"><tr><td bgcolor="EEEEEE">
+    <font size="+1"><code>
+        <signature>
                 String get(String key, Object args[])
+            </signature>
+    </code></font>
+    </td></tr></table>
+    </p>
+    <p>
+    <table width="100%"><tr><td bgcolor="EEEEEE">
+    <font size="+1"><code>
+        <signature>
+                String get(String key, String bundle, Object args[])
             </signature>
     </code></font>
     </td></tr></table>
@@ -192,6 +221,15 @@
     </code></font>
     </td></tr></table>
     </p>
+    <p>
+    <table width="100%"><tr><td bgcolor="EEEEEE">
+    <font size="+1"><code>
+        <signature>
+                String get(String key, String bundle, List args)
+            </signature>
+    </code></font>
+    </td></tr></table>
+    </p>
     <dl>
     <dt><strong>Parameters</strong></dt>
     <dd>
@@ -200,6 +238,13 @@
     <dd>
         <parameter name="key">
                     Message key.
+                </parameter>
+    </dd>
+
+    <dt>bundle</dt>
+    <dd>
+        <parameter name="bundle">
+                    The (non-default) message-resources bundle that holds the message.
                 </parameter>
     </dd>
 
@@ -221,7 +266,7 @@
     <dt><strong>Returns</strong></dt>
     <dd>
         <returns>
-                The localized message for the specified key. Returns null if no 
+                The localized message for the specified key. Returns null if no
                 message exists for the key passed.
             </returns>
     </dd>
@@ -231,16 +276,17 @@
   <dt><strong>See Also</strong></dt>
   <dd>
     <see>
-                Struts user's guide on 
+                Struts user's guide on
                 <a href="http://jakarta.apache.org/struts/userGuide/building_view.html#i18n">
                 Internationalized Messages</a>.
             </see>
   </dd>
 </dl>
-      <p>The user's locale is consulted to determine the language of the 
-                message. The second and third signature take a list of up to five
-                replacement parameters. The second signature is provided for compatibility
-                with existing applications. The third signature is Velocity-friendlier.</p>
+      <p>The user's locale is consulted to determine the language of the
+                message. The third, fourth, fifth and sixth signatures take a list
+                of up to five replacement parameters. The third and fourth signatures
+                are provided for compatibility with existing applications. The fifth and
+                sixth signatures are Velocity-friendlier.</p>
 <p>Assuming that the message resource files contain the following messages:</p>
 <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
@@ -251,9 +297,9 @@ test=This message has five replacement parameters: {0}, {1}, {2}, {3}, {4}</sour
 <p>then the following Velocity script:</p>
 <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>$msg.get("title")
-$msg.title
-$msg.get("test", ["bear", "wolf", "tiger"])</sourcecode></pre>
+    <pre><sourcecode>$text.get("title")
+$text.title
+$text.get("test", ["bear", "wolf", "tiger"])</sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
 <p>produces this output:</p>
@@ -298,6 +344,15 @@ This message has five replacement parameters: bear, wolf, tiger, {3}, {4}</sourc
     </code></font>
     </td></tr></table>
     </p>
+    <p>
+    <table width="100%"><tr><td bgcolor="EEEEEE">
+    <font size="+1"><code>
+        <signature>
+                boolean exists(String key, String bundle)
+            </signature>
+    </code></font>
+    </td></tr></table>
+    </p>
     <dl>
     <dt><strong>Parameters</strong></dt>
     <dd>
@@ -309,6 +364,13 @@ This message has five replacement parameters: bear, wolf, tiger, {3}, {4}</sourc
                 </parameter>
     </dd>
 
+    <dt>bundle</dt>
+    <dd>
+        <parameter name="bundle">
+                    The (non-default) message-resources bundle that holds the message.
+                </parameter>
+    </dd>
+
 
       </dl>
     </dd>
@@ -317,7 +379,7 @@ This message has five replacement parameters: bear, wolf, tiger, {3}, {4}</sourc
     <dt><strong>Returns</strong></dt>
     <dd>
         <returns>
-                <code>true</code> if a message string for the specified message 
+                <code>true</code> if a message string for the specified message
                 key exists for the user's locale. <code>false</code> otherwise.
             </returns>
     </dd>
@@ -325,7 +387,7 @@ This message has five replacement parameters: bear, wolf, tiger, {3}, {4}</sourc
 
       <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>$msg.exists("title")</sourcecode></pre>
+    <pre><sourcecode>$text.exists("title")</sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
 
@@ -349,8 +411,8 @@ This message has five replacement parameters: bear, wolf, tiger, {3}, {4}</sourc
       
         <p>
         <abstract>
-                Returns the user's locale. If a locale is not found, the default 
-                locale is returned.
+                Returns the user's locale. If a locale is not found, the default
+                locale is returned (deprecated - will be removed in VelocityTools 1.2).
             </abstract>
     </p>
     <p>
@@ -373,9 +435,9 @@ This message has five replacement parameters: bear, wolf, tiger, {3}, {4}</sourc
 
       <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>$msg.getLocale()
-$msg.locale
-$msg.getLocale().getDisplayLanguage()</sourcecode></pre>
+    <pre><sourcecode>$text.getLocale()
+$text.locale
+$text.getLocale().getDisplayLanguage()</sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
 <p>produces:</p>
@@ -387,7 +449,7 @@ English</sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
 <p>The returned object of class <code>Locale</code> is automatically rendered by Velocity by
-calling its <code>toString()</code> method. The third example calls method 
+calling its <code>toString()</code> method. The third example calls method
 <code>getDisplayLanguage()</code> of class <code>Locale</code></p>
 
 

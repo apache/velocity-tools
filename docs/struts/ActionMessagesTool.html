@@ -2,10 +2,10 @@
             
     <html>
     <head>
-      <title>VelocityStruts - ErrorsTool</title>
+      <title>VelocityStruts - ActionMessagesTool</title>
 
-               <meta name="author" value="Gabriel Sidler"/>
-        <meta name="email" value="sidler@apache.org" />
+               <meta name="author" value="Marino Jonsson"/>
+        <meta name="email" value="marino@apache.org" />
                
     
     </head>
@@ -89,50 +89,46 @@
   <tr>
     <td colspan="2" bgcolor="#525D76">
       <font color="#ffffff" face="arial,helvetica.sanserif">
-      <a name="ErrorsTool Reference Documentation">
-      <strong>ErrorsTool Reference Documentation</strong></a></font>
+      <a name="ActionMessagesTool Reference Documentation">
+      <strong>ActionMessagesTool Reference Documentation</strong></a></font>
     </td>
   </tr>
   <tr>
     <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
     <td>
       <p>
-        This tool deals with Struts error messages. Errors may stem from the validation
-        of a submitted form or from the processing of a request. If there are errors,
-        they are made available to the view to render. A few important aspects about errors
-        are:</p>
+        This tool deals with Struts action messages.  A few important aspects about action
+        messages are:</p>
 <ul>
-            <li>Error message strings are looked up in the message resources. Support
+            <li>Action message strings are looked up in the message resources. Support
                 for internationalized messages is provided.</li>
-            <li>Error messages can have up to five replacement parameters.</li>
-            <li>Errors have an attribute <code>property</code> that describes the category of
-                error. This allows the view designer to place error messages precisely where an
-                error occurred. For example, errors that apply to the entire page can be rendered
-                at the top of the page, errors that apply to a specific input field can be rendered
-                next to this input field. Several methods of this tool provide a parameter
-                <code>property</code> that allows to select a specific category of errors to operate
-                on. Without the <code>property</code> parameter, methods operate on all error messages.</li>
+            <li>Action messages can have up to five replacement parameters.</li>
+            <li>Actions have an attribute <code>property</code> that describes the category of
+                message. This allows the view designer to place action messages precisely where they are
+                wanted. Several methods of this tool provide a parameter
+                <code>property</code> that allows to select a specific category of messages to operate
+                on. Without the <code>property</code> parameter, methods operate on all action messages.</li>
         </ul>
 <p>See the Struts User's Guide, section
         <a href="http://jakarta.apache.org/struts/userGuide/building_view.html">Building View Components</a>
         for more information on this topic.</p>
 <table cellpadding="0" cellspacing="0">
   <tr><td colspan="2"><strong>Class</strong></td></tr>
-  <tr><td>&nbsp;</td><td>org.apache.velocity.tools.struts.ErrorsTool</td></tr>
+  <tr><td>&nbsp;</td><td>org.apache.velocity.tools.struts.ActionMessagesTool</td></tr>
 
   <tr><td colspan="2"><strong>Name</strong></td></tr>
-  <tr><td>&nbsp;</td><td>$errors (this is the recommended name of the tool in 
+  <tr><td>&nbsp;</td><td>$messages (this is the recommended name of the tool in 
       the Velocity context)</td></tr>
 
   <tr><td colspan="2"><strong>Toolbox Configuration Example</strong></td></tr>
   <tr><td>&nbsp;</td><td><pre>&lt;tool&gt;
-  &lt;key&gt;errors&lt;/key&gt;
+  &lt;key&gt;messages&lt;/key&gt;
   &lt;scope&gt;request&lt;/scope&gt;
-  &lt;class&gt;org.apache.velocity.tools.struts.ErrorsTool&lt;/class&gt;
+  &lt;class&gt;org.apache.velocity.tools.struts.ActionMessagesTool&lt;/class&gt;
 &lt;/tool&gt;</pre></td></tr>
 
   <tr><td colspan="2"><strong>Author(s)</strong></td></tr>
-  <tr><td>&nbsp;</td><td><a href="mailto:sidler@teamup.com">Gabriel Sidler</a><br></td></tr>
+  <tr><td>&nbsp;</td><td><a href="mailto:sidler@teamup.com">Gabriel Sidler</a><br><a href="mailto:nathan@esha.com">Nathan Bubna</a><br></td></tr>
 </table>
 <dl>
   <dt><strong>Method Overview</strong></dt>
@@ -143,7 +139,8 @@
             <a href="#exist()">exist()</a></td>
           <td bgcolor="EEEEEE">
             
-                Returns  if there are errors queued, otherwise .
+            	Returns  if there are action messages queued,
+     		otherwise .
             
           </td>
         </tr>
@@ -152,7 +149,7 @@
             <a href="#getSize()">getSize()</a></td>
           <td bgcolor="EEEEEE">
             
-                Returns the number of error messages queued.
+                Returns the number of action messages queued.
             
           </td>
         </tr>
@@ -171,7 +168,7 @@
             <a href="#getAll()">getAll()</a></td>
           <td bgcolor="EEEEEE">
             
-                Returns a list of localized error messages for all errors queued.
+                Returns a list of localized action messages for all action messages queued.
             
           </td>
         </tr>
@@ -180,17 +177,8 @@
             <a href="#get()">get()</a></td>
           <td bgcolor="EEEEEE">
             
-                Returns a list of localized error messages for a particular category
-                of errors.
-            
-          </td>
-        </tr>
-                        <tr>
-          <td bgcolor="EEEEEE" nowrap>
-            <a href="#getMsgs()">getMsgs()</a></td>
-          <td bgcolor="EEEEEE">
-            
-                Renders the queued errors messages.
+                Returns a list of localized action messages for a particular category
+                of action messages.
             
           </td>
         </tr>
@@ -215,7 +203,8 @@
       
         <p>
         <abstract>
-                Returns <code>true</code> if there are errors queued, otherwise <code>false</code>.
+            	Returns <code>true</code> if there are action messages queued,
+     		otherwise <code>false</code>.
             </abstract>
     </p>
     <p>
@@ -243,7 +232,7 @@
               <dt>property</dt>
     <dd>
         <parameter name="property">
-                    The category of errors to check for.
+                    The category of messages to check for.
                 </parameter>
     </dd>
 
@@ -255,14 +244,14 @@
     <dt><strong>Returns</strong></dt>
     <dd>
         <returns>
-                <code>true</code> if there are error messages queued. <code>false</code> otherwise.
+                <code>true</code> if there are action messages queued. <code>false</code> otherwise.
             </returns>
     </dd>
     </dl>
 
-      <p>Calling <code>exist()</code> without the <code>property</code> parameter checks for error messages of
+      <p>Calling <code>exist()</code> without the <code>property</code> parameter checks for action messages of
                 any category. The <code>property</code> parameter can be used to limit the check to
-                error messages of a specific category.</p>
+                action messages of a specific category.</p>
 <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
     <pre><sourcecode>$errors.exist()
@@ -291,7 +280,7 @@ $errors.exist("password")
       
         <p>
         <abstract>
-                Returns the number of error messages queued.
+                Returns the number of action messages queued.
             </abstract>
     </p>
     <p>
@@ -319,7 +308,7 @@ $errors.exist("password")
               <dt>property</dt>
     <dd>
         <parameter name="property">
-                    The category of errors to operate on.
+                    The category of action messages to operate on.
                 </parameter>
     </dd>
 
@@ -331,19 +320,19 @@ $errors.exist("password")
     <dt><strong>Returns</strong></dt>
     <dd>
         <returns>
-                The number of error messages.
+                The number of action messages.
             </returns>
     </dd>
     </dl>
 
       <p>Calling <code>getSize()</code> without the <code>property</code> parameter returns the total
-                number of queued error messages. The <code>property</code> parameter can be used to
-                obtain the number of queued error messages for a specific category.</p>
+                number of queued action messages. The <code>property</code> parameter can be used to
+                obtain the number of queued action messages for a specific category.</p>
 <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>$errors.getSize()
-$errors.size
-$errors.getSize("password")</sourcecode></pre>
+    <pre><sourcecode>$messages.getSize()
+$messages.size
+$messages.getSize("password")</sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
 
@@ -368,7 +357,7 @@ $errors.getSize("password")</sourcecode></pre>
         <p>
         <abstract>
                 This a convenience method and the equivalent of
-                <code>$errors.get($errors.globalName)</code>
+                <code>$messages.get($messages.globalName)</code>
             </abstract>
     </p>
     <p>
@@ -384,7 +373,7 @@ $errors.getSize("password")</sourcecode></pre>
     <dt><strong>Returns</strong></dt>
     <dd>
         <returns>
-                A list of all errors stored under the "global" property.
+                A list of all messages stored under the "global" property.
             </returns>
     </dd>
     </dl>
@@ -411,7 +400,7 @@ $errors.getSize("password")</sourcecode></pre>
       
         <p>
         <abstract>
-                Returns a list of localized error messages for all errors queued.
+                Returns a list of localized action messages for all action messages queued.
             </abstract>
     </p>
     <p>
@@ -439,7 +428,7 @@ $errors.getSize("password")</sourcecode></pre>
               <dt>bundle</dt>
     <dd>
         <parameter name="bundle">
-                    The (non-default) message-resources bundle that holds the error messages.
+                    The (non-default) message-resources bundle that holds the action messages.
                 </parameter>
     </dd>
 
@@ -451,20 +440,20 @@ $errors.getSize("password")</sourcecode></pre>
     <dt><strong>Returns</strong></dt>
     <dd>
         <returns>
-                If the message resources are lacking an error message for a
-                particular message key, the key itself is used as an error message
+                If the message resources are lacking an action message message for a
+                particular message key, the key itself is used as an action message
                 and a warning is logged.
             </returns>
     </dd>
     </dl>
 
-      <p>The following example shows a macro to render the error messages:</p>
+      <p>The following example shows a macro to render the action messages:</p>
 <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>#macro (errorMarkup)
-    #if ($errors.exist)
+    <pre><sourcecode>#macro (messagesMarkup)
+    #if ($messages.exist)
         &lt;ul&gt;
-        #foreach ($e in $errors.all )
+        #foreach ($e in $messages.all )
             &lt;li&gt;$e&lt;/li&gt;
         #end
         &lt;/ul&gt;
@@ -476,8 +465,8 @@ $errors.getSize("password")</sourcecode></pre>
 <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
     <pre><sourcecode>&lt;ul&gt;
-    &lt;li&gt;The field Expiration Date is required.&lt;/li&gt;
-    &lt;li&gt;The provided number is not a valid credit card number&lt;/li&gt;
+    &lt;li&gt;This is the first action message in the queue.&lt;/li&gt;
+    &lt;li&gt;This is the second action message in the queue.&lt;/li&gt;
 &lt;/ul&gt;</sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
@@ -502,8 +491,8 @@ $errors.getSize("password")</sourcecode></pre>
       
         <p>
         <abstract>
-                Returns a list of localized error messages for a particular category
-                of errors.
+                Returns a list of localized action messages for a particular category
+                of action messages.
             </abstract>
     </p>
     <p>
@@ -531,14 +520,14 @@ $errors.getSize("password")</sourcecode></pre>
               <dt>property</dt>
     <dd>
         <parameter name="property">
-                    The category of error messages to return.
+                    The category of action messages to return.
                 </parameter>
     </dd>
 
     <dt>bundle</dt>
     <dd>
         <parameter name="bundle">
-                    The (non-default) message-resources bundle that holds the error messages.
+                    The (non-default) message-resources bundle that holds the action messages.
                 </parameter>
     </dd>
 
@@ -551,23 +540,23 @@ $errors.getSize("password")</sourcecode></pre>
     <dd>
         <returns>
                 A <code>java.util.List</code> of <code>java.lang.String</code>.
-                If no error messages exist for the specified category,
+                If no action messages exist for the specified category,
                 <code>null</code> is returned.
                 If the message resources are lacking an error message for a
-                particular message key, the key itself is used as an error message
+                particular message key, the key itself is used as an action message
                 and a warning is logged.
             </returns>
     </dd>
     </dl>
 
-      <p>The following example shows a macro to render the error messages for a
-                particular category of errors:</p>
+      <p>The following example shows a macro to render the action messages for a
+                particular category of action messages:</p>
 <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>#macro (errorMarkup $property)
-    #if ($errors.exist($property))
+    <pre><sourcecode>#macro (messagesMarkup $property)
+    #if ($messages.exist($property))
         &lt;ul&gt;
-        #foreach ($er in $errors.get($property) )
+        #foreach ($er in $messages.get($property) )
             &lt;li&gt;$er&lt;/li&gt;
         #end
         &lt;/ul&gt;
@@ -579,121 +568,8 @@ $errors.getSize("password")</sourcecode></pre>
 <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
     <pre><sourcecode>&lt;ul&gt;
-    &lt;li&gt;The field Expiration Date is required.&lt;/li&gt;
-    &lt;li&gt;The provided number is not a valid credit card number&lt;/li&gt;
-&lt;/ul&gt;</sourcecode></pre>
-  </td></tr></table>
-</td></tr></table>
-
-
-    <br clear="all">
-
-    </td>
-  </tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="2" width="100%">
-  <tr>
-    <td colspan="2" bgcolor="#525D76">
-      <font color="#ffffff" face="arial,helvetica.sanserif">
-      <a name="getMsgs()">
-      <strong>getMsgs()</strong></a></font>
-    </td>
-  </tr>
-  <tr>
-    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
-    <td>
-      
-        <p>
-        <abstract>
-                Renders the queued errors messages.
-            </abstract>
-    </p>
-    <p>
-    <table width="100%"><tr><td bgcolor="EEEEEE">
-    <font size="+1"><code>
-        <signature>
-                String getMsgs()
-            </signature>
-    </code></font>
-    </td></tr></table>
-    </p>
-    <p>
-    <table width="100%"><tr><td bgcolor="EEEEEE">
-    <font size="+1"><code>
-        <signature>
-                String getMsgs(String property)
-            </signature>
-    </code></font>
-    </td></tr></table>
-    </p>
-    <p>
-    <table width="100%"><tr><td bgcolor="EEEEEE">
-    <font size="+1"><code>
-        <signature>
-                String getMsgs(String property, String bundle)
-            </signature>
-    </code></font>
-    </td></tr></table>
-    </p>
-    <dl>
-    <dt><strong>Parameters</strong></dt>
-    <dd>
-      <dl>
-              <dt>property</dt>
-    <dd>
-        <parameter name="property">
-                    The category of errors messages to render.
-                </parameter>
-    </dd>
-
-    <dt>bundle</dt>
-    <dd>
-        <parameter name="bundle">
-                    The (non-default) message-resources bundle that holds the error messages.
-                </parameter>
-    </dd>
-
-
-      </dl>
-    </dd>
-    </dl>
-    <dl>
-    <dt><strong>Returns</strong></dt>
-    <dd>
-        <returns>
-                The formatted error messages. If no errors are queued, an
-                empty <code>String</code> is returned.
-            </returns>
-    </dd>
-    </dl>
-
-      <p>This method renders the queued error messages as a list. If the method
-                is called without a parameter, all queued errors are rendered. With the
-                parameter <code>property</code> the list of rendered messages can be
-                limited to a specific category of errors. Error message texts
-                are looked up in the message resources. If a message text
-                cannot be found, the message key will be displayed instead.</p>
-<p>The method expects a message header and a message footer
-                to be defined in the message resources. The corresponding
-                message keys are <code>errors.header</code> and
-                <code>errors.footer</code>.</p>
-<p>Assuming that the message resources contain the following
-                definitions:</p>
-<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
-  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>errors.header=Please correct the following errors:&lt;ul&gt;
-errors.footer=&lt;/ul&gt;
-error01=&lt;li&gt;The field Expiration Date is required.&lt;/li&gt;
-error02=&lt;li&gt;The input is not a valid credit card number.&lt;/li&gt;
-...</sourcecode></pre>
-  </td></tr></table>
-</td></tr></table>
-<p>an error message would be rendered as follows:</p>
-<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
-  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>Please correct the following errors before proceeding:&lt;ul&gt;
-    &lt;li&gt;The field Expiration Date is required.&lt;/li&gt;
-    &lt;li&gt;The input is not a valid credit card number.&lt;/li&gt;
+    &lt;li&gt;This is the first action message in the queue.&lt;/li&gt;
+    &lt;li&gt;TThis is the second action message in the queue.&lt;/li&gt;
 &lt;/ul&gt;</sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
