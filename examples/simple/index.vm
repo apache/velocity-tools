@@ -1,35 +1,44 @@
 <html>
-
 <body>
 
 I'm a velocity template.
 
-<br>
-<br>
+#if( $XHTML )
+  #set( $br = "<br />" )
+#else
+  #set( $br = "<br>" )
+#end
 
-Here we use a tool : $toytool.getMessage()
+$br
+$br
 
-<br>
-<br>
+Here we use a custom tool: $toytool.message
+
+$br
+$br
 
 Lets count : #foreach($i in [1..5])$i #end
 
-<br>
-<br>
+$br
+$br
 
-Let's play with a hashmap:<br>
-first add foo: $map.put("foo",$foo)<br>
-then add bar: $map.put("bar",$bar)<br>
-<br>
+Let's play with a hashmap:$br
+first add foo: $map.put("foo",$foo)$br
+then add bar: $map.put("bar",$bar)$br
+$br
 and that gives us $map
 
-<br>
-<br>
+$br
+$br
+
+Here we get the date from the DateTool:  $date.medium
+
+$br
+$br
 
 #if( $isSimple )
-This is simple app version ${version}.
+This is simple#if( $XHTML ) xhtml#end app version ${version}.
 #end
 
 </body>
 </html>
-

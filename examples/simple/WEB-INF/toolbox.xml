@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <toolbox>
+  <xhtml>true</xhtml>
   <tool>
      <key>toytool</key>
      <class>ToyTool</class>
@@ -23,5 +24,10 @@
   <tool>
     <key>map</key>
     <class>java.util.HashMap</class>
+  </tool>
+  <tool>
+    <key>date</key>
+    <scope>application</scope>
+    <class>org.apache.velocity.tools.generic.DateTool</class>
   </tool>
 </toolbox>
