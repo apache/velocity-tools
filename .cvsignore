@@ -3,7 +3,6 @@ build
 Tomcat
 bak
 classes
-docs
 Servlet.library
 layout.war
 simple.war
