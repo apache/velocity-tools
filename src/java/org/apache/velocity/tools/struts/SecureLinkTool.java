@@ -54,18 +54,15 @@
 
 package org.apache.velocity.tools.struts;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
-//import org.apache.velocity.app.Velocity;
 import org.apache.velocity.tools.view.tools.LinkTool;
 import org.apache.velocity.tools.struts.StrutsUtils;
 
-//import org.apache.struts.config.ForwardConfig;
 import org.apache.struts.config.ModuleConfig;
 import org.apache.struts.config.SecureActionConfig;
 import org.apache.struts.action.SecurePlugIn;
-import org.apache.struts.util.RequestUtils;
 import org.apache.struts.Globals;
 
 /**
@@ -81,7 +78,7 @@ import org.apache.struts.Globals;
  * $link.setForward("nameOfForward")
  *
  * If the action or forward is marked as secure, or not, in your struts-config then the link will be rendered
- * with https og http accordingly.
+ * with https or http accordingly.
  *
  * Toolbox configuration:
  *
@@ -96,13 +93,14 @@ import org.apache.struts.Globals;
  * @version 1.0
  */
 
-public class SecureLinkTool
-    extends LinkTool {
+public class SecureLinkTool extends LinkTool
+{
 
     private static final String HTTP = "http";
     private static final String HTTPS = "https";
     private static final String STD_HTTP_PORT = "80";
     private static final String STD_HTTPS_PORT = "443";
+
 
     /**
      * <p>Returns a copy of the link with the given action name
@@ -115,9 +113,10 @@ public class SecureLinkTool
      *
      * @return a new instance of StrutsLinkTool
      */
-    public SecureLinkTool setAction(String action) {
+    public SecureLinkTool setAction(String action)
+    {
         String link = StrutsUtils.getActionMappingURL(application, request, action);
-        return (SecureLinkTool) copyWith(this.computeURL(request, application, link));
+        return (SecureLinkTool)copyWith(computeURL(request, application, link));
     }
 
     /**
@@ -131,25 +130,26 @@ public class SecureLinkTool
      *
      * @return a new instance of StrutsLinkTool
      */
-    public SecureLinkTool setForward(String forward) {
-
+    public SecureLinkTool setForward(String forward)
+    {
         String url = StrutsUtils.getForwardURL(request, application, forward);
-        if (url == null) {
+        if (url == null)
+        {
             return null;
         }
-
-        return (SecureLinkTool) copyWith(this.computeURL(request, application, url));
+        return (SecureLinkTool)copyWith(computeURL(request, application, url));
     }
 
-    public static String computeURL(HttpServletRequest request, ServletContext app, String link) {
-
+    public static String computeURL(HttpServletRequest request, 
+                                    ServletContext app, String link)
+    {
         StringBuffer url = new StringBuffer(link);
 
         String contextPath = request.getContextPath();
 
         if (SecurePlugIn.getAppSslExtEnable(app) &&
-            url.toString().startsWith(contextPath)) {
-
+            url.toString().startsWith(contextPath))
+        {
             // Initialize the scheme and ports we are using
             String usingScheme = request.getScheme();
             String usingPort = String.valueOf(request.getServerPort());
@@ -162,23 +162,26 @@ public class SecureLinkTool
 
             // If link is an action, find the desired port and scheme
             if (secureConfig != null &&
-                !SecureActionConfig.ANY.equalsIgnoreCase(secureConfig.getSecure())) {
-
+                !SecureActionConfig.ANY.equalsIgnoreCase(secureConfig.getSecure()))
+            {
                 String desiredScheme = Boolean.valueOf(secureConfig.getSecure()).booleanValue() ?
                     HTTPS : HTTP;
                 String desiredPort = Boolean.valueOf(secureConfig.getSecure()).booleanValue() ?
                     SecurePlugIn.getAppHttpsPort(app) : SecurePlugIn.getAppHttpPort(app);
 
                 // If scheme and port we are using do not match the ones we want
-                if ( (!desiredScheme.equals(usingScheme) || !desiredPort.equals(usingPort))) {
+                if (!desiredScheme.equals(usingScheme) || 
+                    !desiredPort.equals(usingPort))
+                {
                     url.insert(0, startNewUrlString(request, desiredScheme, desiredPort));
 
                     // This is a hack to help us overcome the problem that some
                     // older browsers do not share sessions between http & https
-                    if (url.toString().indexOf(";jsessionid=") < 0) {
+                    if (url.toString().indexOf(";jsessionid=") < 0)
+                    {
                         // Add the session identifier
                         url = new StringBuffer(toEncoded(url.toString(),
-                            request.getSession().getId()));
+                                               request.getSession().getId()));
                     }
                 }
             }
@@ -188,61 +191,73 @@ public class SecureLinkTool
 
     /**
      * Finds the configuration definition for the specified action link
+     *
      * @param pageContext the current page context.
-         * @param linkString The action we are searching for, specified as a link. (i.e. may include "..")
-     * @return The SecureActionConfig object entry for this action, or null if not found
+     * @param linkString The action we are searching for, specified as a 
+     *        link. (i.e. may include "..")
+     * @return The SecureActionConfig object entry for this action, 
+     *         or null if not found
      */
     private static SecureActionConfig getActionConfig(HttpServletRequest request,
-        ServletContext app, String linkString) {
-
+                                                      ServletContext app, 
+                                                      String linkString)
+    {
         ModuleConfig moduleConfig = StrutsUtils.selectModule(linkString, app);
 
         // Strip off the subapp path, if any
         linkString = linkString.substring(moduleConfig.getPrefix().length());
 
         // Use our servlet mapping, if one is specified
-        String servletMapping = (String) app.getAttribute(Globals.SERVLET_KEY);
+        String servletMapping = (String)app.getAttribute(Globals.SERVLET_KEY);
 
-        int starIndex = servletMapping != null ? servletMapping.indexOf('*') : -1;
-        if (starIndex == -1) {
+        int starIndex = (servletMapping != null) ? servletMapping.indexOf('*') : -1;
+        if (starIndex == -1)
+        {
+            // No servlet mapping or no usable pattern defined, short circuit
             return null;
-        } // No servlet mapping or no usable pattern defined, short circuit
+        }
 
         String prefix = servletMapping.substring(0, starIndex);
         String suffix = servletMapping.substring(starIndex + 1);
 
         // Strip off the jsessionid, if any
         int jsession = linkString.indexOf(";jsessionid=");
-        if (jsession >= 0) {
+        if (jsession >= 0)
+        {
             linkString = linkString.substring(0, jsession);
         }
 
         // Strip off the anchor, if any
         int anchor = linkString.indexOf("#");
-        if (anchor >= 0) {
+        if (anchor >= 0)
+        {
             linkString = linkString.substring(0, anchor);
         }
 
         // Strip off the query string, if any
         int question = linkString.indexOf("?");
-        if (question >= 0) {
+        if (question >= 0)
+        {
             linkString = linkString.substring(0, question);
         }
 
         // Unable to establish this link as an action, short circuit
-        if (! (linkString.startsWith(prefix) && linkString.endsWith(suffix))) {
+        if (!(linkString.startsWith(prefix) && 
+              linkString.endsWith(suffix)))
+        {
             return null;
         }
 
         // Chop off prefix and suffix
         linkString = linkString.substring(prefix.length());
         linkString = linkString.substring(0, linkString.length() - suffix.length());
-        if (!linkString.startsWith("/")) {
+        if (!linkString.startsWith("/"))
+        {
             linkString = "/" + linkString;
         }
 
-        SecureActionConfig secureConfig = (SecureActionConfig) moduleConfig.findActionConfig(
-            linkString);
+        SecureActionConfig secureConfig = 
+            (SecureActionConfig)moduleConfig.findActionConfig(linkString);
 
         return secureConfig;
     }
@@ -256,16 +271,17 @@ public class SecureLinkTool
      */
     private static StringBuffer startNewUrlString(HttpServletRequest request,
                                                   String desiredScheme,
-                                                  String desiredPort) {
+                                                  String desiredPort)
+    {
         StringBuffer url = new StringBuffer();
         String serverName = request.getServerName();
         url.append(desiredScheme).append("://").append(serverName);
 
-        if ( (HTTP.equals(desiredScheme) && !STD_HTTP_PORT.equals(desiredPort)) ||
-            (HTTPS.equals(desiredScheme) && !STD_HTTPS_PORT.equals(desiredPort))) {
+        if ((HTTP.equals(desiredScheme) && !STD_HTTP_PORT.equals(desiredPort)) ||
+            (HTTPS.equals(desiredScheme) && !STD_HTTPS_PORT.equals(desiredPort)))
+        {
             url.append(":").append(desiredPort);
         }
-
         return url;
     }
 
@@ -276,31 +292,38 @@ public class SecureLinkTool
      * @param url URL to be encoded with the session id
      * @param sessionId Session id to be included in the encoded URL
      */
-    public static String toEncoded(String url, String sessionId) {
-
-        if ( (url == null) || (sessionId == null))
+    public static String toEncoded(String url, String sessionId)
+    {
+        if (url == null || sessionId == null)
+        {
             return (url);
+        }
 
         String path = url;
         String query = "";
         String anchor = "";
         int pound = url.indexOf('#');
-        if (pound >= 0) {
+        if (pound >= 0)
+        {
             path = url.substring(0, pound);
             anchor = url.substring(pound);
         }
         int question = path.indexOf('?');
-        if (question >= 0) {
+        if (question >= 0)
+        {
             query = path.substring(question);
             path = path.substring(0, question);
         }
         StringBuffer sb = new StringBuffer(path);
-        if (sb.length() > 0) { // jsessionid can't be first.
+        // jsessionid can't be first.
+        if (sb.length() > 0)
+        {
             sb.append(";jsessionid=");
             sb.append(sessionId);
         }
         sb.append(query);
         sb.append(anchor);
-        return (sb.toString());
+        return sb.toString();
     }
+
 }
