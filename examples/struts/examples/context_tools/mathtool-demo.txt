@@ -11,7 +11,7 @@
         using a tool loader tool.<br>
         <br>
         Example: Load the MathTool into the context with key "math":<br>
-        <code>&#35;set (&#36;math = toolLoader.load("org.apache.velocity.tools.generic.MathTool"))</code><br><br>
+        <code>&#35;set (&#36;math = &#36;toolLoader.load("org.apache.velocity.tools.generic.MathTool"))</code><br><br>
 
         #set ($math = $toolLoader.load("org.apache.velocity.tools.generic.MathTool"))
     
