@@ -9,7 +9,7 @@
   <section name="Velocity Tools Changes">
     <p>This document tracks the changes in Velocity Tools between releases.</p>
 
-    <subsection name="1.1-dev">
+    <subsection name="1.1-beta1">
       <p>This section describes changes after the 1.0 release.</p>
       <ul>
       <li>Made VelocityViewServlet use response.getOutputStream() if response.getWriter() fails.  This is functionality is deprecated and provided as a migration path from 1.0 behavior. (dlr, ndb)</li>
