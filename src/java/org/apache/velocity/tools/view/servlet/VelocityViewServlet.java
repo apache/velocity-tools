@@ -139,7 +139,7 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.11 2003/07/22 21:14:58 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.12 2003/08/07 03:16:41 nbubna Exp $
  */
 
 public class VelocityViewServlet extends HttpServlet
@@ -629,6 +629,10 @@ public class VelocityViewServlet extends HttpServlet
                     // don't close to allow us to play
                     // nicely with others.
                     vw.flush();
+                    /* This hack sets the VelocityWriter's internal ref to the 
+                     * OutputStreamWriter to null to keep memory free while
+                     * the writer is pooled. See bug report #18951 */
+                    vw.recycle(null);
                     writerPool.put(vw);
                 }                
             }
