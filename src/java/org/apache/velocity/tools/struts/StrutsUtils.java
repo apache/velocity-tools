@@ -23,7 +23,6 @@ import java.util.Iterator;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
 
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionForm;
@@ -55,7 +54,7 @@ import org.apache.struts.util.RequestUtils;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * based on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Id: StrutsUtils.java,v 1.18 2004/03/12 20:30:31 nbubna Exp $
+ * @version $Id: StrutsUtils.java,v 1.19 2004/03/12 20:39:07 nbubna Exp $
  */
 public class StrutsUtils
 {

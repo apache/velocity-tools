@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: build.xml,v 1.39 2004/03/12 19:41:04 marino Exp $
+  $Id: build.xml,v 1.40 2004/03/12 20:39:07 nbubna Exp $
 -->
 <project name="velocity-tools" default="all" basedir=".">
 
@@ -72,7 +72,6 @@
     <pathelement location="${velocity.jar}"/>
 
     <!-- for JDK 1.3 users -->
-    <pathelement location="${jdbc.jar}"/>
     <pathelement location="${xerces.jar}"/>
   </path>
 
@@ -140,14 +139,6 @@
   <!-- Compile VelocityStruts (struts, view, generic) -->
   <target name="compile.struts" depends="prepare"
           description="Compiles the Velocity-Tools project (struts, view, and generic)">
-    <echo>
-      #######################################################
-      #
-      #  JDK 1.3 users must define a valid jdbc.jar property
-      #  in the build.properties for this to work.
-      #
-      #######################################################
-    </echo>
     <javac srcdir="${classes.src}"
            debug="${compile.debug}"
            optimize="${compile.optimize}"
