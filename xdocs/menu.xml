@@ -1,23 +1,22 @@
 <?xml version="1.0"?>
 
-<project href="http://jakarta.apache.org/velocity/">
+<project href="index.html">
+    <title>Velocity</title>
+    <logo href="images/velocitytools.png">&lt; Velocity Tools &gt;</logo>
 
-  <title>Velocity Tools</title>
-  <logo href="http://jakarta.apache.org/velocity/images/logo.gif"> &lt;  :)  /&gt;</logo>
+    <body>
+      <uplink name="Velocity"        href="http://jakarta.apache.org/velocity" alt="top"/>
 
-  <body>
+      <menu name="Velocity Tools">
+          <item name="Overview"               href="index.html"/>
+          <item name="CVS Repository"         href="index.html#CVS Repository"/>
+          <item name="Javadoc"                href="javadoc/index.html"/>
+      </menu>
 
-    <menu name="About">
-        <item name="Overview"               href="index.html"/>
-        <item name="CVS Repository"         href="index.html#CVS Repository"/>
-    </menu>
-
-    <menu name="Subprojects">
-        <item name="VelocityStruts"         href="../docs/struts-index.html"/>
-        <item name="VelocityView"        href="../docs/velservlet.html"/>
-        <item name="VelocityView - Tools"        href="../docs/tools-index.html"/>
-    </menu>
-
-  </body>
+      <menu name="Sub-projects">
+          <item name="VelocityView"           href="view/"/>
+          <item name="Generic Tools"          href="generic/"/>
+          <item name="VelocityStruts"         href="struts/"/>
+      </menu>
+    </body>
 </project>
-
