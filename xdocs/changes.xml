@@ -12,6 +12,11 @@
     <subsection name="1.1-dev">
       <p>This section describes changes after the 1.1-beta release.</p>
       <ul>
+      <li>Changed recommended keys for MessageTool and ActionMessagesTool to $text and $messages. (ndb)</li>
+      <li>Changed XMLToolboxManager to use thread context classloader when digesting toolbox. (ndb)</li>
+      <li>Fixed session tool initialization/synchronization issue. (ndb)</li>
+      <li>Added TilesTool methods to import attributes to specific scopes (page/request/session/application). (maj)</li>
+      <li>Added new demos for using ValidatorTool, TilesTool, and SecureLinkTool to VelocityStruts example app. (maj)</li>
       <li>Upgraded/refactored MathTool to add floor() and ceil(), make type-handling more intuitive and flexible, and improve number parsing. (ndb)</li>
       <li>Improved resource bundle support in ActionMessagesTool. (ndb)</li>
       <li>ErrorsTool now extends ActionMessagesTool. (ndb)</li>
