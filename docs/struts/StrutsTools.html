@@ -48,7 +48,6 @@
 <ul>
         <li><a href="index.html">Overview</a></li>
     <li><a href="index.html#Benefits">Benefits</a></li>
-    <li><a href="index.html#What About Struts 1.1?">What About 1.1?</a></li>
     <li><a href="../index.html#Download">Download</a></li>
     <li><a href="userguide.html">User Guide</a></li>
     <li><a href="userguide.html#Installation">Installation</a></li>
@@ -60,10 +59,22 @@
     <a href="StrutsTools.html"><strong>VelocityStruts Tools</strong></a>
 </p>
 <ul>
-        <li><a href="MessageTool.html">MessageTool</a></li>
-    <li><a href="FormTool.html">FormTool</a></li>
+        <li><a href="ActionMessagesTool.html">ActionMessagesTool</a></li>
     <li><a href="ErrorsTool.html">ErrorsTool</a></li>
+    <li><a href="FormTool.html">FormTool</a></li>
+    <li><a href="MessageTool.html">MessageTool</a></li>
     <li><a href="StrutsLinkTool.html">StrutsLinkTool</a></li>
+    <li><a href="SecureLinkTool.html">SecureLinkTool</a></li>
+    <li><a href="TilesTool.html">TilesTool</a></li>
+    <li><a href="ValidatorTool.html">ValidatorTool</a></li>
+
+</ul>
+<p>
+    <strong>Other Subprojects</strong>
+</p>
+<ul>
+        <li><a href="../generic/">GenericTools</a></li>
+    <li><a href="../view/">VelocityView</a></li>
 
 </ul>
 
@@ -87,7 +98,7 @@
     <td>
       <p>
         VelocityStruts includes four view tools that provide access
-        to Struts resources from within Velocity templates. This page is the 
+        to Struts resources from within Velocity templates. This page is the
         starting point to the reference documentation for the view tools.
         Primary audience are the template designers.</p>
 <p>
@@ -95,7 +106,11 @@
         </p>
 <p>
         <strong><a href="MessageTool.html">MessageTool</a></strong><br/>
-        Provides access to the Struts message resources for internationalized output.
+        Provides access to the Struts application resources for internationalized text.
+        </p>
+<p>
+        <strong><a href="ActionMessagesTool.html">ActionMessagesTool</a></strong><br/>
+        Provides methods to work with Struts action messages
         </p>
 <p>
         <strong><a href="ErrorsTool.html">ErrorsTool</a></strong><br/>
@@ -103,19 +118,28 @@
         </p>
 <p>
         <strong><a href="FormTool.html">FormTool</a></strong><br/>
-        Provides miscellaneous methods to work with forms and form beans in the context 
+        Provides miscellaneous methods to work with forms and form beans in the context
         of Struts applications.
         </p>
 <p>
         <strong><a href="StrutsLinkTool.html">StrutsLinkTool</a></strong><br/>
-        Provides methods to work with URIs.
+        Extends <a href="../view/LinkTool.html">LinkTool</a> to to add methods
+        for working with Struts' Actions and Forwards.
         </p>
 <p>
-        <strong>ActionMessagesTool</strong><br/>
-        Provides methods to work with Struts action messages, a new feature in the
-        upcoming 1.1. release. Will be added shortly.  For the present, an initial
-        version of this class can be found in CVS under 
-        "whiteboard/nathan/ActionMessagesTool.java"
+        <strong><a href="SecureLinkTool.html">SecureLinkTool</a></strong><br/>
+        Has the same interface as <a href="StrutsLinkTool.html">StrutsLinkTool</a>
+        and should substitute it when the SSL Ext. extension for Struts is installed.
+        </p>
+<p>
+        <strong><a href="TilesTool.html">TilesTool</a></strong><br/>
+        Provides miscellaneous methods to work with Tiles in the context
+        of Struts applications.
+        </p>
+<p>
+        <strong><a href="ValidatorTool.html">ValidatorTool</a></strong><br/>
+        Provides methods to dynamically generate javascript validation in the context
+        of Struts applications.
         </p>
 
     </td>

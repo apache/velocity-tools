@@ -2,7 +2,7 @@
             
     <html>
     <head>
-      <title>VelocityStruts - StrutsLinkTool</title>
+      <title>Velocity - ViewRenderTool</title>
 
                <meta name="author" value="Gabriel Sidler"/>
         <meta name="email" value="sidler@apache.org" />
@@ -25,7 +25,7 @@
         
           
                     <a href="index.html">
-            <img src="../images/velocitystruts.png" align="right" alt="< Velocity Tools - Struts >" border="0"/>
+            <img src="../images/velocityview.png" align="right" alt="< Tools - View >" border="0"/>
           </a>
         
       </td></tr>
@@ -40,33 +40,30 @@
 
                         <td width="20%" valign="top" nowrap="true">
             
-                <p><strong><a href="../">Velocity Tools</a></strong></p>
+                <p><strong><a href="../index.html">Velocity Tools</a></strong></p>
 
             <p>
-    <strong>VelocityStruts</strong>
+    <strong>VelocityView</strong>
 </p>
 <ul>
         <li><a href="index.html">Overview</a></li>
-    <li><a href="index.html#Benefits">Benefits</a></li>
     <li><a href="../index.html#Download">Download</a></li>
-    <li><a href="userguide.html">User Guide</a></li>
-    <li><a href="userguide.html#Installation">Installation</a></li>
-    <li><a href="userguide.html#Examples">Examples</a></li>
+    <li><a href="index.html#Installation">Installation</a></li>
+    <li><a href="index.html#VelocityLayoutServlet">LayoutServlet</a></li>
+    <li><a href="index.html#Examples">Examples</a></li>
     <li><a href="../javadoc/index.html">Javadoc</a></li>
 
 </ul>
 <p>
-    <a href="StrutsTools.html"><strong>VelocityStruts Tools</strong></a>
+    <strong>VelocityView Tools</strong>
 </p>
 <ul>
-        <li><a href="ActionMessagesTool.html">ActionMessagesTool</a></li>
-    <li><a href="ErrorsTool.html">ErrorsTool</a></li>
-    <li><a href="FormTool.html">FormTool</a></li>
-    <li><a href="MessageTool.html">MessageTool</a></li>
-    <li><a href="StrutsLinkTool.html">StrutsLinkTool</a></li>
-    <li><a href="SecureLinkTool.html">SecureLinkTool</a></li>
-    <li><a href="TilesTool.html">TilesTool</a></li>
-    <li><a href="ValidatorTool.html">ValidatorTool</a></li>
+        <li><a href="../javadoc/org/apache/velocity/tools/view/tools/AbstractSearchTool.html">AbstractSearchTool</a></li>
+    <li><a href="CookieTool.html">CookieTool</a></li>
+    <li><a href="ImportTool.html">ImportTool</a></li>
+    <li><a href="LinkTool.html">LinkTool</a></li>
+    <li><a href="ParameterParser.html">ParameterParser</a></li>
+    <li><a href="ViewRenderTool.html">ViewRenderTool</a></li>
 
 </ul>
 <p>
@@ -74,7 +71,7 @@
 </p>
 <ul>
         <li><a href="../generic/">GenericTools</a></li>
-    <li><a href="../view/">VelocityView</a></li>
+    <li><a href="../struts/">VelocityStruts</a></li>
 
 </ul>
 
@@ -89,38 +86,32 @@
   <tr>
     <td colspan="2" bgcolor="#525D76">
       <font color="#ffffff" face="arial,helvetica.sanserif">
-      <a name="StrutsLinkTool Reference Documentation">
-      <strong>StrutsLinkTool Reference Documentation</strong></a></font>
+      <a name="ViewRenderTool Reference Documentation">
+      <strong>ViewRenderTool Reference Documentation</strong></a></font>
     </td>
   </tr>
   <tr>
     <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
     <td>
-      <p>The StrutsLinkTool extends the standard 
-        <a href="../view/LinkTool.html">LinkTool</a> to add methods 
-        for working with Struts' Actions and Forwards:</p>
-<ul>
-            <li>translate logical names (Struts forwards, actions ) to URI references, see
-              methods <a href="#setAction()">setAction()</a> and <a href="#setForward()">
-              setForward()</a></li>
-        </ul>
+      <p>This tool exposes methods to evaluate the given strings as VTL
+        (Velocity Template Language) and automatically using the current context.</p>
 <table cellpadding="0" cellspacing="0">
   <tr><td colspan="2"><strong>Class</strong></td></tr>
-  <tr><td>&nbsp;</td><td>org.apache.velocity.tools.struts.StrutsLinkTool</td></tr>
+  <tr><td>&nbsp;</td><td>org.apache.velocity.tools.view.tools.ViewRenderTool</td></tr>
 
   <tr><td colspan="2"><strong>Name</strong></td></tr>
-  <tr><td>&nbsp;</td><td>$link (this is the recommended name of the tool in 
+  <tr><td>&nbsp;</td><td>$render (this is the recommended name of the tool in 
       the Velocity context)</td></tr>
 
   <tr><td colspan="2"><strong>Toolbox Configuration Example</strong></td></tr>
   <tr><td>&nbsp;</td><td><pre>&lt;tool&gt;
-  &lt;key&gt;link&lt;/key&gt;
+  &lt;key&gt;render&lt;/key&gt;
   &lt;scope&gt;request&lt;/scope&gt;
-  &lt;class&gt;org.apache.velocity.tools.struts.StrutsLinkTool&lt;/class&gt;
+  &lt;class&gt;org.apache.velocity.tools.view.tools.ViewRenderTool&lt;/class&gt;
 &lt;/tool&gt;</pre></td></tr>
 
   <tr><td colspan="2"><strong>Author(s)</strong></td></tr>
-  <tr><td>&nbsp;</td><td><a href="mailto:sidler@teamup.com">Gabriel Sidler</a><br><a href="mailto:nathan@esha.com">Nathan Bubna</a><br></td></tr>
+  <tr><td>&nbsp;</td><td><a href="mailto:nathan@esha.com">Nathan Bubna</a><br></td></tr>
 </table>
 <dl>
   <dt><strong>Method Overview</strong></dt>
@@ -128,21 +119,21 @@
     <table cellpadding="2" cellspacing="2" border="0">
                             <tr>
           <td bgcolor="EEEEEE" nowrap>
-            <a href="#setAction()">setAction()</a></td>
+            <a href="#eval()">eval()</a></td>
           <td bgcolor="EEEEEE">
             
-                Returns a copy of this StrutsLinkTool instance with the given action path
-                converted into a server-relative URI reference.
+                Evaluates a String containing VTL using the current context, and
+                returns the result as a String.
             
           </td>
         </tr>
                         <tr>
           <td bgcolor="EEEEEE" nowrap>
-            <a href="#setForward()">setForward()</a></td>
+            <a href="#recurse()">recurse()</a></td>
           <td bgcolor="EEEEEE">
             
-                Returns a copy of this StrutsLinkTool instance with the given global 
-                forward name converted into a server-relative URI reference.
+                Recursively evaluates a String containing VTL using the
+                current context, and returns the result as a String.
             
           </td>
         </tr>
@@ -157,8 +148,8 @@
   <tr>
     <td colspan="2" bgcolor="#525D76">
       <font color="#ffffff" face="arial,helvetica.sanserif">
-      <a name="setAction()">
-      <strong>setAction()</strong></a></font>
+      <a name="eval()">
+      <strong>eval()</strong></a></font>
     </td>
   </tr>
   <tr>
@@ -167,15 +158,15 @@
       
         <p>
         <abstract>
-                Returns a copy of this StrutsLinkTool instance with the given action path
-                converted into a server-relative URI reference.
+                Evaluates a String containing VTL using the current context, and
+                returns the result as a String.
             </abstract>
     </p>
     <p>
     <table width="100%"><tr><td bgcolor="EEEEEE">
     <font size="+1"><code>
         <signature>
-                StrutsLinkTool setAction(String action)
+                String eval(String vtl)
             </signature>
     </code></font>
     </td></tr></table>
@@ -184,10 +175,10 @@
     <dt><strong>Parameters</strong></dt>
     <dd>
       <dl>
-              <dt>action</dt>
+              <dt>vtl</dt>
     <dd>
-        <parameter name="action">
-                    An action path as defined in struts-config.xml, e.g. <code>/logon</code>.
+        <parameter name="vtl">
+                    The code to be evaluated.
                 </parameter>
     </dd>
 
@@ -199,27 +190,29 @@
     <dt><strong>Returns</strong></dt>
     <dd>
         <returns>
-                A new instance of <code>StrutsLinkTool</code>.  
+                The evaluated code as a String.
             </returns>
     </dd>
     </dl>
 
-      <p>The action name is translated into a server-relative URI reference. The method does 
-                not check if the specified action has been defined. It will overwrite any 
-                previously set URI reference but will copy the query string.</p>
+      <p>Evaluates a String containing VTL using the current context, and
+                returns the result as a String.  If this fails, then <code>null</code>
+                will be returned.  This evaluation is not recursive.</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>#set( $list = [1,2,3] )
+#set( $object = '$list' )
+#set( $method = 'size()' )
+$render.eval("${object}.$method")</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+<p>This will produce the following output:</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>3</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
 
-<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
-  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>## a form tag
-&lt;form name="form1" action="$link.setAction("demo")"&gt;</sourcecode></pre>
-  </td></tr></table>
-</td></tr></table>
-<p>Produces something like:</p>
-<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
-  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>&lt;form name="form1" action="/myapp/demo.do"&gt;</sourcecode></pre>
-  </td></tr></table>
-</td></tr></table>
 
     <br clear="all">
 
@@ -230,8 +223,8 @@
   <tr>
     <td colspan="2" bgcolor="#525D76">
       <font color="#ffffff" face="arial,helvetica.sanserif">
-      <a name="setForward()">
-      <strong>setForward()</strong></a></font>
+      <a name="recurse()">
+      <strong>recurse()</strong></a></font>
     </td>
   </tr>
   <tr>
@@ -240,15 +233,15 @@
       
         <p>
         <abstract>
-                Returns a copy of this StrutsLinkTool instance with the given global 
-                forward name converted into a server-relative URI reference.
+                Recursively evaluates a String containing VTL using the
+                current context, and returns the result as a String.
             </abstract>
     </p>
     <p>
     <table width="100%"><tr><td bgcolor="EEEEEE">
     <font size="+1"><code>
         <signature>
-                StrutsLinkTool setForward(String forward)
+                String recurse(String vtl)
             </signature>
     </code></font>
     </td></tr></table>
@@ -257,10 +250,10 @@
     <dt><strong>Parameters</strong></dt>
     <dd>
       <dl>
-              <dt>forward</dt>
+              <dt>vtl</dt>
     <dd>
-        <parameter name="forward">
-                    The name of a global forward as defined in struts-config.xml.
+        <parameter name="vtl">
+                    The code to be evaluated.
                 </parameter>
     </dd>
 
@@ -272,29 +265,31 @@
     <dt><strong>Returns</strong></dt>
     <dd>
         <returns>
-                A new instance of <code>StrutsLinkTool</code> or <code>null</code> if the 
-                parameter does not map to a valid forward.
+                The evaluated code as a String
             </returns>
     </dd>
     </dl>
 
-      <p>The global forward name is translated into a server-relative 
-                URI reference. This method will overwrite any previously set URI 
-                reference but will copy the query string.</p>
+      <p>Recursively evaluates a String containing VTL using the
+                current context, and returns the result as a String. It
+                will continue to re-evaluate the output of the last
+                evaluation until an evaluation returns the same code
+                that was fed into it.</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>#macro( say_hi )hello world!#end
+#set( $foo = '#say_hi()' )
+#set( $bar = '$foo' )
+$render.recurse('$bar')</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+<p>This will produce the following output:</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>hello world!</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
 
-<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
-  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>## a forward
-&lt;a href="$link.setForward("start").addQueryData("key1","val 1")"&gt;
-My Link&lt;/a&gt;</sourcecode></pre>
-  </td></tr></table>
-</td></tr></table>
-<p>Produces something like:</p>
-<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
-  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>&lt;a href="/myapp/templates/index.vm?key=val+1"&gt;My Link&lt;/a&gt;</sourcecode></pre>
-  </td></tr></table>
-</td></tr></table>
 
     <br clear="all">
 

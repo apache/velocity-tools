@@ -2,10 +2,10 @@
             
     <html>
     <head>
-      <title>Velocity - ToolLoader</title>
+      <title>Velocity - ImportTool</title>
 
-               <meta name="author" value="Gabriel Sidler"/>
-        <meta name="email" value="sidler@apache.org" />
+               <meta name="author" value="Marino A. Jonsson"/>
+        <meta name="email" value="marino@apache.org" />
                
     
     </head>
@@ -25,7 +25,7 @@
         
           
                     <a href="index.html">
-            <img src="../images/velocitygenerictools.png" align="right" alt="< Velocity Tools - Library >" border="0"/>
+            <img src="../images/velocityview.png" align="right" alt="< Tools - View >" border="0"/>
           </a>
         
       </td></tr>
@@ -40,34 +40,37 @@
 
                         <td width="20%" valign="top" nowrap="true">
             
-                <p><strong><a href="../">Velocity Tools</a></strong></p>
+                <p><strong><a href="../index.html">Velocity Tools</a></strong></p>
 
             <p>
-    <strong>Generic Tools</strong>
+    <strong>VelocityView</strong>
 </p>
 <ul>
         <li><a href="index.html">Overview</a></li>
     <li><a href="../index.html#Download">Download</a></li>
-    <li><a href="index.html#Contributions">Contributions</a></li>
+    <li><a href="index.html#Installation">Installation</a></li>
+    <li><a href="index.html#VelocityLayoutServlet">LayoutServlet</a></li>
+    <li><a href="index.html#Examples">Examples</a></li>
     <li><a href="../javadoc/index.html">Javadoc</a></li>
 
 </ul>
 <p>
-    <strong>Tool Documentation</strong>
+    <strong>VelocityView Tools</strong>
 </p>
 <ul>
-        <li><a href="../javadoc/org/apache/velocity/tools/generic/DateTool.html">DateTool</a></li>
-    <li><a href="../javadoc/org/apache/velocity/tools/generic/IteratorTool.html">IteratorTool</a></li>
-    <li><a href="MathTool.html">MathTool</a></li>
-    <li><a href="../javadoc/org/apache/velocity/tools/generic/NumberTool.html">NumberTool</a></li>
-    <li><a href="../javadoc/org/apache/velocity/tools/generic/RenderTool.html">RenderTool</a></li>
+        <li><a href="../javadoc/org/apache/velocity/tools/view/tools/AbstractSearchTool.html">AbstractSearchTool</a></li>
+    <li><a href="CookieTool.html">CookieTool</a></li>
+    <li><a href="ImportTool.html">ImportTool</a></li>
+    <li><a href="LinkTool.html">LinkTool</a></li>
+    <li><a href="ParameterParser.html">ParameterParser</a></li>
+    <li><a href="ViewRenderTool.html">ViewRenderTool</a></li>
 
 </ul>
 <p>
     <strong>Other Subprojects</strong>
 </p>
 <ul>
-        <li><a href="../view/">VelocityView</a></li>
+        <li><a href="../generic/">GenericTools</a></li>
     <li><a href="../struts/">VelocityStruts</a></li>
 
 </ul>
@@ -83,37 +86,31 @@
   <tr>
     <td colspan="2" bgcolor="#525D76">
       <font color="#ffffff" face="arial,helvetica.sanserif">
-      <a name="ToolLoader Reference Documentation">
-      <strong>ToolLoader Reference Documentation</strong></a></font>
+      <a name="ImportTool Reference Documentation">
+      <strong>ImportTool Reference Documentation</strong></a></font>
     </td>
   </tr>
   <tr>
     <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
     <td>
-      <p>
-        A view tool that allows template designers to load view tools 
-        from within the template. Any object with a public constructor without 
-        parameters can be loaded into the context.  This tool is considered
-        by the developers to be merely a development tool and inappropriate
-        for use in a production setting.
-        </p>
+      <p>General-purpose text-importing view tool for templates.</p>
 <table cellpadding="0" cellspacing="0">
   <tr><td colspan="2"><strong>Class</strong></td></tr>
-  <tr><td>&nbsp;</td><td>org.apache.velocity.tools.generic.ToolLoader</td></tr>
+  <tr><td>&nbsp;</td><td>org.apache.velocity.tools.view.tools.ImportTool</td></tr>
 
   <tr><td colspan="2"><strong>Name</strong></td></tr>
-  <tr><td>&nbsp;</td><td>$toolLoader (this is the recommended name of the tool in 
+  <tr><td>&nbsp;</td><td>$import (this is the recommended name of the tool in 
       the Velocity context)</td></tr>
 
   <tr><td colspan="2"><strong>Toolbox Configuration Example</strong></td></tr>
   <tr><td>&nbsp;</td><td><pre>&lt;tool&gt;
-  &lt;key&gt;toolLoader&lt;/key&gt;
-  &lt;scope&gt;application&lt;/scope&gt;
-  &lt;class&gt;org.apache.velocity.tools.generic.ToolLoader&lt;/class&gt;
+  &lt;key&gt;import&lt;/key&gt;
+  &lt;scope&gt;session&lt;/scope&gt;
+  &lt;class&gt;org.apache.velocity.tools.view.tools.ImportTool&lt;/class&gt;
 &lt;/tool&gt;</pre></td></tr>
 
   <tr><td colspan="2"><strong>Author(s)</strong></td></tr>
-  <tr><td>&nbsp;</td><td><a href="mailto:sidler@apache.org">Gabriel Sidler</a><br></td></tr>
+  <tr><td>&nbsp;</td><td><a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a><br></td></tr>
 </table>
 <dl>
   <dt><strong>Method Overview</strong></dt>
@@ -121,10 +118,10 @@
     <table cellpadding="2" cellspacing="2" border="0">
                             <tr>
           <td bgcolor="EEEEEE" nowrap>
-            <a href="#load()">load()</a></td>
+            <a href="#read()">read()</a></td>
           <td bgcolor="EEEEEE">
             
-                Loads an instance of a tool and returns it.
+                Returns the supplied URL rendered as a String.
             
           </td>
         </tr>
@@ -139,8 +136,8 @@
   <tr>
     <td colspan="2" bgcolor="#525D76">
       <font color="#ffffff" face="arial,helvetica.sanserif">
-      <a name="load()">
-      <strong>load()</strong></a></font>
+      <a name="read()">
+      <strong>read()</strong></a></font>
     </td>
   </tr>
   <tr>
@@ -149,14 +146,14 @@
       
         <p>
         <abstract>
-                Loads an instance of a tool and returns it.
+                Returns the supplied URL rendered as a String.
             </abstract>
     </p>
     <p>
     <table width="100%"><tr><td bgcolor="EEEEEE">
     <font size="+1"><code>
         <signature>
-                void load(String class)
+                String read(String url)
             </signature>
     </code></font>
     </td></tr></table>
@@ -165,10 +162,10 @@
     <dt><strong>Parameters</strong></dt>
     <dd>
       <dl>
-              <dt>class</dt>
+              <dt>url</dt>
     <dd>
-        <parameter name="class">
-                    The name of the class to instantiate.
+        <parameter name="url">
+                    The URL to import.
                 </parameter>
     </dd>
 
@@ -176,17 +173,24 @@
       </dl>
     </dd>
     </dl>
-      <p>example:</p>
+    <dl>
+    <dt><strong>Returns</strong></dt>
+    <dd>
+        <returns>
+                The supplied URL rendered as a String.
+            </returns>
+    </dd>
+    </dl>
+
+      <p>This method takes an arbitrary URL or URI and renders it as a String.
+                This tool can also be used to import local .vm resources without sharing
+                the current velocity-context (as opposed to the #parse directive).</p>
 <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>
-#set( $math = $toolLoader.load("org.apache.velocity.tools.generic.MathTool") )
-$math.random(1,1000)
-</sourcecode></pre>
+    <pre><sourcecode>$import.read("http://jakarta.apache.org/velocity/tools")
+$import.read("/wookie.jsp")</sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
-<p>Loads MathTool with name $math into the context. Then, its random() function is
-                used to generate a random number between 1 and 1000.</p>
 
 
     <br clear="all">
