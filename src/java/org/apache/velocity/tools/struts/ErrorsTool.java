@@ -82,7 +82,7 @@ import org.apache.struts.action.ActionErrors;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Id: ErrorsTool.java,v 1.10 2004/01/06 00:53:06 nbubna Exp $
+ * @version $Id: ErrorsTool.java,v 1.11 2004/01/08 18:51:06 nbubna Exp $
  */
 public class ErrorsTool extends ActionMessagesTool
 {
@@ -158,7 +158,7 @@ public class ErrorsTool extends ActionMessagesTool
 
 
     /**
-     * Overrrides {@link ActionMessagesTool#getGlobalName()}
+     * Overrides {@link ActionMessagesTool#getGlobalName()}
      * to return the "global" key for action errors.
      *
      * @see org.apache.struts.action.ActionErrors.GLOBAL_ERROR
