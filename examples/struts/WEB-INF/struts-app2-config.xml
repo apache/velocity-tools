@@ -30,6 +30,16 @@
 
   </form-beans>
 
+  <!-- ========== Global Forward Definitions ============================== -->
+  <global-forwards>
+
+    <!-- Forward to source pages -->
+     <forward
+        name="src"
+        path="/examples/struts_app2/tool-demo.vm"
+        contextRelative="true"/>
+
+  </global-forwards>
 
   <!-- ========== Action Mapping Definitions ============================== -->
   <action-mappings>
@@ -42,7 +52,6 @@
             scope="request"
             validate="false">
         <forward name="home" path="/examples/struts_app2/tool-demo.vm" contextRelative="true"/>
-        <forward name="exit" path="/examples/struts_app2/tool-demo.vm" contextRelative="true"/>
     </action>
 
     <action path="/demoSrc"
