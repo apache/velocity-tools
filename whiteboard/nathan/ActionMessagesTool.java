@@ -81,7 +81,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: ActionMessagesTool.java,v 1.1 2003/03/10 21:43:05 nbubna Exp $
+ * @version $Id: ActionMessagesTool.java,v 1.2 2003/04/05 21:40:28 nbubna Exp $
  */
 public class ActionMessagesTool implements ViewTool
 {
@@ -289,7 +289,7 @@ public class ActionMessagesTool implements ViewTool
             else
             {
                 // if error message cannot be found for a key, return key instead
-                Velocity.warn("Message for key " + msg.getKey() + " could not be found in message resources.");
+                Velocity.warn("Message for key \"" + msg.getKey() + "\" could not be found.");
                 list.add(msg.getKey());
             }
         }

@@ -138,7 +138,7 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.7 2003/03/22 20:33:09 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.8 2003/04/05 21:40:28 nbubna Exp $
  */
 
 public class VelocityViewServlet extends HttpServlet
@@ -373,6 +373,10 @@ public class VelocityViewServlet extends HttpServlet
             p.load(servletContext.getResourceAsStream(propsFile));
 
             Velocity.info("Custom Properties File: "+propsFile);
+        }
+        else
+        {
+            Velocity.info("No custom properties found. Using default Velocity configuration.");
         }
 
         return p;

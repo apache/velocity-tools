@@ -84,7 +84,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ErrorsTool.java,v 1.2 2003/03/22 20:33:09 nbubna Exp $
+ * @version $Id: ErrorsTool.java,v 1.3 2003/04/05 21:40:28 nbubna Exp $
  */
 public class ErrorsTool implements ViewTool
 {
@@ -313,7 +313,7 @@ public class ErrorsTool implements ViewTool
             else
             {
                 // if error message cannot be found for a key, return key instead
-                Velocity.warn("Message for key " + errormsg.getKey() + " could not be found in message resources.");
+                Velocity.warn("Message for key \"" + errormsg.getKey() + "\" could not be found.");
                 list.add(errormsg.getKey());
             }
         }
