@@ -117,7 +117,7 @@ import org.apache.velocity.tools.view.context.ToolboxContext;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: XMLToolboxManager.java,v 1.1 2002/05/10 05:42:18 sidler Exp $
+ * @version $Id: XMLToolboxManager.java,v 1.2 2003/01/24 05:04:51 nbubna Exp $
  */
 public abstract class XMLToolboxManager implements ToolboxManager
 {
@@ -204,32 +204,47 @@ public abstract class XMLToolboxManager implements ToolboxManager
         Document document = new SAXReader().read(input);
         List elements = document.selectNodes("//"+BASE_NODE+"/*");
 
+        int elementsRead = 0;
         Iterator i = elements.iterator();
         while(i.hasNext())
         {
             Element e = (Element)i.next();
-            String name = e.getName();
-            
-            ToolInfo info;
-
-            if (name.equalsIgnoreCase(ELEMENT_TOOL))
-            {
-                info = readToolInfo(e);
+            if (readElement(e)) {
+                elementsRead++;
             }
-            else if (name.equalsIgnoreCase(ELEMENT_DATA)) 
-            {
-                info = readDataInfo(e);
-            }
-            else 
-            {
-                throw new InvalidSchemaException("Unknown element: "+name);
-            }
-
-            addTool(info);
-            log("Added "+info.getClassname()+" as "+info.getKey());
         }
 
-        log("Toolbox loaded.");
+        log("Toolbox loaded.  Read "+elementsRead+" elements.");
+    }
+
+
+    /**
+     * Delegates the reading of an element's ToolInfo
+     * and adds the returned instance to the tool list.
+     */
+    protected boolean readElement(Element e) throws Exception
+    {
+        String name = e.getName();
+
+        ToolInfo info = null;
+
+        if (name.equalsIgnoreCase(ELEMENT_TOOL))
+        {
+            info = readToolInfo(e);
+        }
+        else if (name.equalsIgnoreCase(ELEMENT_DATA)) 
+        {
+            info = readDataInfo(e);
+        }
+        else 
+        {
+            log("Could not read element: "+name);
+            return false;
+        }
+
+        addTool(info);
+        log("Added "+info.getClassname()+" as "+info.getKey());
+        return true;
     }
 
 
