@@ -84,7 +84,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ErrorsTool.java,v 1.4 2003/05/28 00:17:15 nbubna Exp $
+ * @version $Id: ErrorsTool.java,v 1.5 2003/07/25 16:54:40 nbubna Exp $
  */
 public class ErrorsTool implements ViewTool
 {
@@ -155,7 +155,7 @@ public class ErrorsTool implements ViewTool
         this.session = request.getSession(false);
         this.application = context.getServletContext();    
 
-        resources = StrutsUtils.getMessageResources(application);
+        resources = StrutsUtils.getMessageResources(request, application);
         locale = StrutsUtils.getLocale(request, session);
         errors = StrutsUtils.getActionErrors(request);
     }
@@ -174,7 +174,7 @@ public class ErrorsTool implements ViewTool
             return false;
         }
 
-        return !errors.empty();
+        return !errors.isEmpty();
     }
 
 
@@ -271,7 +271,7 @@ public class ErrorsTool implements ViewTool
      */
     public ArrayList get(String property) 
     {
-        if (errors == null || errors.empty())
+        if (errors == null || errors.isEmpty())
         {
             return null;
         }

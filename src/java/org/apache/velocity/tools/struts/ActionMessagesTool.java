@@ -84,7 +84,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: ActionMessagesTool.java,v 1.1 2003/07/22 06:09:22 nbubna Exp $
+ * @version $Id: ActionMessagesTool.java,v 1.2 2003/07/25 16:54:40 nbubna Exp $
  */
 public class ActionMessagesTool implements ViewTool
 {
@@ -125,7 +125,7 @@ public class ActionMessagesTool implements ViewTool
         ServletContext application = context.getServletContext();    
 
         this.locale = StrutsUtils.getLocale(request, session);
-        this.resources = StrutsUtils.getMessageResources(application);
+        this.resources = StrutsUtils.getMessageResources(request, application);
         this.actionMsgs = StrutsUtils.getActionMessages(request);
     }
 
