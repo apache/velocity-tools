@@ -12,6 +12,8 @@
     <subsection name="1.1-dev">
       <p>This section describes changes after the 1.1-beta release.</p>
       <ul>
+      <li>LinkTool now encodes URLs using the response's character encoding. (ndb)</li>
+      <li>Removed inadvertant JDK 1.4 dependencies from ImportSupport. (ndb)</li>
       <li>Made XMLToolboxManager not abstract (#24840). (ndb)</li>
       <li>De-staticized non-private methods in RenderTool and LinkTool. (ndb)</li>
       <li>Added NumberTool for formatting numbers (contributed by Mike Kienenberger). (ndb)</li>
