@@ -1,0 +1,268 @@
+<?xml version="1.0"?>
+
+<document>
+
+    <properties>
+        <title>ActionMessagesTool</title>
+        <author email="sidler@apache.org">Gabriel Sidler</author>
+        <projectfile>xdocs/struts/menu.xml</projectfile>
+   </properties>
+
+    <body>
+
+    <section name="ActionMessagesTool Reference Documentation">
+
+        <p>
+        This tool deals with Struts action messages.  A few important aspects about action
+        messages are:</p>
+        <ul>
+            <li>Action message strings are looked up in the message resources. Support
+                for internationalized messages is provided.</li>
+            <li>Action messages can have up to five replacement parameters.</li>
+            <li>Actions have an attribute <code>property</code> that describes the category of
+                message. This allows the view designer to place action messages precisely where they are
+                wanted. Several methods of this tool provide a parameter
+                <code>property</code> that allows to select a specific category of messages to operate
+                on. Without the <code>property</code> parameter, methods operate on all action messages.</li>
+        </ul>
+
+        <p>See the Struts User's Guide, section
+        <a href="http://jakarta.apache.org/struts/userGuide/building_view.html">Building View Components</a>
+        for more information on this topic.</p>
+
+        <toolinfo>
+            <version>@@@version@@@, @@@date@@@</version>
+            <clazz>org.apache.velocity.tools.struts.ActionMessagesTool</clazz>
+            <name>$actionmsgs</name>
+            <author email="sidler@teamup.com">Gabriel Sidler</author>
+            <author email="nathan@esha.com">Nathan Bubna</author>
+            <config-example>&lt;tool&gt;
+  &lt;key&gt;actionmsgs&lt;/key&gt;
+  &lt;scope&gt;request&lt;/scope&gt;
+  &lt;class&gt;org.apache.velocity.tools.struts.ActionMessagesTool&lt;/class&gt;
+&lt;/tool&gt;</config-example>
+        </toolinfo>
+
+        <methods/>
+
+    </section>
+
+    <section name="exist()">
+        <method name="exist()">
+
+            <abstract>
+            	Returns <code>true</code> if there are action messages queued,
+     		otherwise <code>false</code>.
+            </abstract>
+
+            <signature>
+                boolean exist()
+            </signature>
+
+            <signature>
+                boolean exist(String property)
+            </signature>
+
+            <parameters>
+                <parameter name="property">
+                    The category of messages to check for.
+                </parameter>
+            </parameters>
+
+            <returns>
+                <code>true</code> if there are action message queued. <code>false</code> otherwise.
+            </returns>
+
+            <description>
+                <p>Calling <code>exist()</code> without the <code>property</code> parameter checks for action messages of
+                any category. The <code>property</code> parameter can be used to limit the check to
+                action messages of a specific category.</p>
+
+<sourcecode>$errors.exist()
+$errors.exist("password")
+</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="getSize()">
+        <method name="getSize()">
+
+            <abstract>
+                Returns the number of action messages queued.
+            </abstract>
+
+            <signature>
+                int getSize()
+            </signature>
+
+            <signature>
+                int getSize(String property)
+            </signature>
+
+            <parameters>
+                <parameter name="property">
+                    The category of action messages to operate on.
+                </parameter>
+            </parameters>
+
+            <returns>
+                The number of action messages.
+            </returns>
+
+            <description>
+                <p>Calling <code>getSize()</code> without the <code>property</code> parameter returns the total
+                number of queued action messages. The <code>property</code> parameter can be used to
+                obtain the number of queued action messages for a specific category.</p>
+
+<sourcecode>$errors.getSize()
+$errors.size
+$errors.getSize("password")</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="getGlobal()">
+        <method name="getGlobal()">
+
+            <abstract>
+                This a convenience method and the equivalent of
+                <code>$actionmsgs.get($actionmsgs.globalName)</code>
+            </abstract>
+
+            <signature>
+                List getGlobal()
+            </signature>
+
+            <returns>
+                A list of all messages stored under the "global" property.
+            </returns>
+
+            <description>
+                <p>See the section on get() for more information.</p>
+            </description>
+        </method>
+    </section>
+
+    <section name="getAll()">
+        <method name="getAll()">
+
+            <abstract>
+                Returns a list of localized action messages for all action messages queued.
+            </abstract>
+
+            <signature>
+                List getAll()
+            </signature>
+
+            <signature>
+                List getAll(String bundle)
+            </signature>
+
+            <parameters>
+                <parameter name="bundle">
+                    The (non-default) message-resources bundle that holds the action messages.
+                </parameter>
+            </parameters>
+            <returns>
+                If the message resources are lacking an action message message for a
+                particular message key, the key itself is used as action message
+                and a warning is logged.
+            </returns>
+
+            <description>
+                <p>The following example shows a macro to render the action messages:</p>
+
+<sourcecode>&#35;macro (actionmsgsMarkup)
+    &#35;if (&#36;actionmsgs.exist)
+        &lt;ul&gt;
+        &#35;foreach (&#36;e in &#36;actionmsgs.all )
+            &lt;li&gt;&#36;e&lt;/li&gt;
+        &#35;end
+        &lt;/ul&gt;
+    &#35;end
+&#35;end</sourcecode>
+
+<p>This produces output similar to the following:</p>
+
+<sourcecode>&lt;ul&gt;
+    &lt;li&gt;This is the first action message in the queue.&lt;/li&gt;
+    &lt;li&gt;This is the second action message in the queue.&lt;/li&gt;
+&lt;/ul&gt;</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+
+    <section name="get()">
+        <method name="get()">
+
+            <abstract>
+                Returns a list of localized action messages for a particular category
+                of action messages.
+            </abstract>
+
+            <signature>
+                List get(String property)
+            </signature>
+
+            <parameters>
+                <parameter name="property">
+                    The category of action messages to return.
+                </parameter>
+            </parameters>
+
+            <signature>
+                List get(String property, String bundle)
+            </signature>
+
+            <parameters>
+                <parameter name="property">
+                    The category of action messages to return.
+                </parameter>
+
+                <parameter name="bundle">
+                    The (non-default) message-resources bundle that holds the action messages.
+                </parameter>
+            </parameters>
+
+            <returns>
+                A <code>java.util.List</code> of <code>java.lang.String</code>.
+                If no action messages exist for the specified category,
+                <code>null</code> is returned.
+                If the message resources are lacking an error message for a
+                particular message key, the key itself is used as action message
+                and a warning is logged.
+            </returns>
+
+            <description>
+                <p>The following example shows a macro to render the action messages for a
+                particular category of action messages:</p>
+
+<sourcecode>&#35;macro (actionmsgsMarkup &#36;property)
+    &#35;if (&#36;actionmsgs.exist(&#36;property))
+        &lt;ul&gt;
+        &#35;foreach (&#36;er in &#36;actionmsgs.get(&#36;property) )
+            &lt;li&gt;&#36;er&lt;/li&gt;
+        &#35;end
+        &lt;/ul&gt;
+    &#35;end
+&#35;end</sourcecode>
+
+<p>This produces output similar to the following:</p>
+
+<sourcecode>&lt;ul&gt;
+    &lt;li&gt;This is the first action message in the queue.&lt;/li&gt;
+    &lt;li&gt;TThis is the second action message in the queue.&lt;/li&gt;
+&lt;/ul&gt;</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+ </body>
+</document>
+
