@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: build.xml,v 1.42 2004/10/03 16:17:58 marino Exp $
+  $Id$
 -->
 <project name="velocity-tools" default="all" basedir=".">
 
@@ -72,6 +72,7 @@
     <pathelement location="${sslext.jar}"/>
     <pathelement location="${servlet.jar}"/>
     <pathelement location="${velocity.jar}"/>
+    <pathelement location="${commons-lang.jar}"/>
 
     <!-- for JDK 1.3 users -->
     <pathelement location="${xerces.jar}"/>
@@ -299,6 +300,7 @@
     <copy todir="${simple.lib}" file="${commons-logging.jar}"/>
     <copy todir="${simple.lib}" file="${oro.jar}"/>
     <copy todir="${simple.lib}" file="${velocity.jar}"/>
+    <copy todir="${simple.lib}" file="${commons-lang.jar}"/>
 
     <ant dir="${examples.home}/simple" target="war" inheritAll="false"/>
   </target>
@@ -331,6 +333,7 @@
     <copy todir="${velstruts.lib}" file="${struts.jar}"/>
     <copy todir="${velstruts.lib}" file="${oro.jar}"/>
     <copy todir="${velstruts.lib}" file="${velocity.jar}"/>
+    <copy todir="${velstruts.lib}" file="${commons-lang.jar}"/>
 
     <!-- Build VelocityStruts examples -->
     <ant dir="${examples.home}/struts" target="all" inheritAll="false"/>
@@ -357,6 +360,7 @@
     <copy todir="${layout.lib}" file="${commons-digester.jar}"/>
     <copy todir="${layout.lib}" file="${oro.jar}"/>
     <copy todir="${layout.lib}" file="${velocity.jar}"/>
+    <copy todir="${layout.lib}" file="${commons-lang.jar}"/>
 
     <ant dir="${examples.home}/layout" target="war" inheritAll="false"/>
   </target>
@@ -425,6 +429,7 @@
     <copy todir="${release.dir}/lib" file="${struts.jar}"/>
     <copy todir="${release.dir}/lib" file="${oro.jar}"/>
     <copy todir="${release.dir}/lib" file="${velocity.jar}"/>
+    <copy todir="${release.dir}/lib" file="${commons-lang.jar}"/>
 
     <!-- Gather example war files -->
     <mkdir dir="${release.dir}/examples"/>
