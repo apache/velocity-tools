@@ -99,7 +99,7 @@ import javax.servlet.ServletContext;
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ChainedContext.java,v 1.5 2002/04/15 18:30:29 sidler Exp $ 
+ * @version $Id: ChainedContext.java,v 1.6 2002/05/02 12:09:08 sidler Exp $ 
  */
 public class ChainedContext extends VelocityContext implements ViewContext
 {
@@ -229,17 +229,20 @@ public class ChainedContext extends VelocityContext implements ViewContext
         {
             o = request.getAttribute( key );
 
-            if ( o == null && session != null )
+            if ( o == null )
             {
-                o = session.getAttribute( key );
-                
+                if ( session != null )
+                {
+                    o = session.getAttribute( key );
+                }
+
                 if ( o == null )
                 {
                     o = application.getAttribute( key );
                 }
             }
         }
-        
+
         return o;
     }
 
