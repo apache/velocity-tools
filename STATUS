@@ -1,6 +1,6 @@
 S T A T U S
 ===========
-$Id: STATUS,v 1.10 2003/07/22 18:44:17 nbubna Exp $
+$Id: STATUS,v 1.11 2003/07/25 17:23:37 nbubna Exp $
 
 
 Known Issues/Bugs:
@@ -10,9 +10,10 @@ Known Issues/Bugs:
 
 Documentation:
    - Complete user guide.
-   - Document RenderTool, ViewRenderTool, IteratorTool, AbstractSearchTool
-   - Create a developer's guide.
-   - Update plan for Velocimacro libraries
+   - Document RenderTool, ViewRenderTool, IteratorTool, AbstractSearchTool,
+              TilesTool, CookieTool, ActionMessagesTool, MultiViewsTool, and
+              the commons-logging/LogSystem bridges
+   - Create a developer's guide (how to write tools, tips on extending VVS, etc.)
 
 
 
@@ -21,16 +22,17 @@ Proposed Features/Upgrades:
         - convert project to use Maven
         
     VelocityView:
-        - add a library of general velocimacros
+        - add a library of velocimacros for use with these tools
         - Switch to non-singleton mode of Velocity to allow different
           instances/configurations of VVS in the same classloader/application/JVM
         - Pluggable toolbox manager in VelocityViewServlet
         - Tool pooling support (use commons-pool probably)
         - add an ImportTool? (actually might fit under generic tools)
-        - add CookieTool
+        - add ability to do custom, individual tool configurations 
+          from the toolbox config file (pooling support might help here)
 
     Generic tools:
-        - add a library of velocimacros for use with these tools
+        - add a library of general-use velocimacros
         - Template debugging tool(s)/support
 
     VelocityStruts:
@@ -40,21 +42,17 @@ Proposed Features/Upgrades:
             - Validator
                 - tool to access javascripts?
                 - integration with FormTool/MessagesTool?
-            - Tiles?
-            - Modules (sub-apps)
-            - multiple config files
-            - multiple message resources
             - etc.
 
 
 
-Examples:
-   - Create a blank Velocity-Struts application as the starting point
-     for development.
-   - Create a simple Velocity-Struts application to demonstrate use
-     of VelocityLayoutServlet (and other new features like the search tool)
-   - Create a Struts 1.1 example. Take one of the existing Struts 1.1
-     examples and replace the view layer with Velocity.
-   - Create example app(s) that demonstrate the use of other new features.
-     (a macro-library example would be a good one to start with.)
+Example Ideas:
+   - a blank Velocity-Struts application as the starting point for development.
+   - an application to demonstrate use of more obscure features like the 
+     AbstractSearchTool, MultiViewsTool, IteratorTool, and the like.
+   - Struts 1.1 example(s). Take the existing Struts 1.1 examples and replace 
+     the view layer with Velocity. (show off Tiles, modules, Validator, etc.)
+   - example app(s) to demonstrate the velocimacro libraries
+   - self-documenting apps to explain and demonstrate key features
+   - a FooShop-type demo app (i.e. something closer to real-world use)
 
