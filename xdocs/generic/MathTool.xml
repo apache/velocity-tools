@@ -250,7 +250,7 @@
 
 
     <section name="abs()">
-        <method name="max()">
+        <method name="abs()">
     
             <abstract>
                 Absolute value of a number
@@ -261,7 +261,7 @@
             </signature>
 
             <parameters>
-                <parameter name="num1, num2">
+                <parameter name="num">
                     Operand. Valid input is any number (primitive
                     types or objects, Velocity automatically converts primitives types 
                     to objects) or a string representation of a number.

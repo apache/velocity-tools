@@ -95,7 +95,7 @@ $screen_content
           most common will likely be:
         </p>
         <p>
-          &lt;a href="$link.setAbsolute('MyScreen.vm').addQueryData('layout','MyOtherLayout.vm')"&gt;
+          &lt;a href="$link.setRelative('MyScreen.vm').addQueryData('layout','MyOtherLayout.vm')"&gt;
         </p>
         <p>
           but form post data will work just as well.
@@ -164,7 +164,7 @@ $screen_content
 </sourcecode>
 
         <p>and in your screen, just do 
-        <code>#set( $screen_header = 'FooFooter.vm' ).</code></p>
+        <code>#set( $screen_footer = 'FooFooter.vm' ).</code></p>
 
         <p>Remember, your #parsed footer template will have access to the same 
         velocity context as your layout, which gets the screen's context 
@@ -198,7 +198,7 @@ $screen_content
         </tr>
         <tr>
           <td>$stack_trace</td>
-          <td>captured output of $cause.printStackTrace()</td>
+          <td>captured output of $error_cause.printStackTrace()</td>
         </tr>
       </table>              
 

@@ -257,7 +257,7 @@ http://myserver.org/myapp/index.vm?key1=val+1
             
             <returns>
                 Returns the current URI reference as set by one of the methods 
-                setURI(), setAction(), setForward() or setRelative(). Any conversions 
+                setURI() or setRelative(). Any conversions 
                 have been applied. The returned URI reference does not included query data that was
                 added with method addQueryData().
             </returns>
@@ -358,7 +358,7 @@ $l.getQueryData()</sourcecode>
                 
             <returns>
                 The context path that addresses this web application, e.g. 
-                <code>/myapp"</code>. This string starts with a "/" but does 
+                <code>"/myapp"</code>. This string starts with a "/" but does 
                 not end with a "/".
             </returns>
     
@@ -437,7 +437,7 @@ $l.getQueryData()</sourcecode>
                 Velocity will call the toString() method automatically to 
                 obtain a representable version of objects.</p>
 
-<sourcecode>&lt;a href="$link.setAction("demo").addQueryString("key1", "val 1")"&gt;
+<sourcecode>&lt;a href="$link.setRelative("demo").addQueryString("key1", "val 1")"&gt;
 My Link&lt;/a&gt;</sourcecode>
 
 <p>Produces something like:</p>
@@ -501,22 +501,22 @@ is able to work properly with or without cookie support of the client.</p>
 <p>The following examples show the output of the <code>toString()</code> method if 
 cookies are enabled and disabled.</p>
 
-<sourcecode>&lt;a href="$link.setURI("MyAction.do).addQueryData("key1","val 1")"&gt;
+<sourcecode>&lt;a href="$link.setURI("MyPage.vm").addQueryData("key1","val 1")"&gt;
 My Link&lt;/a>
 
-&lt;form name="MyForm" method="post" action="$link.setURI("myAction.do")"&gt;</sourcecode>
+&lt;form name="MyForm" method="post" action="$link.setURI("MyPage.vm")"&gt;</sourcecode>
 
 
 <p>Produces this if cookies are enabled:</p>
 
-<sourcecode>&lt;a href="MyAction.do?key1=val+1">My Link&lt;/a&gt;
+<sourcecode>&lt;a href="MyPage.vm?key1=val+1">My Link&lt;/a&gt;
 
-&lt;form name="MyForm" method="post" action="MyAction.do"&gt;</sourcecode>
+&lt;form name="MyForm" method="post" action="MyPage.vm"&gt;</sourcecode>
 
 
 <p>Produces something like this if cookies are diabled:</p>
 
-<sourcecode>&lt;a href="MyAction.do;jsessionid=E9833012F7B2F8570963B137?key1=val+1"&gt;
+<sourcecode>&lt;a href="MyPage.vm;jsessionid=E9833012F7B2F8570963B137?key1=val+1"&gt;
 My Link&lt;/a&gt;
 
 &lt;form name="MyForm" method="post" 

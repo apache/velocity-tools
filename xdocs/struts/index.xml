@@ -62,7 +62,7 @@
 
             <li>Velocity is easy to extend with <i>Tools</i> which are simply 
             any class which has public methods. These are typically easier to 
-            develop than JSP customer tag libraries.</li>
+            develop than JSP custom tag libraries.</li>
 
             <li>Velocity 'macros' are a powerful tool for the View Designer. 
             They enable the creation of reusable snippets of markup, often 
@@ -76,7 +76,7 @@
             <li>Velocity enables easy access to dynamic data 
             that Web Designers can understand.</li>
 
-            <li>Velocity being interprted, enables a simple development cycle 
+            <li>Velocity being interpreted, enables a simple development cycle 
             where template errors can quickly be localized and debugged.</li>
 
             <li>Velocity, which caches templates for speed, has been reported 
