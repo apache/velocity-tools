@@ -90,7 +90,7 @@ import org.apache.struts.action.*;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>, based
  * on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 class StrutsUtils
 {
@@ -450,6 +450,16 @@ class StrutsUtils
     }
     
     
+    /**
+     * Returns the default "GLOBAL" category name that can be used with
+     * messages that are not associated with a particular property.
+     */
+    static String getGlobalErrorName()
+    {
+        return org.apache.struts.action.ActionErrors.GLOBAL_ERROR;
+    }
+
+
     /**
      * Returns the query parameter name under which a transaction token
      * must be reported.
