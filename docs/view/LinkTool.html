@@ -1,0 +1,991 @@
+
+            
+    <html>
+    <head>
+      <title>Velocity - LinkTool</title>
+
+               <meta name="author" value="Gabriel Sidler"/>
+        <meta name="email" value="sidler@apache.org" />
+               
+    
+    </head>
+
+    <body bgcolor="#ffffff" text="#000000" link="#525D76"
+          alink="#525D76" vlink="#525D76">
+
+    <table border="0" width="100%" cellspacing="4">
+
+            <tr><td colspan="2">
+
+                <a href="http://jakarta.apache.org/">
+          <img src="http://jakarta.apache.org/images/jakarta-logo.gif"
+             align="left" alt="The Jakarta Project" border="0"/>
+        </a>
+
+        
+          
+                    <a href="index.html">
+            <img src="../images/velocityview.png" align="right" alt="< Tools - View >" border="0"/>
+          </a>
+        
+      </td></tr>
+
+            <tr>
+        <td colspan="2">
+          <hr noshade="" size="1"/>
+        </td>
+      </tr>
+
+      <tr>
+
+                        <td width="20%" valign="top" nowrap="true">
+            
+                <p><strong><a href="../index.html">Velocity Tools</a></strong></p>
+
+            <p>
+    <strong>VelocityView</strong>
+</p>
+<ul>
+        <li><a href="index.html">Overview</a></li>
+    <li><a href="index.html#Download">Download</a></li>
+    <li><a href="index.html#Installation">Installation</a></li>
+    <li><a href="index.html#VelocityLayoutServlet">LayoutServlet</a></li>
+    <li><a href="index.html#Examples">Examples</a></li>
+    <li><a href="../javadoc/index.html">Javadoc</a></li>
+
+</ul>
+<p>
+    <strong>VelocityView Tools</strong>
+</p>
+<ul>
+        <li><a href="LinkTool.html">LinkTool</a></li>
+    <li><a href="ParameterParser.html">ParameterParser</a></li>
+    <li>ViewRenderTool</li>
+    <li>AbstractSearchTool</li>
+
+</ul>
+
+            <p>
+</p>
+
+        </td>
+        
+        <!-- RIGHT SIDE MAIN BODY -->
+        <td colspan="1" valign="top" align="left">
+          <table border="0" cellspacing="0" cellpadding="2" width="100%">
+  <tr>
+    <td colspan="2" bgcolor="#525D76">
+      <font color="#ffffff" face="arial,helvetica.sanserif">
+      <a name="LinkTool Reference Documentation">
+      <strong>LinkTool Reference Documentation</strong></a></font>
+    </td>
+  </tr>
+  <tr>
+    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td>
+      <p>The LinkTool provides methods to work with URIs:</p>
+<ul>
+            <li>set server relative URIs<a href="#setRelative()">
+              setRelative()</a></li>
+            <li>set arbitrary URIs<a href="#setURI()">
+              setURI()</a></li>
+            <li>construct and encode query strings, see methods <a href="#addQueryData()">
+              addQueryData()</a> and <a href="#getQueryData()">getQueryData()</a></li>
+            <li>set internal anchor references<a href="#setAnchor()">
+              setAnchor()</a></li>
+            <li>encode session ID into URL, see method <a href="#toString()">toString()</a></li>
+            <li>retrieve server, port and path info for the current request, see methods
+              <a href="#getURI()">getURI()</a>, <a href="#getContextURI()">getContextURI()</a>, 
+              <a href="#getContextPath()">getContextPath()</a> and 
+              <a href="#getBaseRef()">getBaseRef()</a></li>
+        </ul>
+<p>The LinkTool is somewhat special in that many of its methods return
+        a new instance of LinkTool. This facilitates greatly the repeated use
+        of the LinkTool in Velocity and leads to an elegant syntax.</p>
+<p>I've been struggling a bit to find the right terminology for the things
+        that this tool works with. Based on document 
+        <a href="http://www.w3.org/Architecture/Terms">http://www.w3.org/Architecture/Terms</a>,
+        I have used:</p>
+<dl>
+            <dt>URI</dt>
+            <dd>To refer to the full, absolute address of web resources, e.g. static documents
+            or abstract resources like dynamically generated content. 
+            Example: <code>http://myserver.org/myapp/templates/index.html</code></dd>
+
+            <dt>URI Reference</dt>
+            <dd>To refer to partial and relative URIs that reference a URI. Example: 
+            <code>templates/index.html</code>. </dd>
+
+            <dt>URL</dt>
+            <dd>Not used here.</dd>
+
+        </dl>
+<table cellpadding="0" cellspacing="0">
+  <tr><td colspan="2"><strong>Class</strong></td></tr>
+  <tr><td>&nbsp;</td><td>org.apache.velocity.tools.view.tools.LinkTool</td></tr>
+
+  <tr><td colspan="2"><strong>Name</strong></td></tr>
+  <tr><td>&nbsp;</td><td>$link (this is the recommended name of the tool in 
+      the Velocity context)</td></tr>
+
+  <tr><td colspan="2"><strong>Toolbox Configuration Example</strong></td></tr>
+  <tr><td>&nbsp;</td><td><pre>&lt;tool&gt;
+  &lt;key&gt;link&lt;/key&gt;
+  &lt;scope&gt;request&lt;/scope&gt;
+  &lt;class&gt;org.apache.velocity.tools.view.tools.LinkTool&lt;/class&gt;
+&lt;/tool&gt;</pre></td></tr>
+
+  <tr><td colspan="2"><strong>Author(s)</strong></td></tr>
+  <tr><td>&nbsp;</td><td><a href="mailto:sidler@teamup.com">Gabriel Sidler</a><br><a href="mailto:nathan@esha.com">Nathan Bubna</a><br></td></tr>
+</table>
+<dl>
+  <dt><strong>Method Overview</strong></dt>
+  <dd>
+    <table cellpadding="2" cellspacing="2" border="0">
+                            <tr>
+          <td bgcolor="EEEEEE" nowrap>
+            <a href="#setURI()">setURI()</a></td>
+          <td bgcolor="EEEEEE">
+            
+                Returns a copy of this LinkTool instance with the given URI reference.
+            
+          </td>
+        </tr>
+                        <tr>
+          <td bgcolor="EEEEEE" nowrap>
+            <a href="#setRelative()">setRelative()</a></td>
+          <td bgcolor="EEEEEE">
+            
+                Returns a copy of this LinkTool instance with the specified context-relative
+                URI reference converted to a server-relative URI reference.
+            
+          </td>
+        </tr>
+                        <tr>
+          <td bgcolor="EEEEEE" nowrap>
+            <a href="#addQueryData()">addQueryData()</a></td>
+          <td bgcolor="EEEEEE">
+            
+                Adds a key=value pair to the URI reference.
+            
+          </td>
+        </tr>
+                        <tr>
+          <td bgcolor="EEEEEE" nowrap>
+            <a href="#setAnchor()">setAnchor()</a></td>
+          <td bgcolor="EEEEEE">
+            
+                Sets an internal document reference to append to this link (e.g. #foo).
+            
+          </td>
+        </tr>
+                        <tr>
+          <td bgcolor="EEEEEE" nowrap>
+            <a href="#getURI()">getURI()</a></td>
+          <td bgcolor="EEEEEE">
+            
+                Returns the current URI reference.
+            
+          </td>
+        </tr>
+                        <tr>
+          <td bgcolor="EEEEEE" nowrap>
+            <a href="#getQueryData()">getQueryData()</a></td>
+          <td bgcolor="EEEEEE">
+            
+                Returns this instance's query data.
+            
+          </td>
+        </tr>
+                        <tr>
+          <td bgcolor="EEEEEE" nowrap>
+            <a href="#getContextURI()">getContextURI()</a></td>
+          <td bgcolor="EEEEEE">
+            
+                Returns the URI that addresses this web application.
+            
+          </td>
+        </tr>
+                        <tr>
+          <td bgcolor="EEEEEE" nowrap>
+            <a href="#getContextPath()">getContextPath()</a></td>
+          <td bgcolor="EEEEEE">
+            
+                Returns the context path that addresses this web application.
+            
+          </td>
+        </tr>
+                        <tr>
+          <td bgcolor="EEEEEE" nowrap>
+            <a href="#getBaseRef()">getBaseRef()</a></td>
+          <td bgcolor="EEEEEE">
+            
+                Returns the full URI of this template.
+            
+          </td>
+        </tr>
+                        <tr>
+          <td bgcolor="EEEEEE" nowrap>
+            <a href="#toString()">toString()</a></td>
+          <td bgcolor="EEEEEE">
+            
+                Returns the full URI that has been constructed. The session ID
+                is encoded into the URL if cookies are not supported by the web client.
+            
+          </td>
+        </tr>
+              </table>
+  </dd>
+</dl>
+
+    </td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+  <tr>
+    <td colspan="2" bgcolor="#525D76">
+      <font color="#ffffff" face="arial,helvetica.sanserif">
+      <a name="setURI()">
+      <strong>setURI()</strong></a></font>
+    </td>
+  </tr>
+  <tr>
+    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td>
+      
+        <p>
+        <abstract>
+                Returns a copy of this LinkTool instance with the given URI reference.
+            </abstract>
+    </p>
+    <p>
+    <table width="100%"><tr><td bgcolor="EEEEEE">
+    <font size="+1"><code>
+        <signature>
+                LinkTool setURI(String uri)
+            </signature>
+    </code></font>
+    </td></tr></table>
+    </p>
+    <dl>
+    <dt><strong>Parameters</strong></dt>
+    <dd>
+      <dl>
+              <dt>uri</dt>
+    <dd>
+        <parameter name="uri">
+                    URI reference to set. The URI reference can be absolute 
+                    (<code>http://www.mydomain.com/myapp/templates/index.html</code>),
+                    server-relative (<code>/myapp/templates/index.html</code>), 
+                    relative (<code>templates/index.html</code>) 
+                    and may contain query strings (<code>templates/index.html?key1=value1&amp;key2=value2</code>).
+                </parameter>
+    </dd>
+
+
+      </dl>
+    </dd>
+    </dl>
+    <dl>
+    <dt><strong>Returns</strong></dt>
+    <dd>
+        <returns>
+                A new instance of <code>LinkTool</code>.  
+            </returns>
+    </dd>
+    </dl>
+
+      <p>No conversions are applied to the given URI reference. This method will 
+                overwrite any previously set URI reference but will copy query 
+                data set with method <code>setQueryData()</code>.</p>
+
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>## a relative reference
+$link.setURI("index.html").addQueryData("key1","val 1")
+
+## a server-relative reference
+$link.setURI("/myapp/index.vm").addQueryData("key1","val 1")
+
+## an absolute reference
+$link.setURI("http://myserver.org/myapp/index.vm")
+.addQueryData("key1", "val 1")
+
+## a reference with a query string
+$link.setURI("/myapp/index.vm?key0=val0")
+.addQueryData("key1", "val 1")
+</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+<p>This produces:</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>index.vm/key1=val+1
+    
+/myapp/index.vm/key1=val+1
+
+http://myserver.org/myapp/index.vm?key1=val+1
+
+/myapp/index.vm?key0=val0&amp;key1=val+1</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+
+    <br clear="all">
+
+    </td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+  <tr>
+    <td colspan="2" bgcolor="#525D76">
+      <font color="#ffffff" face="arial,helvetica.sanserif">
+      <a name="setRelative()">
+      <strong>setRelative()</strong></a></font>
+    </td>
+  </tr>
+  <tr>
+    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td>
+      
+        <p>
+        <abstract>
+                Returns a copy of this LinkTool instance with the specified context-relative
+                URI reference converted to a server-relative URI reference.
+            </abstract>
+    </p>
+    <p>
+    <table width="100%"><tr><td bgcolor="EEEEEE">
+    <font size="+1"><code>
+        <signature>
+                LinkTool setRelative(String uri)
+            </signature>
+    </code></font>
+    </td></tr></table>
+    </p>
+    <dl>
+    <dt><strong>Parameters</strong></dt>
+    <dd>
+      <dl>
+              <dt>uri</dt>
+    <dd>
+        <parameter name="uri">
+                    A context-relative URI reference, i.e. a URI reference that is relative to the URI
+                    used to address this web application.
+                </parameter>
+    </dd>
+
+
+      </dl>
+    </dd>
+    </dl>
+    <dl>
+    <dt><strong>Returns</strong></dt>
+    <dd>
+        <returns>
+                A new instance of <code>LinkTool</code>.  
+            </returns>
+    </dd>
+    </dl>
+
+      <p>The specified context-relative URI reference is converted to a server-relative URI reference.
+                This method will overwrite any previously set URI reference but will copy the query string.</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>
+## a context-relative hyperlink
+&lt;a href="$link.setRelative("templates/index.vm").addQueryData("key1","val 1")"&gt;My Link&lt;/a&gt;
+</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+<p>Produces something like:</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>&lt;a href="/myapp/templates/index.vm?key=val+1"&gt;My Link&lt;/a&gt;</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+
+
+    <br clear="all">
+
+    </td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+  <tr>
+    <td colspan="2" bgcolor="#525D76">
+      <font color="#ffffff" face="arial,helvetica.sanserif">
+      <a name="addQueryData()">
+      <strong>addQueryData()</strong></a></font>
+    </td>
+  </tr>
+  <tr>
+    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td>
+      
+        <p>
+        <abstract>
+                Adds a key=value pair to the URI reference.
+            </abstract>
+    </p>
+    <p>
+    <table width="100%"><tr><td bgcolor="EEEEEE">
+    <font size="+1"><code>
+        <signature>
+                LinkTool addQueryData(String key, Object value)
+            </signature>
+    </code></font>
+    </td></tr></table>
+    </p>
+    <dl>
+    <dt><strong>Parameters</strong></dt>
+    <dd>
+      <dl>
+              <dt>key</dt>
+    <dd>
+        <parameter name="key">
+                    Key (name) of query parameter.
+                </parameter>
+    </dd>
+
+    <dt>value</dt>
+    <dd>
+        <parameter name="value">
+                    Value of the query parameter. The string representation of this object is 
+                    added to the query data.
+                </parameter>
+    </dd>
+
+
+      </dl>
+    </dd>
+    </dl>
+    <dl>
+    <dt><strong>Returns</strong></dt>
+    <dd>
+        <returns>
+                A new instance of <code>LinkTool</code>.  
+            </returns>
+    </dd>
+    </dl>
+
+      <p>Adds a key=value pair to the query data. This returns a new LinkTool 
+                containing both a copy of this LinkTool's query data and the new data.
+                This makes repeated use in Velocity templates easy. Query data is
+                URL-encoded before it is appended.</p>
+<p>See <a href="#setURI()">method setURI()</a> for examples.</p>
+
+
+    <br clear="all">
+
+    </td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+  <tr>
+    <td colspan="2" bgcolor="#525D76">
+      <font color="#ffffff" face="arial,helvetica.sanserif">
+      <a name="setAnchor()">
+      <strong>setAnchor()</strong></a></font>
+    </td>
+  </tr>
+  <tr>
+    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td>
+      
+        <p>
+        <abstract>
+                Sets an internal document reference to append to this link (e.g. #foo).
+            </abstract>
+    </p>
+    <p>
+    <table width="100%"><tr><td bgcolor="EEEEEE">
+    <font size="+1"><code>
+        <signature>
+                LinkTool setAnchor(String anchor)
+            </signature>
+    </code></font>
+    </td></tr></table>
+    </p>
+    <dl>
+    <dt><strong>Parameters</strong></dt>
+    <dd>
+      <dl>
+              <dt>anchor</dt>
+    <dd>
+        <parameter name="anchor">
+                    The internal document reference to append to this link
+                </parameter>
+    </dd>
+
+
+      </dl>
+    </dd>
+    </dl>
+    <dl>
+    <dt><strong>Returns</strong></dt>
+    <dd>
+        <returns>
+                A new instance of <code>LinkTool</code>.  
+            </returns>
+    </dd>
+    </dl>
+
+      <p>Returns a copy of the link with the specified anchor to be 
+                added to the end of the generated hyperlink.  This returns a new LinkTool 
+                containing both a copy of this LinkTool's data and the new anchor value.
+                This makes repeated use in Velocity templates easy. The anchor value
+                is url encoded before being rendered.</p>
+
+
+    <br clear="all">
+
+    </td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+  <tr>
+    <td colspan="2" bgcolor="#525D76">
+      <font color="#ffffff" face="arial,helvetica.sanserif">
+      <a name="getURI()">
+      <strong>getURI()</strong></a></font>
+    </td>
+  </tr>
+  <tr>
+    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td>
+      
+        <p>
+        <abstract>
+                Returns the current URI reference.
+            </abstract>
+    </p>
+    <p>
+    <table width="100%"><tr><td bgcolor="EEEEEE">
+    <font size="+1"><code>
+        <signature>
+                LinkTool getURI()
+            </signature>
+    </code></font>
+    </td></tr></table>
+    </p>
+    <dl>
+    <dt><strong>Returns</strong></dt>
+    <dd>
+        <returns>
+                Returns the current URI reference as set by one of the methods 
+                setURI(), setAction(), setForward() or setRelative(). Any conversions 
+                have been applied. The returned URI reference does not included query data that was
+                added with method addQueryData().
+            </returns>
+    </dd>
+    </dl>
+
+<dl>
+  <dt><strong>See Also</strong></dt>
+  <dd>
+    <see>
+                Method <a href="#getQueryData()"><code>getQueryData()</code></a> to retrieve
+                query data only. Method <a href="#toString()"><code>toString()</code></a> to 
+                retrieve the URI reference including all query data.
+            </see>
+  </dd>
+</dl>
+      <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>#set ($l = $link.setForward("start").addQueryData("key1","val 1"))
+&lt;a href="$l.getURI()"&gt;My Link&lt;/a&gt;</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+<p>Produces something like:</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>&lt;a href="/myapp/templates/index.vm"&gt;My Link&lt;/a&gt;</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+
+
+    <br clear="all">
+
+    </td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+  <tr>
+    <td colspan="2" bgcolor="#525D76">
+      <font color="#ffffff" face="arial,helvetica.sanserif">
+      <a name="getQueryData()">
+      <strong>getQueryData()</strong></a></font>
+    </td>
+  </tr>
+  <tr>
+    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td>
+      
+        <p>
+        <abstract>
+                Returns this instance's query data.
+            </abstract>
+    </p>
+    <p>
+    <table width="100%"><tr><td bgcolor="EEEEEE">
+    <font size="+1"><code>
+        <signature>
+                String getQueryData()
+            </signature>
+    </code></font>
+    </td></tr></table>
+    </p>
+    <dl>
+    <dt><strong>Returns</strong></dt>
+    <dd>
+        <returns>
+                This instance's query data as set by the method 
+                <a href="#setQueryData()"><code>setQueryData()</code></a>. The
+                returned String is URL-encoded, e.g. "key=value&amp;foo=this+is+encoded".
+            </returns>
+    </dd>
+    </dl>
+
+      <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>#set ($l = $link.setForward("start").addQueryData("key1","val 1"))
+$l.getQueryData()</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+<p>Produces:</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>key1=val+1</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+
+
+    <br clear="all">
+
+    </td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+  <tr>
+    <td colspan="2" bgcolor="#525D76">
+      <font color="#ffffff" face="arial,helvetica.sanserif">
+      <a name="getContextURI()">
+      <strong>getContextURI()</strong></a></font>
+    </td>
+  </tr>
+  <tr>
+    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td>
+      
+        <p>
+        <abstract>
+                Returns the URI that addresses this web application.
+            </abstract>
+    </p>
+    <p>
+    <table width="100%"><tr><td bgcolor="EEEEEE">
+    <font size="+1"><code>
+        <signature>
+                String getContextURI()
+            </signature>
+    </code></font>
+    </td></tr></table>
+    </p>
+    <dl>
+    <dt><strong>Returns</strong></dt>
+    <dd>
+        <returns>
+                Returns the URI reference that addresses this web application, e.g. 
+                "http://myserver.net/myapp". This string does not end with a "/".
+            </returns>
+    </dd>
+    </dl>
+
+      <p>Note! This will not represent the URI reference or 
+                query data set for this LinkTool instance.</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>$link.getContextURI()</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+<p>Produces something like:</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>http://myserver.net/myapp</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+
+
+    <br clear="all">
+
+    </td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+  <tr>
+    <td colspan="2" bgcolor="#525D76">
+      <font color="#ffffff" face="arial,helvetica.sanserif">
+      <a name="getContextPath()">
+      <strong>getContextPath()</strong></a></font>
+    </td>
+  </tr>
+  <tr>
+    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td>
+      
+        <p>
+        <abstract>
+                Returns the context path that addresses this web application.
+            </abstract>
+    </p>
+    <p>
+    <table width="100%"><tr><td bgcolor="EEEEEE">
+    <font size="+1"><code>
+        <signature>
+                String getContextPath()
+            </signature>
+    </code></font>
+    </td></tr></table>
+    </p>
+    <dl>
+    <dt><strong>Returns</strong></dt>
+    <dd>
+        <returns>
+                The context path that addresses this web application, e.g. 
+                <code>/myapp"</code>. This string starts with a "/" but does 
+                not end with a "/".
+            </returns>
+    </dd>
+    </dl>
+
+      <p> Note! This will not represent the URI reference or query 
+                data set for this LinkTool instance.</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>$link.getContextPath()</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+<p>Produces something like:</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>/myapp</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+
+
+    <br clear="all">
+
+    </td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+  <tr>
+    <td colspan="2" bgcolor="#525D76">
+      <font color="#ffffff" face="arial,helvetica.sanserif">
+      <a name="getBaseRef()">
+      <strong>getBaseRef()</strong></a></font>
+    </td>
+  </tr>
+  <tr>
+    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td>
+      
+        <p>
+        <abstract>
+                Returns the full URI of this template.
+            </abstract>
+    </p>
+    <p>
+    <table width="100%"><tr><td bgcolor="EEEEEE">
+    <font size="+1"><code>
+        <signature>
+                String getBaseRef()
+            </signature>
+    </code></font>
+    </td></tr></table>
+    </p>
+    <dl>
+    <dt><strong>Returns</strong></dt>
+    <dd>
+        <returns>
+                The full URI of this template without any query data.
+                e.g. <code>http://myserver.net/myapp/templates/View.vm</code>.
+            </returns>
+    </dd>
+    </dl>
+
+      <p>Note! The returned String will not represent the URI reference or query 
+                data set for this LinkTool instance. A typical application of this method 
+                is with the HTML base tag.</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>## a base tag
+&lt;base href="$link.getBaseRef()"&gt;</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+<p>Produces something like:</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>&lt;base href="http://myserver.net/myapp/templates/index.vm"&gt;</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+
+
+    <br clear="all">
+
+    </td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+  <tr>
+    <td colspan="2" bgcolor="#525D76">
+      <font color="#ffffff" face="arial,helvetica.sanserif">
+      <a name="toString()">
+      <strong>toString()</strong></a></font>
+    </td>
+  </tr>
+  <tr>
+    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td>
+      
+        <p>
+        <abstract>
+                Returns the full URI that has been constructed. The session ID
+                is encoded into the URL if cookies are not supported by the web client.
+            </abstract>
+    </p>
+    <p>
+    <table width="100%"><tr><td bgcolor="EEEEEE">
+    <font size="+1"><code>
+        <signature>
+                String toString()
+            </signature>
+    </code></font>
+    </td></tr></table>
+    </p>
+    <dl>
+    <dt><strong>Returns</strong></dt>
+    <dd>
+        <returns>
+                The full URI that has been built with this tool
+                e.g. <code>/myapp/stuff/View.vm?id=42&amp;type=blue#foobar</code>.
+            </returns>
+    </dd>
+    </dl>
+
+      <p>Typically it is not necessary to call this method explicitly.
+                Velocity will call the toString() method automatically to 
+                obtain a representable version of objects.</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>&lt;a href="$link.setAction("demo").addQueryString("key1", "val 1")"&gt;
+My Link&lt;/a&gt;</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+<p>Produces something like:</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>&lt;a href="/myapp/demo.do?key1=val+1"&gt;My Link&lt;/a&gt;</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+<p>If sessions are used and the web client does not support cookies, the 
+<code>toString()</code> method automatically encodes the session ID into the 
+returned URI. The above example would then produce something like: </p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>&lt;a href="/myapp/demo.do;jsessionid=aaaaaaanisPWVYEY01?key1=val+1"&gt;
+My Link&lt;/a&gt;</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+<p><strong>A Note about URI Encoding</strong></p>
+<p>URI encoding is about encoding the session ID into the URI string. This
+section briefly explains the reasoning behind it and how it works.</p>
+<p>Many web applications use sessions to associate an application state 
+with a particualar user. For example, a session might be used to maintain
+the state of a shopping cart while the user is browsing the online shop.</p>
+<p>The Servlet API has forseen two mechanisms to identify HTTP requests that 
+belong to a particular session.</p>
+<ul>
+  <li><strong>Cookies</strong>: A new cookie containing the session ID is sent
+    to the client at the beginning of a session. The client returns this cookie 
+    with every request.</li> 
+  <li><strong>URI Encoding</strong>: The session ID is encoded into the
+    URI string. The server parses the URI of requests to detect the presence
+    of an encoded session ID.</li>
+</ul>
+<p>Most developers prefer to use cookies to identify sessions. The cookie-based 
+mechanism is easier to work with because it does not require the 
+encoding of every URI. However,
+for reasons of security and privacy some users choose to disable cookie
+support in their browsers. If session management relies on cookies only,
+it will fail in such a situation. A well designed web application needs to
+be able to fall back to the URI encoding method in this case.</p>
+<p>The Servlet API offers two methods to support the web application
+developer with the URI encoding:</p>
+<pre>
+java.lang.String encodeURL(java.lang.String url)
+java.lang.String encodeRedirectURL(java.lang.String url)
+</pre>
+<p>These two methods encode the sesssion id into the URI string <strong>if</strong> sessions
+are used <strong>and if</strong> the particular web client does not support cookies.</p>
+<p>The <code>toString()</code> method of LinkTool automatically does URI encoding using the
+<code>encodeURL()</code> method.
+Therefore, if all URIs within an application are produced with the LinkTool, the application
+is able to work properly with or without cookie support of the client.</p>
+<p>The following examples show the output of the <code>toString()</code> method if 
+cookies are enabled and disabled.</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>&lt;a href="$link.setURI("MyAction.do).addQueryData("key1","val 1")"&gt;
+My Link&lt;/a&gt;
+
+&lt;form name="MyForm" method="post" action="$link.setURI("myAction.do")"&gt;</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+<p>Produces this if cookies are enabled:</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>&lt;a href="MyAction.do?key1=val+1"&gt;My Link&lt;/a&gt;
+
+&lt;form name="MyForm" method="post" action="MyAction.do"&gt;</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+<p>Produces something like this if cookies are diabled:</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>&lt;a href="MyAction.do;jsessionid=E9833012F7B2F8570963B137?key1=val+1"&gt;
+My Link&lt;/a&gt;
+
+&lt;form name="MyForm" method="post" 
+action="MyAction.do;jsessionid=E9833012F7B20857096F37743B137"&gt;</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+
+
+    <br clear="all">
+
+    </td>
+  </tr>
+</table>
+
+        </td>
+
+      </tr>
+
+      <!-- FOOTER SEPARATOR --> 
+      <tr>
+        <td colspan="2">
+          <hr noshade="" size="1"/>
+        </td>
+      </tr>
+
+      <!-- PAGE FOOTER -->
+      <tr><td colspan="2">
+        <div align="center"><font color="#525D76" size="-1"><em>
+        Copyright &#169; 1999-2002, Apache Software Foundation
+        </em></font></div>
+      </td></tr>
+
+    </table>
+    </body>
+    </html>
