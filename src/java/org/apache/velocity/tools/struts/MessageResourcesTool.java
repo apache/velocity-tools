@@ -67,7 +67,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:nbubna@apache.org">Nathan Bubna</a>
  * @since VelocityTools 1.1
- * @version $Id: MessageResourcesTool.java,v 1.1 2003/11/06 06:18:10 nbubna Exp $
+ * @version $Id: MessageResourcesTool.java,v 1.2 2004/01/07 19:07:38 nbubna Exp $
  */
 public abstract class MessageResourcesTool implements ViewTool
 {
@@ -112,7 +112,7 @@ public abstract class MessageResourcesTool implements ViewTool
         {
             if (resources == null) 
             {
-                Velocity.error("Message resources are not available.");
+                Velocity.error("MessageResourcesTool: Message resources are not available.");
             }
             return resources;
         }
@@ -121,8 +121,8 @@ public abstract class MessageResourcesTool implements ViewTool
             StrutsUtils.getMessageResources(request, application, bundle);
         if (res == null)
         {
-            Velocity.error("MessageResources bundle '" + bundle + 
-                           "' is not available.");
+            Velocity.error("MessageResourcesTool: MessageResources bundle '"
+                           + bundle + "' is not available.");
         }
         return res;
     }
