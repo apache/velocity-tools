@@ -132,7 +132,7 @@ import org.apache.velocity.tools.view.servlet.ServletToolboxRuleSet;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ServletToolboxManager.java,v 1.9 2003/11/06 00:26:54 nbubna Exp $
+ * @version $Id: ServletToolboxManager.java,v 1.10 2004/02/12 18:13:21 nbubna Exp $
  */
 public class ServletToolboxManager extends XMLToolboxManager
 {
@@ -359,30 +359,26 @@ public class ServletToolboxManager extends XMLToolboxManager
         if (!sessionToolInfo.isEmpty())
         {
             HttpSession session = ctx.getRequest().getSession(createSession);
-
-            if (session != null) {
-                //synchronize session tool initialization to avoid potential
-                //conflicts from multiple simultaneous requests in the same session
-                synchronized(session)
+            if (session != null)
+            {
+                // allow only one thread per session at a time
+                synchronized(getMutex(session))
                 {
-                    //get the initialized session tools
+                    // get the session tools
                     Map stmap = (Map)session.getAttribute(SESSION_TOOLS_KEY);
-
-                    //if session tools aren't initialized,
-                    //do so and store them in the session
                     if (stmap == null)
                     {
+                        // init and store session tools map
                         stmap = new HashMap(sessionToolInfo.size());
                         Iterator i = sessionToolInfo.iterator();
                         while(i.hasNext())
                         {
-                            ToolInfo info = (ToolInfo)i.next();
-                            stmap.put(info.getKey(), info.getInstance(ctx));
+                            ToolInfo ti = (ToolInfo)i.next();
+                            stmap.put(ti.getKey(), ti.getInstance(ctx));
                         }
                         session.setAttribute(SESSION_TOOLS_KEY, stmap);
                     }
-
-                    //add the initialized session tools to the toolbox
+                    // add them to the toolbox
                     toolbox.putAll(stmap);
                 }
             }
@@ -399,5 +395,31 @@ public class ServletToolboxManager extends XMLToolboxManager
         return new ToolboxContext(toolbox);
     }
 
+
+    /**
+     * Returns a mutex (lock object) unique to the specified session 
+     * to allow for reliable synchronization on the session.
+     */
+    protected Object getMutex(HttpSession session)
+    {
+        // yes, this uses double-checked locking, but it is safe here
+        // since partial initialization of the lock is not an issue
+        Object lock = session.getAttribute("session.mutex");
+        if (lock == null)
+        {
+            // one thread per toolbox manager at a time
+            synchronized(this)
+            {
+                // in case another thread already came thru
+                lock = session.getAttribute("session.mutex");
+                if (lock == null)
+                {
+                    lock = new Object();
+                    session.setAttribute("session.mutex", lock);
+                }
+            }
+        }
+        return lock;
+    }
 
 }
