@@ -186,7 +186,7 @@
            destdir="${docs.dest}/"
     	   toolbox="${docs.src}/toolbox.props"
            extension=".html"
-           style="${docs.src}/site.dvsl"
+           style="../xdocs/site.dvsl"
            excludes="**/project.xml"
            includes="**/*.xml"
       />
