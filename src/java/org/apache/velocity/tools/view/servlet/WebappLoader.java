@@ -42,10 +42,15 @@ import org.apache.velocity.runtime.resource.loader.ResourceLoader;
  *
  * All paths must be relative to the root of the webapp.
  *
+ * To enable caching and cache refreshing the webapp.resource.loader.cache and
+ * webapp.resource.loader.modificationCheckInterval properties need to be
+ * set in the velocity.properties file ... auto-reloading of global macros
+ * requires the webapp.resource.loader.cache property to be set to 'false'.
+ *
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:claude@savoirweb.com">Claude Brisson</a>
- * @version $Id: WebappLoader.java,v 1.8 2004/10/04 13:06:52 marino Exp $  */
+ * @version $Id: WebappLoader.java,v 1.9 2004/10/04 15:00:51 marino Exp $  */
 
 public class WebappLoader extends ResourceLoader
 {
@@ -177,7 +182,10 @@ public class WebappLoader extends ResourceLoader
     }
 
     /**
-     * Defaults to return false.
+     * Checks to see if a resource has been deleted, moved or modified.
+     *
+     * @param resource Resource  The resource to check for modification
+     * @return boolean  True if the resource has been modified
      */
     public boolean isSourceModified(Resource resource)
     {
@@ -230,7 +238,10 @@ public class WebappLoader extends ResourceLoader
     }
 
     /**
-     * Defaults to return 0
+     * Checks to see when a resource was last modified
+     *
+     * @param resource Resource the resource to check
+     * @return long The time when the resource was last modified or 0 if the file can't be read
      */
     public long getLastModified(Resource resource)
     {
