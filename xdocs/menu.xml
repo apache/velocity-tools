@@ -10,6 +10,7 @@
       <menu name="Velocity Tools">
           <item name="Overview"               href="index.html"/>
           <item name="Download"               href="index.html#Download"/>
+          <item name="ChangeLog"              href="changes.html"/>
           <item name="CVS Repository"         href="index.html#CVS Repository"/>
           <item name="Javadoc"                href="javadoc/index.html"/>
           <item name="Wiki"                   href="http://nagoya.apache.org/wiki/apachewiki.cgi?VelocityTools"/>
