@@ -223,7 +223,7 @@ public class NumberTool
         if (style < 0)
         {
             // we have a custom format
-            nf = new DecimalFormat(format, new DecimalFormatSymbols(getLocale()));
+            nf = new DecimalFormat(format, new DecimalFormatSymbols(locale));
         }
         else
         {
