@@ -44,7 +44,7 @@ import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
  * somewhere.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Id: VelocityLayoutServlet.java,v 1.7 2004/02/18 20:07:02 nbubna Exp $
+ * @version $Id: VelocityLayoutServlet.java,v 1.8 2004/07/30 17:14:19 nbubna Exp $
  */
 
 public class VelocityLayoutServlet extends VelocityViewServlet 
@@ -130,9 +130,9 @@ public class VelocityLayoutServlet extends VelocityViewServlet
     public static String KEY_ERROR_INVOCATION_EXCEPTION = "invocation_exception";
 
 
-    private String errorTemplate;
-    private String layoutDir;
-    private String defaultLayout;
+    protected String errorTemplate;
+    protected String layoutDir;
+    protected String defaultLayout;
 
 
     /**
