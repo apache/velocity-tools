@@ -82,7 +82,7 @@ import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
  * somewhere.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Id: VelocityLayoutServlet.java,v 1.5 2003/10/07 04:53:44 nbubna Exp $
+ * @version $Id: VelocityLayoutServlet.java,v 1.6 2003/10/07 04:59:11 nbubna Exp $
  */
 
 public class VelocityLayoutServlet extends VelocityViewServlet 
@@ -279,7 +279,8 @@ public class VelocityLayoutServlet extends VelocityViewServlet
         } 
         catch (Exception e) 
         {
-            Velocity.error("Can't load layout \"" + layout + "\": " + e);
+            Velocity.error("VelocityLayoutServlet: Can't load layout \"" + 
+                           layout + "\": " + e);
 
             // if it was an alternate layout we couldn't get...
             if (!layout.equals(defaultLayout)) 
@@ -334,7 +335,10 @@ public class VelocityLayoutServlet extends VelocityViewServlet
         } 
         catch (Exception e2) 
         {
-            // d'oh! punt this to a higher authority
+            // d'oh! log this
+            Velocity.error("VelocityLayoutServlet: " + 
+                           " Error during error template rendering - " + e2);
+            // then punt the original to a higher authority
             super.error(request, response, e);
         }
     }
