@@ -17,7 +17,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: struts-app4-config.xml,v 1.2 2004/02/20 13:13:42 marino Exp $
+  $Id: struts-app4-config.xml,v 1.3 2004/03/12 01:24:04 marino Exp $
 -->
 
 <!--
@@ -56,6 +56,7 @@
 
   </action-mappings>
 
+  <message-resources parameter="examples.app4.ApplicationResources" />
   <!-- ========== PlugIn Definitions ============================== -->
 
   <plug-in className="org.apache.struts.tiles.TilesPlugin">
