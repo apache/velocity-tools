@@ -32,7 +32,7 @@ import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
- * <p>View tool to make building URIs pleasant and fun! :)</p>
+ * View tool to make building URIs pleasant and fun! 
  * <p><pre>
  * Template example(s):
  *   #set( $base = $link.setRelative('MyPage.vm').setAnchor('view') )
@@ -52,7 +52,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Id: LinkTool.java,v 1.14 2004/02/18 20:06:11 nbubna Exp $
+ * @version $Id: LinkTool.java,v 1.15 2004/03/12 20:30:32 nbubna Exp $
  */
 public class LinkTool implements ViewTool, Cloneable
 {
@@ -188,7 +188,7 @@ public class LinkTool implements ViewTool, Cloneable
      * Copies 'that' LinkTool into this one and sets the new 
      * anchor for the link.
      *
-     * @param uri uri string
+     * @param anchor URI string
      */
     protected LinkTool copyWithAnchor(String anchor)
     {

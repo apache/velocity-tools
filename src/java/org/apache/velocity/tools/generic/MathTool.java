@@ -41,7 +41,7 @@ package org.apache.velocity.tools.generic;
  * </pre></p>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.6 $ $Date: 2004/02/18 20:11:07 $
+ * @version $Revision: 1.7 $ $Date: 2004/03/12 20:30:31 $
  */
 public class MathTool
 {
@@ -186,7 +186,7 @@ public class MathTool
 
 
     /**
-     * @param num1 the number
+     * @param num the number
      * @return the absolute value of the number or
      *         <code>null</code> if it's invalid
      * @see #toDouble
@@ -240,7 +240,7 @@ public class MathTool
      * @param num the number to round
      * @return the number rounded to the nearest whole Integer
      *         or <code>null</code> if it's invalid
-     * @see java.lang.Math.rint(double)
+     * @see java.lang.Math#rint(double)
      */
     public Integer round(Object num)
     {
@@ -261,7 +261,7 @@ public class MathTool
      * an {@link Integer} rather than a {@link Double}.
      *
      * @param decimals the number of decimal places
-     * @param value the number to round
+     * @param num the number to round
      * @return the value rounded to the specified number of
      *         decimal places or <code>null</code> if it's invalid
      * @see #toNumber

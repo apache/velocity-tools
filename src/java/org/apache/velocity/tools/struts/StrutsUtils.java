@@ -55,7 +55,7 @@ import org.apache.struts.util.RequestUtils;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * based on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Id: StrutsUtils.java,v 1.17 2004/03/12 02:37:20 marino Exp $
+ * @version $Id: StrutsUtils.java,v 1.18 2004/03/12 20:30:31 nbubna Exp $
  */
 public class StrutsUtils
 {
@@ -66,7 +66,7 @@ public class StrutsUtils
      * Returns the message resources for this application or <code>null</code>
      * if not found.
      *
-     * @param application the servlet context
+     * @param app the servlet context
      * @since VelocityTools 1.1
      */
     public static MessageResources getMessageResources(HttpServletRequest request,
@@ -83,7 +83,7 @@ public class StrutsUtils
      * Returns the message resources with the specified bundle name for this application
      * or <code>null</code> if not found.
      *
-     * @param application the servlet context
+     * @param app the servlet context
      * @param bundle The bundle name to look for.  If this is <code>null</code>, the
      *               default bundle name is used.
      * @since VelocityTools 1.1
@@ -319,7 +319,7 @@ public class StrutsUtils
      * Returns the action forward name converted into a server-relative URI
      * reference.
      *
-     * @param application the servlet context
+     * @param app the servlet context
      * @param request the servlet request
      * @param forward the name of a forward as per struts-config.xml
      */

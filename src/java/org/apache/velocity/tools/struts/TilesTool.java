@@ -40,7 +40,7 @@ import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
- * <p>View tool to use struts-tiles with Velocity</p>
+ * View tool to use struts-tiles with Velocity.
  * <p><pre>
  * Template example(s):
  *  &lt;!-- insert a tile --&gt;
@@ -64,7 +64,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.11 $ $Date: 2004/02/18 20:09:51 $
+ * @version $Revision: 1.12 $ $Date: 2004/03/12 20:30:31 $
  */
 public class TilesTool extends ImportSupport implements ViewTool
 {
@@ -111,12 +111,12 @@ public class TilesTool extends ImportSupport implements ViewTool
     /***************************** View Helpers ******************************/
 
     /**
-     * <p>A generic tiles insert function</p>
+     * A generic tiles insert function.
      *
      * <p>This is functionally equivalent to
      * <code>&lt;tiles:insert attribute="foo" /&gt;</code>.</p>
      *
-     * @param attr - can be any of the following:
+     * @param obj Can be any of the following:
      *        AttributeDefinition,
      *        tile-definition name,
      *        tile-attribute name,
@@ -505,8 +505,8 @@ public class TilesTool extends ImportSupport implements ViewTool
     }
 
     /**
-     * <p>pops the tiles sub-context off the context-stack after the lower level
-     * tiles have been rendered</p>
+     * Pops the tiles sub-context off the context-stack after the lower level
+     * tiles have been rendered.
      */
     protected void popTilesContext()
     {

@@ -135,7 +135,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Revision: 1.6 $ $Date: 2004/02/18 20:06:11 $
+ * @version $Revision: 1.7 $ $Date: 2004/03/12 20:30:32 $
  */
 public abstract class AbstractSearchTool implements ViewTool
 {
@@ -227,7 +227,7 @@ public abstract class AbstractSearchTool implements ViewTool
     /**
      * Sets the index of the first result in the current page
      *
-     * @param index - the result index to start the current page with
+     * @param index the result index to start the current page with
      */
     public void setIndex(int index)
     {
@@ -243,7 +243,7 @@ public abstract class AbstractSearchTool implements ViewTool
     /**
      * Sets the number of items returned in a page of results
      *
-     * @param itemsPerPage - the number of items to be returned per page
+     * @param itemsPerPage the number of items to be returned per page
      */
     public void setItemsPerPage(int itemsPerPage)
     {
@@ -656,8 +656,8 @@ public abstract class AbstractSearchTool implements ViewTool
         /**
          * Creates a new instance.
          *
-         * @param criteria - the criteria for these results
-         * @param list - the {@link List} of results to store
+         * @param crit the criteria for these results
+         * @param list the {@link List} of results to store
          */
         public StoredResults(Object crit, List list)
         {
