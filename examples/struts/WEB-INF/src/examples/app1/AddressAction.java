@@ -18,22 +18,17 @@ package examples.app1;
 
 
 import java.io.IOException;
-import java.util.Hashtable;
 import java.util.Locale;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.Globals;
 import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionError;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionServlet;
-import org.apache.struts.util.MessageResources;
 
 
 /**
@@ -52,7 +47,7 @@ import org.apache.struts.util.MessageResources;
  *
  *
  * @author <a href="mailto:sidler@teamup.com"/>Gabe Sidler</a>
- * @version $Id: AddressAction.java,v 1.3 2004/02/20 12:42:47 marino Exp $
+ * @version $Id: AddressAction.java,v 1.4 2004/03/12 19:41:01 marino Exp $
  */
 public class AddressAction extends Action
 {
