@@ -14,6 +14,22 @@ Here we use a tool : $toytool.getMessage()
 
 Lets count : #foreach($i in [1..5])$i #end
 
+<br>
+<br>
+
+Let's play with a hashmap:<br>
+first add foo: $map.put("foo",$foo)<br>
+then add bar: $map.put("bar",$bar)<br>
+<br>
+and that gives us $map
+
+<br>
+<br>
+
+#if( $isSimple )
+This is simple app version ${version}.
+#end
+
 </body>
 </html>
 
