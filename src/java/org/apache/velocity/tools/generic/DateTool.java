@@ -74,7 +74,7 @@ import java.util.TimeZone;
  * a non-default calendar, locale, or timezone.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.2 $ $Date: 2003/05/28 00:17:15 $
+ * @version $Revision: 1.3 $ $Date: 2003/07/04 05:13:10 $
  */
 
 public class DateTool
@@ -262,7 +262,7 @@ public class DateTool
     /**
      * Converts an object to an instance of {@link Date}. Uses a 
      * DateFormat to parse the string value of the object if it is not
-     * an instance of Date or Calendar.
+     * an instance of Date or Calendar or Long.
      *
      * @param obj the date to convert
      * @return the object as a {@link Date} or <code>null</code> if no
@@ -281,6 +281,12 @@ public class DateTool
         if (obj instanceof Calendar)
         {
             return ((Calendar)obj).getTime();
+        }
+        if (obj instanceof Long) 
+        {
+            Date d = new Date();
+            d.setTime(((Long)obj).longValue());
+            return d;
         }
         try
         {
