@@ -9,17 +9,14 @@
   <section name="Velocity Tools Changes">
     <p>This document tracks the changes in Velocity Tools between releases.</p>
 
-    <subsection name="1.1-beta">
+    <subsection name="1.1-dev">
       <p>This section describes changes after the 1.0 release.</p>
       <ul>
       <li>De-staticized MathTool to make it extendable. (ndb)</li>
       <li>Factored common functionality of ErrorsTool, MessageTool, and ActionMessagesTool into abstract MessageResourcesTool. (ndb)</li>
       <li>Added ImportTool as a simple ImportSupport-based tool. (maj)</li>
-      <li>Converted TilesTool to extend ImportSupport.  
-          This allows easy mixing of view technologies (JSP, Velocity, etc.) in 
-          VelocityStruts applications. (thanks go to Matthew Payne for the idea!) (maj)</li>
-      <li>Added ImportSupport class for building tools that can import resources 
-          from local or remote URLS. (maj)</li>
+      <li>Converted TilesTool to extend ImportSupport. This allows easy mixing of view technologies (JSP, Velocity, etc.) in VelocityStruts applications. (thanks go to Matthew Payne for the idea!) (maj)</li>
+      <li>Added ImportSupport class for building tools that can import resources from local or remote URLS. (maj)</li>
       <li>Overhauled DateTool to make it more extendable, user-friendly, and add support for standard, localized date-time styles (see DateTool javadoc for more). (ndb)</li>
       <li>Added support for specifying message resource bundles to StrutsUtils, ErrorsTool, ActionMessagesTool, and MessageTool. (maj,ndb)</li>
       <li>Added commons-validator (1.0.2) and sslext jars to library. (maj)</li>
