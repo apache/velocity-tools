@@ -99,7 +99,7 @@ import javax.servlet.ServletContext;
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ChainedContext.java,v 1.6 2002/05/02 12:09:08 sidler Exp $ 
+ * @version $Id: ChainedContext.java,v 1.7 2003/01/24 04:15:43 nbubna Exp $ 
  */
 public class ChainedContext extends VelocityContext implements ViewContext
 {
@@ -175,6 +175,10 @@ public class ChainedContext extends VelocityContext implements ViewContext
     public void setToolbox(ToolboxContext box)
     {
         toolboxContext = box;
+        // just in case the servlet toolbox manager
+        // had to create a new session to hold session tools
+        // let's make sure this context's session ref is current
+        session = request.getSession(false);
     }
 
 
@@ -189,6 +193,18 @@ public class ChainedContext extends VelocityContext implements ViewContext
      */
     public Object internalGet( String key )
     {
+        Object o = null;
+
+        // search the toolbox
+        if (toolboxContext != null)
+        {
+            o = toolboxContext.get(key);
+            if (o != null)
+            {
+                return o;
+            }
+        }
+
         // make the four scopes of the Apocalypse Read only
         if ( key.equals( REQUEST ))
         {
@@ -207,42 +223,27 @@ public class ChainedContext extends VelocityContext implements ViewContext
             return application;
         }
 
-        // search the toolbox
-        Object o = null;
-
-        if ( toolboxContext != null)
+        // try the local hashtable
+        o = super.internalGet(key);
+        if (o != null)
         {
-             o = toolboxContext.get( key );
-
-            if ( o != null )
-            {
-                return o;
-            }
+            return o;
         }
 
-
-        // try the local hashtable
-        o = super.internalGet( key );
-
         // if not found, wander down the scopes...
+        o = request.getAttribute(key);
         if (o == null)
         {
-            o = request.getAttribute( key );
+            if (session != null)
+            {
+                o = session.getAttribute(key);
+            }
 
             if ( o == null )
             {
-                if ( session != null )
-                {
-                    o = session.getAttribute( key );
-                }
-
-                if ( o == null )
-                {
-                    o = application.getAttribute( key );
-                }
+                o = application.getAttribute(key);
             }
         }
-
         return o;
     }
 
