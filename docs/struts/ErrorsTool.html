@@ -673,18 +673,20 @@ $errors.getSize("password")</sourcecode></pre>
                 limited to a specific category of errors. Error message texts
                 are looked up in the message resources. If a message text
                 cannot be found, the message key will be displayed instead.</p>
-<p>The method expects a message header and a message footer
-                to be defined in the message resources. The corresponding
-                message keys are <code>errors.header</code> and
-                <code>errors.footer</code>.</p>
+<p>The method expects a message header, a message footer, a message prefix
+                and a message suffix to be defined in the message resources. The corresponding
+                message keys are <code>errors.header</code>, <code>errors.footer</code>,
+                <code>errors.prefix</code> and <code>errors.suffix</code>.</p>
 <p>Assuming that the message resources contain the following
                 definitions:</p>
 <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>errors.header=Please correct the following errors:&lt;ul&gt;
+    <pre><sourcecode>errors.header=Please correct the following errors before proceeding:&lt;ul&gt;
 errors.footer=&lt;/ul&gt;
-error01=&lt;li&gt;The field Expiration Date is required.&lt;/li&gt;
-error02=&lt;li&gt;The input is not a valid credit card number.&lt;/li&gt;
+errors.prefix=&lt;li&gt;
+errors.suffix=&lt;/li&gt;
+error01=The field Expiration Date is required.
+error02=The input is not a valid credit card number.
 ...</sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
