@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+
+<document>
+
+    <properties>
+        <title>CookieTool</title>
+        <author email="sidler@apache.org">Gabriel Sidler</author>
+        <projectfile>xdocs/view/menu.xml</projectfile>
+     </properties>
+
+    <body>
+
+    <section name="CookieTool Reference Documentation">
+
+        <p>View tool for convenient cookie access and creation.</p>
+
+        <toolinfo>
+            <version>@@@version@@@, @@@date@@@</version>
+            <clazz>org.apache.velocity.tools.view.tools.CookieTool</clazz>
+            <name>$cookie</name>
+            <author email="mailto:dim@colebatch.com">Dmitri Colebatch</author>
+            <author email="nathan@esha.com">Nathan Bubna</author>
+            <config-example>&lt;tool&gt;
+  &lt;key&gt;cookie&lt;/key&gt;
+  &lt;scope&gt;request&lt;/scope&gt;
+  &lt;class&gt;org.apache.velocity.tools.view.tools.CookieTool&lt;/class&gt;
+&lt;/tool&gt;</config-example>
+        </toolinfo>
+
+        <methods/>
+
+    </section>
+
+
+    <section name="getAll()">
+        <method name="getAll()">
+
+            <abstract>
+                Expose array of <code>Cookie</code> objects for this request to the
+                template.
+            </abstract>
+
+            <signature>
+                Cookie[] getAll()
+            </signature>
+
+            <returns>
+                array of <code>Cookie</code> objects for this request.
+            </returns>
+
+            <description>
+                <p>This method exposes the array of <code>Cookie</code> objects for
+                this request.  It is equivalent to <code>$request.cookies</code>.</p>
+
+<sourcecode>#set($cookies = $cookie.getAll())
+#foreach($c in $cookies)
+  $c.getName()
+#end</sourcecode>
+
+	<p>Given that there are two cookies with the names 'foo' and 'bar' in the array
+	this would produce:</p>
+
+<sourcecode>foo
+bar</sourcecode>
+		</description>
+            </method>
+    </section>
+
+    <section name="get()">
+        <method name="get()">
+
+            <abstract>
+                Returns the <code>Cookie</code> with the specified name, if it exists.
+            </abstract>
+
+            <signature>
+                Cookie get(String name)
+            </signature>
+
+            <parameters>
+                <parameter name="name">
+                    The name of the cookie to fetch.
+                </parameter>
+            </parameters>
+
+            <returns>
+                A <code>Cookie</code> with the specified name or null if none exists.
+            </returns>
+
+            <description>
+                <p>Returns the <code>Cookie</code> with the specified name, if it exists.</p>
+
+<sourcecode>$cookie.foo.value</sourcecode>
+
+		<p>Given that the cookie 'foo' contains the value 'bar' this would produce:</p>
+
+<sourcecode>bar</sourcecode>
+
+            </description>
+
+        </method>
+    </section>
+
+
+    <section name="add()">
+        <method name="add()">
+
+            <abstract>
+                Adds a new <code>Cookie</code> with the specified name and value to the
+                <code>HttpServletResponse</code>.
+            </abstract>
+
+            <signature>
+                void add(String name, String value)
+            </signature>
+
+            <signature>
+                void add(String name, String value, int maxAge)
+            </signature>
+
+            <parameters>
+                <parameter name="name">
+                    The name to give this cookie.
+                </parameter>
+
+                <parameter name="value">
+                    The value to be set for this cookie.
+                </parameter>
+
+                <parameter name="maxAge">
+                    The expiry to be set for this cookie.
+                </parameter>
+            </parameters>
+
+            <description>
+                <p>Adds a new Cookie with the specified name and value to the HttpServletResponse.
+                This does *not* add a Cookie to the current request.</p>
+
+<sourcecode>$cookie.add("bar","woogie")</sourcecode>
+             </description>
+        </method>
+    </section>
+
+ </body>
+</document>
+
