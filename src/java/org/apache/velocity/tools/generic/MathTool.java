@@ -92,7 +92,7 @@ import java.lang.Math;
  * </pre></p>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.3 $ $Date: 2003/11/06 00:26:54 $
+ * @version $Revision: 1.4 $ $Date: 2003/11/06 06:48:32 $
  */
 
 public class MathTool
@@ -104,7 +104,7 @@ public class MathTool
      *         <code>null</code> if they're invalid
      * @see #toDouble
      */
-    public static Double add(Object num1, Object num2)
+    public Double add(Object num1, Object num2)
     {
         Double d1 = toDouble(num1);
         Double d2 = toDouble(num2);
@@ -123,7 +123,7 @@ public class MathTool
      *         <code>null</code> if they're invalid
      * @see #toDouble
      */
-    public static Double sub(Object num1, Object num2)
+    public Double sub(Object num1, Object num2)
     {
         Double d1 = toDouble(num1);
         Double d2 = toDouble(num2);
@@ -142,7 +142,7 @@ public class MathTool
      *         <code>null</code> if they're invalid
      * @see #toDouble
      */
-    public static Double mul(Object num1, Object num2)
+    public Double mul(Object num1, Object num2)
     {
         Double d1 = toDouble(num1);
         Double d2 = toDouble(num2);
@@ -161,7 +161,7 @@ public class MathTool
      *         <code>null</code> if they're invalid
      * @see #toDouble
      */
-    public static Double div(Object num1, Object num2)
+    public Double div(Object num1, Object num2)
     {
         Double d1 = toDouble(num1);
         Double d2 = toDouble(num2);
@@ -180,7 +180,7 @@ public class MathTool
      *         second or <code>null</code> if they're invalid
      * @see #toDouble
      */
-    public static Double pow(Object num1, Object num2)
+    public Double pow(Object num1, Object num2)
     {
         Double d1 = toDouble(num1);
         Double d2 = toDouble(num2);
@@ -199,7 +199,7 @@ public class MathTool
      *         <code>null</code> if they're invalid
      * @see #toDouble
      */
-    public static Double max(Object num1, Object num2)
+    public Double max(Object num1, Object num2)
     {
         Double d1 = toDouble(num1);
         Double d2 = toDouble(num2);
@@ -218,7 +218,7 @@ public class MathTool
      *         <code>null</code> if they're invalid
      * @see #toDouble
      */
-    public static Double min(Object num1, Object num2)
+    public Double min(Object num1, Object num2)
     {
         Double d1 = toDouble(num1);
         Double d2 = toDouble(num2);
@@ -236,7 +236,7 @@ public class MathTool
      *         <code>null</code> if it's invalid
      * @see #toDouble
      */
-    public static Double abs(Object num)
+    public Double abs(Object num)
     {
         Double d = toDouble(num);
         if (d == null)
@@ -256,7 +256,7 @@ public class MathTool
      * @return a {@link Double} representation of the number
      *         or <code>null</code> if it's invalid
      */
-    public static Double toDouble(Object num)
+    public Double toDouble(Object num)
     {
         double value;
         try
@@ -287,7 +287,7 @@ public class MathTool
      * @return a {@link Integer} representation of the number
      *         or <code>null</code> if it's invalid
      */
-    public static Integer toInteger(Object num)
+    public Integer toInteger(Object num)
     {
         Double d = toDouble(num);
         if (d == null)
@@ -312,7 +312,7 @@ public class MathTool
      * @see #toDouble
      * @see #toInteger
      */
-    public static Double roundTo(Object decimals, Object num)
+    public Double roundTo(Object decimals, Object num)
     {
         Integer i = toInteger(decimals);
         Double d = toDouble(num);
@@ -346,7 +346,7 @@ public class MathTool
      *         or <code>null</code> if it's invalid
      * @see #toDouble
      */
-    public static Integer roundToInt(Object num)
+    public Integer roundToInt(Object num)
     {
         Double d = toDouble(num);
         if (d == null)
@@ -362,7 +362,7 @@ public class MathTool
      *          than or equal to 0.0 and less than 1.0
      * @see Math#random()
      */
-    public static Double getRandom()
+    public Double getRandom()
     {
         return new Double(Math.random());
     }
@@ -382,7 +382,7 @@ public class MathTool
      * @see #toInteger
      * @see Math#random()
      */
-    public static Integer random(Object num1, Object num2)
+    public Integer random(Object num1, Object num2)
     {
         Integer i1 = toInteger(num1);
         Integer i2 = toInteger(num2);
