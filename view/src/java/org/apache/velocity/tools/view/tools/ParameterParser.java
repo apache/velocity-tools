@@ -53,7 +53,7 @@
  */
 
 
-package org.apache.velocity.tools.tools;
+package org.apache.velocity.tools.view.tools;
 
 
 import javax.servlet.ServletRequest;
@@ -73,7 +73,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * ServletRequest should have its own instance.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.5 $ $Date: 2002/07/31 13:24:48 $
+ * @version $Revision: 1.1 $ $Date: 2003/03/03 19:50:31 $
  */
 
 public class ParameterParser implements ViewTool
