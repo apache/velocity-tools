@@ -99,7 +99,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.4 $ $Date: 2003/11/06 00:26:54 $
+ * @version $Revision: 1.5 $ $Date: 2003/11/18 01:02:33 $
  */
 public class TilesTool extends ImportSupport
     implements ViewTool {
@@ -142,7 +142,7 @@ public class TilesTool extends ImportSupport
      * Fetches a named attribute value from the current tiles-context.
      *
      * <p>This is functionally equivalent to
-     * <code><tiles:getAsString name="title" /></code>.</p>
+     * <code>&lt;tiles:getAsString name="title" /&gt;</code>.</p>
      *
      * @param name the name of the tiles-attribute to fetch
      * @return the attribute value as String
@@ -160,7 +160,7 @@ public class TilesTool extends ImportSupport
      * <p>A generic tiles insert function</p>
      *
      * <p>This is functionally equivalent to
-     * <code><tiles:insert attribute="menu" /></code>.</p>
+     * <code>&lt;tiles:insert attribute="menu" /&gt;</code>.</p>
      *
      * @param attr - can be any of the following:
      *        AttributeDefinition,
