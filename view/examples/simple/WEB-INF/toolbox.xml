@@ -2,14 +2,10 @@
 
 <toolbox>
 
-  <tools>
-
-   <object>
+  <tool>
      <key>toytool</key>
      <class>ToyTool</class>
-   </object>
-
-  </tools>
+  </tool>
 
 </toolbox>
 

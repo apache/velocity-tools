@@ -1,16 +1,7 @@
 <project name="Velocity Tools" default="war" basedir=".">
 
 
-<!--
- *
- *      Build file for Struts Velocity.
- *
- *      Gabriel Sidler, sidler@teamup.ch
- *      December 8. 2001
- *
--->
-
-  <!-- *** ENVIRONMENT ******************************************************* -->
+<!-- ========== Initialize Properties ===========================+======= -->
 
   <property name="DEV"      value="${basedir}/"/>
   <property name="SRC"      value="${basedir}/WEB-INF/src"/>
@@ -25,15 +16,23 @@
     </fileset>
   </path>
 
-  <!-- *** TARGETS ************************************************************* -->
 
 
+<!-- ========== Executable Targets =_==================================== -->
+
+
+  <!-- ================================================================== -->
+  <!-- I N I T                                                            -->
+  <!-- ================================================================== -->
   <target name="init">
     <!-- Create the time stamp -->
     <tstamp/>
   </target>
 
 
+  <!-- ================================================================== -->
+  <!-- H E L P                                                            -->
+  <!-- ================================================================== -->
   <target name="help" depends="init">
     <!-- Print usage information -->
     <echo> </echo>
@@ -45,13 +44,16 @@
     <echo>                                                                  </echo>
     <echo>  clean    Clean dev tree and previously generated distributions. </echo>
     <echo>                                                                  </echo>
-    <echo>  war   Pack the entire application into a war file.              </echo>
+    <echo>  war      Pack the entire application into a war file.           </echo>
     <echo>                                                                  </echo>
     <echo>  help     Print this help information.                           </echo>
     <echo>                                                                  </echo>
   </target>
 
 
+  <!-- ================================================================== -->
+  <!-- C O M P I L E                                                              -->
+  <!-- ================================================================== -->
   <target name="compile" depends="">
     <!-- Compile the java code from ${SRC} into ${CLASSES} -->
     <javac srcdir="${SRC}"
@@ -63,9 +65,13 @@
   </target>
 
 
+  <!-- ================================================================== -->
+  <!-- W A R                                                              -->
+  <!-- ================================================================== -->
   <target name="war" depends="init, clean, compile">
     <jar jarfile="${basedir}/../simple.war" basedir="${DEV}"/>
 
+    <echo>                                                  </echo>
     <echo>  A WAR file (Web ARchive) was created for you in </echo>
     <echo>  the directory above. (/examples)  It is called  </echo>
     <echo>                                                  </echo>
@@ -85,6 +91,9 @@
   </target>
 
 
+  <!-- ================================================================== -->
+  <!-- C L E A B                                                          -->
+  <!-- ================================================================== -->
   <target name="clean">
     <!-- remove old class files -->
     <delete>
