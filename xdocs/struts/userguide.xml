@@ -18,9 +18,8 @@
         contextual information provided by a Struts Controller action.</p>
 
         <p>A set of built-in tools have been created which provide the same
-        functions as the Struts JSP Tag libraries for Forms, Links, Messages,
-        and entry Errors. At this time, the Validator taglib is not supported,
-        but may be in the future.</p>
+        functions as the Struts JSP Tag libraries for Tiles, Validator, forms, links,
+        messages, and errors.</p>
 
         <p>The distribution contains examples which demonstrate the use of the
         built-in Struts tools. The examples are packaged into a web archive file
@@ -48,7 +47,10 @@
             </ol>
           </li>
         </ol>
+
+        <br clear="all"/>
     </section>
+
     <section name="Background">
         <p>The documentation will explain the steps necessary to
         integrate <a href="http://jakarta.apache.org/velocity/">Velocity</a>
@@ -65,10 +67,11 @@
         questions to the
         <a href="http://jakarta.apache.org/site/mail.html">Velocity-User mailing list</a>
         and we'll be happy to help! (And we'll update this doc!)</p>
+
+        <br clear="all"/>
     </section>
 
     <section name="Model 2 Architecture">
-
          <p>In the JSP world, the terms <i>Model 1</i> architectures and
          <i>Model 2</i> architectures were coined to refer to particular ways of
          designing and building web applications. It is important that you understand
@@ -182,6 +185,7 @@
 &lt;/toolbox&gt;
 </sourcecode>
 
+        <br clear="all"/>
     </section>
 
     <section name="Rendering the View">
@@ -307,8 +311,31 @@
             $Customer.getName().
             </p>
 
-            <p>[TODO: Explain chaining of attributes] </p>
+            <p>There is a heirarchy to the objects exposed to the template designer.
+            For instance, if you have set an attribute "foo" in both the session and 
+            the request,</p>
+<sourcecode>request.setAttribute("foo", "request foo");
+session.setAttribute("foo", "session foo");</sourcecode>
+            <p>then the request attribute will take priority, and using </p>
+            <sourcecode>$foo</sourcecode>
+            <p>in the template will give you</p>
+<sourcecode>request foo</sourcecode>
+            <p>Priority is given in the following order:
+            <ol>
+              <li>Tools specified in the toolbox.xml (e.g. $link, $tiles, etc.)</li>
+              <li>The servlet classes (e.g. $request, $response, $session, $application)</li>
+              <li>References set locally within the template</li>
+              <li>Request attributes</li>
+              <li>Session attributes</li>
+              <li>Servlet context (application) attributes</li>
+            </ol>
+            </p>
+            <p>This heirarchy allows the developer to reserve control of key references
+            (for tools and servlet resources) from the template designer and allows for
+            values to be set at various servlet scopes in a manner similar to working
+            with JSP and Struts.</p>
 
+            <br clear="all"/>
         </subsection>
 
         <subsection name="Access to Servlet Resources">
@@ -401,9 +428,9 @@
                 <th>Remarks</th>
               </tr>
               <tr>
-                <td>$msg</td>
+                <td>$text</td>
                 <td><a href="MessageTool.html">MessageTool</a></td>
-                <td>Provides access to the Struts message resources for internationalized output.</td>
+                <td>Provides access to the Struts application resources for internationalized text.</td>
               </tr>
               <tr>
                 <td>$errors</td>
@@ -411,7 +438,7 @@
                 <td>Provides methods to check for and output Struts error messages.</td>
               </tr>
               <tr>
-                <td>$actionmsgs</td>
+                <td>$messages</td>
                 <td><a href="ActionMessagesTool.html">ActionMessagesTool</a></td>
                 <td>Provides methods to work with Struts action messages.</td>
               </tr>
@@ -456,10 +483,10 @@ test=This string has 4 replacement parameters: {1}, {2}, {3}, {4}
 <p>Then, the following script...</p>
 
 <sourcecode>
-$msg.get("title")
-$msg.get("test", ["bear", "dog", "cat"])
-$msg.exists("tutle")
-$msg.getLocale()
+$text.get("title")
+$text.get("test", ["bear", "dog", "cat"])
+$text.exists("tutle")
+$text.getLocale()
 </sourcecode>
 
 <p>..will produce this output:</p>
