@@ -16,10 +16,35 @@
         This user guide describes how Struts application are built using Velocity
         as the view technologie. Application examples illustrate the different
         steps involved in building an application. This guide addresses both,
-        the frontend designer as well as the backend developer. The section <a href="#Velocity vs. Struts">Velocity vs. JSP</a> is designed to help existing Struts/Velocity users get started with Velocity. This document is not a general introduction to Velocity. If you are new to Velocity, please consult <a href="http://jakarta.apache.org/velocity/getting-started.html">Getting Started</a>.
+        the frontend designer as well as the backend developer. This document is not a general introduction to Velocity. If you are new to Velocity, please consult <a href="http://jakarta.apache.org/velocity/getting-started.html">Getting Started</a>.
         </p>
 
-        <p>
+        <p><strong>Table of Contents</strong></p>
+
+        <ol>
+          <li><a href="#Documentation">Documentation</a></li>
+          <li><a href="#Installation">Installation</a></li>
+            <ol>
+                <li><a href="#New Application">New Application</a></li>
+                <li><a href="#Existing Application">Existing Application</a></li>
+                <li><a href="#Configuration">Configuration</a></li>
+                <li><a href="#Logging">Logging</a></li>
+                <li><a href="#Global Macros">Global Macros</a></li>
+            </ol>
+          <li><a href="#Model 2 Architectures">Model 2 Architectures</a></li>
+          <li><a href="#Building Applications">Building Applications</a>
+            <ol>
+                <li><a href="#Velocity Template Language">Velocity Template Language</a></li>
+                <li><a href="#Passing Application Data">Passing Application Data</a></li>
+                <li><a href="#Access to Servlet Resources">Access to Servlet Resources</a></li>
+                <li><a href="#Access to Struts Framework Resources">Access to Struts Framework Resources</a></li>
+                <li><a href="#View Tools">View Tools</a></li>
+                <li><a href="#Velocity and JSP">Velocity and JSP</a></li>
+                <li><a href="#Velocity vs. JSP">Velocity vs. JSP</a></li>
+            </ol>
+          </li>
+        </ol>
+
         [Issues to be addressed here:
         <ul>
           <li><strong>Model 2 Application</strong> Concepts, links to relevant reading, 
@@ -42,8 +67,9 @@
           with the Velocity tools. This should help JSP developers familiar with the 
           custom tag libs get started with Velocity as a view technology.</li>
         </ul>
+
+        <br clear="all"/>
         ]
-        </p>
     </section>
 
 
@@ -59,8 +85,86 @@
             <li><a href=".......struts/docs/index.html">Velocity View Tools for Struts</a></li>
         </ul>            
 
+        <br clear="all"/>
+
     </section>
     
+
+    <section name="Installation">
+
+        <p>This section explains how to get started developing Struts applications with Velocity
+        as the view technology.</p>
+
+        <br clear="all"/>
+
+
+
+        <subsection name="New Application">
+        
+          <p>[Point to the struts-blank example application with built-in Velocity support.]</p>
+
+          <br clear="all"/>
+
+        </subsection>
+
+
+
+        <subsection name="Existing Application">
+        
+          <p>[Step by step guide to adding Velocity support to an existing Struts application.]</p>
+
+          <br clear="all"/>
+
+        </subsection>
+
+
+
+        <subsection name="Velocity Configuration">
+        
+          <p>The behavior of Velocity can be configured through an optional configuration 
+          file. Without a configuration file, default settings are applied. Simple
+          applications work well without changing the default settings. A typical reason
+          for needing to change the default configuration is the use of macros. The
+          Velocity configuration file defines the location of the global macros file
+          as well several aspects related to the handling macros are handled. Please see 
+          the Velocity user's guide for more information about how to configure Velocity.</p>
+          
+          <p>The location of the configuration file is specified in web.xml, the 
+          configuration file of the web application. The recommended location for this 
+          file is the WEB-INF directory of the web application. An example configuration
+          file is included with the distributed files.</p>
+
+          <br clear="all"/>
+
+        </subsection>
+
+
+
+        <subsection name="Logging">
+        
+          <p>[Explain the logging. Mention that currently logger cannot be overwritten in
+          configuraton file.]</p>
+
+          <br clear="all"/>
+
+        </subsection>
+
+
+
+        <subsection name="Global Macros">
+        
+          <p>[Explain purpose, configuration and location of the global macros file.]</p>
+
+          <br clear="all"/>
+
+        </subsection>
+
+
+
+        <br clear="all"/>
+
+    </section>
+
 
 
     
@@ -77,6 +181,9 @@
         
         <p><strong>What does this mean?</strong></p>        
         <p>The Struts framework can support both architectures, but all the facilities it provides are really aimed at making the construction of Model 2 applications easy. Velocity on the other hand cannot be used to build Model 1 architectures. It lacks the libraries to support such a design. I am emphasizing this here because I want to make sure that you have all the relevant facts before you decide on Velocity for your projects. This is especially important for people considering to port existing application built on the Model 1 approach or a mixed Model 1 / Model 2 approach. The good news is, that today for any serious application Model 2 is state of the art and Velocity will support you very well on that route.</p> 
+
+
+    <br clear="all"/>
 
     </section>
 
@@ -157,8 +264,12 @@
             </ul>
                         
             <p>To bring Velocity templates really to live, application data needs to be fed. The next section describes how this is done.</p>
+
+            <br clear="all"/>
             
         </subsection>
+
+
 
         <subsection name="Passing Application Data">
 
@@ -168,36 +279,211 @@
             
             <p>Application data is passed from the Struts servlet to the Velocity servlet as attributes of either the servlet request, the servlet session or the servlet context </p>
 
-            <p></p>
-
-            <p></p>
-
-            <p></p>
-
-            <p>Since the Struts framework was designed to be used with several different view techhnologies (JSP, template engines, XML/XSL, JSF, etc.) it makes the  
+            <p>[Explain chaining of attributes]</p>
             
-            
-            
-            has defined an approach that is based on the Servlet API. 
-</p>
+            <p>[Explain of backend developer makes application data available to template designer.]</p>
 
-        </subsection>
-
-        <subsection name="Access to Struts Resources">
-
-            <p>asdfadffadsff</p>
+            <p></p>
 
         </subsection>
 
 
-    </section>
+
+        <subsection name="Access to Servlet Resources">
+
+            <p>VelocityStruts automatically populates the context with the following objects of the Servlet API on each template processing request:</p>
+            
+            <table>
+              <tr>
+                <th>Context Key</th>
+                <th>Class</th>
+                <th>Remarks</th>
+              </tr>
+              <tr>
+                <td>$request</td>
+                <td>javax.servlet.http.HttpServletRequest</td>
+                <td>the current servlet request</td>
+              </tr>
+              <tr>
+                <td>$session</td>
+                <td>javax.servlet.http.HttpSession</td>
+                <td>the current session, if one exists</td>
+              </tr>
+              <tr>
+                <td>$application</td>
+                <td>javax.servlet.ServletContext</td>
+                <td>the servlet context</td>
+              </tr>
+              <tr>
+                <td>$response</td>
+                <td>javax.servlet.http.HttpServletResponse</td>
+                <td>the current servlet response</td>
+              </tr>
+            </table>              
+
+            <br clear="all"/>
+
+            <p>The following examples illustrates how servlet resources are
+            accessed from within Velocity template. The example renders
+            the list of HTTP header fields of the current servlet request. 
+            In the same way, any public method of the above listed objects can
+            be called from within templates:</p>
+
+<sourcecode>#foreach( $header in $request.HeaderNames )
+  &lt;b&gt;$header:&lt;/b&gt; $request.getHeader($header)&lt;br&gt;
+#end</sourcecode>
+
+            <p>The resulting output is something like this:</p>
+
+<sourcecode><b>Referer:</b> http://localhost:8080/struts/doc/examples.html
+<b>Connection:</b> Keep-Alive
+<b>User-Agent:</b> Mozilla/4.79 [en] (Windows NT 5.0; U)
+<b>Pragma:</b> no-cache
+<b>Host:</b> localhost:8080
+<b>Accept:</b> image/gif, image/jpeg, image/pjpeg, image/png, */*
+<b>Accept-Encoding:</b> gzip
+<b>Accept-Language:</b> en
+<b>Accept-Charset:</b> iso-8859-1,*,utf-8
+<b>Cookie:</b> JSESSIONID=aaaecXd7bnLPAr
+</sourcecode>
+
+            <br clear="all"/>
+
+        </subsection>
+
+
+
+
+        <subsection name="Access to Struts Framework Resources">
+
+            <p>The Struts framework provides resources that
+            are useful to template designers. These include logical names for
+            physical resources, internationalized messages, error handling, 
+            form handling, etc. The interesting question is now how template 
+            designers can gain access these framework resources. In the JSP world, a set 
+            of custom tag libraries provide template
+            designers access to the Struts framework resources. In the Velocity
+            world, the equivalent of the JSP custom tag libraries are <b>view 
+            tools</b>. View tools are a very simple concept. They are Java objects 
+            with public methods that are put into the Velocity context. Tools are
+            accessed by key and allows template designers to call on their public methods.</p>
+            
+            <p>A set of four view tools is included with VelocityStruts 
+            that provide template designers access to Struts framework resources.
+            These four view tools essentially achieve the integration between
+            Struts and Velocity and they can be considered the core of this
+            project.</p>
+            
+            <table>
+              <tr>
+                <th>Context Key</th>
+                <th>Class</th>
+                <th>Remarks</th>
+              </tr>
+              <tr>
+                <td>$msg </td>
+                <td><a href="MessageTool.html">MessageTool</a></td>
+                <td>Provides access to the Struts message resources for internationalized output.</td>
+              </tr>
+              <tr>
+                <td>$errors </td>
+                <td><a href="ErrorsTool.html">ErrorsTool</a></td>
+                <td>Provides methods to check for and output Struts error messages.</td>
+              </tr>
+              <tr>
+                <td>$link</td>
+                <td><a href="LinkTool.html">LinkTool</a></td>
+                <td>Provides methods to work with URIs.</td>
+              </tr>
+              <tr>
+                <td>$form</td>
+                <td><a href="FormTool.html">FormTool</a></td>
+                <td>Provides miscellaneous methods to work with forms and form beans in the context 
+            of Struts applications.</td>
+              </tr>
+              <tr>
+                <td colspan="3">Note: The shown keys are the recommended values. They can
+            be changed in the configuration.</td>
+              </tr>
+            </table>              
+            
+            <p>The following example illustrates some of the features of the MessageTool
+            for working with internationalized messages. For the example we assume that
+            the Struts message resources contain the following two key=value pairs:</p>
+            
+<sourcecode>
+title=Struts Example Application
+test=This string has 4 replacement parameters: {1}, {2}, {3}, {4}
+</sourcecode>            
+
+<p>Then, the following script...</p>
+            
+<sourcecode>
+$msg.get("title")
+$msg.get("test", ["bear", "dog", "cat"])
+$msg.exists("tutle")
+$msg.getLocale()
+</sourcecode>
+
+<p>..will produce this output:</p>
+
+<sourcecode>
+Struts Example Application
+This string has 4 replacement parameters: bear, dog, cat, {4}
+false
+en
+</sourcecode>
+          
+            <p>Please see the <a href="StrutsTools.html">Tool Reference Documentation</a> 
+            for more details about the view tools. Furthermore, the Velocity/Struts 
+            <a href="index.html#Download">example application</a> comes with several 
+            working examples that show how these tools are used.</p>
+
+            <br clear="all"/>
+
+        </subsection>
 
 
 
 
 
-    <section name="View Tools">
-    
+        <subsection name="View Tools">
+
+            <p>[Explain how view tools can be used by the template designer. Toolbox manager.
+            Toolbox configuration file.]</p>
+
+            <br clear="all"/>
+
+        </subsection>
+
+
+
+
+        <subsection name="Velocity and JSP">
+
+            <p>[Explain and demonstrate how Velocity and JSP can easily co-exist
+            within the same application. This allows for a very gradual and painless
+            transition from JSP to Velocity.]</p>
+
+            <br clear="all"/>
+
+        </subsection>
+
+
+
+        <subsection name="Velocity vs. JSP">
+
+            <p>[A table comparing the JSP custom tag libraries with the Struts view tools.
+            This is aimed at the JSP developer that switches to Velocity.]</p>
+
+            <br clear="all"/>
+
+        </subsection>
+
+
+
+        <br clear="all"/>
+
     </section>
 
 
