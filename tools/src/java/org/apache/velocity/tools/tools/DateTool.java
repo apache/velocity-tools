@@ -77,7 +77,7 @@ import org.apache.velocity.tools.view.tools.ThreadSafeViewTool;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabriel Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class DateTool implements ThreadSafeViewTool
@@ -99,7 +99,7 @@ public class DateTool implements ThreadSafeViewTool
      */
     public static Date getDate()
     {
-        return getDate();
+        return new Date();
     }
 
 
