@@ -67,18 +67,16 @@ import org.apache.struts.util.MessageResources;
 import org.apache.struts.action.*;
 
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.LogEnabledViewToolImpl;
-import org.apache.velocity.tools.view.tools.ServletViewTool;
+import org.apache.velocity.tools.view.tools.ViewTool;
 
 
 /**
  * <p>View tool to work with URI links in Struts.</p> 
  * 
  * <p>This class is equipped to be used with a toolbox manager, for example
- * the ServletToolboxManager included with VelServlet. The class extends 
- * ServletViewToolLogger to profit from the logging facilities of that class.
- * Furthermore, this class implements interface ServletViewTool, which allows
- * a toolbox manager to pass the required context information.</p>
+ * the ServletToolboxManager included with VelServlet. This class implements 
+ * interface ViewTool, which allows a toolbox manager to pass the required
+ * context information.</p>
  *
  * <p>This class is not thread-safe by design. A new instance is needed for
  * the processing of every template request.</p>
@@ -86,11 +84,10 @@ import org.apache.velocity.tools.view.tools.ServletViewTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: LinkTool.java,v 1.6 2002/04/29 05:20:51 sidler Exp $
+ * @version $Id: LinkTool.java,v 1.7 2002/05/10 05:42:17 sidler Exp $
  * 
  */
-public class LinkTool extends LogEnabledViewToolImpl 
-    implements ServletViewTool
+public class LinkTool implements ViewTool
 {
 
     // --------------------------------------------- Properties ---------------
@@ -111,12 +108,6 @@ public class LinkTool extends LogEnabledViewToolImpl
      * A reference to the HttpServletResponse.
      */ 
     protected HttpServletResponse response;
-    
-
-    /**
-     * A reference to the HttpSession.
-     */ 
-    protected HttpSession session;
 
 
     /**
@@ -134,37 +125,42 @@ public class LinkTool extends LogEnabledViewToolImpl
     // --------------------------------------------- Constructors -------------
 
     /**
-     * Returns a factory for instances of this class. Use method 
-     * {@link #getInstance(ViewContext context)} to obtain instances 
-     * of this class. Do not use instance obtained from this method
-     * in templates. They are not properly initialized.
+     * Default constructor. Tool must be initialized before use.
      */
     public LinkTool()
     {
-        request = null;
-        response = null;
-        session = null;
-        application = null;
-        
         uri = null;
         queryData = null;
     }
     
     
     /**
-     * For internal use only! Use method {@link #getInstance(ViewContext context)} 
-     * to obtain instances of this tool.
+     * Initializes this tool.
+     *
+     * @param obj the current ViewContext
+     * @throws IllegalArgumentException if the param is not a ViewContext
      */
-    private LinkTool(ViewContext context)
+    public void init(Object obj)
     {
+        if (!(obj instanceof ViewContext))
+        {
+            throw new IllegalArgumentException("Tool can only be initialized with a ViewContext");
+        }
+ 
+        ViewContext context = (ViewContext)obj;
         this.request = context.getRequest();
         this.response = context.getResponse();
         this.application = context.getServletContext();    
-
-        this.uri = null;
-        this.queryData = null;
     }
     
+    
+    /**
+     * Log messages are sent to the servlet context
+     */
+    private void log(String s) {
+        application.log(s);
+    }
+
 
     /**
      * For internal use.
@@ -211,30 +207,6 @@ public class LinkTool extends LogEnabledViewToolImpl
         this.uri = uri;
         //we don't need to clone here, this was not changed
         this.queryData = that.queryData;
-    }
-
-
-
-    // ----------------------------------- Interface ServletViewTool -------
-
-    /**
-     * Returns an initialized instance of this view tool.
-     */
-    public Object getInstance(ViewContext context)
-    {
-        return new LinkTool(context);
-    }
-
-
-    /**
-     * <p>Returns the default life cycle for this tool. This is 
-     * {@link ServletViewTool#REQUEST}. Do not overwrite this
-     * per toolbox configuration. No alternative life cycles are 
-     * supported by this tool</p>
-     */
-    public String getDefaultLifecycle()
-    {
-        return ServletViewTool.REQUEST; 
     }
 
     
@@ -301,7 +273,7 @@ public class LinkTool extends LogEnabledViewToolImpl
         
         if (mapping == null)
         {
-            log(WARN, "In method setForward(" + forward + "): Parameter does not map to a valid forward.");
+            log("[Warn] In method setForward(" + forward + "): Parameter does not map to a valid forward.");
             return null;
         }
 

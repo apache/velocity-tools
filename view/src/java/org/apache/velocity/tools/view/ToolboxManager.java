@@ -1,7 +1,7 @@
 /*
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2002 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,33 +52,41 @@
  * <http://www.apache.org/>.
  */
 
-package org.apache.velocity.tools.view.tools;
+
+package org.apache.velocity.tools.view;
+
+
+import org.apache.velocity.tools.view.context.ToolboxContext;
 
 
 /**
- * <p>Defines the interface of a logger object that can be used by context
- * tools to log messages to an underlying logging facility. </p> 
- * 
- * <p>Implementation of this interface can be thought of as adapters 
- * between view tools and the logging facilities of a specific 
- * environment. For example, in servlet environments a logger instance 
- * would accept log messages from a view tool and write them to the 
- * Servlet API's logging facility.</p>
- * 
+ * Common interface for toolbox manager implementations.
+ *
+ * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ViewToolLogger.java,v 1.1 2002/04/15 18:30:29 sidler Exp $
- * 
+ * @version $Id: ToolboxManager.java,v 1.1 2002/05/10 05:42:18 sidler Exp $
  */
-public interface ViewToolLogger 
+public interface ToolboxManager
 {
 
+
     /**
-     * <p>Log a message to the logging infrastructure of the environment. </p>
-     *
-     * @param msg Message to be logged. The message is passed on as is. No
-     *            formatting, etc. is applied.
+     * Adds a tool to be managed
      */
-    public void log(String msg);
+    void addTool(ToolInfo info);
+
+
+    /**
+     * Creates a {@link ToolboxContext} from the tools and data 
+     * in this manager.  Tools that implement the ViewTool
+     * interface should be initialized using the given initData.
+     *
+     * @param initData data used to initialize ViewTools
+     * @return the created ToolboxContext
+     */
+    ToolboxContext getToolboxContext(Object initData);
+
 
 }

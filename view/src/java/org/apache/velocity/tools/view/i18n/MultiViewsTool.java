@@ -55,6 +55,7 @@
 
 package org.apache.velocity.tools.view.i18n;
 
+
 import java.util.Locale;
 import javax.servlet.ServletContext;
 
@@ -62,7 +63,7 @@ import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
 
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ServletViewTool;
+import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
  * <p>Allows for transparent content negotiation in a manner mimicking
@@ -76,8 +77,7 @@ import org.apache.velocity.tools.view.tools.ServletViewTool;
  *
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  */
-public class MultiViewsTool
-    implements ServletViewTool
+public class MultiViewsTool implements ViewTool
 {
     /**
      * The key used to search initialization, context, and JVM
@@ -93,8 +93,8 @@ public class MultiViewsTool
     protected String defaultLanguage;
 
     /**
-     * Creates a new uninitialized instance.  Call {@link
-     * #init(ViewContext)} to initialize it.
+     * Creates a new uninitialized instance.  Call {@link #init} 
+     * to initialize it.
      */
     public MultiViewsTool()
     {
@@ -108,10 +108,17 @@ public class MultiViewsTool
      * easy to setup language overrides at different levels within
      * your application.
      *
-     * @param context The context to use.
+     * @param obj the current ViewContext
+     * @throws IllegalArgumentException if the param is not a ViewContext
      */
-    protected MultiViewsTool(ViewContext context)
+    public void init(Object obj)
     {
+        if (!(obj instanceof ViewContext))
+        {
+            throw new IllegalArgumentException("Tool can only be initialized with a ViewContext");
+        }
+
+        ViewContext context = (ViewContext)obj;
         Context vc = context.getVelocityContext();
         defaultLanguage = (String) vc.get(DEFAULT_LANGUAGE_KEY);
         if (defaultLanguage == null || defaultLanguage.trim().equals(""))
@@ -195,26 +202,5 @@ public class MultiViewsTool
         return localizedName;
     }
 
-    /**
-     * Unneccessary cruft required by our interface.  Hopefully this
-     * method will go away soon.
-     *
-     * @see org.apache.velocity.tools.view.tools.ServletViewTool#getInstance(ViewContext)
-     */
-    public Object getInstance(ViewContext context)
-    {
-        return new MultiViewsTool(context);
-    }
 
-    /**
-     * Denotes the global/application scope of this tool.  Note that
-     * this is merely to signify that it is thread-safe, and can
-     * actually be used in any scope.
-     *
-     * @see org.apache.velocity.tools.view.tools.ServletViewTool#getDefaultLifecycle()
-     */
-    public String getDefaultLifecycle()
-    {
-        return APPLICATION;
-    }
 }

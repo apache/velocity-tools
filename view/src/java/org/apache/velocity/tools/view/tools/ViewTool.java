@@ -55,49 +55,27 @@
 
 package org.apache.velocity.tools.view.tools;
 
-import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.context.Context;
 
 /**
- * <p>An interface for Velocity view tools that need access to the Velocity
- * context.</p>
- * 
- * <p>View tools that implement this interface receive special treatment
- * by a compatible toolbox manager, e.g. 
- * {@link org.apache.velocity.tools.view.servlet.ServletToolboxManager}:</p>
- * <ul>
- *   <li>Upon creation of a new instance, the toolbox manager passes
- *       to the view tool a reference to the Velocity context.</li>
- * </ul>
- * 
- * <p>Unlike some other tools, tools that implement this interface do not
- * support multiple different life cycles. All implementations of this 
- * interface are assigned a life cycle of 'request', meaning that the 
- * tool is valid only for the processing of the currently requested template.
- * A new instance is created for every request. The life cycle cannot be 
- * configured.</p>
+ * Generic view tool interface to assist in tool management.
+ * This interface provides the {@link #init(Object initData)} method 
+ * as a hook for ToolboxManager implementations to pass data in to
+ * tools to initialize them.  See 
+ * {@link org.apache.velocity.tools.view.ViewToolInfo} for more on this.
  *
- * <p>Examples of view tools that typically would implement this 
- * interface are tools like a view tool loader or a context inspector. 
+ * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
- *
- * @version $Id: ContextViewTool.java,v 1.1 2002/04/15 18:30:29 sidler Exp $
- * 
+ * @version $Id: ViewTool.java,v 1.1 2002/05/10 05:42:18 sidler Exp $
  */
-public interface ContextViewTool
+public interface ViewTool
 {
 
     /**
-     * <p>Returns a new instance.</p>
+     * Initializes this instance using the given data
      *
-     * <p>This is effectively a factory method used to create
-     * object instances for use in templates. It is important 
-     * that only instances obtained from this method are used 
-     * in templates.</p>
-     *
-     * @param context a reference to the Velocity context 
+     * @param initData the initialization data 
      */
-    public Object getInstance(Context context);
+    public void init(Object initData);
+
 
 }

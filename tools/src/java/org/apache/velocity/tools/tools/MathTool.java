@@ -54,7 +54,6 @@
 
 package org.apache.velocity.tools.tools;
 
-import org.apache.velocity.tools.view.tools.ThreadSafeViewTool;
 import java.lang.Math;
 
 
@@ -84,10 +83,10 @@ import java.lang.Math;
  * </ul>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.2 $ $Date: 2002/04/15 18:30:28 $
+ * @version $Revision: 1.3 $ $Date: 2002/05/10 05:42:17 $
  */
 
-public class MathTool implements ThreadSafeViewTool
+public class MathTool
 {
     /**
      * @param num1 the first number

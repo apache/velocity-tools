@@ -52,10 +52,9 @@
  * <http://www.apache.org/>.
  */
 
+
 package org.apache.velocity.tools.view.servlet;
 
-
-import java.io.InputStream;
 
 import java.util.List;
 import java.util.Iterator;
@@ -63,23 +62,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 
-
 import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
 
-import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
-import org.dom4j.io.SAXReader;
 
-import org.apache.velocity.context.Context;
-
+import org.apache.velocity.tools.view.DataInfo;
+import org.apache.velocity.tools.view.ToolInfo;
+import org.apache.velocity.tools.view.XMLToolboxManager;
 import org.apache.velocity.tools.view.context.ToolboxContext;
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ServletViewTool;
-import org.apache.velocity.tools.view.tools.LogEnabledViewTool;
-import org.apache.velocity.tools.view.tools.ContextViewTool;
-import org.apache.velocity.tools.view.tools.ThreadSafeViewTool;
 
 
 /**
@@ -91,122 +84,64 @@ import org.apache.velocity.tools.view.tools.ThreadSafeViewTool;
  * <ul>
  *   <li>configurable through an XML-based configuration file</li>   
  *   <li>assembles a set of view tools (the toolbox) on request</li>
- *   <li>handles view tools with different life cycles</li>
- *   <li>efficiently reuses view tool instances where possible</li>
- *   <li>provides special handling to known classes of view tools</li>
+ *   <li>handles different tool scopes (request, session, application)</li>
  *   <li>supports any class with a public constructor without parameters 
  *     to be used as a view tool</li>
+ *   <li>supports adding primitive data values to the context(String,Number,Boolean)</li>
  * </ul>
  * 
  *
  * <p><strong>Configuration</strong></p>
  * <p>The toolbox manager is configured through an XML-based configuration
- * file. The configuration file is passed to the {@link #load(InputStream input)}
- * method. The required format is show in the following example:</p>
+ * file. The configuration file is passed to the {@link #load(java.io.InputStream input)}
+ * method. The required format is shown in the following example:</p>
  * <pre> 
  * &lt;?xml version="1.0"?&gt;
  * 
  * &lt;toolbox&gt;
  *   &lt;tool&gt;
  *      &lt;key&gt;toolLoader&lt;/key&gt;
- *      &lt;class&gt;org.apache.velocity.tools.tools.ToolLoaderTool&lt;/class&gt;
+ *      &lt;scope&gt;application&lt;/scope&gt;
+ *      &lt;class&gt;org.apache.velocity.tools.tools.ToolLoader&lt;/class&gt;
  *   &lt;/tool&gt;
  *   &lt;tool&gt;
- *      &lt;key>math&lt;/key&gt;
+ *      &lt;key&gt;math&lt;/key&gt;
+ *      &lt;scope&gt;application&lt;/scope&gt;
  *      &lt;class&gt;org.apache.velocity.tools.tools.MathTool&lt;/class&gt;
  *   &lt;/tool&gt;
+ *   &lt;data type="Number"&gt;
+ *      &lt;key&gt;luckynumber&lt;/key&gt;
+ *      &lt;value&gt;1.37&lt;/class&gt;
+ *   &lt;/data&gt;
+ *   &lt;data type="String"&gt;
+ *      &lt;key&gt;greeting&lt;/key&gt;
+ *      &lt;value&gt;Hello World!&lt;/class&gt;
+ *   &lt;/data&gt;
  * &lt;/toolbox&gt;    
  * </pre>
  * <p>The recommended location for the configuration file is the WEB-INF directory of the
- * web application. Note that some classes of view tools may allow or
- * require additional configuration attributes. Please consult the documentation 
- * of the view tools for more details.
- * 
- *
- * <p><strong>Recognized Classes of View Tools</strong></p>
- * <p>ServletToolboxManager provides special support for the following classes
- * of view tools:
- * <dl>
- *   <dt>{@link LogEnabledViewTool}</dt>
- *   <dd>Receive a reference to a logger object that enables them to log error 
- *     conditions.</dd>
- *
- *   <dt>{@link ThreadSafeViewTool}</dt>
- *   <dd>Instances are considered to be thread-safe. One single instance of 
- *     the tool is re-used the entire runtime. This is much more efficient 
- *     than the default handling (see below)</dd>
- *
- *   <dt>{@link ServletViewTool}</dt>
- *   <dd>View tools that implement this interface support the additional 
- *     configuration attribute <i>lifecycle</i>. This allows an
- *     application developer to explicitely assign a <i>lifecycle</i> to the tool.
- *     Supported are the values <code>request</code>, <code>session</code> and 
- *     <code>application</code>. The <i>lifecycle</i> attribute is optional.
- *     If not specified, a tool-specific default lifecycle is used. In the 
- *     following configuration example a <i>lifecycle</i> of <code>session</code> 
- *     is assigned to tool instances:
- *     <pre>
- *       &lt;tool&gt;
- *          &lt;key&gt;xyz&lt;/key&gt;
- *          &lt;class&gt;org.apache.velocity.tools.tools.XYZ&lt;/class&gt;
- *          &lt;scope&gt;session&lt;/scope&gt;
- *       &lt;/tool&gt;
- *     </pre>    
- *     Furthermore, view tools of this class get access to the current 
- *     servlet request, the current session and the servlet context.</dd>
- *
- *   <dt>{@link ContextViewTool}</dt>
- *   <dd>View tools of this class receive a reference to the Velocity
- *     context.</dd>
- * </dl>
- *
- *
- * <p><strong>Default Handling</strong></p>
- * <p>Any object with a public constructor without parameters can be used
- * as a view tool. For classes of view tools that are not listed above,
- * the following default handling is applied:</p>
- * <ul>
- *   <li>instances are created using a constructor without parameters</li>
- *   <li>tools are assumed to be not thread-safe, a new instance is created
- *     for every template being processed</li>
- *   <li>tools have no access to logging</li>
- *   <li>tools have no access to contextual information, like the servlet
- *     environment or the Velocity context</li>
- * </ul>
- *
- *
- * <p><strong>Other Environments</strong></p>
- * <p>Note that while the implementation of this toolbox manager is specific
- * to the Servlet environment, it can be easily adapted to be used in other
- * environments, like the DVSL ant task, for example.</p>
- * 
+ * web application. 
  *
  * @author <a href="mailto:sidler@teamup.com">Gabriel Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ServletToolboxManager.java,v 1.2 2002/04/15 18:30:29 sidler Exp $
+ * @version $Id: ServletToolboxManager.java,v 1.3 2002/05/10 05:42:18 sidler Exp $
  * 
  */
-public class ServletToolboxManager
+public class ServletToolboxManager extends XMLToolboxManager
 {
 
     // --------------------------------------------------- Properties ---------
 
-    public static final String TOOL_KEY = "key";
-    public static final String TOOL_LIFECYCLE = "lifecycle";
-    public static final String TOOL_CLASS = "class";
+    public static final String ELEMENT_SCOPE = "scope";
 
     public static final String SESSION_TOOLS_KEY = "org.apache.velocity.tools.view.tools.ServletToolboxManager.SessionTools";
 
-    private ServletViewToolLogger logger;
-    private ServletContext scontext;
- 
-    private SAXReader saxReader;
-    private Map applicationTools;
-    private ArrayList applicationToolsNotInitialized;
-    private ArrayList sessionTools;
-    private ArrayList requestTools;
+    private ServletContext servletContext;
+    private Map appTools;
+    private ArrayList sessionToolInfo;
+    private ArrayList requestToolInfo;
 
 
 
@@ -215,374 +150,150 @@ public class ServletToolboxManager
     /**
      * Default constructor
      */
-    public ServletToolboxManager(ServletContext scontext)
+    public ServletToolboxManager(ServletContext servletContext)
     {
-        this.scontext = scontext;
-
-        saxReader = new SAXReader();
-        applicationToolsNotInitialized = new ArrayList();
-        sessionTools = new ArrayList();
-        requestTools = new ArrayList();
-        logger = new ServletViewToolLogger(scontext);
+        this.servletContext = servletContext;
+        appTools = new HashMap();
+        sessionToolInfo = new ArrayList();
+        requestToolInfo = new ArrayList();
     }
 
 
 
     // --------------------------------------------------- Methods ------------
 
-    private void log(String s) 
+    /**
+     * Overrides XMLToolboxManager to log to the servlet context
+     */
+    protected void log(String s) 
     {
-        scontext.log("ServletToolboxManager: " + s);
+        servletContext.log("ServletToolboxManager: " + s);
     }
 
 
     /**
-     * Reads an XML document from an {@link InputStream}
-     * using <a href="http://dom4j.org">dom4j</a> and
-     * sets up the toolbox for the servlet from that.
-     * 
-     * Assumes toolbox.xml has a format like
-     *
-     *  <toolbox>
-     *    <tool>
-     *      <key>foo</key>
-     *      <lifecycle>request</lifecycle>
-     *      <class>com.mycompany.tools.Foo</class>
-     *    </tool>
-     *    <tool>
-     *      <key>bar</key>
-     *      <class>org.yourorganization.tools.Bar</class>
-     *    </tool>
-     *  </toolbox>
-     *
-     * @param input the InputStream to read from
+     * Overrides XMLToolboxManager to read a {@link ServletToolInfo}
+     * instead of a {@link org.apache.velocity.tools.view.ViewToolInfo}.
      */
-    public void load(InputStream input) throws Exception
+    protected ToolInfo readToolInfo(Element e) throws Exception
     {
-        log("Initializing the toolbox...");
-        Document document = saxReader.read(input);
-        List tools = document.selectNodes("//toolbox/*");
+        Node n = e.selectSingleNode(ELEMENT_KEY);
+        String key = n.getText();
 
-        Iterator i = tools.iterator();
-        while(i.hasNext())
+        n = e.selectSingleNode(ELEMENT_CLASS);
+        String classname = n.getText();
+        
+        String scope = ServletToolInfo.REQUEST_SCOPE;
+        n = e.selectSingleNode(ELEMENT_SCOPE);
+        if (n != null)
         {
-            //
-            // Read definition of a tool in toolbox config file
-            //
-            Element e = (Element)i.next();
-            String name = e.getName();
-            log("Loading " + name);
+            scope = n.getText();
+        }
 
-            // Read tool's key
-            Node n = e.selectSingleNode(TOOL_KEY);
-            String key = n.getText();
-            log("  Context key: " + key);
+        return new ServletToolInfo(key, classname, scope);
+    }
 
-            // Read the tool's class
-            n = e.selectSingleNode(TOOL_CLASS);
-            String classname = n.getText();
-            log("  Class: " + classname);
+
+    /**
+     * Overrides XMLToolboxManager to separate tools by scope.
+     * For this to work, we obviously override getToolboxContext as well.
+     */
+    public void addTool(ToolInfo info)
+    {
+        if (info instanceof DataInfo)
+        {
+            //add static data to the appTools map
+            appTools.put(info.getKey(), info.getInstance(null));
+        }
+        else if (info instanceof ServletToolInfo)
+        {
+            ServletToolInfo stInfo = (ServletToolInfo)info;
             
-            // Create an instance of the tool
-            Object obj;
-            try
+            if (stInfo.getScope().equalsIgnoreCase(ServletToolInfo.REQUEST_SCOPE))
             {
-                obj = Class.forName(classname).newInstance();
+                requestToolInfo.add(stInfo);
             }
-            catch(Exception ex)
+            else if (stInfo.getScope().equalsIgnoreCase(ServletToolInfo.SESSION_SCOPE))
             {
-                log("  Error creating instance for class: " + classname +
-                    ". " + ex);
-                log("  Tool not loaded.");    
-                continue;
+                sessionToolInfo.add(stInfo);
             }
-
-            // Try to read the tool's lifecycle (specific to ServletViewTool)
-            
-            // First, check of a lifecycle has been configured. 
-            n = e.selectSingleNode(TOOL_LIFECYCLE);
-            String lifecycle;
-            if (n != null)
+            else if (stInfo.getScope().equalsIgnoreCase(ServletToolInfo.APPLICATION_SCOPE))
             {
-                lifecycle = n.getText();
+                //add application scoped tools to appTools and
+                //initialize them with the ServletContext
+                appTools.put(stInfo.getKey(), stInfo.getInstance(servletContext));
             }
             else
             {
-                // Secondly, try to read default lifecycle
-                try 
-                {
-                    lifecycle = ((ServletViewTool)obj).getDefaultLifecycle();
-                }
-                catch (ClassCastException cce)
-                {
-                    lifecycle = "";
-                }
+                log("Unknown scope: "+stInfo.getScope()+" "+stInfo.getKey()+" will be request scoped.");
+                requestToolInfo.add(stInfo);
             }
-            log("  Life cycle: " + lifecycle);
-            
-            //
-            // Pass a logger to the tools that implement interface LogEnabledViewTool
-            //
-            if (obj instanceof LogEnabledViewTool)
-            {
-                ((LogEnabledViewTool)obj).setLogger(logger);
-                log("  Known interface: LogEnabledViewTool");
-            }
-            
-            //
-            // Store the tool instance in the appropriate list
-            //
-            
-            // First, handle tools that implement interface ServletViewTool
-            // (the interface ThreadSafeViewTool is not considered in this
-            // case because the 'lifecycle' attribute takes precedence over the 
-            // 'thread safe' attribute)
-            if (obj instanceof ServletViewTool)
-            {
-                log("  Known interface: ServletViewTool");
-                if (lifecycle.equalsIgnoreCase(ServletViewTool.REQUEST))
-                {
-                    requestTools.add(new ToolInfo(key, obj, classname));
-                }
-                else if (lifecycle.equalsIgnoreCase(ServletViewTool.SESSION))
-                {
-                    sessionTools.add(new ToolInfo(key, obj, classname));
-                }
-                else if (lifecycle.equalsIgnoreCase(ServletViewTool.APPLICATION))
-                {
-                    applicationToolsNotInitialized.add(new ToolInfo(key, obj, classname));
-                }
-                else
-                {
-                    log("  Error: Unknown lifecycle: \""+ lifecycle +"\".");
-                    log("  Tool not loaded.");
-                }
-                continue;
-            }
-
-            // Secondly, handle tools that implement interface ContextViewTool
-            // (The interface ThreadSafeViewTool is not considered in this case
-            // because it doesn't matter. A new tool instance is created for every 
-            // request anyway since the Velocity context needs to be passed.)
-            if (obj instanceof ContextViewTool)
-            {
-                log("  Known interface: ContextViewTool");
-                // These tools always have a life cycle of 'request'
-                requestTools.add(new ToolInfo(key, obj, classname));
-                continue;
-            }
-            
-            // Third, handle tools that implement interface ThreadSafeViewTool.
-            // In this case, the one and only instance of the tool is reused the 
-            // entire runtime.
-            if (obj instanceof ThreadSafeViewTool)
-            {
-                log("  Known interface: ThreadSafeViewTool");
-                applicationToolsNotInitialized.add(new ToolInfo(key, obj, classname));
-                continue;
-            }
-            
-            // Fourth, handle tools that implement no known interface.
-            // Unknown view tools are considered not thread-safe and 
-            // therefore a new instance is created for every template processing
-            // request. 
-            log("  Known interface: None. Apply default handling.");
-            requestTools.add(new ToolInfo(key, obj, classname));
         }
-
-        log("Done initializing the toolbox.");
+        else
+        {
+            //default is request scope
+            requestToolInfo.add(info);
+        }
     }
 
 
     /**
-     * Creates a {@link ToolboxContext} from the tools loaded
-     * in this manager. It uses the given {@link ViewContext}
-     * to create instances of session and request tools. Request
-     * tools are created on every call to this method. Session
-     * tools are created once per session. Application tool instances
-     * are re-used for the entire runtime.
+     * Overrides XMLToolboxManager to handle the separate
+     * scopes.
      *
-     * @param vcontext the current Velocity context
-     * @return the created ToolboxContext
+     * Application scope tools were initialized when the toolbox was loaded.
+     * Session scope tools are initialized once per session and stored in a
+     * map in the session attributes.
+     * Request scope tools are initialized on every request.
+     * 
      */
-    public ToolboxContext getToolboxContext(ViewContext vcontext)
+    public ToolboxContext getToolboxContext(Object initData)
     {
-        // Only on first request, initialize tools with a life 
-        // cycle of 'application'. This cannot be done earlier because 
-        // some tools may need access to data that is only available 
-        // with a template processing request.
-        if (applicationTools == null)
+        //we know the initData is a ViewContext
+        ViewContext ctx = (ViewContext)initData;
+        
+        //create the toolbox map with the application tools in it
+        Map toolbox = new HashMap(appTools);
+
+        if (!sessionToolInfo.isEmpty())
         {
-            synchronized (applicationToolsNotInitialized)
+            HttpSession session = ctx.getRequest().getSession();
+
+            //synchronize session tool initialization to avoid potential
+            //conflicts from multiple simultaneous requests in the same session
+            synchronized(session)
             {
-                if (applicationTools == null)
+                //get the initialized session tools
+                Map stmap = (Map)session.getAttribute(SESSION_TOOLS_KEY);
+
+                //if session tools aren't initialized,
+                //do so and store them in the session
+                if (stmap == null)
                 {
-                    applicationTools = new HashMap(applicationToolsNotInitialized.size());
-                    Iterator i = applicationToolsNotInitialized.iterator();
-                    while (i.hasNext())
+                    stmap = new HashMap(sessionToolInfo.size());
+                    Iterator i = sessionToolInfo.iterator();
+                    while(i.hasNext())
                     {
                         ToolInfo info = (ToolInfo)i.next();
-                        Object tool = info.getTool();
-
-                        // First, handle tools that implement ServletViewTool and have
-                        // a defined life cycle of 'application'
-                        if (tool instanceof ServletViewTool)
-                        {
-                            applicationTools.put(info.getKey(), 
-                                ((ServletViewTool)tool).getInstance(vcontext));
-                            continue;
-                        }
-
-                        // Secondly, handle ContextViewTools
-                        // => they never have an 'application' life cycle, => skip
-
-                        // Third, handle tools that implement ThreadSafeViewTool
-                        if (tool instanceof ThreadSafeViewTool)
-                        {
-                            applicationTools.put(info.getKey(), tool);
-                            continue;
-                        }
-
-                        // There shouldn't be any tool left, otherwise it's an error
-                        log("Error trying to load unknown tool with a life cycle " +
-                            "of 'application': key=" + info.getKey() + " class=" + 
-                            tool.getClass() + ". Tool not loaded.");
+                        stmap.put(info.getKey(), info.getInstance(ctx));
                     }
+                    session.setAttribute(SESSION_TOOLS_KEY, stmap);
                 }
+
+                //add the initialized session tools to the toolbox
+                toolbox.putAll(stmap);
             }
         }
-        
-        //
-        // Assemble toolbox
-        //
-        
-        // First, add tools with an 'application' life cycle, if any.
-        Map toolbox = new HashMap(applicationTools);
-        
-        // Secondly, add tools with a 'session' life cycle, if any.
-        if (!sessionTools.isEmpty())
-        {
-            HttpSession session = vcontext.getRequest().getSession();
 
-            // get the initialized session tools
-            Map stmap = (Map)session.getAttribute(SESSION_TOOLS_KEY);
-
-            // if session tools aren't initialized, do so and store 
-            // them in the session attributes.
-            if (stmap == null)
-            {
-                synchronized (session)
-                {
-                    if (stmap == null)
-                    {
-                        stmap = new HashMap(sessionTools.size());
-                        Iterator i = sessionTools.iterator();
-                        while(i.hasNext())
-                        {
-                            ToolInfo info = (ToolInfo)i.next();
-                            Object tool = info.getTool();
-
-                            // Only tools of class ServletViewTool can
-                            // have a life cycle of session.
-                            try
-                            {
-                            stmap.put(info.getKey(), 
-                                ((ServletViewTool)tool).getInstance(vcontext));
-                            }
-                            catch(ClassCastException cce)
-                            {
-                                log("Error trying to load unknown tool with" +
-                                    " a life cycle of 'session': key=" + 
-                                    info.getKey() + " class=" + tool.getClass() + 
-                                    ". Tool not loaded.");
-                            }
-                            
-                        }
-                        session.setAttribute(SESSION_TOOLS_KEY, stmap);
-                    }
-                }
-            }
-            //add the initialized session tools to the toolbox
-            toolbox.putAll(stmap);
-        }
-        
-        // Thirdly, add tools with a 'request' life cycle, if any.
-        Iterator i = requestTools.iterator();
+        //add and initialize request tools
+        Iterator i = requestToolInfo.iterator();
         while(i.hasNext())
         {
             ToolInfo info = (ToolInfo)i.next();
-            Object tool = info.getTool();
-
-            // First, handle tools that implement ServletViewTool.
-            // They are initialized with an instance of ViewContext.
-            if (tool instanceof ServletViewTool)
-            {
-                toolbox.put(info.getKey(), 
-                        ((ServletViewTool)(info.getTool())).getInstance(vcontext));
-                continue;
-            }
-            
-            // Secondly, handle tools that implement ContextViewTool.
-            // They are initialized with an instance of Context.
-            if (tool instanceof ContextViewTool)
-            {
-                toolbox.put(info.getKey(), 
-                        ((ContextViewTool)(info.getTool())).getInstance((Context)vcontext));
-                continue;
-            }
-            
-            // Third, handle any other tool that does not implement any known
-            // interface. It is required that these tools have a public 
-            // contructor with no parameters.
-            try
-            {
-                tool = Class.forName(info.getClassname()).newInstance();
-                toolbox.put(info.getKey(), tool);
-                continue;
-            }
-            catch(Exception e)
-            {
-               log("Error creating instance for class: " + info.getClassname() +
-                ". " + e);
-               continue;
-            }
+            toolbox.put(info.getKey(), info.getInstance(ctx));
         }
-        
+
         return new ToolboxContext(toolbox);
-    }
-
-
-    /**
-     * This class holds a view tool's key and original instance.
-     */
-    protected final class ToolInfo
-    {
-        private String key;
-        private Object tool;
-        private String classname;
-        
-        ToolInfo(String key, Object tool, String classname)
-        {
-            this.key = key;
-            this.tool = tool;
-            this.classname = classname;
-        }
-        
-        String getKey()
-        {
-            return key;
-        }
-        
-        Object getTool()
-        {
-            return tool;
-        }
-
-        String getClassname()
-        {
-            return classname;
-        }
-        
     }
 
 

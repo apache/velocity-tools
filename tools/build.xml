@@ -23,7 +23,7 @@
   <property name="project.title"         value=""/>
 
   <!-- The current version number of this component -->
-  <property name="project.version"       value="0.1"/>
+  <property name="project.version"       value="0.2"/>
 
   <!-- The current version number of this component -->
   <property name="project.date"          value="24-Mar-2002"/>
