@@ -23,17 +23,17 @@
 <body>
 <font size="+4"><center>$request.getRequestURI()</center></font>
 <br>
-#include("/examples/struts_app6/top.html")
+#include("/app6/top.html")
 <br>
 We are on the any page. The action "any" forwards to this page.
 <br>
 <br>
 
-Try the <a href="$slink.setAction("false")">false</a> page.
+Try the <a href="$slink.setAction('false')">false</a> page.
 <br>
-Try the <a href="$slink.setAction("true")">true</a> page.
+Try the <a href="$slink.setAction('true')">true</a> page.
 <br>
 <br>
-Go to <a href="$slink.setAction("formAction")">form</a> test page.
+Go to <a href="$slink.setAction('formAction')">form</a> test page.
 </body>
 </html>

@@ -28,7 +28,7 @@
 
 	#errorMarkup()
 
-        <form action='$link.setAction("do_submit_vm")' method="post" onsubmit="return validateEmailForm(this)">
+        <form name="$form.name" action="$link.setAction('do_submit_vm')" method="post" onsubmit="return validateEmailForm(this)">
             $text.get("emailForm.label.email") &nbsp; <input type="text" name="email" value="$!emailForm.email"/>&nbsp;
             <input type="submit" name="submit"/>
 	</form>

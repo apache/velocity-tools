@@ -25,7 +25,7 @@
 <body>
 <font size="+4"><center><%=request.getRequestURI()%></center></font>
 <br>
-<jsp:include page="top.html"/>
+<jsp:include page="top.html" flush="true"/>
 <br>
 We are on the any page. The action "any" forwards to this page.
 <br>

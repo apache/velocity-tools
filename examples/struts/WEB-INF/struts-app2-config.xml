@@ -4,14 +4,14 @@
   <form-beans>
     <form-bean name="demoForm" type="examples.app2.DemoForm" />
   </form-beans>
-  <global-forwards>
-    <forward contextRelative="true" name="src" path="/examples/struts_app2/tool-demo.vm" />
-  </global-forwards>
+  <!--global-forwards>
+    <forward name="src" path="/tool-demo.vm" />
+  </global-forwards-->
   <action-mappings>
     <action name="demoForm" path="/demo" scope="request" type="examples.app2.DemoAction" validate="false">
-      <forward contextRelative="true" name="home" path="/examples/struts_app2/tool-demo.vm" />
+      <forward name="home" path="/tool-demo.vm" />
     </action>
-    <action forward="/examples/struts_app2/tool-demo.txt" path="/demoSrc" />
+    <action forward="/tool-demo.txt" path="/demoSrc" />
   </action-mappings>
   <message-resources parameter="examples.app2.ApplicationResources" />
   <plug-in className="org.apache.struts.validator.ValidatorPlugIn">

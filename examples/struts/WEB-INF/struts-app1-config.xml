@@ -5,19 +5,19 @@
     <form-bean name="addressForm" type="examples.app1.AddressForm" />
   </form-beans>
   <global-forwards>
-    <forward contextRelative="true" name="editAddressSrcJsp" path="/examples/struts_app1/edit-addressjsp.txt" />
-    <forward contextRelative="true" name="showAddressSrcJsp" path="/examples/struts_app1/show-addressjsp.txt" />
-    <forward contextRelative="true" name="editAddressSrc" path="/examples/struts_app1/edit-address.txt" />
-    <forward contextRelative="true" name="showAddressSrc" path="/examples/struts_app1/show-address.txt" />
+    <forward name="editAddressSrcJsp" path="/edit-addressjsp.txt" />
+    <forward name="showAddressSrcJsp" path="/show-addressjsp.txt" />
+    <forward name="editAddressSrc" path="/edit-address.txt" />
+    <forward name="showAddressSrc" path="/show-address.txt" />
   </global-forwards>
   <action-mappings>
     <action name="addressForm" path="/address1" scope="request" type="examples.app1.AddressAction">
-      <forward contextRelative="true" name="showAddress" path="/examples/struts_app1/show-address.jsp" />
-      <forward contextRelative="true" name="editAddress" path="/examples/struts_app1/edit-address.jsp" />
+      <forward name="showAddress" path="/show-address.jsp" />
+      <forward name="editAddress" path="/edit-address.jsp" />
     </action>
     <action name="addressForm" path="/address2" scope="request" type="examples.app1.AddressAction">
-      <forward contextRelative="true" name="showAddress" path="/examples/struts_app1/show-address.vm" />
-      <forward contextRelative="true" name="editAddress" path="/examples/struts_app1/edit-address.vm" />
+      <forward name="showAddress" path="/show-address.vm" />
+      <forward name="editAddress" path="/edit-address.vm" />
     </action>
   </action-mappings>
   <message-resources parameter="examples.app1.ApplicationResources" />

@@ -23,7 +23,7 @@
 <body>
 <font size="+4"><center><%=request.getRequestURI()%></center></font>
 <br>
-<jsp:include page="top.html"/>
+<jsp:include page="top.html" flush="true"/>
 <br>
 We are on the false page. The non-secure (non-SSL) action "false" forwards to this page.
 <br>

@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * $Id: index.vm,v 1.4 2004/02/20 13:13:38 marino Exp $
+ * $Id$
  *#
 <HTML>
 <HEAD>
   <TITLE>VelocityStruts</TITLE>
-  <link rel="stylesheet" href="doc/styles.css" type="text/css">
+  <link rel="stylesheet" href="$link.setRelative('styles.css')" type="text/css">
 </HEAD>
 
 <BODY>
 <table width="100%" border="0" cellspacing="0" cellpadding="5">
   <tr bgcolor="#000066">
     <td>
-      <h2><font color="#FFFFFF"><img src="doc/img/spacer.gif" width="520" height="1"><br>
+      <h2><font color="#FFFFFF"><br>
 				VelocityStruts</font></h2>
-      <font color="#FFFFFF">Version 1.1, january 25. 2004</font></td>
+      <font color="#FFFFFF">Version 1.2, february 22. 2005</font></td>
     <td align="right">&nbsp;</td>
   </tr>
 </table>
@@ -46,16 +46,17 @@ with the Velocity template engine.
 	<li>Velocity is now becoming an alternative view technology for Struts-based
 	    Web applications.</li>
 	<li>Velocity templates can be mixed with JSP templates in the same application.</li>
-	<li>No changes are required to Struts. This works with Struts 1.0, 1.01, 1.02, and 1.1.</li>
+	<li>No changes are required to Struts. This works with Struts 1.2.</li>
 </ul>
 
 <h5>Status</h5>
 <p>A great deal of progress has been made since our 1.0 release. These include
-support for Struts 1.1 features like modules, Tiles, and Validator.  For a more
+support for Struts 1.1 features like modules, Tiles, and Validator.  These features have been enhanced further
+to support Struts 1.2.  For a more
 complete listing, see the project <a href="http://jakarta.apache.org/velocity/tools/changes.html">change log</a>.</p>
 
 <h5>Application Examples</h5>
-<p>Seven small <a href="$link.setAction("examples")">application examples</a> have
+<p>Seven small <a href="$link.setAction('examples')">application examples</a> have
 been included. Look at example 2 for a demonstration of the Velocity
 view tools for Struts. JSP versions of some of the examples have
 been included to allow a direct comparison of the two view technologies.

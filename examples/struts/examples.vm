@@ -27,7 +27,7 @@
     <td>
       <h2><font color="#FFFFFF"><br>
 				Velocity for Struts 1.2</font></h2>
-      <font color="#FFFFFF">January 25. 2004</font></td>
+      <font color="#FFFFFF">February 22. 2004</font></td>
     <td align="right">&nbsp;</td>
   </tr>
 </table>
@@ -59,7 +59,7 @@
 		libraries for JSP.
 		<ul>
 			<li><a href="$link.setForward('app2')" target="demo">Struts View Tools Demo</a>
-				(<a href="$link.setForward('app2Src')">template</a>)</li>
+				(<a href="$link.setForward('app2Src')" target="demo">template</a>)</li>
 		</ul>
 		<p>&nbsp;</p>
 	</li>
