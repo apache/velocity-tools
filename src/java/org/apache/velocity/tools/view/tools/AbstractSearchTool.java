@@ -111,7 +111,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * </pre>
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.1 $ $Date: 2003/04/15 00:13:28 $
+ * @version $Revision: 1.2 $ $Date: 2003/04/15 01:44:38 $
  */
 
 public abstract class AbstractSearchTool implements ViewTool
@@ -397,6 +397,24 @@ public abstract class AbstractSearchTool implements ViewTool
 
 
     /**
+     * Returns the "page number" for the specified index.  Because the page
+     * number is used for the user interface, the page numbers are 1-based.
+     *
+     * @param i the index that you want the page number for
+     * @return the approximate "page number" for the specified index or 
+     *         <code>null</code> if there are no results
+     */
+    public Integer getPageNumber(int i)
+    {
+        if (!hasResults())
+        {
+            return null;
+        }
+        return new Integer(1 + i / itemsPerPage);
+    }
+
+
+    /**
      * Returns the "page number" for the current index.  Because the page
      * number is used for the user interface, the page numbers are 1-based.
      *
@@ -405,11 +423,7 @@ public abstract class AbstractSearchTool implements ViewTool
      */
     public Integer getPageNumber()
     {
-        if (!hasResults())
-        {
-            return null;
-        }
-        return new Integer(1 + index / itemsPerPage);
+        return getPageNumber(index);
     }
 
 
