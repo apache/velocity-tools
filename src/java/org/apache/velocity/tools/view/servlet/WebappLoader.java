@@ -1,7 +1,7 @@
 /*
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -72,7 +72,7 @@ import org.apache.velocity.runtime.resource.loader.ResourceLoader;
  *
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Id: WebappLoader.java,v 1.4 2003/03/22 20:33:09 nbubna Exp $
+ * @version $Id: WebappLoader.java,v 1.5 2003/05/28 00:17:16 nbubna Exp $
  */
 public class WebappLoader extends ResourceLoader
 {

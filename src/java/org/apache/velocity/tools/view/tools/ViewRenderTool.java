@@ -1,7 +1,7 @@
 /*
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -104,7 +104,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * session scopes of a servlet environment.</p>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.1 $ $Date: 2003/03/10 21:37:41 $
+ * @version $Revision: 1.2 $ $Date: 2003/05/28 00:17:17 $
  */
 
 public class ViewRenderTool extends RenderTool implements ViewTool

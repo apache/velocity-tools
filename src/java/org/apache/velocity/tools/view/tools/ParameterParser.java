@@ -1,7 +1,7 @@
 /*
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2002 The Apache Software Foundation.  All rights
+ * Copyright (c) 2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -74,7 +74,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * be used in the session or application scopes of your webapp.</p>
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.4 $ $Date: 2003/03/22 20:33:09 $
+ * @version $Revision: 1.5 $ $Date: 2003/05/28 00:17:16 $
  */
 
 public class ParameterParser implements ViewTool

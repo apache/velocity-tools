@@ -1,7 +1,7 @@
 /*
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,7 +66,7 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:sidler@apache.org">Gabriel Sidler</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ToolboxContext.java,v 1.1 2003/03/05 06:13:03 nbubna Exp $ 
+ * @version $Id: ToolboxContext.java,v 1.2 2003/05/28 00:17:16 nbubna Exp $ 
  */
 public class ToolboxContext extends VelocityContext
 {
