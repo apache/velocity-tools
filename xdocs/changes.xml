@@ -17,8 +17,8 @@
       <li>Added ValidatorTool to provide Struts 1.1 javascript validation for VelocityStruts. (maj)</li>
       <li>output.encoding property (if non-default) is appended to default content-type as the charset. (ndb)</li>
       <li>VelocityViewServlet now uses response.getWriter() instead of response.getOutputStream() as suggested by Matthew Payne. (ndb)</li>
-      <li>Improved error handling (exceptions are logged and error() is now more robust). (ndb)</li>
-      <li>Put requestCleanup() call in a 'finally' clause to allow clean after errors during a request. (dlr)</li>
+      <li>Improved VelocityViewServlet error handling (exceptions are logged and error() is now more robust). (ndb)</li>
+      <li>Put VelocityViewServlet's requestCleanup() call in a 'finally' clause to allow clean after errors during a request. (dlr)</li>
       <li>Fixed miscellaneous javadoc and doc typos (many of which were reported by Takayoshi Kimura) (ndb)</li>
       <li>Allow system to reclaim objects held by pooled writers in VelocityViewServlet (see bug 18951) (ndb)</li>
       <li>Changed LinkTool to automatically check for XHTML setting (ndb)</li>
