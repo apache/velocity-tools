@@ -101,7 +101,7 @@
         the view layer in a Struts application.</p>
 <p>As we follow the typical Struts process flow in Diagram 1, 
         notice how there is relatively little change except for the addition 
-        of Velocity. The velocit-struts.jar leverages a standalone Velocity 
+        of Velocity. The velocity-struts.jar leverages a standalone Velocity 
         servlet to process template files (specifically, the jar file is 
         velocity-tools-x.x.jar) and uses some drop-in tools to provide 
         transparent access to Struts specific objects (ex. message resources, 
@@ -214,26 +214,15 @@
   <tr>
     <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
     <td>
-      <p>Ok, you might have noticed that the current VelocityStruts code doesn't
-        offer <i>explicit</i> support for new Struts 1.1 features like Tiles integration,
-        Validator integration, modules, or ActionMessages. Not to worry!  There are
-        both reasons for this, resources for dealing with them, and changes coming soon.</p>
-<p>Here's the rundown:</p>
-<p>First off, you should know that there are a fair number of velocity-tools
-        committers, contributors, and users already happily using VelocityStruts with 
-        Struts 1.1 Final.  All of the VelocityStruts tools work just fine with the new 
-        release.  There are no incompatibility issues to worry about there.</p>
-<p>So, why haven't we developed tools for 1.1 features yet?  Well, one reason
-        is simply that it was not released during most of Velocity Tools' development
-        cycle so far.  Also, we have a number of users and contributors who cannot
-        yet upgrade to 1.1 Final (generally due to problems of the PHB type).  As such,
-        we have been intentional in keeping 1.1 features out of the code until we could
-        release a 1.0 version of our own that Struts 1.0 users could work with.</p>
-<p>Now, about support for the new features in Struts 1.1, here's a few tips to
-        get you started while you wait for Velocity Tools 1.1:
+      <p>Well, since our 1.0 release, we've been busy.  Thanks in large part to the
+        efforts of our newest committer on the project (Marino), we've already
+        implemented support for most of the new features in Struts 1.1.  The latest
+        nightly builds include support for ActionMessages, Tiles, and Modules, among
+        numerous other improvements.  We still haven't developed down support for 
+        Struts 1.1's validator javascript functions, but we hope to have it soon.</p>
+<p>In the meantime, here's a few tips for using Velocity Tools with Struts 1.1:
+        
         <ol>
-          <li>There's a working ActionMessagesTool
-            <a href="http://cvs.apache.org/viewcvs/jakarta-velocity-tools/whiteboard/nathan/">here</a></li>
           <li>Those missing Tiles should check out the
           <a href="http://jakarta.apache.org/velocity/tools/view/layoutservlet.html">VelocityLayoutServlet</a>
           or the disscusion <a href="http://www.mail-archive.com/struts-user@jakarta.apache.org/msg63487.html">here</a></li>
@@ -241,9 +230,9 @@
           <a href="http://www.mail-archive.com/velocity-user@jakarta.apache.org/msg09167.html">here</a></li>
         </ol>
         </p>
-<p>Hopefully, that's enough to get you going; more should be in the works soon.  
-        We are eager to move forward with development in this area.  If you're interested, 
-        you should come over to the velocity-dev list and help out! :-)</p>
+<p>Hopefully, we'll be able to get a Velocity Tools 1.1 release out the door
+        soon. If you're interested in helping us finish it up and test it out, come 
+        over to the velocity-dev list and/or checkout the latest code from CVS!</p>
 <br clear="all"/>
 
     </td>
