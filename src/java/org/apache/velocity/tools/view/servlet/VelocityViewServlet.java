@@ -62,7 +62,6 @@ import java.io.OutputStreamWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
-import java.util.Properties;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -146,7 +145,7 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  * @author <a href="dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.3 2003/03/07 03:28:20 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.4 2003/03/08 01:05:38 nbubna Exp $
  */
 
 public class VelocityViewServlet extends HttpServlet
@@ -269,7 +268,8 @@ public class VelocityViewServlet extends HttpServlet
     /**
      * Initializes the Velocity runtime, first calling 
      * loadConfiguration(ServletConfig) to get a 
-     * java.util.Properties of configuration information
+     * org.apache.commons.collections.ExtendedProperties
+     * of configuration information
      * and then calling Velocity.init().  Override this
      * to do anything to the environment before the 
      * initialization of the singleton takes place, or to 
@@ -292,8 +292,8 @@ public class VelocityViewServlet extends HttpServlet
         // Try reading an overriding Velocity configuration
         try
         {
-            Properties p = loadConfiguration(config);
-            Velocity.setExtendedProperties(ExtendedProperties.convertProperties(p));
+            ExtendedProperties p = loadConfiguration(config);
+            Velocity.setExtendedProperties(p);
         }
         catch(Exception e)
         {
@@ -316,7 +316,7 @@ public class VelocityViewServlet extends HttpServlet
      
     /**
      *  Loads the configuration information and returns that 
-     *  information as a Properties, which will be used to 
+     *  information as an ExtendedProperties, which will be used to 
      *  initialize the Velocity runtime.
      *  <br><br>
      *  Currently, this method gets the initialization parameter
@@ -350,20 +350,19 @@ public class VelocityViewServlet extends HttpServlet
      * 
      *  Derived classes may do the same, or take advantage of this code to do the loading for them via :
      *   <pre>
-     *      Properties p = super.loadConfiguration(config);
+     *      ExtendedProperties p = super.loadConfiguration(config);
      *   </pre>
      *  and then add or modify the configuration values from the file.
      *  <br>
      *
      *  @param config ServletConfig passed to the servlets init() function
      *                Can be used to access the real path via ServletContext (hint)
-     *  @return java.util.Properties loaded with configuration values to be used
+     *  @return ExtendedProperties loaded with configuration values to be used
      *          to initialize the Velocity runtime.
-     *  @throws FileNotFoundException if a specified file is not found.
      *  @throws IOException I/O problem accessing the specified file, if specified.
      */
-    protected Properties loadConfiguration(ServletConfig config)
-        throws IOException, FileNotFoundException
+    protected ExtendedProperties loadConfiguration(ServletConfig config)
+        throws IOException
     {
         ServletContext servletContext = config.getServletContext();
 
@@ -374,31 +373,12 @@ public class VelocityViewServlet extends HttpServlet
             propsFile = servletContext.getInitParameter(INIT_PROPS_KEY);
         }
         
-        /*
-         * This will attempt to find the location of the properties
-         * file from the relative path to the WAR archive (ie:
-         * docroot). Since JServ returns null for getRealPath()
-         * because it was never implemented correctly, then we know we
-         * will not have an issue with using it this way. I don't know
-         * if this will break other servlet engines, but it probably
-         * shouldn't since WAR files are the future anyways.
-         */
-        Properties p = new Properties();
-        
+        ExtendedProperties p = new ExtendedProperties();
         if (propsFile != null)
         {
-            String realPath = servletContext.getRealPath(propsFile);
-        
-            if (realPath != null)
-            {
-                propsFile = realPath;
-            }
+            p.load(servletContext.getResourceAsStream(propsFile));
 
-            p.load(new FileInputStream(propsFile));
-        }
-        else
-        {
-            Velocity.warn("Hey!! Where's the velocity.properties??");
+            Velocity.info("Custom Properties File: "+propsFile);
         }
 
         return p;
