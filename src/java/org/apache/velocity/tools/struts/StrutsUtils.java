@@ -21,7 +21,6 @@ import java.util.Locale;
 import java.util.Iterator;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
@@ -40,7 +39,6 @@ import org.apache.struts.util.MessageResources;
 import org.apache.struts.util.RequestUtils;
 
 /* deprecated imports */
-import org.apache.struts.action.ActionFormBean;
 import org.apache.struts.action.ActionFormBeans;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionForwards;
@@ -66,7 +64,7 @@ import org.apache.struts.action.ActionMappings;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * based on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Id: StrutsUtils.java,v 1.15 2004/02/18 20:09:51 nbubna Exp $
+ * @version $Id: StrutsUtils.java,v 1.16 2004/03/12 01:33:05 marino Exp $
  */
 public class StrutsUtils
 {
@@ -395,7 +393,7 @@ public class StrutsUtils
                                            HttpSession session)
     {
         /* Is there a mapping associated with this request? */
-        ActionConfig mapping = 
+        ActionConfig mapping =
             (ActionConfig)request.getAttribute(Globals.MAPPING_KEY);
         if (mapping == null)
         {
@@ -503,7 +501,7 @@ public class StrutsUtils
         }
 
         /* Use our servlet mapping, if one is specified */
-        String servletMapping = 
+        String servletMapping =
             (String)application.getAttribute(Globals.SERVLET_KEY);
 
         if (servletMapping != null)
@@ -659,7 +657,7 @@ public class StrutsUtils
         String footer = null;
         Locale locale = getLocale(request, session);
 
-        MessageResources resources = 
+        MessageResources resources =
             getMessageResources(request, application, bundle);
         if (resources != null)
         {
