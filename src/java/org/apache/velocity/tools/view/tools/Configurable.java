@@ -22,8 +22,8 @@ import java.util.Map;
  * Interface for tools that can be passed configuration parameters.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Id: Configurable.java,v 1.1 2004/04/16 20:36:12 nbubna Exp $
- * @since VelocityTools 1.1
+ * @version $Id: Configurable.java,v 1.2 2004/05/06 00:39:37 nbubna Exp $
+ * @since VelocityTools 1.2
  */
 public interface Configurable
 {
