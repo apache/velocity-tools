@@ -54,7 +54,7 @@ import org.apache.struts.util.RequestUtils;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * based on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Id: StrutsUtils.java,v 1.19 2004/03/12 20:39:07 nbubna Exp $
+ * @version $Id: StrutsUtils.java,v 1.20 2004/03/12 23:43:08 nbubna Exp $
  */
 public class StrutsUtils
 {
@@ -181,29 +181,28 @@ public class StrutsUtils
     /*********************** Struts Request Resources ****************/
 
     /**
-     * Returns the <code>org.apache.struts.action.ActionErrors</code>
-     * object for this request or <code>null</code> if none exists.
-     *
-     * @param request the servlet request
-     */
-    public static ActionErrors getActionErrors(HttpServletRequest request)
-    {
-        return (ActionErrors)request.getAttribute(Globals.ERROR_KEY);
-    }
-
-
-    /**
-     * Returns the <code>org.apache.struts.action.ActionMessages</code>
-     * object for this request or <code>null</code> if none exists.
+     * Returns the Struts errors for this request or <code>null</code> 
+     * if none exist.
      *
      * @param request the servlet request
      * @since VelocityTools 1.1
      */
-    public static ActionMessages getActionMessages(HttpServletRequest request)
+    public static ActionMessages getErrors(HttpServletRequest request)
+    {
+        return (ActionMessages)request.getAttribute(Globals.ERROR_KEY);
+    }
+
+    /**
+     * Returns the Struts messages for this request or <code>null</code> 
+     * if none exist.
+     *
+     * @param request the servlet request
+     * @since VelocityTools 1.1
+     */
+    public static ActionMessages getMessages(HttpServletRequest request)
     {
         return (ActionMessages)request.getAttribute(Globals.MESSAGE_KEY);
     }
-
 
     /**
      * Returns the <code>ActionForm</code> bean associated with
@@ -394,7 +393,7 @@ public class StrutsUtils
                                      HttpSession session,
                                      ServletContext application)
     {
-        ActionErrors errors = getActionErrors(request);
+        ActionMessages errors = getErrors(request);
         if (errors == null)
         {
             return "";
