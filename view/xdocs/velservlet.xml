@@ -11,26 +11,27 @@
 
  <body>
  
- <section name="Welcome to VelServlet">
+ <section name="Welcome to VelocityServlet">
 
-    <p>VelServlet is a subproject of Velocity. Its goals is to create a 
+    <p>VelocityServlet is a subproject of Velocity. Its goals is to create a 
     standalone Velocity servlet that can be used for template rendering 
     in Web applications.</p>
     <p>Intended audience of this subproject are Web
     application developers that plan on adding Velocity as a view layer
-    technology to their Servlet-based web application framework. VelServlet 
+    technology to their Servlet-based web application framework. VelocityServlet 
     offers the following key features:</p>
     
     <ul>
-        <li>VelServlet is a standalong Java servlet that renders Velocity templates.
+        <li>VelocityServlet provides is a standalone Java servlet that renders Velocity 
+            templates. Its class name is VelocityViewServlet.
             It can be invoked either directly from Web clients or from other servlets
             by forwarding request for template rendering to it. Its usage is
             similar to the JSPServlet for rendering JSP pages.</li>
-        <li>VelServlet makes ServletRequest attributes, HttpSession attributes and 
+        <li>VelocityViewServlet makes ServletRequest attributes, HttpSession attributes and 
             ServletContext attributes automatically available to the template designer 
             through the Velocity context. It is not necessary to explicitely
             populate the Velocity context.</li>
-        <li>VelServlet offers toolbox support. It is possible to define a set
+        <li>VelocityViewServlet offers toolbox support. It is possible to define a set
             of context tools (view helpers) that are made available to the template
             designer automatically through the Velcity context.</li>
         <li>Velocity log output can be redirected to the log infrastructure 
@@ -38,16 +39,16 @@
             logging facility provided by the Servlet API.</li>
     </ul>
        
-    <p>Using VelServlet, it becomes possible to write Web applications that are 
+    <p>Using VelocityViewServlet, it becomes possible to write Web applications that are 
     independent of a particular view technology. This opens a straightforward
     migration path between JSP pages and Velocity templates as the view layer
-    technology in Web application.</p>
+    technology in Web applications.</p>
 
-    <p>A typical application case for VelServlet is to use it in conjunction
+    <p>A typical application case for VelocityViewServlet is to use it in conjunction
     with a Servlet-based web application framework. 
-    <a href="../../struts/docs/index.html">Velocity for Struts</a> is a Velocity
+    <a href="../../struts/docs/index.html">VelocityStruts</a> is a Velocity
     subproject that brings Velocity to the Struts world and is the first 
-    application that takes advantage of VelServlet.</p>
+    application that takes advantage of VelocityViewServlet.</p>
 
 
     <p><strong>To be added</strong></p>

@@ -7,16 +7,16 @@
 
   <body>
 
-    <uplink name="VelTools Home"             href="docs/index.html" alt="top"/>
+    <uplink name="Velocity Tools Home"             href="docs/index.html" alt="top"/>
 
-    <menu name="About VelStruts">
+    <menu name="About VelocityStruts">
         <item name="Overview"                href="struts/docs/index.html"/>
         <item name="Documentation"           href="struts/docs/index.html#Documentation"/>
         <item name="Download"                href="struts/docs/index.html#Download"/>
         <item name="License"                 href="struts/docs/index.html#License"/>
     </menu>
 
-    <menu name="VelStruts User Guide">
+    <menu name="VelocityStruts User Guide">
         <item name="Overview"                href="struts/docs/userguide.html"/>
         <item name="Documentation"           href="struts/docs/userguide.html#Documentation"/>
         <item name="Model 2 Applications"    href="struts/docs/userguide.html#Model 2 Applications"/>
@@ -28,11 +28,11 @@
         <item name="Velocity Configuration"  href="struts/docs/userguide.html#Velocity Configuration"/>
     </menu>
 
-    <menu name="VelStruts Reference Doc"     href="struts/docs/tools.html"        target="velLibrary">
-        <item name="ErrorsTool"              href="struts/docs/ErrorsTool.html"   target="velLibrary"/>
-        <item name="FormTool"                href="struts/docs/FormTool.html"     target="velLibrary"/>
-        <item name="LinkTool"                href="struts/docs/LinkTool.html"     target="velLibrary"/>
-        <item name="MessageTool"             href="struts/docs/MessageTool.html"  target="velLibrary"/>
+    <menu name="VelocityStruts Reference Doc" href="struts/docs/tools.html"        target="velLibrary">
+        <item name="ErrorsTool"               href="struts/docs/ErrorsTool.html"   target="velLibrary"/>
+        <item name="FormTool"                 href="struts/docs/FormTool.html"     target="velLibrary"/>
+        <item name="LinkTool"                 href="struts/docs/LinkTool.html"     target="velLibrary"/>
+        <item name="MessageTool"              href="struts/docs/MessageTool.html"  target="velLibrary"/>
     </menu>
 
   </body>

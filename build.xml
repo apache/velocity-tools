@@ -17,7 +17,7 @@
   <property name="project.name"          value="velocity-tools" />
 
   <!-- The title of this component -->
-  <property name="project.title"         value="VelTools Documentation"/>
+  <property name="project.title"         value="Velocity Tools Documentation"/>
 
   <!-- The current version number of this component -->
   <property name="project.version"       value="0.1"/>
@@ -145,7 +145,7 @@
   <!-- J A V A D O C S   V E L L I B R A R Y                              -->
   <!-- ================================================================== -->
   <target name="javadocs-vellibrary" depends="static"
-   description="Create Javadoc documentation for VelLibrary subproject, only public members">
+   description="Create Javadoc documentation for VelocityLibrary subproject, only public members">
 
 
     <!-- Construct compile classpath -->
