@@ -73,10 +73,23 @@ import javax.servlet.ServletContext;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  *
- * @version $Id: ViewContext.java,v 1.2 2003/05/28 00:17:16 nbubna Exp $ 
+ * @version $Id: ViewContext.java,v 1.3 2003/07/30 22:02:30 nbubna Exp $ 
  */
 public interface ViewContext
 {
+    /** Key used for the HTTP request object. */
+    public static final String REQUEST = "request";
+
+    /** Key used for the HTTP response object. */
+    public static final String RESPONSE = "response";
+
+    /** Key used for the HTTP session object. */
+    public static final String SESSION = "session";
+
+    /** Key used for the servlet context object. */
+    public static final String APPLICATION = "application";
+
+
     /**
      * <p>Returns the instance of {@link HttpServletRequest} for this request.</p>
      */
@@ -93,6 +106,14 @@ public interface ViewContext
      * <p>Returns the instance of {@link ServletContext} for this request.</p>
      */
     public ServletContext getServletContext();
+
+
+    /**
+     * <p>Searches for the named attribute in request, session (if valid), 
+     * and application scope(s) in order and returns the value associated 
+     * or null.</p>
+     */
+    public Object getAttribute(String key);
 
 
     /**
