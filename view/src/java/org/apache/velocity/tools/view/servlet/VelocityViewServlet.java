@@ -80,6 +80,7 @@ import org.apache.velocity.tools.view.context.ToolboxContext;
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.context.ChainedContext;
 import org.apache.velocity.tools.view.servlet.ServletToolboxManager;
+import org.apache.velocity.tools.view.servlet.WebappLoader;
 
 
 /**
@@ -112,7 +113,7 @@ import org.apache.velocity.tools.view.servlet.ServletToolboxManager;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author  <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.7 2003/02/13 04:42:16 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.8 2003/02/19 19:59:02 nbubna Exp $
  */
 
 public class VelocityViewServlet extends VelocityServlet
@@ -123,6 +124,12 @@ public class VelocityViewServlet extends VelocityServlet
      * Servlet init parameters.
      */
     public static final String TOOLBOX_PARAM = "toolbox";
+
+
+    /**
+     * Key used to access the ServletContext in the Velocity
+     */
+    public static final String SERVLET_CONTEXT_KEY = "javax.servlet.ServletContext";
 
 
     /**
@@ -173,7 +180,16 @@ public class VelocityViewServlet extends VelocityServlet
     protected void initVelocity( ServletConfig config )
          throws ServletException
     {
-        // Try reading Velocity configuration
+        // default to servletlogger, which logs to the servlet engines log
+        Velocity.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, 
+                             ServletLogger.class.getName());
+
+        // by default, load resources with webapp resource loader
+        Velocity.setApplicationAttribute(SERVLET_CONTEXT_KEY, getServletContext());
+        Velocity.setProperty(RuntimeConstants.RESOURCE_LOADER, "webapp");
+        Velocity.setProperty("webapp.resource.loader.class", WebappLoader.class.getName());
+
+        // Try reading an overriding Velocity configuration
         try
         {
             Properties p = super.loadConfiguration(config);
@@ -184,16 +200,6 @@ public class VelocityViewServlet extends VelocityServlet
             getServletContext().log("Unable to read Velocity configuration file: " + e);
             getServletContext().log("Using default Velocity configuration.");
         }   
-
-        // define servletlogger, which logs to the servlet engines log
-        ServletLogger sl = new ServletLogger( getServletContext() );
-        Velocity.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, sl );
-
-        // load resources with webapp resource loader
-        VelocityStrutsServletAppContext vssac = new VelocityStrutsServletAppContext( getServletContext() );
-        Velocity.setApplicationAttribute( "org.apache.velocity.tools.view.servlet.WebappLoader",  vssac );
-        Velocity.setProperty( "resource.loader", "webapp" );
-        Velocity.setProperty( "webapp.resource.loader.class", "org.apache.velocity.tools.view.servlet.WebappLoader" );
 
         // now all is ready - init Velocity
         try
@@ -269,34 +275,4 @@ public class VelocityViewServlet extends VelocityServlet
     }
 
 
-    /**
-     * <p>Wrapper class to safely pass the servlet context to the web app
-     * loader.</p>
-     */
-    public class VelocityStrutsServletAppContext implements WebappLoaderAppContext
-    {
-        /**
-         * A reference to the servlet context
-         */
-        ServletContext servletContext = null;
-
-
-        /**
-         * Default constructor.
-         */
-        VelocityStrutsServletAppContext( ServletContext sc )
-        {
-            servletContext = sc;
-        }
-
-
-        /**
-         * Returns a reference to the servlet context.
-         */
-        public ServletContext getServletContext()
-        {
-           return servletContext;
-        }
-   }
-   
 }
