@@ -94,7 +94,7 @@ import org.apache.velocity.tools.view.servlet.ServletToolboxRuleSet;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ServletToolboxManager.java,v 1.13 2004/04/15 17:33:16 nbubna Exp $
+ * @version $Id: ServletToolboxManager.java,v 1.14 2004/04/16 20:39:28 nbubna Exp $
  */
 public class ServletToolboxManager extends XMLToolboxManager
 {
@@ -251,15 +251,18 @@ public class ServletToolboxManager extends XMLToolboxManager
      * <p>The DTD corresponding to the ServletToolboxRuleSet is:
      * <pre>
      *  &lt;?xml version="1.0"?&gt;
-     *  &lt;!ELEMENT toolbox (create-session,xhtml,tool*,data*)&gt;
+     *  &lt;!ELEMENT toolbox (create-session?,xhtml?,tool*,data*,#PCDATA)&gt;
      *  &lt;!ELEMENT create-session (#CDATA)&gt;
      *  &lt;!ELEMENT xhtml          (#CDATA)&gt;
-     *  &lt;!ELEMENT tool           (key,scope,class,#PCDATA)&gt;
+     *  &lt;!ELEMENT tool           (key,scope?,class,parameter*,#PCDATA)&gt;
      *  &lt;!ELEMENT data           (key,value)&gt;
      *      &lt;!ATTLIST data type (string|number|boolean) "string"&gt;
      *  &lt;!ELEMENT key            (#CDATA)&gt;
      *  &lt;!ELEMENT scope          (#CDATA)&gt;
      *  &lt;!ELEMENT class          (#CDATA)&gt;
+     *  &lt;!ELEMENT parameter (EMPTY)&gt;
+     *      &lt;!ATTLIST parameter name CDATA #REQUIRED&gt;
+     *      &lt;!ATTLIST parameter value CDATA #REQUIRED&gt;
      *  &lt;!ELEMENT value          (#CDATA)&gt;
      * </pre></p>
      *
