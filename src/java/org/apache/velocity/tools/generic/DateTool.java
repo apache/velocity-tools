@@ -62,7 +62,7 @@ import java.util.TimeZone;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Revision: 1.13 $ $Date: 2004/03/12 20:50:38 $
+ * @version $Revision: 1.14 $ $Date: 2004/11/10 20:14:46 $
  */
 public class DateTool
 {
@@ -651,10 +651,10 @@ public class DateTool
         {
             return ((Calendar)obj).getTime();
         }
-        if (obj instanceof Long) 
+        if (obj instanceof Number) 
         {
             Date d = new Date();
-            d.setTime(((Long)obj).longValue());
+            d.setTime(((Number)obj).longValue());
             return d;
         }
         try
