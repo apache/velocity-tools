@@ -61,15 +61,20 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 
 /**
- * <p>Tool for manipulating {@link Date} and {@link Calendar}
- * objects in Velocity templates.</p> 
+ * Tool for working with {@link Date} and {@link Calendar}
+ * in Velocity templates.  
+ * 
+ * This tool is entirely threadsafe, and has no instance members.  
+ * As such, the methods are highly interconnected, and overriding 
+ * key methods provides an easy way to create subclasses that use 
+ * a non-default calendar, locale, or timezone.
  *
- * @author <a href="mailto:sidler@teamup.com">Gabriel Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $ $Date: 2002/06/03 10:24:37 $
  */
 
 public class DateTool
@@ -80,69 +85,131 @@ public class DateTool
      * Default constructor.
      */
     public DateTool()
-    {}
+    {
+        // do nothing
+    }
 
+
+    // ------------------------- system date access ------------------
 
     /**
-     * Returns a Date object. The default Locale is used.
-     *
-     * @return a <code>java.util.Date</code> object representing the time at 
-     *    which this method was invoked
+     * @return the system's current time as a {@link Date}
      */
-    public static Date getDate()
+    public static final Date getSystemDate()
     {
-        return new Date();
+        return getSystemCalendar().getTime();
     }
 
 
     /**
-     * Returns a Date object representing the time at which this method was
-     * invoked in the specified locale.
-     *
-     * @param locale the {@link java.util.Locale} to use to generate the Date
-     *
-     * @return a {@link java.util.Date} object representing the time at which 
-     *     this method was invoked in the specified locale
+     * @return the system's current time as a {@link Calendar}
      */
-    public static Date getDate(Locale locale)
-    {
-        return getCalendar(locale).getTime();
-    }
-
-
-    /**
-     * Returns a Calendar object representing the time at which this method was
-     * invoked and in the default Locale.
-     *
-     * @return a {@link java.util.Calendar} object representing the time at which 
-     *     this method was invoked using the default Locale
-     */
-    public static Calendar getCalendar()
+    public static final Calendar getSystemCalendar()
     {
         return Calendar.getInstance();
     }
 
 
+    // ------------------------- locale/timezone/date access ----------------
+
+
     /**
-     * Returns a Calendar object representing the time at which this method was
-     * invoked and in the specified locale.
-     *
-     * @param locale the {@link java.util.Locale} to use to create a Calendar
-     * @return a {@link java.util.Calendar} object representing the time at which 
-     *     this method was invoked and in the specified locale
+     * @return the default {@link Locale}
      */
-    public static Calendar getCalendar(Locale locale)
+    public Locale getLocale()
     {
-        return Calendar.getInstance(locale);
+        return Locale.getDefault();
     }
 
 
     /**
-     * Returns a formatted string representing the specified date
-     * in the default locale.
+     * @return the default {@link TimeZone}
+     */
+    public TimeZone getTimeZone()
+    {
+        return TimeZone.getDefault();
+    }
+
+
+    /**
+     * Returns a {@link Date} derived from the result of {@link #getCalendar}
+     *
+     * @return a {@link Date} derived from the result of {@link #getCalendar}
+     */
+    public Date getDate()
+    {
+        return getCalendar().getTime();
+    }
+
+
+    /**
+     * Returns a {@link Calendar} instance created using the timezone and
+     * locale returned by getTimeZone() and getLocale().  This allows subclasses
+     * to easily override the default locale and timezone used by this tool.
+     *
+     * Sub-classes may override this method to return a Calendar instance
+     * not based on the system date.
+     * Doing so will also cause the getDate(), getNormalDate(), 
+     * getFormattedDate(), and toString() methods to return dates equivalent 
+     * to the Calendar returned by this method, because those methods return
+     * values derived from the result of this method.
+     *
+     * @return a {@link Calendar} instance created using the results of 
+     *         {@link #getTimeZone()} and {@link #getLocale()}.
+     * @see Calendar#getInstance(TimeZone zone, Locale aLocale)
+     */
+    public Calendar getCalendar()
+    {
+        return Calendar.getInstance(getTimeZone(), getLocale());
+    }
+
+
+    // ------------------------- formatting methods ---------------------------
+
+    /**
+     * Returns a formatted string representing the date as returned by
+     * {@link #getDate()}.
+     *
+     * This method uses the same formatting instructions as
+     * {@link SimpleDateFormat}:
+     *
+     * @param format the formatting instructions
+     * @return a formatted string representing the date returned by
+     *         {@link #getDate()} or <code>null</code> if the parameters
+     *         are invalid
+     * @see #format(String format, Object obj, Locale locale)
+     */
+    public String getFormattedDate(String format)
+    {
+        return format(format, getDate());
+    }
+
+
+    /**
+     * Converts the specified object to a date and returns
+     * a formatted string representing that date using the locale
+     * returned by {@link #getLocale()}.
+     *
+     * This method uses the same formatting instructions as
+     * {@link SimpleDateFormat}:
+     *
+     * @param format the formatting instructions
+     * @param obj the date object to be formatted
+     * @return a formatted string for this locale representing the specified
+     *         date or <code>null</code> if the parameters are invalid
+     * @see #format(String format, Object obj, Locale locale)
+     */
+    public String format(String format, Object obj)
+    {
+        return format(format, obj, getLocale());
+    }
+
+
+    /**
+     * Returns a formatted string representing the specified date and locale
      *
      * <p>
-     * This method uses the same formatting instructions as 
+     * This method uses the same formatting instructions as
      * {@link SimpleDateFormat}:
      * <pre>
      *   Symbol   Meaning                 Presentation        Example
@@ -166,7 +233,7 @@ public class DateTool
      *   K        hour in am/pm (0~11)    (Number)            0
      *   z        time zone               (Text)              Pacific Standard Time
      *   '        escape for text         (Delimiter)
-     *   ''       single quote            (Literal)           '     
+     *   ''       single quote            (Literal)           '
      *
      *   Examples: "E, MMMM d" will result in "Tue, July 24"
      *             "EEE, M-d (H:m)" will result in "Tuesday, 7-24 (14:12)"
@@ -174,35 +241,9 @@ public class DateTool
      *
      * @param format the formatting instructions
      * @param obj the date to format
-     *
-     * @return a formatted string representing the specified date or
-     *     <code>null</code> if the parameters are invalid
-     */
-    public static String format(String format, Object obj)
-    {
-        Date date = toDate(obj);
-        if (date == null || format == null)
-        {
-            return null;
-        }
-        SimpleDateFormat formatter = new SimpleDateFormat(format);
-        return formatter.format(date);
-    }
-
-
-    /**
-     * Returns a formatted string representing the specified date and locale.
-     *
-     * This method uses the same formatting instructions as 
-     * {@link SimpleDateFormat}:
-     *
-     * @param format the formatting instructions
-     * @param obj the date to format
-     * @param locale the {@link java.util.Locale} to format the date for
-     *
+     * @param locale the {@link Locale} to format the date for
      * @return a formatted string representing the specified date or
      *         <code>null</code> if the parameters are invalid
-     * @see #format
      */
     public static String format(String format, Object obj, Locale locale)
     {
@@ -216,13 +257,16 @@ public class DateTool
     }
 
 
+    // ------------------------- date conversion methods ---------------
 
     /**
-     * Returns a Date object representing the specified date.
+     * Converts an object to an instance of {@link Date}. Uses a 
+     * DateFormat to parse the string value of the object if it is not
+     * an instance of Date or Calendar.
      *
      * @param obj the date to convert
-     *
-     * @return the converted date
+     * @return the object as a {@link Date} or <code>null</code> if no
+     *         conversion is possible
      */
     public static Date toDate(Object obj)
     {
@@ -240,9 +284,9 @@ public class DateTool
         }
         try
         {
-            //try treating obj as a string and parsing it
-            DateFormat format = DateFormat.getInstance();
-            return format.parse(String.valueOf(obj));
+            //try parsing the obj as String w/a DateFormat
+            DateFormat parser = DateFormat.getInstance();
+            return parser.parse(String.valueOf(obj));
         }
         catch (Exception e)
         {
@@ -252,13 +296,81 @@ public class DateTool
 
 
     /**
-     * Returns a Calendar object representing the specified date.
+     * Converts an object to an instance of {@link Date} using the
+     * specified format and the {@link Locale} returned by 
+     * {@link #getLocale()} if the object is not already an instance
+     * of Date or Calendar.
+     *
+     * @param format - the format the date is in
+     * @param obj - the date to convert
+     * @return the object as a {@link Date} or <code>null</code> if no
+     *         conversion is possible
+     * @see #toDate(String format, Object obj, Locale locale)
+     */
+    public Date toDate(String format, Object obj)
+    {
+        return toDate(format, obj, getLocale());
+    }
+    
+    
+    /**
+     * Converts an object to an instance of {@link Date} using the
+     * specified format and {@link Locale}if the object is not already
+     * an instance of Date or Calendar.
+     *
+     * @param format - the format the date is in
+     * @param obj - the date to convert
+     * @param locale - the {@link Locale}
+     * @return the object as a {@link Date} or <code>null</code> if no
+     *         conversion is possible
+     * @see SimpleDateFormat#parse
+     */
+    public static Date toDate(String format, Object obj, Locale locale)
+    {
+        //first try the easiest conversions
+        Date date = toDate(obj);
+        if (date != null)
+        {
+            return date;
+        }
+        try
+        {
+            //try parsing w/a customized SimpleDateFormat
+            SimpleDateFormat parser = new SimpleDateFormat(format, locale);
+            return parser.parse(String.valueOf(obj));
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * Converts an object to an instance of {@link Calendar} using the
+     * locale returned by {@link #getLocale()} if necessary.
      *
      * @param obj the date to convert
-     *
      * @return the converted date
+     * @see #toCalendar(Object obj, Locale locale)
      */
-    public static Calendar toCalendar(Object obj)
+    public Calendar toCalendar(Object obj)
+    {
+        return toCalendar(obj, getLocale());
+    }
+
+
+    /**
+     * Converts an object to an instance of {@link Calendar} using the
+     * locale returned by {@link #getLocale()} if necessary.
+     *
+     * @param obj the date to convert
+     * @param locale the locale used
+     * @return the converted date
+     * @see #toDate(Object obj, Locale locale)
+     * @see Calendar
+     */
+    public static Calendar toCalendar(Object obj, Locale locale)
     {
         if (obj == null)
         {
@@ -274,15 +386,26 @@ public class DateTool
         {
             return null;
         }
-        
+
         //convert the date to a calendar
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(locale);
         cal.setTime(date);
-        //Force fields to update.
+        // HACK: Force all fields to update. see link for explanation of this.
+        //http://java.sun.com/j2se/1.4/docs/api/java/util/Calendar.html
         cal.getTime();
         return cal;
     }
 
 
-}
+    // ------------------------- default toString() implementation ------------
 
+    /**
+     * @return the result of {@link #getDate()} as a string
+     */
+    public String toString()
+    {
+        return getDate().toString();
+    }
+
+
+}
