@@ -73,6 +73,12 @@ import java.util.Iterator;
 public class BrowserSnifferTool
         implements ViewTool
 {
+    private String userAgent = null;
+    private String version = null;
+    private int majorVersion = -1;
+    private int minorVersion = -1;
+    private String geckoVersion = null;
+
     public BrowserSnifferTool()
     {
     }
@@ -1030,72 +1036,4 @@ public class BrowserSnifferTool
         }
     }
 
-    private String userAgent = null;
-    private String version = null;
-    private int majorVersion = -1;
-    private int minorVersion = -1;
-    private String geckoVersion = null;
-
-    /* testing : give a filename as argument
-     * the file is supposed to contains user agent strings, one per line
-     */
-    public static void main(String[] args)
-    {
-        try
-        {
-
-            /* open a reader on the input file */
-            BufferedReader reader = new BufferedReader(new FileReader(args[0]));
-            String ua;
-            BrowserSnifferTool browser = new BrowserSnifferTool();
-
-            /* build an array of all the tests */
-            Method[] methods = BrowserSnifferTool.class.getDeclaredMethods();
-            List tests = new ArrayList();
-            for(int i = 0; i < methods.length; i++)
-            {
-                Method m = methods[i];
-                int mod = m.getModifiers();
-                String name = m.getName();
-                if(Modifier.isPublic(mod) && !Modifier.isStatic(mod) &&
-                   name.startsWith("get") && name.length() > 3 &&
-                   m.getReturnType().getName().equals("boolean"))
-                {
-                    tests.add(m);
-                }
-            }
-
-            while( (ua = reader.readLine()) != null)
-            {
-                browser.version = null;
-                browser.majorVersion = -1;
-                browser.minorVersion = -1;
-                browser.geckoVersion = null;
-                browser.userAgent = ua.toLowerCase();
-                System.out.println("User Agent: " + ua);
-                System.out.print("    version=" + browser.getVersion() +
-                                 ", major=" + browser.getMajorVersion() +
-                                 ", minor=" + browser.getMinorVersion());
-                if(browser.getGecko())System.out.print(", gecko=" +
-                        browser.getGeckoVersion());
-                System.out.println();
-                System.out.print("    ");
-                for(Iterator mi = tests.iterator(); mi.hasNext(); )
-                {
-                    Method m = (Method)mi.next();
-                    boolean b = ( (Boolean)m.invoke(browser, new Object[]
-                            {})).
-                            booleanValue();
-                    if(b)System.out.print(m.getName().substring(3).
-                                          toLowerCase() + " ");
-                }
-                System.out.println();
-                System.out.println();
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
 }
