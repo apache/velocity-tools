@@ -58,6 +58,8 @@ import java.util.Stack;
 import java.util.Map;
 import java.util.Iterator;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.struts.tiles.ComponentContext;
 import org.apache.struts.tiles.ComponentDefinition;
 import org.apache.struts.tiles.AttributeDefinition;
@@ -100,17 +102,16 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.9 $ $Date: 2004/01/27 01:42:32 $
+ * @version $Revision: 1.10 $ $Date: 2004/02/13 05:14:21 $
  */
-public class TilesTool extends ImportSupport
-        implements ViewTool
+public class TilesTool extends ImportSupport implements ViewTool
 {
     static final String PAGE_SCOPE = "page";
     static final String REQUEST_SCOPE = "request";
     static final String SESSION_SCOPE = "session";
     static final String APPLICATION_SCOPE = "application";
 
-    protected ViewContext context;
+    protected Context velocityContext;
 
     /**
      * A stack to hold ComponentContexts while nested tile-definitions
@@ -135,20 +136,126 @@ public class TilesTool extends ImportSupport
     {
         if (!(obj instanceof ViewContext))
         {
-            throw new IllegalArgumentException(
-                    "Tool can only be initialized with a ViewContext");
+            throw new IllegalArgumentException("Tool can only be initialized with a ViewContext");
         }
 
-        this.context = (ViewContext)obj;
-        this.request = context.getRequest();
-        this.response = context.getResponse();
-        this.application = context.getServletContext();
+        ViewContext viewContext = (ViewContext)obj;
+        this.velocityContext = viewContext.getVelocityContext();
+        this.request = viewContext.getRequest();
+        this.response = viewContext.getResponse();
+        this.application = viewContext.getServletContext();
     }
 
     /***************************** View Helpers ******************************/
 
     /**
-     * Imports all attributes in the current tiles-context into the velocity-context.
+     * <p>A generic tiles insert function</p>
+     *
+     * <p>This is functionally equivalent to
+     * <code>&lt;tiles:insert attribute="foo" /&gt;</code>.</p>
+     *
+     * @param attr - can be any of the following:
+     *        AttributeDefinition,
+     *        tile-definition name,
+     *        tile-attribute name,
+     *        regular uri.
+     *        (checked in that order)
+     * @return the rendered template or value as a String
+     * @throws Exception on failure
+     */
+    public String get(Object obj)
+    {
+        try
+        {
+            Object value = getCurrentContext().getAttribute(obj.toString());
+            if (value != null)
+            {
+                return processObjectValue(value);
+            }
+            return processAsDefinitionOrURL(obj.toString());
+        }
+        catch (Exception e)
+        {
+            Velocity.error("TilesTool: Exeption while rendering Tile "
+                           + obj + ": " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Fetches a named attribute-value from the current tiles-context.
+     *
+     * <p>This is functionally equivalent to
+     * <code>&lt;tiles:getAsString name="foo" /&gt;</code>.</p>
+     *
+     * @param name the name of the tiles-attribute to fetch
+     * @return attribute value for the named attribute
+     */
+    public Object getAttribute(String name)
+    {
+        Object value = getCurrentContext().getAttribute(name);
+        if (value == null)
+        {
+            Velocity.warn("TilesTool: Tile attribute '"
+                           + name + "' was not found in context.");
+        }
+        return value;
+    }
+
+    /**
+     * Imports the named attribute-value from the current tiles-context into the
+     * current Velocity context.
+     *
+     * <p>This is functionally equivalent to
+     * <code>&lt;tiles:importAttribute name="foo" /&gt;</code>
+     *
+     * @param name the name of the tiles-attribute to import
+     */
+    public void importAttribute(String name)
+    {
+        this.importAttribute(name, PAGE_SCOPE);
+    }
+
+    /**
+     * Imports the named attribute-value from the current tiles-context into the
+     * named context ("page", "request", "session", or "application").
+     *
+     * <p>This is functionally equivalent to
+     * <code>&lt;tiles:importAttribute name="foo" scope="scopeValue" /&gt;</code>
+     *
+     * @param name the name of the tiles-attribute to import
+     * @param scope the named context scope to put the attribute into.
+     */
+    public void importAttribute(String name, String scope)
+    {
+        Object value = getCurrentContext().getAttribute(name);
+        if (value == null)
+        {
+            Velocity.warn("TilesTool: Tile attribute '"
+                           + name + "' was not found in context.");
+        }
+
+        if (scope.equals(PAGE_SCOPE))
+        {
+            velocityContext.put(name, value);
+        }
+        else if (scope.equals(REQUEST_SCOPE))
+        {
+            request.setAttribute(name, value);
+        }
+        else if (scope.equals(SESSION_SCOPE))
+        {
+            request.getSession().setAttribute(name, value);
+        }
+        else if (scope.equals(APPLICATION_SCOPE))
+        {
+            application.setAttribute(name, value);
+        }
+    }
+
+    /**
+     * Imports all attributes in the current tiles-context into the 
+     * current velocity-context.
      *
      * <p>This is functionally equivalent to
      * <code>&lt;tiles:importAttribute /&gt;</code>.</p>
@@ -169,18 +276,15 @@ public class TilesTool extends ImportSupport
      */
     public void importAttributes(String scope)
     {
-        ComponentContext currentContext = ComponentContext.getContext(this.
-                request);
-        Iterator names = currentContext.getAttributeNames();
+        ComponentContext context = getCurrentContext();
+        Iterator names = context.getAttributeNames();
 
         if (scope.equals(PAGE_SCOPE))
         {
             while (names.hasNext())
             {
                 String name = (String)names.next();
-                context.getVelocityContext().put(name,
-                                                 currentContext.
-                                                 getAttribute(name));
+                velocityContext.put(name, context.getAttribute(name));
             }
         }
         else if (scope.equals(REQUEST_SCOPE))
@@ -188,17 +292,16 @@ public class TilesTool extends ImportSupport
             while (names.hasNext())
             {
                 String name = (String)names.next();
-                request.setAttribute(name, currentContext.getAttribute(name));
+                request.setAttribute(name, context.getAttribute(name));
             }
         }
         else if (scope.equals(SESSION_SCOPE))
         {
+            HttpSession session = request.getSession();
             while (names.hasNext())
             {
                 String name = (String)names.next();
-                request.getSession().setAttribute(name,
-                                                  currentContext.
-                                                  getAttribute(name));
+                session.setAttribute(name, context.getAttribute(name));
             }
         }
         else if (scope.equals(APPLICATION_SCOPE))
@@ -206,127 +309,11 @@ public class TilesTool extends ImportSupport
             while (names.hasNext())
             {
                 String name = (String)names.next();
-                application.setAttribute(name, currentContext.getAttribute(name));
+                application.setAttribute(name, context.getAttribute(name));
             }
         }
     }
 
-
-    /**
-     * Fetches a named attribute-value from the current tiles-context.
-     *
-     * <p>This is functionally equivalent to
-     * <code>&lt;tiles:getAsString name="attributeName" /&gt;</code>.</p>
-     *
-     * @param attributeName the name of the tiles-attribute to fetch
-     * @return attribute value for the named attribute
-     */
-    public Object getAttribute(String attributeName)
-    {
-        ComponentContext currentContext =
-            ComponentContext.getContext(this.request);
-        Object value = currentContext.getAttribute(attributeName);
-        if (value == null)
-        {
-            Velocity.warn("TilesTool: Tile attribute '"
-                           + attributeName
-                           + "' was not found in context.");
-        }
-        return value;
-    }
-
-    /**
-     * Imports the named attribute-value from the current tiles-context into the
-     * current Velocity context.
-     *
-     * <p>This is functionally equivalent to
-     * <code>&lt;tiles:importAttribute name="attributeName" /&gt;</code>
-     *
-     * @param attributeName the name of the tiles-attribute to import
-     */
-    public void importAttribute(String attributeName)
-    {
-        this.importAttribute(attributeName, PAGE_SCOPE);
-    }
-
-    /**
-     * Imports the named attribute-value from the current tiles-context into the
-     * named context ("page", "request", "session", or "application").
-     *
-     * <p>This is functionally equivalent to
-     * <code>&lt;tiles:importAttribute name="attributeName" scope="scopeValue" /&gt;</code>
-     *
-     * @param attributeName the name of the tiles-attribute to import
-     * @param scope the named context scope to put the attribute into.
-     */
-    public void importAttribute(String attributeName, String scope)
-    {
-        ComponentContext currentContext =
-            ComponentContext.getContext(this.request);
-        Object value = currentContext.getAttribute(attributeName);
-        if (value == null)
-        {
-            Velocity.warn("TilesTool: Tile attribute '"
-                           + attributeName
-                           + "' was not found in context.");
-        }
-
-        if (scope.equals(PAGE_SCOPE))
-        {
-            context.getVelocityContext().put(attributeName, value);
-        }
-        else if (scope.equals(REQUEST_SCOPE))
-        {
-            request.setAttribute(attributeName, value);
-        }
-        else if (scope.equals(SESSION_SCOPE))
-        {
-            request.getSession().setAttribute(attributeName, value);
-        }
-        else if (scope.equals(APPLICATION_SCOPE))
-        {
-            application.setAttribute(attributeName, value);
-        }
-
-    }
-
-
-
-    /**
-     * <p>A generic tiles insert function</p>
-     *
-     * <p>This is functionally equivalent to
-     * <code>&lt;tiles:insert attribute="menu" /&gt;</code>.</p>
-     *
-     * @param attr - can be any of the following:
-     *        AttributeDefinition,
-     *        tile-definition name,
-     *        tile-attribute name,
-     *        regular uri.
-     *        (checked in that order)
-     * @return the rendered template or value as a String
-     * @throws Exception on failure
-     */
-    public String get(Object attr)
-    {
-        try
-        {
-            ComponentContext currentContext =
-                ComponentContext.getContext(this.request);
-            Object attrValue = currentContext.getAttribute(attr.toString());
-            if (attrValue != null)
-            {
-                return processObjectValue(attrValue);
-            }
-            return processAsDefinitionOrURL(attr.toString());
-        }
-        catch (Exception e)
-        {
-            Velocity.error("TilesTool: Exeption while rendering Tile "
-                           + attr + ": " + e.getMessage());
-            return null;
-        }
-    }
 
     /************************** Protected Methods ****************************/
 
@@ -363,8 +350,8 @@ public class TilesTool extends ImportSupport
      * @return the fully processed attribute value as String.
      * @throws Exception - Throws by underlying nested call to processDefinitionName()
      */
-    protected String processTypedAttribute(AttributeDefinition value) throws
-            Exception
+    protected String processTypedAttribute(AttributeDefinition value) 
+        throws Exception
     {
         if (value instanceof DirectStringAttribute)
         {
@@ -533,6 +520,15 @@ public class TilesTool extends ImportSupport
     }
 
     /**
+     * Retrieve the current tiles component context.
+     * This is pretty much just a convenience method.
+     */
+    protected ComponentContext getCurrentContext()
+    {
+        return ComponentContext.getContext(this.request);
+    }
+
+    /**
      * <p>pushes the current tiles context onto the context-stack.
      * preserving the context is necessary so that a sub-context can be
      * put into request scope and lower level tiles can be rendered</p>
@@ -543,7 +539,7 @@ public class TilesTool extends ImportSupport
         {
             this.contextStack = new Stack();
         }
-        contextStack.push(ComponentContext.getContext(this.request));
+        contextStack.push(getCurrentContext());
     }
 
     /**
@@ -552,8 +548,8 @@ public class TilesTool extends ImportSupport
      */
     protected void popTilesContext()
     {
-        ComponentContext.setContext((ComponentContext)this.contextStack.pop(),
-                                    this.request);
+        ComponentContext context = (ComponentContext)this.contextStack.pop();
+        ComponentContext.setContext(context, this.request);
     }
 
 }
