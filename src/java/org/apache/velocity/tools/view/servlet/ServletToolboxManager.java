@@ -131,7 +131,7 @@ import org.apache.velocity.tools.view.servlet.ServletToolboxRuleSet;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ServletToolboxManager.java,v 1.6 2003/07/30 22:04:00 nbubna Exp $
+ * @version $Id: ServletToolboxManager.java,v 1.7 2003/08/02 20:42:04 nbubna Exp $
  * 
  */
 public class ServletToolboxManager extends XMLToolboxManager
@@ -262,6 +262,20 @@ public class ServletToolboxManager extends XMLToolboxManager
     {
         createSession = b;
         Velocity.debug("ServletToolboxManager: create-session is set to " + b);
+    }
+
+
+    /**
+     * <p>Sets an application attribute to tell velocimacros and tools 
+     * (especially the LinkTool) whether they should output XHTML or HTML.</p>
+     *
+     * @see ViewContext.XHTML
+     */
+    public void setXhtml(Boolean value)
+    {
+        servletContext.setAttribute(ViewContext.XHTML, value);
+        Velocity.info("ServletToolboxManager: " + ViewContext.XHTML + 
+                      " is set to " + value);
     }
 
 
