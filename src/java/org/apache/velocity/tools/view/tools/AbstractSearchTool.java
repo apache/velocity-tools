@@ -227,11 +227,15 @@ public abstract class AbstractSearchTool extends AbstractPagerTool
             /* perform a new query */
             list = executeQuery(criteria);
 
-            /* save the new results */
-            if (list != null)
+            /* because we can't trust executeQuery() not to return null
+               and getItems() must _never_ return null... */
+            if (list == null)
             {
-                setItems(list);
+                list = Collections.EMPTY_LIST;
             }
+
+            /* save the new results */
+            setItems(list);
         }
         return list;
     }
