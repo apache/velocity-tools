@@ -43,7 +43,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * or action code as well as in templates.</p>
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.8 $ $Date: 2004/02/18 20:06:11 $
+ * @version $Revision: 1.8.2.1 $ $Date: 2004/03/12 20:16:28 $
  */
 public class ParameterParser implements ViewTool
 {
@@ -61,7 +61,7 @@ public class ParameterParser implements ViewTool
     /**
      * Constructs a new instance using the specified request.
      *
-     * @param the {@link ServletRequest} to be parsed
+     * @param request the {@link ServletRequest} to be parsed
      */
     public ParameterParser(ServletRequest request)
     {
@@ -97,7 +97,7 @@ public class ParameterParser implements ViewTool
     /**
      * Sets the current {@link ServletRequest}
      *
-     * @param the {@link ServletRequest} to be parsed
+     * @param request the {@link ServletRequest} to be parsed
      */
     protected void setRequest(ServletRequest request)
     {
@@ -166,8 +166,8 @@ public class ParameterParser implements ViewTool
 
 
     /**
-     * @param the desired parameter's key
-     * @param the alternate value
+     * @param key the desired parameter's key
+     * @param alternate The alternate value
      * @return parameter matching the specified key or the 
      *         specified alternate String if there is no matching
      *         parameter
@@ -180,7 +180,7 @@ public class ParameterParser implements ViewTool
 
 
     /**
-     * @param the desired parameter's key
+     * @param key the desired parameter's key
      * @return a {@link Boolean} object for the specified key or 
      *         <code>null</code> if no matching parameter is found
      */
@@ -192,8 +192,8 @@ public class ParameterParser implements ViewTool
 
 
     /**
-     * @param the desired parameter's key
-     * @param the alternate boolean value
+     * @param key the desired parameter's key
+     * @param alternate The alternate boolean value
      * @return boolean value for the specified key or the 
      *         alternate boolean is no value is found
      */
@@ -205,8 +205,8 @@ public class ParameterParser implements ViewTool
 
 
     /**
-     * @param the desired parameter's key
-     * @param the alternate {@link Boolean}
+     * @param key the desired parameter's key
+     * @param alternate the alternate {@link Boolean}
      * @return a {@link Boolean} for the specified key or the specified
      *         alternate if no matching parameter is found
      */
@@ -218,7 +218,7 @@ public class ParameterParser implements ViewTool
 
 
     /**
-     * @param the desired parameter's key
+     * @param key the desired parameter's key
      * @return a {@link Number} for the specified key or 
      *         <code>null</code> if no matching parameter is found
      */
@@ -242,8 +242,8 @@ public class ParameterParser implements ViewTool
 
 
     /**
-     * @param the desired parameter's key
-     * @param the alternate Number
+     * @param key the desired parameter's key
+     * @param alternate The alternate Number
      * @return a Number for the specified key or the specified
      *         alternate if no matching parameter is found
      */
@@ -255,8 +255,8 @@ public class ParameterParser implements ViewTool
 
 
     /**
-     * @param the desired parameter's key
-     * @param the alternate int value
+     * @param key the desired parameter's key
+     * @param alternate The alternate int value
      * @return the int value for the specified key or the specified
      *         alternate value if no matching parameter is found
      */
@@ -268,8 +268,8 @@ public class ParameterParser implements ViewTool
 
 
     /**
-     * @param the desired parameter's key
-     * @param the alternate double value
+     * @param key the desired parameter's key
+     * @param alternate The alternate double value
      * @return the double value for the specified key or the specified
      *         alternate value if no matching parameter is found
      */
@@ -281,7 +281,7 @@ public class ParameterParser implements ViewTool
 
 
     /**
-     * @param the key for the desired parameter
+     * @param key the key for the desired parameter
      * @return an array of String objects containing all of the values
      *         the given request parameter has, or <code>null</code>
      *         if the parameter does not exist
@@ -293,7 +293,7 @@ public class ParameterParser implements ViewTool
 
 
     /**
-     * @param the key for the desired parameter
+     * @param key the key for the desired parameter
      * @return an array of Number objects for the specified key or 
      *         <code>null</code> if the parameter does not exist or the
      *         parameter does not contain Numbers.
@@ -326,7 +326,7 @@ public class ParameterParser implements ViewTool
 
 
     /**
-     * @param the key for the desired parameter
+     * @param key the key for the desired parameter
      * @return an array of int values for the specified key or 
      *         <code>null</code> if the parameter does not exist or the
      *         parameter does not contain ints.
@@ -359,7 +359,7 @@ public class ParameterParser implements ViewTool
 
 
     /**
-     * @param the key for the desired parameter
+     * @param key the key for the desired parameter
      * @return an array of double values for the specified key or 
      *         <code>null</code> if the parameter does not exist or the
      *         parameter does not contain doubles.
