@@ -5,7 +5,7 @@
   <tools>
 
    <object>
-     <contextkey>toytool</contextkey>
+     <key>toytool</key>
      <class>ToyTool</class>
    </object>
 
