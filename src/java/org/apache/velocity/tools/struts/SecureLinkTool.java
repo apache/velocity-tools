@@ -90,7 +90,7 @@ import org.apache.struts.Globals;
  * </pre>
  * </p>
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @version $Revision: 1.4 $ $Date: 2003/10/15 21:58:52 $
+ * @version $Revision: 1.5 $ $Date: 2003/11/05 15:39:09 $
  */
 public class SecureLinkTool extends LinkTool
 {
@@ -139,7 +139,7 @@ public class SecureLinkTool extends LinkTool
         return (SecureLinkTool)copyWith(computeURL(request, application, url));
     }
 
-    public String computeURL(HttpServletRequest request, 
+    public String computeURL(HttpServletRequest request,
                              ServletContext app, String link)
     {
         StringBuffer url = new StringBuffer(link);
@@ -169,7 +169,7 @@ public class SecureLinkTool extends LinkTool
                     SecurePlugIn.getAppHttpsPort(app) : SecurePlugIn.getAppHttpPort(app);
 
                 // If scheme and port we are using do not match the ones we want
-                if (!desiredScheme.equals(usingScheme) || 
+                if (!desiredScheme.equals(usingScheme) ||
                     !desiredPort.equals(usingPort))
                 {
                     url.insert(0, startNewUrlString(request, desiredScheme, desiredPort));
@@ -191,14 +191,15 @@ public class SecureLinkTool extends LinkTool
     /**
      * Finds the configuration definition for the specified action link
      *
-     * @param pageContext the current page context.
-     * @param linkString The action we are searching for, specified as a 
+     * @param request the current request.
+     * @param app the current ServletContext.
+     * @param linkString The action we are searching for, specified as a
      *        link. (i.e. may include "..")
-     * @return The SecureActionConfig object entry for this action, 
+     * @return The SecureActionConfig object entry for this action,
      *         or null if not found
      */
     private static SecureActionConfig getActionConfig(HttpServletRequest request,
-                                                      ServletContext app, 
+                                                      ServletContext app,
                                                       String linkString)
     {
         ModuleConfig moduleConfig = StrutsUtils.selectModule(linkString, app);
@@ -241,7 +242,7 @@ public class SecureLinkTool extends LinkTool
         }
 
         // Unable to establish this link as an action, short circuit
-        if (!(linkString.startsWith(prefix) && 
+        if (!(linkString.startsWith(prefix) &&
               linkString.endsWith(suffix)))
         {
             return null;
@@ -255,7 +256,7 @@ public class SecureLinkTool extends LinkTool
             linkString = "/" + linkString;
         }
 
-        SecureActionConfig secureConfig = 
+        SecureActionConfig secureConfig =
             (SecureActionConfig)moduleConfig.findActionConfig(linkString);
 
         return secureConfig;
@@ -290,6 +291,7 @@ public class SecureLinkTool extends LinkTool
      *
      * @param url URL to be encoded with the session id
      * @param sessionId Session id to be included in the encoded URL
+     * @return the specified URL with the specified session identifier suitably encoded
      */
     public String toEncoded(String url, String sessionId)
     {
