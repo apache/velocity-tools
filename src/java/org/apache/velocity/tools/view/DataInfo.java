@@ -83,37 +83,59 @@ package org.apache.velocity.tools.view;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: DataInfo.java,v 1.3 2003/05/28 00:17:15 nbubna Exp $
+ * @version $Id: DataInfo.java,v 1.4 2003/07/22 18:29:50 nbubna Exp $
  */
 public class DataInfo implements ToolInfo
 {
 
-    public static String TYPE_STRING = "string";
-    public static String TYPE_NUMBER = "number";
-    public static String TYPE_BOOLEAN = "boolean";
+    public static final String TYPE_STRING = "string";
+    public static final String TYPE_NUMBER = "number";
+    public static final String TYPE_BOOLEAN = "boolean";
+
+    private static final int TYPE_ID_STRING = 0;
+    private static final int TYPE_ID_NUMBER = 1;
+    private static final int TYPE_ID_BOOLEAN = 2;
 
     private String key;
+    private int type_id;
     private Object data;
 
 
-    /**
-     * Parses the value string into a recognized type. If
-     * the type specified is not supported, the data will
-     * be held and returned as a string.
-     *
-     * @param key the context key for the data
-     * @param type the data type
-     * @param value the data
-     */
-    public DataInfo(String key, String type, String value)
-    {
-        this.key = key;
+    public DataInfo() {}
 
-        if (type.equalsIgnoreCase(TYPE_BOOLEAN))
+
+    /***********************  Mutators *************************/
+
+    public void setKey(String key)
+    { 
+        this.key = key;
+    }
+
+
+    public void setType(String type)
+    { 
+        if (TYPE_BOOLEAN.equalsIgnoreCase(type))
+        {
+            this.type_id = TYPE_ID_BOOLEAN;
+        }
+        else if (TYPE_NUMBER.equalsIgnoreCase(type))
+        {
+            this.type_id = TYPE_ID_NUMBER;
+        }
+        else /* if no type or type="string" */
+        {
+            this.type_id = TYPE_ID_STRING;
+        }
+    }
+
+
+    public void setValue(String value)
+    {
+        if (type_id == TYPE_ID_BOOLEAN)
         {
             this.data = Boolean.valueOf(value);
         }
-        else if (type.equalsIgnoreCase(TYPE_NUMBER))
+        else if (type_id == TYPE_ID_NUMBER)
         {
             if (value.indexOf('.') >= 0)
             {
@@ -124,12 +146,14 @@ public class DataInfo implements ToolInfo
                 this.data = new Integer(value);
             }
         }
-        else
+        else /* type is "string" */
         {
             this.data = value;
         }
     }
 
+
+    /***********************  Accessors *************************/
 
     public String getKey()
     {
@@ -152,6 +176,5 @@ public class DataInfo implements ToolInfo
     {
         return data;
     }
-
 
 }

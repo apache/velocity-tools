@@ -67,7 +67,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: ViewToolInfo.java,v 1.3 2003/05/28 00:17:15 nbubna Exp $
+ * @version $Id: ViewToolInfo.java,v 1.4 2003/07/22 18:30:27 nbubna Exp $
  */
 public class ViewToolInfo implements ToolInfo
 {
@@ -77,25 +77,35 @@ public class ViewToolInfo implements ToolInfo
     private boolean initializable = false;
 
 
+    public ViewToolInfo() {}
+
+
+    /***********************  Mutators *************************/
+
+    public void setKey(String key)
+    { 
+        this.key = key;
+    }
+
+
     /**
-     * Constructor.  If an instance of the tool cannot be created from
-     * the classname, it will throw an exception.
+     * If an instance of the tool cannot be created from
+     * the classname passed to this method, it will throw an exception.
      *
-     * @param key the context key for the tool
      * @param classname the fully qualified java.lang.Class of the tool
      */
-    public ViewToolInfo(String key, String classname) throws Exception
+    public void setClassname(String classname) throws Exception
     {
-        this.key = key;
         this.clazz = Class.forName(classname);
-
-        //create an instance and see if it is initializable
+        /* create an instance and see if it is initializable */
         if (clazz.newInstance() instanceof ViewTool)
         {
             this.initializable = true;
         }
     }
 
+
+    /***********************  Accessors *************************/
 
     public String getKey()
     {
@@ -133,6 +143,5 @@ public class ViewToolInfo implements ToolInfo
         }
         return tool;
     }
-
 
 }
