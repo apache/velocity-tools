@@ -1,0 +1,21 @@
+<html>
+<head>
+</head>
+
+<body>
+<font size="+4"><center>$request.getRequestURI()</center></font>
+<br>
+#include("/examples/struts_app6/top.html")
+<br>
+We are on the true page. The secure (SSL) action "true" forwards to this page.
+<br>
+<br>
+
+Try the <a href="$slink.setAction("false")">false</a> page.
+<br>
+Try the <a href="$slink.setAction("any")">any</a> page.
+<br>
+<br>
+Go to <a href="$slink.setAction("formAction")">form</a> test page.
+</body>
+</html>

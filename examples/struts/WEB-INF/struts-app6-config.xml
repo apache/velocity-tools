@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<!--
+     This is a blank Struts configuration file for a single example module,
+     with commented examples of some items.
+
+     NOTE: If you have a generator tool to create the corresponding Java classes
+     for you, you could include the details in the "form-bean" declarations.
+     Otherwise, you would only define the "form-bean" element itself, with the
+     corresponding "name" and "type" attributes, as shown here.
+-->
+
+
+<struts-config>
+
+  <!-- ========== Form Bean Definitions ============================== -->
+
+  <form-beans>
+
+    <form-bean name="testForm" type="org.apache.struts.action.DynaActionForm">
+        <form-property name="propA" type="java.lang.String"/>
+        <form-property name="propB" type="java.lang.String"/>
+    </form-bean>
+
+  </form-beans>
+
+  <!-- ========== Action Mapping Definitions ============================== -->
+  <action-mappings type="org.apache.struts.config.SecureActionConfig">
+
+    <!-- Struts Example Application 6, Velocity Version -->
+
+    <action path="/true" type="org.apache.struts.actions.ForwardAction"
+        parameter="/examples/struts_app6/true.vm">
+    	<set-property property="secure" value="true"/>
+    </action>
+
+    <action path="/false" type="org.apache.struts.actions.ForwardAction"
+        parameter="/examples/struts_app6/false.vm">
+    	<set-property property="secure" value="false"/>
+    </action>
+
+    <action path="/any" type="org.apache.struts.actions.ForwardAction"
+        parameter="/examples/struts_app6/any.vm">
+     	<set-property property="secure" value="any"/>
+    </action>
+
+    <action path="/secureSubmit" type="org.apache.struts.actions.ForwardAction"
+        name="testForm"
+        parameter="/examples/struts_app6/submitted.vm">
+    	<set-property property="secure" value="true"/>
+    </action>
+
+    <action path="/nonsecureSubmit" type="org.apache.struts.actions.ForwardAction"
+        name="testForm"
+        parameter="/examples/struts_app6/submitted.vm">
+    	<set-property property="secure" value="false"/>
+    </action>
+
+    <action path="/formAction" type="org.apache.struts.actions.ForwardAction"
+        parameter="/examples/struts_app6/form.vm">
+    	<set-property property="secure" value="false"/>
+    </action>
+
+
+    <!-- Struts Example Application 6, JSP Version -->
+
+    <action path="/true_jsp" type="org.apache.struts.actions.ForwardAction"
+        parameter="/examples/struts_app6/true.jsp">
+    	<set-property property="secure" value="true"/>
+    </action>
+
+    <action path="/false_jsp" type="org.apache.struts.actions.ForwardAction"
+        parameter="/examples/struts_app6/false.jsp">
+    	<set-property property="secure" value="false"/>
+    </action>
+
+    <action path="/any_jsp" type="org.apache.struts.actions.ForwardAction"
+        parameter="/examples/struts_app6/any.jsp">
+     	<set-property property="secure" value="any"/>
+    </action>
+
+    <action path="/secureSubmit_jsp" type="org.apache.struts.actions.ForwardAction"
+        name="testForm"
+        parameter="/examples/struts_app6/submitted.jsp">
+    	<set-property property="secure" value="true"/>
+    </action>
+
+    <action path="/nonsecureSubmit_jsp" type="org.apache.struts.actions.ForwardAction"
+        name="testForm"
+        parameter="/examples/struts_app6/submitted.jsp">
+    	<set-property property="secure" value="false"/>
+    </action>
+
+    <action path="/formAction_jsp" type="org.apache.struts.actions.ForwardAction"
+        parameter="/examples/struts_app6/form.jsp">
+    	<set-property property="secure" value="false"/>
+    </action>
+
+  </action-mappings>
+
+  <!-- ========== Controller Definitions ============================== -->
+  <controller processorClass="org.apache.struts.action.SecureRequestProcessor" />
+
+  <!-- ========== PlugIn Definitions ============================== -->
+  <plug-in className="org.apache.struts.action.SecurePlugIn">
+            <set-property property="httpPort"
+                          value="8080"/>
+            <set-property property="httpsPort"
+                          value="8443"/>
+            <set-property property="enable"
+                          value="true"/>
+            <set-property property="addSession"
+            		  value="true"/>
+  </plug-in>
+
+</struts-config>

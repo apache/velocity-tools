@@ -1,0 +1,30 @@
+<html>
+<head>
+</head>
+
+<body>
+<font size="+4"><center>$request.getRequestURI()</center></font>
+<br>
+We are on the form page.  View the page source to see the difference in the action attribute values between the two forms.
+<br>
+<br>
+<form action='$slink.setAction("secureSubmit")' >
+This posts to a secure action.
+<br>
+   <input type="text" name="propA" value="" size="8" maxlength="8" />
+<br>
+   <input type="text" name="propB" value="" size="8" maxlength="8" />
+<br>
+<input type="submit"/>
+</form>
+<form action='$slink.setAction("nonsecureSubmit")' >
+This posts to a non-secure action.
+<br>
+   <input type="text" name="propA" value="" size="8" maxlength="8" />
+<br>
+   <input type="text" name="propB" value="" size="8" maxlength="8" />
+<br>
+<input type="submit"/>
+</form>
+</body>
+</html>
