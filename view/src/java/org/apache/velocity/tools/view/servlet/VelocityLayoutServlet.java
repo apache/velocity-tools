@@ -82,7 +82,7 @@ import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
  * somewhere.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Id: VelocityLayoutServlet.java,v 1.1 2003/01/24 04:05:24 nbubna Exp $
+ * @version $Id: VelocityLayoutServlet.java,v 1.2 2003/02/18 04:36:10 nbubna Exp $
  */
 
 public class VelocityLayoutServlet extends VelocityViewServlet 
@@ -259,7 +259,8 @@ public class VelocityLayoutServlet extends VelocityViewServlet
         // we check after merging the screen template so the screen 
         // can overrule any layout set in the request parameters
         // by doing #set( $layout = "MyLayout.vm" )
-        String layout = (String)context.get(KEY_LAYOUT);
+        Object obj = context.get(KEY_LAYOUT);
+        String layout = (obj == null) ? null : obj.toString();
         if (layout == null) 
         {
             // no alternate, use default
@@ -281,7 +282,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
             Velocity.error("Can't load layout \"" + layout + "\": " + e);
 
             // if it was an alternate layout we couldn't get...
-            if (layout != defaultLayout) 
+            if (!layout.equals(defaultLayout)) 
             {
                 // try to get the default layout
                 // if this also fails, let the exception go
