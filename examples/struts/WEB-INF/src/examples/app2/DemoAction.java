@@ -30,7 +30,7 @@ import org.apache.struts.util.MessageResources;
  * <p>A simple action used to demonstrate the view tools.</p>
  *
  * @author <a href="mailto:sidler@teamup.com"/>Gabe Sidler</a>
- * @version $Id: DemoAction.java,v 1.1 2003/03/06 00:05:18 nbubna Exp $
+ * @version $Id: DemoAction.java,v 1.2 2003/07/22 05:16:40 nbubna Exp $
  */
 public class DemoAction extends Action 
 {
@@ -49,7 +49,7 @@ public class DemoAction extends Action
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet exception occurs
 	 */
-    public ActionForward perform(ActionMapping mapping,
+    public ActionForward execute(ActionMapping mapping,
                                  ActionForm form,
                                  HttpServletRequest request,
                                  HttpServletResponse response)
