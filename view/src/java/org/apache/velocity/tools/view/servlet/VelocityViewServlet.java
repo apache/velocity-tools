@@ -107,7 +107,7 @@ import org.apache.velocity.tools.view.servlet.ServletToolboxManager;
  *   <dd>Path and name of the toolbox configuration file. The path must be
  *     relative to the web application root directory. If this parameter is
  *     not found, no toolbox is instantiated.</dd>
- *   <dt>velocity.properties</dt>
+ *   <dt>org.apache.velocity.properties</dt>
  *   <dd>Path and name of the Velocity configuration file. The path must be
  *     relative to the web application root directory. If this parameter
  *     is not present, Velocity is initialized with default settings.</dd>
@@ -116,7 +116,7 @@ import org.apache.velocity.tools.view.servlet.ServletToolboxManager;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author  <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.3 2002/04/02 16:46:31 sidler Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.4 2002/04/04 13:05:56 sidler Exp $
  */
 
 public class VelocityViewServlet extends VelocityServlet
@@ -220,35 +220,17 @@ public class VelocityViewServlet extends VelocityServlet
     protected void initVelocity( ServletConfig config )
          throws ServletException
     {
-   		// Read Velocity configuration
-        ExtendedProperties velProps = new ExtendedProperties();
-	    String filename = config.getInitParameter(VELOCITY_PROPERTIES);
-        if ( filename != null )
+   		// Try reading Velocity configuration
+        try
         {
-            InputStream is = null;
-            try
-            {
-                // ensure path start with '/'
-                if ( !filename.startsWith("/") )
-                {
-            	   filename = "/" + filename;
-            	}
-
-               is = getServletContext().getResourceAsStream(filename);
-               if ( is != null)
-               {
-                    getServletContext().log("Using configuration file '" + filename +"'");
-                    velProps.load(is);
-                    getServletContext().log("Configuration file sucessfully read.");
-               }
-           }
-           catch( Exception e )
-           {
-                getServletContext().log("Problem reading Velocity configuration file '" + filename +"' : " + e );
-           }
+            Properties p = super.loadConfiguration(config);
+            Velocity.setExtendedProperties(ExtendedProperties.convertProperties(p));
         }
-
-        Velocity.setExtendedProperties(velProps);
+        catch(Exception e)
+        {
+            getServletContext().log("Unable to read Velocity configuration file: " + e);
+            getServletContext().log("Using default Velocity configuration.");
+        }   
 
         // define servletlogger, which logs to the servlet engines log
         ServletLogger sl = new ServletLogger( getServletContext() );
