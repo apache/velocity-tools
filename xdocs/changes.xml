@@ -12,6 +12,7 @@
     <subsection name="1.1-dev">
       <p>This section describes changes after the 1.0 release.</p>
       <ul>
+      <li>Made VelocityViewServlet use response.getOutputStream() if response.getWriter() fails.  This is functionality is deprecated and provided as a migration path from 1.0 behavior. (dlr, ndb)</li>
       <li>De-staticized MathTool to make it extendable. (ndb)</li>
       <li>Factored common functionality of ErrorsTool, MessageTool, and ActionMessagesTool into abstract MessageResourcesTool. (ndb)</li>
       <li>Added ImportTool as a simple ImportSupport-based tool. (maj)</li>
