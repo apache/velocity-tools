@@ -43,7 +43,7 @@ import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
  * somewhere.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Id: VelocityLayoutServlet.java,v 1.9 2004/11/11 04:50:45 nbubna Exp $
+ * @version $Id: VelocityLayoutServlet.java,v 1.10 2004/11/11 07:01:21 nbubna Exp $
  */
 
 public class VelocityLayoutServlet extends VelocityViewServlet 
@@ -134,7 +134,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
     protected String defaultLayout;
 
     // keep a local reference for convenience
-    private VelocityEngine velocity = super.getVelocityEngine();
+    private VelocityEngine velocity;
 
     /**
      * Initializes Velocity, the view servlet and checks for changes to 
@@ -146,7 +146,10 @@ public class VelocityLayoutServlet extends VelocityViewServlet
     {
         // first do VVS' init()
         super.init(config);
-        
+
+        // grab the initialized engine
+        velocity = super.getVelocityEngine();
+
         // check for default template path overrides
         errorTemplate = 
             getVelocityProperty(PROPERTY_ERROR_TEMPLATE, DEFAULT_ERROR_TEMPLATE);
