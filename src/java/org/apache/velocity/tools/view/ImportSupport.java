@@ -83,7 +83,7 @@ import java.net.HttpURLConnection;
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.7 $ $Date: 2003/12/09 18:43:34 $
+ * @version $Revision: 1.8 $ $Date: 2003/12/09 20:12:26 $
  */
 public abstract class ImportSupport {
 
@@ -138,7 +138,7 @@ public abstract class ImportSupport {
             // as any of the alternatives
             while ((i = r.read()) != -1)
             {
-                sb.append( (char) i);
+                sb.append((char)i);
             }
             return sb.toString();
         }
@@ -158,47 +158,41 @@ public abstract class ImportSupport {
                 String sp = ((HttpServletRequest)request).getServletPath();
                 url = sp.substring(0, sp.lastIndexOf('/')) + '/' + url;
             }
+            
+            // strip the session id from the url
+            url = stripSession(url);
 
             // from this context, get a dispatcher
-            RequestDispatcher rd = application.getRequestDispatcher(stripSession(url));
+            RequestDispatcher rd = application.getRequestDispatcher(url);
             if (rd == null)
             {
-                throw new Exception(stripSession(url));
+                throw new Exception("Couldn't get a RequestDispatcher for \""
+                                    + url + "\"");
             }
 
             // include the resource, using our custom wrapper
             ImportResponseWrapper irw =
                 new ImportResponseWrapper((HttpServletResponse)response);
-            // spec mandates specific error handling form include()
             try
             {
                 rd.include(request, irw);
             }
             catch (IOException ex)
             {
-                throw new Exception(ex);
+                throw new Exception("Problem importing the relative URL \""
+                                    + url + "\". " + ex);
             }
             catch (RuntimeException ex)
             {
-                throw new Exception(ex);
-            }
-            catch (ServletException ex)
-            {
-                Throwable rc = ex.getRootCause();
-                if (rc == null)
-                {
-                    throw new Exception(ex);
-                }
-                else
-                {
-                    throw new Exception(rc);
-                }
+                throw new Exception("Problem importing the relative URL \""
+                                    + url + "\". " + ex);
             }
 
             // disallow inappropriate response codes per JSTL spec
             if (irw.getStatus() < 200 || irw.getStatus() > 299)
             {
-                throw new Exception(irw.getStatus() + " " + stripSession(url));
+                throw new Exception("Invalid response code '" + irw.getStatus()
+                                    + "' for \"" + url + "\"");
             }
 
             // recover the response String from our wrapper
@@ -274,13 +268,13 @@ public abstract class ImportSupport {
             catch (IOException ex)
             {
                 throw new Exception("Problem accessing the absolute URL \""
-                                    + url + "\". " + ex.toString(), ex);
+                                    + url + "\". " + ex);
             }
             catch (RuntimeException ex)
             { 
                 // because the spec makes us
                 throw new Exception("Problem accessing the absolute URL \""
-                                    + url + "\". " + ex.toString(), ex);
+                                    + url + "\". " + ex);
             }
         }
     }
