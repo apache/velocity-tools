@@ -1,5 +1,5 @@
 <!--
-  $Id: build.xml,v 1.22 2003/07/09 23:50:26 nbubna Exp $ 
+  $Id: build.xml,v 1.23 2003/07/10 03:28:36 nbubna Exp $ 
 -->
 <project name="velocity-tools" default="all" basedir=".">
 
@@ -328,10 +328,43 @@
   </target>
 
 
-  <!-- Build everything and construct distribution files -->
+  <!-- Convenient target for rolling releases -->
   <target name="release" 
+          depends="release.source,release.binaries"
+          description="Creates binary and source distribution files"/>
+
+  <!-- Create source distribution files -->
+  <target name="release.source" 
+          depends="clean"
+          description="Cleans everything and creates source distribution files">
+
+    <mkdir dir="${dist.dir}"/>
+    <zip zipfile="${dist.dir}/${project.id}-src.zip">
+      <fileset dir="${basedir}">
+        <include name="*"/>
+        <include name="examples/**"/>
+        <include name="lib/**"/>
+        <include name="src/**"/>
+        <include name="xdocs/**"/>
+      </fileset>
+    </zip>
+    <tar tarfile="${dist.dir}/${project.id}-src.tar" longfile="gnu">
+      <tarfileset dir="${basedir}">
+        <include name="*"/>
+        <include name="examples/**"/>
+        <include name="lib/**"/>
+        <include name="src/**"/>
+        <include name="xdocs/**"/>
+      </tarfileset>
+    </tar>
+    <gzip zipfile="${dist.dir}/${project.id}-src.tar.gz"
+          src="${dist.dir}/${project.id}-src.tar"/>
+  </target>
+
+  <!-- Create binary distribution files -->
+  <target name="release.binaries" 
           depends="jar.struts,jar.view,jar.generic,examples,javadoc,docs"
-          description="Builds all jars, examples, and docs for distribution">
+          description="Builds everything and creates the binary distribution files">
 
     <!-- Gather all project jars -->
     <mkdir dir="${release.dir}/lib"/>
@@ -370,7 +403,7 @@
     <copy todir="${release.dir}" file="${basedir}/LICENSE"/>
     <copy todir="${release.dir}" file="${basedir}/WHY_THREE_JARS.txt"/>
 
-    <!-- Create distribution files -->
+    <!-- Create binary distribution files -->
     <zip zipfile="${dist.dir}/${project.id}.zip" 
          basedir="${dist.dir}/release"/>
     <tar tarfile="${dist.dir}/${project.id}.tar" longfile="gnu"
@@ -378,6 +411,5 @@
     <gzip zipfile="${dist.dir}/${project.id}.tar.gz"
           src="${dist.dir}/${project.id}.tar"/>
   </target>
-
 
 </project>
