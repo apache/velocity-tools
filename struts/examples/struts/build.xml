@@ -1,109 +1,123 @@
-<project name="Velocity-Struts" default="compile" basedir=".">
+<project name="velocity-view" default="jar" basedir=".">
+
+<!-- ========== Initialize Properties ===================================== -->
+
+  <property file="build/build.properties"/>          <!-- Component local   -->
+  <property file="../build.properties"/>             <!-- Commons local     -->
+  <property file="${user.home}/.build.properties"/>  <!-- User local        -->
+
+<!-- ========== External Dependencies ===================================== -->
+
+ <!-- the local repository -->
+ <property name="local.repository"            value="WEB-INF/lib" />
+ <property name="project.repository"          value="WEB-INF/build-lib" />
+
+<!-- ========== Component Declarations ==================================== -->
 
 
-<!--
- * 
- *      Build file for Struts Velocity examples.
- *
--->
+  <!-- The name of this component -->
+  <property name="project.name"          value="VelStruts Example" />
 
-  <!-- *** ENVIRONMENT ******************************************************* -->
+  <!-- The title of this component -->
+  <property name="project.title"         value="VelStruts Example"/>
 
-  <property name="DEV"      value="${basedir}/"/>
-  <property name="SRC"      value="${basedir}/WEB-INF/src"/>
-  <property name="CLASSES"  value="${basedir}/WEB-INF/classes"/>
-  <property name="JAVADOC"  value="${basedir}/doc/javadoc"/>
-  <property name="LIB"      value="${basedir}/WEB-INF/lib"/>
-  <property name="BUILDLIB" value="${basedir}/WEB-INF/build-lib"/>
-  
+  <!-- The base directory for compilation targets -->
+  <property name="build.home"            value="WEB-INF"/>
 
-  <!-- Construct compile and javadoc classpath -->
+  <!-- The base directory for distribution targets -->
+  <property name="dist.home"             value="dist"/>
+
+  <!-- The base directory for component sources -->
+  <property name="source.home"           value="WEB-INF/src"/>
+
+  <!-- The base directory for component sources -->
+  <property name="conf.home"             value="src/conf"/>
+
+  <!-- The docs source directory -->
+  <property name="docs.src"              value="xdocs"/>
+
+  <!-- The docs destination directory  -->
+  <property name="docs.dest"             value="doc"/>
+
+
+<!-- ========== Compiler Defaults ========================================= -->
+
+
+  <!-- Should Java compilations set the 'debug' compiler option? -->
+  <property name="compile.debug"           value="true"/>
+
+  <!-- Should Java compilations set the 'deprecation' compiler option? -->
+  <property name="compile.deprecation"     value="true"/>
+
+  <!-- Should Java compilations set the 'optimize' compiler option? -->
+  <property name="compile.optimize"        value="true"/>
+
+  <!-- Construct compile classpath -->
   <path id="classpath">
-    <fileset dir="${LIB}">
-      <include name="*.jar"/>
+    <fileset dir="${local.repository}">
+      <include name="**/*.jar"/>
     </fileset>
-    <fileset dir="${BUILDLIB}">
-      <include name="*.jar"/>
+    <fileset dir="${project.repository}">
+      <include name="**/*.jar"/>
     </fileset>
   </path>
 
-  <!-- *** TARGETS ************************************************************* -->
+<!-- ========== Executable Targets ======================================== -->
 
 
-  <target name="init">
-    <!-- Create the time stamp -->
+  <!-- ================================================================== -->
+  <!-- I N I T                                                            -->
+  <!-- ================================================================== -->
+  <target name="init"
+   description="Initialize and evaluate conditionals">
+    <echo message="-------- ${project.name} --------"/>
     <tstamp/>
   </target>
 
 
-  <target name="help" depends="init">
-    <!-- Print usage information -->
-    <echo>WEBPROJEKTO BUILD TOOL</echo>
-    <echo> </echo>
-    <echo>Usage: ant &lt;target&gt;                                         </echo>
-    <echo>                                                                  </echo>
-    <echo>where the following targets are supported:                        </echo>
-    <echo>                                                                  </echo>
-    <echo>  compile  Compile all sources.                                   </echo>
-    <echo>                                                                  </echo>
-    <echo>  javadoc  Generate javadoc documentation.                        </echo>
-    <echo>                                                                  </echo>
-    <echo>  clean    Clean dev tree and previously generated distributions. </echo>
-    <echo>                                                                  </echo>
-    <echo>  devwar   Pack the entire application into a war file.           </echo>
-    <echo>                                                                  </echo>
-    <echo>  help     Print this help information.                           </echo>
-    <echo>                                                                  </echo>
-  </target>
+  <!-- ================================================================== -->
+  <!-- C O M P I L E                                                      -->
+  <!-- ================================================================== -->
+  <target name="compile" depends="init" description="Compile">
 
-
-  <target name="compile" depends="">
-    <!-- Compile the java code from ${SRC} into ${CLASSES} -->
-    <javac srcdir="${SRC}"
-           includes="*/**"
-           destdir="${CLASSES}">
-       <classpath refid="classpath"/>
+    <javac  srcdir="${source.home}/"
+            destdir="${build.home}/classes"
+            debug="${compile.debug}"
+            deprecation="${compile.deprecation}"
+            optimize="${compile.optimize}">
+        <classpath refid="classpath"/>
     </javac>
 
-    <!-- classpath="${LIB}/struts.jar;${LIB}/servlet.jar;${LIB}/velocity-1.1.jar;${LIB}/jdbc2_0-stdext.jar" -->
+    <copy    todir="${build.home}/classes">
+      <fileset dir="${source.home}" excludes="**/*.java"/>
+    </copy>
+
   </target>
 
 
-  <target name="javadoc">
-    <!-- Remove any old documentation -->
-    <!-- <delete dir="${JAVADOC}"/> -->
+  <!-- ================================================================== -->
+  <!-- C L E A N                                                          -->
+  <!-- ================================================================== -->
+  <target name="clean" depends="init" 
+   description="Clean build and distribution directories">
 
-    <!-- (Re)Create javadoc directory -->
-    <mkdir dir="${JAVADOC}"/>
-
-    <!-- Generate Javadoc -->
-    <javadoc sourcepath="${SRC}"
-           packagenames="org.*"
-           destdir="${JAVADOC}"
-           author="true"
-           version="true"
-           use="true"
-           windowtitle="Velocity for Struts"
-           doctitle="Velocity for Struts">
-           <classpath refid="classpath"/>
-           <link href="http://jakarta.apache.org/struts/api/"/>
-           <link href="http://java.sun.com/products/servlet/2.3/javadoc/"/>
-           <link href="http://java.sun.com/j2ee/sdk_1.3/techdocs/api"/>
-           <link href="http://jakarta.apache.org/velocity/api/"/>
-    </javadoc>
-  </target>
-           
-
-  <target name="devwar" depends="init, clean, compile">
-    <!-- Generate .war file, name it velstruts.war -->
-    <jar jarfile="${basedir}/../velstruts.war" basedir="${DEV}"/>
-  </target>
-
-
-  <target name="clean">
     <!-- remove old class files -->
     <delete>
-      <fileset dir="${CLASSES}" includes="**/*.class"/>
+      <fileset dir="${build.home}/classes" includes="**/*.class"/>
+    </delete>
+
+    <delete>
+      <fileset dir="${build.home}/lib" includes="velocity-tools-struts-*"/>
+    </delete>
+
+    <!-- remove jsp temporary cache -->
+    <delete    dir="${build.home}/work"/>
+
+
+    <!-- remove old docs -->
+    <delete    dir="${docs.dest}/javadoc"/>
+    <delete>
+      <fileset dir="${docs.dest}" includes="tool*.html,index.html"/>
     </delete>
 
     <!-- remove *.bak backups -->
@@ -111,10 +125,19 @@
       <fileset dir="${basedir}" includes="**/*.bak"/>
     </delete>
 
-    <!-- remove old javadoc -->
-    <delete dir="${JAVADOC}"/>
-
   </target>
-  
+
+
+  <!-- ================================================================== -->
+  <!-- W A R                                                              -->
+  <!-- ================================================================== -->
+  <target name="war" depends="clean, compile"
+    description="Generate a *.war file of the example application">
+    <!-- Generate .war file, name it velstruts.war -->
+    <jar jarfile="${basedir}/../velstruts.war" basedir="${basedir}"/>
+  </target>
+
+
 
 </project>
+

@@ -72,15 +72,18 @@ import org.apache.velocity.tools.view.tools.ContextTool;
  * <code>$toolloader.load("math", "xxx.yyy.zzz.MathTool")</code><br>
  * <br>
  * to load a math tool into the context under key "math". This tool
- * is then accessible as:<br>
+ * is then available for use within the template, for example:<br>
  * <br>
  * <code>$math.random(1, 100)</code><br>
  * </p>
  *
+ * <p>THIS CLASS IS HERE AS A PROOF OF CONCEPT ONLY. IT NEEDS TO BE
+ * REFACTORED AND MOVED TO THE PROPER PACKAGE.</p>
+ * 
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ToolLoaderTool.java,v 1.2 2002/01/09 11:25:44 sidler Exp $
+ * @version $Id: ToolLoaderTool.java,v 1.3 2002/03/12 11:36:49 sidler Exp $
  * 
  */
 
@@ -100,9 +103,9 @@ public class ToolLoaderTool implements ContextTool
 
     /**
      * <p>Loads a context tool of class <i>clazz</i> and inserts it
-     * into the Velocity context with key <i>key</i>. Context tools
-     * must implement the interface {@link ContextTool} and provide
-     * a constructor with no parameters.
+     * into the Velocity context with key <i>key</i>. On order to be
+     * loadable, context tools must implement the interface 
+     * {@link ContextTool} and provide a constructor with no parameters.
      */
     public void load(String key, String clazz)
     {
@@ -135,8 +138,9 @@ public class ToolLoaderTool implements ContextTool
     
     /**
      * <p>Instantiate a factory of tool loaders. Use this contructor to obtain an 
-     * instance of a tool loader factory and then call method {@link #init(ChainedContext context)}
-     * to obtain actual instances of tool loaders.</p>
+     * instance of a tool loader factory and then call method 
+     * {@link #init(ChainedContext context)} to obtain actual instances of tool 
+     * loaders.</p>
      */
     public ToolLoaderTool()
     {

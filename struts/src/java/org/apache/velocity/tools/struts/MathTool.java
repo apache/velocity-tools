@@ -60,13 +60,16 @@ import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ContextTool;
 
 /**
- * A context tool for performing the more useful methods from 
- * <code>java.lang.Math</code>.
+ * <p>A context tool for performing the more useful methods from 
+ * <code>java.lang.Math</code> .</p>
+ *
+ * <p>THIS CLASS IS HERE AS A PROOF OF CONCEPT ONLY. IT NEEDS TO BE
+ * REFACTORED AND MOVED TO THE PROPER PACKAGE.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabriel Sidler</a>, based on
  *   code from <a href="mailto:ebr@tcdi.com">Eric B. Ridge</a>.
  *
- * @version $Revision: 1.4 $ $Date: 2002/01/12 07:28:30 $
+ * @version $Revision: 1.5 $ $Date: 2002/03/12 11:36:49 $
  */
 
 public class MathTool implements ContextTool 

@@ -13,7 +13,7 @@ are used in this example.
 <html>
     <head>
         <title>Welcome World!</title>
-        <base href="$html.baseRef()">
+        <base href="$link.baseRef">
     </head>
 
     <body>
@@ -23,16 +23,25 @@ are used in this example.
         <h3>Welcome World! (Velocity Version)</h3>
         #end
 
-        $!html.errorMarkup
+        #macro (errorMarkup)
+            #if ($errors.exist )
+                <ul>
+                #foreach ($e in $errors.all )
+                    $e
+                #end
+                </ul>
+            #end
+        #end                    
+        #errorMarkup()
         
         <ul>
-            <li><a href="$html.link('logon_vm')">Sign in</a></li>
+            <li><a href="$link.setForward('logon_vm')">Sign in</a></li>
             #if( $user )
-            <li><a href="$html.link('logoff_vm')">Sign out</a></li>
+            <li><a href="$link.setForward('logoff_vm')">Sign out</a></li>
             #end
         </ul>
 
-        <a href="$html.actionMappingURL('/welcome_jsp')">Switch to JSP</a><br>
+        <a href="$link.setAction('/welcome_jsp')">Switch to JSP</a><br>
         <a href="index_vm.txt">View Template</a><br>
         
     </body>

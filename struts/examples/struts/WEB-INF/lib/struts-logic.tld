@@ -10,7 +10,7 @@
 <tlibversion>1.0</tlibversion>
 <jspversion>1.1</jspversion>
 <shortname>logic</shortname>
-<uri>http://jakarta.apache.org/struts/tags-logic-1.0.1</uri>
+<uri>http://jakarta.apache.org/struts/tags-logic-1.0.2</uri>
 <tag>
 <name>equal</name>
 <tagclass>org.apache.struts.taglib.logic.EqualTag</tagclass>

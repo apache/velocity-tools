@@ -1,16 +1,25 @@
 <html>
     <head>
         <title>Sign in, Please!</title>
-        <base href="$html.baseRef()">
+        <base href="$link.baseRef">
     </head>
 
     <body>
     
-        $!html.errorMarkup()
+        #macro (errorMarkup)
+            #if ($errors.exist )
+                <ul>
+                #foreach ($e in $errors.all )
+                    $e
+                #end
+                </ul>
+            #end
+        #end                    
+        #errorMarkup()
         
         <h3>Sign in, Please! (Velocity Version)</h3>
 
-        <form method="POST" action="$html.actionMappingURL('/logonSubmit_vm')">
+        <form method="POST" action="$link.setAction('/logonSubmit_vm')">
 
         <table border="0">
             <tr>

@@ -10,13 +10,23 @@
    </object>
 
    <object>
-     <contextkey>bean</contextkey>
-     <class>org.apache.velocity.tools.struts.StrutsBeanTool</class>
+     <contextkey>link</contextkey>
+     <class>org.apache.velocity.tools.struts.LinkTool</class>
    </object>
 
    <object>
-     <contextkey>html</contextkey>
-     <class>org.apache.velocity.tools.struts.StrutsHtmlTool</class>
+     <contextkey>msg</contextkey>
+     <class>org.apache.velocity.tools.struts.MessageTool</class>
+   </object>
+
+   <object>
+     <contextkey>errors</contextkey>
+     <class>org.apache.velocity.tools.struts.ErrorsTool</class>
+   </object>
+
+   <object>
+     <contextkey>form</contextkey>
+     <class>org.apache.velocity.tools.struts.FormTool</class>
    </object>
 
 
