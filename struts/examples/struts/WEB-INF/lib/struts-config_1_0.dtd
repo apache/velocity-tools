@@ -11,7 +11,7 @@
        "-//Apache Software Foundation//DTD Struts Configuration 1.0//EN"
        "http://jakarta.apache.org/struts/dtds/struts-config_1_0.dtd">
 
-     $Id: struts-config_1_0.dtd,v 1.2 2002/01/09 11:25:43 sidler Exp $
+     $Id: struts-config_1_0.dtd,v 1.3 2002/01/16 11:10:02 sidler Exp $
 -->
 
 
