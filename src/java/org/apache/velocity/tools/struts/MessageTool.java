@@ -69,12 +69,12 @@ import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
 
 
-/** 
+/**
  * <p>View tool that provides methods to render Struts message resources.</p>
  *
  * <p>This class is equipped to be used with a toolbox manager, for example
  * the ServletToolboxManager included with VelServlet. This class implements
- * interface ViewTool, which allows a toolbox manager to pass the 
+ * interface ViewTool, which allows a toolbox manager to pass the
  * required context information.</p>
  *
  * <p>This class is not thread-safe by design. A new instance is needed for
@@ -83,12 +83,20 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: MessageTool.java,v 1.4 2003/07/25 16:54:40 nbubna Exp $
+ * @version $Id: MessageTool.java,v 1.5 2003/10/18 22:57:24 marino Exp $
  */
 public class MessageTool implements ViewTool
 {
 
     // --------------------------------------------- Properties -------
+
+    /** A reference to the ServletContext */
+    protected ServletContext app;
+
+
+    /** A reference to the HttpServletRequest. */
+    protected HttpServletRequest request;
+
 
     /**
      * A reference to the Struts message resources.
@@ -102,7 +110,6 @@ public class MessageTool implements ViewTool
     protected Locale locale;
 
 
-    
     // --------------------------------------------- Constructors -------------
 
     /**
@@ -111,8 +118,8 @@ public class MessageTool implements ViewTool
     public MessageTool()
     {
     }
-    
-    
+
+
     /**
      * Initializes this tool.
      *
@@ -127,11 +134,11 @@ public class MessageTool implements ViewTool
         }
 
         ViewContext context = (ViewContext)obj;
-        HttpServletRequest request = context.getRequest();
+        this.request = context.getRequest();
         HttpSession session = request.getSession(false);
-        ServletContext application = context.getServletContext();    
+        this.app = context.getServletContext();
 
-        this.resources = StrutsUtils.getMessageResources(request, application);
+        this.resources = StrutsUtils.getMessageResources(request, app);
         this.locale = StrutsUtils.getLocale(request, session);
     }
 
@@ -141,12 +148,12 @@ public class MessageTool implements ViewTool
 
     /**
      * Looks up and returns the localized message for the specified key.
-     * The user's locale is consulted to determine the language of the 
+     * The user's locale is consulted to determine the language of the
      * message.
      *
      * @param key message key
      *
-     * @return the localized message for the specified key or 
+     * @return the localized message for the specified key or
      * <code>null</code> if no such message exists
      */
     public String get(String key)
@@ -162,14 +169,37 @@ public class MessageTool implements ViewTool
 
     /**
      * Looks up and returns the localized message for the specified key.
-     * Replacement parameters passed with <code>args</code> are 
-     * inserted into the message. The user's locale is consulted to 
+     * The user's locale is consulted to determine the language of the
+     * message.
+     *
+     * @param key message key
+     * @param bundle The bundle name to look for.
+     *
+     * @return the localized message for the specified key or
+     * <code>null</code> if no such message exists
+     */
+    public String get(String key, String bundle)
+    {
+        MessageResources res = StrutsUtils.getMessageResources(this.request, app, bundle);
+        if (res == null)
+        {
+            Velocity.error("Message resources are not available.");
+            return null;
+        }
+        return res.getMessage(locale, key);
+    }
+
+
+    /**
+     * Looks up and returns the localized message for the specified key.
+     * Replacement parameters passed with <code>args</code> are
+     * inserted into the message. The user's locale is consulted to
      * determine the language of the message.
      *
      * @param key message key
      * @param args replacement parameters for this message
      *
-     * @return the localized message for the specified key or 
+     * @return the localized message for the specified key or
      * <code>null</code> if no such message exists
      */
     public String get(String key, Object args[])
@@ -179,7 +209,7 @@ public class MessageTool implements ViewTool
             Velocity.error("Message resources are not available.");
             return null;
         }
-        
+
         // return the requested message
         if (args == null)
         {
@@ -191,6 +221,39 @@ public class MessageTool implements ViewTool
         }
     }
 
+    /**
+     * Looks up and returns the localized message for the specified key.
+     * Replacement parameters passed with <code>args</code> are
+     * inserted into the message. The user's locale is consulted to
+     * determine the language of the message.
+     *
+     * @param key message key
+     * @param bundle The bundle name to look for.
+     * @param args replacement parameters for this message
+     *
+     * @return the localized message for the specified key or
+     * <code>null</code> if no such message exists
+     */
+
+    public String get(String key, String bundle, Object args[])
+    {
+        MessageResources res = StrutsUtils.getMessageResources(this.request, app, bundle);
+        if (res == null)
+        {
+            Velocity.error("Message resources are not available.");
+            return null;
+        }
+
+        // return the requested message
+        if (args == null)
+        {
+            return res.getMessage(locale, key);
+        }
+        else
+        {
+            return res.getMessage(locale, key, args);
+        }
+    }
 
     /**
      * Same as {@link #get(String key, Object[] args)}, but takes a
@@ -205,7 +268,47 @@ public class MessageTool implements ViewTool
      */
     public String get(String key, List args)
     {
-        return get(key, args.toArray());        
+        return get(key, args.toArray());
+    }
+
+    /**
+     * Same as {@link #get(String key, Object[] args)}, but takes a
+     * <code>java.util.List</code> instead of an array. This is more
+     * Velocity friendly.
+     *
+     * @param key message key
+     * @param bundle The bundle name to look for.
+     * @param args replacement parameters for this message
+     *
+     * @return the localized message for the specified key or
+     * <code>null</code> if no such message exists
+     */
+    public String get(String key, String bundle, List args)
+    {
+        return get(key, bundle, args.toArray());
+    }
+
+    /**
+     * Checks if a message string for a specified message key exists
+     * for the user's locale.
+     *
+     * @param key message key
+     * @param bundle The bundle name to look for.
+     *
+     * @return <code>true</code> if a message strings exists,
+     * <code>false</code> otherwise
+     */
+    public boolean exists(String key, String bundle)
+    {
+        MessageResources res = StrutsUtils.getMessageResources(this.request, app, bundle);
+        if (res == null)
+        {
+            Velocity.error("Message resources are not available.");
+            return false;
+        }
+
+        // Return the requested message presence indicator
+        return (res.isPresent(locale, key));
     }
 
 
@@ -215,7 +318,7 @@ public class MessageTool implements ViewTool
      *
      * @param key message key
      *
-     * @return <code>true</code> if a message strings exists, 
+     * @return <code>true</code> if a message strings exists,
      * <code>false</code> otherwise
      */
     public boolean exists(String key)
@@ -232,12 +335,12 @@ public class MessageTool implements ViewTool
 
 
     /**
-     * Returns the user's locale. If a locale is not found, the default 
+     * Returns the user's locale. If a locale is not found, the default
      * locale is returned.
      */
     public Locale getLocale()
     {
         return locale;
     }
-    
+
 }
