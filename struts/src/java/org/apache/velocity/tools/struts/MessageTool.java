@@ -65,17 +65,17 @@ import org.apache.struts.util.MessageResources;
 import org.apache.struts.action.*;
 
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.LogEnabledContextToolImpl;
-import org.apache.velocity.tools.view.tools.ServletContextTool;
+import org.apache.velocity.tools.view.tools.LogEnabledViewToolImpl;
+import org.apache.velocity.tools.view.tools.ServletViewTool;
 
 
-/**
- * <p>Context tool that provides methods to render Struts message resources.</p>
+/** 
+ * View tool that provides methods to render Struts message resources.</p>
  *
  * <p>This class is equipped to be used with a toolbox manager, for example
  * the ServletToolboxManager included with VelServlet. The class extends 
- * ServletContextToolLogger to profit from the logging facilities of that class.
- * Furthermore, this class implements interface ServletContextTool, which allows
+ * ServletViewToolLogger to profit from the logging facilities of that class.
+ * Furthermore, this class implements interface ServletViewTool, which allows
  * a toolbox manager to pass the required context information.</p>
  *
  * <p>This class is not thread-safe by design. A new instance is needed for
@@ -83,11 +83,11 @@ import org.apache.velocity.tools.view.tools.ServletContextTool;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: MessageTool.java,v 1.3 2002/04/03 15:30:51 dlr Exp $
+ * @version $Id: MessageTool.java,v 1.4 2002/04/15 18:30:28 sidler Exp $
  * 
  */
-public class MessageTool extends LogEnabledContextToolImpl 
-    implements ServletContextTool
+public class MessageTool extends LogEnabledViewToolImpl 
+    implements ServletViewTool
 {
 
     // --------------------------------------------- Properties -------
@@ -154,10 +154,10 @@ public class MessageTool extends LogEnabledContextToolImpl
     
 
 
-    // ----------------------------------- Interface ServletContextTool -------
+    // ----------------------------------- Interface ServletViewTool -------
 
     /**
-     * Returns an initialized instance of this context tool.
+     * Returns an initialized instance of this view tool.
      */
     public Object getInstance(ViewContext context)
     {
@@ -167,13 +167,13 @@ public class MessageTool extends LogEnabledContextToolImpl
 
     /**
      * <p>Returns the default life cycle for this tool. This is 
-     * {@link ServletContextTool#REQUEST}. Do not overwrite this
+     * {@link ServletViewTool#REQUEST}. Do not overwrite this
      * per toolbox configuration. No alternative life cycles are 
      * supported by this tool</p>
      */
     public String getDefaultLifecycle()
     {
-        return ServletContextTool.REQUEST; 
+        return ServletViewTool.REQUEST; 
     }
 
 

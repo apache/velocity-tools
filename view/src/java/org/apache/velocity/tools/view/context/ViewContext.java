@@ -62,20 +62,20 @@ import javax.servlet.ServletContext;
 
 
 /**
- * <p>Objects implementing this interface are passed to context tools
+ * <p>Objects implementing this interface are passed to view tools
  * upon initialization by the 
  *{@link org.apache.velocity.tools.view.servlet.ServletToolboxManager}.</p> 
  * 
- * <p>The interface provides context tools in a servlet environment 
+ * <p>The interface provides view tools in a servlet environment 
  * access to relevant context information, like servlet request, servlet 
  * context and the velocity context. See 
- * {@link org.apache.velocity.tools.view.tools.ServletContextTool} for an 
+ * {@link org.apache.velocity.tools.view.tools.ServletViewTool} for an 
  * example.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  *
- * @version $Id: ViewContext.java,v 1.3 2002/04/15 10:45:32 sidler Exp $ 
+ * @version $Id: ViewContext.java,v 1.4 2002/04/15 18:30:29 sidler Exp $ 
  */
 public interface ViewContext
 {

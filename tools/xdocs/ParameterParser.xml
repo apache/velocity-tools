@@ -12,7 +12,7 @@
 
     <section name="ParameterParser Reference Documentation">
 
-        <p>Context tool for easy parsing of ServletRequest parameters.</p>
+        <p>View tool for easy parsing of ServletRequest parameters.</p>
         
         <toolinfo>
             <version>@@@version@@@, @@@date@@@</version>

@@ -1,7 +1,7 @@
 /*
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2002 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,55 +52,29 @@
  * <http://www.apache.org/>.
  */
 
-package org.apache.velocity.tools.view.servlet;
 
-
-import javax.servlet.ServletContext;
-
-import org.apache.velocity.tools.view.tools.ContextToolLogger;
+package org.apache.velocity.tools.view.tools;
 
 
 /**
- * <p>A logger for context tools in a servlet environment.</p> 
- * 
- * <p>This class implements interface {@link ContextToolLogger}.
- * The logged messages are forwarded to the standard log facilities
- * provided by the Servlet API, namely {@link ServletContext#log(String msg)}
+ * <p>A marker interface that indicates that a view tool is thread-safe. </p>
+ *
+ * <p>The handling of thread-safe view tools can be optimized by 
+ * compatible toolbox managers like 
+ * {@link org.apache.velocity.tools.view.servlet.ServletToolboxManager}. 
+ * The same instance of the view tool can be reused for the entire runtime.
+ * </p>
+ *
+ * <p>This class does not define any methods or fields. Thread-safe context
+ * tools should simply add the 'implements ThreadSafeViewTool' statement
+ * to the class definition to signal the toolbox manager that it is 
+ * safe to reuse the same instance for multiple template processing requests.
+ * </p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ServletContextToolLogger.java,v 1.1 2002/04/02 16:46:31 sidler Exp $
+ * @version $Id: ThreadSafeViewTool.java,v 1.1 2002/04/15 18:30:29 sidler Exp $
  * 
  */
-public class ServletContextToolLogger implements ContextToolLogger
-{
-    
-    /**
-     * A reference to the servlet context.
-     */
-    private ServletContext ctx;
-    
-    
-    /**
-     * <p>Default constructor.</p>
-     *
-     * @param ctx A reference to the servlet context of the web
-     *     application.
-     */
-    public ServletContextToolLogger(ServletContext ctx)
-    {
-        this.ctx = ctx; 
-    }
-
-
-    /**
-     * <p>Logs a message to the standard servlet log facility.</p>
-     *
-     * @param msg message to be logged, no formatting is applied
-     */
-    public void log(String msg)
-    {
-        ctx.log(msg);
-    }
-    
-}
+public interface ThreadSafeViewTool
+{}

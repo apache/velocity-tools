@@ -7,7 +7,7 @@
 
         <h2>MathTool Demo (Velocity)</h2>
 
-        First, load the MathTool context tool into the context with key "math":<br>
+        First, load the MathTool view tool into the context with key "math":<br>
         <code>&#36;toolLoader.load("math", "org.apache.velocity.tools.tools.MathTool")</code><br><br>
 
         $toolLoader.load("math", "org.apache.velocity.tools.tools.MathTool")

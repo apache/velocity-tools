@@ -1,6 +1,6 @@
 
 
-#set( $relative-path = "file://C:/Users/Sidler/VelTools/jakarta-velocity-tools2/" )
+#set( $relative-path = "file://C:/Users/Sidler/VelTools/jakarta-velocity-tools/" )
 
 #set( $body-bg = '#ffffff' )
 #set( $body-fg = '#000000' )

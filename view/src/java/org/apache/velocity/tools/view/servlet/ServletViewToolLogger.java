@@ -52,33 +52,55 @@
  * <http://www.apache.org/>.
  */
 
-package org.apache.velocity.tools.view.tools;
+package org.apache.velocity.tools.view.servlet;
+
+
+import javax.servlet.ServletContext;
+
+import org.apache.velocity.tools.view.tools.ViewToolLogger;
 
 
 /**
- * <p>Defines the interface of a logger object that can be used by context
- * tools to log messages to an underlying logging facility. </p> 
+ * <p>A logger for view tools in a servlet environment.</p> 
  * 
- * <p>Implementation of this interface can be thought of as adapters 
- * between context tools and the logging facilities of a specific 
- * environment. For example, in servlet environments a logger instance 
- * would accept log messages from a context tool and write them to the 
- * Servlet API's logging facility.</p>
- * 
+ * <p>This class implements interface {@link ViewToolLogger}.
+ * The logged messages are forwarded to the standard log facilities
+ * provided by the Servlet API, namely {@link ServletContext#log(String msg)}
+ *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ContextToolLogger.java,v 1.1 2002/04/02 16:46:31 sidler Exp $
+ * @version $Id: ServletViewToolLogger.java,v 1.1 2002/04/15 18:30:29 sidler Exp $
  * 
  */
-public interface ContextToolLogger 
+public class ServletViewToolLogger implements ViewToolLogger
 {
+    
+    /**
+     * A reference to the servlet context.
+     */
+    private ServletContext ctx;
+    
+    
+    /**
+     * <p>Default constructor.</p>
+     *
+     * @param ctx A reference to the servlet context of the web
+     *     application.
+     */
+    public ServletViewToolLogger(ServletContext ctx)
+    {
+        this.ctx = ctx; 
+    }
+
 
     /**
-     * <p>Log a message to the logging infrastructure of the environment. </p>
+     * <p>Logs a message to the standard servlet log facility.</p>
      *
-     * @param msg Message to be logged. The message is passed on as is. No
-     *            formatting, etc. is applied.
+     * @param msg message to be logged, no formatting is applied
      */
-    public void log(String msg);
-
+    public void log(String msg)
+    {
+        ctx.log(msg);
+    }
+    
 }

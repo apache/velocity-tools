@@ -21,7 +21,7 @@
         <item name="Documentation"           href="struts/docs/userguide.html#Documentation"/>
         <item name="Model 2 Applications"    href="struts/docs/userguide.html#Model 2 Applications"/>
         <item name="Velocity Context"        href="struts/docs/userguide.html#Velocity Context"/>
-        <item name="Context Tools"           href="struts/docs/userguide.html#Context Tools"/>
+        <item name="View Tools"              href="struts/docs/userguide.html#View Tools"/>
         <item name="Velocity and JSP"        href="struts/docs/userguide.html#Velocity and JSP"/>
         <item name="Velocity vs. JSP"        href="struts/docs/userguide.html#Velocity vs. JSP"/>
         <item name="Velocity Configuration"  href="struts/docs/userguide.html#Velocity Configuration"/>

@@ -13,7 +13,7 @@
     <section name="Welcome to the VelocityLibrary Project">
 
         <p>VelocityLibrary is a Velocity subproject that aims to build of collection
-        of reusable and well documented context tools.</p>
+        of reusable and well documented view tools.</p>
 
         <p>Emphasis is being put on providing tool documentation that is 
         suitable for template designers. To achive this goal, a documenation
@@ -24,7 +24,7 @@
         developers". Look at the <a href="../struts/docs/MessageTool.html">Struts MessageTool</a> for a good example of the
         new documentation format. We are keen on your feedback. </p>
         
-        <p>Your contribution of useful context tools to the VelocityLibrary
+        <p>Your contribution of useful view tools to the VelocityLibrary
         project are welcome. See <a href="#Contributions">below</a> for more details.</p>
         
         <p><strong>VelocityLibrary Content:</strong></p>
@@ -45,7 +45,7 @@
             for Struts applications.</dd>
                 
             <dt><a href="../tools/docs/ToolLoader.html"><strong>ToolLoader</strong></a></dt>
-            <dd>A tool allowing template designers to load context tools 
+            <dd>A tool allowing template designers to load view tools 
             from within the template.</dd>
         </dl>
 

@@ -13,7 +13,7 @@ struts : Tools specific to integrating Velocity and Struts. See
        struts/README.txt for more information. There are several
        nice application examples included.
 
-tools : A collection of general purpose context tools. See 
+tools : A collection of general purpose view tools. See 
        tools/REAMDE.txt for more information.
        
        

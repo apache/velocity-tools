@@ -62,7 +62,7 @@ import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
 
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ServletContextTool;
+import org.apache.velocity.tools.view.tools.ServletViewTool;
 
 /**
  * <p>Allows for transparent content negotiation in a manner mimicking
@@ -77,7 +77,7 @@ import org.apache.velocity.tools.view.tools.ServletContextTool;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  */
 public class MultiViewsTool
-    implements ServletContextTool
+    implements ServletViewTool
 {
     /**
      * The key used to search initialization, context, and JVM
@@ -109,7 +109,6 @@ public class MultiViewsTool
      * your application.
      *
      * @param context The context to use.
-     * @see org.apache.velocity.view.tools.ContextTool
      */
     protected MultiViewsTool(ViewContext context)
     {
@@ -162,7 +161,7 @@ public class MultiViewsTool
      * #parse ($multiviews.findLocalizedResource("footer.vm", "en"))
      * </pre></code></blockquote>
      *
-     * You might also wrap this method using another pull/context tool
+     * You might also wrap this method using another pull/view tool
      * which does internationalization/localization/content negation
      * for a single point of access.</p>
      *
@@ -200,7 +199,7 @@ public class MultiViewsTool
      * Unneccessary cruft required by our interface.  Hopefully this
      * method will go away soon.
      *
-     * @see org.apache.velocity.tools.view.tools.ServletContextTool#getInstance(ViewContext)
+     * @see org.apache.velocity.tools.view.tools.ServletViewTool#getInstance(ViewContext)
      */
     public Object getInstance(ViewContext context)
     {
@@ -212,7 +211,7 @@ public class MultiViewsTool
      * this is merely to signify that it is thread-safe, and can
      * actually be used in any scope.
      *
-     * @see org.apache.velocity.tools.view.tools.ServletContextTool#getDefaultLifecycle()
+     * @see org.apache.velocity.tools.view.tools.ServletViewTool#getDefaultLifecycle()
      */
     public String getDefaultLifecycle()
     {

@@ -1,7 +1,7 @@
 R E A D M E
 ===========
 
-This package contains a collection of general purpose context tools.
+This package contains a collection of general purpose view tools.
 Most tools are optimized for use with an automatic toolbox manager.
 
 

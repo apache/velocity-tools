@@ -55,7 +55,7 @@
 
 package org.apache.velocity.tools.tools;
 
-import org.apache.velocity.tools.view.tools.ThreadSafeContextTool;
+import org.apache.velocity.tools.view.tools.ThreadSafeViewTool;
 import javax.servlet.ServletRequest;
 
 
@@ -64,10 +64,10 @@ import javax.servlet.ServletRequest;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabriel Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.1 $ $Date: 2002/04/03 09:10:03 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/15 18:30:28 $
  */
 
-public class ParameterParser implements ThreadSafeContextTool
+public class ParameterParser implements ThreadSafeViewTool
 {
 
     /**

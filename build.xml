@@ -169,8 +169,8 @@
       <package name="org.apache.velocity.tools.view.tools"/>
       <package name="org.apache.velocity.tools.view.context"/>
 
-      <group title="Context Tools" packages="org.apache.velocity.tools.tools:org.apache.velocity.tools.struts"/>
-      <group title="Context Tools Infrastructure" packages="org.apache.velocity.tools.view.tools:org.apache.velocity.tools.view.context"/>
+      <group title="View Tools" packages="org.apache.velocity.tools.tools:org.apache.velocity.tools.struts"/>
+      <group title="View Tools Infrastructure" packages="org.apache.velocity.tools.view.tools:org.apache.velocity.tools.view.context"/>
 
       <classpath refid="classpath"/>
 

@@ -4,7 +4,7 @@ R E A D M E
 This part of jakarta-velocity-tools is focused on Struts-Velocity
 integration using the VelocityViewServlet and other tools found
 in this project. Struts support in Velocity is provided through 
-several context tools. 
+several view tools. 
 
 This is an alpha version. We do not recommend that you build production
 systems based on this software at this stage. The API may still
@@ -24,7 +24,7 @@ This compiles the package, generates a jar file in the same directory
 and sets up the examples.
 
 The directory 'docs' contains reference documentation for the included
-context tools. More documentation will be added shortly. For now the 
+view tools. More documentation will be added shortly. For now the 
 best way to get a feel for the Struts Velocity integration is to look 
 at the included examples.
 
