@@ -49,7 +49,7 @@ import java.util.List;
  *  5 is red and fly
  * </pre></p>
  *
- * @version $Revision: 1.1 $ $Date: 2004/05/04 03:32:22 $
+ * @version $Revision: 1.2 $ $Date: 2004/05/05 21:17:35 $
  */
 public class AlternatorTool
 {
@@ -66,6 +66,9 @@ public class AlternatorTool
 
     /**
      * Make an {@link Alternator} from a List.
+     *
+     * @return The new Alternator, or <code>null</code> if arguments
+     * were illegal.
      */
     public Alternator make(boolean auto, List list)
     {
@@ -88,6 +91,9 @@ public class AlternatorTool
     /**
      * Make an {@link Alternator} from the values 
      * in the specified collection.
+     *
+     * @return The new Alternator, or <code>null</code> if arguments
+     * were illegal.
      */
     public Alternator make(boolean auto, Collection collection)
     {
@@ -108,6 +114,9 @@ public class AlternatorTool
 
     /**
      * Make an {@link Alternator} from an object array.
+     *
+     * @return The new Alternator, or <code>null</code> if arguments
+     * were illegal.
      */
     public Alternator make(boolean auto, Object[] array)
     {
@@ -115,12 +124,15 @@ public class AlternatorTool
         {
             return null;
         }
-        return make(auto, Arrays.asList(array));
+        return new Alternator(auto, array);
     }
 
     /**
      * Make a non-automatic {@link Alternator} from a list containing the two
      * specified objects.
+     *
+     * @return The new Alternator, or <code>null</code> if arguments
+     * were illegal.
      */
     public Alternator make(Object o1, Object o2)
     {
@@ -130,13 +142,21 @@ public class AlternatorTool
     /**
      * Make an {@link Alternator} from a list containing the two
      * specified objects.
+     *
+     * @param o1 The first of two objects for alternation between.
+     * Must be non-<code>null</code>.
+     * @param o2 The second of two objects for alternation between.
+     * Must be non-<code>null</code>.
+     * @return The new Alternator, or <code>null</code> if arguments
+     * were illegal.
      */
     public Alternator make(boolean auto, Object o1, Object o2)
     {
-        List list = new ArrayList();
-        list.add(o1);
-        list.add(o2);
-        return make(auto, list);
+        if (o1 == null || o2 == null)
+        {
+            return null;
+        }
+        return new Alternator(auto, new Object[] { o1, o2 });
     }
 
 }
