@@ -1,5 +1,5 @@
 <!--
-  $Id: build.xml,v 1.31 2003/10/15 19:09:21 nbubna Exp $
+  $Id: build.xml,v 1.32 2003/11/18 00:55:44 nbubna Exp $
 -->
 <project name="velocity-tools" default="all" basedir=".">
 
@@ -33,7 +33,7 @@
   <property name="release.dir"      value="${dist.dir}/release/${project.id}"/>
 
   <property name="javadoc.dir"      value="${docs.dir}/javadoc"/>
-  <property name="javadoc.title"    value="Velocity-Tools API Documentation"/>
+  <property name="javadoc.title"    value="${project.name} ${project.version} Documentation"/>
 
 
 
