@@ -88,7 +88,7 @@ import java.net.HttpURLConnection;
  * <p>Based on ImportSupport from the JSTL taglib by Shawn Bayern</p>
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @version $Revision: 1.3 $ $Date: 2003/10/30 01:01:37 $
+ * @version $Revision: 1.4 $ $Date: 2003/11/05 20:15:55 $
  */
 public abstract class ImportSupport {
 
@@ -153,7 +153,7 @@ public abstract class ImportSupport {
              // URL is relative, so we must be an HTTP request
              if (! (request instanceof HttpServletRequest
                     && response instanceof HttpServletResponse)) {
-                 throw new Exception("Importing a non-HTTP relative resource");
+                 throw new Exception("Relative import from non-HTTP request not allowed");
              }
 
              // retrieve an appropriate ServletContext
@@ -170,7 +170,7 @@ public abstract class ImportSupport {
              }
 
              // include the resource, using our custom wrapper
-             ImportResponseWrapper irw = 
+             ImportResponseWrapper irw =
                 new ImportResponseWrapper( (HttpServletResponse) response);
 
              // spec mandates specific error handling form include()
@@ -259,10 +259,10 @@ public abstract class ImportSupport {
                 return r;
             }
             catch (IOException ex) {
-                throw new Exception("IMPORT_ABS_ERROR", ex);
+                throw new Exception("Problem accessing the absolute URL \"" + url + "\". " + ex.toString(), ex);
             }
             catch (RuntimeException ex) { // because the spec makes us
-                throw new Exception("IMPORT_ABS_ERROR", ex);
+                throw new Exception("Problem accessing the absolute URL \"" + url + "\". " + ex.toString(), ex);
             }
         }
     }
@@ -326,7 +326,8 @@ public abstract class ImportSupport {
          */
         public PrintWriter getWriter() {
             if (isStreamUsed) {
-                throw new IllegalStateException("IMPORT_ILLEGAL_STREAM");
+                throw new IllegalStateException("Unexpected internal error during import: "
+                                                + "Target servlet called getWriter(), then getOutputStream()");
             }
             isWriterUsed = true;
             return new PrintWriter(sw);
@@ -337,7 +338,8 @@ public abstract class ImportSupport {
          */
         public ServletOutputStream getOutputStream() {
             if (isWriterUsed) {
-                throw new IllegalStateException("IMPORT_ILLEGAL_WRITER");
+                throw new IllegalStateException("Unexpected internal error during import: "
+                                                + "Target servlet called getOutputStream(), then getWriter()");
             }
             isStreamUsed = true;
             return sos;
