@@ -73,6 +73,8 @@ import org.apache.commons.validator.ValidatorResources;
 import org.apache.commons.validator.ValidatorUtil;
 import org.apache.commons.validator.Var;
 
+import org.apache.struts.Globals;
+import org.apache.struts.config.ActionConfig;
 import org.apache.struts.config.ModuleConfig;
 import org.apache.struts.util.MessageResources;
 import org.apache.struts.util.RequestUtils;
@@ -88,11 +90,6 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * <p>Usage:
  * <pre>
  * Template example:
- * &lt;!-- javascript form validation --&gt;
- * $validator.setFormName("myForm")
- * $validator.javascript <-- spits out the dynamic javascript
- *
- * or simply
  *
  * $validator.getJavascript("nameOfYourForm")
  *
@@ -112,7 +109,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.4 $ $Date: 2003/11/06 00:26:54 $
+ * @version $Revision: 1.5 $ $Date: 2003/11/18 00:44:32 $
  */
 public class ValidatorTool implements ViewTool {
 
@@ -171,6 +168,15 @@ public class ValidatorTool implements ViewTool {
         if (b != null)
         {
             this.xhtml = b.booleanValue();
+        }
+
+        /* Is there a mapping associated with this request? */
+        ActionConfig config = 
+            (ActionConfig)request.getAttribute(Globals.MAPPING_KEY);
+        if (config != null)
+        {
+            /* Is there a form bean associated with this mapping? */
+            this.formName = config.getAttribute();
         }
     }
 
@@ -374,10 +380,24 @@ public class ValidatorTool implements ViewTool {
     /****************** methods that aren't just accessors ***************/
 
     /**
+     * Render the JavaScript for to perform validations based on 
+     * the form name already set the form name via {@link #setFormName} 
+     * or the form name attribute of the action mapping associated
+     * with the current request (if such exists).
+     *
+     * @return the javascript for the current form
+     * @throws Exception
+     */
+    public String getJavascript() throws Exception
+    {
+        return getJavascript(getFormName());
+    }
+
+    /**
      * Render the JavaScript for to perform validations based on the form name.
      *
      * @param formName the key (form name)
-     * @return the Javascript for the specified key
+     * @return the Javascript for the specified form
      * @throws Exception
      */
     public String getJavascript(String formName) throws Exception
