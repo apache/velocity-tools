@@ -54,6 +54,7 @@
 
 package org.apache.velocity.tools.struts;
 
+import java.util.Iterator;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -62,7 +63,7 @@ import org.apache.velocity.tools.struts.StrutsUtils;
 
 import org.apache.struts.config.ModuleConfig;
 import org.apache.struts.config.SecureActionConfig;
-import org.apache.struts.action.SecurePlugIn;
+import org.apache.struts.action.SecurePlugInInterface;
 import org.apache.struts.Globals;
 
 /**
@@ -75,7 +76,7 @@ import org.apache.struts.Globals;
  * $link.setAction("nameOfAction")
  * $link.setForward("nameOfForward")
  *
- * If the action or forward is marked as secure, or not, 
+ * If the action or forward is marked as secure, or not,
  * in your struts-config then the link will be rendered
  * with https or http accordingly.
  *
@@ -89,7 +90,7 @@ import org.apache.struts.Globals;
  * </p>
  * @since VelocityTools 1.1
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @version $Revision: 1.6 $ $Date: 2003/11/06 00:26:54 $
+ * @version $Revision: 1.7 $ $Date: 2004/01/23 16:18:24 $
  */
 public class SecureLinkTool extends LinkTool
 {
@@ -138,6 +139,16 @@ public class SecureLinkTool extends LinkTool
         return (SecureLinkTool)copyWith(computeURL(request, application, url));
     }
 
+    /**
+     * Compute a hyperlink URL based on the specified action link.
+     * The returned URL will have already been passed to
+     * <code>response.encodeURL()</code> for adding a session identifier.
+     *
+     * @param request the current request.
+     * @param app the current ServletContext.
+     * @param link the action that is to be converted to a hyperlink URL
+     * @return the computed hyperlink URL
+     */
     public String computeURL(HttpServletRequest request,
                              ServletContext app, String link)
     {
@@ -145,7 +156,9 @@ public class SecureLinkTool extends LinkTool
 
         String contextPath = request.getContextPath();
 
-        if (SecurePlugIn.getAppSslExtEnable(app) &&
+        SecurePlugInInterface securePlugin = (SecurePlugInInterface)app.getAttribute(SecurePlugInInterface.SECURE_PLUGIN);
+
+        if (securePlugin.getSslExtEnable() &&
             url.toString().startsWith(contextPath))
         {
             // Initialize the scheme and ports we are using
@@ -165,7 +178,7 @@ public class SecureLinkTool extends LinkTool
                 String desiredScheme = Boolean.valueOf(secureConfig.getSecure()).booleanValue() ?
                     HTTPS : HTTP;
                 String desiredPort = Boolean.valueOf(secureConfig.getSecure()).booleanValue() ?
-                    SecurePlugIn.getAppHttpsPort(app) : SecurePlugIn.getAppHttpPort(app);
+                    securePlugin.getHttpsPort() : securePlugin.getHttpPort();
 
                 // If scheme and port we are using do not match the ones we want
                 if (!desiredScheme.equals(usingScheme) ||
@@ -175,7 +188,10 @@ public class SecureLinkTool extends LinkTool
 
                     // This is a hack to help us overcome the problem that some
                     // older browsers do not share sessions between http & https
-                    if (url.toString().indexOf(";jsessionid=") < 0)
+                    // If this feature is diabled, session ID could still be added
+                    // the previous call to the RequestUtils.computeURL() method,
+                    // but only if needed due to cookies disabled, etc.
+                    if (securePlugin.getSslExtAddSession() && url.toString().indexOf(";jsessionid=") < 0)
                     {
                         // Add the session identifier
                         url = new StringBuffer(toEncoded(url.toString(),
@@ -197,9 +213,10 @@ public class SecureLinkTool extends LinkTool
      * @return The SecureActionConfig object entry for this action,
      *         or null if not found
      */
-    private static SecureActionConfig getActionConfig(HttpServletRequest request,
-                                                      ServletContext app,
-                                                      String linkString)
+    private static SecureActionConfig getActionConfig(HttpServletRequest
+            request,
+            ServletContext app,
+            String linkString)
     {
         ModuleConfig moduleConfig = StrutsUtils.selectModule(linkString, app);
 
@@ -207,58 +224,71 @@ public class SecureLinkTool extends LinkTool
         linkString = linkString.substring(moduleConfig.getPrefix().length());
 
         // Use our servlet mapping, if one is specified
-        String servletMapping = (String)app.getAttribute(Globals.SERVLET_KEY);
+        //String servletMapping = (String)app.getAttribute(Globals.SERVLET_KEY);
 
-        int starIndex = (servletMapping != null) ? servletMapping.indexOf('*') : -1;
-        if (starIndex == -1)
+        SecurePlugInInterface spi = (SecurePlugInInterface)app.getAttribute(
+                SecurePlugInInterface.SECURE_PLUGIN);
+        Iterator mappingItr = spi.getServletMappings().iterator();
+        while (mappingItr.hasNext())
         {
-            // No servlet mapping or no usable pattern defined, short circuit
-            return null;
+            String servletMapping = (String)mappingItr.next();
+
+            int starIndex = servletMapping != null ? servletMapping.indexOf('*')
+                            : -1;
+            if (starIndex == -1)
+            {
+                continue;
+            } // No servlet mapping or no usable pattern defined, short circuit
+
+            String prefix = servletMapping.substring(0, starIndex);
+            String suffix = servletMapping.substring(starIndex + 1);
+
+            // Strip off the jsessionid, if any
+            int jsession = linkString.indexOf(";jsessionid=");
+            if (jsession >= 0)
+            {
+                linkString = linkString.substring(0, jsession);
+            }
+
+            // Strip off the query string, if any
+            // (differs from the SSL Ext. version - query string before anchor)
+            int question = linkString.indexOf("?");
+            if (question >= 0)
+            {
+                linkString = linkString.substring(0, question);
+            }
+
+            // Strip off the anchor, if any
+            int anchor = linkString.indexOf("#");
+            if (anchor >= 0)
+            {
+                linkString = linkString.substring(0, anchor);
+            }
+
+
+            // Unable to establish this link as an action, short circuit
+            if (!(linkString.startsWith(prefix) && linkString.endsWith(suffix)))
+            {
+                continue;
+            }
+
+            // Chop off prefix and suffix
+            linkString = linkString.substring(prefix.length());
+            linkString = linkString.substring(0,
+                                              linkString.length()
+                                              - suffix.length());
+            if (!linkString.startsWith("/"))
+            {
+                linkString = "/" + linkString;
+            }
+
+            SecureActionConfig secureConfig = (SecureActionConfig)moduleConfig.
+                                              findActionConfig(linkString);
+
+            return secureConfig;
         }
+        return null;
 
-        String prefix = servletMapping.substring(0, starIndex);
-        String suffix = servletMapping.substring(starIndex + 1);
-
-        // Strip off the jsessionid, if any
-        int jsession = linkString.indexOf(";jsessionid=");
-        if (jsession >= 0)
-        {
-            linkString = linkString.substring(0, jsession);
-        }
-
-        // Strip off the anchor, if any
-        int anchor = linkString.indexOf("#");
-        if (anchor >= 0)
-        {
-            linkString = linkString.substring(0, anchor);
-        }
-
-        // Strip off the query string, if any
-        int question = linkString.indexOf("?");
-        if (question >= 0)
-        {
-            linkString = linkString.substring(0, question);
-        }
-
-        // Unable to establish this link as an action, short circuit
-        if (!(linkString.startsWith(prefix) &&
-              linkString.endsWith(suffix)))
-        {
-            return null;
-        }
-
-        // Chop off prefix and suffix
-        linkString = linkString.substring(prefix.length());
-        linkString = linkString.substring(0, linkString.length() - suffix.length());
-        if (!linkString.startsWith("/"))
-        {
-            linkString = "/" + linkString;
-        }
-
-        SecureActionConfig secureConfig =
-            (SecureActionConfig)moduleConfig.findActionConfig(linkString);
-
-        return secureConfig;
     }
 
     /**
@@ -302,6 +332,8 @@ public class SecureLinkTool extends LinkTool
         String path = url;
         String query = "";
         String anchor = "";
+
+        // (differs from the SSL Ext. version - anchor before query string)
         int pound = url.indexOf('#');
         if (pound >= 0)
         {
