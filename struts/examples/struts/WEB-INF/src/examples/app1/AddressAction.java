@@ -42,13 +42,10 @@ import org.apache.struts.util.MessageResources;
  * 
  *
  * @author <a href="mailto:sidler@teamup.com"/>Gabe Sidler</a>
- * @version $Id: AddressAction.java,v 1.2 2002/01/09 11:25:43 sidler Exp $
+ * @version $Id: AddressAction.java,v 1.3 2002/09/03 11:14:27 sidler Exp $
  */
 public class AddressAction extends Action 
 {
-
-
-
 
     // --------------------------------------------------------- Public Methods
 
@@ -108,6 +105,7 @@ public class AddressAction extends Action
                 bean.setZip( ((AddressForm)form).getZip() );
                 bean.setCity( ((AddressForm)form).getCity() );
                 bean.setCountry( ((AddressForm)form).getCountry() );
+                bean.setLanguages( ((AddressForm)form).getLanguages() );
 
                 // forward to list
                 return (mapping.findForward("showAddress"));
@@ -115,8 +113,8 @@ public class AddressAction extends Action
             }
             else
             {
-                String language = ((AddressForm)form).getLanguage();
-                if (language.equals("Deutsch"))
+                String locale = ((AddressForm)form).getLocale();
+                if (locale.equals("Deutsch"))
                     session.setAttribute(Action.LOCALE_KEY, new Locale("de", ""));
                 else
                     session.setAttribute(Action.LOCALE_KEY, new Locale("en", ""));
