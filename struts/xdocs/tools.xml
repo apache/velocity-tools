@@ -10,10 +10,10 @@
 
     <body>
 
-    <section name="VelStruts - Reference Documentation">
+    <section name="VelocityStruts - Reference Documentation">
 
         <p>
-        VelStruts includes four context tools that provide access
+        VelocityStruts includes four context tools that provide access
         to Struts resources from within Velocity templates. This page is the 
         starting point to the reference documentation for the context tools.
         Primary audience are the template designers.</p> 

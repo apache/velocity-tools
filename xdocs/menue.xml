@@ -13,9 +13,9 @@
     </menu>
 
     <menu name="Subprojects">
-        <item name="VelLibrary"             href="docs/vellibrary.html"/>
-        <item name="VelStruts"              href="struts/docs/index.html"/>
-        <item name="VelServlet"             href="view/docs/velservlet.html"/>
+        <item name="VelocityLibrary"        href="docs/vellibrary.html"/>
+        <item name="VelocityStruts"         href="struts/docs/index.html"/>
+        <item name="VelocityServlet"        href="view/docs/velservlet.html"/>
     </menu>
 
   </body>

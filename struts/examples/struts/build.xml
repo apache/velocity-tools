@@ -16,10 +16,10 @@
 
 
   <!-- The name of this component -->
-  <property name="project.name"          value="VelStruts Example" />
+  <property name="project.name"          value="VelocityStruts Example" />
 
   <!-- The title of this component -->
-  <property name="project.title"         value="VelStruts Example"/>
+  <property name="project.title"         value="VelocityStruts Example"/>
 
   <!-- The base directory for compilation targets -->
   <property name="build.home"            value="WEB-INF"/>

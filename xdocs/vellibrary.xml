@@ -3,16 +3,16 @@
 <document>
 
     <properties>
-        <title>Project VelLibrary</title>
+        <title>Project VelocityLibrary</title>
         <author email="sidler@apache.org">Gabriel Sidler</author>
         <projectfile>xdocs/vellibrary-menue.xml</projectfile>
     </properties>
 
     <body>
 
-    <section name="Welcome to the VelLibrary Project">
+    <section name="Welcome to the VelocityLibrary Project">
 
-        <p>VelLibrary is a Velocity subproject that aims to build of collection
+        <p>VelocityLibrary is a Velocity subproject that aims to build of collection
         of reusable and well documented context tools.</p>
 
         <p>Emphasis is being put on providing tool documentation that is 
@@ -24,10 +24,10 @@
         developers". Look at the <a href="../struts/docs/MessageTool.html">Struts MessageTool</a> for a good example of the
         new documentation format. We are keen on your feedback. </p>
         
-        <p>Your contribution of useful context tools to the VelLibrary
+        <p>Your contribution of useful context tools to the VelocityLibrary
         project are welcome. See <a href="#Contributions">below</a> for more details.</p>
         
-        <p><strong>VelLibrary Content:</strong></p>
+        <p><strong>VelocityLibrary Content:</strong></p>
 
         <dl>
             <dt><a href="../tools/docs/DateTool.html"><strong>DateTool</strong></a></dt>

@@ -3,16 +3,16 @@
 <document>
 
     <properties>
-        <title>Project VelStruts</title>
+        <title>Project VelocityStruts</title>
         <author email="sidler@apache.org">Gabriel Sidler</author>
         <projectfile>xdocs/menue.xml</projectfile>
     </properties>
 
     <body>
 
-    <section name="Welcome to the VelStruts Project">
+    <section name="Welcome to the VelocityStruts Project">
 
-        <p>VelStruts is a subproject of Velocity that aims to integrate Velocity
+        <p>VelocityStruts is a subproject of Velocity that aims to integrate Velocity
         with the <a href="http://jakarta.apache.org/struts/">Jakarta Struts</a> Web application framework.</p>
 
         <p>Struts is one of a growing number of <a href="http://jakarta.apache.org/velocity/powered.html#Frameworks%20that%20support%20Velocity">web application frameworks</a> that offer Velocity as a view layer technology. The integration with Struts offers now to Struts developers an alternative to JSP, the default view technology supported by Struts.</p>
