@@ -20,7 +20,6 @@
       <li>Added importAttributes() method to TilesTool to automatically put all attributes of the current Tiles context into the Velocity context. (maj)</li>
       <li>Replaced TilesTool's getString(String) method with getAttribute(String) in order to support "put lists." (maj)</li>
       </ul>
-      </p>
     </subsection>
 
     <subsection name="1.1-beta1">
