@@ -36,7 +36,7 @@
             validate="false"
             parameter="/examples/struts_app5/validator-demo.vm"/>
 
-    <action path="/do_submit_jsp"
+    <action path="/do_submit_vm"
             type="org.apache.struts.actions.ForwardAction"
             name="emailForm"
             input="/index_vm.do"
