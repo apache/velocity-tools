@@ -1,4 +1,3 @@
-<%@page import="test.ssl.*" %>
 <%@ taglib uri="/WEB-INF/sslext.tld" prefix="sslext"%>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
 <html>
