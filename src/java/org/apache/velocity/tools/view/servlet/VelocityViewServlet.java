@@ -139,32 +139,27 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.13 2003/10/01 23:38:14 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.14 2003/10/01 23:46:45 nbubna Exp $
  */
 
 public class VelocityViewServlet extends HttpServlet
 {
 
-    /**
-     * The HTTP content type context key.
-     */
+    /** The HTTP content type context key. */
     public static final String CONTENT_TYPE = "default.contentType";
 
-    /**
-     * The default content type for the response
-     */
+    /** The default content type for the response */
     public static final String DEFAULT_CONTENT_TYPE = "text/html";
   
-    /**
-     * Default encoding for the output stream
-     */
+    /** Default encoding for the output stream */
     public static final String DEFAULT_OUTPUT_ENCODING = "ISO-8859-1";
 
     /**
      * Key used to access the ServletContext in 
      * the Velocity application attributes.
      */
-    public static final String SERVLET_CONTEXT_KEY = ServletContext.class.getName();
+    public static final String SERVLET_CONTEXT_KEY = 
+        ServletContext.class.getName();
 
 
     /**
@@ -181,25 +176,17 @@ public class VelocityViewServlet extends HttpServlet
     protected static final String INIT_PROPS_KEY =
         "org.apache.velocity.properties";
 
-    /**
-     * A reference to the toolbox manager.
-     */
+    /** A reference to the toolbox manager. */
     protected ToolboxManager toolboxManager = null;
 
 
-    /**
-     * Cache of writers
-     */
+    /** Cache of writers */
     private static SimplePool writerPool = new SimplePool(40);
 
-    /**
-     * The encoding to use when generating outputing.
-     */
+    /** The encoding to use when generating outputing. */
     private String encoding = null;
 
-    /**
-     * The default content type.
-     */
+    /** The default content type. */
     private String defaultContentType;
 
 
@@ -282,7 +269,8 @@ public class VelocityViewServlet extends HttpServlet
 
         // by default, load resources with webapp resource loader
         Velocity.setProperty(RuntimeConstants.RESOURCE_LOADER, "webapp");
-        Velocity.setProperty("webapp.resource.loader.class", WebappLoader.class.getName());
+        Velocity.setProperty("webapp.resource.loader.class", 
+                             WebappLoader.class.getName());
 
         // Try reading an overriding Velocity configuration
         try
@@ -292,7 +280,7 @@ public class VelocityViewServlet extends HttpServlet
         }
         catch(Exception e)
         {
-            getServletContext().log("Unable to read Velocity configuration file: " + e);
+            getServletContext().log("Unable to read Velocity configuration file: "+e);
             getServletContext().log("Using default Velocity configuration.");
         }   
 
@@ -301,10 +289,10 @@ public class VelocityViewServlet extends HttpServlet
         {
             Velocity.init();
         }
-        catch( Exception e )
+        catch(Exception e)
         {
-            getServletContext().log("VELOCITY PANIC : unable to init() : " + e );
-            throw new ServletException ( e );
+            getServletContext().log("VELOCITY PANIC : unable to init() : "+e);
+            throw new ServletException(e);
         }
     }
 
@@ -450,9 +438,9 @@ public class VelocityViewServlet extends HttpServlet
 
 
     /**
-     *  cleanup routine called at the end of the request processing sequence
+     *  Cleanup routine called at the end of the request processing sequence
      *  allows a derived class to do resource cleanup or other end of 
-     *  process cycle tasks
+     *  process cycle tasks.  This default implementation does nothing.
      *
      *  @param request servlet request from client 
      *  @param response servlet reponse 
@@ -462,7 +450,6 @@ public class VelocityViewServlet extends HttpServlet
                                   HttpServletResponse response, 
                                   Context context)
     {
-        return;
     }
 
 
@@ -477,7 +464,7 @@ public class VelocityViewServlet extends HttpServlet
      */
     protected Template handleRequest(HttpServletRequest request, 
                                      HttpServletResponse response, 
-                                     Context ctx )
+                                     Context ctx)
         throws Exception
     {
         // If we get here from RequestDispatcher.include(), getServletPath()
@@ -489,7 +476,6 @@ public class VelocityViewServlet extends HttpServlet
         {
             path = request.getServletPath();
         }
-
         return getTemplate(path);
     }
 
@@ -529,21 +515,13 @@ public class VelocityViewServlet extends HttpServlet
     protected Context createContext(HttpServletRequest request, 
                                     HttpServletResponse response)
     {
-        /*
-         *  create a ChainedContext()
-         */
+        ChainedContext ctx = new ChainedContext(null, request, response, getServletContext());
 
-        ChainedContext ctx =  new ChainedContext( null, request, response, getServletContext() );
-
-        /*
-         *  if we have a toolbox manager, let it make a context for us
-         */
-
+        /* if we have a toolbox manager, get a toolbox from it */
         if (toolboxManager != null)
         {
             ctx.setToolbox(toolboxManager.getToolboxContext(ctx));
         }
-
         return ctx;
     }
 
@@ -609,7 +587,7 @@ public class VelocityViewServlet extends HttpServlet
         
         try
         {
-            vw = (VelocityWriter) writerPool.get();
+            vw = (VelocityWriter)writerPool.get();
             
             if (vw == null)
             {
