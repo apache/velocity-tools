@@ -1,0 +1,137 @@
+<project name="velocity-view" default="all" basedir=".">
+
+<!-- ========== Initialize Properties ===================================== -->
+
+  <property file="${basedir}/build/build.properties"/>  <!-- Component local   -->
+  <property file="${basedir}/../build.properties"/>     <!-- Commons local     -->
+  <property file="${user.home}/.build.properties"/>     <!-- User local        -->
+
+
+
+<!-- ========== External Dependencies ===================================== -->
+
+ <!-- the local repository -->
+ <property name="local.repository"            value="${basedir}/WEB-INF/lib" />
+ <property name="project.repository"          value="${basedir}/WEB-INF/build-lib" />
+
+
+<!-- ========== Component Declarations ==================================== -->
+
+  <!-- The name of this component -->
+  <property name="project.name"          value="VelocityStruts Example" />
+
+  <!-- The title of this component -->
+  <property name="project.title"         value="VelocityStruts Example"/>
+
+  <!-- The base directory for compilation targets -->
+  <property name="build.home"            value="${basedir}/WEB-INF"/>
+
+  <!-- The base directory for distribution targets -->
+  <property name="dist.home"             value="${basedir}/dist"/>
+
+  <!-- The base directory for component sources -->
+  <property name="source.home"           value="${basedir}/WEB-INF/src"/>
+
+  <!-- The base directory for component sources -->
+  <property name="conf.home"             value="${basedir}/src/conf"/>
+
+  <!-- The docs source directory -->
+  <property name="docs.src"              value="${basedir}/xdocs"/>
+
+  <!-- The docs destination directory  -->
+  <property name="docs.dest"             value="${basedir}/doc"/>
+
+
+<!-- ========== Compiler Defaults ========================================= -->
+
+  <!-- Should Java compilations set the 'debug' compiler option? -->
+  <property name="compile.debug"           value="true"/>
+
+  <!-- Should Java compilations set the 'deprecation' compiler option? -->
+  <property name="compile.deprecation"     value="true"/>
+
+  <!-- Should Java compilations set the 'optimize' compiler option? -->
+  <property name="compile.optimize"        value="true"/>
+
+  <!-- Construct compile classpath -->
+  <path id="classpath">
+    <fileset dir="${local.repository}">
+      <include name="**/*.jar"/>
+    </fileset>
+    <fileset dir="${project.repository}">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+
+
+<!-- ========== Executable Targets ======================================== -->
+
+  <!-- ================================================================== -->
+  <!-- I N I T                                                            -->
+  <!-- ================================================================== -->
+  <target name="init"
+   description="Initialize and evaluate conditionals">
+    <echo message="-------- ${project.name} --------"/>
+    <tstamp/>
+  </target>
+
+
+  <!-- ================================================================== -->
+  <!-- A L L                                                              -->
+  <!-- ================================================================== -->
+  <target name="all" depends="war"
+   description="Build entire example"/>
+
+
+  <!-- ================================================================== -->
+  <!-- C O M P I L E                                                      -->
+  <!-- ================================================================== -->
+  <target name="compile" depends="init" description="Compile">
+    <mkdir name="${build.home}/classes"/>
+    <javac  srcdir="${source.home}/"
+            destdir="${build.home}/classes"
+            debug="${compile.debug}"
+            deprecation="${compile.deprecation}"
+            optimize="${compile.optimize}">
+        <classpath refid="classpath"/>
+    </javac>
+
+    <copy todir="${build.home}/classes">
+      <fileset dir="${source.home}" excludes="**/*.java"/>
+    </copy>
+
+  </target>
+
+
+  <!-- ================================================================== -->
+  <!-- C L E A N                                                          -->
+  <!-- ================================================================== -->
+  <target name="clean" depends="" 
+   description="Clean build and distribution directories">
+
+    <delete dir="${build.home}/classes"/>
+
+    <!-- remove jsp temporary cache -->
+    <delete dir="${build.home}/work"/>
+
+    <!-- remove *.bak backups -->
+    <delete>
+      <fileset dir="${basedir}" includes="**/*.bak"/>
+    </delete>
+
+  </target>
+
+
+  <!-- ================================================================== -->
+  <!-- W A R                                                              -->
+  <!-- ================================================================== -->
+  <target name="war" depends="compile"
+    description="Generate a *.war file of the example application">
+    <!-- Generate .war file, name it velstruts.war -->
+    <jar jarfile="${basedir}/../velstruts.war" 
+         basedir="${basedir}"
+         excludes="**/MANIFEST.MF"/>
+  </target>
+
+</project>
+

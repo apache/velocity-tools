@@ -1,0 +1,62 @@
+<project name="VelocityView - Simple Application" default="war" basedir=".">
+
+  <property name="SRC"      value="${basedir}/WEB-INF/src"/>
+  <property name="CLASSES"  value="${basedir}/WEB-INF/classes"/>
+  <property name="LIB"      value="${basedir}/WEB-INF/lib"/>
+
+  <!-- Construct compile and javadoc classpath -->
+  <path id="classpath">
+    <fileset dir="${LIB}">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+  <!-- ================================================================== -->
+  <!-- C O M P I L E                                                      -->
+  <!-- ================================================================== -->
+  <target name="compile">
+    <mkdir dir="${basedir}/WEB-INF/classes"/>
+    <!-- Compile the java code from ${SRC} into ${CLASSES} -->
+    <javac srcdir="${SRC}"
+           includes="*/**"
+           destdir="${CLASSES}">
+       <classpath refid="classpath"/>
+    </javac>
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- W A R                                                              -->
+  <!-- ================================================================== -->
+  <target name="war" depends="compile">
+    <jar jarfile="${basedir}/../simple.war" 
+         basedir="${basedir}"
+         excludes="**/MANIFEST.MF"/>
+
+    <echo>                                                  </echo>
+    <echo>  A WAR file (Web ARchive) was created for you in </echo>
+    <echo>  the directory above. (/examples)  It is called  </echo>
+    <echo>                                                  </echo>
+    <echo>      simple.war                                  </echo>
+    <echo>                                                  </echo>
+    <echo>  To use it with Tomcat, copy the .war file to    </echo>
+    <echo>  the webapps directory in the Tomcat tree        </echo>
+    <echo>  (assuming a standard Tomcat installation)  and  </echo>
+    <echo>  then restart Tomcat.  To access the page        </echo>
+    <echo>  point you browser to                            </echo>
+    <echo>                                                  </echo>
+    <echo>     http://localhost:8080/simple/index.vm        </echo>
+    <echo>                                                  </echo>
+    <echo>  If you have any questions, don't hesitate to    </echo>
+    <echo>  ask on the Velocity user list.                  </echo>
+
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- C L E A N                                                          -->
+  <!-- ================================================================== -->
+  <target name="clean">
+    <!-- remove old class files -->
+    <delete dir="${CLASSES}"/>
+  </target>
+
+</project>
