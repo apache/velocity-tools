@@ -85,25 +85,25 @@ import org.apache.velocity.tools.view.ViewToolInfo;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: ServletToolInfo.java,v 1.3 2003/05/28 00:17:16 nbubna Exp $
+ * @version $Id: ServletToolInfo.java,v 1.4 2003/07/22 18:31:30 nbubna Exp $
  */
 public class ServletToolInfo extends ViewToolInfo
 {
 
-    public static final String REQUEST_SCOPE = "request";
-    public static final String SESSION_SCOPE = "session";
-    public static final String APPLICATION_SCOPE = "application";
+    /** @deprecated use ServletToolboxManager.REQUEST_SCOPE */
+    public static final String REQUEST_SCOPE = ServletToolboxManager.REQUEST_SCOPE;
+    /** @deprecated use ServletToolboxManager.SESSION_SCOPE */
+    public static final String SESSION_SCOPE = ServletToolboxManager.SESSION_SCOPE;
+    /** @deprecated use ServletToolboxManager.APPLICATION_SCOPE */
+    public static final String APPLICATION_SCOPE = ServletToolboxManager.APPLICATION_SCOPE;
         
     private String scope;
 
 
-    /**
-     * Creates a new tool of the specified class with the given key and scope.
-     */
-    public ServletToolInfo(String key, String classname, String scope)
-        throws Exception
-    {
-        super(key, classname);
+    public ServletToolInfo() {}
+
+
+    public void setScope(String scope) { 
         this.scope = scope;
     }
 
@@ -115,6 +115,5 @@ public class ServletToolInfo extends ViewToolInfo
     {
         return scope;
     }
-
 
 }
