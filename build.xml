@@ -1,223 +1,269 @@
+<!--
+  $Id: build.xml,v 1.10 2003/03/05 06:42:14 nbubna Exp $ 
+-->
 <project name="velocity-tools" default="all" basedir=".">
 
-<!-- ========== Initialize Properties ===================================== -->
 
-  <property file="build/build.properties"/>          <!-- Component local   -->
-  <property file="../build.properties"/>             <!-- Commons local     -->
-  <property file="${user.home}/.build.properties"/>  <!-- User local        -->
+<!-- ========== Properties ===================================== -->
 
-<!-- ========== External Dependencies ===================================== -->
+  <property file="build.properties"/>                <!-- Component local   -->
+  <property file="${user.home}/build.properties"/>   <!-- User local        -->
 
- <!-- the local repository -->
- <property name="project.repository"     value="./lib" />
+  <property name="project.name"     value="VelocityTools" />
+  <property name="project.version"  value="0.9"/>
 
-<!-- ========== Component Declarations ==================================== -->
+  <property name="struts.version"   value="${project.version}"/>
+  <property name="view.version"     value="0.8"/>
+  <property name="generic.version"  value="0.3"/>
+  
+  <property name="struts.name"      value="velocity-tools-${struts.version}"/>
+  <property name="view.name"        value="velocity-tools-view-${view.version}"/>
+  <property name="generic.name"     value="velocity-tools-generic-${generic.version}"/>
 
-  <!-- The name of this component -->
-  <property name="project.name"          value="VelocityTools" />
+  <property name="source.home"      value="${basedir}/src"/>
+  <property name="lib.home"         value="${basedir}/lib"/>
+  <property name="examples.home"    value="${basedir}/examples"/>
+  <property name="conf.home"        value="${source.home}/conf"/>
 
-  <!-- The title of this component -->
-  <property name="project.title"         value="Velocity Tools Documentation"/>
+  <property name="classes.src"      value="${source.home}/java"/>
+  <property name="macros.src"       value="${source.home}/velocity"/>
+  <property name="docs.src"         value="${basedir}/xdocs"/>
 
-  <!-- The base directory for compilation targets -->
-  <property name="build.home"            value="${basedir}"/>
+  <property name="build.dir"        value="${basedir}/build"/>
+  <property name="classes.dir"      value="${build.dir}/classes"/>
+  <property name="dist.dir"         value="${basedir}/dist"/>
+  <property name="docs.dir"         value="${basedir}/docs"/>
 
-  <!-- The base directory for distribution targets -->
-  <property name="dist.home"             value="dist"/>
-
-  <!-- The docs source directory -->
-  <property name="docs.src"              value="xdocs"/>
-
-  <!-- The docs destination directory  -->
-  <property name="docs.dest"             value="docs"/>
-
-  <!-- The docs source directory -->
-  <property name="struts.docs.src"       value="struts/xdocs"/>
-
-  <!-- The docs source directory -->
-  <property name="tools.docs.src"        value="tools/xdocs"/>
+  <property name="javadoc.dir"      value="${docs.dir}/javadoc"/>
+  <property name="javadoc.title"    value="Velocity-Tools API Documentation"/>
 
 
-<!-- ========== Compiler Defaults ========================================= -->
 
-  <!-- Construct compile classpath -->
-  <path id="classpath">
-    <fileset dir="${project.repository}">
+<!-- ========== Paths ========================================= -->
+
+  <!-- Construct classpath of all jars in lib repository -->
+  <path id="lib.classpath">
+    <fileset dir="${lib.home}">
       <include name="**/*.jar"/>
     </fileset>
   </path>
 
-<!-- ========== Executable Targets ======================================== -->
+  <!-- Construct explicit classpath of libs needed to compile this project -->
+  <path id="compile.classpath">
+    <pathelement location="${commons-collections.jar}"/>
+    <pathelement location="${dom4j.jar}"/>
+    <pathelement location="${struts.jar}"/>
+    <pathelement location="${servlet.jar}"/>
+    <pathelement location="${velocity.jar}"/>
+  </path>
 
 
-  <!-- ================================================================== -->
-  <!-- I N I T                                                            -->
-  <!-- ================================================================== -->
-  <target name="init">
-    <!-- Initialize and evaluate conditionals -->
-    <echo message="-------- ${project.name} --------"/>
-    <filter  token="name"                  value="${project.name}"/>
-  </target>
 
-  <!-- ================================================================== -->
-  <!-- P R E P A R E                                                      -->
-  <!-- ================================================================== -->
-  <target name="prepare" depends="init">
-    <!-- Prepare build directory -->
-    <mkdir dir="${docs.dest}"/>
-    <mkdir dir="${docs.dest}/javadoc"/>
-  </target>
-
-  <!-- ================================================================== -->
-  <!-- S T A T I C                                                        -->
-  <!-- ================================================================== -->
-  <target name="static" depends="prepare">
-    <!-- Copy static files to build directory -->
-    <tstamp/>
-  </target>
+<!-- ========== Targets ======================================== -->
 
 
-  <!-- ================================================================== -->
-  <!-- C L E A N                                                          -->
-  <!-- ================================================================== -->
-  <target name="clean"
-    description="Clean build and distribution directories">
-  
-    <delete dir="${docs.dest}"/>
- 
+  <!-- Main Target -->
+  <target name="all" depends="clean,jar.struts,javadoc,docs"/>
+
+
+
+  <!-- Clean Target -->
+  <target name="clean" description="Deletes the build, doc, and dist directories">
+    <delete dir="${build.dir}"/>
+    <delete dir="${dist.dir}"/>
+    <delete dir="${docs.dir}"/>
+
+    <!-- Clean example applications  -->
+    <ant dir="${examples.home}/simple" target="clean" inheritAll="false"/>
+    <ant dir="${examples.home}/struts" target="clean" inheritAll="false"/>
     <delete>
-      <fileset dir="${basedir}" includes="**/*.bak"/>
+      <fileset dir="${examples.home}/simple/WEB-INF/lib" includes="*.jar"/>
+      <fileset dir="${examples.home}/struts/WEB-INF/lib" includes="*.jar"/>
+    </delete>
+    <delete>
+      <fileset dir="${examples.home}" includes="*.war"/>
+    </delete>
+  </target>
+
+
+
+  <!-- Prepare directories -->
+  <target name="prepare">
+    <echo message="-------- ${project.name} ${project.version} --------"/>
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${classes.dir}"/>
+    <mkdir dir="${dist.dir}"/>
+  </target>
+
+
+
+  <!-- Compile VelocityStruts (struts, view, generic) -->
+  <target name="compile.struts" depends="prepare"
+          description="Compiles the Velocity-Tools project (struts, view, and generic)">
+    <javac srcdir="${classes.src}"
+           debug="${compile.debug}"
+           optimize="${compile.optimize}"
+           deprecation="${compile.deprecation}"
+           destdir="${classes.dir}">
+      <classpath refid="compile.classpath" />
+      <include name="org/**"/>
+    </javac>
+  </target>
+
+  <!-- Compile Just VelocityView (view, generic) -->
+  <target name="compile.view" depends="prepare"
+          description="Compiles VelocityView and the generic tools">
+    <javac srcdir="${classes.src}"
+           debug="${compile.debug}"
+           optimize="${compile.optimize}"
+           deprecation="${compile.deprecation}"
+           destdir="${classes.dir}">
+      <classpath refid="compile.classpath" />
+      <include name="org/**"/>
+      <exclude name="**/struts/**"/>
+    </javac>
+  </target>
+
+  <!-- Compile Just Generic Tools (generic) -->
+  <target name="compile.generic" depends="prepare"
+          description="Compiles just the generic tools in this project">
+    <javac srcdir="${classes.src}"
+           debug="${compile.debug}"
+           optimize="${compile.optimize}"
+           deprecation="${compile.deprecation}"
+           destdir="${classes.dir}">
+      <classpath refid="compile.classpath" />
+      <include name="org/**"/>
+      <exclude name="**/struts/**"/>
+      <exclude name="**/view/**"/>
+    </javac>
+  </target>
+
+
+
+  <!-- Jar VelocityStruts (struts, view, generic) -->
+  <target name="jar.struts" depends="compile.struts"
+          description="Creates a velocity-tools jar in the dist directory.">
+    <jar destfile="${dist.dir}/${struts.name}.jar" 
+         basedir="${classes.dir}"/>
+  </target>
+
+  <!-- Jar Just VelocityView (view, generic) -->
+  <target name="jar.view" depends="compile.view"
+          description="Creates a velocity-tools-view jar in the dist directory">
+    <jar destfile="${dist.dir}/${view.name}.jar" 
+         basedir="${classes.dir}">
+      <exclude name="**/struts/**"/>
+    </jar>
+  </target>
+
+  <!-- Jar Just Generic Tools (generic) -->
+  <target name="jar.generic" depends="compile.generic"
+          description="Creates a velocity-tools-generic jar in the dist directory">
+    <jar destfile="${dist.dir}/${generic.name}.jar" 
+         basedir="${classes.dir}">
+      <exclude name="**/struts/**"/>
+      <exclude name="**/view/**"/>
+    </jar>
+  </target>
+
+
+
+  <!-- Build Javadocs (struts, view, generic) -->
+  <target name="javadoc" description="Builds Javadoc for the whole project.">
+    <mkdir dir="${javadoc.dir}" />
+    <javadoc packagenames="org.apache.velocity.tools.*"
+             destdir="${docs.dir}/javadoc"
+             author="true"
+             private="true"
+             version="true"
+             doctitle="&lt;h1&gt;${javadoc.title}&lt;/h1&gt;"
+             windowtitle="${javadoc.title}"
+             bottom="Copyright (c) 2003 Apache Software Foundation" >
+
+      <classpath refid="compile.classpath"/>
+      <sourcepath>
+        <pathelement path="${classes.src}" />
+      </sourcepath>
+    </javadoc>
+  </target>
+
+
+
+  <!-- Build Velocity-Tools documentation -->
+  <target name="docs" description="Generate documentation into ${docs.dir}">
+    <taskdef name="dvsl" classname="org.apache.tools.dvsl.DVSLTask">
+      <classpath>
+        <pathelement location="${dom4j.jar}"/>
+        <pathelement location="${velocity.jar}"/>
+        <pathelement location="${velocity-dvsl.jar}"/>
+      </classpath>
+    </taskdef>
+
+    <dvsl basedir="${docs.src}"
+          destdir="${docs.dir}/"
+          toolboxfile="xdocs/toolbox.props"
+          extension=".html"
+          style="xdocs/site.dvsl"
+          excludes="*menu.xml"
+          includes="*.xml" />
+  </target>
+
+
+
+  <!-- Build VelocityView - Simple application -->
+  <target name="example.simple" depends="jar.view"
+          description="Compiles and jars the VelocityView example application.">
+
+    <property name="simple.lib" value="${examples.home}/simple/WEB-INF/lib"/>
+
+    <!-- Clean up any past build -->
+    <delete file="${examples.home}/simple.war"/>
+    <delete>
+      <fileset dir="${simple.lib}" includes="velocity-tools*.jar"/>
     </delete>
 
-    <!-- Clean subprojects-->
- 
-    <ant dir="view" target="clean" inheritAll="false"/>
+    <!-- Assemble and build the simple example -->
+    <copy todir="${simple.lib}" file="${dist.dir}/${view.name}.jar"/>
+    <copy todir="${simple.lib}" file="${commons-beanutils.jar}"/>
+    <copy todir="${simple.lib}" file="${commons-collections.jar}"/>
+    <copy todir="${simple.lib}" file="${commons-digester.jar}"/>
+    <copy todir="${simple.lib}" file="${dom4j.jar}"/>
+    <copy todir="${simple.lib}" file="${velocity.jar}"/>
 
-    <ant dir="tools" target="clean" inheritAll="false"/>
-
-    <ant dir="struts" target="clean" inheritAll="false"/>
-    
+    <ant dir="${examples.home}/simple" target="war" inheritAll="false"/>
   </target>
 
 
-  <!-- ================================================================== -->
-  <!-- A L L                                                              -->
-  <!-- ================================================================== -->
-  <target name="all" depends="view,library,struts,docs,javadocs"
-    description="Build entire project, including all subprojects">
 
+  <!-- Build VelocityStruts example application -->
+  <target name="example.struts" depends="jar.struts" 
+          description="Compiles and jars the VelocityStruts example application.">
+
+    <property name="velstruts.lib" value="${examples.home}/struts/WEB-INF/lib"/>
+
+    <!-- Clean away old war -->
+    <delete>
+      <fileset dir="${examples.home}" includes="velstruts.war"/>
+    </delete>
+
+    <!-- Deploy jars -->
+    <delete>
+      <fileset dir="${velstruts.lib}" includes="velocity-tools*.jar"/>
+    </delete>
+    <copy todir="${velstruts.lib}" file="${dist.dir}/${struts.name}.jar"/>
+    <copy todir="${velstruts.lib}" file="${commons-beanutils.jar}"/>
+    <copy todir="${velstruts.lib}" file="${commons-collections.jar}"/>
+    <copy todir="${velstruts.lib}" file="${commons-digester.jar}"/>
+    <copy todir="${velstruts.lib}" file="${dom4j.jar}"/>
+    <copy todir="${velstruts.lib}" file="${jakarta-servlet.jar}"/>
+    <copy todir="${velstruts.lib}" file="${struts.jar}"/>
+    <copy todir="${velstruts.lib}" file="${velocity.jar}"/>
+
+    <!-- Build VelocityStruts examples -->
+    <ant dir="${examples.home}/struts" target="all" inheritAll="false"/>
   </target>
 
-
-  <!-- ================================================================== -->
-  <!-- J A R S                                                            -->
-  <!-- ================================================================== -->
-  <target name="jars" description="Build and install all subproject jars">
-    <ant dir="view" target="install-jar" inheritAll="false"/>
-    <ant dir="tools" target="install-jar" inheritAll="false"/>
-    <ant dir="struts" target="install-jar" inheritAll="false"/>
-  </target>
-
-
-  <!-- ================================================================== -->
-  <!-- V I E W                                                            -->
-  <!-- ================================================================== -->
-  <target name="view" depends=""
-    description="Build the 'view' subproject">
-   
-      <!-- Build view package -->
-      <ant dir="view" target="all" inheritAll="false"/>
-
-      <!-- Build the Simple example -->
-      <!-- <ant dir="view/examples/simple" target="all" inheritAll="false"/> -->
-
-  </target>
-
-
-  <!-- ================================================================== -->
-  <!-- L I B R A R Y                                                      -->
-  <!-- ================================================================== -->
-  <target name="library" depends="view"
-    description="Build the 'library' subproject">
-   
-      <!-- Build library package -->
-      <ant dir="tools" target="all" inheritAll="false"/>
-
-  </target>
-
-
-  <!-- ================================================================== -->
-  <!-- S T R U T S                                                        -->
-  <!-- ================================================================== -->
-  <target name="struts" depends="view,library"
-    description="Build the 'struts' subproject">
-   
-      <!-- Build struts package -->
-      <ant dir="struts" target="all" inheritAll="false"/> 
-   
-      <!-- Build VelocityStruts examples -->
-      <!-- <ant dir="struts/examples/struts" target="all" inheritAll="false"/> -->
-
-  </target>
-
-
-  <!-- ================================================================== -->
-  <!-- J A V A D O C S                                                    -->
-  <!-- ================================================================== -->
-  <target name="javadocs" depends="static"
-   description="Create Javadoc documentation">
-
-
-    <!-- Construct compile classpath -->
-    <path id="sourcepath">
-      <pathelement path="view/src/java/"/>
-      <pathelement path="struts/src/java/"/>
-      <pathelement path="tools/src/java/"/>
-    </path>
-
-    <javadoc sourcepathref="sourcepath"
-                   destdir="${docs.dest}/javadoc"
-                    author="true"
-                   private="true"
-                   version="true"
-                  doctitle="&lt;h1&gt;${project.title}&lt;/h1&gt;"
-               windowtitle="${project.title}"
-                    bottom="Copyright (c) 2002 Apache Software Foundation" >
-
-      <package name="org.apache.velocity.tools.*"/>
-
-      <classpath refid="classpath"/>
-
-     </javadoc>
-  </target>
-
-
-  <!-- ================================================================== -->
-  <!-- D O C S                                                            -->
-  <!-- ================================================================== -->
-  <target name="docs" depends="static"
-    description="Generate documentation into ${docs.dest}">
-
-      <taskdef name="dvsl" classname="org.apache.tools.dvsl.DVSLTask">
-
-          <classpath>
-             <path refid="classpath"/>
-          </classpath>
-
-      </taskdef>
-
-      <dvsl
-           basedir="${docs.src}"
-           destdir="${docs.dest}/"
-    	   toolboxfile="xdocs/toolbox.props"
-           extension=".html"
-           style="xdocs/site.dvsl"
-           excludes="*menue.xml"
-           includes="*.xml"
-      />
-
-  </target>
 
 
 </project>
-
