@@ -21,9 +21,9 @@ import java.util.List;
 /**
  * Utility class for easily alternating over values in a list.
  *
- * <p><b>Example Use:</b>
+ * <p><b>Example usage:</b>
  * <pre>
- * java...
+ * Java using a List...
  *      List myColors = new ArrayList();
  *      myColors.add("red");
  *      myColors.add("blue");
@@ -34,6 +34,12 @@ import java.util.List;
  *      myColors.add("groovy");
  *      // use auto alternation
  *      context.put("style", new Alternator(true, myStyles));
+ *
+ * or Java using Object array...
+ *      context.put("color", new Alternator(true, new String[]
+ *                                                { "red", "blue" }));
+ *      context.put("style", new Alternator(true, new String[]
+ *                                                { "hip", "fly", "groovy" }));
  *
  * template...
  *      #foreach( $foo in [1..5] )
@@ -49,7 +55,7 @@ import java.util.List;
  * </pre></p>
  *
  * @since Velocity Tools 1.2
- * @version $Revision: 1.2 $ $Date: 2004/05/05 20:51:55 $
+ * @version $Revision: 1.3 $ $Date: 2004/05/05 20:57:46 $
  */
 public class Alternator
 {
