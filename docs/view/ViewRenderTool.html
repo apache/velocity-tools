@@ -1,0 +1,320 @@
+
+            
+    <html>
+    <head>
+      <title>Velocity - ViewRenderTool</title>
+
+               <meta name="author" value="Gabriel Sidler"/>
+        <meta name="email" value="sidler@apache.org" />
+               
+    
+    </head>
+
+    <body bgcolor="#ffffff" text="#000000" link="#525D76"
+          alink="#525D76" vlink="#525D76">
+
+    <table border="0" width="100%" cellspacing="4">
+
+            <tr><td colspan="2">
+
+                <a href="http://jakarta.apache.org/">
+          <img src="http://jakarta.apache.org/images/jakarta-logo.gif"
+             align="left" alt="The Jakarta Project" border="0"/>
+        </a>
+
+        
+          
+                    <a href="index.html">
+            <img src="../images/velocityview.png" align="right" alt="< Tools - View >" border="0"/>
+          </a>
+        
+      </td></tr>
+
+            <tr>
+        <td colspan="2">
+          <hr noshade="" size="1"/>
+        </td>
+      </tr>
+
+      <tr>
+
+                        <td width="20%" valign="top" nowrap="true">
+            
+                <p><strong><a href="../index.html">Velocity Tools</a></strong></p>
+
+            <p>
+    <strong>VelocityView</strong>
+</p>
+<ul>
+        <li><a href="index.html">Overview</a></li>
+    <li><a href="../index.html#Download">Download</a></li>
+    <li><a href="index.html#Installation">Installation</a></li>
+    <li><a href="index.html#VelocityLayoutServlet">LayoutServlet</a></li>
+    <li><a href="index.html#Examples">Examples</a></li>
+    <li><a href="../javadoc/index.html">Javadoc</a></li>
+
+</ul>
+<p>
+    <strong>VelocityView Tools</strong>
+</p>
+<ul>
+        <li><a href="../javadoc/org/apache/velocity/tools/view/tools/AbstractSearchTool.html">AbstractSearchTool</a></li>
+    <li><a href="CookieTool.html">CookieTool</a></li>
+    <li><a href="ImportTool.html">ImportTool</a></li>
+    <li><a href="LinkTool.html">LinkTool</a></li>
+    <li><a href="ParameterParser.html">ParameterParser</a></li>
+    <li><a href="ViewRenderTool.html">ViewRenderTool</a></li>
+
+</ul>
+<p>
+    <strong>Other Subprojects</strong>
+</p>
+<ul>
+        <li><a href="../generic/">GenericTools</a></li>
+    <li><a href="../struts/">VelocityStruts</a></li>
+
+</ul>
+
+            <p>
+</p>
+
+        </td>
+        
+        <!-- RIGHT SIDE MAIN BODY -->
+        <td colspan="1" valign="top" align="left">
+          <table border="0" cellspacing="0" cellpadding="2" width="100%">
+  <tr>
+    <td colspan="2" bgcolor="#525D76">
+      <font color="#ffffff" face="arial,helvetica.sanserif">
+      <a name="ViewRenderTool Reference Documentation">
+      <strong>ViewRenderTool Reference Documentation</strong></a></font>
+    </td>
+  </tr>
+  <tr>
+    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td>
+      <p>This tool exposes methods to evaluate the given strings as VTL
+        (Velocity Template Language) and automatically using the current context.</p>
+<table cellpadding="0" cellspacing="0">
+  <tr><td colspan="2"><strong>Class</strong></td></tr>
+  <tr><td>&nbsp;</td><td>org.apache.velocity.tools.view.tools.ViewRenderTool</td></tr>
+
+  <tr><td colspan="2"><strong>Name</strong></td></tr>
+  <tr><td>&nbsp;</td><td>$render (this is the recommended name of the tool in 
+      the Velocity context)</td></tr>
+
+  <tr><td colspan="2"><strong>Toolbox Configuration Example</strong></td></tr>
+  <tr><td>&nbsp;</td><td><pre>&lt;tool&gt;
+  &lt;key&gt;render&lt;/key&gt;
+  &lt;scope&gt;request&lt;/scope&gt;
+  &lt;class&gt;org.apache.velocity.tools.view.tools.ViewRenderTool&lt;/class&gt;
+&lt;/tool&gt;</pre></td></tr>
+
+  <tr><td colspan="2"><strong>Author(s)</strong></td></tr>
+  <tr><td>&nbsp;</td><td><a href="mailto:nathan@esha.com">Nathan Bubna</a><br></td></tr>
+</table>
+<dl>
+  <dt><strong>Method Overview</strong></dt>
+  <dd>
+    <table cellpadding="2" cellspacing="2" border="0">
+                            <tr>
+          <td bgcolor="EEEEEE" nowrap>
+            <a href="#eval()">eval()</a></td>
+          <td bgcolor="EEEEEE">
+            
+                Evaluates a String containing VTL using the current context, and
+                returns the result as a String.
+            
+          </td>
+        </tr>
+                        <tr>
+          <td bgcolor="EEEEEE" nowrap>
+            <a href="#recurse()">recurse()</a></td>
+          <td bgcolor="EEEEEE">
+            
+                Recursively evaluates a String containing VTL using the
+                current context, and returns the result as a String.
+            
+          </td>
+        </tr>
+              </table>
+  </dd>
+</dl>
+
+    </td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+  <tr>
+    <td colspan="2" bgcolor="#525D76">
+      <font color="#ffffff" face="arial,helvetica.sanserif">
+      <a name="eval()">
+      <strong>eval()</strong></a></font>
+    </td>
+  </tr>
+  <tr>
+    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td>
+      
+        <p>
+        <abstract>
+                Evaluates a String containing VTL using the current context, and
+                returns the result as a String.
+            </abstract>
+    </p>
+    <p>
+    <table width="100%"><tr><td bgcolor="EEEEEE">
+    <font size="+1"><code>
+        <signature>
+                String eval(String vtl)
+            </signature>
+    </code></font>
+    </td></tr></table>
+    </p>
+    <dl>
+    <dt><strong>Parameters</strong></dt>
+    <dd>
+      <dl>
+              <dt>vtl</dt>
+    <dd>
+        <parameter name="vtl">
+                    The code to be evaluated.
+                </parameter>
+    </dd>
+
+
+      </dl>
+    </dd>
+    </dl>
+    <dl>
+    <dt><strong>Returns</strong></dt>
+    <dd>
+        <returns>
+                The evaluated code as a String.
+            </returns>
+    </dd>
+    </dl>
+
+      <p>Evaluates a String containing VTL using the current context, and
+                returns the result as a String.  If this fails, then <code>null</code>
+                will be returned.  This evaluation is not recursive.</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>#set( $list = [1,2,3] )
+#set( $object = '$list' )
+#set( $method = 'size()' )
+$render.eval("${object}.$method")</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+<p>This will produce the following output:</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>3</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+
+
+    <br clear="all">
+
+    </td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+  <tr>
+    <td colspan="2" bgcolor="#525D76">
+      <font color="#ffffff" face="arial,helvetica.sanserif">
+      <a name="recurse()">
+      <strong>recurse()</strong></a></font>
+    </td>
+  </tr>
+  <tr>
+    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td>
+      
+        <p>
+        <abstract>
+                Recursively evaluates a String containing VTL using the
+                current context, and returns the result as a String.
+            </abstract>
+    </p>
+    <p>
+    <table width="100%"><tr><td bgcolor="EEEEEE">
+    <font size="+1"><code>
+        <signature>
+                String recurse(String vtl)
+            </signature>
+    </code></font>
+    </td></tr></table>
+    </p>
+    <dl>
+    <dt><strong>Parameters</strong></dt>
+    <dd>
+      <dl>
+              <dt>vtl</dt>
+    <dd>
+        <parameter name="vtl">
+                    The code to be evaluated.
+                </parameter>
+    </dd>
+
+
+      </dl>
+    </dd>
+    </dl>
+    <dl>
+    <dt><strong>Returns</strong></dt>
+    <dd>
+        <returns>
+                The evaluated code as a String
+            </returns>
+    </dd>
+    </dl>
+
+      <p>Recursively evaluates a String containing VTL using the
+                current context, and returns the result as a String. It
+                will continue to re-evaluate the output of the last
+                evaluation until an evaluation returns the same code
+                that was fed into it.</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>#macro( say_hi )hello world!#end
+#set( $foo = '#say_hi()' )
+#set( $bar = '$foo' )
+$render.recurse('$bar')</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+<p>This will produce the following output:</p>
+<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
+  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
+    <pre><sourcecode>hello world!</sourcecode></pre>
+  </td></tr></table>
+</td></tr></table>
+
+
+    <br clear="all">
+
+    </td>
+  </tr>
+</table>
+
+        </td>
+
+      </tr>
+
+      <!-- FOOTER SEPARATOR --> 
+      <tr>
+        <td colspan="2">
+          <hr noshade="" size="1"/>
+        </td>
+      </tr>
+
+      <!-- PAGE FOOTER -->
+      <tr><td colspan="2">
+        <div align="center"><font color="#525D76" size="-1"><em>
+        Copyright &#169; 1999-2003, Apache Software Foundation
+        </em></font></div>
+      </td></tr>
+
+    </table>
+    </body>
+    </html>
