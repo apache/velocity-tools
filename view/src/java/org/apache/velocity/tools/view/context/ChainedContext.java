@@ -99,7 +99,7 @@ import javax.servlet.ServletContext;
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ChainedContext.java,v 1.3 2002/04/02 16:46:31 sidler Exp $ 
+ * @version $Id: ChainedContext.java,v 1.4 2002/04/15 10:45:32 sidler Exp $ 
  */
 public class ChainedContext extends VelocityContext implements ViewContext
 {
@@ -250,6 +250,15 @@ public class ChainedContext extends VelocityContext implements ViewContext
     public HttpServletRequest getRequest()
     {
         return request;
+    }
+
+
+    /**
+     * <p>Returns the current servlet response.</p>
+     */
+    public HttpServletResponse getResponse()
+    {
+        return response;
     }
 
 
