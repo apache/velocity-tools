@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2003 The Apache Software Foundation.
+ * Copyright 2002-2004 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package org.apache.velocity.tools.view.context;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
 
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 
 /**
@@ -60,13 +61,13 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ChainedContext.java,v 1.7 2004/04/15 20:25:34 nbubna Exp $ 
+ * @version $Id: ChainedContext.java,v 1.8 2004/11/11 04:08:16 nbubna Exp $ 
  */
 public class ChainedContext extends VelocityContext implements ViewContext
 {
 
     /* the current toolbox, request, response, and session */
-    private ToolboxContext toolboxContext;
+    private Map toolbox;
     private HttpServletRequest request;
     private HttpServletResponse response;
     private HttpSession session;
@@ -74,14 +75,39 @@ public class ChainedContext extends VelocityContext implements ViewContext
     /* the servlet context */
     private ServletContext application;
 
+    /* the velocity engine being used */
+    private VelocityEngine velocity;
 
+
+    /**
+     * @deprecated
+     */
     public ChainedContext(Context ctx,
+                          HttpServletRequest request,
+                          HttpServletResponse response,
+                          ServletContext application)
+    {
+        this(ctx, null, request, response, application);
+    }
+
+
+    public ChainedContext(VelocityEngine velocity,
+                          HttpServletRequest request,
+                          HttpServletResponse response,
+                          ServletContext application)
+    {
+        this(null, velocity, request, response, application);
+    }
+    
+    public ChainedContext(Context ctx,
+                          VelocityEngine velocity,
                           HttpServletRequest request,
                           HttpServletResponse response,
                           ServletContext application)
     {
         super(null, ctx);
 
+        this.velocity = velocity;
         this.request = request;
         this.response = response;
         this.session = request.getSession(false);
@@ -90,13 +116,22 @@ public class ChainedContext extends VelocityContext implements ViewContext
 
 
     /**
+     * @deprecated Use setToolbox(Map) instead.
+     */
+    public void setToolbox(ToolboxContext box)
+    {
+        setToolbox(box.getToolbox());
+    }
+
+
+    /**
      * <p>Sets the toolbox of view tools.</p>
      *
      * @param box toolbox of view tools
      */
-    public void setToolbox(ToolboxContext box)
+    public void setToolbox(Map box)
     {
-        this.toolboxContext = box;
+        this.toolbox = box;
         /* just in case the servlet toolbox manager
          * had to create a new session to hold session tools
          * let's make sure this context's session ref is current */
@@ -116,9 +151,9 @@ public class ChainedContext extends VelocityContext implements ViewContext
         Object o = null;
 
         /* search the toolbox */
-        if (toolboxContext != null)
+        if (toolbox != null)
         {
-            o = toolboxContext.get(key);
+            o = toolbox.get(key);
             if (o != null)
             {
                 return o;
@@ -211,6 +246,14 @@ public class ChainedContext extends VelocityContext implements ViewContext
     public Context getVelocityContext()
     {
         return this;
+    }
+
+    /**
+     * <p>Returns a reference to the VelocityEngine.</p>
+     */
+    public VelocityEngine getVelocityEngine()
+    {
+        return velocity;
     }
 
 }
