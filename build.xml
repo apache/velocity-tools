@@ -88,15 +88,29 @@
   <!-- C L E A N                                                          -->
   <!-- ================================================================== -->
   <target name="clean"
-   description="Clean build and distribution directories">
+    description="Clean build and distribution directories">
+ 
     <delete>
       <fileset dir="${docs.dest}" includes="**/*.html"/>
     </delete>
+ 
     <delete    dir="${docs.dest}/javadoc"/>
+ 
     <delete    dir="${docs.dest}/javadoc-vellibrary"/>
+ 
     <delete>
       <fileset dir="${basedir}" includes="**/*.bak"/>
     </delete>
+
+    <!-- Clean subprojects-->
+ 
+    <ant dir="view" target="clean" inheritAll="false"/>
+
+    <ant dir="tools" target="clean" inheritAll="false"/>
+
+    <ant dir="struts" target="clean" inheritAll="false"/>
+
+    <ant dir="struts/examples/struts" target="clean" inheritAll="false"/>
 
   </target>
 
@@ -104,8 +118,22 @@
   <!-- ================================================================== -->
   <!-- A L L                                                              -->
   <!-- ================================================================== -->
-  <target name="all" depends="clean, docs,javadocs"
-   description="Clean and compile all components"/>
+  <target name="all" depends="clean,docs,javadocs,javadocs-vellibrary"
+    description="Build entire project, including all subprojects">
+   
+      <!-- Build view package -->
+      <ant dir="view" target="all" inheritAll="false"/>
+   
+      <!-- Build library package -->
+      <ant dir="tools" target="all" inheritAll="false"/>
+   
+      <!-- Build struts package -->
+      <ant dir="struts" target="all" inheritAll="false"/> 
+   
+      <!-- Build VelocityStruts examples -->
+      <ant dir="struts/examples/struts" target="all" inheritAll="false"/> 
+
+  </target>
 
 
 
