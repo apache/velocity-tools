@@ -16,7 +16,6 @@
 
 package org.apache.velocity.tools.struts;
 
-
 import java.util.Locale;
 import java.util.Iterator;
 
@@ -26,7 +25,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.config.ModuleConfig;
@@ -54,7 +52,7 @@ import org.apache.struts.util.RequestUtils;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * based on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Id: StrutsUtils.java,v 1.20 2004/03/12 23:43:08 nbubna Exp $
+ * @version $Id: StrutsUtils.java,v 1.21 2004/03/12 23:44:51 nbubna Exp $
  */
 public class StrutsUtils
 {
