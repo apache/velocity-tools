@@ -85,7 +85,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @since VelocityTools 1.0
- * @version $Id: FormTool.java,v 1.4 2003/11/06 00:26:54 nbubna Exp $
+ * @version $Id: FormTool.java,v 1.5 2003/11/06 18:03:43 nbubna Exp $
  */
 public class FormTool implements ViewTool
 {
@@ -173,7 +173,7 @@ public class FormTool implements ViewTool
      */
     public String getCancelName()
     {
-        return StrutsUtils.getCancelName();
+        return org.apache.struts.taglib.html.Constants.CANCEL_PROPERTY;
     }
     
 
@@ -194,7 +194,7 @@ public class FormTool implements ViewTool
      */
     public String getTokenName()
     {
-        return StrutsUtils.getTokenName();
+        return org.apache.struts.taglib.html.Constants.TOKEN_KEY;
     }
 
 }
