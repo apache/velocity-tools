@@ -1,7 +1,7 @@
 <HTML>
 <HEAD>
-  <TITLE>Velocity for Struts 1.1</TITLE>
-  <link rel="stylesheet" href="styles.css" type="text/css">
+  <TITLE>VelocityStruts 1.1</TITLE>
+  <link rel="stylesheet" href="doc/styles.css" type="text/css">
 </HEAD>
 
 <BODY>
@@ -15,7 +15,7 @@
   </tr>
 </table>
 
-<div><a href="../index.html"><font color="#000000">Home</font></a> <font color="#000000">&gt; Examples</font></div>
+<div><a href="index.vm"><font color="#000000">Home</font></a> <font color="#000000">&gt; Examples</font></div>
 
 
 <h5><b>Examples</b></h5>
@@ -76,14 +76,14 @@
 	</li>
         <li><b><i></i> Struts App6: Struts SSL Ext. Example</b><br>
 		This application demonstrates the SecureLinkTool for Struts.  It's functionality is a subset
-                of the functionality provided by the SSL Ext. HTML tag library for JSP. <br/>
-                SSL Ext. is a very useful extension to the Struts framework that enables you to declare actions
-                secure, non-secure or neutral in the struts-config.  For more information see the project's
-                <a href="http://sslext.sourceforge.net">homepage</a>.  This example app is a stripped down version
-                of the demo that comes with the SSL Ext. package.<br/>
-                In order to try out this example app you have to have SSL set up and enabled on your web server.
-                The test app defaults to ports 8080 for http and 8443 for https - if you use other ports for these
-                protocols you need to change the settings in the app's struts-config.
+    of the functionality provided by the SSL Ext. HTML tag library for JSP. <br/>
+    SSL Ext. is a very useful extension to the Struts framework that enables you to declare actions
+    secure, non-secure or neutral in the struts-config.  For more information see the project's
+    <a href="http://sslext.sourceforge.net">homepage</a>.  This example app is a stripped down version
+    of the demo that comes with the SSL Ext. package.<br/>
+    In order to try out this example app you have to have SSL set up and enabled on your web server.
+    The test app defaults to ports 8080 for http and 8443 for https - if you use other ports for these
+    protocols you need to change the settings in the app's struts-config.
 		<ul>
 			<li><a href="$link.setForward("app6")" target="demo">Velocity Version</a></li>
 			<li><a href="$link.setForward("app6Jsp")" target="demo">JSP Version</a></li>
@@ -98,28 +98,6 @@
 			<li><a href="$link.setForward("app7Jsp")" target="demo">JSP Version</a></li>
 		</ul>
 		<p>&nbsp;</p>
-	</li>
-	<li>
-		<p><b>View Tool Demo: MathTool</b><br>
-			This example demonstrates how a view tool can be loaded from within a
-			template by the view designer. The tool used to load view tools is
-			a view tool itself. It is defined in toolbox.xml and pre-loaded during initialization.
-		<ul>
-			<li><a href="$link.setForward("math")" target="demo">Math Tool Demo</a>
-				(<a href="$link.setForward("mathSrc")">template</a>)</li>
-		</ul>
-		<p>&nbsp;</p>
-	</li>
-	<li><b>List HTTP Request Header</b><br>
-		This application simply lists the HTTP request headers. It demonstrates how
-		to access functionality provided by the servlet API in Velocity and JSP templates.
-		The JSP implementation uses the Struts bean and logic custom tag libraries.
-		<ul>
-			<li><a href="$link.setForward("header")" target="demo">Velocity Version</a></li>
-			<li><a href="$link.setForward("headerJsp")" target="demo">JSP Version</a><br>
-			</li>
-		</ul>
-		<br>
 	</li>
 </ul>
 
