@@ -97,7 +97,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * &lt;tool&gt;
  *   &lt;key&gt;validator&lt;/key&gt;
  *   &lt;scope&gt;request&lt;/scope&gt;
- *   &lt;class&gt;package org.apache.velocity.tools.struts.ValidatorTool&lt;/class&gt;
+ *   &lt;class&gt;org.apache.velocity.tools.struts.ValidatorTool&lt;/class&gt;
  * &lt;/tool&gt;
  * </pre>
  * </p>
@@ -109,7 +109,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.5 $ $Date: 2003/11/18 00:44:32 $
+ * @version $Revision: 1.6 $ $Date: 2003/11/19 19:35:16 $
  */
 public class ValidatorTool implements ViewTool {
 
