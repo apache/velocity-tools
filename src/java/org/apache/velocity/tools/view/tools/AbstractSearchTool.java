@@ -135,7 +135,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Revision: 1.8 $ $Date: 2004/11/11 03:46:44 $
+ * @version $Revision$ $Date$
  */
 public abstract class AbstractSearchTool extends AbstractPagerTool
 {
@@ -228,7 +228,10 @@ public abstract class AbstractSearchTool extends AbstractPagerTool
             list = executeQuery(criteria);
 
             /* save the new results */
-            setItems(list);
+            if (list != null)
+            {
+                setItems(list);
+            }
         }
         return list;
     }
