@@ -64,7 +64,7 @@ import org.apache.struts.action.ActionMappings;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * based on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Id: StrutsUtils.java,v 1.16.2.1 2004/03/12 20:16:27 nbubna Exp $
+ * @version $Id: StrutsUtils.java,v 1.16.2.2 2004/03/12 23:36:19 nbubna Exp $
  */
 public class StrutsUtils
 {
@@ -331,27 +331,44 @@ public class StrutsUtils
     /*********************** Struts Request Resources ****************/
 
     /**
-     * Returns the <code>org.apache.struts.action.ActionErrors</code>
-     * object for this request or <code>null</code> if none exists.
-     *
-     * @param request the servlet request
-     */
-    public static ActionErrors getActionErrors(HttpServletRequest request)
-    {
-        return (ActionErrors)request.getAttribute(Globals.ERROR_KEY);
-    }
-
-
-    /**
-     * Returns the <code>org.apache.struts.action.ActionMessages</code>
-     * object for this request or <code>null</code> if none exists.
+     * Returns the Struts errors for this request or <code>null</code> 
+     * if none exist.
      *
      * @param request the servlet request
      * @since VelocityTools 1.1
      */
-    public static ActionMessages getActionMessages(HttpServletRequest request)
+    public static ActionMessages getErrors(HttpServletRequest request)
+    {
+        return (ActionMessages)request.getAttribute(Globals.ERROR_KEY);
+    }
+
+    /**
+     * Returns the Struts messages for this request or <code>null</code> 
+     * if none exist.
+     *
+     * @param request the servlet request
+     * @since VelocityTools 1.1
+     */
+    public static ActionMessages getMessages(HttpServletRequest request)
     {
         return (ActionMessages)request.getAttribute(Globals.MESSAGE_KEY);
+    }
+
+
+    /**
+     * @deprecated use {@link #getErrors(HttpServletRequest request)}.
+     */
+    public static ActionErrors getActionErrors(HttpServletRequest request)
+    {
+        return (ActionErrors)getErrors(request);
+    }
+
+    /**
+     * @deprecated use {@link #getMessages(HttpServletRequest request)}.
+     */
+    public static ActionMessages getActionMessages(HttpServletRequest request)
+    {
+        return getMessages(request);
     }
 
 
