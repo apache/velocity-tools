@@ -1,8 +1,0 @@
-org.apache.velocity.tools.generic
-org.apache.velocity.tools.generic.log
-org.apache.velocity.tools.struts
-org.apache.velocity.tools.view
-org.apache.velocity.tools.view.context
-org.apache.velocity.tools.view.i18n
-org.apache.velocity.tools.view.servlet
-org.apache.velocity.tools.view.tools
