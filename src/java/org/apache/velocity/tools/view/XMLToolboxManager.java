@@ -111,7 +111,7 @@ import org.apache.velocity.tools.view.context.ToolboxContext;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: XMLToolboxManager.java,v 1.7 2003/12/06 06:00:45 nbubna Exp $
+ * @version $Id: XMLToolboxManager.java,v 1.8 2004/02/11 23:57:13 nbubna Exp $
  */
 public class XMLToolboxManager implements ToolboxManager
 {
@@ -180,6 +180,7 @@ public class XMLToolboxManager implements ToolboxManager
 
         Digester digester = new Digester();
         digester.setValidating(false);
+        digester.setUseContextClassLoader(true);
         digester.push(this);
         digester.addRuleSet(getRuleSet());
         digester.parse(input);
