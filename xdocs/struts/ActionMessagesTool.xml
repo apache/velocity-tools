@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: ActionMessagesTool.xml,v 1.5 2004/02/18 20:22:36 nbubna Exp $
+  $Id$
 -->
 <document>
 
@@ -193,7 +193,7 @@ $messages.getSize("password")</sourcecode>
                 <p>The following example shows a macro to render the action messages:</p>
 
 <sourcecode>&#35;macro (messagesMarkup)
-    &#35;if (&#36;messages.exist)
+    &#35;if (&#36;messages.exist())
         &lt;ul&gt;
         &#35;foreach (&#36;e in &#36;messages.all )
             &lt;li&gt;&#36;e&lt;/li&gt;
