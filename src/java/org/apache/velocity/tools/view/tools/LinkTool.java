@@ -55,6 +55,8 @@
 package org.apache.velocity.tools.view.tools;
 
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
@@ -83,7 +85,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: LinkTool.java,v 1.3 2003/03/22 20:33:09 nbubna Exp $
+ * @version $Id: LinkTool.java,v 1.4 2003/04/19 20:08:11 nbubna Exp $
  */
 public class LinkTool implements ViewTool, Cloneable
 {
@@ -114,6 +116,26 @@ public class LinkTool implements ViewTool, Cloneable
 
     /** The current delimiter for query data */
     private String queryDataDelim;
+
+    
+    /** Java 1.4 encode method to use instead of deprecated 1.3 version. */
+    private static Method encode = null;
+    
+    /* Initialize the encode variable with the 1.4 method if available.
+     * this code was adapted from org.apache.struts.utils.RequestUtils */
+    static
+    {
+        try
+        {
+            /* get version of encode method with two String args  */
+            Class[] args = new Class[] { String.class, String.class };
+            encode = URLEncoder.class.getMethod("encode", args);
+        }
+        catch (NoSuchMethodException e)
+        {
+            Velocity.debug("Could not find Java 1.4 encode method. Using deprecated version.");
+        }
+    }
 
 
     /**
@@ -442,6 +464,39 @@ public class LinkTool implements ViewTool, Cloneable
     }
 
 
+    /**
+     * Use the new URLEncoder.encode() method from java 1.4 if available, else
+     * use the old deprecated version.  This method uses reflection to find the appropriate
+     * method; if the reflection operations throw exceptions, this will return the url
+     * encoded with the old URLEncoder.encode() method.
+     *
+     * @return String - the encoded url.
+     */
+    public static String encodeURL(String url)
+    {
+        /* this code was adapted from org.apache.struts.utils.RequestUtils */
+        /* encode url with new 1.4 method and UTF-8 encoding */
+        if (encode != null)
+        {
+            try
+            {
+                return (String)encode.invoke(null, new Object[] { url, "UTF-8" });
+            }
+            catch (IllegalAccessException e)
+            {
+                Velocity.debug("Could not find Java 1.4 encode method (" + e + 
+                               "). Using deprecated version.");
+            }
+            catch (InvocationTargetException e)
+            {
+                Velocity.debug("Could not find Java 1.4 encode method (" + e + 
+                               "). Using deprecated version.");
+            }
+        }
+        return URLEncoder.encode(url);
+    }
+
+
   
     // --------------------------------------------- Internal Class -----------
  
@@ -474,9 +529,9 @@ public class LinkTool implements ViewTool, Cloneable
         public String toString()
         {
             StringBuffer out = new StringBuffer();
-            out.append(URLEncoder.encode(key));
+            out.append(encodeURL(key));
             out.append('=');
-            out.append(URLEncoder.encode(String.valueOf(value)));
+            out.append(encodeURL(String.valueOf(value)));
             return out.toString();
         }
     }
