@@ -61,10 +61,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
 
-import java.io.StringWriter;
-import org.apache.velocity.app.Velocity;
-import org.apache.velocity.Template;
-
 import org.apache.struts.tiles.ComponentContext;
 import org.apache.struts.tiles.ComponentDefinition;
 import org.apache.struts.tiles.AttributeDefinition;
@@ -76,9 +72,10 @@ import org.apache.struts.tiles.TilesUtil;
 import org.apache.struts.tiles.DefinitionsFactoryException;
 import org.apache.struts.tiles.Controller;
 
+import org.apache.velocity.app.Velocity;
+import org.apache.velocity.tools.view.ImportSupport;
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
-
 
 /**
  * <p>Title: TilesTool</p>
@@ -92,22 +89,18 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * from the current tiles-context.
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @version $Revision: 1.1 $ $Date: 2003/07/24 04:59:21 $
+ * @version $Revision: 1.2 $ $Date: 2003/10/30 00:03:37 $
  */
-public class TilesTool implements ViewTool
-{
+public class TilesTool extends ImportSupport
+    implements ViewTool {
 
     protected ViewContext context;
-    protected ServletContext application;
-    protected HttpServletRequest request;
-    protected HttpServletResponse response;
 
     /**
      * A stack to hold ComponentContexts while nested tile-definitions
      * are rendered.
      */
     protected Stack contextStack;
-
 
     /******************************* Constructors ****************************/
 
@@ -116,54 +109,47 @@ public class TilesTool implements ViewTool
      */
     public TilesTool() {}
 
-
     /**
      * Initializes this tool.
      *
      * @param obj the current ViewContext
      * @throws IllegalArgumentException if the param is not a ViewContext
      */
-    public void init(Object obj)
-    {
-        if (!(obj instanceof ViewContext))
-        {
+    public void init(Object obj) {
+        if (! (obj instanceof ViewContext)) {
             throw new IllegalArgumentException("Tool can only be initialized with a ViewContext");
         }
 
-        this.context = (ViewContext)obj;
+        this.context = (ViewContext) obj;
         this.request = context.getRequest();
         this.response = context.getResponse();
         this.application = context.getServletContext();
     }
-
 
     /***************************** View Helpers ******************************/
 
     /**
      * Fetches a named attribute value from the current tiles-context.
      *
-     * <p>This is functionally equivalent to 
+     * <p>This is functionally equivalent to
      * <code><tiles:getAsString name="title" /></code>.</p>
      *
      * @param name the name of the tiles-attribute to fetch
      * @return the attribute value as String
      */
-    public String getString(String name)
-    {
+    public String getString(String name) {
         ComponentContext context = ComponentContext.getContext(request);
         Object attrValue = context.getAttribute(name);
-        if (attrValue == null)
-        {
+        if (attrValue == null) {
             return null;
         }
         return attrValue.toString();
     }
 
-
     /**
      * <p>A generic tiles insert function</p>
      *
-     * <p>This is functionally equivalent to 
+     * <p>This is functionally equivalent to
      * <code><tiles:insert attribute="menu" /></code>.</p>
      *
      * @param attr - can be any of the following:
@@ -175,17 +161,20 @@ public class TilesTool implements ViewTool
      * @return the rendered template or value as a String
      * @throws Exception on failure
      */
-    public String get(Object attr) throws Exception
-    {
-        ComponentContext currentContext = ComponentContext.getContext(request);
-        Object attrValue = currentContext.getAttribute(attr.toString());
-        if (attrValue != null)
-        {
-            return processObjectValue(attrValue);
+    public String get(Object attr) throws Exception {
+        try {
+            ComponentContext currentContext = ComponentContext.getContext(request);
+            Object attrValue = currentContext.getAttribute(attr.toString());
+            if (attrValue != null) {
+                return processObjectValue(attrValue);
+            }
+            return processAsDefinitionOrURL(attr.toString());
         }
-        return processAsDefinitionOrURL(attr.toString());
+        catch(Exception e) {
+            Velocity.error("Exeption while rendering Tile " + attr.toString() + ": " + e.getMessage());
+            return null;
+        }
     }
-
 
     /************************** Protected Methods ****************************/
 
@@ -193,30 +182,26 @@ public class TilesTool implements ViewTool
      * Process an object retrieved as a bean or attribute.
      *
      * @param value - Object can be a typed attribute, a String, or anything
-     *        else. If typed attribute, use associated type. Otherwise, apply 
+     *        else. If typed attribute, use associated type. Otherwise, apply
      *        toString() on object, and use returned string as a name.
-     * @throws Exception - Throws by underlying nested call to 
+     * @throws Exception - Throws by underlying nested call to
      *         processDefinitionName()
      * @return the fully processed value as String
      */
-    protected String processObjectValue(Object value) throws Exception
-    {
+    protected String processObjectValue(Object value) throws Exception {
         /* First, check if value is one of the Typed Attribute */
-        if (value instanceof AttributeDefinition)
-        {
+        if (value instanceof AttributeDefinition) {
             /* We have a type => return appropriate IncludeType */
-            return processTypedAttribute((AttributeDefinition)value);
+            return processTypedAttribute( (AttributeDefinition) value);
 
         }
-        else if (value instanceof ComponentDefinition)
-        {
-            return processDefinition((ComponentDefinition)value);
+        else if (value instanceof ComponentDefinition) {
+            return processDefinition( (ComponentDefinition) value);
         }
 
         /* Value must denote a valid String */
         return processAsDefinitionOrURL(value.toString());
     }
-
 
     /**
      * Process typed attribute according to its type.
@@ -226,24 +211,20 @@ public class TilesTool implements ViewTool
      * @throws Exception - Throws by underlying nested call to processDefinitionName()
      */
     protected String processTypedAttribute(AttributeDefinition value) throws Exception {
-        if (value instanceof DirectStringAttribute)
-        {
-            return (String)value.getValue();
+        if (value instanceof DirectStringAttribute) {
+            return (String) value.getValue();
 
         }
-        else if (value instanceof DefinitionAttribute)
-        {
-            return processDefinition((ComponentDefinition)value.getValue());
+        else if (value instanceof DefinitionAttribute) {
+            return processDefinition( (ComponentDefinition) value.getValue());
 
         }
-        else if (value instanceof DefinitionNameAttribute)
-        {
-            return processAsDefinitionOrURL((String)value.getValue());
+        else if (value instanceof DefinitionNameAttribute) {
+            return processAsDefinitionOrURL( (String) value.getValue());
         }
         /* else if( value instanceof PathAttribute ) */
-        return doInsert((String)value.getValue(), null, null);
+        return doInsert( (String) value.getValue(), null, null);
     }
-
 
     /**
      * Try to process name as a definition, or as an URL if not found.
@@ -253,23 +234,19 @@ public class TilesTool implements ViewTool
      * @throws Exception
      */
     protected String processAsDefinitionOrURL(String name) throws Exception {
-        try
-        {
+        try {
             ComponentDefinition definition =
                 TilesUtil.getDefinition(name, request, application);
-            if (definition != null)
-            {
+            if (definition != null) {
                 return processDefinition(definition);
             }
         }
-        catch (DefinitionsFactoryException ex)
-        {
+        catch (DefinitionsFactoryException ex) {
             /* silently failed, because we can choose to not define a factory. */
         }
         /* no definition found, try as url */
         return processUrl(name);
     }
-
 
     /**
      * End of Process for definition.
@@ -278,12 +255,10 @@ public class TilesTool implements ViewTool
      * @return the fully processed definition.
      * @throws Exception from InstantiationException Can't create requested controller
      */
-    protected String processDefinition(ComponentDefinition definition) throws Exception
-    {
+    protected String processDefinition(ComponentDefinition definition) throws Exception {
         Controller controller = null;
 
-        try
-        {
+        try {
             controller = definition.getOrCreateController();
 
             String role = definition.getRole();
@@ -294,12 +269,10 @@ public class TilesTool implements ViewTool
                             role,
                             controller);
         }
-        catch (InstantiationException ex)
-        {
+        catch (InstantiationException ex) {
             throw new Exception(ex.getMessage());
         }
     }
-
 
     /**
      * Processes an url
@@ -308,11 +281,9 @@ public class TilesTool implements ViewTool
      * @return the rendered template as String.
      * @throws Exception
      */
-    protected String processUrl(String url) throws Exception
-    {
+    protected String processUrl(String url) throws Exception {
         return doInsert(url, null, null);
     }
-
 
     /**
      * Use this if there is no nested tile.
@@ -323,17 +294,14 @@ public class TilesTool implements ViewTool
      * @return the rendered template as String.
      * @throws Exception
      */
-    protected String doInsert(String page, String role, Controller controller) throws Exception
-    {
-        if (role != null && !request.isUserInRole(role))
-        {
+    protected String doInsert(String page, String role, Controller controller) throws Exception {
+        if (role != null && !request.isUserInRole(role)) {
             return null;
         }
 
         ComponentContext subCompContext = new ComponentContext();
         return doInsert(subCompContext, page, role, controller);
     }
-
 
     /**
      * Use this if there is a nested tile.
@@ -345,20 +313,17 @@ public class TilesTool implements ViewTool
      * @return the rendered template as String.
      * @throws Exception
      */
-    protected String doInsert(Map attributes, 
-                              String page, 
-                              String role, 
-                              Controller controller) throws Exception
-    {
-        if (role != null && !request.isUserInRole(role))
-        {
+    protected String doInsert(Map attributes,
+                              String page,
+                              String role,
+                              Controller controller) throws Exception {
+        if (role != null && !request.isUserInRole(role)) {
             return null;
         }
 
         ComponentContext subCompContext = new ComponentContext(attributes);
         return doInsert(subCompContext, page, role, controller);
     }
-
 
     /**
      * An extension of the other two doInsert functions
@@ -371,71 +336,46 @@ public class TilesTool implements ViewTool
      * @return the rendered template as String.
      * @throws Exception
      */
-    protected String doInsert(ComponentContext subCompContext, 
-                              String page, 
+    protected String doInsert(ComponentContext subCompContext,
+                              String page,
                               String role,
-                              Controller controller) throws Exception
-    {
+                              Controller controller) throws Exception {
         pushTilesContext();
-        try
-        {
+        try {
             ComponentContext.setContext(subCompContext, request);
 
             /* Call controller if any */
-            if (controller != null)
-            {
+            if (controller != null) {
                 controller.perform(subCompContext,
                                    request,
                                    response,
                                    application);
             }
-            return parse(page);
+            return this.acquireString(page);
         }
-        finally
-        {
+        finally {
             popTilesContext();
         }
     }
-
 
     /**
      * <p>pushes the current tiles context onto the context-stack.
      * preserving the context is necessary so that a sub-context can be
      * put into request scope and lower level tiles can be rendered</p>
      */
-    protected void pushTilesContext()
-    {
-        if (contextStack == null)
-        {
+    protected void pushTilesContext() {
+        if (contextStack == null) {
             contextStack = new Stack();
         }
         contextStack.push(ComponentContext.getContext(request));
     }
 
-
     /**
      * <p>pops the tiles sub-context off the context-stack after the lower level
      * tiles have been rendered</p>
      */
-    protected void popTilesContext()
-    {
-        ComponentContext.setContext((ComponentContext)contextStack.pop(), request);
-    }
-
-
-    /**
-     * <p>Renders a template</p>
-     *
-     * @param templateName - name of template to be rendered
-     * @throws Exception if it fails
-     * @return the rendered template as a String
-     */
-    protected String parse(String templateName) throws Exception
-    {
-        StringWriter sw = new StringWriter();
-        Template template = Velocity.getTemplate(templateName);
-        template.merge(context.getVelocityContext(), sw);
-        return sw.toString();
+    protected void popTilesContext() {
+        ComponentContext.setContext( (ComponentContext) contextStack.pop(), request);
     }
 
 }
