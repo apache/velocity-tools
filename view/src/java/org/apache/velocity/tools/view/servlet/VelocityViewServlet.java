@@ -112,7 +112,7 @@ import org.apache.velocity.tools.view.servlet.ServletToolboxManager;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author  <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.6 2003/01/27 17:17:20 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.7 2003/02/13 04:42:16 nbubna Exp $
  */
 
 public class VelocityViewServlet extends VelocityServlet
@@ -123,13 +123,6 @@ public class VelocityViewServlet extends VelocityServlet
      * Servlet init parameters.
      */
     public static final String TOOLBOX_PARAM = "toolbox";
-
-
-    /**
-     * Key used to access the Velocity configuration file path from the
-     * Servlet init parameters.
-     */ 
-    public static final String VELOCITY_PROPERTIES = "velocity.properties";
 
 
     /**
