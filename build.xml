@@ -1,5 +1,5 @@
 <!--
-  $Id: build.xml,v 1.19 2003/06/28 00:38:03 nbubna Exp $ 
+  $Id: build.xml,v 1.20 2003/06/28 05:10:56 nbubna Exp $ 
 -->
 <project name="velocity-tools" default="all" basedir=".">
 
@@ -11,6 +11,7 @@
 
   <property name="project.name"     value="Velocity Tools" />
   <property name="project.version"  value="1.0-dev"/>
+  <property name="project.id"       value="velocity-tools-${project.version}"/>
   
   <property name="struts.name"      value="velocity-tools-${project.version}"/>
   <property name="view.name"        value="velocity-tools-view-${project.version}"/>
@@ -29,6 +30,7 @@
   <property name="classes.dir"      value="${build.dir}/classes"/>
   <property name="dist.dir"         value="${basedir}/dist"/>
   <property name="docs.dir"         value="${basedir}/docs"/>
+  <property name="release.dir"      value="${dist.dir}/release/${project.id}"/>
 
   <property name="javadoc.dir"      value="${docs.dir}/javadoc"/>
   <property name="javadoc.title"    value="Velocity-Tools API Documentation"/>
@@ -305,6 +307,58 @@
     <copy todir="${layout.lib}" file="${velocity.jar}"/>
 
     <ant dir="${examples.home}/layout" target="war" inheritAll="false"/>
+  </target>
+
+
+  <!-- Build everything and construct distribution files -->
+  <target name="release" 
+          depends="jar.struts,jar.view,jar.generic,examples,javadoc,docs"
+          description="Builds all jars, examples, and docs for distribution">
+
+    <!-- Gather all project jars -->
+    <mkdir dir="${release.dir}/lib"/>
+    <copy todir="${release.dir}/lib">
+      <fileset dir="${dist.dir}" includes="*.jar" />
+    </copy>
+
+    <!-- Gather all project dependencies -->
+    <copy todir="${release.dir}/lib" file="${commons-beanutils.jar}"/>
+    <copy todir="${release.dir}/lib" file="${commons-collections.jar}"/>
+    <copy todir="${release.dir}/lib" file="${commons-digester.jar}"/>
+    <copy todir="${release.dir}/lib" file="${dom4j.jar}"/>
+    <copy todir="${release.dir}/lib" file="${servlet.jar}"/>
+    <copy todir="${release.dir}/lib" file="${struts.jar}"/>
+    <copy todir="${release.dir}/lib" file="${velocity.jar}"/>
+
+    <!-- Gather example war files -->
+    <mkdir dir="${release.dir}/examples"/>
+    <copy todir="${release.dir}/examples">
+      <fileset dir="${examples.home}">
+        <include name="*.war" />
+      </fileset>
+    </copy>
+
+    <!-- Gather all generated documentation -->
+    <mkdir dir="${release.dir}/docs"/>
+    <copy todir="${release.dir}/docs">
+      <fileset dir="${docs.dir}">
+        <include name="**" />
+      </fileset>
+    </copy>
+
+    <!-- Gather misc docs/files -->
+    <copy todir="${release.dir}" file="${basedir}/README.txt"/>
+    <copy todir="${release.dir}" file="${basedir}/STATUS"/>
+    <copy todir="${release.dir}" file="${basedir}/LICENSE"/>
+    <copy todir="${release.dir}" file="${basedir}/WHY_THREE_JARS.txt"/>
+
+    <!-- Create distribution files -->
+    <zip zipfile="${dist.dir}/${project.id}.zip" 
+         basedir="${dist.dir}/release"/>
+    <tar tarfile="${dist.dir}/${project.id}.tar" longfile="gnu"
+         basedir="${dist.dir}/release"/>
+    <gzip zipfile="${dist.dir}/${project.id}.tar.gz"
+          src="${dist.dir}/${project.id}.tar"/>
   </target>
 
 
