@@ -3,7 +3,7 @@
 <document>
 
     <properties>
-        <title>Generic Tools</title>
+        <title>GenericTools</title>
         <author email="sidler@apache.org">Gabriel Sidler</author>
         <projectfile>xdocs/generic/menu.xml</projectfile>
     </properties>
@@ -12,8 +12,9 @@
 
     <section name="Overview">
 
-        <p>Generic Tools contain a collection of reusable and well 
-        documented tools of general interest..</p>
+        <p>GenericTools contain a collection of reusable and well 
+        documented tools and utility classes of general interest
+        to Velocity users...</p>
 
         <p>Emphasis is being put on providing tool documentation that is 
         suitable for template designers. To achive this goal, a documentation
@@ -25,9 +26,9 @@
         for a good example of the new documentation format. </p>
         <p>We are interested in Designer and Developer feedback on the format. </p>
         
-        <p>Contributions of generic tools are welcome, see <a href="#Contributions">below</a> for more details.</p>
+        <p>Contributions are welcome, see <a href="#Contributions">below</a> for more details.</p>
           
-        <p><strong>Generic Tools:</strong></p>
+        <p><strong>Tools:</strong></p>
 
         <dl>
             <dt><a href="DateTool.html"><strong>DateTool</strong></a></dt>
@@ -47,12 +48,25 @@
         </dl>
         <br clear="all" />
 
+        <p><strong>Utilities:</strong></p>
+        <dl>
+            <dt><strong>CommonsLogLogSystem</strong></dt>
+            <dd>An implementation of Velocity's LogSystem interface that redirects
+            log output to a Commons-Logging Log instance.</dd>
+
+            <dt><strong>LogSystemCommonsLog</strong></dt>
+            <dd>An implementation of Commons-Logging's Log interface that redirects
+            log output to Velocity's LogSystem.</dd>
+        </dl>
+        <br clear="all" />
     </section>
 
     <section name="Contributions">
-        <p>We welcome your contributions to this library. Please post your offer
-        to contribute a tool to the 
-        <a href="mailto:velocity-user@jakarta.apache.org">Velocity mailing list</a>.</p>
+        <p>We welcome your contributions to this library.  Patches can be sent to the 
+        mailing list or attached to a
+        <a href="http://issues.apache.org/bugzilla/enter_bug.cgi?product=Velocity&amp;component=Tools">bugzilla</a>
+        ticket.  The <a href="http://nagoya.apache.org/wiki/apachewiki.cgi?VelocityTools">Wiki</a>
+        can also be a good place to discuss and develop ideas.</p>
 
         <p><strong>Checklist for Contributions</strong></p>
         <ul>
