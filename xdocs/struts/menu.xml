@@ -12,6 +12,7 @@
     <menu name="VelocityStruts">
         <item name="Overview"                href="index.html"/>
         <item name="Benefits"                href="index.html#Benefits"/>
+        <item name="What About 1.1?"         href="index.html#What About Struts 1.1?"/>
         <item name="Download"                href="../index.html#Download"/>
         <item name="User Guide"              href="userguide.html"/>
         <item name="Installation"            href="userguide.html#Installation"/>
