@@ -65,11 +65,11 @@
     <section name="Download">
         <p><strong>Releases</strong></p>
         <p>
-          VelocityTools 1.0 has been released and is available 
-          <a href="http://jakarta.apache.org/builds/jakarta-velocity-tools/">here</a>.
+          VelocityTools 1.1-beta1 has been released and is available in
+          <a href="http://jakarta.apache.org/site/sourceindex.cgi">source</a> or
+          <a href="http://jakarta.apache.org/site/binindex.cgi">binary</a> form.
         </p>
 
-        <p><strong>Source Code</strong></p>
         <p>
           Nightly snapshots of the project source are available as binaries
           <a href="http://cvs.apache.org/builds/jakarta-velocity/nightly/">here</a>.
