@@ -10,12 +10,12 @@
     </head>
 
     <body>
-    
+
         <html:errors/>
 
         <h3>Sign in, Please! (JSP Version)</h3>
-        
-        <html:form action="/logonSubmit_jsp" focus="username">
+
+        <html:form action="logonSubmit_jsp" focus="username">
 
         <table border="0">
 
@@ -27,7 +27,7 @@
                     <html:text property="username"/>
                 </td>
             </tr>
-        
+
             <tr>
                 <th align="right">
                     Password:
@@ -36,7 +36,7 @@
                     <html:password property="password"/>
                 </td>
             </tr>
-        
+
             <tr>
                 <td align="right">
                     <html:submit property="submit" value="Submit"/>
@@ -45,14 +45,14 @@
                     <html:reset/>
                 </td>
             </tr>
-        
+
         </table>
-        
+
         </html:form>
 
-        <a href="logon_jsp.txt">View Template</a><br>
+        <html:link forward="logon_jsp_src">View Template</html:link><br>
 
-    
+
     </body>
 </html>
 
