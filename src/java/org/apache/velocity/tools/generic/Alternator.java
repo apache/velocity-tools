@@ -48,35 +48,63 @@ import java.util.List;
  *      5 is red and fly
  * </pre></p>
  *
- * @version $Revision: 1.1 $ $Date: 2004/05/04 03:32:22 $
+ * @since Velocity Tools 1.2
+ * @version $Revision: 1.2 $ $Date: 2004/05/05 20:51:55 $
  */
 public class Alternator
 {
-    private List list;
+    private Object[] list;
     private int index = 0;
     private boolean auto = false;
 
     /**
-     * Creates a new Alternator for the specified list.
+     * Creates a new Alternator for the specified list.  Alternation
+     * is set to explicit (e.g. it's not automatic).
      */
-    public Alternator(List list)
+    public Alternator(Object[] list)
     {
-        this.list = list;
+        this(false, list);
     }
 
     /**
      * Creates a new Alternator for the specified list with the specified
-     * automatic shifting preference.  See {@link #setAuto(boolean auto)}.
+     * automatic shifting preference.
+     *
+     * @param auto See {@link #setAuto(boolean auto)}.
+     * @param list The (non-<code>null</code>) list of elements to
+     * alternate.
      */
     public Alternator(boolean auto, List list)
+    {
+        this(auto, list.toArray(new Object[list.size()]));
+    }
+
+    /**
+     * Creates a new Alternator for the specified list.  Alternation
+     * is set to explicit (e.g. it's not automatic).
+     */
+    public Alternator(List list)
+    {
+        this(false, list);
+    }
+
+    /**
+     * Creates a new Alternator for the specified list with the specified
+     * automatic shifting preference.
+     *
+     * @param auto See {@link #setAuto(boolean auto)}.
+     * @param list The (non-<code>null</code>) list of elements to
+     * alternate.
+     */
+    public Alternator(boolean auto, Object[] list)
     {
         this.auto = auto;
         this.list = list;
     }
 
     /**
-     * Returns true if this Alternator shifts the list index automatically
-     * after a call to toString().
+     * @return Whether this Alternator shifts the list index
+     * automatically after a call to {@link #toString()}.
      */
     public boolean isAuto()
     {
@@ -98,7 +126,7 @@ public class Alternator
      */
     public void shift()
     {
-        index = (index + 1) % list.size();
+        index = (index + 1) % list.length;
     }
 
     /**
@@ -106,11 +134,11 @@ public class Alternator
      */
     public Object getCurrent()
     {
-        return list.get(index);
+        return list[index];
     }
 
     /**
-     * Returns the current item before shifting the list index.
+     * Returns the current item, then shifts the list index.
      */
     public Object getNext()
     {
@@ -127,7 +155,7 @@ public class Alternator
      */
     public String toString()
     {
-        Object o = list.get(index);
+        Object o = list[index];
         if (auto)
         {
             shift();
