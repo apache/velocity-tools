@@ -1,5 +1,5 @@
 /*
- * Copyright 2003 The Apache Software Foundation.
+ * Copyright 2003-2004 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ package org.apache.velocity.tools.view.servlet;
 import javax.servlet.ServletContext;
 
 import java.io.InputStream;
+import java.io.File;
+import java.util.HashMap;
 
 import org.apache.commons.collections.ExtendedProperties;
 
@@ -43,13 +45,14 @@ import org.apache.velocity.runtime.resource.loader.ResourceLoader;
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:claude@savoirweb.com">Claude Brisson</a>
- * @version $Id: WebappLoader.java,v 1.7 2004/02/18 20:07:02 nbubna Exp $
- */
+ * @version $Id: WebappLoader.java,v 1.8 2004/10/04 13:06:52 marino Exp $  */
+
 public class WebappLoader extends ResourceLoader
 {
 
     /** The root paths for templates (relative to webapp's root). */
     protected String[] paths = null;
+    protected HashMap templatePaths = null;
 
     protected ServletContext servletContext = null;
 
@@ -60,13 +63,13 @@ public class WebappLoader extends ResourceLoader
      *        been placed in the runtime's application attributes
      *        under its full class name (i.e. "javax.servlet.ServletContext").
      *
-     * @param configuration the {@link ExtendedProperties} associated with 
+     * @param configuration the {@link ExtendedProperties} associated with
      *        this resource loader.
      */
     public void init(ExtendedProperties configuration)
     {
         rsvc.info("WebappLoader : initialization starting.");
-        
+
         /* get configured paths */
         paths = configuration.getStringArray("path");
         if (paths == null || paths.length == 0)
@@ -98,6 +101,9 @@ public class WebappLoader extends ResourceLoader
             rsvc.error("WebappLoader : unable to retrieve ServletContext");
         }
 
+        /* init the template paths map */
+        templatePaths = new HashMap();
+
         rsvc.info("WebappLoader : initialization complete.");
     }
 
@@ -114,29 +120,30 @@ public class WebappLoader extends ResourceLoader
         throws ResourceNotFoundException
     {
         InputStream result = null;
-        
+
         if (name == null || name.length() == 0)
         {
             throw new ResourceNotFoundException ("WebappLoader : No template name provided");
         }
-        
+
         /* since the paths always ends in '/',
-         * make sure the name never ends in one */
+         * make sure the name never starts with one */
         while (name.startsWith("/"))
         {
             name = name.substring(1);
         }
 
         Exception exception = null;
-        for (int i=0; i < paths.length; i++)
+        for (int i = 0; i < paths.length; i++)
         {
-            try 
+            try
             {
                 result = servletContext.getResourceAsStream(paths[i] + name);
 
-                /* exit the loop if we found the template */
+                /* save the path and exit the loop if we found the template */
                 if (result != null)
                 {
+                    templatePaths.put(name, paths[i]);
                     break;
                 }
             }
@@ -168,13 +175,58 @@ public class WebappLoader extends ResourceLoader
 
         return result;
     }
-    
+
     /**
      * Defaults to return false.
      */
     public boolean isSourceModified(Resource resource)
     {
-        return false;
+        String rootPath = servletContext.getRealPath("/");
+        if(rootPath == null) {
+           /*
+            * rootPath is null if the servlet container cannot translate the
+            * virtual path to a real path for any reason (such as when the
+            * content is being made available from a .war archive)
+            */
+            return false;
+        }
+
+        /* first, try getting the previously found file */
+        String fileName = resource.getName();
+        String savedPath = (String)templatePaths.get(fileName);
+        File cachedFile = new File(rootPath + savedPath, fileName);
+        if (!cachedFile.exists())
+        {
+            /* then the source has been moved and/or deleted */
+            return true;
+        }
+
+        /* check to see if the file can now be found elsewhere
+         * before it is found in the previously saved path */
+        File currentFile = null;
+        for (int i = 0; i < paths.length; i++)
+        {
+            currentFile = new File(rootPath + paths[i], fileName);
+            if (currentFile.canRead())
+            {
+                /* stop at the first resource found
+                 * (just like in getResourceStream()) */
+                break;
+            }
+        }
+
+        /* if the current is the cached and it is readable */
+        if (cachedFile.equals(currentFile) && cachedFile.canRead())
+        {
+            /* then (and only then) do we compare the last modified values */
+            return (cachedFile.lastModified() != resource.getLastModified());
+        }
+        else
+        {
+            /* we found a new file for the resource
+             * or the resource is no longer readable. */
+            return true;
+        }
     }
 
     /**
@@ -182,6 +234,25 @@ public class WebappLoader extends ResourceLoader
      */
     public long getLastModified(Resource resource)
     {
-        return 0;
+        String rootPath = servletContext.getRealPath("/");
+        if(rootPath == null) {
+           /*
+            * rootPath is null if the servlet container cannot translate the
+            * virtual path to a real path for any reason (such as when the
+            * content is being made available from a .war archive)
+            */
+            return 0;
+        }
+
+        String path = (String)templatePaths.get(resource.getName());
+        File file = new File(rootPath + path, resource.getName());
+        if (file.canRead())
+        {
+            return file.lastModified();
+        }
+        else
+        {
+            return 0;
+        }
     }
 }
