@@ -73,7 +73,7 @@ import org.apache.velocity.tools.view.context.ToolboxContext;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: XMLToolboxManager.java,v 1.9 2004/02/18 20:08:29 nbubna Exp $
+ * @version $Id: XMLToolboxManager.java,v 1.10 2004/04/15 17:33:15 nbubna Exp $
  */
 public class XMLToolboxManager implements ToolboxManager
 {
@@ -121,18 +121,6 @@ public class XMLToolboxManager implements ToolboxManager
     /**
      * <p>Reads an XML document from an {@link InputStream}
      * and sets up the toolbox from that.</p>
-     *
-     * The DTD for toolbox schema is:
-     * <pre>
-     *  &lt;?xml version="1.0"?&gt;
-     *  &lt;!ELEMENT toolbox (tool*,data*)&gt;
-     *  &lt;!ELEMENT tool    (key,class,#PCDATA)&gt;
-     *  &lt;!ELEMENT data    (key,value)&gt;
-     *      &lt;!ATTLIST data type (string|number|boolean) "string"&gt;
-     *  &lt;!ELEMENT key     (#CDATA)&gt;
-     *  &lt;!ELEMENT class   (#CDATA)&gt;
-     *  &lt;!ELEMENT value   (#CDATA)&gt;
-     * </pre>
      * 
      * @param input the InputStream to read from
      */
@@ -152,7 +140,20 @@ public class XMLToolboxManager implements ToolboxManager
 
 
     /**
-     * For subclassing convienence.
+     * <p>Retrieves the rule set Digester should use to parse and load
+     * the toolbox for this manager.</p>
+     *
+     * <p>The DTD corresponding to the default ToolboxRuleSet is:
+     * <pre>
+     *  &lt;?xml version="1.0"?&gt;
+     *  &lt;!ELEMENT toolbox (tool*,data*)&gt;
+     *  &lt;!ELEMENT tool    (key,class,#PCDATA)&gt;
+     *  &lt;!ELEMENT data    (key,value)&gt;
+     *      &lt;!ATTLIST data type (string|number|boolean) "string"&gt;
+     *  &lt;!ELEMENT key     (#CDATA)&gt;
+     *  &lt;!ELEMENT class   (#CDATA)&gt;
+     *  &lt;!ELEMENT value   (#CDATA)&gt;
+     * </pre></p>
      *
      * @since VelocityTools 1.1
      */

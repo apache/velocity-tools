@@ -94,7 +94,7 @@ import org.apache.velocity.tools.view.servlet.ServletToolboxRuleSet;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ServletToolboxManager.java,v 1.12 2004/02/18 20:07:02 nbubna Exp $
+ * @version $Id: ServletToolboxManager.java,v 1.13 2004/04/15 17:33:16 nbubna Exp $
  */
 public class ServletToolboxManager extends XMLToolboxManager
 {
@@ -245,7 +245,24 @@ public class ServletToolboxManager extends XMLToolboxManager
     // ------------------------------ XMLToolboxManager Overrides -------------
 
     /**
-     * For subclassing convienence.
+     * <p>Retrieves the rule set Digester should use to parse and load
+     * the toolbox for this manager.</p>
+     *
+     * <p>The DTD corresponding to the ServletToolboxRuleSet is:
+     * <pre>
+     *  &lt;?xml version="1.0"?&gt;
+     *  &lt;!ELEMENT toolbox (create-session,xhtml,tool*,data*)&gt;
+     *  &lt;!ELEMENT create-session (#CDATA)&gt;
+     *  &lt;!ELEMENT xhtml          (#CDATA)&gt;
+     *  &lt;!ELEMENT tool           (key,scope,class,#PCDATA)&gt;
+     *  &lt;!ELEMENT data           (key,value)&gt;
+     *      &lt;!ATTLIST data type (string|number|boolean) "string"&gt;
+     *  &lt;!ELEMENT key            (#CDATA)&gt;
+     *  &lt;!ELEMENT scope          (#CDATA)&gt;
+     *  &lt;!ELEMENT class          (#CDATA)&gt;
+     *  &lt;!ELEMENT value          (#CDATA)&gt;
+     * </pre></p>
+     *
      * @since VelocityTools 1.1
      */
     protected RuleSet getRuleSet()
