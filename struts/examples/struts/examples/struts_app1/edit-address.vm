@@ -1,0 +1,49 @@
+<html>
+    <head>
+    	<title>$bean.message("title")</title>
+    	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    </head>
+    
+    <body>    
+        <p><b>$bean.message("edit") (Velocity $bean.message("version"))</b></p>
+        
+        <form name="address" method="POST" action="address2.do">
+        <input type="hidden" name="action" value="list">
+        
+        <table width="300" border="1" cellspacing="" cellpadding="5">
+        	<tr> 
+        		<td>$bean.message("firstname")</td>
+        		<td><input type="text" name="firstname" value="$!address.firstname"></td>
+        	</tr>
+        	<tr> 
+        		<td>$bean.message("lastname")</td>
+        		<td><input type="text" name="lastname" value="$!address.lastname"></td>
+        	</tr>
+        	<tr> 
+        		<td>$bean.message("street")</td>
+        		<td><input type="text" name="street" value="$!address.street"></td>
+        	</tr>
+        	<tr> 
+        		<td>$bean.message("zip")</td>
+        		<td><input type="text" name="zip" value="$!address.zip"></td>
+        	</tr>
+        	<tr> 
+        		<td>$bean.message("city")</td>
+        		<td><input type="text" name="city" value="$!address.city"></td>
+        	</tr>
+        	<tr> 
+        		<td>$bean.message("country")</td>
+        		<td><input type="text" name="country" value="$!address.country"></td>
+        	</tr>
+        </table>
+        <br>
+        
+        <input type="submit" name="Submit" value="  $bean.message("save")  " onclick="address.action.value='save'; document.address.submit(); return false;">
+        <input type="submit" name="Submit2" value="$bean.message("cancel")"  onclick="address.action.value='list'; document.address.submit(); return false;">
+        </form>
+
+        <br>
+        <a href="examples/struts_app1/edit-address.txt">Template</a>
+    
+    </body>
+</html>

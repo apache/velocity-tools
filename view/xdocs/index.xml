@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+
+<document>
+
+ <properties>
+  <title>Velocity View For Struts</title>
+  <author email="geirm@apache.org">VVS Documentation Team</author>
+ </properties>
+
+ <body>
+ 
+ <section name="Velocity View For Struts">
+ 
+    <p>
+    Velocity View for Struts is the first non-JSP view layer to take advantage
+    of the new Struts ContextHelper.  The ContextHelper is an object exposed
+    by Struts that allows any Java-based view technology access to Struts
+    resources.
+    </p>
+
+    <strong>Why Was it Created?</strong>
+
+    <p>
+    It was created by Gabriel Sidler and Geir Magnusson Jr of the Velocity
+    community and Ted Husted of the Struts community to try and demonstrate that
+    other presentation layer technologies can be used with the 
+    <a href="http://jakarta.apache.org/struts/">Struts</a> web application
+    framework.
+    </p>
+  </section>
+
+  <section name="Example Please?">
+
+  <strong>Simmple Example</strong>
+
+  <p>
+  You can find a complete example WAR at ...  You can just drop this WAR
+  into your favorite servlet engine's webapp directory (or equivalent) as the file
+  vvs.war, restart
+  the servlet engine, and aim your browser at
+  </p>
+  <blockquote>
+  http://localhost:8080/vvs/examples/
+  </blockquote>
+  
+  <p>
+  and follow the directions.
+ </p>
+
+ </section>
+ 
+ </body>
+</document>
+

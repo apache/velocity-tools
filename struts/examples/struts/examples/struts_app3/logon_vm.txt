@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <title>Sign in, Please!</title>
+        <base href="$html.baseRef()">
+    </head>
+
+    <body>
+    
+        $!html.errorMarkup()
+        
+        <h3>Sign in, Please! (Velocity Version)</h3>
+
+        <form method="POST" action="$html.actionMappingURL('/logonSubmit_vm')">
+
+        <table border="0">
+            <tr>
+                <th align="right">
+                    Username:
+                </th>
+                <td align="left">
+                    <input type="text" name="username" value="$!logonForm.username">
+                </td>
+            </tr>
+        
+            <tr>
+                <th align="right">
+                    Password:
+                </th>
+                <td align="left">
+                    <input type="password" name="password" value="$!logonForm.password">
+                </td>
+            </tr>
+        
+            <tr>
+                <td align="right">
+                    <input type="submit" value="Submit" name="submit">
+                </td>
+                <td align="left">
+                    <input type="reset" value="Reset" name="reset">
+                </td>
+            </tr>
+        
+        </table>
+        
+        </form>
+
+        <a href="logon_vm.txt">View Template</a><br>
+
+    </body>
+    
+</html>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<toolbox>
+
+  <tools>
+
+   <object>
+     <contextkey>toytool</contextkey>
+     <class>ToyTool</class>
+   </object>
+
+  </tools>
+
+</toolbox>
+

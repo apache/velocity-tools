@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<toolbox>
+
+  <tools>
+
+   <object>
+     <contextkey>toolLoader</contextkey>
+     <class>org.apache.velocity.tools.struts.ToolLoaderTool</class>
+   </object>
+
+   <object>
+     <contextkey>bean</contextkey>
+     <class>org.apache.velocity.tools.struts.StrutsBeanTool</class>
+   </object>
+
+   <object>
+     <contextkey>html</contextkey>
+     <class>org.apache.velocity.tools.struts.StrutsHtmlTool</class>
+   </object>
+
+
+  </tools>
+
+</toolbox>
+

@@ -1,0 +1,118 @@
+<project name="Velocity-Struts" default="compile" basedir=".">
+
+
+<!--
+ * 
+ *      Build file for Struts Velocity.
+ *
+ *      Gabriel Sidler, sidler@teamup.ch
+ *      December 8. 2001
+ * 
+-->
+
+  <!-- *** ENVIRONMENT ******************************************************* -->
+
+  <property name="DEV"      value="${basedir}/"/>
+  <property name="SRC"      value="${basedir}/WEB-INF/src"/>
+  <property name="CLASSES"  value="${basedir}/WEB-INF/classes"/>
+  <property name="JAVADOC"  value="${basedir}/doc/javadoc"/>
+  <property name="LIB"      value="${basedir}/WEB-INF/lib"/>
+
+  <!-- Construct compile and javadoc classpath -->
+  <path id="classpath">
+    <fileset dir="${LIB}">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+  <!-- *** TARGETS ************************************************************* -->
+
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+  </target>
+
+
+  <target name="help" depends="init">
+    <!-- Print usage information -->
+    <echo>WEBPROJEKTO BUILD TOOL</echo>
+    <echo> </echo>
+    <echo>Usage: ant &lt;target&gt;                                         </echo>
+    <echo>                                                                  </echo>
+    <echo>where the following targets are supported:                        </echo>
+    <echo>                                                                  </echo>
+    <echo>  compile  Compile all sources.                                   </echo>
+    <echo>                                                                  </echo>
+    <echo>  javadoc  Generate javadoc documentation.                        </echo>
+    <echo>                                                                  </echo>
+    <echo>  clean    Clean dev tree and previously generated distributions. </echo>
+    <echo>                                                                  </echo>
+    <echo>  devwar   Pack the entire application into a war file.           </echo>
+    <echo>                                                                  </echo>
+    <echo>  help     Print this help information.                           </echo>
+    <echo>                                                                  </echo>
+  </target>
+
+
+  <target name="compile" depends="">
+    <!-- Compile the java code from ${SRC} into ${CLASSES} -->
+    <javac srcdir="${SRC}"
+           includes="*/**"
+           destdir="${CLASSES}">
+       <classpath refid="classpath"/>
+    </javac>
+
+    <!-- classpath="${LIB}/struts.jar;${LIB}/servlet.jar;${LIB}/velocity-1.1.jar;${LIB}/jdbc2_0-stdext.jar" -->
+  </target>
+
+
+  <target name="javadoc">
+    <!-- Remove any old documentation -->
+    <!-- <delete dir="${JAVADOC}"/> -->
+
+    <!-- (Re)Create javadoc directory -->
+    <mkdir dir="${JAVADOC}"/>
+
+    <!-- Generate Javadoc -->
+    <javadoc sourcepath="${SRC}"
+           packagenames="org.*"
+           destdir="${JAVADOC}"
+           author="true"
+           version="true"
+           use="true"
+           windowtitle="Velocity for Struts"
+           doctitle="Velocity for Struts">
+           <classpath refid="classpath"/>
+           <link href="http://jakarta.apache.org/struts/api/"/>
+           <link href="http://java.sun.com/products/servlet/2.3/javadoc/"/>
+           <link href="http://java.sun.com/j2ee/sdk_1.3/techdocs/api"/>
+           <link href="http://jakarta.apache.org/velocity/api/"/>
+    </javadoc>
+  </target>
+           
+
+  <target name="devwar" depends="init, clean, compile, javadoc">
+    <!-- Generate .war file, name it *.wa_ otherwise it will be unpacked -->
+    <jar jarfile="${basedir}/../struts-velocity-${DSTAMP}.wa_" basedir="${DEV}"/>
+  </target>
+
+
+  <target name="clean">
+    <!-- remove old class files -->
+    <delete>
+      <fileset dir="${CLASSES}" includes="**/*.class"/>
+    </delete>
+
+    <!-- remove *.bak backups -->
+    <delete>
+      <fileset dir="${basedir}" includes="**/*.bak"/>
+    </delete>
+
+    <!-- remove old javadoc -->
+    <delete dir="${JAVADOC}"/>
+
+  </target>
+  
+
+</project>

@@ -1,0 +1,47 @@
+<html>
+    <head>
+	    <title>$bean.message("title")</title>
+	    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	    <base href=" $html.getBaseRef() $html.errorSize ">
+    </head>
+
+    <body>
+        <h2>$bean.message("title") (Velocity)</h2>
+        <p>A demonstration of Struts context tools.</p>
+
+        A sample of functions provided by StrutsHtmlTool: (covers partially the Struts html tag lib for JSP)<br>
+        <table border="1" cellspacing="0" cellpadding="4">
+            <tr>
+                <td>\$html.baseRef()</td><td>$html.baseRef()</td>
+            </tr>
+            <tr>
+                <td>\$html.errorSize()</td><td>$html.errorSize()</td>
+            </tr>
+            <tr>
+                <td>\$html.errorsEmpty()</td><td>$html.errorsEmpty()</td>
+            </tr>
+            <tr>
+                <td>\$html.actionMappingURL("tooldemo")</td><td>$html.actionMappingURL("tooldemo")</td>
+            </tr>
+            <tr>
+                <td>\$html.link("logon_vm")</td><td>$html.link("logon_vm")</td>
+            </tr>
+        </table>
+
+        <br><br>
+
+        A sample of functions provided by StrutsBeanTool: (covers partially the Struts bean tag lib for JSP)<br>
+        <table border="1" cellspacing="0" cellpadding="4">
+            <tr>
+                <td>\$bean.message("title")</td><td>$bean.message("title")</td>
+            </tr>
+            <tr>
+                <td>\$bean.isMessage("title")</td><td>$bean.isMessage("title")</td>
+            </tr>
+            <tr>
+                <td>\$bean.isMessage("tutle")</td><td>$bean.isMessage("tutle")</td>
+            </tr>
+        </table>
+
+    </body>
+</html>

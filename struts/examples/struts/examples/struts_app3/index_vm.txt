@@ -1,0 +1,48 @@
+#*
+
+If user is logged in, display "Welcome ${username}!"
+Else display "Welcome World!"
+Display link to log in page; maintain session id if needed.
+If user is logged in, display a link to the sign-out page.
+
+Note: Only the minimum required html or Sruts custom tags 
+are used in this example.
+
+*#
+
+<html>
+    <head>
+        <title>Welcome World!</title>
+        <base href="$html.baseRef()">
+    </head>
+
+    <body>
+        #if( $user )
+        <h3>Welcome $user.username! (Velocity Version)</h3>
+        #else
+        <h3>Welcome World! (Velocity Version)</h3>
+        #end
+
+        $!html.errorMarkup
+        
+        <ul>
+            <li><a href="$html.link('logon_vm')">Sign in</a></li>
+            #if( $user )
+            <li><a href="$html.link('logoff_vm')">Sign out</a></li>
+            #end
+        </ul>
+
+        <a href="$html.actionMappingURL('/welcome_jsp')">Switch to JSP</a><br>
+        <a href="index_vm.txt">View Template</a><br>
+        
+    </body>
+
+</html>
+
+
+
+
+
+
+
+
