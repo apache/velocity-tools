@@ -94,7 +94,7 @@ import org.apache.velocity.tools.view.servlet.ServletToolboxRuleSet;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ServletToolboxManager.java,v 1.14 2004/04/16 20:39:28 nbubna Exp $
+ * @version $Id: ServletToolboxManager.java,v 1.15 2004/11/11 04:04:42 nbubna Exp $
  */
 public class ServletToolboxManager extends XMLToolboxManager
 {
@@ -330,7 +330,7 @@ public class ServletToolboxManager extends XMLToolboxManager
      * 
      * @param initData the {@link ViewContext} for the current servlet request
      */
-    public ToolboxContext getToolboxContext(Object initData)
+    public Map getToolbox(Object initData)
     {
         //we know the initData is a ViewContext
         ViewContext ctx = (ViewContext)initData;
@@ -374,7 +374,7 @@ public class ServletToolboxManager extends XMLToolboxManager
             toolbox.put(info.getKey(), info.getInstance(ctx));
         }
 
-        return new ToolboxContext(toolbox);
+        return toolbox;
     }
 
 
