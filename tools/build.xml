@@ -31,9 +31,6 @@
   <!-- The base directory for compilation targets -->
   <property name="build.home"            value="${basedir}/target"/>
 
-  <!-- The base directory for distribution targets -->
-  <property name="dist.home"             value="${basedir}/dist"/>
-
   <!-- The base directory for component sources -->
   <property name="source.home"           value="${basedir}/src"/>
 
@@ -89,6 +86,7 @@
   <!-- ================================================================== -->
   <target name="prepare" depends="init"
    description="Prepare build directory">
+    <mkdir dir="${docs.dest}"/>
     <mkdir dir="${build.home}"/>
     <mkdir dir="${build.home}/classes"/>
     <mkdir dir="${build.home}/conf"/>
@@ -110,7 +108,7 @@
   <!-- ================================================================== -->
   <!-- A L L                                                              -->
   <!-- ================================================================== -->
-  <target name="all" depends="clean,jar,install-jar,docs,javadocs"
+  <target name="all" depends="jar,install-jar,docs,javadocs"
    description="Build entire project"/>
 
 
@@ -122,8 +120,6 @@
 
     <delete    dir="${build.home}"/>
 
-    <delete    dir="${dist.home}"/>
-
     <delete>
       <fileset dir="${basedir}" includes="*.jar"/>
     </delete>
@@ -132,9 +128,7 @@
         <fileset dir="${project.repository}" includes="${project.name}-*.jar"/>
     </delete>
 
-    <delete>
-      <fileset dir="${docs.dest}" includes="**/*.html"/>
-    </delete>
+    <delete    dir="${docs.dest}"/>
 
     <delete>
       <fileset dir="${basedir}" includes="**/*.bak"/>

@@ -30,16 +30,16 @@
         <p><strong>VelocityLibrary Content:</strong></p>
 
         <dl>
-            <dt><a href="../tools/docs/DateTool.html"><strong>DateTool</strong></a></dt>
+            <dt><a href="DateTool.html"><strong>DateTool</strong></a></dt>
             <dd>A tool for manipulating and formating dates.</dd>
                 
-            <dt><a href="../tools/docs/MathTool.html"><strong>MathTool</strong></a></dt>
+            <dt><a href="MathTool.html"><strong>MathTool</strong></a></dt>
             <dd>A tool for performing floating point math.</dd>
                 
-            <dt><a href="../tools/docs/ParameterParser.html"><strong>ParameterParser</strong></a></dt>
+            <dt><a href="ParameterParser.html"><strong>ParameterParser</strong></a></dt>
             <dd>A tool for easy parsing of servlet request parameters.</dd>
                 
-            <dt><a href="../tools/docs/ToolLoader.html"><strong>ToolLoader</strong></a></dt>
+            <dt><a href="ToolLoader.html"><strong>ToolLoader</strong></a></dt>
             <dd>A tool allowing template designers to load view tools 
             from within the template.</dd>
         </dl>
