@@ -137,7 +137,7 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.18 2003/11/18 00:52:29 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.19 2003/12/04 00:59:35 nbubna Exp $
  */
 
 public class VelocityViewServlet extends HttpServlet
@@ -667,40 +667,50 @@ public class VelocityViewServlet extends HttpServlet
      */
     protected void error(HttpServletRequest request, 
                          HttpServletResponse response, 
-                         Exception cause)
+                         Exception e)
         throws ServletException
     {
         try
         {
             StringBuffer html = new StringBuffer();
-            html.append("<html>");
-            html.append("<title>Error</title>");
-            html.append("<body bgcolor=\"#ffffff\">");
-            html.append("<h2>VelocityViewServlet : Error processing the template</h2>");
-            html.append("<pre>");
+            html.append("<html>\n");
+            html.append("<head><title>Error</title></head>\n");
+            html.append("<body>\n");
+            html.append("<h2>VelocityViewServlet : Error processing the template</h2>\n");
+
+            Throwable cause = e;
+
             String why = cause.getMessage();
             if (why != null && why.trim().length() > 0)
             {
                 html.append(why);
-                html.append("<br>");
+                html.append("\n<br>\n");
+            }
+
+            // if it's an MIE, i want the real stack trace!
+            if (cause instanceof MethodInvocationException) 
+            {
+                // get the real cause
+                cause = ((MethodInvocationException)cause).getWrappedThrowable();
             }
 
             StringWriter sw = new StringWriter();
             cause.printStackTrace(new PrintWriter(sw));
 
+            html.append("<pre>\n");
             html.append(sw.toString());
-            html.append("</pre>");
-            html.append("</body>");
+            html.append("</pre>\n");
+            html.append("</body>\n");
             html.append("</html>");
             getResponseWriter(response).write(html.toString());
         }
-        catch (Exception e)
+        catch (Exception e2)
         {
             // clearly something is quite wrong.
             // let's log the new exception then give up and
             // throw a servlet exception that wraps the first one
-            Velocity.error("VelocityViewServlet: Exception while printing error screen: "+e);
-            throw new ServletException(cause);
+            Velocity.error("VelocityViewServlet: Exception while printing error screen: "+e2);
+            throw new ServletException(e);
         }
     }
 
