@@ -99,7 +99,7 @@ import java.util.TimeZone;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Revision: 1.7 $ $Date: 2003/11/11 01:16:54 $
+ * @version $Revision: 1.8 $ $Date: 2003/11/11 01:55:21 $
  */
 public class DateTool
 {
@@ -540,9 +540,9 @@ public class DateTool
     protected DateFormat getDateFormat(int dateStyle, int timeStyle, 
                                        Locale locale, TimeZone timezone)
     {
-        DateFormat df = null;
         try
         {
+            DateFormat df;
             if (dateStyle < 0 && timeStyle < 0)
             {
                 // no style was specified, use default instance
@@ -564,10 +564,12 @@ public class DateTool
                                                     locale);
             }
             df.setTimeZone(timezone);
-        }
-        catch (RuntimeException suppressed)
-        {
             return df;
+        }
+        catch (Exception suppressed)
+        {
+            // let it go...
+            return null;
         }
     }
 
