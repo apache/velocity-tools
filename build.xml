@@ -1,5 +1,5 @@
 <!--
-  $Id: build.xml,v 1.16 2003/06/26 02:08:16 nbubna Exp $ 
+  $Id: build.xml,v 1.17 2003/06/27 22:03:44 nbubna Exp $ 
 -->
 <project name="velocity-tools" default="all" basedir=".">
 
@@ -9,7 +9,7 @@
   <property file="build.properties"/>                <!-- Component local   -->
   <property file="${user.home}/build.properties"/>   <!-- User local        -->
 
-  <property name="project.name"     value="VelocityTools" />
+  <property name="project.name"     value="Velocity Tools" />
   <property name="project.version"  value="1.0-dev"/>
   
   <property name="struts.name"      value="velocity-tools-${project.version}"/>
@@ -281,7 +281,7 @@
     <copy todir="${velstruts.lib}" file="${commons-collections.jar}"/>
     <copy todir="${velstruts.lib}" file="${commons-digester.jar}"/>
     <copy todir="${velstruts.lib}" file="${dom4j.jar}"/>
-    <copy todir="${velstruts.lib}" file="${jakarta-servlet.jar}"/>
+    <copy todir="${velstruts.lib}" file="${servlet.jar}"/>
     <copy todir="${velstruts.lib}" file="${struts.jar}"/>
     <copy todir="${velstruts.lib}" file="${velocity.jar}"/>
 
