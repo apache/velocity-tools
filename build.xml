@@ -1,5 +1,5 @@
 <!--
-  $Id: build.xml,v 1.21 2003/07/04 19:42:32 nbubna Exp $ 
+  $Id: build.xml,v 1.22 2003/07/09 23:50:26 nbubna Exp $ 
 -->
 <project name="velocity-tools" default="all" basedir=".">
 
@@ -83,6 +83,25 @@
     <delete>
       <fileset dir="${examples.home}" includes="*.war"/>
     </delete>
+  </target>
+
+  <!-- To help rebuild the documentation -->
+  <target name="clean.docs" description="Deletes the docs directory">
+      <echo>
+       #######################################################
+       #
+       #  This will delete the existing documentation
+       #  directory.  To restore the documentation you
+       #  should re-checkout the directory from CVS
+       #  (especially before rebuilding the documentation
+       #  with the "docs" or "javadoc" targets).  If you
+       #  attempt to rebuild the documentation while the
+       #  folder remains deleted, it will cause file 
+       #  conflicts.
+       #
+       #######################################################
+      </echo>
+    <delete dir="${docs.dir}"/>
   </target>
 
 
