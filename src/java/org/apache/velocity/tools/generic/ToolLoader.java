@@ -66,8 +66,8 @@ package org.apache.velocity.tools.generic;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ToolLoader.java,v 1.2 2003/05/28 00:17:15 nbubna Exp $
- * 
+ * @version $Id: ToolLoader.java,v 1.3 2004/01/29 20:55:19 nbubna Exp $
+ * @deprecated This class will be removed after VelocityTools 1.1
  */
 
 public class ToolLoader
