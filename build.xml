@@ -1,5 +1,5 @@
 <!--
-  $Id: build.xml,v 1.10 2003/03/05 06:42:14 nbubna Exp $ 
+  $Id: build.xml,v 1.11 2003/03/10 19:05:08 nbubna Exp $ 
 -->
 <project name="velocity-tools" default="all" basedir=".">
 
@@ -52,6 +52,7 @@
   <path id="compile.classpath">
     <pathelement location="${commons-collections.jar}"/>
     <pathelement location="${dom4j.jar}"/>
+    <pathelement location="${jdbc.jar}"/>
     <pathelement location="${struts.jar}"/>
     <pathelement location="${servlet.jar}"/>
     <pathelement location="${velocity.jar}"/>
