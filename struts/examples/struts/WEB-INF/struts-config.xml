@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.0//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_0.dtd">
+
+<!--
+     This is a blank Struts configuration file based on the example application,
+     with commented examples of some items.
+
+     NOTE: If you have a generator tool to create the corresponding Java classes 
+     for you, you could include the details in the "form-bean" declarations.  
+     Otherwise, you would only define the "form-bean" element itself, with the 
+     corresponding "name" and "type" attributes, as shown here.
+-->
+
+
+<struts-config>
+
+
+  <!-- ========== Data Source Configuration =============================== -->
+<!--
+  <data-sources>
+    <data-source
+       autoCommit="false"
+      description="Example Data Source Configuration"
+      driverClass="org.postgresql.Driver"
+         maxCount="4"
+         minCount="2"
+         password="mypassword"
+              url="jdbc:postgresql://localhost/mydatabase"
+             user="myusername"
+    />
+  </data-sources>
+-->
+
+  <!-- ========== Form Bean Definitions =================================== -->
+  <form-beans>
+
+    <!-- Struts Example Application 1 -->
+    
+    <form-bean name="addressForm"
+               type="examples.app1.AddressForm"/>
+
+
+    <!-- Struts Example Application 3 -->
+
+     <form-bean
+        name="logonForm"
+        type= "examples.app3.LogonForm"/>
+
+  </form-beans>
+
+
+  <!-- ========== Global Forward Definitions ============================== -->
+  <global-forwards>
+
+    <!-- Struts Example Application 3, JSP Version -->
+
+    <!-- Forward to welcome -->
+     <forward
+        name="welcome_jsp"
+        path="/welcome_jsp.do"/>
+
+    <!-- Forward to logon -->
+     <forward
+        name="logon_jsp"
+        path="/logon_jsp.do"/>
+
+    <!-- Forward to logoff -->
+     <forward
+        name="logoff_jsp"
+        path="/logoff_jsp.do"/>
+
+
+    <!-- Struts Example Application 3, VM Version -->
+
+    <!-- Forward to welcome -->
+     <forward
+        name="welcome_vm"
+        path="/welcome_vm.do"/>
+
+    <!-- Forward to logon -->
+     <forward
+        name="logon_vm"
+        path="/logon_vm.do"/>
+
+    <!-- Forward to logoff -->
+     <forward
+        name="logoff_vm"
+        path="/logoff_vm.do"/>
+
+
+  </global-forwards>
+
+
+  <!-- ========== Action Mapping Definitions ============================== -->
+  <action-mappings>
+
+
+    <!-- Struts Example Application 1, JSP Version -->
+    <action path="/address1"
+            type="examples.app1.AddressAction"
+            name="addressForm"
+            scope="request">
+        <forward name="showAddress" path="/examples/struts_app1/show-address.jsp"/>
+        <forward name="editAddress" path="/examples/struts_app1/edit-address.jsp"/>
+    </action>
+
+
+    <!-- Struts Example Application 1, Velocity Version --> 
+    <action path="/address2"
+            type="examples.app1.AddressAction"
+            name="addressForm"
+            scope="request">
+        <forward name="showAddress" path="/examples/struts_app1/show-address.vm"/>
+        <forward name="editAddress" path="/examples/struts_app1/edit-address.vm"/>
+    </action>
+
+
+    <!-- Struts Example Application 2, Velocity Version -->
+    <action path="/tooldemo"
+            type="examples.app2.ToolDemoAction">
+        <forward name="gotoStart" path="/examples/struts_app2/tool-demo.vm"/>
+        <forward name="gotoEnd" path="/examples/struts_app2/tool-demo.vm"/>
+    </action>
+
+
+    <!-- Struts Example Application 3, JSP Version -->
+
+    <!-- Proceed to welcome page -->
+    <action 
+        path="/welcome_jsp"
+        type="examples.app3.ContinueAction">
+      <forward name="continue" path="/examples/struts_app3/index.jsp"/>
+    </action>
+    
+    <!-- Process a user logon -->
+    <action 
+        path="/logon_jsp"
+        type="examples.app3.ContinueAction"
+        name="logonForm"    
+        scope="request"
+        validate="false">
+      <forward name="continue" path="/examples/struts_app3/logon.jsp"/>
+    </action>
+    
+    <action 
+        path="/logonSubmit_jsp"
+        type="examples.app3.LogonAction"
+        name="logonForm"    
+        scope="request"
+        validate="true"
+        input="/examples/struts_app3/logon.jsp">
+      <forward name="continue" path="/examples/struts_app3/index.jsp"/>
+    </action>
+    
+    <!-- Process a user logoff -->
+    <action 
+        path="/logoff_jsp"
+        type="examples.app3.LogoffAction">
+      <forward name="continue" path="/examples/struts_app3/index.jsp"/>
+    </action>
+
+
+    <!-- Struts Example Application 3, VM Version -->
+
+    <!-- Proceed to welcome page -->
+    <action 
+        path="/welcome_vm"
+        type="examples.app3.ContinueAction">
+      <forward name="continue" path="/examples/struts_app3/index.vm"/>
+    </action>
+    
+    <!-- Process a user logon -->
+    <action 
+        path="/logon_vm"
+        type="examples.app3.ContinueAction"
+        name="logonForm"    
+        scope="request"
+        validate="false">
+      <forward name="continue" path="/examples/struts_app3/logon.vm"/>
+    </action>
+    
+    <action 
+        path="/logonSubmit_vm"
+        type="examples.app3.LogonAction"
+        name="logonForm"    
+        scope="request"
+        validate="true"
+        input="/examples/struts_app3/logon.vm">
+      <forward name="continue" path="/examples/struts_app3/index.vm"/>
+    </action>
+    
+    <!-- Process a user logoff -->
+    <action 
+        path="/logoff_vm"
+        type="examples.app3.LogoffAction">
+      <forward name="continue" path="/examples/struts_app3/index.vm"/>
+    </action>
+
+
+
+
+    <!-- The standard administrative actions available with Struts -->
+    <!-- These would be either omitted or protected by security -->
+    <!-- in a real application deployment -->
+    <action    path="/admin/addFormBean"
+               type="org.apache.struts.actions.AddFormBeanAction"/>
+    <action    path="/admin/addForward"
+               type="org.apache.struts.actions.AddForwardAction"/>
+    <action    path="/admin/addMapping"
+               type="org.apache.struts.actions.AddMappingAction"/>
+    <action    path="/admin/reload"
+               type="org.apache.struts.actions.ReloadAction"/>
+    <action    path="/admin/removeFormBean"
+               type="org.apache.struts.actions.RemoveFormBeanAction"/>
+    <action    path="/admin/removeForward"
+               type="org.apache.struts.actions.RemoveForwardAction"/>
+    <action    path="/admin/removeMapping"
+               type="org.apache.struts.actions.RemoveMappingAction"/>
+
+
+  </action-mappings>
+
+</struts-config>

@@ -1,0 +1,168 @@
+<project name="velocity-view" default="jar" basedir=".">
+
+<!-- ========== Initialize Properties ===================================== -->
+
+  <property file="build/build.properties"/>          <!-- Component local   -->
+  <property file="../build.properties"/>             <!-- Commons local     -->
+  <property file="${user.home}/.build.properties"/>  <!-- User local        -->
+ 
+<!-- ========== External Dependencies ===================================== -->
+
+ <!-- the local repository -->
+ <property name="local.repository"            value="./lib" />
+
+<!-- ========== Component Declarations ==================================== -->
+
+
+  <!-- The name of this component -->
+  <property name="project.name"          value="velocity-tools-struts" />
+
+  <!-- The title of this component -->
+  <property name="project.title"         value=""/>
+
+  <!-- The current version number of this component -->
+  <property name="project.version"       value="0.1"/>
+
+  <!-- The base directory for compilation targets -->
+  <property name="build.home"              value="target"/>
+
+  <!-- The base directory for distribution targets -->
+  <property name="dist.home"               value="dist"/>
+
+  <!-- The base directory for component sources -->
+  <property name="source.home"             value="src"/>
+
+  <!-- The base directory for component sources -->
+  <property name="conf.home"             value="src/conf"/>
+
+  <!-- The docs source directory -->
+  <property name="docs.src"             value="xdocs"/>
+
+  <!-- The docs destination directory  -->
+  <property name="docs.dest"             value="docs"/>
+
+<!-- ========== Compiler Defaults ========================================= -->
+
+
+  <!-- Should Java compilations set the 'debug' compiler option? -->
+  <property name="compile.debug"           value="true"/>
+
+  <!-- Should Java compilations set the 'deprecation' compiler option? -->
+  <property name="compile.deprecation"     value="true"/>
+
+  <!-- Should Java compilations set the 'optimize' compiler option? -->
+  <property name="compile.optimize"        value="true"/>
+
+  <!-- Construct compile classpath -->
+  <path id="classpath">
+    <fileset dir="${local.repository}">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+
+<!-- ========== Executable Targets ======================================== -->
+
+
+  <target name="init"
+   description="Initialize and evaluate conditionals">
+    <echo message="-------- ${project.name} ${project.version} --------"/>
+    <filter  token="name"                  value="${project.name}"/>
+    <filter  token="version"               value="${project.version}"/>
+  </target>
+
+  <target name="prepare" depends="init"
+   description="Prepare build directory">
+    <mkdir dir="${build.home}"/>
+    <mkdir dir="${build.home}/classes"/>
+    <mkdir dir="${build.home}/conf"/>
+    <mkdir dir="${build.home}/javadoc"/> 
+  </target>
+
+  <target name="static" depends="prepare"
+   description="Copy static files to build directory">
+    <tstamp/>
+    <copy  todir="${build.home}/conf" filtering="on">
+      <fileset dir="${conf.home}" includes="*.MF"/>
+    </copy>
+  </target>
+
+
+  <target name="compile" depends="static" description="Compile">
+  
+    <javac  srcdir="${source.home}/java"
+            destdir="${build.home}/classes"
+            debug="${compile.debug}"
+            deprecation="${compile.deprecation}"
+            optimize="${compile.optimize}">
+        <classpath refid="classpath"/>
+    </javac>
+
+    <copy    todir="${build.home}/classes" filtering="on">
+      <fileset dir="${source.home}/java" excludes="**/*.java"/>
+    </copy>
+
+  </target>
+
+
+  <target name="clean"
+   description="Clean build and distribution directories">
+    <delete    dir="${build.home}"/>
+    <delete    dir="${dist.home}"/>
+  </target>
+
+  <target name="all" depends="clean,compile"
+   description="Clean and compile all components"/>
+
+  <target name="javadoc" depends="compile"
+   description="Create Javadoc documentation">
+    <javadoc sourcepath="${source.home}/java"
+                destdir="${build.home}/javadoc"
+           packagenames="org.apache.taglibs.velocity.*"
+                 author="true"
+                private="true"
+                version="true"
+               doctitle="&lt;h1&gt;${project.title}&lt;/h1&gt;"
+            windowtitle="${project.title} (Version ${project.version})"
+                 bottom="Copyright (c) 2001 Apache Software Foundation" >
+
+      <classpath refid="classpath"/>
+ 
+     </javadoc>
+  </target>
+
+  <target name="jar" depends="compile">
+    <jar    jarfile="${project.name}-${project.version}.jar"
+            basedir="${build.home}/classes"
+            manifest="${conf.home}/MANIFEST.MF"/>
+  </target>
+
+ <target name="jar-templates" depends="compile">
+    <jar    jarfile="${project.name}-${project.version}-templates.jar"
+            basedir="${source.home}/templates"
+            manifest="${conf.home}/MANIFEST.MF"/>
+  </target>
+
+
+  <target name="docs">
+  
+      <taskdef name="dvsl" classname="org.apache.tools.dvsl.DVSLTask">
+                        
+          <classpath>
+             <path refid="classpath"/>
+          </classpath>
+
+      </taskdef>
+
+      <dvsl 
+           basedir="${docs.src}" 
+           destdir="${docs.dest}/"
+    	   toolbox="${docs.src}/toolbox.props"
+           extension=".html" 
+           style="${docs.src}/site.dvsl"
+           excludes="**/project.xml"
+           includes="**/*.xml" 
+      />
+  </target>
+
+</project>
+
