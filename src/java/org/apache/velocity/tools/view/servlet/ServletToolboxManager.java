@@ -132,7 +132,7 @@ import org.apache.velocity.tools.view.servlet.ServletToolboxRuleSet;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ServletToolboxManager.java,v 1.10 2004/02/12 18:13:21 nbubna Exp $
+ * @version $Id: ServletToolboxManager.java,v 1.11 2004/02/18 16:20:43 nbubna Exp $
  */
 public class ServletToolboxManager extends XMLToolboxManager
 {
@@ -140,7 +140,7 @@ public class ServletToolboxManager extends XMLToolboxManager
     // --------------------------------------------------- Properties ---------
 
     public static final String SESSION_TOOLS_KEY = 
-        "org.apache.velocity.tools.view.tools.ServletToolboxManager.SessionTools";
+        ServletToolboxManager.class.getName() + ":session-tools";
 
     private ServletContext servletContext;
     private Map appTools;
