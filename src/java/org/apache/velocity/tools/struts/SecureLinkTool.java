@@ -89,10 +89,9 @@ import org.apache.struts.Globals;
  * </tool>
  * </pre>
  * </p>
- * @author Marinó A. Jónsson
- * @version 1.0
+ * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
+ * @version $Revision: 1.3 $ $Date: 2003/10/15 20:23:46 $
  */
-
 public class SecureLinkTool extends LinkTool
 {
 
