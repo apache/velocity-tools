@@ -99,7 +99,7 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.24 2004/11/11 07:02:24 nbubna Exp $
+ * @version $Id$
  */
 
 public class VelocityViewServlet extends HttpServlet
@@ -508,9 +508,16 @@ public class VelocityViewServlet extends HttpServlet
         // attribute holds the correct path.  See section 8.3 of the Servlet
         // 2.3 specification.
         String path = (String)request.getAttribute("javax.servlet.include.servlet_path");
+        // also take into account the PathInfo stated on SRV.4.4 Request Path Elements
+        String info = (String)request.getAttribute("javax.servlet.include.path_info");
         if (path == null)
         {
             path = request.getServletPath();
+            info = request.getPathInfo();
+        }
+        if (info != null)
+        {
+            path += info;
         }
         return getTemplate(path);
     }
