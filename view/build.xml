@@ -22,7 +22,7 @@
   <property name="project.title"         value=""/>
 
   <!-- The current version number of this component -->
-  <property name="project.version"       value="0.5"/>
+  <property name="project.version"       value="0.6"/>
 
   <!-- The base directory for compilation targets -->
   <property name="build.home"              value="target"/>
@@ -132,6 +132,9 @@
       <fileset dir="${docs.dest}" includes="**/*"/>
     </delete>
     <delete    dir="${docs.dest}/javadoc-velservlet"/>
+    <delete>
+      <fileset dir="${basedir}" includes="*.jar"/>
+    </delete>
     <delete>
       <fileset dir="${basedir}" includes="**/*.bak"/>
     </delete>
