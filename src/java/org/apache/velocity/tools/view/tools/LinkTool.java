@@ -92,7 +92,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Id: LinkTool.java,v 1.11 2003/11/06 00:26:54 nbubna Exp $
+ * @version $Id: LinkTool.java,v 1.12 2003/12/06 05:54:39 nbubna Exp $
  */
 public class LinkTool implements ViewTool, Cloneable
 {
@@ -542,7 +542,7 @@ public class LinkTool implements ViewTool, Cloneable
      *
      * @return String - the encoded url.
      */
-    public static String encodeURL(String url)
+    public String encodeURL(String url)
     {
         /* this code was adapted from org.apache.struts.utils.RequestUtils */
         /* encode url with new 1.4 method and UTF-8 encoding */
@@ -550,6 +550,7 @@ public class LinkTool implements ViewTool, Cloneable
         {
             try
             {
+                //TODO? use response.getCharacterEncoding() instead of UTF-8?
                 return (String)encode.invoke(null, new Object[] { url, "UTF-8" });
             }
             catch (IllegalAccessException e)
