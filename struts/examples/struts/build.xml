@@ -79,7 +79,7 @@
   <!-- ================================================================== -->
   <!-- A L L                                                              -->
   <!-- ================================================================== -->
-  <target name="all" depends="clean,init,compile,war"
+  <target name="all" depends="war"
    description="Build entire example"/>
 
 
@@ -128,12 +128,13 @@
   <!-- ================================================================== -->
   <!-- W A R                                                              -->
   <!-- ================================================================== -->
-  <target name="war" depends="clean, compile"
+  <target name="war" depends="compile"
     description="Generate a *.war file of the example application">
     <!-- Generate .war file, name it velstruts.war -->
-    <jar jarfile="${basedir}/../velstruts.war" basedir="${basedir}"/>
+    <jar jarfile="${basedir}/../velstruts.war" 
+         basedir="${basedir}"
+         excludes="**/MANIFEST.MF"/>
   </target>
-
 
 </project>
 
