@@ -89,6 +89,7 @@
   <!-- ================================================================== -->
   <target name="prepare" depends="init">
     <!-- Prepare build directory -->
+    <mkdir dir="${basedir}/docs"/>
     <mkdir dir="${build.home}"/>
     <mkdir dir="${build.home}/classes"/>
     <mkdir dir="${build.home}/conf"/>
