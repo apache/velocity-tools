@@ -83,7 +83,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: MessageTool.java,v 1.6 2003/10/20 02:24:03 nbubna Exp $
+ * @version $Id: MessageTool.java,v 1.7 2003/10/20 02:33:48 nbubna Exp $
  */
 public class MessageTool implements ViewTool
 {
@@ -143,6 +143,32 @@ public class MessageTool implements ViewTool
     }
 
 
+    /**
+     * Retrieves the specified {@link MessageResources} bundle, or the
+     * application's default MessageResources if no bundle is specified.
+     */
+    protected MessageResources getResources(String bundle)
+    {
+        if (bundle == null)
+        {
+            if (resources == null) 
+            {
+                Velocity.error("Message resources are not available.");
+            }
+            return resources;
+        }
+        
+        MessageResources res = 
+            StrutsUtils.getMessageResources(request, app, bundle);
+        if (res == null)
+        {
+            Velocity.error("MessageResources bundle '" + bundle + 
+                           "' is not available.");
+        }
+        return res;
+    }
+
+
 
     // --------------------------------------------- View Helpers -------------
 
@@ -160,7 +186,6 @@ public class MessageTool implements ViewTool
     {
         return get(key, (Object[])null);
     }
-
 
     /**
      * Looks up and returns the localized message for the specified key.
@@ -193,21 +218,7 @@ public class MessageTool implements ViewTool
      */
     public String get(String key, Object args[])
     {
-        if (resources == null)
-        {
-            Velocity.error("Message resources are not available.");
-            return null;
-        }
-
-        // return the requested message
-        if (args == null)
-        {
-            return resources.getMessage(locale, key);
-        }
-        else
-        {
-            return resources.getMessage(locale, key, args);
-        }
+       return get(key, null, args);
     }
 
     /**
@@ -223,13 +234,11 @@ public class MessageTool implements ViewTool
      * @return the localized message for the specified key or
      * <code>null</code> if no such message exists
      */
-
     public String get(String key, String bundle, Object args[])
     {
-        MessageResources res = StrutsUtils.getMessageResources(this.request, app, bundle);
+        MessageResources res = getResources(bundle);
         if (res == null)
         {
-            Velocity.error("Message resources are not available.");
             return null;
         }
 
@@ -277,29 +286,6 @@ public class MessageTool implements ViewTool
         return get(key, bundle, args.toArray());
     }
 
-    /**
-     * Checks if a message string for a specified message key exists
-     * for the user's locale.
-     *
-     * @param key message key
-     * @param bundle The bundle name to look for.
-     *
-     * @return <code>true</code> if a message strings exists,
-     * <code>false</code> otherwise
-     */
-    public boolean exists(String key, String bundle)
-    {
-        MessageResources res = StrutsUtils.getMessageResources(this.request, app, bundle);
-        if (res == null)
-        {
-            Velocity.error("Message resources are not available.");
-            return false;
-        }
-
-        // Return the requested message presence indicator
-        return (res.isPresent(locale, key));
-    }
-
 
     /**
      * Checks if a message string for a specified message key exists
@@ -312,14 +298,29 @@ public class MessageTool implements ViewTool
      */
     public boolean exists(String key)
     {
-        if (resources == null)
+        return exists(key, null);
+    }
+
+    /**
+     * Checks if a message string for a specified message key exists
+     * for the user's locale.
+     *
+     * @param key message key
+     * @param bundle The bundle name to look for.
+     *
+     * @return <code>true</code> if a message strings exists,
+     * <code>false</code> otherwise
+     */
+    public boolean exists(String key, String bundle)
+    {
+        MessageResources res = getResources(bundle);
+        if (res == null)
         {
-            Velocity.error("Message resources are not available.");
             return false;
         }
 
         // Return the requested message presence indicator
-        return (resources.isPresent(locale, key));
+        return res.isPresent(locale, key);
     }
 
 
