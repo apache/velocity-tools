@@ -123,7 +123,6 @@
                 <li><a href="#Exposing Data">Exposing Data</a></li>
                 <li><a href="#Access to Servlet Resources">Access to Servlet Resources</a></li>
                 <li><a href="#Access to Struts Framework Resources">Access to Struts Framework Resources</a></li>
-                <li><a href="#View Tools">View Tools</a></li>
             </ol>
           </li>
         </ol>
@@ -860,10 +859,9 @@ test=This string has 4 replacement parameters: {1}, {2}, {3}, {4}
 <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
     <pre><sourcecode>
-$text.get("title")
-$text.get("test", ["bear", "dog", "cat"])
-$text.exists("tutle")
-$text.getLocale()
+$text.title
+$text.get('test', ['bear', 'dog', 'cat'])
+$text.exists('tutle')
 </sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
@@ -874,7 +872,6 @@ $text.getLocale()
 Struts Example Application
 This string has 4 replacement parameters: bear, dog, cat, {4}
 false
-en
 </sourcecode></pre>
   </td></tr></table>
 </td></tr></table>

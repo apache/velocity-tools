@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: userguide.xml,v 1.5 2004/02/18 20:22:36 nbubna Exp $
+  $Id: userguide.xml,v 1.6 2004/07/21 17:16:10 nbubna Exp $
 -->
 <document>
 
@@ -59,7 +59,6 @@
                 <li><a href="#Exposing Data">Exposing Data</a></li>
                 <li><a href="#Access to Servlet Resources">Access to Servlet Resources</a></li>
                 <li><a href="#Access to Struts Framework Resources">Access to Struts Framework Resources</a></li>
-                <li><a href="#View Tools">View Tools</a></li>
             </ol>
           </li>
         </ol>
@@ -499,10 +498,9 @@ test=This string has 4 replacement parameters: {1}, {2}, {3}, {4}
 <p>Then, the following script...</p>
 
 <sourcecode>
-$text.get("title")
-$text.get("test", ["bear", "dog", "cat"])
-$text.exists("tutle")
-$text.getLocale()
+$text.title
+$text.get('test', ['bear', 'dog', 'cat'])
+$text.exists('tutle')
 </sourcecode>
 
 <p>..will produce this output:</p>
@@ -511,7 +509,6 @@ $text.getLocale()
 Struts Example Application
 This string has 4 replacement parameters: bear, dog, cat, {4}
 false
-en
 </sourcecode>
 
             <p>Please see the <a href="StrutsTools.html">Tool Reference Documentation</a>
