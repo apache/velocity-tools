@@ -33,7 +33,8 @@ import javax.servlet.ServletContext;
 
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RuleSet;
-import org.apache.velocity.app.Velocity;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.view.DataInfo;
 import org.apache.velocity.tools.view.ToolInfo;
 import org.apache.velocity.tools.view.XMLToolboxManager;
@@ -94,7 +95,7 @@ import org.apache.velocity.tools.view.servlet.ServletToolboxRuleSet;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ServletToolboxManager.java,v 1.15 2004/11/11 04:04:42 nbubna Exp $
+ * @version $Id: ServletToolboxManager.java,v 1.16 2004/11/11 06:26:27 nbubna Exp $
  */
 public class ServletToolboxManager extends XMLToolboxManager
 {
@@ -103,6 +104,8 @@ public class ServletToolboxManager extends XMLToolboxManager
 
     public static final String SESSION_TOOLS_KEY = 
         ServletToolboxManager.class.getName() + ":session-tools";
+
+    protected static final Log LOG = LogFactory.getLog(ServletToolboxManager.class);
 
     private ServletContext servletContext;
     private Map appTools;
@@ -165,8 +168,7 @@ public class ServletToolboxManager extends XMLToolboxManager
 
                 if (is != null)
                 {
-                    Velocity.info("ServletToolboxManager: Using config file '" + 
-                                  toolboxFile +"'");
+                    LOG.info("Using config file '" + toolboxFile +"'");
 
                     toolboxManager = new ServletToolboxManager(servletContext);
                     toolboxManager.load(is);
@@ -174,18 +176,18 @@ public class ServletToolboxManager extends XMLToolboxManager
                     // remember it
                     managersMap.put(pathname, toolboxManager);
 
-                    Velocity.info("ServletToolboxManager: Toolbox setup complete.");
+                    LOG.info("Toolbox setup complete.");
                 }
             }
             catch(Exception e)
             {
-                Velocity.error("Problem loading toolbox '" + toolboxFile +"' : " + e);
+                LOG.error("Problem loading toolbox '" + toolboxFile +"' : " + e);
 
                 // if this happens, it probably deserves
                 // to have the stack trace logged
                 StringWriter sw = new StringWriter();
                 e.printStackTrace(new PrintWriter(sw));
-                Velocity.error(sw.toString());
+                LOG.error(sw.toString());
             }
             finally
             {
@@ -223,7 +225,7 @@ public class ServletToolboxManager extends XMLToolboxManager
     public void setCreateSession(boolean b)
     {
         createSession = b;
-        Velocity.debug("ServletToolboxManager: create-session is set to " + b);
+        LOG.debug("create-session is set to " + b);
     }
 
 
@@ -237,8 +239,7 @@ public class ServletToolboxManager extends XMLToolboxManager
     public void setXhtml(Boolean value)
     {
         servletContext.setAttribute(ViewContext.XHTML, value);
-        Velocity.info("ServletToolboxManager: " + ViewContext.XHTML + 
-                      " is set to " + value);
+        LOG.info(ViewContext.XHTML + " is set to " + value);
     }
 
 
@@ -305,9 +306,8 @@ public class ServletToolboxManager extends XMLToolboxManager
             }
             else
             {
-                Velocity.warn("ServletToolboxManager: Unknown scope '" +
-                              sti.getScope() + "' - " + sti.getKey() + 
-                              " will be request scoped.");
+                LOG.warn("Unknown scope '" + sti.getScope() + "' - " + 
+                         sti.getKey() + " will be request scoped.");
                 requestToolInfo.add(sti);
             }
         }

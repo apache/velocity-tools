@@ -19,12 +19,11 @@ package org.apache.velocity.tools.struts;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.struts.util.MessageResources;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-
-import org.apache.velocity.app.Velocity;
 import org.apache.velocity.tools.struts.StrutsUtils;
 
 /**
@@ -51,10 +50,12 @@ import org.apache.velocity.tools.struts.StrutsUtils;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.1
- * @version $Id: ActionMessagesTool.java,v 1.9 2004/03/12 23:43:08 nbubna Exp $
+ * @version $Id: ActionMessagesTool.java,v 1.10 2004/11/11 06:26:27 nbubna Exp $
  */
 public class ActionMessagesTool extends MessageResourcesTool
 {
+
+    protected static final Log LOG = LogFactory.getLog(ActionMessagesTool.class);
 
     /** A reference to the queued action messages. */
     protected ActionMessages actionMsgs;
@@ -254,9 +255,8 @@ public class ActionMessagesTool extends MessageResourcesTool
 
                 if (message == null)
                 {
-                    Velocity.warn("ActionMessagesTool: Message for key " + 
-                                  msg.getKey() + 
-                                  " could not be found in message resources.");
+                    LOG.warn("Message for key " + msg.getKey() + 
+                             " could not be found in message resources.");
                 }
             }
             else

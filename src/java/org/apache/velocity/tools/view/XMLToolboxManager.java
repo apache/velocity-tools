@@ -27,7 +27,8 @@ import java.util.Map;
 
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RuleSet;
-import org.apache.velocity.app.Velocity;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.view.ToolboxRuleSet;
 import org.apache.velocity.tools.view.context.ToolboxContext;
 
@@ -73,10 +74,11 @@ import org.apache.velocity.tools.view.context.ToolboxContext;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: XMLToolboxManager.java,v 1.12 2004/11/11 04:02:03 nbubna Exp $
+ * @version $Id: XMLToolboxManager.java,v 1.13 2004/11/11 06:26:27 nbubna Exp $
  */
 public class XMLToolboxManager implements ToolboxManager
 {
+    protected static final Log LOG = LogFactory.getLog(XMLToolboxManager.class);
 
     private List toolinfo;
     private Map data;
@@ -106,7 +108,7 @@ public class XMLToolboxManager implements ToolboxManager
         {
             toolinfo.add(info);
         }
-        Velocity.info("Added "+info.getKey()+" ("+info.getClassname()+") to the toolbox.");
+        LOG.info("Added "+info.getKey()+" ("+info.getClassname()+") to the toolbox.");
     }
 
 
@@ -142,7 +144,7 @@ public class XMLToolboxManager implements ToolboxManager
      */
     public void load(InputStream input) throws Exception
     {
-        Velocity.debug("XMLToolboxManager: Loading toolbox...");
+        LOG.trace("Loading toolbox...");
 
         Digester digester = new Digester();
         digester.setValidating(false);
@@ -151,7 +153,7 @@ public class XMLToolboxManager implements ToolboxManager
         digester.addRuleSet(getRuleSet());
         digester.parse(input);
 
-        Velocity.debug("XMLToolboxManager: Toolbox loaded.");
+        LOG.trace("Toolbox loaded.");
     }
 
 
