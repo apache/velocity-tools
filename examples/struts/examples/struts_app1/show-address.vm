@@ -1,16 +1,16 @@
 <html>
 	<head>
-		<title>$msg.get("title")</title>
+		<title>$text.get("title")</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 	</head>
 
 	<body>
-		<p><b>$msg.get("title") (Velocity $msg.get("version"))</b></p>
+		<p><b>$text.get("title") (Velocity $text.get("version"))</b></p>
 
-		<p>$msg.get("intro")</p>
+		<p>$text.get("intro")</p>
 
 		<form name="form1" method="GET" action="$link.setAction("address2")">
-		<p>$msg.get("language")
+		<p>$text.get("language")
 		<select name="locale" size="1" onchange="form1.submit(); return false;">
 			<option value="" SELECTED></option>
 			<option value="English">English</option>
@@ -18,37 +18,37 @@
 		</select>
 		</p></form>
 
-		<p>$msg.get("header")</p>
+		<p>$text.get("header")</p>
 		<table width="300" border="1" cellspacing="" cellpadding="5">
 			<tr>
-				<td>$msg.get("firstname")</td>
+				<td>$text.get("firstname")</td>
 				<td>&nbsp; $!address.firstname </td>
 			</tr>
 			<tr>
-				<td>$msg.get("lastname")</td>
+				<td>$text.get("lastname")</td>
 				<td>&nbsp; $!address.lastname </td>
 			</tr>
 			<tr>
-				<td>$msg.get("street")</td>
+				<td>$text.get("street")</td>
 				<td>&nbsp; $!address.street </td>
 			</tr>
 			<tr>
-				<td>$msg.get("zip")</td>
+				<td>$text.get("zip")</td>
 				<td>&nbsp; $!address.zip </td>
 			</tr>
 			<tr>
-				<td>$msg.get("city")</td>
+				<td>$text.get("city")</td>
 				<td>&nbsp; $!address.city </td>
 			</tr>
 			<tr>
-				<td>$msg.get("country")</td>
+				<td>$text.get("country")</td>
 				<td>&nbsp; $!address.country </td>
 			</tr>
 			<tr>
-				<td>$msg.get("languages")</td>
+				<td>$text.get("languages")</td>
 				<td>
 					#foreach ($language in $!address.languages)
-						&nbsp; $msg.get($language)<br>
+						&nbsp; $text.get($language)<br>
 					#end
 					&nbsp;
 				</td>
@@ -56,8 +56,8 @@
 		</table>
 
 		<br>
-		<a href="$link.setAction("address1").addQueryData("action","edit")">$msg.get("edit")</a> (JSP)<br><br>
-		<a href="$link.setAction("address2").addQueryData("action","edit")">$msg.get("edit")</a> (Velocity)
+		<a href="$link.setAction("address1").addQueryData("action","edit")">$text.get("edit")</a> (JSP)<br><br>
+		<a href="$link.setAction("address2").addQueryData("action","edit")">$text.get("edit")</a> (Velocity)
 
 		<br><br>
 		<a href="$link.setForward("showAddressSrc")">Template</a>

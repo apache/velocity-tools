@@ -22,7 +22,7 @@
   </tool>
 
   <tool>
-     <key>msg</key>
+     <key>text</key>
      <class>org.apache.velocity.tools.struts.MessageTool</class>
   </tool>
 
@@ -32,7 +32,7 @@
   </tool>
 
   <tool>
-     <key>actionmsgs</key>
+     <key>messages</key>
      <class>org.apache.velocity.tools.struts.ActionMessagesTool</class>
   </tool>
 

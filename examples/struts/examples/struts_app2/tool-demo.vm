@@ -15,23 +15,23 @@
         <h3>MessageTool</h3>
         <table border="1" cellspacing="0" cellpadding="4">
             <tr>
-                <td>\$msg.get("title")<br>
-                    \$msg.title</td>
-                <td>$msg.get("title")</td>
+                <td>\$text.get("title")<br>
+                    \$text.title</td>
+                <td>$text.get("title")</td>
             </tr>
             <tr>
-                <td>\$msg.get("test", ["bear", "dog", "cat"])</td>
-                <td>$msg.get("test", ["bear", "dog", "cat"])</td>
+                <td>\$text.get("test", ["bear", "dog", "cat"])</td>
+                <td>$text.get("test", ["bear", "dog", "cat"])</td>
             </tr>
             <tr>
-                <td>\$msg.exists("tutle")</td>
-                <td>$msg.exists("tutle")</td>
+                <td>\$text.exists("tutle")</td>
+                <td>$text.exists("tutle")</td>
             </tr>
             <tr>
             <tr>
-                <td>\$msg.getLocale()<br>
-                    \$msg.locale</td>
-                <td>$msg.getLocale()</td>
+                <td>\$text.getLocale()<br>
+                    \$text.locale</td>
+                <td>$text.getLocale()</td>
             </tr>
         </table>
 
@@ -69,7 +69,7 @@
             </tr>
             <tr>
                 <td>\$errors.getMsgs()<br>
-                    \$errors.msgs</td>
+                    \$errors.texts</td>
                 <td>$errors.getMsgs()</td>
             </tr>
             <tr>
@@ -195,40 +195,40 @@
         <h3>ActionMessagesTool</h3>
         <table border="1" cellspacing="0" cellpadding="4">
             <tr>
-                <td>\$actionmsgs.exist()</td>
-                <td>$actionmsgs.exist()</td>
+                <td>\$messages.exist()</td>
+                <td>$messages.exist()</td>
             </tr>
             <tr>
-                <td>\$actionmsgs.exist("foobar")</td>
-                <td>$actionmsgs.exist("foobar")</td>
+                <td>\$messages.exist("foobar")</td>
+                <td>$messages.exist("foobar")</td>
             </tr>
             <tr>
-                <td>\$actionmsgs.getSize()<br>
-                    \$actionmsgs.size</td>
-                <td>$actionmsgs.getSize()</td>
+                <td>\$messages.getSize()<br>
+                    \$messages.size</td>
+                <td>$messages.getSize()</td>
             </tr>
             <tr>
-                <td>\$actionmsgs.getSize("foobar")</td>
-                <td>$actionmsgs.getSize("foobar")</td>
+                <td>\$messages.getSize("foobar")</td>
+                <td>$messages.getSize("foobar")</td>
             </tr>
             <tr>
-                <td>\$actionmsgs.getAll()<br>
-                    \$actionmsgs.all</td>
+                <td>\$messages.getAll()<br>
+                    \$messages.all</td>
                 <td>[This is a String representation of the ArrayList that is returned]<br>
-                    $actionmsgs.getAll()</td>
+                    $messages.getAll()</td>
             </tr>
             <tr>
-                <td>\$actionmsgs.get("foobar")<br>
-                    \$actionmsgs.language</td>
+                <td>\$messages.get("foobar")<br>
+                    \$messages.language</td>
                 <td>[This is a String representation of the ArrayList that is returned]<br>
-                    $actionmsgs.get("foobar")</td>
+                    $messages.get("foobar")</td>
             </tr>
             <tr>
-                <td>A Velocity macro to render all actionmsg messages:<br>
+                <td>A Velocity macro to render all actiontext messages:<br>
 <pre><code>&#35;macro (messageMarkup)
-  &#35;if (&#36;actionmsgs.exist() )
+  &#35;if (&#36;messages.exist() )
     &lt;ul&gt;
-    &#35;foreach (&#36;m in &#36;actionmsgs.all )
+    &#35;foreach (&#36;m in &#36;messages.all )
       &#36;m
     &#35;end
     &lt;/ul&gt;
@@ -240,12 +240,12 @@
                 </td>
             </tr>
             <tr>
-                <td>A Velocity macro to render actionmsg messages specific<br>
+                <td>A Velocity macro to render actiontext messages specific<br>
                     to a property:<br>
 <pre><code>&#35;macro (messageMarkup &#36;property)
-  &#35;if (&#36;actionmsgs.exist(&#36;property))
+  &#35;if (&#36;messages.exist(&#36;property))
     &lt;ul&gt;
-    &#35;foreach (&#36;m in &#36;actionmsgs.get(&#36;property))
+    &#35;foreach (&#36;m in &#36;messages.get(&#36;property))
       &#36;m
     &#35;end
     &lt;/ul&gt;

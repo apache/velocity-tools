@@ -23,9 +23,9 @@
 
 ## Display all queued Struts errors
 #macro (messageMarkup)
-    #if ($actionmsgs.exist() )
+    #if ($messages.exist() )
         <ul>
-        #foreach ($m in $actionmsgs.all )
+        #foreach ($m in $messages.all )
             $m
         #end
         </ul>
@@ -34,9 +34,9 @@
 
 ## Display all queued Struts action messages for a particular property
 #macro (messageMarkupForProperty $property)
-    #if ($actionmsgs.exist($property) )
+    #if ($messages.exist($property) )
         <ul>
-        #foreach ($m in $actionmsgs.get($property))
+        #foreach ($m in $messages.get($property))
             $m
         #end
         </ul>
