@@ -14,10 +14,15 @@
   <property name="CLASSES"  value="${basedir}/WEB-INF/classes"/>
   <property name="JAVADOC"  value="${basedir}/doc/javadoc"/>
   <property name="LIB"      value="${basedir}/WEB-INF/lib"/>
+  <property name="BUILDLIB" value="${basedir}/WEB-INF/build-lib"/>
+  
 
   <!-- Construct compile and javadoc classpath -->
   <path id="classpath">
     <fileset dir="${LIB}">
+      <include name="*.jar"/>
+    </fileset>
+    <fileset dir="${BUILDLIB}">
       <include name="*.jar"/>
     </fileset>
   </path>
