@@ -8,40 +8,40 @@
     </form-bean>
   </form-beans>
   <action-mappings type="org.apache.struts.config.SecureActionConfig">
-    <action forward="/examples/struts_app6/true.vm" path="/true">
+    <action forward="/true.vm" path="/true">
       <set-property property="secure" value="true" />
     </action>
-    <action forward="/examples/struts_app6/false.vm" path="/false">
+    <action forward="/false.vm" path="/false">
       <set-property property="secure" value="false" />
     </action>
-    <action forward="/examples/struts_app6/any.vm" path="/any">
+    <action forward="/any.vm" path="/any">
       <set-property property="secure" value="any" />
     </action>
-    <action name="testForm" forward="/examples/struts_app6/submitted.vm" path="/secureSubmit">
+    <action name="testForm" forward="/submitted.vm" path="/secureSubmit">
       <set-property property="secure" value="true" />
     </action>
-    <action name="testForm" forward="/examples/struts_app6/submitted.vm" path="/nonsecureSubmit">
+    <action name="testForm" forward="/submitted.vm" path="/nonsecureSubmit">
       <set-property property="secure" value="false" />
     </action>
-    <action forward="/examples/struts_app6/form.vm" path="/formAction">
+    <action forward="/form.vm" path="/formAction">
       <set-property property="secure" value="false" />
     </action>
-    <action forward="/examples/struts_app6/true.jsp" path="/true_jsp">
+    <action forward="/true.jsp" path="/true_jsp">
       <set-property property="secure" value="true" />
     </action>
-    <action forward="/examples/struts_app6/false.jsp" path="/false_jsp">
+    <action forward="/false.jsp" path="/false_jsp">
       <set-property property="secure" value="false" />
     </action>
-    <action forward="/examples/struts_app6/any.jsp" path="/any_jsp">
+    <action forward="/any.jsp" path="/any_jsp">
       <set-property property="secure" value="any" />
     </action>
-    <action name="testForm" forward="/examples/struts_app6/submitted.jsp" path="/secureSubmit_jsp">
+    <action name="testForm" forward="/submitted.jsp" path="/secureSubmit_jsp">
       <set-property property="secure" value="true" />
     </action>
-    <action name="testForm" forward="/examples/struts_app6/submitted.jsp" path="/nonsecureSubmit_jsp">
+    <action name="testForm" forward="/submitted.jsp" path="/nonsecureSubmit_jsp">
       <set-property property="secure" value="false" />
     </action>
-    <action forward="/examples/struts_app6/form.jsp" path="/formAction_jsp">
+    <action forward="/form.jsp" path="/formAction_jsp">
       <set-property property="secure" value="false" />
     </action>
   </action-mappings>

@@ -6,18 +6,12 @@
       <form-property name="email" type="java.lang.String" />
     </form-bean>
   </form-beans>
-  <global-forwards>
-    <forward contextRelative="true" name="demoVm" path="/examples/struts_app5/validator-demo.vm" />
-    <forward contextRelative="true" name="successVm" path="/examples/struts_app5/success.vm" />
-    <forward contextRelative="true" name="demoJsp" path="/examples/struts_app5/validator-demo.jsp" />
-    <forward contextRelative="true" name="successJsp" path="/examples/struts_app5/success.jsp" />
-  </global-forwards>
   <action-mappings>
-    <action name="emailForm" forward="/examples/struts_app5/validator-demo.vm" path="/index_vm" validate="false" />
-    <action input="/index_vm.do" name="emailForm" forward="successVm" path="/do_submit_vm" validate="true" />
+    <action name="emailForm" forward="/validator-demo.vm" path="/index_vm" validate="false" />
+    <action input="/index_vm.do" name="emailForm" forward="/success.vm" path="/do_submit_vm" validate="true" />
 
-    <action name="emailForm" forward="demoJsp" path="/index_jsp" validate="false" />
-    <action input="/index_jsp.do" name="emailForm" forward="successJsp" path="/do_submit_jsp" validate="true" />
+    <action name="emailForm" forward="/validator-demo.jsp" path="/index_jsp" validate="false" />
+    <action input="/index_jsp.do" name="emailForm" forward="/success.jsp" path="/do_submit_jsp" validate="true" />
   </action-mappings>
   <message-resources parameter="examples.app5.ApplicationResources" />
   <plug-in className="org.apache.struts.validator.ValidatorPlugIn">

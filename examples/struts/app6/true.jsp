@@ -24,7 +24,7 @@
 <body>
 <font size="+4"><center><%=request.getRequestURI()%></center></font>
 <br>
-<jsp:include page="top.html"/>
+<jsp:include page="top.html" flush="true"/>
 <br>
 We are on the true page. The secure (SSL) action "true" forwards to this page.
 <br>

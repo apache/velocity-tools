@@ -15,20 +15,20 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: tiles-app7-defs.xml,v 1.2 2004/02/20 13:13:42 marino Exp $
+  $Id$
 -->
 <tiles-definitions>
   <definition name=".common">
-    <put name="top" value="/examples/struts_app7/top.html" />
+    <put name="top" value="/app7/top.html" />
   </definition>
-  <definition extends=".common" name=".true" path="/examples/struts_app7/true.vm" />
-  <definition extends=".common" name=".false" path="/examples/struts_app7/false.vm" />
-  <definition extends=".common" name=".any" path="/examples/struts_app7/any.vm" />
-  <definition name=".form" path="/examples/struts_app7/form.vm" />
-  <definition name=".submitted" path="/examples/struts_app7/submitted.vm" />
-  <definition extends=".common" name=".true.jsp" path="/examples/struts_app7/true.jsp" />
-  <definition extends=".common" name=".false.jsp" path="/examples/struts_app7/false.jsp" />
-  <definition extends=".common" name=".any.jsp" path="/examples/struts_app7/any.jsp" />
-  <definition name=".form.jsp" path="/examples/struts_app7/form.jsp" />
-  <definition name=".submitted.jsp" path="/examples/struts_app7/submitted.jsp" />
+  <definition extends=".common" name=".true" path="/app7/true.vm" />
+  <definition extends=".common" name=".false" path="/app7/false.vm" />
+  <definition extends=".common" name=".any" path="/app7/any.vm" />
+  <definition name=".form" path="/app7/form.vm" />
+  <definition name=".submitted" path="/app7/submitted.vm" />
+  <definition extends=".common" name=".true.jsp" path="/app7/true.jsp" />
+  <definition extends=".common" name=".false.jsp" path="/app7/false.jsp" />
+  <definition extends=".common" name=".any.jsp" path="/app7/any.jsp" />
+  <definition name=".form.jsp" path="/app7/form.jsp" />
+  <definition name=".submitted.jsp" path="/app7/submitted.jsp" />
 </tiles-definitions>

@@ -21,16 +21,16 @@
 <body>
 <font size="+4"><center>$request.getRequestURI()</center></font>
 <br>
-#include("/examples/struts_app6/top.html")
+#include("/app6/top.html")
 <br>
 We are on the false page. The non-secure (non-SSL) action "false" forwards to this page.
 <br>
 <br>
-Try the <a href="$slink.setAction("true")">true</a> page.
+Try the <a href="$slink.setAction('true')">true</a> page.
 <br>
-Try the <a href="$slink.setAction("any")">any</a> page.
+Try the <a href="$slink.setAction('any')">any</a> page.
 <br>
 <br>
-Go to <a href="$slink.setAction("formAction")">form</a> test page.
+Go to <a href="$slink.setAction('formAction')">form</a> test page.
 </body>
 </html>

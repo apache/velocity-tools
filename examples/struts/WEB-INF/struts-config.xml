@@ -17,13 +17,13 @@
     <forward name="app6Jsp" path="/app6/true_jsp.do" redirect="true" />
     <forward name="app7" path="/app7/true.do" redirect="true" />
     <forward name="app7Jsp" path="/app7/true_jsp.do" redirect="true" />
-    <forward name="math" path="/examples/context_tools/mathtool-demo.vm" redirect="true" />
+    <!--forward name="math" path="/examples/context_tools/mathtool-demo.vm" redirect="true" />
     <forward name="mathSrc" path="/examples/context_tools/mathtool-demo.txt" redirect="true" />
     <forward name="header" path="/examples/request_headers/list.vm" redirect="true" />
-    <forward name="headerJsp" path="/examples/request_headers/list.jsp" redirect="true" />
+    <forward name="headerJsp" path="/examples/request_headers/list.jsp" redirect="true" /-->
   </global-forwards>
   <action-mappings>
     <action forward="/index.vm" path="/index" />
-    <action forward="/doc/examples.vm" path="/examples" />
+    <action forward="/examples.vm" path="/examples" />
   </action-mappings>
 </struts-config>

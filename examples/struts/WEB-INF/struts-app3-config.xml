@@ -8,30 +8,30 @@
     <forward name="welcome_jsp" path="/welcome_jsp.do" />
     <forward name="logon_jsp" path="/logon_jsp.do" />
     <forward name="logoff_jsp" path="/logoff_jsp.do" />
-    <forward contextRelative="true" name="index_jsp_src" path="/examples/struts_app3/index_jsp.txt" />
-    <forward contextRelative="true" name="logon_jsp_src" path="/examples/struts_app3/logon_jsp.txt" />
+    <forward name="index_jsp_src" path="/index_jsp.txt" />
+    <forward name="logon_jsp_src" path="/logon_jsp.txt" />
     <forward name="welcome_vm" path="/welcome_vm.do" />
     <forward name="logon_vm" path="/logon_vm.do" />
     <forward name="logoff_vm" path="/logoff_vm.do" />
-    <forward contextRelative="true" name="index_vm_src" path="/examples/struts_app3/index_vm.txt" />
-    <forward contextRelative="true" name="logon_vm_src" path="/examples/struts_app3/logon_vm.txt" />
+    <forward name="index_vm_src" path="/index_vm.txt" />
+    <forward name="logon_vm_src" path="/logon_vm.txt" />
   </global-forwards>
   <action-mappings>
-    <action forward="/examples/struts_app3/index.jsp" path="/welcome_jsp" />
-    <action name="logonForm" forward="/examples/struts_app3/logon.jsp" path="/logon_jsp" scope="request" validate="false" />
-    <action input="/examples/struts_app3/logon.jsp" name="logonForm" path="/logonSubmit_jsp" scope="request" type="examples.app3.LogonAction" validate="true">
-      <forward contextRelative="true" name="continue" path="/examples/struts_app3/index.jsp" />
+    <action forward="/index.jsp" path="/welcome_jsp" />
+    <action name="logonForm" forward="/logon.jsp" path="/logon_jsp" scope="request" validate="false" />
+    <action input="/logon.jsp" name="logonForm" path="/logonSubmit_jsp" scope="request" type="examples.app3.LogonAction" validate="true">
+      <forward name="continue" path="/index.jsp" />
     </action>
     <action path="/logoff_jsp" type="examples.app3.LogoffAction">
-      <forward contextRelative="true" name="continue" path="/examples/struts_app3/index.jsp" />
+      <forward name="continue" path="/index.jsp" />
     </action>
-    <action forward="/examples/struts_app3/index.vm" path="/welcome_vm" />
-    <action name="logonForm" forward="/examples/struts_app3/logon.vm" path="/logon_vm" scope="request" validate="false" />
-    <action input="/examples/struts_app3/logon.vm" name="logonForm" path="/logonSubmit_vm" scope="request" type="examples.app3.LogonAction" validate="true">
-      <forward contextRelative="true" name="continue" path="/examples/struts_app3/index.vm" />
+    <action forward="/index.vm" path="/welcome_vm" />
+    <action name="logonForm" forward="/logon.vm" path="/logon_vm" scope="request" validate="false" />
+    <action input="/logon.vm" name="logonForm" path="/logonSubmit_vm" scope="request" type="examples.app3.LogonAction" validate="true">
+      <forward name="continue" path="/index.vm" />
     </action>
     <action path="/logoff_vm" type="examples.app3.LogoffAction">
-      <forward contextRelative="true" name="continue" path="/examples/struts_app3/index.vm" />
+      <forward name="continue" path="/index.vm" />
     </action>
   </action-mappings>
   <message-resources parameter="examples.app3.ApplicationResources" />

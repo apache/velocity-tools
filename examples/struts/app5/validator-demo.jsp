@@ -28,7 +28,7 @@
 
 	<html:errors/>
 
-        <html:form type="emailForm" action="do_submit_jsp" method="post" onsubmit="return validateEmailForm(this)">
+        <html:form action="do_submit_jsp" method="post" onsubmit="return validateEmailForm(this)">
             <html:text property="email"/>&nbsp;
             <html:submit/>
 	</html:form>
