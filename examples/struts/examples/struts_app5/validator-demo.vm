@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * $Id: validator-demo.vm,v 1.5 2004/02/20 13:31:41 marino Exp $
+ * $Id: validator-demo.vm,v 1.6 2004/03/12 14:42:08 marino Exp $
  *#
 
 <html>
@@ -35,6 +35,5 @@
 
     </body>
     ## if this line is commented out, the form will be validated server-side ... go ahead, try it :)
-    ##$validator.getJavascript()
-#getDynamicJavascript()
+    $validator.getJavascript()
 </html>
