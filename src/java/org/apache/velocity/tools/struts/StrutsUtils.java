@@ -107,7 +107,7 @@ import org.apache.struts.action.ActionMappings;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * based on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class StrutsUtils
 {
@@ -757,6 +757,32 @@ public class StrutsUtils
                                      HttpSession session,
                                      ServletContext application)
     {
+        return errorMarkup(property, null, request, session, application);
+    }
+
+
+    /**
+     * Returns a formatted error message. The error message is assembled from
+     * the following three pieces: First, value of message resource
+     * "errors.header" is prepended. Then, the list of error messages is
+     * rendered. Finally, the value of message resource "errors.footer"
+     * is appended.
+     *
+     * @param property the category of errors to markup and return
+     * @param bundle the message resource bundle to use
+     * @param request the servlet request
+     * @param session the HTTP session
+     * @param application the servlet context
+     *
+     * @return The formatted error message. If no error messages are queued,
+     * an empty string is returned.
+     */
+    public static String errorMarkup(String property,
+                                     String bundle,
+                                     HttpServletRequest request,
+                                     HttpSession session,
+                                     ServletContext application)
+    {
         ActionErrors errors = getActionErrors(request);
         if (errors == null)
         {
@@ -785,7 +811,8 @@ public class StrutsUtils
         String footer = null;
         Locale locale = getLocale(request, session);
 
-        MessageResources resources = getMessageResources(request, application);
+        MessageResources resources = 
+            getMessageResources(request, application, bundle);
         if (resources != null)
         {
             header = resources.getMessage(locale, "errors.header");
