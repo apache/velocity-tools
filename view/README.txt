@@ -1,13 +1,13 @@
 R E A D M E
 ===========
 
-This package contains a standalone servlet that can be used for template 
-rendering in Web applications. It offers automatic population of 
-the Velocity context and automatic, configurable management of context 
-tools. Other efforts within this package are the development of a 
-toolbox manager and the definition of a set of interfaces for context 
-tools, thereby enabling the efficient handling and reuse of context 
-tools.
+This package contains a standalone servlet that can be used for
+template rendering in Web applications. It offers automatic population
+of the Velocity context and automatic, configurable management of
+context tools, and I18N support. Other efforts within this package are
+the development of a toolbox manager and the definition of a set of
+interfaces for context tools, thereby enabling the efficient handling
+and reuse of context tools.
 
 
 Build and JAR
