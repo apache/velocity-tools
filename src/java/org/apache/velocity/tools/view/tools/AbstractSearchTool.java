@@ -111,7 +111,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * </pre>
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.2 $ $Date: 2003/04/15 01:44:38 $
+ * @version $Revision: 1.3 $ $Date: 2003/04/15 01:49:09 $
  */
 
 public abstract class AbstractSearchTool implements ViewTool
@@ -447,7 +447,6 @@ public abstract class AbstractSearchTool implements ViewTool
             out.append(total);
             out.append(" of ");
             out.append(total);
-            return out.toString();
         }
         else
         {
@@ -457,8 +456,8 @@ public abstract class AbstractSearchTool implements ViewTool
             out.append(last);
             out.append(" of ");
             out.append(total);
-            return out.toString();
         }
+        return out.toString();
     }
 
 
