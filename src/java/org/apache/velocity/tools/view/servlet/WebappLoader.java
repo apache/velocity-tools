@@ -68,17 +68,26 @@ import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 /**
  * Resource loader that uses the ServletContext of a webapp to
  * load Velocity templates.  (it's much easier to use with servlets than
- * the standard FileResourceLoader.)
+ * the standard FileResourceLoader, in particular the use of war files
+ * is transparent).
+ *
+ * The default search path is '/' (relative to the webapp root), but
+ * you can change this behaviour by specifying one or more paths
+ * by mean of as many webapp.resource.loader.path properties as needed
+ * in the velocity.properties file.
+ *
+ * All paths must be relative to the root of the webapp.
  *
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Id: WebappLoader.java,v 1.5 2003/05/28 00:17:16 nbubna Exp $
+ * @author <a href="mailto:claude@savoirweb.com">Claude Brisson</a>
+ * @version $Id: WebappLoader.java,v 1.6 2003/07/04 18:28:25 nbubna Exp $
  */
 public class WebappLoader extends ResourceLoader
 {
 
-    /** The root path for templates (relative to webapp's root). */
-    protected String path = null;
+    /** The root paths for templates (relative to webapp's root). */
+    protected String[] paths = null;
 
     protected ServletContext servletContext = null;
 
@@ -92,27 +101,31 @@ public class WebappLoader extends ResourceLoader
      * @param configuration the {@link ExtendedProperties} associated with 
      *        this resource loader.
      */
-    public void init( ExtendedProperties configuration)
+    public void init(ExtendedProperties configuration)
     {
         rsvc.info("WebappLoader : initialization starting.");
         
-        // get custom default path
-        path = configuration.getString("path");
-        if (path == null || path.length() == 0)
+        /* get configured paths */
+        paths = configuration.getStringArray("path");
+        if (paths == null || paths.length == 0)
         {
-            path = "/";
+            paths = new String[1];
+            paths[0] = "/";
         }
         else
         {
-            // make sure the path ends with a '/'
-            if (!path.endsWith("/"))
+            /* make sure the paths end with a '/' */
+            for (int i=0; i < paths.length; i++)
             {
-                path += '/';
+                if (!paths[i].endsWith("/"))
+                {
+                    paths[i] += '/';
+                }
+                rsvc.info("WebappLoader : added template path - '" + paths[i] + "'");
             }
-            rsvc.info("WebappLoader : template path (relative to webapp root) is '" + path + "'");
         }
 
-        // get the ServletContext
+        /* get the ServletContext */
         Object obj = rsvc.getApplicationAttribute(ServletContext.class.getName());
         if (obj instanceof ServletContext)
         {
@@ -142,29 +155,55 @@ public class WebappLoader extends ResourceLoader
         
         if (name == null || name.length() == 0)
         {
-            throw new ResourceNotFoundException ("No template name provided");
+            throw new ResourceNotFoundException ("WebappLoader : No template name provided");
         }
         
-        try 
+        /* since the paths always ends in '/',
+         * make sure the name never ends in one */
+        while (name.startsWith("/"))
         {
-            // since the path always ends in '/',
-            // make sure the name never ends in one
-            if (name.startsWith("/"))
-            {
-                name = name.substring(1);
-            }
+            name = name.substring(1);
+        }
 
-            result = servletContext.getResourceAsStream(path + name);
-        }
-        catch( Exception fnfe )
+        Exception exception = null;
+        for (int i=0; i < paths.length; i++)
         {
-            /*
-             *  log and convert to a general Velocity ResourceNotFoundException
-             */
-            
-            throw new ResourceNotFoundException( fnfe.getMessage() );
+            try 
+            {
+                result = servletContext.getResourceAsStream(paths[i] + name);
+
+                /* exit the loop if we found the template */
+                if (result != null)
+                {
+                    break;
+                }
+            }
+            catch (Exception e)
+            {
+                /* only save the first one for later throwing */
+                if (exception == null)
+                {
+                    exception = e;
+                }
+            }
         }
-        
+
+        /* if we never found the template */
+        if (result == null)
+        {
+            String msg;
+            if (exception == null)
+            {
+                msg = "WebappLoader : Resource '" + name + "' not found.";
+            }
+            else
+            {
+                msg = exception.getMessage();
+            }
+            /* convert to a general Velocity ResourceNotFoundException */
+            throw new ResourceNotFoundException(msg);
+        }
+
         return result;
     }
     
