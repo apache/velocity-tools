@@ -111,9 +111,9 @@ import org.apache.velocity.tools.view.context.ToolboxContext;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: XMLToolboxManager.java,v 1.6 2003/11/06 00:26:54 nbubna Exp $
+ * @version $Id: XMLToolboxManager.java,v 1.7 2003/12/06 06:00:45 nbubna Exp $
  */
-public abstract class XMLToolboxManager implements ToolboxManager
+public class XMLToolboxManager implements ToolboxManager
 {
 
     private List toolinfo;
