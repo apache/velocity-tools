@@ -145,7 +145,7 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  * @author <a href="dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.4 2003/03/08 01:05:38 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.5 2003/03/20 05:56:43 nbubna Exp $
  */
 
 public class VelocityViewServlet extends HttpServlet
@@ -519,8 +519,7 @@ public class VelocityViewServlet extends HttpServlet
      * <p>Creates and returns an initialized Velocity context.</p> 
      * 
      * A new context of class {@link ChainedContext} is created and 
-     * initialized. This method overwrites 
-     * {@link org.apache.velocity.servlet.VelocityServlet#createContext(HttpServletRequest request, HttpServletResponse response)}.</p>
+     * initialized.
      *
      * @param request servlet request from client
      * @param response servlet reponse to client

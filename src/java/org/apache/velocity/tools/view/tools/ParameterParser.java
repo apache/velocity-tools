@@ -73,7 +73,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * ServletRequest should have its own instance.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.2 $ $Date: 2003/03/20 05:55:09 $
+ * @version $Revision: 1.3 $ $Date: 2003/03/20 05:56:42 $
  */
 
 public class ParameterParser implements ViewTool
@@ -179,7 +179,8 @@ public class ParameterParser implements ViewTool
      *         <code>null</code> if there is no matching
      *         parameter
      */
-    public String get(String key) {
+    public String get(String key)
+    {
         return getString(key);
     }
 
