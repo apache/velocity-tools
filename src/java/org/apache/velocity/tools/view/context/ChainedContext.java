@@ -99,7 +99,7 @@ import javax.servlet.ServletContext;
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ChainedContext.java,v 1.3 2003/05/28 00:17:16 nbubna Exp $ 
+ * @version $Id: ChainedContext.java,v 1.4 2003/07/30 22:02:54 nbubna Exp $ 
  */
 public class ChainedContext extends VelocityContext implements ViewContext
 {
@@ -128,26 +128,6 @@ public class ChainedContext extends VelocityContext implements ViewContext
      * The toolbox. 
      */ 
     private ToolboxContext toolboxContext = null;
-
-    /**
-     * Key to the HTTP request object.
-     */
-    public static final String REQUEST = "request";
-
-    /**
-     * Key to the HTTP response object.
-     */
-    public static final String RESPONSE = "response";
-
-    /**
-     * Key to the HTTP session object.
-     */
-    public static final String SESSION = "session";
-
-    /**
-     * Key to the servlet context object.
-     */
-    public static final String APPLICATION = "application";
 
 
     /**
@@ -231,7 +211,18 @@ public class ChainedContext extends VelocityContext implements ViewContext
         }
 
         // if not found, wander down the scopes...
-        o = request.getAttribute(key);
+        return getAttribute(key);
+    }
+
+
+    /**
+     * <p>Searches for the named attribute in request, session (if valid), 
+     * and application scope(s) in order and returns the value associated 
+     * or null.</p>
+     */
+    public Object getAttribute(String key)
+    {
+        Object o = request.getAttribute(key);
         if (o == null)
         {
             if (session != null)
@@ -239,7 +230,7 @@ public class ChainedContext extends VelocityContext implements ViewContext
                 o = session.getAttribute(key);
             }
 
-            if ( o == null )
+            if (o == null)
             {
                 o = application.getAttribute(key);
             }
