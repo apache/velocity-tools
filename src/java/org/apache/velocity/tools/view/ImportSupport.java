@@ -88,7 +88,7 @@ import java.net.HttpURLConnection;
  * <p>Based on ImportSupport from the JSTL taglib by Shawn Bayern</p>
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @version $Revision: 1.2 $ $Date: 2003/10/30 00:17:56 $
+ * @version $Revision: 1.3 $ $Date: 2003/10/30 01:01:37 $
  */
 public abstract class ImportSupport {
 
@@ -132,8 +132,8 @@ public abstract class ImportSupport {
       */
      protected String acquireString(String url) throws IOException, Exception {
          // Record whether our URL is absolute or relative
-         isAbsoluteUrl = isAbsoluteUrl(url);
-         if (isAbsoluteUrl) {
+         this.isAbsoluteUrl = isAbsoluteUrl(url);
+         if (this.isAbsoluteUrl) {
              // for absolute URLs, delegate to our peer
              BufferedReader r = new BufferedReader(acquireReader(url));
              StringBuffer sb = new StringBuffer();
@@ -141,8 +141,9 @@ public abstract class ImportSupport {
 
              // under JIT, testing seems to show this simple loop is as fast
              // as any of the alternatives
-             while ( (i = r.read()) != -1)
+             while ( (i = r.read()) != -1) {
                  sb.append( (char) i);
+             }
 
              return sb.toString();
          }
@@ -151,8 +152,9 @@ public abstract class ImportSupport {
 
              // URL is relative, so we must be an HTTP request
              if (! (request instanceof HttpServletRequest
-                    && response instanceof HttpServletResponse))
+                    && response instanceof HttpServletResponse)) {
                  throw new Exception("Importing a non-HTTP relative resource");
+             }
 
              // retrieve an appropriate ServletContext
              // normalize the URL if we have an HttpServletRequest
@@ -163,11 +165,13 @@ public abstract class ImportSupport {
 
              // from this context, get a dispatcher
              RequestDispatcher rd = application.getRequestDispatcher(stripSession(url));
-             if (rd == null)
+             if (rd == null) {
                  throw new Exception(stripSession(url));
+             }
 
              // include the resource, using our custom wrapper
-             ImportResponseWrapper irw = new ImportResponseWrapper( (HttpServletResponse) response);
+             ImportResponseWrapper irw = 
+                new ImportResponseWrapper( (HttpServletResponse) response);
 
              // spec mandates specific error handling form include()
              try {
@@ -181,10 +185,12 @@ public abstract class ImportSupport {
              }
              catch (ServletException ex) {
                  Throwable rc = ex.getRootCause();
-                 if (rc == null)
+                 if (rc == null) {
                      throw new Exception(ex);
-                 else
+                 }
+                 else {
                      throw new Exception(rc);
+                 }
              }
 
              // disallow inappropriate response codes per JSTL spec
@@ -205,7 +211,7 @@ public abstract class ImportSupport {
      * @throws java.lang.Exception
      */
     protected Reader acquireReader(String url) throws IOException, Exception {
-        if (!isAbsoluteUrl) {
+        if (!this.isAbsoluteUrl) {
             // for relative URLs, delegate to our peer
             return new StringReader(acquireString(url));
         }
@@ -226,8 +232,9 @@ public abstract class ImportSupport {
                 String contentType = uc.getContentType();
                 if (contentType != null) {
                     charSet = this.getContentTypeAttribute(contentType, "charset");
-                    if (charSet == null)
+                    if (charSet == null) {
                         charSet = DEFAULT_ENCODING;
+                    }
                 }
                 else {
                     charSet = DEFAULT_ENCODING;
@@ -244,8 +251,9 @@ public abstract class ImportSupport {
                 // before returning
                 if (uc instanceof HttpURLConnection) {
                     int status = ( (HttpURLConnection) uc).getResponseCode();
-                    if (status < 200 || status > 299)
+                    if (status < 200 || status > 299) {
                         throw new Exception(status + " " + url);
+                    }
                 }
 
                 return r;
@@ -317,8 +325,9 @@ public abstract class ImportSupport {
          * @return a Writer designed to buffer the output.
          */
         public PrintWriter getWriter() {
-            if (isStreamUsed)
+            if (isStreamUsed) {
                 throw new IllegalStateException("IMPORT_ILLEGAL_STREAM");
+            }
             isWriterUsed = true;
             return new PrintWriter(sw);
         }
@@ -327,8 +336,9 @@ public abstract class ImportSupport {
          * @return a ServletOutputStream designed to buffer the output.
          */
         public ServletOutputStream getOutputStream() {
-            if (isWriterUsed)
+            if (isWriterUsed) {
                 throw new IllegalStateException("IMPORT_ILLEGAL_WRITER");
+            }
             isStreamUsed = true;
             return sos;
         }
@@ -369,13 +379,15 @@ public abstract class ImportSupport {
          * @throws UnsupportedEncodingException if the encoding is not supported
          */
         public String getString() throws UnsupportedEncodingException {
-            if (isWriterUsed)
+            if (isWriterUsed) {
                 return sw.toString();
+            }
             else if (isStreamUsed) {
                 return bos.toString(DEFAULT_ENCODING);
             }
-            else
+            else {
                 return ""; // target didn't write anything
+            }
         }
     }
 
@@ -391,19 +403,23 @@ public abstract class ImportSupport {
       */
      public static boolean isAbsoluteUrl(String url) {
          // a null URL is not absolute, by our definition
-         if (url == null)
+         if (url == null) {
              return false;
+         }
 
          // do a fast, simple check first
          int colonPos;
-         if ( (colonPos = url.indexOf(":")) == -1)
+         if ( (colonPos = url.indexOf(":")) == -1) {
              return false;
+         }
 
          // if we DO have a colon, make sure that every character
          // leading up to it is a valid scheme character
-         for (int i = 0; i < colonPos; i++)
-             if (VALID_SCHEME_CHARS.indexOf(url.charAt(i)) == -1)
+         for (int i = 0; i < colonPos; i++) {
+             if (VALID_SCHEME_CHARS.indexOf(url.charAt(i)) == -1) {
                  return false;
+             }
+         }
 
          // if so, we've got an absolute url
          return true;
@@ -423,10 +439,12 @@ public abstract class ImportSupport {
         int sessionStart;
         while ( (sessionStart = u.toString().indexOf(";jsessionid=")) != -1) {
             int sessionEnd = u.toString().indexOf(";", sessionStart + 1);
-            if (sessionEnd == -1)
+            if (sessionEnd == -1) {
                 sessionEnd = u.toString().indexOf("?", sessionStart + 1);
-            if (sessionEnd == -1) // still
+            }
+            if (sessionEnd == -1) { // still
                 sessionEnd = u.length();
+            }
             u.delete(sessionStart, sessionEnd);
         }
         return u.toString();
@@ -445,12 +463,14 @@ public abstract class ImportSupport {
         int begin;
         int end;
         int index = input.toUpperCase().indexOf(name.toUpperCase());
-        if (index == -1)
+        if (index == -1) {
             return null;
+        }
         index = index + name.length(); // positioned after the attribute name
         index = input.indexOf('=', index); // positioned at the '='
-        if (index == -1)
+        if (index == -1) {
             return null;
+        }
         index += 1; // positioned after the '='
         input = input.substring(index).trim();
 
@@ -458,16 +478,19 @@ public abstract class ImportSupport {
             // attribute value is a quoted string
             begin = 1;
             end = input.indexOf('"', begin);
-            if (end == -1)
+            if (end == -1) {
                 return null;
+            }
         }
         else {
             begin = 0;
             end = input.indexOf(';');
-            if (end == -1)
+            if (end == -1) {
                 end = input.indexOf(' ');
-            if (end == -1)
+            }
+            if (end == -1) {
                 end = input.length();
+            }
         }
         return input.substring(begin, end).trim();
     }
