@@ -13,26 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * $Id: examples.vm,v 1.7 2004/02/20 13:13:36 marino Exp $
+ * $Id$
  *#
 <HTML>
 <HEAD>
-  <TITLE>VelocityStruts 1.1</TITLE>
-  <link rel="stylesheet" href="doc/styles.css" type="text/css">
+  <TITLE>VelocityStruts 1.2</TITLE>
+  <link rel="stylesheet" href="$link.setRelative('styles.css')" type="text/css">
 </HEAD>
 
 <BODY>
 <table width="100%" border="0" cellspacing="0" cellpadding="5">
   <tr bgcolor="#000066">
     <td>
-      <h2><font color="#FFFFFF"><img src="img/spacer.gif" width="520" height="1"><br>
-				Velocity for Struts 1.1</font></h2>
+      <h2><font color="#FFFFFF"><br>
+				Velocity for Struts 1.2</font></h2>
       <font color="#FFFFFF">January 25. 2004</font></td>
     <td align="right">&nbsp;</td>
   </tr>
 </table>
 
-<div><a href="index.vm"><font color="#000000">Home</font></a> <font color="#000000">&gt; Examples</font></div>
+<div><a href="$link.setAction('index')"><font color="#000000">Home</font></a> <font color="#000000">&gt; Examples</font></div>
 
 
 <h5><b>Examples</b></h5>
@@ -47,8 +47,8 @@
 		for multiple languages demonstrates how Struts resources may be accessed from
 		within templates.
 		<ul>
-			<li><a href="$link.setForward("app1")" target="demo">Velocity Version</a></li>
-			<li><a href="$link.setForward("app1Jsp")" target="demo">JSP Version</a></li>
+			<li><a href="$link.setForward('app1')" target="demo">Velocity Version</a></li>
+			<li><a href="$link.setForward('app1Jsp')" target="demo">JSP Version</a></li>
 		</ul>
 		<p>&nbsp;</p>
 	</li>
@@ -58,8 +58,8 @@
 		functionality is a subset of the functionality provided by the Struts custom tag
 		libraries for JSP.
 		<ul>
-			<li><a href="$link.setForward("app2")" target="demo">Struts View Tools Demo</a>
-				(<a href="$link.setForward("app2Src")">template</a>)</li>
+			<li><a href="$link.setForward('app2')" target="demo">Struts View Tools Demo</a>
+				(<a href="$link.setForward('app2Src')">template</a>)</li>
 		</ul>
 		<p>&nbsp;</p>
 	</li>
@@ -67,8 +67,8 @@
 		This is the well known Struts logon example application by Ted Husted. Here
 		it is implemented in both JSP and Velocity versions.
 		<ul>
-			<li><a href="$link.setForward("app3")" target="demo">Velocity Version</a></li>
-			<li><a href="$link.setForward("app3Jsp")" target="demo">JSP Version</a></li>
+			<li><a href="$link.setForward('app3')" target="demo">Velocity Version</a></li>
+			<li><a href="$link.setForward('app3Jsp')" target="demo">JSP Version</a></li>
 		</ul>
 		<p>&nbsp;</p>
 	</li>
@@ -76,9 +76,9 @@
 		This application demonstrates the Velocity TilesTool for Struts.  It's functionality is a subset
                 of the functionality provided by the Struts Tiles tag library for JSP.
 		<ul>
-			<li><a href="$link.setForward("app4")" target="demo">Velocity Version</a></li>
-			<li><a href="$link.setForward("app4Jsp")" target="demo">JSP Version</a></li>
-                        <li><a href="$link.setForward("app4Mixed")" target="demo">Mixed Version</a></li>
+			<li><a href="$link.setForward('app4')" target="demo">Velocity Version</a></li>
+			<li><a href="$link.setForward('app4Jsp')" target="demo">JSP Version</a></li>
+                        <li><a href="$link.setForward('app4Mixed')" target="demo">Mixed Version</a></li>
 		</ul>
 		<p>&nbsp;</p>
 	</li>
@@ -86,8 +86,8 @@
 		This application demonstrates the Velocity ValidatorTool for Struts.  It's functionality is a subset
                 of the functionality provided by the Struts HTML tag library for JSP.
 		<ul>
-			<li><a href="$link.setForward("app5")" target="demo">Velocity Version</a></li>
-			<li><a href="$link.setForward("app5Jsp")" target="demo">JSP Version</a></li>
+			<li><a href="$link.setForward('app5')" target="demo">Velocity Version</a></li>
+			<li><a href="$link.setForward('app5Jsp')" target="demo">JSP Version</a></li>
 		</ul>
 		<p>&nbsp;</p>
 	</li>
@@ -102,8 +102,8 @@
     The test app defaults to ports 8080 for http and 8443 for https - if you use other ports for these
     protocols you need to change the settings in the app's struts-config.
 		<ul>
-			<li><a href="$link.setForward("app6")" target="demo">Velocity Version</a></li>
-			<li><a href="$link.setForward("app6Jsp")" target="demo">JSP Version</a></li>
+			<li><a href="$link.setForward('app6')" target="demo">Velocity Version</a></li>
+			<li><a href="$link.setForward('app6Jsp')" target="demo">JSP Version</a></li>
 		</ul>
 		<p>&nbsp;</p>
 	</li>
@@ -111,8 +111,8 @@
 		This application is the same as app 6 except for the struts-config and the added tiles-config.  It
                 shows how to use Tiles and SSL Ext. together in the same application.
 		<ul>
-			<li><a href="$link.setForward("app7")" target="demo">Velocity Version</a></li>
-			<li><a href="$link.setForward("app7Jsp")" target="demo">JSP Version</a></li>
+			<li><a href="$link.setForward('app7')" target="demo">Velocity Version</a></li>
+			<li><a href="$link.setForward('app7Jsp')" target="demo">JSP Version</a></li>
 		</ul>
 		<p>&nbsp;</p>
 	</li>
