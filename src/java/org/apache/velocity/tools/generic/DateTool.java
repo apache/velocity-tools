@@ -99,7 +99,7 @@ import java.util.TimeZone;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Revision: 1.8 $ $Date: 2003/11/11 01:55:21 $
+ * @version $Revision: 1.9 $ $Date: 2003/12/06 05:45:25 $
  */
 public class DateTool
 {
@@ -617,15 +617,72 @@ public class DateTool
     // ------------------------- date conversion methods ---------------
 
     /**
-     * Converts an object to an instance of {@link Date}. Uses a 
-     * DateFormat to parse the string value of the object if it is not
-     * an instance of Date or Calendar or Long.
+     * Converts an object to an instance of {@link Date} using the
+     * format returned by {@link getFormat()},the {@link Locale} returned 
+     * by {@link #getLocale()}, and the {@link TimeZone} returned by
+     * {@link #getTimeZone()} if the object is not already an instance
+     * of Date, Calendar, or Long.
      *
      * @param obj the date to convert
      * @return the object as a {@link Date} or <code>null</code> if no
      *         conversion is possible
      */
     public Date toDate(Object obj)
+    {
+        return toDate(getFormat(), obj, getLocale(), getTimeZone());
+    }
+
+    /**
+     * Converts an object to an instance of {@link Date} using the
+     * specified format,the {@link Locale} returned by 
+     * {@link #getLocale()}, and the {@link TimeZone} returned by
+     * {@link #getTimeZone()} if the object is not already an instance
+     * of Date, Calendar, or Long.
+     *
+     * @param format - the format the date is in
+     * @param obj - the date to convert
+     * @return the object as a {@link Date} or <code>null</code> if no
+     *         conversion is possible
+     * @see #toDate(String format, Object obj, Locale locale)
+     */
+    public Date toDate(String format, Object obj)
+    {
+        return toDate(format, obj, getLocale(), getTimeZone());
+    }
+
+    /**
+     * Converts an object to an instance of {@link Date} using the
+     * specified format and {@link Locale} if the object is not already
+     * an instance of Date, Calendar, or Long.
+     *
+     * @param format - the format the date is in
+     * @param obj - the date to convert
+     * @param locale - the {@link Locale}
+     * @return the object as a {@link Date} or <code>null</code> if no
+     *         conversion is possible
+     * @see SimpleDateFormat#parse
+     */
+    public Date toDate(String format, Object obj, Locale locale)
+    {
+        return toDate(format, obj, locale, getTimeZone());
+    }
+
+    /**
+     * Converts an object to an instance of {@link Date} using the
+     * specified format, {@link Locale}, and {@link TimeZone} if the 
+     * object is not already an instance of Date, Calendar, or Long.
+     *
+     * @param format - the format the date is in
+     * @param obj - the date to convert
+     * @param locale - the {@link Locale}
+     * @param timezone - the {@link TimeZone}
+     * @return the object as a {@link Date} or <code>null</code> if no
+     *         conversion is possible
+     * @see #getDateFormat
+     * @see SimpleDateFormat#parse
+     */
+    public Date toDate(String format, Object obj, 
+                       Locale locale, TimeZone timezone)
     {
         if (obj == null)
         {
@@ -647,59 +704,8 @@ public class DateTool
         }
         try
         {
-            //TODO? add better parsing support?
-            //try parsing the obj as String w/a DateFormat
-            DateFormat parser = DateFormat.getInstance();
-            return parser.parse(String.valueOf(obj));
-        }
-        catch (Exception e)
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Converts an object to an instance of {@link Date} using the
-     * specified format and the {@link Locale} returned by 
-     * {@link #getLocale()} if the object is not already an instance
-     * of Date or Calendar.
-     *
-     * @param format - the format the date is in
-     * @param obj - the date to convert
-     * @return the object as a {@link Date} or <code>null</code> if no
-     *         conversion is possible
-     * @see #toDate(String format, Object obj, Locale locale)
-     */
-    public Date toDate(String format, Object obj)
-    {
-        return toDate(format, obj, getLocale());
-    }
-
-    /**
-     * Converts an object to an instance of {@link Date} using the
-     * specified format and {@link Locale}if the object is not already
-     * an instance of Date or Calendar.
-     *
-     * @param format - the format the date is in
-     * @param obj - the date to convert
-     * @param locale - the {@link Locale}
-     * @return the object as a {@link Date} or <code>null</code> if no
-     *         conversion is possible
-     * @see SimpleDateFormat#parse
-     */
-    public Date toDate(String format, Object obj, Locale locale)
-    {
-        //first try the easiest conversions
-        Date date = toDate(obj);
-        if (date != null)
-        {
-            return date;
-        }
-        try
-        {
-            //TODO? add better parsing support?
             //try parsing w/a customized SimpleDateFormat
-            SimpleDateFormat parser = new SimpleDateFormat(format, locale);
+            DateFormat parser = getDateFormat(format, locale, timezone);
             return parser.parse(String.valueOf(obj));
         }
         catch (Exception e)
