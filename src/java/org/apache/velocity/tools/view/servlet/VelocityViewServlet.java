@@ -35,13 +35,13 @@ import org.apache.commons.collections.ExtendedProperties;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.io.VelocityWriter;
 import org.apache.velocity.runtime.RuntimeConstants;
-import org.apache.velocity.runtime.RuntimeSingleton;
 import org.apache.velocity.util.SimplePool;
 
 import org.apache.velocity.tools.view.ToolboxManager;
@@ -99,7 +99,7 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.21 2004/03/12 20:30:32 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.22 2004/11/11 04:12:24 nbubna Exp $
  */
 
 public class VelocityViewServlet extends HttpServlet
@@ -143,6 +143,8 @@ public class VelocityViewServlet extends HttpServlet
     /** Cache of writers */
     private static SimplePool writerPool = new SimplePool(40);
 
+    private VelocityEngine velocity = new VelocityEngine();
+
     /**
      * The default content type.  When necessary, includes the
      * character set to use when encoding textual output.
@@ -174,12 +176,18 @@ public class VelocityViewServlet extends HttpServlet
         initToolbox(config);
 
         // we can get these now that velocity is initialized
-        defaultContentType = 
-            RuntimeSingleton.getString(CONTENT_TYPE, DEFAULT_CONTENT_TYPE);
+        defaultContentType = (String)velocity.getProperty(CONTENT_TYPE);
+        if (defaultContentType == null)
+        {
+            defaultContentType = DEFAULT_CONTENT_TYPE;
+        }
 
         String encoding = 
-            RuntimeSingleton.getString(RuntimeSingleton.OUTPUT_ENCODING,
-                                       DEFAULT_OUTPUT_ENCODING);
+            (String)velocity.getProperty(RuntimeConstants.OUTPUT_ENCODING);
+        if (encoding == null)
+        {
+            encoding = DEFAULT_OUTPUT_ENCODING;
+        }
 
         // For non Latin-1 encodings, ensure that the charset is
         // included in the Content-Type header.
@@ -195,13 +203,13 @@ public class VelocityViewServlet extends HttpServlet
             else
             {
                 // The user may have configuration issues.
-                Velocity.warn("VelocityViewServlet: Charset was already " +
+                velocity.warn("VelocityViewServlet: Charset was already " +
                               "specified in the Content-Type property.  " +
                               "Output encoding property will be ignored.");
             }
         }
 
-        Velocity.info("VelocityViewServlet: Default content-type is: " + 
+        velocity.info("VelocityViewServlet: Default content-type is: " + 
                       defaultContentType);
     }
 
@@ -233,7 +241,7 @@ public class VelocityViewServlet extends HttpServlet
         }
         else
         {
-            Velocity.info("VelocityViewServlet: No toolbox entry in configuration.");
+            velocity.info("VelocityViewServlet: No toolbox entry in configuration.");
         }
     }
 
@@ -243,7 +251,7 @@ public class VelocityViewServlet extends HttpServlet
      * loadConfiguration(ServletConfig) to get a 
      * org.apache.commons.collections.ExtendedProperties
      * of configuration information
-     * and then calling Velocity.init().  Override this
+     * and then calling velocityEngine.init().  Override this
      * to do anything to the environment before the 
      * initialization of the singleton takes place, or to 
      * initialize the singleton in other ways.
@@ -252,22 +260,22 @@ public class VelocityViewServlet extends HttpServlet
      */
     protected void initVelocity(ServletConfig config) throws ServletException
     {
-        Velocity.setApplicationAttribute(SERVLET_CONTEXT_KEY, getServletContext());
+        velocity.setApplicationAttribute(SERVLET_CONTEXT_KEY, getServletContext());
 
         // default to servletlogger, which logs to the servlet engines log
-        Velocity.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, 
+        velocity.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, 
                              ServletLogger.class.getName());
 
         // by default, load resources with webapp resource loader
-        Velocity.setProperty(RuntimeConstants.RESOURCE_LOADER, "webapp");
-        Velocity.setProperty("webapp.resource.loader.class", 
+        velocity.setProperty(RuntimeConstants.RESOURCE_LOADER, "webapp");
+        velocity.setProperty("webapp.resource.loader.class", 
                              WebappLoader.class.getName());
 
         // Try reading an overriding Velocity configuration
         try
         {
             ExtendedProperties p = loadConfiguration(config);
-            Velocity.setExtendedProperties(p);
+            velocity.setExtendedProperties(p);
         }
         catch(Exception e)
         {
@@ -278,7 +286,7 @@ public class VelocityViewServlet extends HttpServlet
         // now all is ready - init Velocity
         try
         {
-            Velocity.init();
+            velocity.init();
         }
         catch(Exception e)
         {
@@ -352,11 +360,11 @@ public class VelocityViewServlet extends HttpServlet
         {
             p.load(servletContext.getResourceAsStream(propsFile));
 
-            Velocity.info("VelocityViewServlet: Custom Properties File: "+propsFile);
+            velocity.info("VelocityViewServlet: Custom Properties File: "+propsFile);
         }
         else
         {
-            Velocity.info("VelocityViewServlet: No custom properties found. " +
+            velocity.info("VelocityViewServlet: No custom properties found. " +
                           "Using default Velocity configuration.");
         }
 
@@ -409,7 +417,7 @@ public class VelocityViewServlet extends HttpServlet
             // bail if we can't find the template
             if (template == null)
             {
-                Velocity.warn("VelocityViewServlet: couldn't find template to match request.");
+                velocity.warn("VelocityViewServlet: couldn't find template to match request.");
                 return;
             }
 
@@ -419,7 +427,7 @@ public class VelocityViewServlet extends HttpServlet
         catch (Exception e)
         {
             // log the exception
-            Velocity.error("VelocityViewServlet: Exception processing the template: "+e);
+            velocity.error("VelocityViewServlet: Exception processing the template: "+e);
 
             // call the error handler to let the derived class
             // do something useful with this failure.
@@ -511,12 +519,13 @@ public class VelocityViewServlet extends HttpServlet
     protected Context createContext(HttpServletRequest request, 
                                     HttpServletResponse response)
     {
-        ChainedContext ctx = new ChainedContext(null, request, response, getServletContext());
+        ChainedContext ctx = 
+            new ChainedContext(velocity, request, response, getServletContext());
 
         /* if we have a toolbox manager, get a toolbox from it */
         if (toolboxManager != null)
         {
-            ctx.setToolbox(toolboxManager.getToolboxContext(ctx));
+            ctx.setToolbox(toolboxManager.getToolbox(ctx));
         }
         return ctx;
     }
@@ -537,7 +546,7 @@ public class VelocityViewServlet extends HttpServlet
     public Template getTemplate(String name)
         throws ResourceNotFoundException, ParseErrorException, Exception
     {
-        return RuntimeSingleton.getTemplate(name);
+        return velocity.getTemplate(name);
     }
 
     
@@ -557,7 +566,7 @@ public class VelocityViewServlet extends HttpServlet
     public Template getTemplate(String name, String encoding)
         throws ResourceNotFoundException, ParseErrorException, Exception
     {
-        return RuntimeSingleton.getTemplate(name, encoding);
+        return velocity.getTemplate(name, encoding);
     }
 
 
@@ -609,7 +618,7 @@ public class VelocityViewServlet extends HttpServlet
                 }
                 catch (Exception e)
                 {
-                    Velocity.debug("VelocityViewServlet: " + 
+                    velocity.debug("VelocityViewServlet: " + 
                                    "Trouble releasing VelocityWriter: " +
                                    e.getMessage());
                 }                
@@ -671,7 +680,7 @@ public class VelocityViewServlet extends HttpServlet
             // clearly something is quite wrong.
             // let's log the new exception then give up and
             // throw a servlet exception that wraps the first one
-            Velocity.error("VelocityViewServlet: Exception while printing error screen: "+e2);
+            velocity.error("VelocityViewServlet: Exception while printing error screen: "+e2);
             throw new ServletException(e);
         }
     }
@@ -705,7 +714,7 @@ public class VelocityViewServlet extends HttpServlet
             if (this.warnOfOutputStreamDeprecation)
             {
                 this.warnOfOutputStreamDeprecation = false;
-                Velocity.warn("VelocityViewServlet: " +
+                velocity.warn("VelocityViewServlet: " +
                               "Use of ServletResponse's getOutputStream() " +
                               "method with VelocityViewServlet is " +
                               "deprecated -- support will be removed in " +
