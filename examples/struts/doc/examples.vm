@@ -55,6 +55,16 @@
 		</ul>
 		<p>&nbsp;</p>
 	</li>
+        <li><b><i></i> Struts App4: Struts Tiles Example</b><br>
+		This application demonstrates the Velocity TilesTool for Struts.  It's functionality is a subset
+                of the functionality provided by the Struts Tiles tag library for JSP.
+		<ul>
+			<li><a href="$link.setForward("app4")" target="demo">Velocity Version</a></li>
+			<li><a href="$link.setForward("app4Jsp")" target="demo">JSP Version</a></li>
+                        <li><a href="$link.setForward("app4Mixed")" target="demo">Mixed Version</a></li>
+		</ul>
+		<p>&nbsp;</p>
+	</li>
 	<li>
 		<p><b>View Tool Demo: MathTool</b><br>
 			This example demonstrates how a view tool can be loaded from within a
