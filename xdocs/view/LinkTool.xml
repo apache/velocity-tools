@@ -24,7 +24,7 @@
               setAnchor()</a></li>
             <li>encode session ID into URL, see method <a href="#toString()">toString()</a></li>
             <li>retrieve server, port and path info for the current request, see methods
-              <a href="#getURI()">getURI()</a>, <a href="#getContextURI()">getContextURI()</a>, 
+              <a href="#getURI()">getURI()</a>, <a href="#getContextURL()">getContextURL()</a>, 
               <a href="#getContextPath()">getContextPath()</a> and 
               <a href="#getBaseRef()">getBaseRef()</a></li>
         </ul>
@@ -312,15 +312,15 @@ $l.getQueryData()</sourcecode>
 
 
 
-    <section name="getContextURI()">
-        <method name="getContextURI()">
+    <section name="getContextURL()">
+        <method name="getContextURL()">
     
             <abstract>
                 Returns the URI that addresses this web application.
             </abstract>
     
             <signature>
-                String getContextURI()
+                String getContextURL()
             </signature>
     
             <returns>
@@ -332,7 +332,7 @@ $l.getQueryData()</sourcecode>
                 <p>Note! This will not represent the URI reference or 
                 query data set for this LinkTool instance.</p>
 
-<sourcecode>$link.getContextURI()</sourcecode>
+<sourcecode>$link.getContextURL()</sourcecode>
 
 <p>Produces something like:</p>
 
