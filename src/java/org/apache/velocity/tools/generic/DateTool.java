@@ -62,7 +62,7 @@ import java.util.TimeZone;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Revision: 1.12 $ $Date: 2004/03/12 20:30:31 $
+ * @version $Revision: 1.13 $ $Date: 2004/03/12 20:50:38 $
  */
 public class DateTool
 {
@@ -181,15 +181,6 @@ public class DateTool
 
 
     // ------------------------- formatting methods ---------------------------
-
-    /**
-     * @deprecated use {@link #get(String format)} instead. This will be
-     *             removed in VelocityTools 1.2
-     */
-    public String getFormattedDate(String format)
-    {
-        return format(format, getDate());
-    }
 
     /**
      * Returns a formatted string representing the date returned by

@@ -48,17 +48,10 @@ import org.apache.velocity.tools.view.context.ViewContext;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: ServletToolInfo.java,v 1.6 2004/02/18 20:07:02 nbubna Exp $
+ * @version $Id: ServletToolInfo.java,v 1.7 2004/03/12 20:50:38 nbubna Exp $
  */
 public class ServletToolInfo extends ViewToolInfo
 {
-
-    /** @deprecated use ViewContext.REQUEST */
-    public static final String REQUEST_SCOPE = ViewContext.REQUEST;
-    /** @deprecated use ViewContext.SESSION */
-    public static final String SESSION_SCOPE = ViewContext.SESSION;
-    /** @deprecated use ViewContext.APPLICATION */
-    public static final String APPLICATION_SCOPE = ViewContext.APPLICATION;
         
     private String scope;
 

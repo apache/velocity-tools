@@ -42,7 +42,7 @@ import org.apache.struts.util.MessageResources;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @since VelocityTools 1.0
- * @version $Id: MessageTool.java,v 1.12 2004/02/18 20:09:51 nbubna Exp $
+ * @version $Id: MessageTool.java,v 1.13 2004/03/12 20:50:38 nbubna Exp $
  */
 public class MessageTool extends MessageResourcesTool
 {
@@ -204,18 +204,6 @@ public class MessageTool extends MessageResourcesTool
 
         // Return the requested message presence indicator
         return res.isPresent(this.locale, key);
-    }
-
-
-    /**
-     * Returns the user's locale. If a locale is not found, the default
-     * locale is returned.
-     * @deprecated This does not fit the purpose of MessageTool and will be
-     *             removed in VelocityTools 1.2
-     */
-    public Locale getLocale()
-    {
-        return this.locale;
     }
 
 }
