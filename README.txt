@@ -69,6 +69,14 @@ To build the VelocityStruts example, execute:
 
 Please note:
 
+- To compile VelocityStruts with JDK 1.3, you *must* define a jdbc.jar property
+  somewhere in your build.properties or the build.properties provided with this
+  project.
+  
+- When building the javadoc with JDK 1.3, you will get a number of warnings if you
+  do not have a xerces.jar property defined somewhere in the build.properties.  
+  However, these warnings can generally be ignored.
+
 - During the documentation build process DVSL emits several of the following error
   messages. They can be ingnored. A bug report has already been filed.
 
@@ -103,4 +111,4 @@ Feedback
 We welcome your feedback to velocity-user@jakarta.apache.org.
 
 
-$Revision: 1.9 $ $Date: 2003/04/21 15:09:06 $
+$Revision: 1.10 $ $Date: 2003/07/10 21:18:22 $
