@@ -29,33 +29,30 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:sidler@apache.org">Gabriel Sidler</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ToolboxContext.java,v 1.3 2004/02/18 20:07:58 nbubna Exp $ 
+ * @version $Id: ToolboxContext.java,v 1.4 2004/11/11 04:01:01 nbubna Exp $
+ * @deprecated This class will be removed after VelocityTools 1.2.
  */
 public class ToolboxContext extends VelocityContext
 {
-    /**
-     * The collection of view tools in this toolbox.
-     */
-    private Map toolbox;
 
+    private Map toolbox;
 
     /**
      * Default constructor.
      */
     public ToolboxContext( Map tb )
     {
-        toolbox = tb;
+        super(tb);
+        this.toolbox = tb;
     }
 
-
     /**
-     * Get value for key.
+     * Return the internal toolbox map.
      */
-    public Object internalGet( String key )
+    public Map getToolbox()
     {
-        return toolbox.get( key );
-    }        
-
+        return toolbox;
+    }
 
     /**
      * Does nothing. Returns <code>null</code> always.
