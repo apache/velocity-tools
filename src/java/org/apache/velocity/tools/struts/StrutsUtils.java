@@ -69,8 +69,8 @@ import javax.sql.DataSource;
 
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionError;
 import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.config.ModuleConfig;
 import org.apache.struts.config.ForwardConfig;
@@ -107,7 +107,7 @@ import org.apache.struts.action.ActionMappings;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * based on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class StrutsUtils
 {
@@ -605,6 +605,7 @@ public class StrutsUtils
                                        String forward)
     {
         ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
+        //TODO? beware of null module config if ActionServlet isn't init'ed?
         ForwardConfig fc = moduleConfig.findForwardConfig(forward);
         if (fc == null)
         {
@@ -722,7 +723,7 @@ public class StrutsUtils
         while (reports.hasNext())
         {
             message = null;
-            ActionError report = (ActionError)reports.next();
+            ActionMessage report = (ActionMessage)reports.next();
             if (resources != null)
             {
                 message = resources.getMessage(locale,
