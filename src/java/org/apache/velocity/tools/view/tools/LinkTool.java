@@ -59,6 +59,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -85,7 +86,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: LinkTool.java,v 1.5 2003/04/21 18:53:11 nbubna Exp $
+ * @version $Id: LinkTool.java,v 1.6 2003/04/22 04:30:49 nbubna Exp $
  */
 public class LinkTool implements ViewTool, Cloneable
 {
@@ -547,7 +548,7 @@ public class LinkTool implements ViewTool, Cloneable
   
     // --------------------------------------------- Internal Class -----------
  
-     /**
+    /**
      * Internal util class to handle representation and
      * encoding of key/value pairs in the query string
      */
@@ -576,11 +577,48 @@ public class LinkTool implements ViewTool, Cloneable
         public String toString()
         {
             StringBuffer out = new StringBuffer();
-            out.append(encodeURL(key));
-            out.append('=');
-            out.append(encodeURL(String.valueOf(value)));
+            if (value == null)
+            {
+                out.append(encodeURL(key));
+                out.append('=');
+                /* Interpret null as "no value" */
+            }
+            else if (value instanceof List)
+            {
+                appendAsArray(out, key, ((List)value).toArray());
+            }
+            else if (value instanceof Object[])
+            {
+                appendAsArray(out, key, (Object[])value); 
+            }
+            else
+            {
+                out.append(encodeURL(key));
+                out.append('=');
+                out.append(encodeURL(String.valueOf(value)));
+            }
             return out.toString();
         }
+
+        /* Utility method to avoid logic duplication in toString() */
+        private void appendAsArray(StringBuffer out, String key, Object[] arr)
+        {
+            String encKey = encodeURL(key);
+            for (int i=0; i < arr.length; i++)
+            {
+                out.append(encKey);
+                out.append('=');
+                if (arr[i] != null)
+                {
+                    out.append(encodeURL(String.valueOf(arr[i])));
+                }
+                if (i+1 < arr.length)
+                {
+                    out.append(queryDataDelim);
+                }
+            }
+        }
+
     }
 
 
