@@ -14,10 +14,10 @@
 
         <p>
         The MessageTool is used to render internationalized message strings. Source
-        of the strings are the message resource bundles of the Struts framework. The 
+        of the strings are the message resource bundles of the Struts framework. The
         following methods operate on these message resources.
         </p>
-        
+
         <toolinfo>
             <version>@@@version@@@, @@@date@@@</version>
             <clazz>org.apache.velocity.tools.struts.MessageTool</clazz>
@@ -36,28 +36,44 @@
 
     <section name="get()">
         <method name="get()">
-    
+
             <abstract>
                 Looks up and returns the localized message for the specified key.
             </abstract>
-    
+
             <signature>
                 String get(String key)
             </signature>
-            
+
+            <signature>
+                String get(String key, String bundle)
+            </signature>
+
             <signature>
                 String get(String key, Object args[])
             </signature>
-            
+
+            <signature>
+                String get(String key, String bundle, Object args[])
+            </signature>
+
             <signature>
                 String get(String key, List args)
+            </signature>
+
+            <signature>
+                String get(String key, String bundle, List args)
             </signature>
 
             <parameters>
                 <parameter name="key">
                     Message key.
                 </parameter>
-                
+
+                <parameter name="bundle">
+                    The (non-default) message-resources bundle that holds the message.
+                </parameter>
+
                 <parameter name="args">
                     Replacement parameters for this message. Typically
                     an array of Strings or a List of Strings (but any
@@ -65,24 +81,25 @@
                     method can be used).
                 </parameter>
             </parameters>
-    
+
             <returns>
-                The localized message for the specified key. Returns null if no 
+                The localized message for the specified key. Returns null if no
                 message exists for the key passed.
             </returns>
-    
+
             <see>
-                Struts user's guide on 
+                Struts user's guide on
                 <a href="http://jakarta.apache.org/struts/userGuide/building_view.html#i18n">
                 Internationalized Messages</a>.
             </see>
-            
+
             <description>
-                <p>The user's locale is consulted to determine the language of the 
-                message. The second and third signature take a list of up to five
-                replacement parameters. The second signature is provided for compatibility
-                with existing applications. The third signature is Velocity-friendlier.</p>
-                
+                <p>The user's locale is consulted to determine the language of the
+                message. The third, fourth, fifth and sixth signatures take a list
+                of up to five replacement parameters. The third and fourth signatures
+                are provided for compatibility with existing applications. The fifth and
+                sixth signatures are Velocity-friendlier.</p>
+
 <p>Assuming that the message resource files contain the following messages:</p>
 <sourcecode>title=Welcome to Velocity for Struts
 test=This message has five replacement parameters: {0}, {1}, {2}, {3}, {4}</sourcecode>
@@ -95,35 +112,43 @@ $msg.get("test", ["bear", "wolf", "tiger"])</sourcecode>
 <p>produces this output:</p>
 <sourcecode>Welcome to Velocity for Struts
 Welcome to Velocity for Struts
-This message has five replacement parameters: bear, wolf, tiger, {3}, {4}</sourcecode>                    
+This message has five replacement parameters: bear, wolf, tiger, {3}, {4}</sourcecode>
             </description>
-    
+
         </method>
     </section>
 
     <section name="exists()">
         <method name="exists()">
-    
+
             <abstract>
                 Checks if a message string for a specified message key exists
                 for the user's locale.
             </abstract>
-    
+
             <signature>
                 boolean exists(String key)
             </signature>
-            
+
+            <signature>
+                boolean exists(String key, String bundle)
+            </signature>
+
             <parameters>
                 <parameter name="key">
                     Message key.
                 </parameter>
+
+                <parameter name="bundle">
+                    The (non-default) message-resources bundle that holds the message.
+                </parameter>
             </parameters>
-    
+
             <returns>
-                <code>true</code> if a message string for the specified message 
+                <code>true</code> if a message string for the specified message
                 key exists for the user's locale. <code>false</code> otherwise.
             </returns>
-       
+
             <description>
 <sourcecode>$msg.exists("title")</sourcecode>
             </description>
@@ -133,20 +158,20 @@ This message has five replacement parameters: bear, wolf, tiger, {3}, {4}</sourc
 
     <section name="getLocale()">
         <method name="getLocale()">
-    
+
             <abstract>
-                Returns the user's locale. If a locale is not found, the default 
-                locale is returned.
+                Returns the user's locale. If a locale is not found, the default
+                locale is returned (deprecated - will be removed in VelocityTools 1.2).
             </abstract>
-    
+
             <signature>
                 Locale getLocale()
             </signature>
-            
+
             <returns>
                 An instance of class <code>java.util.Locale</code>.
             </returns>
-       
+
             <description>
 <sourcecode>$msg.getLocale()
 $msg.locale
@@ -158,7 +183,7 @@ en
 English</sourcecode>
 
 <p>The returned object of class <code>Locale</code> is automatically rendered by Velocity by
-calling its <code>toString()</code> method. The third example calls method 
+calling its <code>toString()</code> method. The third example calls method
 <code>getDisplayLanguage()</code> of class <code>Locale</code></p>
 
             </description>
