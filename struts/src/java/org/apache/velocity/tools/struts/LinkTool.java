@@ -75,9 +75,9 @@ import org.apache.velocity.tools.view.tools.ContextTool;
  * that class.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
- * @author <a href="mailto:nathan@esh.com">Nathan Bubna</a>
+ * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: LinkTool.java,v 1.1 2002/03/12 11:36:49 sidler Exp $
+ * @version $Id: LinkTool.java,v 1.2 2002/03/13 22:08:54 sidler Exp $
  * 
  */
 public class LinkTool extends ServletContextTool
@@ -244,7 +244,7 @@ public class LinkTool extends ServletContextTool
      */
     public LinkTool setAction(String action)
     {
-        return new LinkTool (this, StrutsUtils.getActionMappingURL(application, request, action));
+        return new LinkTool(this, StrutsUtils.getActionMappingURL(application, request, action));
     }
     
     

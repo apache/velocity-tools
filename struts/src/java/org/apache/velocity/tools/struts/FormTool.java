@@ -71,7 +71,7 @@ import org.apache.velocity.tools.view.tools.ContextTool;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: FormTool.java,v 1.1 2002/03/12 11:36:49 sidler Exp $
+ * @version $Id: FormTool.java,v 1.2 2002/03/13 22:08:54 sidler Exp $
  * 
  */
 public class FormTool extends ServletContextTool
@@ -157,7 +157,7 @@ public class FormTool extends ServletContextTool
      * <pre>   
      * Example:
      * #set ($defaults = $form.bean) 
-     * &lt;input type="text" name="username" value="$form.username"&gt;
+     * &lt;input type="text" name="username" value="$defaults.username"&gt;
      * </pre>
      *
      * @return the {@link ActionForm} associated with this request or 

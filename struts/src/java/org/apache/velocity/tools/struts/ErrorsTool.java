@@ -54,8 +54,9 @@
 
 package org.apache.velocity.tools.struts;
 
-import java.util.Locale;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -66,7 +67,6 @@ import org.apache.struts.action.*;
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ContextTool;
 
-import java.util.Iterator;
 
 /**
  * <p>Context tool to work with the Struts error messages.
@@ -75,7 +75,7 @@ import java.util.Iterator;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ErrorsTool.java,v 1.1 2002/03/12 11:36:49 sidler Exp $
+ * @version $Id: ErrorsTool.java,v 1.2 2002/03/13 22:08:54 sidler Exp $
  * 
  */
 public class ErrorsTool extends ServletContextTool 
@@ -196,14 +196,7 @@ public class ErrorsTool extends ServletContextTool
             return false;
         }
 
-        if (errors.size(property) > 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (errors.size(property) > 0);
     }
 
 
@@ -260,8 +253,15 @@ public class ErrorsTool extends ServletContextTool
      */
     public ArrayList get(String property) 
     {
-        if ( errors == null || errors.empty())
+        if (errors == null || errors.empty())
         {
+            return null;
+        }
+        
+        if (resources == null) 
+        {
+            log(ERROR, "Message resources are not available.");
+            //FIXME? should we return the list of error keys instead?
             return null;
         }
         
@@ -269,28 +269,19 @@ public class ErrorsTool extends ServletContextTool
         if (property == null)
         {
             errormsgs = errors.get();
-            if ( !(errormsgs.hasNext()) ) 
-            {
-                return null;
-            }       
         }
         else
         {
             errormsgs = errors.get(property);
-            if ( !(errormsgs.hasNext()) ) 
-            {
-                return null;
-            }       
+        }
+        
+        if (!(errormsgs.hasNext())) 
+        {
+            return null;
         }
 
         ArrayList list = new ArrayList();
-
-        if (resources == null) 
-        {
-            log(ERROR, "Message resources are not available.");
-            return null;
-        }
-        
+         
         while (errormsgs.hasNext())
         {
             ActionError errormsg = (ActionError)errormsgs.next();
