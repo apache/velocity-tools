@@ -54,7 +54,7 @@ import org.apache.struts.util.ModuleUtils;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * based on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Id: StrutsUtils.java,v 1.23 2004/04/14 20:08:28 marino Exp $
+ * @version $Id: StrutsUtils.java,v 1.24 2004/11/11 00:52:15 nbubna Exp $
  */
 public class StrutsUtils
 {
@@ -419,6 +419,8 @@ public class StrutsUtils
         StringBuffer results = new StringBuffer();
         String header = null;
         String footer = null;
+        String prefix = null;
+        String suffix = null;
         Locale locale = getLocale(request, session);
 
         MessageResources resources =
@@ -427,6 +429,8 @@ public class StrutsUtils
         {
             header = resources.getMessage(locale, "errors.header");
             footer = resources.getMessage(locale, "errors.footer");
+            prefix = resources.getMessage(locale, "errors.prefix");
+            suffix = resources.getMessage(locale, "errors.suffix");
         }
         if (header == null)
         {
@@ -435,6 +439,15 @@ public class StrutsUtils
         if (footer == null)
         {
             footer = "errors.footer";
+        }
+        /* prefix or suffix are optional, be quiet if they're missing */
+        if (prefix == null)
+        {
+            prefix = "";
+        }
+        if (suffix == null)
+        {
+            suffix = "";
         }
 
         results.append(header);
@@ -451,16 +464,20 @@ public class StrutsUtils
                                                report.getKey(),
                                                report.getValues());
             }
+
+            results.append(prefix);
+
             if (message != null)
             {
                 results.append(message);
-                results.append("\r\n");
             }
             else
             {
                 results.append(report.getKey());
-                results.append("\r\n");
             }
+
+            results.append(suffix);
+            results.append("\r\n");
         }
 
         results.append(footer);
