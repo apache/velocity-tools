@@ -29,7 +29,7 @@ import org.apache.velocity.tools.view.servlet.ServletToolInfo;
  *
  * @since VelocityTools 1.1
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Id: ServletToolboxRuleSet.java,v 1.4 2004/02/18 20:07:02 nbubna Exp $
+ * @version $Id: ServletToolboxRuleSet.java,v 1.5 2004/04/15 17:32:06 nbubna Exp $
  */
 public class ServletToolboxRuleSet extends ToolboxRuleSet
 {
@@ -120,7 +120,7 @@ public class ServletToolboxRuleSet extends ToolboxRuleSet
 
 
     /**
-     * Rule that sets <code>setCreateSession()</code> for the top object
+     * Rule that sets <code>setXhtml()</code> for the top object
      * on the stack, which must be a
      * <code>org.apache.velocity.tools.ServletToolboxManager</code>.
      */
