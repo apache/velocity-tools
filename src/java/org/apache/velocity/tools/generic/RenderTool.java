@@ -70,7 +70,7 @@ import org.apache.velocity.context.Context;
  * scope of a servlet environment.</p>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.9 $ $Date: 2004/11/11 06:18:32 $
+ * @version $Revision: 1.10 $ $Date: 2004/11/12 02:02:25 $
  */
 
 public class RenderTool
@@ -101,8 +101,7 @@ public class RenderTool
      */
     public String eval(Context ctx, String vtl) throws Exception
     {
-        /* don't waste time with null or empty strings */
-        if (vtl == null || vtl.length() == 0)
+        if (vtl == null)
         {
             return null;
         }
