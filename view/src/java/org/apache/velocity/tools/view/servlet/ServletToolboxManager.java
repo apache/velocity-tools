@@ -126,7 +126,7 @@ import org.apache.velocity.tools.view.context.ViewContext;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ServletToolboxManager.java,v 1.3 2002/05/10 05:42:18 sidler Exp $
+ * @version $Id: ServletToolboxManager.java,v 1.4 2003/01/24 05:04:51 nbubna Exp $
  * 
  */
 public class ServletToolboxManager extends XMLToolboxManager
@@ -135,6 +135,10 @@ public class ServletToolboxManager extends XMLToolboxManager
     // --------------------------------------------------- Properties ---------
 
     public static final String ELEMENT_SCOPE = "scope";
+    public static final String ELEMENT_CREATE_SESSION = "create-session";
+
+    public static final String VALUE_YES  = "yes";
+    public static final String VALUE_NO   = "no";
 
     public static final String SESSION_TOOLS_KEY = "org.apache.velocity.tools.view.tools.ServletToolboxManager.SessionTools";
 
@@ -142,6 +146,7 @@ public class ServletToolboxManager extends XMLToolboxManager
     private Map appTools;
     private ArrayList sessionToolInfo;
     private ArrayList requestToolInfo;
+    private boolean createSession;
 
 
 
@@ -156,6 +161,7 @@ public class ServletToolboxManager extends XMLToolboxManager
         appTools = new HashMap();
         sessionToolInfo = new ArrayList();
         requestToolInfo = new ArrayList();
+        createSession = true;
     }
 
 
@@ -163,11 +169,94 @@ public class ServletToolboxManager extends XMLToolboxManager
     // --------------------------------------------------- Methods ------------
 
     /**
+     * Sets whether or not to create a new session when none exists for the
+     * current request and session-scoped tools have been defined for this
+     * toolbox.
+     *
+     * If true, then a call to {@link getToolboxContext} will 
+     * create a new session if none currently exists for this request and
+     * the toolbox has one or more session-scoped tools designed.
+     *
+     * If false, then a call to {@link getToolboxContext} will never
+     * create a new session for the current request.
+     * This effectively means that no session-scoped tools will be added to 
+     * the ToolboxContext for a request that does not have a session object.
+     *
+     * The default value is true.
+     */
+    public void setCreateSession(boolean b)
+    {
+        createSession = b;
+    }
+
+
+    /**
      * Overrides XMLToolboxManager to log to the servlet context
+     * and to Velocity's main log
      */
     protected void log(String s) 
     {
         servletContext.log("ServletToolboxManager: " + s);
+    }
+
+
+    /**
+     * Overrides XMLToolboxManager to handle the create-session element.
+     */
+    protected boolean readElement(Element e) throws Exception
+    {
+        String name = e.getName();
+
+        ToolInfo info = null;
+
+        if (name.equalsIgnoreCase(ELEMENT_TOOL))
+        {
+            info = readToolInfo(e);
+        }
+        else if (name.equalsIgnoreCase(ELEMENT_DATA)) 
+        {
+            info = readDataInfo(e);
+        }
+        else if (name.equalsIgnoreCase(ELEMENT_CREATE_SESSION))
+        {
+            readCreateSession(e);
+            return true;
+        }
+        else
+        {
+            log("Could not read element: "+name);
+            return false;
+        }
+
+        addTool(info);
+        log("Added "+info.getClassname()+" as "+info.getKey());
+        return true;
+    }
+
+
+    /**
+     * Reads the value for create-session.
+     *
+     * @see setCreateSession(boolean)
+     */
+    protected boolean readCreateSession(Element e) throws Exception
+    {
+        String csValue = e.getText();
+        if (VALUE_YES.equalsIgnoreCase(csValue))
+        {
+            setCreateSession(true);
+        }
+        else if (VALUE_NO.equalsIgnoreCase(csValue))
+        {
+            setCreateSession(false);
+        }
+        else
+        {
+            log("Unknown value for create-session.  Valid options are 'yes' or 'no'.");
+            return false;
+        }
+        log("create-session is set to "+createSession);
+        return true;
     }
 
 
@@ -257,31 +346,33 @@ public class ServletToolboxManager extends XMLToolboxManager
 
         if (!sessionToolInfo.isEmpty())
         {
-            HttpSession session = ctx.getRequest().getSession();
+            HttpSession session = ctx.getRequest().getSession(createSession);
 
-            //synchronize session tool initialization to avoid potential
-            //conflicts from multiple simultaneous requests in the same session
-            synchronized(session)
-            {
-                //get the initialized session tools
-                Map stmap = (Map)session.getAttribute(SESSION_TOOLS_KEY);
-
-                //if session tools aren't initialized,
-                //do so and store them in the session
-                if (stmap == null)
+            if (session != null) {
+                //synchronize session tool initialization to avoid potential
+                //conflicts from multiple simultaneous requests in the same session
+                synchronized(session)
                 {
-                    stmap = new HashMap(sessionToolInfo.size());
-                    Iterator i = sessionToolInfo.iterator();
-                    while(i.hasNext())
-                    {
-                        ToolInfo info = (ToolInfo)i.next();
-                        stmap.put(info.getKey(), info.getInstance(ctx));
-                    }
-                    session.setAttribute(SESSION_TOOLS_KEY, stmap);
-                }
+                    //get the initialized session tools
+                    Map stmap = (Map)session.getAttribute(SESSION_TOOLS_KEY);
 
-                //add the initialized session tools to the toolbox
-                toolbox.putAll(stmap);
+                    //if session tools aren't initialized,
+                    //do so and store them in the session
+                    if (stmap == null)
+                    {
+                        stmap = new HashMap(sessionToolInfo.size());
+                        Iterator i = sessionToolInfo.iterator();
+                        while(i.hasNext())
+                        {
+                            ToolInfo info = (ToolInfo)i.next();
+                            stmap.put(info.getKey(), info.getInstance(ctx));
+                        }
+                        session.setAttribute(SESSION_TOOLS_KEY, stmap);
+                    }
+
+                    //add the initialized session tools to the toolbox
+                    toolbox.putAll(stmap);
+                }
             }
         }
 
