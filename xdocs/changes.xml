@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <title>Velocity Tools Changes</title>
+    <author email="nathan@esha.com">Nathan Bubna</author>
+    <projectfile>xdocs/menu.xml</projectfile>
+  </properties>
+<body>
+  <section name="Velocity Tools Changes">
+    <p>This document tracks the changes in Velocity Tools between releases.</p>
+
+    <subsection name="1.1-dev">
+      <p>This section describes changes after the 1.0 release.</p>
+      <ul>
+      <li>Allow system to reclaim objects held by pooled writers in VelocityViewServlet (see bug 18951) (ndb)</li>
+      <li>Changed LinkTool to automatically check for XHTML setting (ndb)</li>
+      <li>Added support for standard XHTML mode setting via toolbox config (ndb)</li>
+      <li>Moved request/response/session/application keys to ViewContext and add getAttribute() method (ndb)</li>
+      <li>Added selectModule() and getForwardURL() to StrutsUtils (maj)</li>
+      <li>Convert VelocityStruts tools to use new StrutsUtils methods and be module aware (maj)</li>
+      <li>Removed unused imports from StrutsLinkTool (ndb)</li>
+      <li>Refactor StrutsUtils to use Struts 1.1 classes and support modules (maj)</li>
+      <li>Added TilesTool (maj)</li>
+      <li>Allow subclasses of VelocityViewServlet to use different ToolboxManager implementations (ndb)</li>
+      <li>Added CookieTool (contributed by Dmitri Colebatch) (ndb)</li>
+      <li>Added demo of &lt;data&gt; elements to simple VelocityStruts example (ndb)</li>
+      <li>Made simple VelocityStruts example catch Commons-Logging output with LogSystemCommonsLog (ndb)</li>
+      <li>Convert toolbox setup to use Digester instead of dom4j (ndb)</li>
+      <li>Added LogSystemCommonsLog and CommonsLogLogSystem to provide bridges between Commons-Logging and Velocity's LogSystem (ndb)</li>
+      <li>Added Commons Logging 1.0.3 jar (ndb)</li>
+      <li>Added ActionMessagesTool (ndb)</li>
+      <li>Upgrade deprecated Struts 1.0 uses in examples (ndb)</li>
+      <li>Updated jars to Struts 1.1, BeanUtils 1.6.1, Digester 1.5, Collections 2.1 (ndb)</li>
+      </ul>
+    </subsection>
+
+    <subsection name="1.0">
+      <ul>
+      <li>Initial release.</li>
+      </ul>
+    </subsection>
+
+  </section>
+
+</body>
+</document>
