@@ -1,0 +1,35 @@
+#*
+ * $Id: Error.vm,v 1.1 2003/05/27 23:15:39 nbubna Exp $
+ *#
+##Force use of default layout (so req params don't override it)
+#set( $layout = "Default.vm" )
+#title( "Error - $!cause.class.name" )
+
+<div align="center">
+<h1>There has been an error!</h1>
+<br>
+<b style="color: #FF0000;">
+#if( $invocation_exception )
+  $!invocation_exception.message
+#else
+  $!cause.message
+#end
+</b>
+<br><br><br>
+##Let's hide this highly useful but highly ugly info from the users
+<!--
+
+#if( $invocation_exception )
+oh joy! it's a MethodInvocationException!
+
+Reference name: $invocation_exception.referenceName
+Method name: $invocation_exception.methodName
+#end
+
+Alright, here's the stack.  Good luck.
+
+$stack_trace
+
+-->
+<h3>Sorry about that!</h3>
+</div>

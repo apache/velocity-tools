@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<!-- $Id: toolbox.xml,v 1.1 2003/05/27 23:15:39 nbubna Exp $ -->
+<toolbox>
+
+  <data type="string">
+    <key>author</key>
+    <value>Tim Colson</value>
+  </data>
+
+  <tool>
+    <key>link</key>
+    <scope>request</scope>
+    <class>LayoutLinkTool</class>
+  </tool>
+
+</toolbox>

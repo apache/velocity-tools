@@ -1,0 +1,58 @@
+#*
+ * $Id: CSS.vm,v 1.1 2003/05/27 23:15:39 nbubna Exp $ 
+ *#
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+	<title>LAYOUT = $!page_title</title>
+	<style type="text/css" media="screen">@import "$link.setRelative('/layout/layout.css')";</style>
+	
+</head>
+<body>
+
+<div class="content">
+	<h1>CSS Layout</h1>
+	<p>$screen_content</p>
+</div>
+
+<div class="content">
+	<h2>Known Issues</h2>
+	<p>This layout fails in IE4.5/Mac. That browser has poor support for CSS absolute positioning, yet it recognizes and executes the CSS @import statement used to hide CSS from broken browsers. Currently, there is no known solution.</p>
+</div>
+
+
+<div id="navAlpha">
+	<h2>Links</h2>
+	<p>
+		<a href="http://jakarta.apache.org/velocity/" title="Velocity Template Engine">Velocity</a><br>
+		<a href="$link.setRelative('index.vm')">Default Layout</a><br>
+		<a href="$link.setRelative('index.vm').setLayout('Printable.vm')">Printable Layout</a><br>
+	</p>
+	
+	<h2>Rollover via CSS</h2>
+	
+	<p>
+	<div id="button">
+	<ul>
+		<li><a href="#">Home</a></li>
+		<li><a href="#">Velocity Manual</a></li>
+		<li><a href="#">Jakarta</a></li>
+		<li><a href="http://www.alistapart.com/stories/taminglists/">A List Apart CSS</a></li>
+		
+	</ul>
+	</div>
+
+	</p>
+</div>
+
+<div id="navBeta">
+	<h2>Nifty Layout Techniques</h2>
+	<p>All sorts of nifty layout can be accomplished using cascading style sheets (CSS). Check out <a href="http://www.bluerobot.com" title="BlueRobot layout Resource">bluerobot.com</a> and the <a href="http://www.bluerobot.com/web/layouts/">Layout Reservoir</A> </p>
+</div>
+
+<!-- BlueRobot was here. -->
+
+</body>
+</html>

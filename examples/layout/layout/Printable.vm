@@ -1,0 +1,17 @@
+#*
+ * $Id: Printable.vm,v 1.1 2003/05/27 23:15:39 nbubna Exp $  
+ *#
+<html>
+<head>
+  <title>LAYOUT= $!page_title</title>
+</head>
+<body>
+<B>PRINTABLE LAYOUT - HEADER</B><BR>
+
+<P>
+$screen_content
+</P>
+
+<B>PRINTABLE LAYOUT - FOOTER</B><BR>
+</body>
+</html>

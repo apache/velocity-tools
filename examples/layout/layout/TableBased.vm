@@ -1,0 +1,31 @@
+#*
+ * $Id: TableBased.vm,v 1.1 2003/05/27 23:15:39 nbubna Exp $ 
+ *#
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+	<title>LAYOUT = $!page_title</title>
+	
+</head>
+
+<body>
+
+<TABLE CELLPADDING="10"> 
+ 
+<TR>
+<!-- left nav -->
+<TD BGCOLOR="#66EEFF" VALIGN="TOP" >
+	<ul>
+		<li><a href="#">Home</a></li>
+		<li><a href="#">Velocity Manual</a></li>
+		<li><a href="#">Jakarta</a></li>
+	</ul>
+</TD>
+<TD>
+	<p>$screen_content</p>
+</TD>
+
+</body>
+</html>

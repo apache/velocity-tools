@@ -1,0 +1,8 @@
+##$Id: VM_global_library.vm,v 1.1 2003/05/27 23:15:39 nbubna Exp $  
+
+#**
+ * Sets the $page_title key, so if it ever changes,
+ * it need only be changed here.
+ *#
+#macro( title $string )
+#set( $page_title = $string )#end
