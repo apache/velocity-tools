@@ -1,6 +1,6 @@
 S T A T U S
 ===========
-$Id: STATUS,v 1.9 2003/07/22 18:43:34 nbubna Exp $
+$Id: STATUS,v 1.10 2003/07/22 18:44:17 nbubna Exp $
 
 
 Known Issues/Bugs:
@@ -37,8 +37,6 @@ Proposed Features/Upgrades:
         - add a library of velocimacros for use with struts tools
           (ideally these would be roughly parallel to struts tags to ease transition)
         - Struts 1.1 Support:
-            - ActionMessages
-                - add getActionMessages() to StrutsUtils
             - Validator
                 - tool to access javascripts?
                 - integration with FormTool/MessagesTool?
