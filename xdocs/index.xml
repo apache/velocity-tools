@@ -60,6 +60,34 @@
             of the use of the VelocityLayoutServlet and a minimal "simple" application.</p>
             <br clear="all" />
         </subsection>
+
+        <subsection name="Documentation">
+          <p>
+            Emphasis <s>is</s> was being put on providing tool documentation that 
+            is suitable for template designers. To achive this goal, a documentation
+            format has been defined that captures all information relevant to the
+            template designer. It is being supplied in addition to the customary
+            Javadoc. This should help to achieve what we always claim for Velocity:
+            "Decouple the work of template designers from the work of software
+            developers". Look at the Struts 
+            <a href="../struts/MessageTool.html">MessageTool</a>
+            for a good example of the new documentation format.
+          </p>
+          <p>
+            <b>Update:</b> 
+            While we value the look and readability of this format, we are presently 
+            drifting away from the use of it. The primary reason for this is that the 
+            developers have found it difficult to maintain (i.e. no one
+            has been motivated enough to put in the extra work).  If you feel this 
+            documentation format is valuable and wish to help us create and maintain
+            it for the various individual tools, please see 
+            <a href="#Wanna help?">below</a> 
+            for more details on getting involved.  Meanwhile, we'll be putting effort
+            into improving javadoc for individual tools and overview documents for 
+            the sub-projects.
+          </p>
+        </subsection>
+        <br clear="all"/>
     </section>    
 
     <section name="Download">
