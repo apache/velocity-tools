@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: changes.xml,v 1.22 2004/07/22 01:27:50 nbubna Exp $
+  $Id: changes.xml,v 1.23 2004/11/11 07:34:19 nbubna Exp $
 -->
 <document>
   <properties>
@@ -29,6 +29,19 @@
     <subsection name="1.2-dev">
       <p>This section describes changes after the 1.1 release.</p>
       <ul>
+      <li>Converted VelocityView and VelocityStruts to use a VelocityEngine instead of the Velocity singleton.
+          This means only the servlets log directly to the VelocityEngine instance; the tools and other
+          classes now use commons-logging (which can still be redirected to the VVS's VelocityEngine). Also, both
+          the RenderTool and LogSystemCommonsLog now support either the singleton or non-singleton approach. (ndb)</li>
+      <li>Fixed bad relative URIs in LinkTool when webapp is installed as root (#32104, reported by Laurent Dauvilaire). (ndb)</li>
+      <li>Factored basic pagination code out of AbstractSearchTool into new AbstractPagerTool. (ndb)</li>
+      <li>Make StrutsUtils.errorMarkup() support errors.prefix/suffix (#31768, patch by Shinobu Kawai). (ndb)</li>
+      <li>Fixed ImportSupport bug with multiple calls to ImportResponseWrapper.getWriter() or getOutputStream() (#32146, patch by Shinobu Kawai). (ndb)</li>
+      <li>Made DateTool.toDate(Object) accept Number in place of Long. (ndb)</li>
+      <li>Fixed RenderTool NPE when passed null VTL string (#31583, reported by Tim Colson). (ndb)</li>
+      <li>Enable template cache refreshing and global macro autoreloading in WebappLoader. (maj)</li>
+      <li>Stopped using Velocity's dependency jar. (maj)</li>
+      <li>Upgraded Struts, commons-collections, commons-logging, and commons-validator to Struts 1.2.4 versions. (maj)</li>
       <li>Added new SortTool (based on contribution from Brett Sutton). (ndb)</li>
       <li>Added MathTool methods for totalling or averaging lists or arrays of values (adapted from a contribution by Leon Messerschmidt). (ndb)</li>
       <li>Prevent NPE in RenderTool.recurse() when an evaluation fails. (ndb)</li>
