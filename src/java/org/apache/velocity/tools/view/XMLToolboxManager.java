@@ -73,13 +73,13 @@ import org.apache.velocity.tools.view.context.ToolboxContext;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: XMLToolboxManager.java,v 1.11 2004/04/16 20:39:28 nbubna Exp $
+ * @version $Id: XMLToolboxManager.java,v 1.12 2004/11/11 04:02:03 nbubna Exp $
  */
 public class XMLToolboxManager implements ToolboxManager
 {
 
     private List toolinfo;
-    private Map toolbox;
+    private Map data;
 
     private static RuleSet ruleSet = new ToolboxRuleSet();
 
@@ -90,7 +90,7 @@ public class XMLToolboxManager implements ToolboxManager
     public XMLToolboxManager()
     {
         toolinfo = new ArrayList();
-        toolbox = new HashMap();
+        data = new HashMap();
     }
 
 
@@ -98,21 +98,37 @@ public class XMLToolboxManager implements ToolboxManager
 
     public void addTool(ToolInfo info)
     {
-        toolinfo.add(info);
+        if (info instanceof DataInfo)
+        {
+            data.put(info.getKey(), info.getInstance(null));
+        }
+        else
+        {
+            toolinfo.add(info);
+        }
         Velocity.info("Added "+info.getKey()+" ("+info.getClassname()+") to the toolbox.");
     }
 
 
+    /**
+     * @deprecated Use getToolbox(Object) instead.
+     */
     public ToolboxContext getToolboxContext(Object initData)
     {
+        return new ToolboxContext(getToolbox(initData));
+    }
+
+
+    public Map getToolbox(Object initData)
+    {
+        Map toolbox = new HashMap(data);
         Iterator i = toolinfo.iterator();
         while(i.hasNext())
         {
             ToolInfo info = (ToolInfo)i.next();
             toolbox.put(info.getKey(), info.getInstance(initData));
         }
-
-        return new ToolboxContext(toolbox);
+        return toolbox;
     }
 
 
