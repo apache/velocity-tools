@@ -1,58 +1,52 @@
 R E A D M E
 ===========
 
-This part of jakarta-velocity-tools is focused on Struts-Velocity
-integration using the VelocityViewServlet and other tools found
-in this project. Struts support in Velocity is provided through 
-several view tools. 
+This is the root directory of the VelocityStruts package. This 
+package aims to make Velocity available as an alterative view
+technology for the Apache Struts Web application framework.
+Struts support in Velocity is provided through several view tools. 
 
-This is an alpha version. We do not recommend that you build production
-systems based on this software at this stage. The API may still
-change. We will produce a beta version when we believe that the API
-is reasonably stable. 
-
-Prerequisites are:
-
-o Ant 1.4.1 or higher 
-o JDK 1.3.1 or higher
-
-To build the package:
-
-> ant
-
-This compiles the package, generates a jar file in the same directory 
-and sets up the examples.
-
-The directory 'docs' contains reference documentation for the included
-view tools. More documentation will be added shortly. For now the 
-best way to get a feel for the Struts Velocity integration is to look 
-at the included examples.
+This is an alpha version. The API may still change. We will produce 
+a beta version when we believe that the API is reasonably stable. 
 
 
 
-Examples
---------
+Build Instructions
+------------------
 
-Several Struts application examples have been included to demonstrate
-the use of Velocity templates with Struts. 
+See the README.txt file in the directory above the directory of 
+this file.
 
-To run the examples you need:
+The build process generates a velocity-tools-struts-*.jar file in
+the directory where this README is located. This jar file contains
+the classes needed for Velocity support in Struts.
 
-o ant 1.4.1 or higher to build a deployable version of the example 
-  applications (war file)
-o JDK 1.3.1 or higher
-o Tomcat 3.X, Tomcat 4.X or a comparable servlet runner to run the
-  examples.
 
-To build a deployable version of the examples follow these steps:
 
-o Build the Struts package as outlined in the first section.
-o Change to directory examples/struts
-o Use ant to build a deployable version: > ant war
-  
-This will generate a velstruts.war file in directory 'examples'.
-Deploy this .war file to the webapps directory of your servlet
-runner and restart. Now point a web browser at:
+Documentation
+-------------
+
+After the project has been built, the directory 'docs' contains 
+reference documentation for the included view tools and an incomplete 
+draft of a user guide. More documentation will be added shortly. For 
+now the best way to get a feel for the Struts Velocity integration is 
+to look at the included application examples.
+
+
+
+Application Examples
+--------------------
+
+Several Struts application examples are included to demonstrate the 
+use of Velocity templates with Struts. 
+
+To run the examples you need Tomcat 4.X or a compatible servlet runner.
+
+The build process automatically generates a ready-to-deploy war archive
+file of the included application examples. The war file is located in 
+the examples subdirectory. Deploy (copy) this .war file to the webapps 
+directory of your servlet runner and restart. Now point a web browser 
+at:
 
 http://<server>:<port>/velstruts/
 
@@ -60,4 +54,10 @@ to access the examples.
  
  
   
-Please send your feedback to velocity-user@jakarta.apache.org. 
+Feedback
+--------
+
+We welcome your feedback to velocity-user@jakarta.apache.org.
+
+
+$Revision: 1.6 $ $Date: 2002/06/23 09:45:16 $

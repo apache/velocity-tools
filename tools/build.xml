@@ -10,7 +10,7 @@
 <!-- ========== External Dependencies ===================================== -->
 
  <!-- the local repository -->
- <property name="local.repository"            value="${basedir}/lib" />
+ <!-- <property name="local.repository"       value="${basedir}/lib" /> -->
  <property name="project.repository"          value="${basedir}/../lib" />
 
 <!-- ========== Component Declarations ==================================== -->
@@ -23,10 +23,10 @@
   <property name="project.title"         value=""/>
 
   <!-- The current version number of this component -->
-  <property name="project.version"       value="0.2"/>
+  <property name="project.version"       value="0.3"/>
 
-  <!-- The current version number of this component -->
-  <property name="project.date"          value="24-Mar-2002"/>
+  <!-- The version's date -->
+  <property name="project.date"          value="22-Jun-2002"/>
 
   <!-- The base directory for compilation targets -->
   <property name="build.home"            value="${basedir}/target"/>
@@ -60,9 +60,10 @@
 
   <!-- Construct compile classpath -->
   <path id="classpath">
-    <fileset dir="${local.repository}">
-      <include name="**/*.jar"/>
-    </fileset>
+    <!-- <fileset dir="${local.repository}">
+           <include name="**/*.jar"/>
+         </fileset>
+    -->
     <fileset dir="${project.repository}">
       <include name="**/*.jar"/>
     </fileset>
@@ -87,10 +88,10 @@
   <target name="prepare" depends="init"
    description="Prepare build directory">
     <mkdir dir="${docs.dest}"/>
+    <mkdir dir="${docs.dest}/javadoc"/>
     <mkdir dir="${build.home}"/>
     <mkdir dir="${build.home}/classes"/>
     <mkdir dir="${build.home}/conf"/>
-    <mkdir dir="${build.home}/javadoc"/>
   </target>
 
   <!-- ================================================================== -->
@@ -108,7 +109,7 @@
   <!-- ================================================================== -->
   <!-- A L L                                                              -->
   <!-- ================================================================== -->
-  <target name="all" depends="jar,install-jar,docs,javadocs"
+  <target name="all" depends="install-jar,docs,javadocs"
    description="Build entire project"/>
 
 
@@ -181,9 +182,10 @@
       <package name="org.apache.velocity.tools.tools"/>
       <package name="org.apache.velocity.tools.view.tools"/>
       <package name="org.apache.velocity.tools.view.context"/>
+      <package name="org.apache.velocity.tools.view.servlet"/>
 
       <group title="View Tools" packages="org.apache.velocity.tools.tools"/>
-      <group title="View Tools Infrastructure" packages="org.apache.velocity.tools.view.tools:org.apache.velocity.tools.view.context"/>
+      <group title="View Tools Infrastructure" packages="org.apache.velocity.tools.view.tools:org.apache.velocity.tools.view.context:org.apache.velocity.tools.view.servlet"/>
 
       <classpath refid="classpath"/>
 
@@ -197,7 +199,8 @@
   <target name="jar" depends="compile">
     <jar    jarfile="${project.name}-${project.version}.jar"
             basedir="${build.home}/classes"
-            manifest="${conf.home}/MANIFEST.MF"/>
+            manifest="${conf.home}/MANIFEST.MF"
+            excludes="**/*.html" />
   </target>
 
 

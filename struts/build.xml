@@ -9,7 +9,7 @@
 <!-- ========== External Dependencies ===================================== -->
 
  <!-- the local repository -->
- <property name="local.repository"            value="${basedir}/lib" />
+ <property name="local.repository"       value="${basedir}/lib" />
  <property name="project.repository"          value="${basedir}/../lib" />
 
 <!-- ========== Component Declarations ==================================== -->
@@ -22,10 +22,10 @@
   <property name="project.title"         value=""/>
 
   <!-- The current version number of this component -->
-  <property name="project.version"       value="0.8"/>
+  <property name="project.version"       value="0.9"/>
 
-  <!-- The current version number of this component -->
-  <property name="project.date"          value="29-Mar-2002"/>
+  <!-- The version's date -->
+  <property name="project.date"          value="22-Jun-2002"/>
 
   <!-- The base directory for compilation targets -->
   <property name="build.home"            value="${basedir}/target"/>
@@ -83,6 +83,7 @@
     <filter  token="version"               value="${project.version}"/>
   </target>
 
+
   <!-- ================================================================== -->
   <!-- P R E P A R E                                                      -->
   <!-- ================================================================== -->
@@ -95,6 +96,7 @@
     <mkdir dir="${build.home}/javadoc"/>
   </target>
 
+
   <!-- ================================================================== -->
   <!-- S T A T I C                                                        -->
   <!-- ================================================================== -->
@@ -105,6 +107,7 @@
       <fileset dir="${conf.home}" includes="*.MF"/>
     </copy>
   </target>
+
 
   <!-- ================================================================== -->
   <!-- C O M P I L E                                                      -->
@@ -124,6 +127,7 @@
     </copy>
 
   </target>
+
 
   <!-- ================================================================== -->
   <!-- C L E A N                                                          -->
@@ -145,21 +149,22 @@
         <fileset dir="${project.repository}" includes="${project.name}-*.jar"/>
     </delete>
 
-    <delete    dir="${examples.home}/velstruts"/>
-
-    <delete    dir="${examples.home}/struts/doc/javadoc"/>
-
     <delete>
-        <fileset dir="${examples.home}/struts/WEB-INF/lib" includes="$velocity-tools-*.jar"/>
+      <fileset dir="${basedir}" includes="**/*.bak"/>
     </delete>
 
+    <!-- Clean examples -->
+    <delete    dir="${examples.home}/velstruts"/>
+    <ant dir="examples/struts" target="clean" inheritAll="false"/>
+    <delete    dir="${examples.home}/struts/doc/javadoc"/>
+    <delete>
+        <fileset dir="${examples.home}/struts/WEB-INF/lib" includes="*.jar"/>
+        <fileset dir="${examples.home}/struts/WEB-INF/build-lib" includes="*.jar"/>
+    </delete>
     <delete>
       <fileset dir="${examples.home}" includes="*.war"/>
     </delete>
 
-    <delete>
-      <fileset dir="${basedir}" includes="**/*.bak"/>
-    </delete>
 
   </target>
 
@@ -167,14 +172,14 @@
   <!-- ================================================================== -->
   <!-- A L L                                                              -->
   <!-- ================================================================== -->
-  <target name="all" depends="jar,install-jar,docs,javadocs,examples"
+  <target name="all" depends="install-jar,docs,javadocs,examples"
    description="Build entire project"/>
 
 
   <!-- ================================================================== -->
   <!-- J A V A D O C S                                                    -->
   <!-- ================================================================== -->
-  <target name="javadocs" depends="compile"
+  <target name="javadocs" depends="static"
    description="Create Javadoc documentation">
     <javadoc sourcepath="${source.home}/java"
                 destdir="${build.home}/javadoc"
@@ -185,10 +190,9 @@
                doctitle="&lt;h1&gt;${project.title}&lt;/h1&gt;"
             windowtitle="${project.title} (Version ${project.version})"
                  bottom="Copyright (c) 2002 Apache Software Foundation" >
-
       <classpath refid="classpath"/>
-
      </javadoc>
+
   </target>
 
 
@@ -199,7 +203,8 @@
     description="Package class as jar file into ${builddir}">
     <jar    jarfile="${project.name}-${project.version}.jar"
             basedir="${build.home}/classes"
-            manifest="${conf.home}/MANIFEST.MF"/>
+            manifest="${conf.home}/MANIFEST.MF"
+            excludes="**/*.html" />
   </target>
 
 
@@ -256,8 +261,8 @@
   <!-- ================================================================== -->
   <!-- E X A M P L E S                                                    -->
   <!-- ================================================================== -->
-  <target name="examples" depends="jar,install-jar,docs,javadocs" 
-    description="Setup example application">
+  <target name="examples" depends="install-jar,docs,javadocs" 
+    description="Setup example applications.">
 
       <!-- Setup example applications -->
 
@@ -274,6 +279,19 @@
       <copy todir="${examples.home}/struts/WEB-INF/lib" filtering="no">
         <fileset dir="${project.repository}">
           <include name="velocity-tools-*.jar"/>
+          <include name="commons-beanutils*.jar"/>
+          <include name="commons-collections*.jar"/>
+          <include name="commons-digester*.jar"/>
+          <include name="dom4j*.jar"/>
+          <include name="jdbc2_0-stdext*.jar"/>
+          <include name="velocity-dep*.jar"/>
+          <include name="struts*.jar"/>
+        </fileset>
+      </copy>
+
+      <copy todir="${examples.home}/struts/WEB-INF/build-lib" filtering="no">
+        <fileset dir="${project.repository}">
+          <include name="jakarta-servlet-api*.jar"/>
         </fileset>
       </copy>
 
@@ -281,6 +299,10 @@
       <copy todir="${examples.home}/struts/doc/javadoc/">
         <fileset dir="${build.home}/javadoc"/>
       </copy>
+
+      <!-- Build VelocityStruts examples -->
+      <ant dir="examples/struts" target="all" inheritAll="false"/>
+
 
 <!-- Fix problems with relative links first
       Copy reference documentation 
@@ -315,7 +337,7 @@
   <!-- I N S T A L L  J A R                                               -->
   <!-- ================================================================== -->
   <target name="install-jar" depends="jar"
-          description="--> Installs .jar file in ${project.repository}">
+          description="Installs .jar file in ${project.repository}">
 
     <copy todir="${project.repository}" filtering="no">
       <fileset dir="${basedir}">

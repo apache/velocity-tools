@@ -14,16 +14,10 @@
 <!-- ========== Component Declarations ==================================== -->
 
   <!-- The name of this component -->
-  <property name="project.name"          value="velocity-tools" />
+  <property name="project.name"          value="VelocityTools" />
 
   <!-- The title of this component -->
   <property name="project.title"         value="Velocity Tools Documentation"/>
-
-  <!-- The current version number of this component -->
-  <property name="project.version"       value="0.1"/>
-
-  <!-- The current version number of this component -->
-  <property name="project.date"          value="27-Mar-2002"/>
 
   <!-- The base directory for compilation targets -->
   <property name="build.home"            value="${basedir}"/>
@@ -51,6 +45,15 @@
     <fileset dir="${project.repository}">
       <include name="**/*.jar"/>
     </fileset>
+    <fileset dir="${basedir}/view/lib">
+      <include name="**/*.jar"/>
+    </fileset>
+    <fileset dir="${basedir}/struts/lib">
+      <include name="**/*.jar"/>
+    </fileset>
+    <fileset dir="${basedir}/tools/lib">
+      <include name="**/*.jar"/>
+    </fileset>
   </path>
 
 <!-- ========== Executable Targets ======================================== -->
@@ -61,9 +64,8 @@
   <!-- ================================================================== -->
   <target name="init">
     <!-- Initialize and evaluate conditionals -->
-    <echo message="-------- ${project.name} ${project.version} --------"/>
+    <echo message="-------- ${project.name} --------"/>
     <filter  token="name"                  value="${project.name}"/>
-    <filter  token="version"               value="${project.version}"/>
   </target>
 
   <!-- ================================================================== -->
@@ -103,9 +105,7 @@
     <ant dir="tools" target="clean" inheritAll="false"/>
 
     <ant dir="struts" target="clean" inheritAll="false"/>
-
-    <ant dir="struts/examples/struts" target="clean" inheritAll="false"/>
-
+    
   </target>
 
 
@@ -126,6 +126,9 @@
    
       <!-- Build view package -->
       <ant dir="view" target="all" inheritAll="false"/>
+
+      <!-- Build the Simple example -->
+      <!-- <ant dir="view/examples/simple" target="all" inheritAll="false"/> -->
 
   </target>
 
@@ -152,7 +155,7 @@
       <ant dir="struts" target="all" inheritAll="false"/> 
    
       <!-- Build VelocityStruts examples -->
-      <ant dir="struts/examples/struts" target="all" inheritAll="false"/> 
+      <!-- <ant dir="struts/examples/struts" target="all" inheritAll="false"/> -->
 
   </target>
 
@@ -177,7 +180,7 @@
                    private="true"
                    version="true"
                   doctitle="&lt;h1&gt;${project.title}&lt;/h1&gt;"
-               windowtitle="${project.title} (Version ${project.version})"
+               windowtitle="${project.title}"
                     bottom="Copyright (c) 2002 Apache Software Foundation" >
 
       <package name="org.apache.velocity.tools.*"/>

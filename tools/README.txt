@@ -5,22 +5,29 @@ This package contains a collection of general purpose view tools.
 Most tools are optimized for use with an automatic toolbox manager.
 
 
-Build and JAR
--------------
-An ant script is provided to build and jar the package.
 
-> ant compile
-> ant jar
+Build Instructions
+------------------
+See the README.txt file in the directory above the directory of 
+this file.
+
+The build process generates a velocity-tools-library-*.jar file in
+the directory where this README is located. This jar file contains
+the classes of all view tools in this package.
+
 
 
 Documentation
 -------------
-To generate the documentation for this package, call:
+After the project has been built, the 'docs' directory contains the
+available documentation of this package.
 
-> ant docs
-
-Then look for the generated documentation in the 'docs' subdirectory.
-
+ 
   
-  
-Please send your feedback to velocity-user@jakarta.apache.org. 
+Feedback
+--------
+
+We welcome your feedback to velocity-user@jakarta.apache.org.
+
+
+$Revision: 1.3 $ $Date: 2002/06/23 09:45:16 $

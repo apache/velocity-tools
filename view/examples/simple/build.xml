@@ -1,7 +1,7 @@
-<project name="Velocity Tools" default="war" basedir=".">
+<project name="Velocity Tools" default="all" basedir=".">
 
 
-<!-- ========== Initialize Properties ===========================+======= -->
+<!-- ========== Initialize Properties ================================== -->
 
   <property name="DEV"      value="${basedir}/"/>
   <property name="SRC"      value="${basedir}/WEB-INF/src"/>
@@ -31,30 +31,16 @@
 
 
   <!-- ================================================================== -->
-  <!-- H E L P                                                            -->
+  <!-- A L L                                                              -->
   <!-- ================================================================== -->
-  <target name="help" depends="init">
-    <!-- Print usage information -->
-    <echo> </echo>
-    <echo>Usage: ant &lt;target&gt;                                         </echo>
-    <echo>                                                                  </echo>
-    <echo>where the following targets are supported:                        </echo>
-    <echo>                                                                  </echo>
-    <echo>  compile  Compile all sources.                                   </echo>
-    <echo>                                                                  </echo>
-    <echo>  clean    Clean dev tree and previously generated distributions. </echo>
-    <echo>                                                                  </echo>
-    <echo>  war      Pack the entire application into a war file.           </echo>
-    <echo>                                                                  </echo>
-    <echo>  help     Print this help information.                           </echo>
-    <echo>                                                                  </echo>
-  </target>
+  <target name="all" depends="war"
+   description="Build entire example"/>
 
 
   <!-- ================================================================== -->
   <!-- C O M P I L E                                                              -->
   <!-- ================================================================== -->
-  <target name="compile" depends="">
+  <target name="compile" depends="init">
     <!-- Compile the java code from ${SRC} into ${CLASSES} -->
     <javac srcdir="${SRC}"
            includes="*/**"
@@ -68,9 +54,12 @@
   <!-- ================================================================== -->
   <!-- W A R                                                              -->
   <!-- ================================================================== -->
-  <target name="war" depends="init, clean, compile">
-    <jar jarfile="${basedir}/../simple.war" basedir="${DEV}"/>
+  <target name="war" depends="compile">
+    <jar jarfile="${basedir}/../simple.war" 
+         basedir="${DEV}"
+         excludes="**/MANIFEST.MF"/>
 
+    <echo>                                                  </echo>
     <echo>                                                  </echo>
     <echo>  A WAR file (Web ARchive) was created for you in </echo>
     <echo>  the directory above. (/examples)  It is called  </echo>
@@ -78,8 +67,8 @@
     <echo>      simple.war                                  </echo>
     <echo>                                                  </echo>
     <echo>  To use it with Tomcat, copy the .war file to    </echo>
-    <echo>  the webapps directory in the tomcat tree        </echo>
-    <echo>  (assuming a standard tomcat installation)  and  </echo>
+    <echo>  the webapps directory in the Tomcat tree        </echo>
+    <echo>  (assuming a standard Tomcat installation)  and  </echo>
     <echo>  then restart Tomcat.  To access the page        </echo>
     <echo>  point you browser to                            </echo>
     <echo>                                                  </echo>
@@ -92,7 +81,7 @@
 
 
   <!-- ================================================================== -->
-  <!-- C L E A B                                                          -->
+  <!-- C L E A N                                                          -->
   <!-- ================================================================== -->
   <target name="clean">
     <!-- remove old class files -->
