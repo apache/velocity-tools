@@ -33,9 +33,10 @@ import java.util.List;
  *
  * template...
  * #set( $color = $alternator.make('red', 'blue') )
- * #set( $style = $alternator.make(true, ['hip','fly','groovy']) )
+ * ## use manual alternation for this one
+ * #set( $style = $alternator.make(false, ['hip','fly','groovy']) )
  * #foreach( $i in [1..5] )
- *  $i is $color.next and $style
+ *  $i is $color and $style.next
  * #end
  *
  * output...
@@ -47,7 +48,7 @@ import java.util.List;
  * </pre></p>
  *
  * @since Velocity Tools 1.2
- * @version $Revision: 1.4 $ $Date: 2004/05/05 23:19:11 $
+ * @version $Revision: 1.5 $ $Date: 2004/05/06 00:01:27 $
  */
 public class AlternatorTool
 {
@@ -55,7 +56,7 @@ public class AlternatorTool
     public AlternatorTool() {}
 
     /**
-     * Make a non-automatic {@link Alternator} from a List.
+     * Make an automatic {@link Alternator} from a List.
      */
     public Alternator make(List list)
     {
@@ -78,7 +79,7 @@ public class AlternatorTool
     }
 
     /**
-     * Make a non-automatic {@link Alternator} from an object array.
+     * Make an automatic {@link Alternator} from an object array.
      */
     public Alternator make(Object[] array)
     {
@@ -101,7 +102,7 @@ public class AlternatorTool
     }
 
     /**
-     * Make a non-automatic {@link Alternator} from a list containing the two
+     * Make an automatic {@link Alternator} from a list containing the two
      * specified objects.
      *
      * @return The new Alternator, or <code>null</code> if arguments
