@@ -67,6 +67,26 @@
          redirect="true"
          contextRelative="true" />
 
+     <forward name="app6"
+         path="/app6/true.do"
+         redirect="true"
+         contextRelative="true" />
+
+     <forward name="app6Jsp"
+         path="/app6/true_jsp.do"
+         redirect="true"
+         contextRelative="true" />
+
+     <forward name="app7"
+         path="/app7/true.do"
+         redirect="true"
+         contextRelative="true" />
+
+     <forward name="app7Jsp"
+         path="/app7/true_jsp.do"
+         redirect="true"
+         contextRelative="true" />
+
      <forward name="math"
          path="/examples/context_tools/mathtool-demo.vm"
          redirect="true"
