@@ -1,106 +1,27 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-<!DOCTYPE struts-config PUBLIC
-          "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
-          "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
-<!--
-  Copyright 2004 The Apache Software Foundation.
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-
-  $Id: struts-app1-config.xml,v 1.2 2004/02/20 13:13:42 marino Exp $
--->
-
-<!--
-     This is a blank Struts configuration file for a single example module,
-     with commented examples of some items.
-
-     NOTE: If you have a generator tool to create the corresponding Java classes
-     for you, you could include the details in the "form-bean" declarations.
-     Otherwise, you would only define the "form-bean" element itself, with the
-     corresponding "name" and "type" attributes, as shown here.
--->
-
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
 <struts-config>
-
-  <!-- ========== Form Bean Definitions =================================== -->
   <form-beans>
-
-    <!-- Struts Example Application 1 -->
-
-    <form-bean name="addressForm"
-               type="examples.app1.AddressForm"/>
-
+    <form-bean name="addressForm" type="examples.app1.AddressForm" />
   </form-beans>
-
-  <!-- ========== Global Forward Definitions ============================== -->
   <global-forwards>
-
-    <!-- Forward to source pages -->
-     <forward
-        name="editAddressSrcJsp"
-        path="/examples/struts_app1/edit-addressjsp.txt"
-        contextRelative="true"/>
-
-     <forward
-        name="showAddressSrcJsp"
-        path="/examples/struts_app1/show-addressjsp.txt"
-        contextRelative="true"/>
-
-     <forward
-        name="editAddressSrc"
-        path="/examples/struts_app1/edit-address.txt"
-        contextRelative="true"/>
-
-     <forward
-        name="showAddressSrc"
-        path="/examples/struts_app1/show-address.txt"
-        contextRelative="true"/>
-
+    <forward contextRelative="true" name="editAddressSrcJsp" path="/examples/struts_app1/edit-addressjsp.txt" />
+    <forward contextRelative="true" name="showAddressSrcJsp" path="/examples/struts_app1/show-addressjsp.txt" />
+    <forward contextRelative="true" name="editAddressSrc" path="/examples/struts_app1/edit-address.txt" />
+    <forward contextRelative="true" name="showAddressSrc" path="/examples/struts_app1/show-address.txt" />
   </global-forwards>
-
-
-  <!-- ========== Action Mapping Definitions ============================== -->
   <action-mappings>
-
-    <!-- Struts Example Application 1, JSP Version -->
-    <action path="/address1"
-            type="examples.app1.AddressAction"
-            name="addressForm"
-            scope="request">
-        <forward name="showAddress"
-            path="/examples/struts_app1/show-address.jsp"
-            contextRelative="true"/>
-        <forward name="editAddress"
-            path="/examples/struts_app1/edit-address.jsp"
-            contextRelative="true"/>
+    <action name="addressForm" path="/address1" scope="request" type="examples.app1.AddressAction">
+      <forward contextRelative="true" name="showAddress" path="/examples/struts_app1/show-address.jsp" />
+      <forward contextRelative="true" name="editAddress" path="/examples/struts_app1/edit-address.jsp" />
     </action>
-
-    <!-- Struts Example Application 1, Velocity Version -->
-    <action path="/address2"
-            type="examples.app1.AddressAction"
-            name="addressForm"
-            scope="request">
-        <forward name="showAddress"
-            path="/examples/struts_app1/show-address.vm"
-            contextRelative="true"/>
-        <forward name="editAddress"
-            path="/examples/struts_app1/edit-address.vm"
-            contextRelative="true"/>
+    <action name="addressForm" path="/address2" scope="request" type="examples.app1.AddressAction">
+      <forward contextRelative="true" name="showAddress" path="/examples/struts_app1/show-address.vm" />
+      <forward contextRelative="true" name="editAddress" path="/examples/struts_app1/edit-address.vm" />
     </action>
-
   </action-mappings>
-
   <message-resources parameter="examples.app1.ApplicationResources" />
-
+  <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+    <set-property property="pathnames" value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml" />
+  </plug-in>
 </struts-config>
