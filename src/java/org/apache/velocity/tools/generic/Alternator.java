@@ -55,21 +55,30 @@ import java.util.List;
  * </pre></p>
  *
  * @since Velocity Tools 1.2
- * @version $Revision: 1.3 $ $Date: 2004/05/05 20:57:46 $
+ * @version $Revision: 1.4 $ $Date: 2004/05/05 23:23:51 $
  */
 public class Alternator
 {
     private Object[] list;
     private int index = 0;
-    private boolean auto = false;
+    private boolean auto = true;
 
     /**
      * Creates a new Alternator for the specified list.  Alternation
-     * is set to explicit (e.g. it's not automatic).
+     * defaults to automatic.
+     */
+    public Alternator(List list)
+    {
+        this(true, list);
+    }
+
+    /**
+     * Creates a new Alternator for the specified list.  Alternation
+     * defaults to automatic.
      */
     public Alternator(Object[] list)
     {
-        this(false, list);
+        this(true, list);
     }
 
     /**
@@ -83,15 +92,6 @@ public class Alternator
     public Alternator(boolean auto, List list)
     {
         this(auto, list.toArray(new Object[list.size()]));
-    }
-
-    /**
-     * Creates a new Alternator for the specified list.  Alternation
-     * is set to explicit (e.g. it's not automatic).
-     */
-    public Alternator(List list)
-    {
-        this(false, list);
     }
 
     /**
@@ -155,9 +155,9 @@ public class Alternator
 
     /**
      * Returns a string representation of the current item or
-     * <code>null</code> if the current item is null.  Also,
-     * if <i>auto</i> is true, this will shift after returning
-     * the current item.
+     * <code>null</code> if the current item is null.  <b>If
+     * <i>auto</i> is true, this will shift after returning the
+     * current item</b>.
      */
     public String toString()
     {
