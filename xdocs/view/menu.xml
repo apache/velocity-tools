@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<project href="index.html">
+
+  <title>Velocity</title>
+  <logo href="../images/velocityview.png">&lt; Tools - View &gt;</logo>
+
+  <body>
+    <uplink name="Velocity Tools"        href="../index.html" alt="top"/>
+
+    <menu name="VelocityView">
+        <item name="Overview"                 href="index.html"/>
+        <item name="Download"                 href="index.html#Download"/>
+        <item name="Installation"             href="index.html#Installation"/>
+        <item name="LayoutServlet"            href="index.html#VelocityLayoutServlet"/>
+        <item name="Examples"                 href="index.html#Examples"/>
+        <item name="Javadoc"                  href="../javadoc/index.html"/>
+    </menu>
+
+    <menu name="VelocityView Tools">
+        <item name="LinkTool"              href="LinkTool.html"/>
+        <item name="ParameterParser"       href="ParameterParser.html"/>
+        <item name="ViewRenderTool" />
+        <item name="AbstractSearchTool" />
+    </menu>
+
+    <printerversion/>
+  </body>
+</project>
