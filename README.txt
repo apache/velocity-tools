@@ -6,23 +6,23 @@ Apache Velocity project hosted at http://jakarta.apache.org/velocity/
 The VelocityTools project contains three subprojects:
 
 
-VelocityServlet
-
-    A general-purpose servlet for rendering Velocity templates.
-    There is no controller functionality - it's akin to the 
-    JspServlet. It includes toolbox support. See view/README.txt
-    for more information.
-
-VelocityLibrary
-
-    A collection of general purpose view tools. See 
-    library/REAMDE.txt for more information.
-
 VelocityStruts
 
-    Tools specific to integrating Velocity and Struts. See
-    struts/README.txt for more information. There are several
-    nice application examples included.
+    Includes tools specific to integrating Velocity and Struts. This
+    package sits on top of (requires) the VelocityView package.
+
+VelocityView
+
+    Package containing the VelocityViewServlet for rendering Velocity
+    templates. There is no controller functionality - it's akin to the 
+    JspServlet. It includes toolbox support. (Also contains a
+    VelocityLayoutServlet to support more advanced template rendering.)
+    
+
+Generic tools
+
+    A collection of general purpose tools that may be used independently of
+    the VelocityView or VelocityStruts package (but is included with both).
 
 
 
@@ -41,9 +41,34 @@ To return the project to the original virgin state, execute:
 
 > ant clean
 
+By default, the project will build the VelocityStruts jar, javadoc and
+project documentation.
+
+To build only the VelocityStruts jar (which includes both VelocityView classes
+and the generic tools), execute:
+
+> ant jar.struts
+
+To build only the VelocityView jar (which includes the generic tools), execute:
+
+> ant jar.view
+
+To build only the generic tools jar, execute:
+
+> ant jar.generic
+
+To build the simple example for VelocityView, execute:
+
+> ant example.simple
+
+To build the VelocityStruts example, execute:
+
+> ant example.struts
+
+
 Please note:
 
-- During the build process DVSL emits several of the following error
+- During the documentation build process DVSL emits several of the following error
   messages. They can be ingnored. A bug report has be filed.
 
   [dvsl] [error] ResourceManager: unable to find resource 'VM_global_library.vm' in any resource loader.
@@ -53,11 +78,12 @@ Please note:
   because then the software wouldn't compile with JDK 1.3.1 anymore.
 
 The build process has been tested with JDK 1.3.1 and JDK 1.4.0. The 
-included example applications have been tested with Tomcat 4.0.4 and
-Resin 2.1.0.
+included example applications have been tested with Tomcat 4.0.4, 
+Tomcat 4.1.18, and Resin 2.1.0.
 
 If you observe any problems with the build process, please report this
-to the Velocity users mailing list, velocity-user@jakarta.apache.org.      
+to the Velocity users mailing list, velocity-user@jakarta.apache.org, and
+put [veltools] in the subject line.
 
 
        
@@ -76,4 +102,4 @@ Feedback
 We welcome your feedback to velocity-user@jakarta.apache.org.
 
 
-$Revision: 1.7 $ $Date: 2002/06/23 09:45:16 $
+$Revision: 1.8 $ $Date: 2003/03/08 19:59:55 $
