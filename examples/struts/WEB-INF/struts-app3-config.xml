@@ -1,188 +1,41 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-<!DOCTYPE struts-config PUBLIC
-          "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
-          "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
-<!--
-  Copyright 2004 The Apache Software Foundation.
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-
-  $Id: struts-app3-config.xml,v 1.3 2004/02/20 13:13:42 marino Exp $
--->
-
-<!--
-     This is a blank Struts configuration file for a single example module,
-     with commented examples of some items.
-
-     NOTE: If you have a generator tool to create the corresponding Java classes
-     for you, you could include the details in the "form-bean" declarations.
-     Otherwise, you would only define the "form-bean" element itself, with the
-     corresponding "name" and "type" attributes, as shown here.
--->
-
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
 <struts-config>
-
-
   <form-beans>
-
-     <!-- Struts Example Application 3 -->
-
-     <form-bean
-        name="logonForm"
-        type= "examples.app3.LogonForm"/>
-
-
+    <form-bean name="logonForm" type="examples.app3.LogonForm" />
   </form-beans>
-
-
-  <!-- ========== Global Forward Definitions ============================== -->
   <global-forwards>
-
-    <!-- Struts Example Application 3, JSP Version -->
-
-    <!-- Forward to welcome -->
-     <forward
-        name="welcome_jsp"
-        path="/welcome_jsp.do"/>
-
-    <!-- Forward to logon -->
-     <forward
-        name="logon_jsp"
-        path="/logon_jsp.do"/>
-
-    <!-- Forward to logoff -->
-     <forward
-        name="logoff_jsp"
-        path="/logoff_jsp.do"/>
-
-    <!-- Forward to sources -->
-     <forward
-        name="index_jsp_src"
-        path="/examples/struts_app3/index_jsp.txt"
-        contextRelative="true"/>
-
-     <forward
-        name="logon_jsp_src"
-        path="/examples/struts_app3/logon_jsp.txt"
-        contextRelative="true"/>
-
-    <!-- Struts Example Application 3, VM Version -->
-
-    <!-- Forward to welcome -->
-     <forward
-        name="welcome_vm"
-        path="/welcome_vm.do"/>
-
-    <!-- Forward to logon -->
-     <forward
-        name="logon_vm"
-        path="/logon_vm.do"/>
-
-    <!-- Forward to logoff -->
-     <forward
-        name="logoff_vm"
-        path="/logoff_vm.do"/>
-
-    <!-- Forward to sources -->
-     <forward
-        name="index_vm_src"
-        path="/examples/struts_app3/index_vm.txt"
-        contextRelative="true"/>
-
-     <forward
-        name="logon_vm_src"
-        path="/examples/struts_app3/logon_vm.txt"
-        contextRelative="true"/>
-
+    <forward name="welcome_jsp" path="/welcome_jsp.do" />
+    <forward name="logon_jsp" path="/logon_jsp.do" />
+    <forward name="logoff_jsp" path="/logoff_jsp.do" />
+    <forward contextRelative="true" name="index_jsp_src" path="/examples/struts_app3/index_jsp.txt" />
+    <forward contextRelative="true" name="logon_jsp_src" path="/examples/struts_app3/logon_jsp.txt" />
+    <forward name="welcome_vm" path="/welcome_vm.do" />
+    <forward name="logon_vm" path="/logon_vm.do" />
+    <forward name="logoff_vm" path="/logoff_vm.do" />
+    <forward contextRelative="true" name="index_vm_src" path="/examples/struts_app3/index_vm.txt" />
+    <forward contextRelative="true" name="logon_vm_src" path="/examples/struts_app3/logon_vm.txt" />
   </global-forwards>
-
-
-  <!-- ========== Action Mapping Definitions ============================== -->
   <action-mappings>
-
-
-    <!-- Struts Example Application 3, JSP Version -->
-
-    <!-- Proceed to welcome page -->
-    <action
-        path="/welcome_jsp"
-        type="org.apache.struts.actions.ForwardAction"
-        parameter="/examples/struts_app3/index.jsp"/>
-
-    <!-- Process a user logon -->
-    <action
-        path="/logon_jsp"
-        type="org.apache.struts.actions.ForwardAction"
-        name="logonForm"
-        scope="request"
-        validate="false"
-        parameter="/examples/struts_app3/logon.jsp"/>
-
-    <action
-        path="/logonSubmit_jsp"
-        type="examples.app3.LogonAction"
-        name="logonForm"
-        scope="request"
-        validate="true"
-        input="/examples/struts_app3/logon.jsp">
-      <forward name="continue" path="/examples/struts_app3/index.jsp" contextRelative="true"/>
+    <action forward="/examples/struts_app3/index.jsp" path="/welcome_jsp" />
+    <action name="logonForm" forward="/examples/struts_app3/logon.jsp" path="/logon_jsp" scope="request" validate="false" />
+    <action input="/examples/struts_app3/logon.jsp" name="logonForm" path="/logonSubmit_jsp" scope="request" type="examples.app3.LogonAction" validate="true">
+      <forward contextRelative="true" name="continue" path="/examples/struts_app3/index.jsp" />
     </action>
-
-    <!-- Process a user logoff -->
-    <action
-        path="/logoff_jsp"
-        type="examples.app3.LogoffAction">
-      <forward name="continue" path="/examples/struts_app3/index.jsp" contextRelative="true"/>
+    <action path="/logoff_jsp" type="examples.app3.LogoffAction">
+      <forward contextRelative="true" name="continue" path="/examples/struts_app3/index.jsp" />
     </action>
-
-
-    <!-- Struts Example Application 3, VM Version -->
-
-    <!-- Proceed to welcome page -->
-    <action
-        path="/welcome_vm"
-        type="org.apache.struts.actions.ForwardAction"
-        parameter="/examples/struts_app3/index.vm" />
-
-    <!-- Process a user logon -->
-    <action
-        path="/logon_vm"
-        type="org.apache.struts.actions.ForwardAction"
-        name="logonForm"
-        scope="request"
-        validate="false"
-        parameter="/examples/struts_app3/logon.vm"/>
-
-    <action
-        path="/logonSubmit_vm"
-        type="examples.app3.LogonAction"
-        name="logonForm"
-        scope="request"
-        validate="true"
-        input="/examples/struts_app3/logon.vm">
-      <forward name="continue" path="/examples/struts_app3/index.vm" contextRelative="true"/>
+    <action forward="/examples/struts_app3/index.vm" path="/welcome_vm" />
+    <action name="logonForm" forward="/examples/struts_app3/logon.vm" path="/logon_vm" scope="request" validate="false" />
+    <action input="/examples/struts_app3/logon.vm" name="logonForm" path="/logonSubmit_vm" scope="request" type="examples.app3.LogonAction" validate="true">
+      <forward contextRelative="true" name="continue" path="/examples/struts_app3/index.vm" />
     </action>
-
-    <!-- Process a user logoff -->
-    <action
-        path="/logoff_vm"
-        type="examples.app3.LogoffAction">
-      <forward name="continue" path="/examples/struts_app3/index.vm" contextRelative="true"/>
+    <action path="/logoff_vm" type="examples.app3.LogoffAction">
+      <forward contextRelative="true" name="continue" path="/examples/struts_app3/index.vm" />
     </action>
-
   </action-mappings>
-
   <message-resources parameter="examples.app3.ApplicationResources" />
-
+  <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+    <set-property property="pathnames" value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml" />
+  </plug-in>
 </struts-config>

@@ -1,89 +1,26 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-<!DOCTYPE struts-config PUBLIC
-          "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
-          "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
-<!--
-  Copyright 2004 The Apache Software Foundation.
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-
-  $Id: struts-app5-config.xml,v 1.3 2004/02/20 13:13:42 marino Exp $
--->
-
-<!--
-     This is a blank Struts configuration file for a single example module,
-     with commented examples of some items.
-
-     NOTE: If you have a generator tool to create the corresponding Java classes
-     for you, you could include the details in the "form-bean" declarations.
-     Otherwise, you would only define the "form-bean" element itself, with the
-     corresponding "name" and "type" attributes, as shown here.
--->
-
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
 <struts-config>
-
-  <!-- ========== Form Bean Definitions =================================== -->
   <form-beans>
-  	<form-bean name="emailForm" type="org.apache.struts.validator.DynaValidatorForm">
-            <form-property name="email" type="java.lang.String"/>
-        </form-bean>
+    <form-bean name="emailForm" type="org.apache.struts.validator.DynaValidatorForm">
+      <form-property name="email" type="java.lang.String" />
+    </form-bean>
   </form-beans>
-
-
-  <!-- ========== Action Mapping Definitions ============================== -->
+  <global-forwards>
+    <forward contextRelative="true" name="demoVm" path="/examples/struts_app5/validator-demo.vm" />
+    <forward contextRelative="true" name="successVm" path="/examples/struts_app5/success.vm" />
+    <forward contextRelative="true" name="demoJsp" path="/examples/struts_app5/validator-demo.jsp" />
+    <forward contextRelative="true" name="successJsp" path="/examples/struts_app5/success.jsp" />
+  </global-forwards>
   <action-mappings>
+    <action name="emailForm" forward="/examples/struts_app5/validator-demo.vm" path="/index_vm" validate="false" />
+    <action input="/index_vm.do" name="emailForm" forward="successVm" path="/do_submit_vm" validate="true" />
 
-    <!-- Struts Example Application 5, Velocity Version -->
-
-    <action path="/index_vm"
-            type="org.apache.struts.actions.ForwardAction"
-            name="emailForm"
-            validate="false"
-            parameter="/examples/struts_app5/validator-demo.vm"/>
-
-    <action path="/do_submit_vm"
-            type="org.apache.struts.actions.ForwardAction"
-            name="emailForm"
-            input="/index_vm.do"
-            validate="true"
-            parameter="/examples/struts_app5/success.vm"/>
-
-
-    <!-- Struts Example Application 5, JSP Version -->
-
-    <action path="/index_jsp"
-            type="org.apache.struts.actions.ForwardAction"
-            name="emailForm"
-            validate="false"
-            parameter="/examples/struts_app5/validator-demo.jsp"/>
-
-    <action path="/do_submit_jsp"
-            type="org.apache.struts.actions.ForwardAction"
-            name="emailForm"
-            input="/index_jsp.do"
-            validate="true"
-            parameter="/examples/struts_app5/success.jsp"/>
-
+    <action name="emailForm" forward="demoJsp" path="/index_jsp" validate="false" />
+    <action input="/index_jsp.do" name="emailForm" forward="successJsp" path="/do_submit_jsp" validate="true" />
   </action-mappings>
-
-  <!-- ========== Message Resource bundles ============================== -->
   <message-resources parameter="examples.app5.ApplicationResources" />
-
-  <!-- ========== PlugIn Definitions ============================== -->
   <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
-        <set-property property="pathnames"
-                      value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml"/>
+    <set-property property="pathnames" value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml" />
   </plug-in>
-
 </struts-config>
