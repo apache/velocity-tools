@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.struts.Globals;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionError;
 import org.apache.struts.action.ActionErrors;
@@ -42,7 +43,7 @@ import org.apache.struts.util.MessageResources;
  * 
  *
  * @author <a href="mailto:sidler@teamup.com"/>Gabe Sidler</a>
- * @version $Id: AddressAction.java,v 1.1 2003/03/06 00:05:18 nbubna Exp $
+ * @version $Id: AddressAction.java,v 1.2 2003/07/22 05:16:40 nbubna Exp $
  */
 public class AddressAction extends Action 
 {
@@ -60,7 +61,7 @@ public class AddressAction extends Action
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet exception occurs
      */
-    public ActionForward perform(ActionMapping mapping,
+    public ActionForward execute(ActionMapping mapping,
                                  ActionForm form,
                                  HttpServletRequest request,
                                  HttpServletResponse response)
@@ -115,9 +116,9 @@ public class AddressAction extends Action
             {
                 String locale = ((AddressForm)form).getLocale();
                 if (locale.equals("Deutsch"))
-                    session.setAttribute(Action.LOCALE_KEY, new Locale("de", ""));
+                    session.setAttribute(Globals.LOCALE_KEY, new Locale("de", ""));
                 else
-                    session.setAttribute(Action.LOCALE_KEY, new Locale("en", ""));
+                    session.setAttribute(Globals.LOCALE_KEY, new Locale("en", ""));
                 
                 // forward to edit formular
                 return (mapping.findForward("showAddress"));                

@@ -79,7 +79,7 @@ import org.apache.struts.util.MessageResources;
  *
  * @author Craig R. McClanahan
  * @author Ted Husted
- * @version $Revision: 1.1 $ $Date: 2003/03/06 00:05:18 $
+ * @version $Revision: 1.2 $ $Date: 2003/07/22 05:16:41 $
  */
 
 public final class LogonAction extends Action 
@@ -100,7 +100,7 @@ public final class LogonAction extends Action
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet exception occurs
      */
-    public ActionForward perform(ActionMapping mapping,
+    public ActionForward execute(ActionMapping mapping,
                                  ActionForm form,
                                  HttpServletRequest request,
                                  HttpServletResponse response)
@@ -115,16 +115,12 @@ public final class LogonAction extends Action
       HttpSession session = request.getSession();
       session.setAttribute(Constants.USER_KEY, form);
 
-      // Log this event, if appropriate
-      if (servlet.getDebug() >= Constants.DEBUG) 
-      {
-          StringBuffer message =
-            new StringBuffer("LogonAction: User '");
-          message.append(username);
-          message.append("' logged on in session ");
-          message.append(session.getId());
-          servlet.log(message.toString());
-      }
+      // Log this event
+      StringBuffer message = new StringBuffer("LogonAction: User '");
+      message.append(username);
+      message.append("' logged on in session ");
+      message.append(session.getId());
+      servlet.log(message.toString());
 
       // Forward control to the success URI
       // specified in struts-config.xml
