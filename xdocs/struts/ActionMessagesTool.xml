@@ -33,11 +33,11 @@
         <toolinfo>
             <version>@@@version@@@, @@@date@@@</version>
             <clazz>org.apache.velocity.tools.struts.ActionMessagesTool</clazz>
-            <name>$actionmsgs</name>
+            <name>$messages</name>
             <author email="sidler@teamup.com">Gabriel Sidler</author>
             <author email="nathan@esha.com">Nathan Bubna</author>
             <config-example>&lt;tool&gt;
-  &lt;key&gt;actionmsgs&lt;/key&gt;
+  &lt;key&gt;messages&lt;/key&gt;
   &lt;scope&gt;request&lt;/scope&gt;
   &lt;class&gt;org.apache.velocity.tools.struts.ActionMessagesTool&lt;/class&gt;
 &lt;/tool&gt;</config-example>
@@ -116,9 +116,9 @@ $errors.exist("password")
                 number of queued action messages. The <code>property</code> parameter can be used to
                 obtain the number of queued action messages for a specific category.</p>
 
-<sourcecode>$actionmsgs.getSize()
-$actionmsgs.size
-$actionmsgs.getSize("password")</sourcecode>
+<sourcecode>$messages.getSize()
+$messages.size
+$messages.getSize("password")</sourcecode>
             </description>
 
         </method>
@@ -129,7 +129,7 @@ $actionmsgs.getSize("password")</sourcecode>
 
             <abstract>
                 This a convenience method and the equivalent of
-                <code>$actionmsgs.get($actionmsgs.globalName)</code>
+                <code>$messages.get($messages.globalName)</code>
             </abstract>
 
             <signature>
@@ -176,10 +176,10 @@ $actionmsgs.getSize("password")</sourcecode>
             <description>
                 <p>The following example shows a macro to render the action messages:</p>
 
-<sourcecode>&#35;macro (actionmsgsMarkup)
-    &#35;if (&#36;actionmsgs.exist)
+<sourcecode>&#35;macro (messagesMarkup)
+    &#35;if (&#36;messages.exist)
         &lt;ul&gt;
-        &#35;foreach (&#36;e in &#36;actionmsgs.all )
+        &#35;foreach (&#36;e in &#36;messages.all )
             &lt;li&gt;&#36;e&lt;/li&gt;
         &#35;end
         &lt;/ul&gt;
@@ -237,10 +237,10 @@ $actionmsgs.getSize("password")</sourcecode>
                 <p>The following example shows a macro to render the action messages for a
                 particular category of action messages:</p>
 
-<sourcecode>&#35;macro (actionmsgsMarkup &#36;property)
-    &#35;if (&#36;actionmsgs.exist(&#36;property))
+<sourcecode>&#35;macro (messagesMarkup &#36;property)
+    &#35;if (&#36;messages.exist(&#36;property))
         &lt;ul&gt;
-        &#35;foreach (&#36;er in &#36;actionmsgs.get(&#36;property) )
+        &#35;foreach (&#36;er in &#36;messages.get(&#36;property) )
             &lt;li&gt;&#36;er&lt;/li&gt;
         &#35;end
         &lt;/ul&gt;

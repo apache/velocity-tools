@@ -21,10 +21,10 @@
         <toolinfo>
             <version>@@@version@@@, @@@date@@@</version>
             <clazz>org.apache.velocity.tools.struts.MessageTool</clazz>
-            <name>$msg</name>
+            <name>$text</name>
             <author email="sidler@teamup.com">Gabriel Sidler</author>
             <config-example>&lt;tool&gt;
-  &lt;key&gt;msg&lt;/key&gt;
+  &lt;key&gt;text&lt;/key&gt;
   &lt;scope&gt;request&lt;/scope&gt;
   &lt;class&gt;org.apache.velocity.tools.struts.MessageTool&lt;/class&gt;
 &lt;/tool&gt;</config-example>
@@ -105,9 +105,9 @@
 test=This message has five replacement parameters: {0}, {1}, {2}, {3}, {4}</sourcecode>
 
 <p>then the following Velocity script:</p>
-<sourcecode>$msg.get("title")
-$msg.title
-$msg.get("test", ["bear", "wolf", "tiger"])</sourcecode>
+<sourcecode>$text.get("title")
+$text.title
+$text.get("test", ["bear", "wolf", "tiger"])</sourcecode>
 
 <p>produces this output:</p>
 <sourcecode>Welcome to Velocity for Struts
@@ -150,7 +150,7 @@ This message has five replacement parameters: bear, wolf, tiger, {3}, {4}</sourc
             </returns>
 
             <description>
-<sourcecode>$msg.exists("title")</sourcecode>
+<sourcecode>$text.exists("title")</sourcecode>
             </description>
 
         </method>
@@ -173,9 +173,9 @@ This message has five replacement parameters: bear, wolf, tiger, {3}, {4}</sourc
             </returns>
 
             <description>
-<sourcecode>$msg.getLocale()
-$msg.locale
-$msg.getLocale().getDisplayLanguage()</sourcecode>
+<sourcecode>$text.getLocale()
+$text.locale
+$text.getLocale().getDisplayLanguage()</sourcecode>
 
 <p>produces:</p>
 <sourcecode>en
