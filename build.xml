@@ -1,5 +1,5 @@
 <!--
-  $Id: build.xml,v 1.29 2003/07/25 20:10:23 nbubna Exp $ 
+  $Id: build.xml,v 1.30 2003/10/14 23:03:21 marino Exp $
 -->
 <project name="velocity-tools" default="all" basedir=".">
 
@@ -12,7 +12,7 @@
   <property name="project.name"     value="Velocity Tools" />
   <property name="project.version"  value="1.1-dev"/>
   <property name="project.id"       value="velocity-tools-${project.version}"/>
-  
+
   <property name="struts.name"      value="velocity-tools-${project.version}"/>
   <property name="view.name"        value="velocity-tools-view-${project.version}"/>
   <property name="generic.name"     value="velocity-tools-generic-${project.version}"/>
@@ -51,7 +51,9 @@
     <pathelement location="${commons-collections.jar}"/>
     <pathelement location="${commons-digester.jar}"/>
     <pathelement location="${commons-logging.jar}"/>
+    <pathelement location="${commons-validator.jar}"/>
     <pathelement location="${struts.jar}"/>
+	<pathelement location="${sslext.jar}"/>
     <pathelement location="${servlet.jar}"/>
     <pathelement location="${velocity.jar}"/>
 
@@ -101,7 +103,7 @@
        #  (especially before rebuilding the documentation
        #  with the "docs" or "javadoc" targets).  If you
        #  attempt to rebuild the documentation while the
-       #  folder remains deleted, it will cause file 
+       #  folder remains deleted, it will cause file
        #  conflicts.
        #
        #######################################################
@@ -176,14 +178,14 @@
   <!-- Jar VelocityStruts (struts, view, generic) -->
   <target name="jar.struts" depends="compile.struts"
           description="Creates a velocity-tools jar in the dist directory.">
-    <jar destfile="${dist.dir}/${struts.name}.jar" 
+    <jar destfile="${dist.dir}/${struts.name}.jar"
          basedir="${classes.dir}"/>
   </target>
 
   <!-- Jar Just VelocityView (view, generic) -->
   <target name="jar.view" depends="compile.view"
           description="Creates a velocity-tools-view jar in the dist directory">
-    <jar destfile="${dist.dir}/${view.name}.jar" 
+    <jar destfile="${dist.dir}/${view.name}.jar"
          basedir="${classes.dir}">
       <exclude name="**/struts/**"/>
     </jar>
@@ -192,7 +194,7 @@
   <!-- Jar Just Generic Tools (generic) -->
   <target name="jar.generic" depends="compile.generic"
           description="Creates a velocity-tools-generic jar in the dist directory">
-    <jar destfile="${dist.dir}/${generic.name}.jar" 
+    <jar destfile="${dist.dir}/${generic.name}.jar"
          basedir="${classes.dir}">
       <exclude name="**/struts/**"/>
       <exclude name="**/view/**"/>
@@ -294,7 +296,7 @@
 
 
   <!-- Build VelocityStruts example application -->
-  <target name="example.struts" depends="jar.struts" 
+  <target name="example.struts" depends="jar.struts"
           description="Compiles and jars the VelocityStruts example application.">
 
     <property name="velstruts.lib" value="${examples.home}/struts/WEB-INF/lib"/>
@@ -346,12 +348,12 @@
 
 
   <!-- Convenient target for rolling releases -->
-  <target name="release" 
+  <target name="release"
           depends="release.source,release.binaries"
           description="Creates binary and source distribution files"/>
 
   <!-- Create source distribution files -->
-  <target name="release.source" 
+  <target name="release.source"
           depends="clean"
           description="Cleans everything and creates source distribution files">
 
@@ -379,7 +381,7 @@
   </target>
 
   <!-- Create binary distribution files -->
-  <target name="release.binaries" 
+  <target name="release.binaries"
           depends="jar.struts,jar.view,jar.generic,examples,javadoc,docs"
           description="Builds everything and creates the binary distribution files">
 
@@ -421,7 +423,7 @@
     <copy todir="${release.dir}" file="${basedir}/WHY_THREE_JARS.txt"/>
 
     <!-- Create binary distribution files -->
-    <zip zipfile="${dist.dir}/${project.id}.zip" 
+    <zip zipfile="${dist.dir}/${project.id}.zip"
          basedir="${dist.dir}/release"/>
     <tar tarfile="${dist.dir}/${project.id}.tar" longfile="gnu"
          basedir="${dist.dir}/release"/>
