@@ -14,12 +14,14 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 
+import java.util.ArrayList;
+
 
 /**
  * <p>A simple form that allows a user to enter and modify an address.</p>
  *
  * @author <a href="mailto:sidler@teamup.com"/>Gabe Sidler</a>
- * @version $Id: AddressForm.java,v 1.2 2002/01/09 11:25:43 sidler Exp $
+ * @version $Id: AddressForm.java,v 1.3 2002/09/03 11:14:27 sidler Exp $
  */
 
 public final class AddressForm extends ActionForm 
@@ -29,8 +31,6 @@ public final class AddressForm extends ActionForm
  
     private String action = "";
     
-    private String language = "";
-
     private String firstname = "";
     
     private String lastname = "";
@@ -42,6 +42,10 @@ public final class AddressForm extends ActionForm
     private String city = "";
     
     private String country = "";
+    
+    private String locale = "";
+    
+    private String[] languages;
     
 
     // ---- Accessor Methods --------------------------------------------
@@ -56,18 +60,6 @@ public final class AddressForm extends ActionForm
         action = s;
     }
             
-
-    public String getLanguage()
-    {
-        return language;
-    }
-    
-    public void setLanguage(String s)
-    {
-        language = s;
-    }
-
-
     public String getFirstname()
     {
         return firstname;
@@ -128,6 +120,27 @@ public final class AddressForm extends ActionForm
         country = s;
     }
 
+    public String getLocale()
+    {
+        return locale;
+    }
+    
+    public void setLocale(String s)
+    {
+        locale = s;
+    }
+
+    public String[] getLanguages()
+    {
+        return languages;
+    }
+    
+    public void setLanguages(String[] s)
+    {
+        languages = s;
+    }
+    
+
     /**
      * Reset all properties to their default values.
      *
@@ -138,7 +151,7 @@ public final class AddressForm extends ActionForm
     {
 
         action = "";
-        language = "";
+        locale = "";
         firstname = "";
         lastname = "";
         street = "";

@@ -16,7 +16,7 @@
         
         <form name="form1" action="address1.do">
         <p><bean:message key="language"/>
-        <select name="language" size="1" onchange="form1.submit(); return false;">
+        <select name="locale" size="1" onchange="form1.submit(); return false;">
             <option value="" SELECTED></option>
             <option value="English">English</option>             
             <option value="Deutsch">Deutsch</option>

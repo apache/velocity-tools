@@ -14,12 +14,14 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 
+import java.util.Properties;
+
 
 /**
  * <p>A simple bean that represent an address record.</p>
  *
  * @author <a href="mailto:sidler@teamup.com"/>Gabe Sidler</a>
- * @version $Id: AddressBean.java,v 1.2 2002/01/09 11:25:43 sidler Exp $
+ * @version $Id: AddressBean.java,v 1.3 2002/09/03 11:14:27 sidler Exp $
  */
 
 public class AddressBean extends Object 
@@ -38,6 +40,8 @@ public class AddressBean extends Object
     private String city;
     
     private String country;
+    
+    private String[] languages;
     
 
     // ---- Accessor Methods --------------------------------------------
@@ -114,6 +118,28 @@ public class AddressBean extends Object
             
     }
 
+    public String[] getLanguages()
+    {
+        return languages;
+    }
+    
+    public void setLanguages(String[] languages)
+    {
+        this.languages = languages;   
+    }
+
+    // Convenience method to simplify repopulation of select lists
+    public Properties getLanguagesAsMap()
+    {
+        Properties p = new Properties();
+        if (languages != null)
+        {
+            for (int i = 0; i < languages.length; i++)
+                p.setProperty((String)languages[i], "SELECTED");
+        }            
+        return p;
+    } 
+       
 }
 
 
