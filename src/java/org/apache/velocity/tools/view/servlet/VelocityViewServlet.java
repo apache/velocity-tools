@@ -56,17 +56,15 @@ package org.apache.velocity.tools.view.servlet;
 
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.io.OutputStreamWriter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -139,7 +137,7 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.17 2003/10/07 00:33:19 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.18 2003/11/18 00:52:29 nbubna Exp $
  */
 
 public class VelocityViewServlet extends HttpServlet
@@ -183,8 +181,18 @@ public class VelocityViewServlet extends HttpServlet
     /** Cache of writers */
     private static SimplePool writerPool = new SimplePool(40);
 
-    /** The default content type. */
+    /**
+     * The default content type.  When necessary, includes the
+     * character set to use when encoding textual output.
+     */
     private String defaultContentType;
+
+    /**
+     * Whether we've logged a deprecation warning for
+     * ServletResponse's <code>getOutputStream()</code>.
+     * @since VelocityTools 1.1
+     */
+    private boolean warnOfOutputStreamDeprecation = true;
 
 
     /**
@@ -211,19 +219,22 @@ public class VelocityViewServlet extends HttpServlet
             RuntimeSingleton.getString(RuntimeSingleton.OUTPUT_ENCODING,
                                        DEFAULT_OUTPUT_ENCODING);
 
+        // For non Latin-1 encodings, ensure that the charset is
+        // included in the Content-Type header.
         if (!DEFAULT_OUTPUT_ENCODING.equalsIgnoreCase(encoding))
         {
             int index = defaultContentType.lastIndexOf("charset");
             if (index < 0)
             {
+                // the charset specifier is not yet present in header.
                 // append character encoding to default content-type
                 defaultContentType += "; charset=" + encoding;
             }
             else
             {
-                // they may have configuration issues
-                Velocity.warn("VelocityViewServlet: " +
-                              "Charset was already specified in content-type. " +
+                // The user may have configuration issues.
+                Velocity.warn("VelocityViewServlet: Charset was already " +
+                              "specified in the Content-Type property.  " +
                               "Output encoding property will be ignored.");
             }
         }
@@ -260,7 +271,7 @@ public class VelocityViewServlet extends HttpServlet
         }
         else
         {
-            Velocity.info("No toolbox entry in configuration.");
+            Velocity.info("VelocityViewServlet: No toolbox entry in configuration.");
         }
     }
 
@@ -298,8 +309,8 @@ public class VelocityViewServlet extends HttpServlet
         }
         catch(Exception e)
         {
-            getServletContext().log("Unable to read Velocity configuration file: "+e);
-            getServletContext().log("Using default Velocity configuration.");
+            getServletContext().log("VelocityViewServlet: Unable to read Velocity configuration file: "+e);
+            getServletContext().log("VelocityViewServlet: Using default Velocity configuration.");
         }   
 
         // now all is ready - init Velocity
@@ -309,7 +320,7 @@ public class VelocityViewServlet extends HttpServlet
         }
         catch(Exception e)
         {
-            getServletContext().log("VELOCITY PANIC : unable to init() : "+e);
+            getServletContext().log("VelocityViewServlet: PANIC! unable to init() - "+e);
             throw new ServletException(e);
         }
     }
@@ -379,11 +390,12 @@ public class VelocityViewServlet extends HttpServlet
         {
             p.load(servletContext.getResourceAsStream(propsFile));
 
-            Velocity.info("Custom Properties File: "+propsFile);
+            Velocity.info("VelocityViewServlet: Custom Properties File: "+propsFile);
         }
         else
         {
-            Velocity.info("No custom properties found. Using default Velocity configuration.");
+            Velocity.info("VelocityViewServlet: No custom properties found. " +
+                          "Using default Velocity configuration.");
         }
 
         return p;
@@ -435,6 +447,7 @@ public class VelocityViewServlet extends HttpServlet
             // bail if we can't find the template
             if (template == null)
             {
+                Velocity.warn("VelocityViewServlet: couldn't find template to match request.");
                 return;
             }
 
@@ -444,7 +457,7 @@ public class VelocityViewServlet extends HttpServlet
         catch (Exception e)
         {
             // log the exception
-            Velocity.error("Exception processing the template: "+e);
+            Velocity.error("VelocityViewServlet: Exception processing the template: "+e);
 
             // call the error handler to let the derived class
             // do something useful with this failure.
@@ -459,13 +472,13 @@ public class VelocityViewServlet extends HttpServlet
 
 
     /**
-     *  Cleanup routine called at the end of the request processing sequence
-     *  allows a derived class to do resource cleanup or other end of 
-     *  process cycle tasks.  This default implementation does nothing.
+     * Cleanup routine called at the end of the request processing sequence
+     * allows a derived class to do resource cleanup or other end of 
+     * process cycle tasks.  This default implementation does nothing.
      *
-     *  @param request servlet request from client 
-     *  @param response servlet reponse 
-     *  @param context  context created by the createContext() method
+     * @param request servlet request from client 
+     * @param response servlet reponse 
+     * @param context Context created by the {@link #createContext}
      */
     protected void requestCleanup(HttpServletRequest request, 
                                   HttpServletResponse response, 
@@ -502,20 +515,20 @@ public class VelocityViewServlet extends HttpServlet
 
 
     /**
-     *  Sets the content type of the response.  This is available to be overriden
-     *  by a derived class.
-     *  
-     *  <p>The default implementation is :
-     *  <pre>
+     * Sets the content type of the response.  This is available to be overriden
+     * by a derived class.
      *
-     *     response.setContentType(defaultContentType);
+     * <p>The default implementation is :
+     * <pre>
+     *
+     *    response.setContentType(defaultContentType);
      * 
-     *  </pre>
-     *  where defaultContentType is set to the value of the default.contentType
-     *  property, or "text/html" if that is not set.</p>
+     * </pre>
+     * where defaultContentType is set to the value of the default.contentType
+     * property, or "text/html" if that is not set.</p>
      *
-     *  @param request servlet request from client
-     *  @param response servlet reponse to client
+     * @param request servlet request from client
+     * @param response servlet reponse to client
      */
     protected void setContentType(HttpServletRequest request, 
                                   HttpServletResponse response)
@@ -552,7 +565,7 @@ public class VelocityViewServlet extends HttpServlet
      *
      * @param name The file name of the template to retrieve relative to the 
      *             template root.
-     * @return     The requested template.
+     * @return The requested template.
      * @throws ResourceNotFoundException if template not found
      *          from any available source.
      * @throws ParseErrorException if template cannot be parsed due
@@ -567,14 +580,12 @@ public class VelocityViewServlet extends HttpServlet
 
     
     /**
-     * Retrieves the requested template with the specified
-     * character encoding.
+     * Retrieves the requested template with the specified character encoding.
      *
      * @param name The file name of the template to retrieve relative to the 
      *             template root.
      * @param encoding the character encoding of the template
-     *
-     * @return     The requested template.
+     * @return The requested template.
      * @throws ResourceNotFoundException if template not found
      *          from any available source.
      * @throws ParseErrorException if template cannot be parsed due
@@ -589,12 +600,12 @@ public class VelocityViewServlet extends HttpServlet
 
 
     /**
-     *  merges the template with the context.  Only override this if you really, really
-     *  really need to. (And don't call us with questions if it breaks :)
+     * Merges the template with the context.  Only override this if you really, really
+     * really need to. (And don't call us with questions if it breaks :)
      *
-     *  @param template template object returned by the handleRequest() method
-     *  @param context  context created by the createContext() method
-     *  @param response servlet reponse (use this to get the output stream or Writer
+     * @param template template object returned by the handleRequest() method
+     * @param context Context created by the {@link #createContext}
+     * @param response servlet reponse (used to get a Writer)
      */
     protected void mergeTemplate(Template template, 
                                  Context context, 
@@ -603,29 +614,26 @@ public class VelocityViewServlet extends HttpServlet
                MethodInvocationException, IOException, 
                UnsupportedEncodingException, Exception
     {
-        PrintWriter pw = response.getWriter();
         VelocityWriter vw = null;
-        
+        Writer writer = getResponseWriter(response);
         try
         {
             vw = (VelocityWriter)writerPool.get();
-            
             if (vw == null)
             {
-                vw = new VelocityWriter(pw, 4*1024, true);
+                vw = new VelocityWriter(writer, 4 * 1024, true);
             }
             else
             {
-                vw.recycle(pw);
+                vw.recycle(writer);
             }
-           
             template.merge(context, vw);
         }
         finally
         {
-            try
+            if (vw != null)
             {
-                if (vw != null)
+                try
                 {
                     // flush and put back into the pool
                     // don't close to allow us to play
@@ -636,11 +644,13 @@ public class VelocityViewServlet extends HttpServlet
                      * the writer is pooled. See bug report #18951 */
                     vw.recycle(null);
                     writerPool.put(vw);
+                }
+                catch (Exception e)
+                {
+                    Velocity.debug("VelocityViewServlet: " + 
+                                   "Trouble releasing VelocityWriter: " +
+                                   e.getMessage());
                 }                
-            }
-            catch (Exception e)
-            {
-                // do nothing
             }
         }
     }
@@ -682,17 +692,63 @@ public class VelocityViewServlet extends HttpServlet
             html.append("</pre>");
             html.append("</body>");
             html.append("</html>");
-            response.getWriter().print(html.toString());
+            getResponseWriter(response).write(html.toString());
         }
         catch (Exception e)
         {
             // clearly something is quite wrong.
             // let's log the new exception then give up and
             // throw a servlet exception that wraps the first one
-            Velocity.error("Exception while printing error screen: "+e);
+            Velocity.error("VelocityViewServlet: Exception while printing error screen: "+e);
             throw new ServletException(cause);
         }
     }
 
+    /**
+     * <p>Procure a Writer with correct encoding which can be used
+     * even if HttpServletResponse's <code>getOutputStream()</code> method
+     * has already been called.</p>
+     *
+     * <p>This is a transitional method which will be removed in a
+     * future version of Velocity.  It is not recommended that you
+     * override this method.</p>
+     *
+     * @param response The response.
+     * @return A <code>Writer</code>, possibly created using the
+     *        <code>getOutputStream()</code>.
+     */
+    protected Writer getResponseWriter(HttpServletResponse response)
+        throws UnsupportedEncodingException, IOException
+    {
+        Writer writer = null;
+        try
+        {
+            writer = response.getWriter();
+        }
+        catch (IllegalStateException e)
+        {
+            // ASSUMPTION: We already called getOutputStream(), so
+            // calls to getWriter() fail.  Use of OutputStreamWriter
+            // assures our desired character set
+            if (this.warnOfOutputStreamDeprecation)
+            {
+                this.warnOfOutputStreamDeprecation = false;
+                Velocity.warn("VelocityViewServlet: " +
+                              "Use of ServletResponse's getOutputStream() " +
+                              "method with VelocityViewServlet is " +
+                              "deprecated -- support will be removed in " +
+                              "an upcoming release");
+            }
+            // Assume the encoding has been set via setContentType().
+            String encoding = response.getCharacterEncoding();
+            if (encoding == null)
+            {
+                encoding = DEFAULT_OUTPUT_ENCODING;
+            }
+            writer = new OutputStreamWriter(response.getOutputStream(),
+                                            encoding);
+        }
+        return writer;
+    }
 
 }
