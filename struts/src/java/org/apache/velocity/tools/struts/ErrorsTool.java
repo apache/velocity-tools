@@ -84,7 +84,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
 
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ErrorsTool.java,v 1.6 2003/02/13 00:22:55 nbubna Exp $
+ * @version $Id: ErrorsTool.java,v 1.7 2003/03/01 22:59:55 nbubna Exp $
  * 
  */
 public class ErrorsTool implements ViewTool
@@ -226,6 +226,28 @@ public class ErrorsTool implements ViewTool
 
 
     /**
+     * <p>
+     * This a convenience method and the equivalent of 
+     * <code>$errors.get($errors.globalName)</code>
+     * </p>
+     * <p>
+     * Returns the set of localized error messages as an 
+     * <code>java.util.ArrayList</code> of <code> java.lang.String</code> 
+     * for all errors queued of the global category or <code>null</code> 
+     * if no error are queued for the specified category.
+     * </p>
+     * <p>
+     * If the message resources don't contain an error message for a
+     * particular error key, the key itself is used as error message.
+     * </p>
+     */
+    public ArrayList getGlobal() 
+    {
+        return get(getGlobalName());
+    }
+
+
+    /**
      * Returns the set of localized error messages as an 
      * <code>java.util.ArrayList</code> of <code> java.lang.String</code> 
      * for all errors queued or <code>null</code> if no errors are queued.
@@ -332,5 +354,16 @@ public class ErrorsTool implements ViewTool
     {
         return StrutsUtils.errorMarkup(property, request, session, application);    
     }
+
+
+    /**
+     * Returns the default "GLOBAL" category name that can be used for
+     * messages that are not associated with a particular property.
+     */
+    public String getGlobalName()
+    {
+        return StrutsUtils.getGlobalErrorName();
+    }
+
 
 }
