@@ -145,7 +145,7 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  * @author <a href="dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.5 2003/03/20 05:56:43 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.6 2003/03/20 06:07:27 nbubna Exp $
  */
 
 public class VelocityViewServlet extends HttpServlet
@@ -169,7 +169,7 @@ public class VelocityViewServlet extends HttpServlet
     /**
      * Key used to access the ServletContext in the Velocity
      */
-    public static final String SERVLET_CONTEXT_KEY = "javax.servlet.ServletContext";
+    public static final String SERVLET_CONTEXT_KEY = ServletContext.class.getName();
 
 
     /**
