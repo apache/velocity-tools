@@ -16,7 +16,8 @@ VelocityView
     Package containing the VelocityViewServlet for rendering Velocity
     templates. There is no controller functionality - it's akin to the 
     JspServlet. It includes toolbox support. (Also contains a
-    VelocityLayoutServlet to support more advanced template rendering.)
+    VelocityLayoutServlet to support more advanced template rendering
+    as an alternative to Tiles.)
     
 
 Generic tools
@@ -29,7 +30,7 @@ Generic tools
 Build Instructions
 ------------------
 
-Building the project requires JDK 1.3.1 or JDK 1.4.0 and ant 1.4.1 
+Building the project requires JDK 1.3.1 or higher and ant 1.4.1 
 or higher. There is an ant script included that builds the entire 
 project, including all three subprojects, documentation, application 
 examples, etc. To build the project, start ant in the root directory 
@@ -69,17 +70,17 @@ To build the VelocityStruts example, execute:
 Please note:
 
 - During the documentation build process DVSL emits several of the following error
-  messages. They can be ingnored. A bug report has be filed.
+  messages. They can be ingnored. A bug report has already been filed.
 
   [dvsl] [error] ResourceManager: unable to find resource 'VM_global_library.vm' in any resource loader.
 
-- When compiling with JDK 1.4.0 there are two deprecation warnings
-  involving java.net.URLEncoder. They can't be fixed at the moment, 
-  because then the software wouldn't compile with JDK 1.3.1 anymore.
+- When compiling with JDK 1.4 there is a deprecation warning in LinkTool
+  involving java.net.URLEncoder.  This is to maintain compatibility with JDK 1.3.
+  However, when running the code on 1.4, the new, non-deprecated method is used.
 
-The build process has been tested with JDK 1.3.1 and JDK 1.4.0. The 
+The build process has been tested with JDK 1.3.1 and JDK 1.4.1. The 
 included example applications have been tested with Tomcat 4.0.4, 
-Tomcat 4.1.18, and Resin 2.1.0.
+Tomcat 4.1.24, and Resin 2.1.0.
 
 If you observe any problems with the build process, please report this
 to the Velocity users mailing list, velocity-user@jakarta.apache.org, and
@@ -102,4 +103,4 @@ Feedback
 We welcome your feedback to velocity-user@jakarta.apache.org.
 
 
-$Revision: 1.8 $ $Date: 2003/03/08 19:59:55 $
+$Revision: 1.9 $ $Date: 2003/04/21 15:09:06 $
