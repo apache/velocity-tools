@@ -52,15 +52,12 @@
  * <http://www.apache.org/>.
  */
 
-
 package org.apache.velocity.tools.view.tools;
-
 
 import javax.servlet.ServletRequest;
 
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
-
 
 /**
  * <p>Utility class for easy parsing of {@link ServletRequest} parameters.</p>
@@ -84,9 +81,8 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * or action code as well as in templates.</p>
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.6 $ $Date: 2003/11/06 00:26:54 $
+ * @version $Revision: 1.7 $ $Date: 2004/01/05 20:29:52 $
  */
-
 public class ParameterParser implements ViewTool
 {
 
@@ -164,7 +160,6 @@ public class ParameterParser implements ViewTool
 
 
     // ----------------- public parsing methods --------------------------
-
 
     /**
      * Convenience method for checking whether a certain parameter exists.
@@ -434,25 +429,24 @@ public class ParameterParser implements ViewTool
     }
 
 
-     // --------------------------- protected methods ------------------
+    // --------------------------- protected methods ------------------
  
- 
-     /**
-      * Converts a parameter value into a {@link Number}
-      * This is used as the base for all numeric parsing methods. So,
-      * sub-classes can override to allow for customized number parsing.
-      * (e.g. to handle fractions, compound numbers, etc.)
-      *
-      * @param value the string to be parsed
-      * @return the value as a {@link Number}
-      */
-     protected Number parseNumber(String value) throws NumberFormatException {
-         if (value.indexOf('.') >= 0)
-         {
-             return new Double(value);
-         }
-         return new Long(value);
-     }
- 
+    /**
+     * Converts a parameter value into a {@link Number}
+     * This is used as the base for all numeric parsing methods. So,
+     * sub-classes can override to allow for customized number parsing.
+     * (e.g. to handle fractions, compound numbers, etc.)
+     *
+     * @param value the string to be parsed
+     * @return the value as a {@link Number}
+     */
+    protected Number parseNumber(String value) throws NumberFormatException
+    {
+        if (value.indexOf('.') >= 0)
+        {
+            return new Double(value);
+        }
+        return new Long(value);
+    }
  
 }
