@@ -1,5 +1,5 @@
 <!--
-  $Id: build.xml,v 1.18 2003/06/27 23:57:37 nbubna Exp $ 
+  $Id: build.xml,v 1.19 2003/06/28 00:38:03 nbubna Exp $ 
 -->
 <project name="velocity-tools" default="all" basedir=".">
 
@@ -249,9 +249,6 @@
 
     <!-- Assemble and build the simple example -->
     <copy todir="${simple.lib}" file="${dist.dir}/${view.name}.jar"/>
-    <copy todir="${simple.lib}" file="${commons-beanutils.jar}"/>
-    <copy todir="${simple.lib}" file="${commons-collections.jar}"/>
-    <copy todir="${simple.lib}" file="${commons-digester.jar}"/>
     <copy todir="${simple.lib}" file="${dom4j.jar}"/>
     <copy todir="${simple.lib}" file="${velocity.jar}"/>
 
@@ -304,9 +301,6 @@
 
     <!-- Assemble and build the layout example -->
     <copy todir="${layout.lib}" file="${dist.dir}/${view.name}.jar"/>
-    <copy todir="${layout.lib}" file="${commons-beanutils.jar}"/>
-    <copy todir="${layout.lib}" file="${commons-collections.jar}"/>
-    <copy todir="${layout.lib}" file="${commons-digester.jar}"/>
     <copy todir="${layout.lib}" file="${dom4j.jar}"/>
     <copy todir="${layout.lib}" file="${velocity.jar}"/>
 
