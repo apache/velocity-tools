@@ -1,5 +1,5 @@
 <!--
-  $Id: build.xml,v 1.12 2003/04/26 01:27:45 nbubna Exp $ 
+  $Id: build.xml,v 1.13 2003/04/26 01:31:01 nbubna Exp $ 
 -->
 <project name="velocity-tools" default="all" basedir=".">
 
@@ -64,7 +64,8 @@
 
 
   <!-- Main Target -->
-  <target name="all" depends="clean,jar.struts,javadoc,docs"/>
+  <target name="all" depends="clean,jar.struts,examples,javadoc,docs"
+          description="Clean and build velocity-tools library, examples, and documentation."/>
 
 
 
@@ -215,6 +216,13 @@
       </fileset>
     </copy>
   </target>
+
+
+
+  <!-- Build all example applications -->
+  <target name="examples"
+          depends="example.simple,example.struts"
+          description="Compiles and jars all example applications."/>
 
 
 
