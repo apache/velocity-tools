@@ -20,6 +20,7 @@ package org.apache.velocity.tools.generic;
 
 import java.io.StringWriter;
 import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 
 
@@ -69,19 +70,24 @@ import org.apache.velocity.context.Context;
  * scope of a servlet environment.</p>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.8 $ $Date: 2004/11/10 20:17:17 $
+ * @version $Revision: 1.9 $ $Date: 2004/11/11 06:18:32 $
  */
 
 public class RenderTool
 {
 
-    /**
-     * Constructs a new instance
-     */
-    public RenderTool()
-    {}
-
     private static final String LOG_TAG = "RenderTool.eval()";
+
+    private VelocityEngine engine = null;
+
+    /**
+     * Allow user to specify a VelocityEngine to be used
+     * in place of the Velocity singleton.
+     */
+    public void setVelocityEngine(VelocityEngine ve)
+    {
+        this.engine = ve;
+    }
 
     /**
      * <p>Evaluates a String containing VTL using the current context,
@@ -101,7 +107,15 @@ public class RenderTool
             return null;
         }
         StringWriter sw = new StringWriter();
-        boolean success = Velocity.evaluate(ctx, sw, LOG_TAG, vtl);
+        boolean success;
+        if (engine == null)
+        {
+            success = Velocity.evaluate(ctx, sw, LOG_TAG, vtl);
+        }
+        else
+        {
+            success = engine.evaluate(ctx, sw, LOG_TAG, vtl);
+        }
         if (success)
         {
             return sw.toString();
