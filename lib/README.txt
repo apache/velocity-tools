@@ -11,6 +11,7 @@ that the file names include the library version.
 
 VelocityStruts:
 - dom4j.jar (1.1)
+- jdbc2_0-stdext.jar (for jdk 1.3)
 - servlet.jar (2.2+)
 - struts.jar (1.0.2+)
 - velocity-dep-1.3.1.jar
@@ -29,6 +30,7 @@ VelStruts example:
 - commons-collections.jar
 - commons-digester.jar
 - dom4j.jar (1.1)
+- jdbc2_0-stdext.jar (for jdk 1.3)
 - servlet.jar (2.2+)
 - struts.jar (1.0.2)
 - velocity-dep-1.3.1.jar
