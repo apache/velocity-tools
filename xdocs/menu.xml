@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: menu.xml,v 1.7 2004/06/16 20:56:42 nbubna Exp $
+  $Id$
 -->
 <project href="index.html">
     <title>Velocity</title>
@@ -27,7 +27,7 @@
           <item name="Overview"               href="index.html"/>
           <item name="Download"               href="index.html#Download"/>
           <item name="ChangeLog"              href="changes.html"/>
-          <item name="CVS Repository"         href="index.html#CVS Repository"/>
+          <item name="Subversion Repository"  href="index.html#Subversion Repository"/>
           <item name="Javadoc"                href="javadoc/index.html"/>
           <item name="Wiki"                   href="http://wiki.apache.org/jakarta-velocity/VelocityTools"/>
           <item name="FAQ"                    href="http://wiki.apache.org/jakarta-velocity/VelocityFAQ"/>
