@@ -107,19 +107,17 @@ import org.apache.velocity.context.Context;
  * scope of a servlet environment.</p>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.4 $ $Date: 2003/11/20 05:43:18 $
+ * @version $Revision: 1.5 $ $Date: 2003/12/06 05:57:21 $
  */
 
 public class RenderTool
 {
-
 
     /**
      * Constructs a new instance
      */
     public RenderTool()
     {}
-
 
     private static final String LOG_TAG = "RenderTool.eval()";
 
@@ -133,7 +131,7 @@ public class RenderTool
      * @param vtl the code to be evaluated
      * @return the evaluated code as a String
      */
-    public static String eval(Context ctx, String vtl) throws Exception
+    public String eval(Context ctx, String vtl) throws Exception
     {
         StringWriter sw = new StringWriter();
         boolean success = Velocity.evaluate(ctx, sw, LOG_TAG, vtl);
@@ -144,7 +142,6 @@ public class RenderTool
         /* or would it be preferable to return the original? */
         return null;
     }
-
 
     /**
      * <p>Recursively evaluates a String containing VTL using the
@@ -159,7 +156,7 @@ public class RenderTool
      * @param vtl the code to be evaluated
      * @return the evaluated code as a String
      */
-    public static String recurse(Context ctx, String vtl) throws Exception
+    public String recurse(Context ctx, String vtl) throws Exception
     {
         String result = eval(ctx, vtl);
         if (result.equals(vtl))
@@ -171,6 +168,5 @@ public class RenderTool
             return recurse(ctx, result);
         }
     }
-
 
 }
