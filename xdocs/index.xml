@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: index.xml,v 1.18 2004/05/28 19:13:29 nbubna Exp $
+  $Id: index.xml,v 1.19 2004/06/16 21:12:26 nbubna Exp $
 -->
 <document>
 
@@ -110,8 +110,8 @@
         <p><strong>Releases</strong></p>
         <p>
           VelocityTools 1.1 is now available in
-          <a href="http://jakarta.apache.org/site/sourceindex.cgi">source</a> or
-          <a href="http://jakarta.apache.org/site/binindex.cgi">binary</a> form.
+          <a href="http://jakarta.apache.org/site/sourceindex.cgi#velocity-tools">source</a> or
+          <a href="http://jakarta.apache.org/site/binindex.cgi#velocity-tools">binary</a> form.
         </p>
 
         <br clear="all"/>
