@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: changes.xml,v 1.17 2004/02/18 20:23:41 nbubna Exp $
+  $Id: changes.xml,v 1.18 2004/02/21 20:54:19 nbubna Exp $
 -->
 <document>
   <properties>
@@ -26,7 +26,7 @@
   <section name="Velocity Tools Changes">
     <p>This document tracks the changes in Velocity Tools between releases.</p>
 
-    <subsection name="1.1-dev">
+    <subsection name="1.1-rc1">
       <p>This section describes changes after the 1.1-beta release.</p>
       <ul>
       <li>Changed recommended keys for MessageTool and ActionMessagesTool to $text and $messages. (ndb)</li>
