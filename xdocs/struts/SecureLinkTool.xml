@@ -60,8 +60,6 @@
             <version>@@@version@@@, @@@date@@@</version>
             <clazz>org.apache.velocity.tools.struts.SecureLinkTool</clazz>
             <name>$link</name>
-            <author email="sidler@teamup.com">Gabriel Sidler</author>
-            <author email="nathan@esha.com">Nathan Bubna</author>
             <author email="marinoj@centrum.is">Marino A. Jonsson</author>
             <config-example>&lt;tool&gt;
   &lt;key&gt;link&lt;/key&gt;
