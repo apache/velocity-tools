@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-
 package org.apache.velocity.tools.struts;
-
-import org.apache.struts.action.ActionErrors;
 
 /**
  * <p>View tool to work with the Struts error messages.</p>
@@ -45,7 +42,7 @@ import org.apache.struts.action.ActionErrors;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Id: ErrorsTool.java,v 1.14 2004/03/12 23:43:08 nbubna Exp $
+ * @version $Id: ErrorsTool.java,v 1.15 2004/03/12 23:44:51 nbubna Exp $
  */
 public class ErrorsTool extends ActionMessagesTool
 {
