@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<!--
+     This is a blank Struts configuration file for a single example module,
+     with commented examples of some items.
+
+     NOTE: If you have a generator tool to create the corresponding Java classes
+     for you, you could include the details in the "form-bean" declarations.
+     Otherwise, you would only define the "form-bean" element itself, with the
+     corresponding "name" and "type" attributes, as shown here.
+-->
+
+
+<struts-config>
+
+  <!-- ========== Form Bean Definitions ============================== -->
+
+  <form-beans>
+
+    <form-bean name="testForm" type="org.apache.struts.action.DynaActionForm">
+        <form-property name="propA" type="java.lang.String"/>
+        <form-property name="propB" type="java.lang.String"/>
+    </form-bean>
+
+  </form-beans>
+
+  <!-- ========== Action Mapping Definitions ============================== -->
+  <action-mappings type="org.apache.struts.config.SecureActionConfig">
+
+    <!-- Struts Example Application 6, Velocity Version -->
+
+    <action path="/true" type="org.apache.struts.actions.ForwardAction"
+        parameter=".true">
+    	<set-property property="secure" value="true"/>
+    </action>
+
+    <action path="/false" type="org.apache.struts.actions.ForwardAction"
+        parameter=".false">
+    	<set-property property="secure" value="false"/>
+    </action>
+
+    <action path="/any" type="org.apache.struts.actions.ForwardAction"
+        parameter=".any">
+     	<set-property property="secure" value="any"/>
+    </action>
+
+    <action path="/secureSubmit" type="org.apache.struts.actions.ForwardAction"
+        name="testForm"
+        parameter=".submitted">
+    	<set-property property="secure" value="true"/>
+    </action>
+
+    <action path="/nonsecureSubmit" type="org.apache.struts.actions.ForwardAction"
+        name="testForm"
+        parameter=".submitted">
+    	<set-property property="secure" value="false"/>
+    </action>
+
+    <action path="/formAction" type="org.apache.struts.actions.ForwardAction"
+        parameter=".form">
+    	<set-property property="secure" value="false"/>
+    </action>
+
+
+    <!-- Struts Example Application 6, JSP Version -->
+
+    <action path="/true_jsp" type="org.apache.struts.actions.ForwardAction"
+        parameter=".true.jsp">
+    	<set-property property="secure" value="true"/>
+    </action>
+
+    <action path="/false_jsp" type="org.apache.struts.actions.ForwardAction"
+        parameter=".false.jsp">
+    	<set-property property="secure" value="false"/>
+    </action>
+
+    <action path="/any_jsp" type="org.apache.struts.actions.ForwardAction"
+        parameter=".any.jsp">
+     	<set-property property="secure" value="any"/>
+    </action>
+
+    <action path="/secureSubmit_jsp" type="org.apache.struts.actions.ForwardAction"
+        name="testForm"
+        parameter=".submitted.jsp">
+    	<set-property property="secure" value="true"/>
+    </action>
+
+    <action path="/nonsecureSubmit_jsp" type="org.apache.struts.actions.ForwardAction"
+        name="testForm"
+        parameter=".submitted.jsp">
+    	<set-property property="secure" value="false"/>
+    </action>
+
+    <action path="/formAction_jsp" type="org.apache.struts.actions.ForwardAction"
+        parameter=".form.jsp">
+    	<set-property property="secure" value="false"/>
+    </action>
+
+  </action-mappings>
+
+  <!-- ========== Controller Definitions ============================== -->
+  <!-- no need to specify the custom controller - the plugin takes care of that for us. -->
+  <!--controller processorClass="org.apache.struts.action.SecureRequestProcessor" /-->
+
+  <!-- ========== PlugIn Definitions ============================== -->
+  <plug-in className="org.apache.struts.tiles.SecureTilesPlugin">
+            <set-property property="httpPort"
+                          value="8080"/>
+            <set-property property="httpsPort"
+                          value="8443"/>
+            <set-property property="enable"
+                          value="true"/>
+            <set-property property="addSession"
+            		  value="true"/>
+            <set-property property="definitions-config"
+            		  value="/WEB-INF/tiles-app7-defs.xml"/>
+            <set-property property="definitions-debug"
+                	  value="1"/>
+            <set-property property="moduleAware"
+                	  value="true"/>
+            <set-property property="definitions-parser-details"
+                	  value="0"/>
+            <set-property property="definitions-parser-validate"
+                	  value="true"/>
+  </plug-in>
+
+</struts-config>

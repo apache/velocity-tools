@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+<tiles-definitions>
+
+  <definition name=".common">
+    <put name="top" value="/examples/struts_app7/top.html" />
+  </definition>
+
+  <!-- ========== Velocity Definitions ============================== -->
+
+  <definition name=".true" path="/examples/struts_app7/true.vm" extends=".common"/>
+
+  <definition name=".false" path="/examples/struts_app7/false.vm" extends=".common"/>
+
+  <definition name=".any" path="/examples/struts_app7/any.vm" extends=".common"/>
+
+  <definition name=".form" path="/examples/struts_app7/form.vm"/>
+
+  <definition name=".submitted" path="/examples/struts_app7/submitted.vm"/>
+
+
+  <!-- ========== JSP Definitions ============================== -->
+
+  <definition name=".true.jsp" path="/examples/struts_app7/true.jsp" extends=".common"/>
+
+  <definition name=".false.jsp" path="/examples/struts_app7/false.jsp" extends=".common"/>
+
+  <definition name=".any.jsp" path="/examples/struts_app7/any.jsp" extends=".common"/>
+
+  <definition name=".form.jsp" path="/examples/struts_app7/form.jsp"/>
+
+  <definition name=".submitted.jsp" path="/examples/struts_app7/submitted.jsp"/>
+
+</tiles-definitions>
