@@ -52,12 +52,10 @@
  * <http://www.apache.org/>.
  */
 
-
 package org.apache.velocity.tools.view;
 
-
 import org.apache.velocity.tools.view.tools.ViewTool;
-
+import org.apache.velocity.app.Velocity;
 
 /**
  * ToolInfo implementation for view tools. New instances
@@ -67,7 +65,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: ViewToolInfo.java,v 1.5 2003/11/06 06:16:18 nbubna Exp $
+ * @version $Id: ViewToolInfo.java,v 1.6 2003/11/06 06:36:01 nbubna Exp $
  */
 public class ViewToolInfo implements ToolInfo
 {
@@ -154,11 +152,19 @@ public class ViewToolInfo implements ToolInfo
         {
             tool = clazz.newInstance();
         }
-        catch (Exception e)
+        /* we shouldn't get exceptions here because we already 
+         * got an instance of this class during setClassname().
+         * but to be safe, let's catch the declared ones and give 
+         * notice of them, and let other exceptions slip by. */
+        catch (IllegalAccessException e)
         {
-            //we should never get here since we
-            //got a new instance just fine when we
-            //created this tool info
+            Velocity.error("Exception while instantiating instance of \"" +
+                           getClassname() + "\": " + e);
+        }
+        catch (InstantiationException e)
+        {
+            Velocity.error("Exception while instantiating instance of \"" +
+                           getClassname() + "\": " + e);
         }
         
         if (initializable) {
