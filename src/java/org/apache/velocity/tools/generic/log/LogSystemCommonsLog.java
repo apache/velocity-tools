@@ -1,5 +1,5 @@
 /*
- * Copyright 2003 The Apache Software Foundation.
+ * Copyright 2003-2004 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import java.io.PrintWriter;
 
 import org.apache.commons.logging.Log;
 import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.log.LogSystem;
 
 /**
@@ -28,30 +29,43 @@ import org.apache.velocity.runtime.log.LogSystem;
  *
  * <p>To use, specify this class in your commons-logging.properties:
  * <code>
- * org.apache.commons.logging.Log=org.apache.velocity.tools.generic.log.LogSystemCommonsLog
+ * org.apache.commons.logging.Log=org.apache.velocity.tools.log.LogSystemCommonsLog
  * </code>
  * </p>
  * 
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @since VelocityTools 1.1
- * @version $Id: LogSystemCommonsLog.java,v 1.3 2004/02/18 20:10:38 nbubna Exp $
+ * @version $Id: LogSystemCommonsLog.java,v 1.4 2004/11/11 07:00:54 nbubna Exp $
  */
 public class LogSystemCommonsLog implements Log
 {
 
+    protected static VelocityEngine handler = null;
+
+    /**
+     * Set a VelocityEngine to handle all the log messages.
+     */
+    public static void setVelocityEngine(VelocityEngine engine)
+    {
+        handler = engine;
+    }
+
+
+    // ********************  begin non-static stuff *******************
+
     private boolean printStackTrace = false;
+    private String name;
 
+    public LogSystemCommonsLog() 
+    {
+        this("");
+    }
 
-    /**
-     * Default constructor
-     */
-    public LogSystemCommonsLog() {}
-
-
-    /**
-     * Meaningless constructor to make commons-logging happy.
-     */
-    public LogSystemCommonsLog(String name) {}
+    public LogSystemCommonsLog(String name) 
+    {
+        if (name == null)
+        {
+            throw new NullPointerException("Log name cannot be null");
+        }
+    }
 
 
     /**
@@ -65,29 +79,68 @@ public class LogSystemCommonsLog implements Log
      */
     public LogSystemCommonsLog(boolean pst)
     {
-        this.printStackTrace = pst;
+        this(pst, null);
     }
 
+    /**
+     * Lets you set whether or not this instance should print the
+     * full stack trace of exceptions and errors passed to it.
+     *
+     * <p>It should be possible to create a LogFactory implementation
+     * that takes advantage of this constructor.</p>
+     *
+     * @param pst if true, stack traces will be printed
+     * @param name the name of this logger
+     */
+    public LogSystemCommonsLog(boolean pst, String name)
+    {
+        this(name);
+        this.printStackTrace = pst;
+    }
     
     private void log(int level, Object message)
     {
-        switch (level) 
+        if (handler != null)
         {
-            case LogSystem.WARN_ID:
-                Velocity.warn(message);
-                break;
-            case LogSystem.INFO_ID:
-                Velocity.info(message);
-                break;
-            case LogSystem.DEBUG_ID:
-                Velocity.debug(message);
-                break;
-            case LogSystem.ERROR_ID:
-                Velocity.error(message);
-                break;
-            default:
-                Velocity.debug(message);
-                break;
+            switch (level) 
+            {
+                case LogSystem.WARN_ID:
+                    handler.warn(message);
+                    break;
+                case LogSystem.INFO_ID:
+                    handler.info(message);
+                    break;
+                case LogSystem.DEBUG_ID:
+                    handler.debug(message);
+                    break;
+                case LogSystem.ERROR_ID:
+                    handler.error(message);
+                    break;
+                default:
+                    handler.debug(message);
+                    break;
+            }
+        }
+        else
+        {
+            switch (level) 
+            {
+                case LogSystem.WARN_ID:
+                    Velocity.warn(message);
+                    break;
+                case LogSystem.INFO_ID:
+                    Velocity.info(message);
+                    break;
+                case LogSystem.DEBUG_ID:
+                    Velocity.debug(message);
+                    break;
+                case LogSystem.ERROR_ID:
+                    Velocity.error(message);
+                    break;
+                default:
+                    Velocity.debug(message);
+                    break;
+            }
         }
     }
 
