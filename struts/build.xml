@@ -1,4 +1,5 @@
-<project name="velocity-view" default="all" basedir=".">
+
+<project name="velocity-tools-struts" default="all" basedir=".">
 
 <!-- ========== Initialize Properties ===================================== -->
 
@@ -22,10 +23,10 @@
   <property name="project.title"         value=""/>
 
   <!-- The current version number of this component -->
-  <property name="project.version"       value="0.6"/>
+  <property name="project.version"       value="0.7"/>
 
   <!-- The current version number of this component -->
-  <property name="project.date"          value="05-Mar-2002"/>
+  <property name="project.date"          value="29-Mar-2002"/>
 
   <!-- The base directory for compilation targets -->
   <property name="build.home"            value="target"/>
@@ -76,8 +77,8 @@
   <!-- ================================================================== -->
   <!-- I N I T                                                            -->
   <!-- ================================================================== -->
-  <target name="init"
-   description="Initialize and evaluate conditionals">
+  <target name="init">
+    <!-- Initialize and evaluate conditionals -->
     <echo message="-------- ${project.name} ${project.version} --------"/>
     <filter  token="name"                  value="${project.name}"/>
     <filter  token="version"               value="${project.version}"/>
@@ -86,8 +87,8 @@
   <!-- ================================================================== -->
   <!-- P R E P A R E                                                      -->
   <!-- ================================================================== -->
-  <target name="prepare" depends="init"
-   description="Prepare build directory">
+  <target name="prepare" depends="init">
+    <!-- Prepare build directory -->
     <mkdir dir="${build.home}"/>
     <mkdir dir="${build.home}/classes"/>
     <mkdir dir="${build.home}/conf"/>
@@ -97,8 +98,8 @@
   <!-- ================================================================== -->
   <!-- S T A T I C                                                        -->
   <!-- ================================================================== -->
-  <target name="static" depends="prepare"
-   description="Copy static files to build directory">
+  <target name="static" depends="prepare">
+    <!-- Copy static files to build directory -->
     <tstamp/>
     <copy  todir="${build.home}/conf" filtering="on">
       <fileset dir="${conf.home}" includes="*.MF"/>
@@ -164,7 +165,7 @@
                 destdir="${build.home}/javadoc"
            packagenames="org.apache.velocity.tools.struts.*"
                  author="true"
-                private="true"
+                 public="true"
                 version="true"
                doctitle="&lt;h1&gt;${project.title}&lt;/h1&gt;"
             windowtitle="${project.title} (Version ${project.version})"
@@ -179,7 +180,8 @@
   <!-- ================================================================== -->
   <!-- J A R                                                              -->
   <!-- ================================================================== -->
-  <target name="jar" depends="compile">
+  <target name="jar" depends="compile"
+    description="Package class as jar file into ${builddir}">
     <jar    jarfile="${project.name}-${project.version}.jar"
             basedir="${build.home}/classes"
             manifest="${conf.home}/MANIFEST.MF"/>
@@ -189,7 +191,8 @@
   <!-- ================================================================== -->
   <!-- D O C S                                                            -->
   <!-- ================================================================== -->
-  <target name="docs">
+  <target name="docs"
+    description="Generate documentation into ${docs.dest}">
 
       <taskdef name="dvsl" classname="org.apache.tools.dvsl.DVSLTask">
 
@@ -205,7 +208,7 @@
     	   toolboxfile="../xdocs/toolbox.props"
            extension=".html"
            style="../xdocs/site.dvsl"
-           excludes="**/project.xml,**/tools.xml"
+           excludes="*menue.xml"
            includes="**/*.xml"
       />
 
@@ -247,14 +250,11 @@
         <fileset dir="${build.home}/javadoc"/>
       </copy>
 
-      <!-- Copy reference documentation -->
+<!-- Copy reference documentation 
       <copy todir="${examples.home}/struts/doc/">
-        <fileset dir="${docs.dest}" includes="tool-*"/>
+        <fileset dir="${docs.dest}" includes="*.html"/>
       </copy>
-      <copy todir="${examples.home}/struts/doc/">
-        <fileset dir="${docs.dest}" includes="index.html"/>
-      </copy>
-
+-->
   </target>
 
 
@@ -309,7 +309,7 @@
   <!-- I N S T A L L  J A R                                               -->
   <!-- ================================================================== -->
   <target name="install-jar" depends="jar"
-          description="--> Installs .jar file in ${lib.repo}">
+    description="Installs .jar file in ${lib.repo}">
     <copy todir="${lib.repo}" filtering="no">
       <fileset dir="${basedir}">
         <include name="${project.name}-${project.version}.jar"/>
@@ -322,7 +322,7 @@
   <!--  D E P L O Y   J A R                                               -->
   <!-- ================================================================== -->
   <target name="deploy-jar" depends="compile, jar"
-          description="Deploy jar to example applications">
+    description="Deploy jar to example applications">
     
     <delete>
         <fileset dir="${examples.home}/struts/WEB-INF/lib" includes="${project.name}-*.jar"/>

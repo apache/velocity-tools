@@ -66,24 +66,39 @@ import org.apache.struts.util.MessageResources;
 import org.apache.struts.action.*;
 
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ContextTool;
+import org.apache.velocity.tools.view.tools.LogEnabledContextToolImpl;
+import org.apache.velocity.tools.view.tools.ServletContextTool;
 
 
 /**
- * <p>Context tool to work with URI links in Struts. Extends 
- * ServletContextTool to profit from the logging facilities of 
- * that class.</p>
+ * <p>Context tool to work with URI links in Struts.</p> 
+ * 
+ * <p>This class is equipped to be used with a toolbox manager, for example
+ * the ServletToolboxManager included with VelServlet. The class extends 
+ * ServletContextToolLogger to profit from the logging facilities of that class.
+ * Furthermore, this class implements interface ServletContextTool, which allows
+ * a toolbox manager to pass the required context information.</p>
+ *
+ * <p>This class is not thread-safe by design. A new instance is needed for
+ * the processing of every template request.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: LinkTool.java,v 1.2 2002/03/13 22:08:54 sidler Exp $
+ * @version $Id: LinkTool.java,v 1.3 2002/04/02 16:46:30 sidler Exp $
  * 
  */
-public class LinkTool extends ServletContextTool
+public class LinkTool extends LogEnabledContextToolImpl 
+    implements ServletContextTool
 {
 
-    // --------------------------------------------- Private Properties -------
+    // --------------------------------------------- Properties ---------------
+
+    /**
+     * A reference to the ServletContext
+     */ 
+    protected ServletContext application;
+
 
     /**
      * A reference to the HtttpServletRequest.
@@ -112,8 +127,10 @@ public class LinkTool extends ServletContextTool
     // --------------------------------------------- Constructors -------------
 
     /**
-     * Returns a factory. Use method {@link #init(ViewContext context)} to 
-     * obtain instances of this class.
+     * Returns a factory for instances of this class. Use method 
+     * {@link #getInstance(ViewContext context)} to obtain instances 
+     * of this class. Do not use instance obtained from this method
+     * in templates. They are not properly initialized.
      */
     public LinkTool()
     {
@@ -127,8 +144,8 @@ public class LinkTool extends ServletContextTool
     
     
     /**
-     * For internal use only! Use method {@link #init(ViewContext context)} 
-     * to obtain instances of the tool.
+     * For internal use only! Use method {@link #getInstance(ViewContext context)} 
+     * to obtain instances of this tool.
      */
     private LinkTool(ViewContext context)
     {
@@ -143,7 +160,10 @@ public class LinkTool extends ServletContextTool
     /**
      * For internal use.
      *
-     * Copies 'that' LinkTool into this one and adds the new query data
+     * Copies 'that' LinkTool into this one and adds the new query data.
+     *
+     * @param that a reference to a link tool
+     * @param pair the query parameter to add
      */
     private LinkTool(LinkTool that, QueryPair pair)
     {
@@ -167,7 +187,10 @@ public class LinkTool extends ServletContextTool
     /**
      * For internal use.
      *
-     * Copies 'that' LinkTool into this one and sets the new URI
+     * Copies 'that' LinkTool into this one and sets the new URI.
+     *
+     * @param that a reference to a link tool
+     * @param uri uri string
      */
     private LinkTool(LinkTool that, String uri)
     {
@@ -181,37 +204,36 @@ public class LinkTool extends ServletContextTool
 
 
 
-
-    // --------------------------------------------- ContextTool Interface ----
+    // ----------------------------------- Interface ServletContextTool -------
 
     /**
-     * A new tool object will be instantiated per-request by calling 
-     * this method. A ContextTool is effectively a factory used to 
-     * create objects for use in templates. Some tools may simply return
-     * themselves from this method others may instantiate new objects
-     * to hold the per-request state.
+     * Returns an initialized instance of this context tool.
      */
-    public Object init(ViewContext context)
+    public Object getInstance(ViewContext context)
     {
         return new LinkTool(context);
     }
-    
-    
+
+
     /**
-     * Perform any cleanup needed. This method is called after the template
-     * has been processed.
+     * <p>Returns the default life cycle for this tool. This is 
+     * {@link ServletContextTool#REQUEST}. Do not overwrite this
+     * per toolbox configuration. No alternative life cycles are 
+     * supported by this tool</p>
      */
-    public void destroy(Object o)
+    public String getDefaultLifecycle()
     {
+        return ServletContextTool.REQUEST; 
     }
 
+    
 
-
+    
     // --------------------------------------------- View Helpers -------------
 
 
     /**
-     * <p>Returns a copy of this link with the given URI reference. 
+     * <p>Returns a copy of the link with the given URI reference set. 
      * No conversions are applied to the given URI reference. The URI 
      * reference can be absolute, server-relative, relative and may
      * contain query parameters. This method will overwrite any 
@@ -224,6 +246,7 @@ public class LinkTool extends ServletContextTool
      * or setForward() instead.</p>
      * 
      * @param uri URI reference to set
+     *
      * @return a new instance of LinkTool
      */
     public LinkTool setURI(String uri)
@@ -233,29 +256,32 @@ public class LinkTool extends ServletContextTool
 
 
     /**
-     * <p>Returns a copy of this link with the given action name
+     * <p>Returns a copy of the link with the given action name
      * converted into a server-relative URI reference. This method 
      * does not check if the specified action really is defined. 
      * This method will overwrite any previous URI reference settings 
      * but will copy the query string.</p>
      *
      * @param action an action path as defined in struts-config.xml
+     *
      * @return a new instance of LinkTool
      */
     public LinkTool setAction(String action)
     {
-        return new LinkTool(this, StrutsUtils.getActionMappingURL(application, request, action));
+        return new LinkTool(this, 
+            StrutsUtils.getActionMappingURL(application, request, action));
     }
     
     
     /**
-     * <p>Returns a copy of this link with the given global forward name
+     * <p>Returns a copy of the link with the given global forward name
      * converted into a server-relative URI reference. If the parameter 
      * does not map to an existing global forward name, <code>null</code> 
      * is returned. This method will overwrite any previous URI reference 
      * settings but will copy the query string.</p>
      *
      * @param forward a global forward name as defined in struts-config.xml
+     *
      * @return a new instance of LinkTool
      */
     public LinkTool setForward(String forward)
@@ -264,7 +290,7 @@ public class LinkTool extends ServletContextTool
         
         if (mapping == null)
         {
-            log(WARNING, "In method setForward(" + forward + "): Parameter does not map to a valid forward.");
+            log(WARN, "In method setForward(" + forward + "): Parameter does not map to a valid forward.");
             return null;
         }
 
@@ -282,7 +308,7 @@ public class LinkTool extends ServletContextTool
         
 
     /**
-     * <p>Returns a copy of this link with the specified context-relative
+     * <p>Returns a copy of the link with the specified context-relative
      * URI reference converted to a server-relative URI reference. This 
      * method will overwrite any previous URI reference settings but will 
      * copy the query string.</p> 
@@ -294,6 +320,7 @@ public class LinkTool extends ServletContextTool
      *
      * @param uri A context-relative URI reference. A context-relative URI 
      * is a URI that is relative to the root of this web application.
+     *
      * @return a new instance of LinkTool
      */
     public LinkTool setAbsolute(String uri)
@@ -316,6 +343,7 @@ public class LinkTool extends ServletContextTool
      *
      * @param key key of new query parameter
      * @param value value of new query parameter
+     *
      * @return a new instance of LinkTool
      */
     public LinkTool addQueryData(String key, Object value)
@@ -361,7 +389,7 @@ public class LinkTool extends ServletContextTool
 
 
     /**
-     * <p>Returns the URI that addresses this web application, e.g. 
+     * <p>Returns the URI that addresses this web application. E.g. 
      * <code>http://myserver.net/myapp</code>. This string does not end 
      * with a "/".  Note! This will not represent any URI reference or 
      * query data set for this LinkTool.</p>
@@ -467,13 +495,22 @@ public class LinkTool extends ServletContextTool
         private final String key;
         private final Object value;
 
+
+        /**
+         * Construct a new query pair.
+         *
+         * @param key query pair
+         * @param value query value
+         */
         public QueryPair(String key, Object value) 
         {
             this.key = key;
             this.value = value;
         }
 
-
+        /**
+         * Return the URL-encoded query string.
+         */ 
         public String toString()
         {
             StringBuffer out = new StringBuffer();
@@ -485,6 +522,5 @@ public class LinkTool extends ServletContextTool
     }
 
  
- 
- 
+  
 }

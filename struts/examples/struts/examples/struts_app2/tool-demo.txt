@@ -1,14 +1,15 @@
 <html>
     <head>
-	    <title>$msg.title</title>
+	    <title>Struts App2: Struts Context Tool Demo</title>
 	    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 	    <base href="$link.baseRef">
     </head>
 
     <body>
-        <h2>$msg.title (Velocity)</h2>
-        <p>A demonstration of Struts context tools. Where available, the Velocity 
-        shorthand notation to method calls is shown as well.</p>
+        <h2>Struts App2: Struts Context Tool Demo</h2>
+        <p>A demonstration of the Velocity context tools provided for Struts support. 
+        Where available, the Velocity shorthand notation to method calls is shown 
+        as well.</p>
 
 
         <h3>MessageTool</h3>
@@ -42,6 +43,10 @@
                 <td>$errors.exist()</td>
             </tr>
             <tr>
+                <td>\$errors.exist("language")</td>
+                <td>$errors.exist("language")</td>
+            </tr>
+            <tr>
                 <td>\$errors.getSize()<br>
                     \$errors.size</td>
                 <td>$errors.getSize()</td>
@@ -53,61 +58,55 @@
             <tr>
                 <td>\$errors.getAll()<br>
                     \$errors.all</td>
-                <td>$errors.getAll()</td>
+                <td>[This is a String representation of the ArrayList that is returned]<br>
+                    $errors.getAll()</td>
             </tr>
             <tr>
                 <td>\$errors.get("language")<br>
                     \$errors.language</td>
-                <td>$errors.get("language")</td>
+                <td>[This is a String representation of the ArrayList that is returned]<br>
+                    $errors.get("language")</td>
+            </tr>
+            <tr>
+                <td>\$errors.getMsgs()<br>
+                    \$errors.msgs</td>
+                <td>$errors.getMsgs()</td>
+            </tr>
+            <tr>
+                <td>\$errors.getMsgs("language")</td>
+                <td>$errors.getMsgs("language")</td>
             </tr>
             <tr>
                 <td>A Velocity macro to render all error messages:<br>
 <pre><code>&#35;macro (errorMarkup)
-    &#35;if (&#36;errors.exist)
-        &lt;ul&gt;
-        &#35;foreach (&#36;e in &#36;errors.all )
-            &lt;li&gt;&#36;e&lt;/li&gt;
-        &#35;end
-        &lt;/ul&gt;
+  &#35;if (&#36;errors.exist() )
+    &lt;ul&gt;
+    &#35;foreach (&#36;e in &#36;errors.all )
+      &#36;e
     &#35;end
+    &lt;/ul&gt;
+  &#35;end
 &#35;end</code></pre>
                 </td>
                 <td>
-                    #macro (errorMarkup)
-                        #if ($errors.exist )
-                            <ul>
-                            #foreach ($e in $errors.all )
-                                <li>$e</li>
-                            #end
-                            </ul>
-                        #end
-                    #end                    
                     #errorMarkup()
                 </td>
             </tr>
             <tr>
-                <td>A Velocity macro to render error messages specific to a property:<br>
+                <td>A Velocity macro to render error messages specific<br>
+                    to a property:<br>
 <pre><code>&#35;macro (errorMarkup &#36;property)
-    &#35;if (&#36;errors.exist(&#36;property))
-        &lt;ul&gt;
-        &#35;foreach (&#36;er in &#36;errors.get(&#36;property) )
-            &lt;li&gt;&#36;er&lt;/li&gt;
-        &#35;end
-        &lt;/ul&gt;
+  &#35;if (&#36;errors.exist(&#36;property))
+    &lt;ul&gt;
+    &#35;foreach (&#36;er in &#36;errors.get(&#36;property))
+      &#36;er
     &#35;end
+    &lt;/ul&gt;
+  &#35;end
 &#35;end</code></pre>
                 </td>
                 <td>
-                    #macro (errorMarkup1 $property)
-                        #if ($errors.exist($property) )
-                            <ul>
-                            #foreach ($er in $errors.get($property) )
-                                <li>$er</li>
-                            #end
-                            </ul>
-                        #end
-                    #end                    
-                    #errorMarkup1("language")
+                    #errorMarkupForProperty("language")
                 </td>
             </tr>
 
@@ -142,8 +141,8 @@
         <h3>LinkTool</h3>
         <table border="1" cellspacing="0" cellpadding="4">
             <tr>
-                <td>\$link.setHref("template/login.vm")</td>
-                <td>$link.setHref("template/login.vm")</td>
+                <td>\$link.setURI("template/login.vm")</td>
+                <td>$link.setURI("template/login.vm")</td>
             </tr>
             <tr>
                 <td>\$link.setAction("demo")</td>
@@ -158,18 +157,18 @@
                 <td>$link.setAbsolute("examples/index.html")</td>
             </tr>
             <tr>
-                <td>\$link.setHref("index.html").addQueryData("key1", "val 1")</td>             
-                <td>$link.setHref("index.html").addQueryData("key1", "val 1")</td>
+                <td>\$link.setURI("index.html").addQueryData("key1", "val 1")</td>             
+                <td>$link.setURI("index.html").addQueryData("key1", "val 1")</td>
             </tr>
             <tr>
-                <td>\$link.setHref("index.html").addQueryData("key1", "val 1").getHref()<br>
-                    \$link.setHref("index.html").addQueryData("key1", "val 1").href</td>             
-                <td>$link.setHref("index.html").addQueryData("key1", "val 1").getHref()</td>
+                <td>\$link.setURI("index.html").addQueryData("key1", "val 1").getURI()<br>
+                    \$link.setURI("index.html").addQueryData("key1", "val 1").URI</td>             
+                <td>$link.setURI("index.html").addQueryData("key1", "val 1").getURI()</td>
             </tr>
             <tr>
-                <td>\$link.setHref("/index.html").addQueryData("key1", "val 1").getQueryData()<br>
-                    \$link.setHref("/index.html").addQueryData("key1", "val 1").queryData</td>             
-                <td>$link.setHref("/index.html").addQueryData("key1", "val 1").getQueryData()</td>
+                <td>\$link.setURI("/index.html").addQueryData("key1", "val 1").getQueryData()<br>
+                    \$link.setURI("/index.html").addQueryData("key1", "val 1").queryData</td>             
+                <td>$link.setURI("/index.html").addQueryData("key1", "val 1").getQueryData()</td>
             </tr>
             <tr>
                 <td>\$link.getContextURL()<br>
@@ -187,8 +186,8 @@
                 <td>$link.getBaseRef()</td>
             </tr>
             <tr>
-                <td>\$link.setHref("index.vm").toString()</td>
-                <td>$link.setHref("index.vm").toString()</td>
+                <td>\$link.setURI("index.vm").toString()</td>
+                <td>$link.setURI("index.vm").toString()</td>
             </tr>
         </table>
 

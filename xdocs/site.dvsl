@@ -1,6 +1,6 @@
 
 
-#set( $relative-path = "." )
+#set( $relative-path = "file://C:/Users/Sidler/VelTools/jakarta-velocity-tools2/" )
 
 #set( $body-bg = '#ffffff' )
 #set( $body-fg = '#000000' )
@@ -107,35 +107,51 @@
 #match( "menu" )
     <p>
     #if ($attrib.href)
-        <a href="$attrib.href"><strong>$attrib.name</strong></a>
+        <a href="${relative-path}$attrib.href"><strong>$attrib.name</strong></a>
     #else
         <strong>$attrib.name</strong>
     #end    
     </p>
     <ul>
-        $context.applyTemplates("item")
+        $context.applyTemplates()
     </ul>
 #end
+
+
+#*
+ *   Process a submenu for the navigation bar
+ *#
+#match( "submenu" )
+
+    #if ($attrib.href)
+        <li><a href="${relative-path}$attrib.href">$attrib.name</a>
+    #else
+        <li>$attrib.name
+    #end    
+        <ul>
+            $context.applyTemplates("item")
+        </ul>
+    </li>
+#end
+
 
 #*
  *   Process a menu item for the navigation bar
  *#
 #match( "item" )
-    <li><a href="${relative-path}$attrib.href">$attrib.name</a></li>
+    #if ($attrib.href)
+        <li><a href="${relative-path}$attrib.href">$attrib.name</a></li>
+    #else
+        <li>$attrib.name</li>
+    #end
 #end
 
-#*
- *   Process a link to the top of the navigation hierarchy
- *#
-#match( "toplink" )
-    <p><strong><a href="$attrib.href" alt="$!attrib.alt"><img src="images/caret-t.gif" alt="$!attrib.alt" border="0"/> $attrib.name</a></strong></p>
-#end
 
 #*
  *   Process a link to one layer above in the navigation hierarchy
  *#
 #match( "uplink" )
-    <p><strong><a href="$attrib.href"><img src="images/caret-u.gif" alt="$!attrib.alt" border="0"/> $attrib.name</a></strong></p>
+    <p><strong><a href="${relative-path}$attrib.href">$attrib.name</a></strong></p>
 #end
 
 
@@ -272,44 +288,49 @@
  *  process a 'toolinfo' block
  *#
 #match( "toolinfo" )
-        <dl>
-            <dt><strong>Version</strong></dt>
-            <dd>$attrib.version</dd>
+    <table cellpadding="0" cellspacing="0">
+        <tr><td colspan="2"><strong>Version</strong></td></tr>
+        <tr><td>&nbsp; &nbsp; &nbsp; &nbsp; </td><td>$node.version.value()</td></tr>
+
+        <tr><td colspan="2"><strong>JAR</strong></td></tr>
+        <tr><td>&nbsp;</td><td>$node.jar.value()</td></tr>
+
+        <tr><td colspan="2"><strong>Class</strong></td></tr>
+        <tr><td>&nbsp;</td><td>$node.clazz.value()</td></tr>
+
+        <tr><td colspan="2"><strong>Name</strong></td></tr>
+        <tr><td>&nbsp;</td><td>$node.name.value() (this is the recommended name of the tool in 
+            the Velocity context)</td></tr>
+
+        <tr><td colspan="2"><strong>Toolbox Configuration Example</strong></td></tr>
+        <tr><td>&nbsp;</td><td><pre>$node.copy($node.config-example.children())</pre></td></tr>
+
+        <tr><td colspan="2"><strong>Author(s)</strong></td></tr>
+        <tr><td>&nbsp;</td><td>#foreach($n in $node.selectNodes("author"))<a href="mailto:$n.attribute("email")">$n</a><br>#end</td></tr>
+    </table>
     
-            <dt><strong>JAR</strong></dt>
-            <dd>$attrib.jar</dd>
-    
-            <dt><strong>Class</strong></dt>
-            <dd>$attrib.clazz</dd>
-            
-            <dt><strong>Name</strong></dt>
-            <dd>$attrib.name (this is the recommended name of the tool in 
-                the Velocity context)</dd>
-    
-            <dt><strong>Author</strong></dt>
-            <dd>$attrib.authors</dd>
-        </dl>
 #end
+
 
 
 #*
  *  process a 'methods' block. Generates a list of methods.
  *#
 #match( "methods" )
-        <strong>Method Overview</strong>
-        <table cellpadding="2" cellspacing="2" border="0">
-        #foreach ($s in $document.body.selectNodes("section") )
-          #if ($s.method)
-            <tr>
-              <td bgcolor="EEEEEE">
-                <a href="#$s.method.attrib("name")">$s.method.attrib("name")</a></td>
-              <td bgcolor="EEEEEE">
-                $s.method.abstract.value()
-              </td>
-            </tr>
-          #end
-        #end
-        </table>
+    <strong>Method Overview</strong>
+    <table cellpadding="2" cellspacing="2" border="0">
+    #foreach ($s in $document.body.selectNodes("section") )
+      #if ($s.method)
+        <tr>
+          <td bgcolor="EEEEEE" nowrap>
+            <a href="#$s.method.attrib("name")">$s.method.attrib("name")</a></td>
+          <td bgcolor="EEEEEE">
+            $s.method.abstract.value()
+          </td>
+        </tr>
+      #end
+    #end
+    </table>
 #end
 
 

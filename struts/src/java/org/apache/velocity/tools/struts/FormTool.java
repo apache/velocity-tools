@@ -62,23 +62,34 @@ import org.apache.struts.util.MessageResources;
 import org.apache.struts.action.*;
 
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ContextTool;
+import org.apache.velocity.tools.view.tools.LogEnabledContextToolImpl;
+import org.apache.velocity.tools.view.tools.ServletContextTool;
 
 
 /**
- * <p>Context tool to work with forms in Struts. Extends ServletContextTool 
- * to profit from the logging facilities of that class.</p>
+ * <p>Context tool to work with HTML forms in Struts.</p> 
+ *
+ * <p>This class is equipped to be used with a toolbox manager, for example
+ * the ServletToolboxManager included with VelServlet. The class extends 
+ * ServletContextToolLogger to profit from the logging facilities of that class.
+ * Furthermore, this class implements interface ServletContextTool, which allows
+ * a toolbox manager to pass the required context information.</p>
+ *
+ * <p>This class is not thread-safe by design. A new instance is needed for
+ * the processing of every template request.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: FormTool.java,v 1.2 2002/03/13 22:08:54 sidler Exp $
+ * @version $Id: FormTool.java,v 1.3 2002/04/02 16:46:30 sidler Exp $
  * 
  */
-public class FormTool extends ServletContextTool
+public class FormTool extends LogEnabledContextToolImpl 
+    implements ServletContextTool
 {
 
-    // --------------------------------------------- Private Properties -------
+    // --------------------------------------------- Properties ---------------
 
+    
     /**
      * A reference to the HtttpServletRequest.
      */ 
@@ -95,8 +106,10 @@ public class FormTool extends ServletContextTool
     // --------------------------------------------- Constructors -------------
 
     /**
-     * Returns a factory. Use method {@link #init(ViewContext context)} to 
-     * obtain instances of this class.
+     * Returns a factory for instances of this class. Use method 
+     * {@link #getInstance(ViewContext context)} to obtain instances 
+     * of this class. Do not use instance obtained from this method
+     * in templates. They are not properly initialized.
      */
     public FormTool()
     {
@@ -104,39 +117,37 @@ public class FormTool extends ServletContextTool
     
     
     /**
-     * For internal use only! Use method {@link #init(ViewContext context)} 
+     * For internal use only! Use method {@link #getInstance(ViewContext context)} 
      * to obtain instances of the tool.
      */
     private FormTool(ViewContext context)
     {
         this.request = context.getRequest();
         this.session = request.getSession(false);
-        this.application = context.getServletContext();    
     }
     
 
 
-    // --------------------------------------------- ContextTool Interface ----
+    // ----------------------------------- Interface ServletContextTool -------
 
     /**
-     * A new tool object will be instantiated per-request by calling 
-     * this method. A context tool is effectively a factory used to 
-     * create objects for use in templates. Some tools may simply return
-     * themselves from this method others may instantiate new objects
-     * to hold the per-request state.
+     * Returns an initialized instance of this context tool.
      */
-    public Object init(ViewContext context)
+    public Object getInstance(ViewContext context)
     {
         return new FormTool(context);
     }
 
 
     /**
-     * Perform any cleanup needed. This method is called after the template
-     * has been processed.
+     * <p>Returns the default life cycle for this tool. This is 
+     * {@link ServletContextTool#REQUEST}. Do not overwrite this
+     * per toolbox configuration. No alternative life cycles are 
+     * supported by this tool</p>
      */
-    public void destroy(Object o)
+    public String getDefaultLifecycle()
     {
+        return ServletContextTool.REQUEST; 
     }
 
 
@@ -171,8 +182,10 @@ public class FormTool extends ServletContextTool
 
     /**
      * <p>Returns the query parameter name under which a cancel button press 
-     * must be reported if form validation is to be skipped. This is the value
-     * of <code>org.apache.struts.taglib.html.Constants.CANCEL_PROPERTY</code></p>
+     * must be reported if form validation is to be skipped.</p> 
+     *
+     * <p>This is the value of 
+     * <code>org.apache.struts.taglib.html.Constants.CANCEL_PROPERTY</code></p>
      */
     public String getCancelName()
     {

@@ -6,15 +6,6 @@
 
     <body>
     
-        #macro (errorMarkup)
-            #if ($errors.exist )
-                <ul>
-                #foreach ($e in $errors.all )
-                    $e
-                #end
-                </ul>
-            #end
-        #end                    
         #errorMarkup()
         
         <h3>Sign in, Please! (Velocity Version)</h3>

@@ -1,36 +1,24 @@
 <?xml version="1.0"?>
 
 <toolbox>
-
-  <tools>
-
-   <object>
-     <contextkey>toolLoader</contextkey>
-     <class>org.apache.velocity.tools.struts.ToolLoaderTool</class>
-   </object>
-
-   <object>
-     <contextkey>link</contextkey>
+  <tool>
+     <key>toolLoader</key>
+     <class>org.apache.velocity.tools.tools.ToolLoader</class>
+  </tool>
+  <tool>
+     <key>link</key>
      <class>org.apache.velocity.tools.struts.LinkTool</class>
-   </object>
-
-   <object>
-     <contextkey>msg</contextkey>
+  </tool>
+  <tool>
+     <key>msg</key>
      <class>org.apache.velocity.tools.struts.MessageTool</class>
-   </object>
-
-   <object>
-     <contextkey>errors</contextkey>
+  </tool>
+  <tool>
+     <key>errors</key>
      <class>org.apache.velocity.tools.struts.ErrorsTool</class>
-   </object>
-
-   <object>
-     <contextkey>form</contextkey>
+  </tool>
+  <tool>
+     <key>form</key>
      <class>org.apache.velocity.tools.struts.FormTool</class>
-   </object>
-
-
-  </tools>
-
+  </tool>
 </toolbox>
-

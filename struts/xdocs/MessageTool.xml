@@ -5,7 +5,7 @@
     <properties>
         <title>MessageTool</title>
         <author email="sidler@apache.org">Gabriel Sidler</author>
-        <projectfile>xdocs/tools.xml</projectfile>
+        <projectfile>../xdocs/vellibrary-menue.xml</projectfile>
     </properties>
 
     <body>
@@ -13,17 +13,22 @@
     <section name="MessageTool Reference Documentation">
 
         <p>
-        Struts supports internationalized messages. The message strings are stored
-        in NVP files by language. The following methods operate on these message 
-        files.
+        The MessageTool is used to render internationalized message strings. Source
+        of the strings are the message resource bundles of the Struts framework. The 
+        following methods operate on these message resources.
         </p>
         
-        <toolinfo version="@@@version@@@, @@@date@@@"
-                  jar="velocity-tools-struts-@@@version@@@.jar"
-                  clazz="org.apache.velocity.tools.struts.MessageTool"
-                  name="$msg"
-                  authors="Gabriel Sidler"
-        />
+        <toolinfo>
+            <version>@@@version@@@, @@@date@@@</version>
+            <jar>velocity-tools-struts-@@@version@@@.jar</jar>
+            <clazz>org.apache.velocity.tools.struts.MessageTool</clazz>
+            <name>$msg</name>
+            <author email="sidler@teamup.com">Gabriel Sidler</author>
+            <config-example>&lt;tool&gt;
+  &lt;key&gt;msg&lt;/key&gt;
+  &lt;class&gt;org.apache.velocity.tools.struts.MessageTool&lt;/class&gt;
+&lt;/tool&gt;</config-example>
+        </toolinfo>
 
         <methods/>
 

@@ -1,0 +1,214 @@
+<project name="velocity-tools" default="all" basedir=".">
+
+<!-- ========== Initialize Properties ===================================== -->
+
+  <property file="build/build.properties"/>          <!-- Component local   -->
+  <property file="../build.properties"/>             <!-- Commons local     -->
+  <property file="${user.home}/.build.properties"/>  <!-- User local        -->
+
+<!-- ========== External Dependencies ===================================== -->
+
+ <!-- the local repository -->
+ <property name="project.repository"          value="./lib" />
+
+<!-- ========== Component Declarations ==================================== -->
+
+  <!-- The name of this component -->
+  <property name="project.name"          value="velocity-tools" />
+
+  <!-- The title of this component -->
+  <property name="project.title"         value="VelTools Documentation"/>
+
+  <!-- The current version number of this component -->
+  <property name="project.version"       value="0.1"/>
+
+  <!-- The current version number of this component -->
+  <property name="project.date"          value="27-Mar-2002"/>
+
+  <!-- The base directory for compilation targets -->
+  <property name="build.home"            value="${basedir}"/>
+
+  <!-- The base directory for distribution targets -->
+  <property name="dist.home"             value="dist"/>
+
+  <!-- The docs source directory -->
+  <property name="docs.src"              value="xdocs"/>
+
+  <!-- The docs destination directory  -->
+  <property name="docs.dest"             value="docs"/>
+
+  <!-- The docs source directory -->
+  <property name="struts.docs.src"       value="struts/xdocs"/>
+
+  <!-- The docs source directory -->
+  <property name="tools.docs.src"        value="tools/xdocs"/>
+
+
+<!-- ========== Compiler Defaults ========================================= -->
+
+  <!-- Construct compile classpath -->
+  <path id="classpath">
+    <fileset dir="${project.repository}">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+
+<!-- ========== Executable Targets ======================================== -->
+
+
+  <!-- ================================================================== -->
+  <!-- I N I T                                                            -->
+  <!-- ================================================================== -->
+  <target name="init">
+    <!-- Initialize and evaluate conditionals -->
+    <echo message="-------- ${project.name} ${project.version} --------"/>
+    <filter  token="name"                  value="${project.name}"/>
+    <filter  token="version"               value="${project.version}"/>
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- P R E P A R E                                                      -->
+  <!-- ================================================================== -->
+  <target name="prepare" depends="init">
+    <!-- Prepare build directory -->
+    <mkdir dir="${docs.dest}/javadoc"/>
+    <mkdir dir="${docs.dest}/javadoc-vellibrary"/>
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- S T A T I C                                                        -->
+  <!-- ================================================================== -->
+  <target name="static" depends="prepare">
+    <!-- Copy static files to build directory -->
+    <tstamp/>
+  </target>
+
+
+  <!-- ================================================================== -->
+  <!-- C L E A N                                                          -->
+  <!-- ================================================================== -->
+  <target name="clean"
+   description="Clean build and distribution directories">
+    <delete>
+      <fileset dir="${docs.dest}" includes="**/*.html"/>
+    </delete>
+    <delete    dir="${docs.dest}/javadoc"/>
+    <delete    dir="${docs.dest}/javadoc-vellibrary"/>
+    <delete>
+      <fileset dir="${basedir}" includes="**/*.bak"/>
+    </delete>
+
+  </target>
+
+
+  <!-- ================================================================== -->
+  <!-- A L L                                                              -->
+  <!-- ================================================================== -->
+  <target name="all" depends="clean, docs,javadocs"
+   description="Clean and compile all components"/>
+
+
+
+  <!-- ================================================================== -->
+  <!-- J A V A D O C S                                                    -->
+  <!-- ================================================================== -->
+  <target name="javadocs" depends="static"
+   description="Create Javadoc documentation">
+
+
+    <!-- Construct compile classpath -->
+    <path id="sourcepath">
+      <pathelement path="view/src/java/"/>
+      <pathelement path="struts/src/java/"/>
+      <pathelement path="tools/src/java/"/>
+    </path>
+
+    <javadoc sourcepathref="sourcepath"
+                   destdir="${docs.dest}/javadoc"
+                    author="true"
+                   private="true"
+                   version="true"
+                  doctitle="&lt;h1&gt;${project.title}&lt;/h1&gt;"
+               windowtitle="${project.title} (Version ${project.version})"
+                    bottom="Copyright (c) 2002 Apache Software Foundation" >
+
+      <package name="org.apache.velocity.tools.*"/>
+
+      <classpath refid="classpath"/>
+
+     </javadoc>
+  </target>
+
+
+
+  <!-- ================================================================== -->
+  <!-- J A V A D O C S   V E L L I B R A R Y                              -->
+  <!-- ================================================================== -->
+  <target name="javadocs-vellibrary" depends="static"
+   description="Create Javadoc documentation for VelLibrary subproject, only public members">
+
+
+    <!-- Construct compile classpath -->
+    <path id="sourcepath">
+      <pathelement path="view/src/java/"/>
+      <pathelement path="struts/src/java/"/>
+      <pathelement path="tools/src/java/"/>
+    </path>
+
+    <javadoc sourcepathref="sourcepath"
+                   destdir="${docs.dest}/javadoc-vellibrary"
+                    author="true"
+                    public="true"
+                   version="true"
+                  doctitle="&lt;h1&gt;${project.title}&lt;/h1&gt;"
+               windowtitle="${project.title} (Version ${project.version})"
+                    bottom="Copyright (c) 2002 Apache Software Foundation" >
+
+      <package name="org.apache.velocity.tools.tools"/>
+      <package name="org.apache.velocity.tools.struts"/>
+      <package name="org.apache.velocity.tools.view.tools"/>
+      <package name="org.apache.velocity.tools.view.context"/>
+
+      <group title="Context Tools" packages="org.apache.velocity.tools.tools:org.apache.velocity.tools.struts"/>
+      <group title="Context Tools Infrastructure" packages="org.apache.velocity.tools.view.tools:org.apache.velocity.tools.view.context"/>
+
+      <classpath refid="classpath"/>
+
+     </javadoc>
+  </target>
+
+
+
+  <!-- ================================================================== -->
+  <!-- D O C S                                                            -->
+  <!-- ================================================================== -->
+  <target name="docs"
+    description="Generate documentation into ${docs.dest}">
+
+      <taskdef name="dvsl" classname="org.apache.tools.dvsl.DVSLTask">
+
+          <classpath>
+             <path refid="classpath"/>
+          </classpath>
+
+      </taskdef>
+
+      <dvsl
+           basedir="${docs.src}"
+           destdir="${docs.dest}/"
+    	   toolboxfile="xdocs/toolbox.props"
+           extension=".html"
+           style="xdocs/site.dvsl"
+           excludes="*menue.xml"
+           includes="**/*.xml"
+      />
+
+      <replace dir="${docs.dest}">
+          <replacefilter token="@@@version@@@" value="${project.version}"/>
+          <replacefilter token="@@@date@@@" value="${project.date}"/>
+      </replace>
+
+  </target>
+
+</project>
+

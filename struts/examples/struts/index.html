@@ -10,19 +10,19 @@
     <td> 
       <h2><font color="#FFFFFF"><img src="doc/img/spacer.gif" width="520" height="1"><br>
 				Velocity for Struts</font></h2>
-      <font color="#FFFFFF">Version 0.6, March 5. 2002</font></td>
+      <font color="#FFFFFF">Version 0.7, April 2. 2002</font></td>
     <td align="right">&nbsp;</td>
   </tr>
 </table>
 
-<p>This is a web application to demonstrate the integration of Velocity with Struts.
-   It contains basic documentation and serveral example applications.</p>
+<p>This is an example web application demonstrating the integration of the
+<a href="http://jakarta.apache.org/struts/">Struts web application framework</a> 
+with the <a href="http://jakarta.apache.org/velocity">Velocity template engine</a>.
+</p>
 
-<p>This includes version 0.6 of Velocity for Struts. The API has been completely
-   redesigned and is now more complete and more systematic. Reference documentation
-   for the included context tools has been added.</p>
 
-<h5><b>Highlights</b></h5>
+
+<h5>Highlights</h5>
 <ul>
 	<li>Velocity is now becoming an alternative view technology for Struts-based
 	    Web applications.</li>
@@ -32,54 +32,40 @@
 </ul>
 
 
+<h5>Status</h5>
+<p>The API has been redesigned completely and is now more complete and more 
+systematic. An early draft of several documentation pages is 
+now available.</p>
 
-<h5><b>Overview</b></h5>
-<ul>
-	<li><b><a href="doc/examples.html">Example Applications</a></b><br>
-		Five small example application have been included. Look at example 2 for a
-		demonstration of the Velocity context tools for Struts. JSP versions of 
-		some of the examples have been included to allow a direct comparison of 
-		the two view technologies.</li>
-</ul>
+<p>This is an unrealeased work in progress. New versions will be announced
+on the Velocity mailing list and home page.</p>
 
-<ul>
-	<li><b><a href="doc/index.html">Reference Documentation</a></b><br>
-	    This is the reference documentation of the context tools.
-	    <ul>
-	        <li><a href="doc/tool-MessageTool.html">MessageTool</a> - handles internationalized messages</li>
-	        <li><a href="doc/tool-ErrorsTool.html">ErrorsTool</a> - handles error messages</li>
-	        <li><a href="doc/tool-FormTool.html">FormTool</a> - provides support for form handling</li>
-	        <li><a href="doc/tool-LinkTool.html">LinkTool</a> - works with URIs</li>
-	    </ul>
-    </li>
-</ul>
 
-<ul>
-    <li><b><a href="doc/javadoc/index.html">JavaDoc</a></b><br></li>
-</ul>
+
+
+<h5>Application Examples</h5>
+<p>Five small <a href="doc/examples.html">application examples</a> have 
+been included. Look at example 2 for a demonstration of the Velocity 
+context tools for Struts. JSP versions of some of the examples have 
+been included to allow a direct comparison of the two view technologies.
+</p>
+
+
+
+<h5>Documentation</h5>
+<p>An early draft of the <a href="http://www.teamup.com/jakarta-velocity-tools/struts/docs/index.html">
+documentation</a> is available online. This is a work in progress but I 
+guess it is better than no documentation at all.</p>
         
-
-
-<h5><b>To Do</b></h5>
-<ul>
-	<li>add documentation: overview, user guide, quick reference guide</li>
-	<li>make documentation printable</li>
-	<li>add ActionMessagesTool</li>
-	<li>rework the current logging concept for context tools</li>
-	<li>setup test cases</li>
-	<li>add capability to config Velocity</li>
-	<li>put together a binary distribution with examples and a blank application</li>
-	<li>remove Velocity's [INFO] logging for each template<li>
-</ul>
-
+        
 
 	    
 <h5>Tested Configuration</h5>
 <ul>
-	<li>Tomcat 4.01, Resin 2.0.5</li>
+	<li>Tomcat 4.01, Resin 2.1.0</li>
 	<li>Netscape 4.7, MS Explorer 5.5</li>
-	<li>Java 2 Version 1.3.1, Standard Editon, with Java Hot Spot Client VM</li>
-	<li>Ant 1.4</li>
+	<li>Java 2 Version 1.3.1, Standard Editon, with Java Hot Spot Server VM</li>
+	<li>Ant 1.4.1</li>
 	<li>Jakarta Struts 1.0.2 Binary Library Distribution </li>
 	<li>Jakarta Velocity 1.3 dev with dependencies</li>
 	<li>Jakarta Servlet API 4 (same as distributed with Tomcat 4) 

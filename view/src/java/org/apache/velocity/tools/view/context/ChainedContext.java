@@ -66,62 +66,68 @@ import javax.servlet.ServletContext;
 
 
 /**
- *  <p>
- *  Velocity context implementation that does a few things :
- *  <ul>
- *    <li>
- *      puts the request, response, session, and application objects
- *      into the Context for
- *      direct access, and keeps them read-only
- *   </li>
- *   <li>
- *      supports a read-only toolbox
- *   </li>
- *   <li>
- *    chains the servlet API scopes  <i>request</i>, <i>session</i> and
- *     <i>application</i> for auto-search if all else fails.
- *   </li>
- *  </ul>
+ * <p>Velocity context implementation specific to the Servlet environment.</p>
  *
- *  This means when accessing an object in the context, and it is not either one
- *  of REQUEST, RESPONSE, SESSION or APPLICATIOn or a toolbox rquest, and not
- *  an object placed directly into the context (conventional use)  then
- *  the three servlet scopes are searched. The search order is
- *  <i>Velocity context</i>, <i>request scope</i>, <i>session scope</i>
- *  and <i>application scope</i>.
- *  </p>
+ * <p>It provides the following special features:</p>
+ * <ul>
+ *   <li>puts the request, response, session, and servlet context objects
+ *       into the Velocity context for direct access, and keeps them 
+ *       read-only</li>
+ *   <li>supports a read-only toolbox of context tools</li>
+ *   <li>auto-searches servlet request attributes, session attributes and
+ *       servlet context attribues for objects</li>
+ * </ul>
  *
- *  <p>
- *  The purpose of this class is to make
- *  it easy for web designer to work with 
- *  Java servlet based web applications. They do not need to be concerned with
- *  the concepts of request, session of application scopes and the live time
- *  of objects in these scopes.
- *  </p>
+ * <p>The {@link #internalGet(String key)} method implements the following search order
+ * for objects:</p>
+ * <ol>
+ *   <li>servlet request, servlet response, servlet session, servlet context</li>
+ *   <li>toolbox</li>
+ *   <li>local hashtable of objects (traditional use)</li>
+ *   <li>servlet request attribues, servlet session attribute, servlet context
+ *     attributes</li>
+ * </ol> 
+ *
+ * <p>The purpose of this class is to make it easy for web designer to work 
+ * with Java servlet based web applications. They do not need to be concerned 
+ * with the concepts of request, session or application attributes and the 
+ * live time of objects in these scopes.</p>
  *  
- *  <p>
- *  Note that objects put into the context are always put into the
- *  Velocity context itself, not any of the servlet scopes. In order to put 
- *  an object into one of the servlet scopes, the request, session or servlet
- *  context instances must be put into the Velocity context and then accessed
- *  using like any other context variable,
- *  for example $request.setAttribute(name, value).
- *  </p>
+ * <p>Note that the put() method always puts objects into the local hashtable.
+ * </p>
  *
- *  @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
- *  @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
-v *
- * @version $Id: ChainedContext.java,v 1.2 2002/01/09 11:26:40 sidler Exp $ 
+ * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
+ * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
+ *
+ * @version $Id: ChainedContext.java,v 1.3 2002/04/02 16:46:31 sidler Exp $ 
  */
 public class ChainedContext extends VelocityContext implements ViewContext
 {
+
+    /**
+     * A local reference to the current servlet request.
+     */ 
     private HttpServletRequest request;
+    
+    /**
+     * A local reference to the current servlet response.
+     */
     private HttpServletResponse response;
+    
+    /**
+     * A local reference to the servlet session.
+     */
     private HttpSession session;
+    
+    /**
+     * A local reference to the servlet context.
+     */
     private ServletContext application;
 
+    /**
+     * The toolbox. 
+     */ 
     private ToolboxContext toolboxContext = null;
-    private String toolboxName = null;
 
     /**
      * Key to the HTTP request object.
@@ -143,8 +149,14 @@ public class ChainedContext extends VelocityContext implements ViewContext
      */
     public static final String APPLICATION = "application";
 
-    public ChainedContext(Context ctx, HttpServletRequest request,
-                           HttpServletResponse response, ServletContext application)
+
+    /**
+     * Default constructor.
+     */
+    public ChainedContext(Context ctx, 
+                          HttpServletRequest request,
+                          HttpServletResponse response,
+                          ServletContext application)
     {
         super(null, ctx );
 
@@ -154,26 +166,30 @@ public class ChainedContext extends VelocityContext implements ViewContext
         this.application = application;
     }
 
-    public void setToolbox(  ToolboxContext box )
+
+    /**
+     * <p>Sets the toolbox of context tools.</p>
+     *
+     * @param box toolbox of context tools
+     */
+    public void setToolbox(ToolboxContext box)
     {
         toolboxContext = box;
     }
 
+
     /**
-     * A requested object is searched in the Velocity context and the Servlet API
-     * scopes <i>request</i>, <i>session</i> (if exists) and <i>servlet context</i>. 
-     * The search order is <i>Velocity context</i>, <i>request scope</i>, <i>session scope</i> 
-     * and <i>servlet context</i>.</p>
+     * <p>Looks up and returns the object with the specified key.</p>
+     * 
+     * <p>See the class documentation for more details.</p>
      *
-     * @param key The key of the object requested.
-     * @return The requested object or null if not found.
+     * @param key the key of the object requested
+     * 
+     * @return the requested object or null if not found
      */
     public Object internalGet( String key )
     {
-        /*
-         * make the 4 Scopes of the Apocalypse Read only
-         */
-
+        // make the four scopes of the Apocalypse Read only
         if ( key.equals( REQUEST ))
         {
             return request;
@@ -191,10 +207,7 @@ public class ChainedContext extends VelocityContext implements ViewContext
             return application;
         }
 
-        /*
-         *  now the toolbox?
-         */
-
+        // search the toolbox
         Object o = null;
 
         if ( toolboxContext != null)
@@ -208,16 +221,10 @@ public class ChainedContext extends VelocityContext implements ViewContext
         }
 
 
-        /*
-         * try the real impl
-         */
-
+        // try the local hashtable
         o = super.internalGet( key );
 
-        /*
-         *  if not, wander down the scopes...
-         */
-
+        // if not found, wander down the scopes...
         if (o == null)
         {
             o = request.getAttribute( key );
@@ -236,8 +243,9 @@ public class ChainedContext extends VelocityContext implements ViewContext
         return o;
     }
 
-      /**
-     * <p>Fetch the instance of {@link HttpServletRequest} for this request.</p>
+
+    /**
+     * <p>Returns the current servlet request.</p>
      */
     public HttpServletRequest getRequest()
     {
@@ -246,16 +254,21 @@ public class ChainedContext extends VelocityContext implements ViewContext
 
 
     /**
-     * <p>Fetch the instance of {@link ServletContext} for this request.</p>
+     * <p>Returns the servlet context.</p>
      */
     public ServletContext getServletContext()
     {
         return application;
     }
 
+
+    /**
+     * <p>Returns a reference to the Velocity context (this object).</p>
+     */
     public Context getVelocityContext()
     {
         return this;
     }
+
 
 }  // ChainedContext

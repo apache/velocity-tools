@@ -51,55 +51,53 @@
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.velocity.tools.view.context;
 
-import java.util.Map;
 
-import org.apache.velocity.VelocityContext;
+package org.apache.velocity.tools.view.tools;
+
+import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.context.Context;
 
 /**
- * <p>Read-only context used to carry a set of context tools.</p>
+ * <p>An interface for Velocity context tools that need access to the Velocity
+ * context.</p>
+ * 
+ * <p>Context tools that implement this interface receive special treatment
+ * by a compatible toolbox manager, e.g. 
+ * {@link org.apache.velocity.tools.view.servlet.ServletToolboxManager}:</p>
+ * <ul>
+ *   <li>Upon creation of a new instance, the toolbox manager passes
+ *       to the context tool a reference to the Velocity context.</li>
+ * </ul>
+ * 
+ * <p>Unlike some other tools, tools that implement this interface do not
+ * support multiple different life cycles. All implementations of this 
+ * interface are assigned a life cycle of 'request', meaning that the 
+ * tool is valid only for the processing of the currently requested template.
+ * A new instance is created for every request. The life cycle cannot be 
+ * configured.</p>
  *
- * <p>Writes get dropped.</p>
+ * <p>Examples of context tools that typically would implement this 
+ * interface are tools like a context tool loader or a context inspector. 
  *
- * @author<a href="mailto:sidler@apache.org">Gabriel Sidler</a>
- * @author<a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
+ * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ToolboxContext.java,v 1.3 2002/04/02 16:46:31 sidler Exp $ 
+ * @version $Id: ContextContextTool.java,v 1.1 2002/04/02 16:46:31 sidler Exp $
+ * 
  */
-public class ToolboxContext extends VelocityContext
+public interface ContextContextTool
 {
-    /**
-     * The collection of context tools in this toolbox.
-     */
-    private Map toolbox;
-
 
     /**
-     * Default constructor.
+     * <p>Returns a new instance.</p>
+     *
+     * <p>This is effectively a factory method used to create
+     * object instances for use in templates. It is important 
+     * that only instances obtained from this method are used 
+     * in templates.</p>
+     *
+     * @param context a reference to the Velocity context 
      */
-    public ToolboxContext( Map tb )
-    {
-        toolbox = tb;
-    }
+    public Object getInstance(Context context);
 
-
-    /**
-     * Get value for key.
-     */
-    public Object internalGet( String key )
-    {
-        return toolbox.get( key );
-    }        
-
-
-    /**
-     * Does nothing. Returns <code>null</code> always.
-     */
-    public Object internalPut( String key, Object value )
-    {
-        return null;
-    }
-    
 }

@@ -5,7 +5,7 @@
     <properties>
         <title>LinkTool</title>
         <author email="sidler@apache.org">Gabriel Sidler</author>
-        <projectfile>xdocs/tools.xml</projectfile>
+        <projectfile>../xdocs/vellibrary-menue.xml</projectfile>
     </properties>
 
     <body>
@@ -43,14 +43,18 @@
 
         </dl>
         
-        
-        
-        <toolinfo version="@@@version@@@, @@@date@@@"
-                  jar="velocity-tools-struts-@@@version@@@.jar"
-                  clazz="org.apache.velocity.tools.struts.LinkTool"
-                  name="$link"
-                  authors="Gabriel Sidler, Nathan Bubna"
-        />
+        <toolinfo>
+            <version>@@@version@@@, @@@date@@@</version>
+            <jar>velocity-tools-struts-@@@version@@@.jar</jar>
+            <clazz>org.apache.velocity.tools.struts.LinkTool</clazz>
+            <name>$link</name>
+            <author email="sidler@teamup.com">Gabriel Sidler</author>
+            <author email="nathan@esha.com">Nathan Bubna</author>
+            <config-example>&lt;tool&gt;
+  &lt;key&gt;link&lt;/key&gt;
+  &lt;class&gt;org.apache.velocity.tools.struts.LinkTool&lt;/class&gt;
+&lt;/tool&gt;</config-example>
+        </toolinfo>
 
         <methods/>
 

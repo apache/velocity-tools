@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<project href="http://jakarta.apache.org/velocity/">
+
+  <title>Velocity Tools</title>
+  <logo href="http://jakarta.apache.org/velocity/images/logo.gif"> &lt;  :)  /&gt;</logo>
+
+  <body>
+
+    <menu name="About">
+        <item name="Overview"               href="docs/index.html"/>
+        <item name="CVS Repository"         href="docs/index.html#CVS Repository"/>
+    </menu>
+
+    <menu name="Subprojects">
+        <item name="VelLibrary"             href="docs/vellibrary.html"/>
+        <item name="VelStruts"              href="struts/docs/index.html"/>
+        <item name="VelServlet"             href="view/docs/velservlet.html"/>
+    </menu>
+
+  </body>
+</project>
+

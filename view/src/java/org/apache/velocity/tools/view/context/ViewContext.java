@@ -59,20 +59,40 @@ import org.apache.velocity.context.Context;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletContext;
 
+
+/**
+ * <p>Objects implementing this interface are passed to context tools
+ * upon initialization by the 
+ *{@link org.apache.velocity.tools.view.servlet.ServletToolboxManager}.</p> 
+ * 
+ * <p>The interface provides context tools in a servlet environment 
+ * access to relevant context information, like servlet request, servlet 
+ * context and the velocity context. See 
+ * {@link org.apache.velocity.tools.view.tools.ServletContextTool} for an 
+ * example.</p>
+ *
+ * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
+ * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
+ *
+ * @version $Id: ViewContext.java,v 1.2 2002/04/02 16:46:31 sidler Exp $ 
+ */
 public interface ViewContext
 {
-     /**
-     * <p>Fetch the instance of {@link HttpServletRequest} for this request.</p>
+    /**
+     * <p>Returns the instance of {@link HttpServletRequest} for this request.</p>
      */
     public HttpServletRequest getRequest();
 
 
     /**
-     * <p>Fetch the instance of {@link ServletContext} for this request.</p>
+     * <p>Returns the instance of {@link ServletContext} for this request.</p>
      */
     public ServletContext getServletContext();
 
 
+    /**
+     * <p>Returns a reference to the current Velocity context.</p>
+     */
     public Context getVelocityContext();
 
 }
