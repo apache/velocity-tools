@@ -45,7 +45,7 @@ import java.net.HttpURLConnection;
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.11 $ $Date: 2004/11/10 23:18:35 $
+ * @version $Revision$ $Date$
  */
 public abstract class ImportSupport {
 
@@ -379,7 +379,7 @@ public abstract class ImportSupport {
             }
             else if (isStreamUsed)
             {
-                return bos.toString(DEFAULT_ENCODING);
+                return bos.toString(this.getCharacterEncoding());
             }
             else
             {
