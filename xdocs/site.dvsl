@@ -7,15 +7,15 @@
 ## $context.toolbox.basedir
 ##     Its value is expected to be the path to the base directory of 
 ##     this documentation set. It can be used to reference other files,
-##     for example a menue file that is to be loaded.
+##     for example a menu file that is to be loaded.
 ##
 ## $context.toolbox.PrinterFriendlyVersion
-##     If its value is "yes", the generated page has no left-hand menue.
+##     If its value is "yes", the generated page has no left-hand menu.
 ##     This facilitates the printing of documentation.
 ##
 ## $context.toolbox.LinkToPrinterFriendlyVersion
 ##     If its value is "yes", a link to a printer-friendly version of
-##     the same document is added to the end of the left-hand menue.
+##     the same document is added to the end of the left-hand menu.
 ##     The file name of the printer-frienly document is derived from the
 ##     the name of the current template in the following way:
 ##     filename.html becomes filename-printer.html
@@ -29,7 +29,7 @@
 ##   	    toolboxfile="${basedir}/../xdocs/toolbox.props"
 ##          extension="-printer.html"
 ##          style="${basedir}/../xdocs/site.dvsl"
-##          excludes="*menue.xml"
+##          excludes="*menu.xml"
 ##          includes="**/*.xml">
 ##        <tool name="toolbox.string.PrinterFriendlyVersion" value="yes" />
 ##        <tool name="toolbox.string.basedir" value="${basedir}" />

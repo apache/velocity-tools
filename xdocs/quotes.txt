@@ -1,0 +1,41 @@
+From: "Matt Ho" <matt@xtreme.com>
+To: "'Struts Users Mailing List'" <struts-user@jakarta.apache.org>
+Subject: RE: Velocity-Tools / Struts
+Date: Tue, 19 Feb 2002 18:57:02 -0800
+
+We've been using Struts/Velocity for some time now and we find it to be
+an extremely well matched combination.  One of the main advantages of
+Velocity is that the syntax is incredibly easy.  I can explain it to a
+designer who has never seen it before and expect them to be useful
+within an hour.
+
+One of the nicest things it enforces is the separation of presentation
+layer and business logic.  It removes the desire to "fix" problems but
+just putting a small change into the JSP via scriptlets.  It also makes
+the code a _lot_ more readable which also reduces the development time.
+
+
+> i have been looking at velocity periodically for a few months now, and
+> although i understand what it is trying to do (define a clearer
+separation
+> between controller and view) i felt that its big disadvantage was that
+it
+> introduced another language/syntax for a developer/designer to learn.
+In
+> view of this i decided to stay with struts, and occasionally resort to
+> using
+> java scriptlets in my applications !-)
+
+--
+Matt Ho
+Principal
+Indigo Egg, Inc.
+Providing VoiceXML Professional Services
+
+
+
+
+--
+To unsubscribe, e-mail:   <mailto:struts-user-unsubscribe@jakarta.apache.org>
+For additional commands, e-mail: <mailto:struts-user-help@jakarta.apache.org>
+

@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+
+<document>
+
+    <properties>
+        <title>ToolLoader</title>
+        <author email="sidler@apache.org">Gabriel Sidler</author>
+        <projectfile>xdocs/menu.xml</projectfile>
+    </properties>
+
+    <body>
+
+    <section name="ToolLoader Reference Documentation">
+
+        <p>
+        A view tool that allows template designers to load view tools 
+        from within the template. Any object with a public constructor without 
+        parameters can be loaded into the context.
+        </p>
+        
+        <toolinfo>
+            <version>@@@version@@@, @@@date@@@</version>
+
+            <jar>velocity-tools-generic-@@@version@@@.jar</jar>
+
+            <clazz>org.apache.velocity.tools.generic.ToolLoader</clazz>
+
+            <name>$toolLoader</name>
+
+            <author email="sidler@apache.org">Gabriel Sidler</author>
+
+            <config-example>&lt;tool&gt;
+  &lt;key&gt;toolLoader&lt;/key&gt;
+  &lt;class&gt;org.apache.velocity.tools.generic.ToolLoader&lt;/class&gt;
+&lt;/tool&gt;</config-example>
+
+        </toolinfo>
+
+        <methods/>
+
+    </section>
+
+    <section name="load()">
+        <method name="load()">
+    
+            <abstract>
+                Loads a view tool and inserts it into the Velocity context.
+            </abstract>
+    
+            <signature>
+                void load(String key, String class)
+            </signature>
+            
+            <parameters>
+                <parameter name="key">
+                    The key string used to insert to newly instantiated tool 
+                    into the Velocity context.
+                </parameter>
+                
+                <parameter name="class">
+                    The name of the class to instantiate.
+                </parameter>
+            </parameters>
+            
+            <description>
+                <p>Loads a view tool of class <i>class</i> and inserts it
+                into the Velocity context with key <i>key</i>. On order to be
+                loadable, view tools must provide a public constructor with no 
+                parameters.</p> 
+                <p>The life cycle of a view tool loaded using this method is 
+                the current template request. The instance is processing of the
+                current template has been completet.</p>
+                <p>If the specified class cannot be found or does not have a 
+                public contructor without parameters, then the tool is not loaded
+                and an error message is written to the log.</p>
+
+                <p>Application example:</p>
+<sourcecode>$toolLoader.load("math", "org.apache.velocity.tools.generic.MathTool")
+$math.random(1,1000)</sourcecode>
+
+                <p>Loads MathTool with name $math into the context. Then, its random() function is
+                used to generate a random number betweenn 1 and 1000.</p>
+            </description>
+    
+        </method>
+    </section>
+
+
+ </body>
+</document>
+
