@@ -42,6 +42,21 @@
          redirect="true"
          contextRelative="true" />
 
+     <forward name="app4"
+         path="/app4/index_vm.do"
+         redirect="true"
+         contextRelative="true" />
+
+     <forward name="app4Jsp"
+         path="/app4/index_jsp.do"
+         redirect="true"
+         contextRelative="true" />
+
+     <forward name="app4Mixed"
+         path="/app4/index_mixed.do"
+         redirect="true"
+         contextRelative="true" />
+
      <forward name="math"
          path="/examples/context_tools/mathtool-demo.vm"
          redirect="true"
