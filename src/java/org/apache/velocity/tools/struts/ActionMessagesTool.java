@@ -89,7 +89,7 @@ import org.apache.velocity.tools.struts.StrutsUtils;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.1
- * @version $Id: ActionMessagesTool.java,v 1.5 2003/11/06 18:25:28 nbubna Exp $
+ * @version $Id: ActionMessagesTool.java,v 1.6 2004/01/07 19:08:57 nbubna Exp $
  */
 public class ActionMessagesTool extends MessageResourcesTool
 {
@@ -216,6 +216,19 @@ public class ActionMessagesTool extends MessageResourcesTool
 
 
     /**
+     * Returns a List of all queued action messages using
+     * the specified message resource bundle.
+     *
+     * @param bundle the message resource bundle to use
+     * @see #getAll()
+     */
+    public List getAll(String bundle)
+    {
+        return get(null, bundle);
+    }
+
+
+    /**
      * Returns the set of localized action messages as an 
      * <code>java.util.List</code> of strings for all actionMsgs 
      * queued of the specified category or <code>null</code> 
@@ -249,13 +262,6 @@ public class ActionMessagesTool extends MessageResourcesTool
             return null;
         }
         
-        MessageResources res = getResources(bundle);
-        if (res == null) 
-        {
-            //FIXME? should we return the list of message keys instead?
-            return null;
-        }
-        
         Iterator msgs;
         if (property == null)
         {
@@ -271,24 +277,32 @@ public class ActionMessagesTool extends MessageResourcesTool
             return null;
         }
 
+        MessageResources res = getResources(bundle);
         List list = new ArrayList();
          
         while (msgs.hasNext())
         {
             ActionMessage msg = (ActionMessage)msgs.next();
-            String message = 
-                res.getMessage(this.locale, msg.getKey(), msg.getValues());
-            if (message != null)
+
+            String message = null;
+            if (res != null)
             {
-                list.add(message);
+                message = 
+                    res.getMessage(this.locale, msg.getKey(), msg.getValues());
+
+                if (message == null)
+                {
+                    Velocity.warn("ActionMessagesTool: Message for key " + 
+                                  msg.getKey() + 
+                                  " could not be found in message resources.");
+                }
             }
             else
             {
-                /* if error message cannot be found for a key, return key instead */
-                Velocity.warn("Message for key " + msg.getKey() + 
-                              " could not be found in message resources.");
-                list.add(msg.getKey());
+                // if the resource bundle wasn't found, use the key
+                message = msg.getKey();
             }
+            list.add(message);
         }
         return list;
     }
