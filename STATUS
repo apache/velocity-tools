@@ -1,6 +1,6 @@
 S T A T U S
 ===========
-$Id: STATUS,v 1.11 2003/07/25 17:23:37 nbubna Exp $
+$Id: STATUS,v 1.12 2003/10/16 18:01:18 nbubna Exp $
 
 
 Known Issues/Bugs:
@@ -11,8 +11,8 @@ Known Issues/Bugs:
 Documentation:
    - Complete user guide.
    - Document RenderTool, ViewRenderTool, IteratorTool, AbstractSearchTool,
-              TilesTool, CookieTool, ActionMessagesTool, MultiViewsTool, and
-              the commons-logging/LogSystem bridges
+              TilesTool, CookieTool, ActionMessagesTool, MultiViewsTool, 
+              ValidatorTool, SecureLinkTool, and the commons-logging/LogSystem bridges
    - Create a developer's guide (how to write tools, tips on extending VVS, etc.)
 
 
@@ -20,6 +20,7 @@ Documentation:
 Proposed Features/Upgrades:
     General:
         - convert project to use Maven
+        - stop keeping jars in CVS
         
     VelocityView:
         - add a library of velocimacros for use with these tools
@@ -27,22 +28,21 @@ Proposed Features/Upgrades:
           instances/configurations of VVS in the same classloader/application/JVM
         - Pluggable toolbox manager in VelocityViewServlet
         - Tool pooling support (use commons-pool probably)
-        - add an ImportTool? (actually might fit under generic tools)
+        - add an ImportTool (for more info, see
+          http://www.mail-archive.com/velocity-user@jakarta.apache.org/msg10047.html)
         - add ability to do custom, individual tool configurations 
           from the toolbox config file (pooling support might help here)
 
     Generic tools:
         - add a library of general-use velocimacros
         - Template debugging tool(s)/support
+        - number formatting tool
 
     VelocityStruts:
         - add a library of velocimacros for use with struts tools
           (ideally these would be roughly parallel to struts tags to ease transition)
-        - Struts 1.1 Support:
-            - Validator
-                - tool to access javascripts?
-                - integration with FormTool/MessagesTool?
-            - etc.
+        - move dynamic javascript generation from java (ValidatorTool) to templates
+          (this would probably work in concert with the velocimacro libraries)
 
 
 
