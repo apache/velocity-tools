@@ -49,7 +49,8 @@ import java.util.List;
  *  5 is red and fly
  * </pre></p>
  *
- * @version $Revision: 1.2 $ $Date: 2004/05/05 21:17:35 $
+ * @since Velocity Tools 1.2
+ * @version $Revision: 1.3 $ $Date: 2004/05/05 21:22:01 $
  */
 public class AlternatorTool
 {
