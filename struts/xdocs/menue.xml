@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<project href="http://jakarta.apache.org/velocity">
+
+  <title>Math</title>
+  <logo href="http://jakarta.apache.org/velocity/images/logo.gif"> &lt;  :)  /&gt;</logo>
+
+  <body>
+
+    <uplink name="VelTools Home"             href="docs/index.html" alt="top"/>
+
+    <menu name="About VelStruts">
+        <item name="Overview"                href="struts/docs/index.html"/>
+        <item name="Documentation"           href="struts/docs/index.html#Documentation"/>
+        <item name="Download"                href="struts/docs/index.html#Download"/>
+        <item name="License"                 href="struts/docs/index.html#License"/>
+    </menu>
+
+    <menu name="VelStruts User Guide">
+        <item name="Overview"                href="struts/docs/userguide.html"/>
+        <item name="Documentation"           href="struts/docs/userguide.html#Documentation"/>
+        <item name="Model 2 Applications"    href="struts/docs/userguide.html#Model 2 Applications"/>
+        <item name="Velocity Context"        href="struts/docs/userguide.html#Velocity Context"/>
+        <item name="Context Tools"           href="struts/docs/userguide.html#Context Tools"/>
+        <item name="Velocity and JSP"        href="struts/docs/userguide.html#Velocity and JSP"/>
+        <item name="Velocity vs. JSP"        href="struts/docs/userguide.html#Velocity vs. JSP"/>
+        <item name="Velocity Configuration"  href="struts/docs/userguide.html#Velocity Configuration"/>
+        <item name="Velocity Configuration"  href="struts/docs/userguide.html#Velocity Configuration"/>
+    </menu>
+
+    <menu name="VelStruts Reference Doc"     href="struts/docs/tools.html"        target="velLibrary">
+        <item name="ErrorsTool"              href="struts/docs/ErrorsTool.html"   target="velLibrary"/>
+        <item name="FormTool"                href="struts/docs/FormTool.html"     target="velLibrary"/>
+        <item name="LinkTool"                href="struts/docs/LinkTool.html"     target="velLibrary"/>
+        <item name="MessageTool"             href="struts/docs/MessageTool.html"  target="velLibrary"/>
+    </menu>
+
+  </body>
+</project>
+

@@ -89,15 +89,6 @@
 &#35;end</code></pre>
                 </td>
                 <td>
-                    #macro (errorMarkup)
-                        #if ($errors.exist() )
-                            <ul>
-                            #foreach ($e in $errors.all )
-                                $e
-                            #end
-                            </ul>
-                        #end
-                    #end                    
                     #errorMarkup()
                 </td>
             </tr>
@@ -115,16 +106,7 @@
 &#35;end</code></pre>
                 </td>
                 <td>
-                    #macro (errorMarkup1 $property)
-                        #if ($errors.exist($property) )
-                            <ul>
-                            #foreach ($er in $errors.get($property))
-                                $er
-                            #end
-                            </ul>
-                        #end
-                    #end                    
-                    #errorMarkup1("language")
+                    #errorMarkupForProperty("language")
                 </td>
             </tr>
 

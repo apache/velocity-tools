@@ -5,7 +5,7 @@
     <properties>
         <title>FormTool</title>
         <author email="sidler@apache.org">Gabriel Sidler</author>
-        <projectfile>xdocs/tools.xml</projectfile>
+        <projectfile>../xdocs/vellibrary-menue.xml</projectfile>
     </properties>
 
     <body>
@@ -20,12 +20,17 @@
         <p>FormTool provides miscellaneous methods to work with forms and form bean in
         the context of Struts applications.</p>
         
-        <toolinfo version="@@@version@@@, @@@date@@@"
-                  jar="velocity-tools-struts-@@@version@@@.jar"
-                  clazz="org.apache.velocity.tools.struts.FormTool"
-                  name="$form"
-                  authors="Gabriel Sidler"
-        />
+        <toolinfo>
+            <version>@@@version@@@, @@@date@@@</version>
+            <jar>velocity-tools-struts-@@@version@@@.jar</jar>
+            <clazz>org.apache.velocity.tools.struts.FormTool</clazz>
+            <name>$form</name>
+            <author email="sidler@teamup.com">Gabriel Sidler</author>
+            <config-example>&lt;tool&gt;
+  &lt;key&gt;form&lt;/key&gt;
+  &lt;class&gt;org.apache.velocity.tools.struts.FormTool&lt;/class&gt;
+&lt;/tool&gt;</config-example>
+        </toolinfo>
 
         <methods/>
 

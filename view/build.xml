@@ -22,7 +22,7 @@
   <property name="project.title"         value=""/>
 
   <!-- The current version number of this component -->
-  <property name="project.version"       value="0.3"/>
+  <property name="project.version"       value="0.4"/>
 
   <!-- The base directory for compilation targets -->
   <property name="build.home"              value="target"/>
@@ -70,8 +70,7 @@
   <!-- ================================================================== -->
   <!-- I N I T                                                            -->
   <!-- ================================================================== -->
-  <target name="init"
-   description="Initialize and evaluate conditionals">
+  <target name="init">
     <echo message="-------- ${project.name} ${project.version} --------"/>
     <filter  token="name"                  value="${project.name}"/>
     <filter  token="version"               value="${project.version}"/>
@@ -81,20 +80,19 @@
   <!-- ================================================================== -->
   <!-- P R E P A R E                                                      -->
   <!-- ================================================================== -->
-  <target name="prepare" depends="init"
-   description="Prepare build directory">
+  <target name="prepare" depends="init">
     <mkdir dir="${build.home}"/>
     <mkdir dir="${build.home}/classes"/>
     <mkdir dir="${build.home}/conf"/>
     <mkdir dir="${build.home}/javadoc"/>
+    <mkdir dir="${docs.dest}/javadoc-velservlet"/>
   </target>
 
 
   <!-- ================================================================== -->
   <!-- S T A T I C                                                        -->
   <!-- ================================================================== -->
-  <target name="static" depends="prepare"
-   description="Copy static files to build directory">
+  <target name="static" depends="prepare">
     <tstamp/>
     <copy  todir="${build.home}/conf" filtering="on">
       <fileset dir="${conf.home}" includes="*.MF"/>
@@ -105,7 +103,8 @@
   <!-- ================================================================== -->
   <!-- C O M P I L E                                                      -->
   <!-- ================================================================== -->
-  <target name="compile" depends="static" description="Compile">
+  <target name="compile" depends="static" 
+    description="Compile all classes into ${build.home}/classes">
 
     <javac  srcdir="${source.home}/java"
             destdir="${build.home}/classes"
@@ -129,7 +128,16 @@
    description="Clean build and distribution directories">
     <delete    dir="${build.home}"/>
     <delete    dir="${dist.home}"/>
+    <delete>
+      <fileset dir="${docs.dest}" includes="**/*"/>
+    </delete>
+    <delete    dir="${docs.dest}/javadoc-velservlet"/>
+    <delete>
+      <fileset dir="${basedir}" includes="**/*.bak"/>
+    </delete>
+
   </target>
+
 
   <!-- ================================================================== -->
   <!-- A L L                                                              -->
@@ -137,11 +145,12 @@
   <target name="all" depends="clean,jar, docs, javadocs"
    description="Clean and compile all components"/>
 
+
   <!-- ================================================================== -->
   <!-- J A V A D O C S                                                    -->
   <!-- ================================================================== -->
   <target name="javadocs" depends="compile"
-   description="Create Javadoc documentation">
+    description="Create Javadoc documentation into ${build.home}/javadoc">
     <javadoc sourcepath="${source.home}/java"
                 destdir="${build.home}/javadoc"
            packagenames="org.apache.velocity.tools.view.*"
@@ -159,9 +168,38 @@
 
 
   <!-- ================================================================== -->
+  <!-- J A V A D O C S   V E L S E R V L E T                              -->
+  <!-- ================================================================== -->
+  <target name="javadocs-velservlet" depends="static"
+    description="Create Javadoc documentation specific to VelServlet, only public members">
+
+    <!-- Construct compile classpath -->
+    <path id="sourcepath">
+      <pathelement path="src/java/"/>
+    </path>
+
+    <javadoc sourcepathref="sourcepath"
+                   destdir="${docs.dest}/javadoc-velservlet"
+                    author="true"
+                    public="true"
+                   version="true"
+                  doctitle="&lt;h1&gt;${project.title}&lt;/h1&gt;"
+               windowtitle="${project.title} (Version ${project.version})"
+                    bottom="Copyright (c) 2002 Apache Software Foundation" >
+      <package name="org.apache.velocity.tools.view.context"/>
+      <package name="org.apache.velocity.tools.view.servlet"/>
+      <package name="org.apache.velocity.tools.view.tools"/>
+      <classpath refid="classpath"/>
+    </javadoc>
+
+  </target>
+
+
+  <!-- ================================================================== -->
   <!--  J A R                                                             -->
   <!-- ================================================================== -->
-  <target name="jar" depends="compile">
+  <target name="jar" depends="compile"
+    description="Package classes as jar into ${builddir}">
     <jar    jarfile="${project.name}-${project.version}.jar"
             basedir="${build.home}/classes"
             manifest="${conf.home}/MANIFEST.MF"/>
@@ -171,7 +209,8 @@
   <!-- ================================================================== -->
   <!-- D O C S                                                            -->
   <!-- ================================================================== -->
-  <target name="docs">
+  <target name="docs"
+    description="Generate documentation into ${docs.dest}">
 
       <taskdef name="dvsl" classname="org.apache.tools.dvsl.DVSLTask">
 
@@ -184,19 +223,20 @@
       <dvsl
            basedir="${docs.src}"
            destdir="${docs.dest}/"
-    	   toolbox="../xdocs/toolbox.props"
+    	   toolboxfile="../xdocs/toolbox.props"
            extension=".html"
            style="../xdocs/site.dvsl"
-           excludes="**/project.xml"
+           excludes="**/*menue.xml"
            includes="**/*.xml"
       />
   </target>
+
 
   <!-- ================================================================== -->
   <!-- I N S T A L L  J A R                                               -->
   <!-- ================================================================== -->
   <target name="install-jar" depends="jar"
-          description="--> Installs .jar file in ${lib.repo}">
+          description="Installs .jar file in ${lib.repo}">
     <copy todir="${lib.repo}" filtering="no">
       <fileset dir="${basedir}">
         <include name="${project.name}-${project.version}.jar"/>

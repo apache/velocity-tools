@@ -1,7 +1,7 @@
 /*
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2002 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,55 +51,34 @@
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.velocity.tools.view.context;
 
-import java.util.Map;
+package org.apache.velocity.tools.view.tools;
 
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.context.Context;
 
 /**
- * <p>Read-only context used to carry a set of context tools.</p>
+ * <p>Defines the interface of a logger object that can be used by context
+ * tools to log messages to an underlying logging facility. </p> 
+ * 
+ * <p>Implementation of this interface can be thought of as adapters 
+ * between context tools and the logging facilities of a specific 
+ * environment. For example, in servlet environments a logger instance 
+ * would accept log messages from a context tool and write them to the 
+ * Servlet API's logging facility.</p>
+ * 
+ * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * <p>Writes get dropped.</p>
- *
- * @author<a href="mailto:sidler@apache.org">Gabriel Sidler</a>
- * @author<a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
- *
- * @version $Id: ToolboxContext.java,v 1.3 2002/04/02 16:46:31 sidler Exp $ 
+ * @version $Id: ContextToolLogger.java,v 1.1 2002/04/02 16:46:31 sidler Exp $
+ * 
  */
-public class ToolboxContext extends VelocityContext
+public interface ContextToolLogger 
 {
-    /**
-     * The collection of context tools in this toolbox.
-     */
-    private Map toolbox;
-
 
     /**
-     * Default constructor.
+     * <p>Log a message to the logging infrastructure of the environment. </p>
+     *
+     * @param msg Message to be logged. The message is passed on as is. No
+     *            formatting, etc. is applied.
      */
-    public ToolboxContext( Map tb )
-    {
-        toolbox = tb;
-    }
+    public void log(String msg);
 
-
-    /**
-     * Get value for key.
-     */
-    public Object internalGet( String key )
-    {
-        return toolbox.get( key );
-    }        
-
-
-    /**
-     * Does nothing. Returns <code>null</code> always.
-     */
-    public Object internalPut( String key, Object value )
-    {
-        return null;
-    }
-    
 }

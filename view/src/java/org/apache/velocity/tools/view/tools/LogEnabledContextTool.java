@@ -1,7 +1,7 @@
 /*
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2002 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,55 +51,48 @@
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.apache.velocity.tools.view.context;
 
-import java.util.Map;
+package org.apache.velocity.tools.view.tools;
 
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.context.Context;
 
 /**
- * <p>Read-only context used to carry a set of context tools.</p>
+ * <p>An interface that marks a context tool class as capable of logging.</p>
+ * 
+ * <p>The only method defined by this interface is 
+ * <code>{@link #setLogger(ContextToolLogger logger)}</code>. This method allows 
+ * a toolbox manager to pass an instance of a logger object to the context 
+ * tool. This logger can be used subsequently to log messages.</p>
+ * 
+ * <p>The following implementation guidelines are to be noted:</p>
+ * <ul>
+ *   <li>Implementing this interface by a context tool does not garantuee
+ *       that a logger will be passed. It is up to the implementation of the
+ *       toolbox manager if a logger is passed or not.</li>
+ *   <li>If a logger is passed using setLogger(), it will be passed only
+ *       to one instance of a context tool class. It has to be made sure, that
+ *       a reference to the logger is stored in a static variable, such that
+ *       the logger is available to all instances of the class.</li>
+ *   <li>Logging in context tools typically should be used only for serious 
+ *       errors. Most application environments already implement usage
+ *       logging, etc.</li>
+ * </ul>
  *
- * <p>Writes get dropped.</p>
+ * @author <a href="mailto:sidler@teamup.com">Gabriel Sidler</a>
  *
- * @author<a href="mailto:sidler@apache.org">Gabriel Sidler</a>
- * @author<a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
- *
- * @version $Id: ToolboxContext.java,v 1.3 2002/04/02 16:46:31 sidler Exp $ 
+ * @version $Id: LogEnabledContextTool.java,v 1.1 2002/04/02 16:46:31 sidler Exp $
+ * 
  */
-public class ToolboxContext extends VelocityContext
+public interface LogEnabledContextTool 
 {
-    /**
-     * The collection of context tools in this toolbox.
-     */
-    private Map toolbox;
-
 
     /**
-     * Default constructor.
+     * <p>Sets a logger instance for this class of context tools.</p>
+     *
+     * <p>This logger can be used subsequently by instances to to log 
+     * messages to the logging infrastructor of th underlying framework.</p>
+     *
+     * @param logger the logger instance to be set
      */
-    public ToolboxContext( Map tb )
-    {
-        toolbox = tb;
-    }
+    public void setLogger(ContextToolLogger logger);
 
-
-    /**
-     * Get value for key.
-     */
-    public Object internalGet( String key )
-    {
-        return toolbox.get( key );
-    }        
-
-
-    /**
-     * Does nothing. Returns <code>null</code> always.
-     */
-    public Object internalPut( String key, Object value )
-    {
-        return null;
-    }
-    
 }

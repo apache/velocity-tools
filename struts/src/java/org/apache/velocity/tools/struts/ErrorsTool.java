@@ -64,33 +64,50 @@ import javax.servlet.ServletContext;
 
 import org.apache.struts.util.MessageResources;
 import org.apache.struts.action.*;
+
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ContextTool;
+import org.apache.velocity.tools.view.tools.LogEnabledContextToolImpl;
+import org.apache.velocity.tools.view.tools.ServletContextTool;
 
 
 /**
- * <p>Context tool to work with the Struts error messages.
- * Extends ServletContextTool to profit from the logging
- * facilities of that class.</p>
+ * <p>Context tool to work with the Struts error messages.</p>
  *
+ * <p>This class is equipped to be used with a toolbox manager, for example
+ * the ServletToolboxManager included with VelServlet. The class extends 
+ * ServletContextToolLogger to profit from the logging facilities of that class.
+ * Furthermore, this class implements interface ServletContextTool, which allows
+ * a toolbox manager to pass the required context information.</p>
+ *
+ * <p>This class is not thread-safe by design. A new instance is needed for
+ * the processing of every template request.</p>
+ *
+
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ErrorsTool.java,v 1.2 2002/03/13 22:08:54 sidler Exp $
+ * @version $Id: ErrorsTool.java,v 1.3 2002/04/02 16:46:30 sidler Exp $
  * 
  */
-public class ErrorsTool extends ServletContextTool 
+public class ErrorsTool extends LogEnabledContextToolImpl 
+    implements ServletContextTool
 {
 
     // --------------------------------------------- Properties ---------------
 
     /**
-     * A reference to the HtttpServletRequest.
+     * A reference to the ServletContext
+     */ 
+    protected ServletContext application;
+
+
+    /**
+     * A reference to the HttpServletRequest.
      */ 
     protected HttpServletRequest request;
     
 
     /**
-     * A reference to the HtttpSession.
+     * A reference to the HttpSession.
      */ 
     protected HttpSession session;
 
@@ -117,16 +134,17 @@ public class ErrorsTool extends ServletContextTool
     // --------------------------------------------- Constructors -------------
 
     /**
-     * Returns a factory. Use method {@link #init(ViewContext context)} to 
-     * obtain instances of this class.
+     * Returns a factory for instances of this class. Use method 
+     * {@link #getInstance(ViewContext context)} to obtain instances 
+     * of this class. Do not use instance obtained from this method
+     * in templates. They are not properly initialized.
      */
     public ErrorsTool()
-    {
-    }
+    {}
     
     
     /**
-     * For internal use only! Use method {@link #init(ViewContext context)} 
+     * For internal use only! Use method {@link #getInstance(ViewContext context)} 
      * to obtain instances of the tool.
      */
     private ErrorsTool(ViewContext context)
@@ -142,27 +160,26 @@ public class ErrorsTool extends ServletContextTool
     
 
 
-    // --------------------------------------------- ContextTool Interface ----
+    // ----------------------------------- Interface ServletContextTool -------
 
     /**
-     * A new tool object will be instantiated per-request by calling 
-     * this method. A ContextTool is effectively a factory used to 
-     * create objects for use in templates. Some tools may simply return
-     * themselves from this method others may instantiate new objects
-     * to hold the per-request state.
+     * Returns an initialized instance of this context tool.
      */
-    public Object init(ViewContext context)
+    public Object getInstance(ViewContext context)
     {
         return new ErrorsTool(context);
     }
-    
+
     
     /**
-     * Perform any cleanup needed. This method is called after the template
-     * has been processed.
+     * <p>Returns the default life cycle for this tool. This is 
+     * {@link ServletContextTool#REQUEST}. Do not overwrite this
+     * per toolbox configuration. No alternative life cycles are 
+     * supported by this tool</p>
      */
-    public void destroy(Object o)
+    public String getDefaultLifecycle()
     {
+        return ServletContextTool.REQUEST; 
     }
 
 
@@ -185,9 +202,9 @@ public class ErrorsTool extends ServletContextTool
 
     /**
      * <p>Returns true if there are action errors queued for the specified 
-     * property, otherwise <code>false</code>.</p>
+     * category of errors, otherwise <code>false</code>.</p>
      *
-     * @param property The category of errors to check for.
+     * @param property the category of errors to check for
      */
     public boolean exist(String property) 
     {
@@ -195,7 +212,6 @@ public class ErrorsTool extends ServletContextTool
         {
             return false;
         }
-
         return (errors.size(property) > 0);
     }
 
@@ -246,10 +262,12 @@ public class ErrorsTool extends ServletContextTool
     /**
      * Returns the set of localized error messages as an 
      * <code>java.util.ArrayList</code> of <code> java.lang.String</code> 
-     * for all errors queued of the specified property or <code>null</code> 
-     * if no error are queued for the specified property. If the message 
+     * for all errors queued of the specified category or <code>null</code> 
+     * if no error are queued for the specified category. If the message 
      * resources don't contain an error message for a particular error key, 
      * the key itself is used as error message.
+     *
+     * @param property the category of errors to operate on
      */
     public ArrayList get(String property) 
     {
@@ -295,7 +313,7 @@ public class ErrorsTool extends ServletContextTool
             else
             {
                 // if error message cannot be found for a key, return key instead
-                log(WARNING, "Message for key " + errormsg.getKey() + " could not be found in message resources.");
+                log(WARN, "Message for key " + errormsg.getKey() + " could not be found in message resources.");
                 list.add(errormsg.getKey());
             }
         }
@@ -320,13 +338,14 @@ public class ErrorsTool extends ServletContextTool
      
 
     /**
-     * <p>Renders the queued error messages of a particual property as a list. 
+     * <p>Renders the queued error messages of a particual category as a list. 
      * This method expects the message keys <code>errors.header</code> and 
      * <code>errors.footer</code> in the message resources. The value of the 
      * former is rendered before the list of error messages and the value of 
      * the latter is rendered after the error messages.</p>
      * 
      * @param property the category of errors to render
+     * 
      * @return The formatted error messages. If no error messages are queued, 
      * an empty string is returned. 
      */

@@ -58,6 +58,11 @@
       <param-value>/WEB-INF/toolbox.xml</param-value>
    </init-param>
 
+    <init-param>
+      <param-name>velocity.properties</param-name>
+      <param-value>/WEB-INF/velocity.properties</param-value>
+   </init-param>
+
    <load-on-startup>10</load-on-startup>
   </servlet>
 

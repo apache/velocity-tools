@@ -1,5 +1,5 @@
-Struts
-======
+R E A D M E
+===========
 
 This part of jakarta-velocity-tools is focused on Struts-Velocity
 integration using the VelocityViewServlet and other tools found
@@ -23,7 +23,7 @@ To build the package:
 This compiles the package, generates a jar file in the same directory 
 and sets up the examples.
 
-The directory docs contains reference documentation for the included
+The directory 'docs' contains reference documentation for the included
 context tools. More documentation will be added shortly. For now the 
 best way to get a feel for the Struts Velocity integration is to look 
 at the included examples.
@@ -50,7 +50,7 @@ o Build the Struts package as outlined in the first section.
 o Change to directory examples/struts
 o Use ant to build a deployable version: > ant war
   
-This will generate a velstruts.war file in directory examples.
+This will generate a velstruts.war file in directory 'examples'.
 Deploy this .war file to the webapps directory of your servlet
 runner and restart. Now point a web browser at:
 

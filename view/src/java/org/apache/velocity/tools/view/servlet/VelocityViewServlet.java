@@ -66,10 +66,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.HashMap;
+import java.util.Properties;
 
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+
+import org.apache.commons.collections.ExtendedProperties;
 
 import org.apache.velocity.servlet.VelocityServlet;
 import org.apache.velocity.app.Velocity;
@@ -77,36 +80,73 @@ import org.apache.velocity.Template;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.runtime.RuntimeConstants;
 
-
 import org.apache.velocity.tools.view.context.ToolboxContext;
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.context.ChainedContext;
-import org.apache.velocity.tools.view.tools.ToolboxManager;
+import org.apache.velocity.tools.view.servlet.ServletToolboxManager;
 
 
 /**
- *  <p>
- *  Servlet implementation designed for use in web applications
- *  where a controller forwards the request to a rendering servlet
- *  such as the JspServlet for JSP based applicaions.
- *  </p>
+ * <p>A servlet to process Velocity templates. This is comparable to the
+ * the JspServlet for JSP-based applications.</p>
+ *
+ * <p>The servlet provides the following features:</p>
+ * <ul>
+ *   <li>renders Velocity templates</li>
+ *   <li>provides support for an auto-loaded, configurable toolbox</li>
+ *   <li>provides transparent access to the servlet request attributes,
+ *       servlet session attributes and servlet context attributes by
+ *       auto-searching them</li>
+ *   <li>logs to the logging facility of the servlet API</li>
+ * </ul>
+ *
+ * <p>VelocityViewServlet supports the following configuration parameters
+ * in webl.xml:</p>
+ * <dl>
+ *   <dt>toolbox</dt>
+ *   <dd>Path and name of the toolbox configuration file. The path must be
+ *     relative to the web application root directory. If this parameter is
+ *     not found, no toolbox is instantiated.</dd>
+ *   <dt>velocity.properties</dt>
+ *   <dd>Path and name of the Velocity configuration file. The path must be
+ *     relative to the web application root directory. If this parameter
+ *     is not present, Velocity is initialized with default settings.</dd>
+ * </dl>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author  <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.2 2002/01/04 03:29:39 geirm Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.3 2002/04/02 16:46:31 sidler Exp $
  */
 
 public class VelocityViewServlet extends VelocityServlet
 {
-    public static final String TOOLBOX_PARAM = "toolbox";
-    protected ToolboxManager toolboxManager = null;
 
     /**
-     *  we want to see if there is a magickey as a context
-     *  param
+     * Key used to access the toolbox configuration file path from the
+     * Servlet init parameters.
      */
+    public static final String TOOLBOX_PARAM = "toolbox";
 
+
+    /**
+     * Key used to access the Velocity configuration file path from the
+     * Servlet init parameters.
+     */ 
+    public static final String VELOCITY_PROPERTIES = "velocity.properties";
+
+
+    /**
+     * A reference to the toolbox manager.
+     */
+    protected ServletToolboxManager toolboxManager = null;
+
+
+    /**
+     *  <p>Initializes servlet, toolbox and Velocity template engine.</p>
+     *
+     * @param config servlet configuation
+     */
     public void init( ServletConfig config )
         throws ServletException
     {
@@ -143,7 +183,7 @@ public class VelocityViewServlet extends VelocityServlet
                {
                     Velocity.info("Using toolbox configuration file '" + key +"'");
 
-                    toolboxManager = new ToolboxManager();
+                    toolboxManager = new ServletToolboxManager(getServletContext());
                     toolboxManager.load( is );
 
                     Velocity.info("Toolbox setup complete.");
@@ -171,35 +211,56 @@ public class VelocityViewServlet extends VelocityServlet
        }
     }
 
+
     /**
-     *  do our own init...
+     * Initializes Velocity.
+     *
+     * @param config servlet configuration parameters
      */
     protected void initVelocity( ServletConfig config )
          throws ServletException
     {
+   		// Read Velocity configuration
+        ExtendedProperties velProps = new ExtendedProperties();
+	    String filename = config.getInitParameter(VELOCITY_PROPERTIES);
+        if ( filename != null )
+        {
+            InputStream is = null;
+            try
+            {
+                // ensure path start with '/'
+                if ( !filename.startsWith("/") )
+                {
+            	   filename = "/" + filename;
+            	}
 
-        /*
-         *  start with our servletlogger, which logs to the servlet
-         *  engines log
-         */
+               is = getServletContext().getResourceAsStream(filename);
+               if ( is != null)
+               {
+                    getServletContext().log("Using configuration file '" + filename +"'");
+                    velProps.load(is);
+                    getServletContext().log("Configuration file sucessfully read.");
+               }
+           }
+           catch( Exception e )
+           {
+                getServletContext().log("Problem reading Velocity configuration file '" + filename +"' : " + e );
+           }
+        }
 
+        Velocity.setExtendedProperties(velProps);
+
+        // define servletlogger, which logs to the servlet engines log
         ServletLogger sl = new ServletLogger( getServletContext() );
         Velocity.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, sl );
 
-        /*
-         *  as for the webapp resource loader
-         */
-
+        // load resources with webapp resource loader
         VelocityStrutsServletAppContext vssac = new VelocityStrutsServletAppContext( getServletContext() );
-
         Velocity.setApplicationAttribute( "org.apache.velocity.tools.view.servlet.WebappLoader",  vssac );
         Velocity.setProperty( "resource.loader", "webapp" );
         Velocity.setProperty( "webapp.resource.loader.class", "org.apache.velocity.tools.view.servlet.WebappLoader" );
 
-        /*
-         * now all is ready - init()
-         */
-
+        // now all is ready - init Velocity
         try
         {
             Velocity.init();
@@ -211,36 +272,37 @@ public class VelocityViewServlet extends VelocityServlet
         }
     }
 
+
     /**
-     *  <p>Handled the request. Current responsibilities :</p>
-     *  <ul>
-     *  <li> fill context with all application/session/request attributes
-     *  <li> find and return Template
-     *  </ul>
-     *  @param request client request
-     *  @param response client response
-     *  @param ctx  VelocityContext to fill
-     *  @return Velocity Template object or null
+     * <p>Handle the template processing request.</p> 
+     *
+     * @param request client request
+     * @param response client response
+     * @param ctx  VelocityContext to fill
+     *
+     * @return Velocity Template object or null
      */
-    protected Template handleRequest( HttpServletRequest request, HttpServletResponse response, Context ctx )
+    protected Template handleRequest(HttpServletRequest request, 
+                                     HttpServletResponse response, 
+                                     Context ctx )
         throws Exception
     {
         return getTemplate(request.getServletPath() );
     }
 
+
     /**
-     *  <p>Returns a Velocity context. A new context of class
-     *  {@link ChainedContext} is created and returned. This method overwrites
-     *  {@link org.apache.velocity.servlet.VelocityServlet#createContext(
-     *  HttpServletRequest request, HttpServletResponse response)}.
-     *  </p>
+     * <p>Creates and returns an initialized Velocity context.</p> 
+     * 
+     * A new context of class {@link ChainedContext} is created and 
+     * initialized. This method overwrites 
+     * {@link org.apache.velocity.servlet.VelocityServlet#createContext(HttpServletRequest request, HttpServletResponse response)}.</p>
      *
-     *  @param request servlet request from client
-     *  @param response servlet reponse to client
-     *
-     *  @return context
+     * @param request servlet request from client
+     * @param response servlet reponse to client
      */
-    protected Context createContext(HttpServletRequest request, HttpServletResponse response )
+    protected Context createContext(HttpServletRequest request, 
+                                    HttpServletResponse response)
     {
         /*
          *  create a ChainedContext()
@@ -261,21 +323,35 @@ public class VelocityViewServlet extends VelocityServlet
         return ctx;
     }
 
+
     /**
-     *  little wrapper class to safely pass the ServletContext to the loader
+     * <p>Wrapper class to safely pass the servlet context to the web app
+     * loader.</p>
      */
     public class VelocityStrutsServletAppContext implements WebappLoaderAppContext
     {
+        /**
+         * A reference to the servlet context
+         */
         ServletContext servletContext = null;
 
+
+        /**
+         * Default constructor.
+         */
         VelocityStrutsServletAppContext( ServletContext sc )
         {
             servletContext = sc;
         }
 
+
+        /**
+         * Returns a reference to the servlet context.
+         */
         public ServletContext getServletContext()
         {
            return servletContext;
         }
    }
+   
 }

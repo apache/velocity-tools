@@ -65,23 +65,38 @@ import org.apache.struts.util.MessageResources;
 import org.apache.struts.action.*;
 
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ContextTool;
+import org.apache.velocity.tools.view.tools.LogEnabledContextToolImpl;
+import org.apache.velocity.tools.view.tools.ServletContextTool;
 
 
 /**
- * <p>Context tool to work with the Struts message resources.
- * Extends ServletContextTool to profit from the logging
- * facilities of that class.</p>
+ * <p>Context tool that provides methods to render Struts message resources.</p>
+ *
+ * <p>This class is equipped to be used with a toolbox manager, for example
+ * the ServletToolboxManager included with VelServlet. The class extends 
+ * ServletContextToolLogger to profit from the logging facilities of that class.
+ * Furthermore, this class implements interface ServletContextTool, which allows
+ * a toolbox manager to pass the required context information.</p>
+ *
+ * <p>This class is not thread-safe by design. A new instance is needed for
+ * the processing of every template request.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: MessageTool.java,v 1.1 2002/03/12 11:36:49 sidler Exp $
+ * @version $Id: MessageTool.java,v 1.2 2002/04/02 16:46:30 sidler Exp $
  * 
  */
-public class MessageTool extends ServletContextTool
+public class MessageTool extends LogEnabledContextToolImpl 
+    implements ServletContextTool
 {
 
-    // --------------------------------------------- Private Properties -------
+    // --------------------------------------------- Properties -------
+
+    /**
+     * A reference to the ServletContext
+     */ 
+    protected ServletContext application;
+
 
     /**
      * A reference to the HttpServletRequest.
@@ -111,8 +126,10 @@ public class MessageTool extends ServletContextTool
     // --------------------------------------------- Constructors -------------
 
     /**
-     * Returns a factory. Use method {@link #init(ViewContext context)} to 
-     * obtain instances of this class.
+     * Returns a factory for instances of this class. Use method 
+     * {@link #getInstance(ViewContext context)} to obtain instances 
+     * of this class. Do not use instance obtained from this method
+     * in templates. They are not properly initialized.
      */
     public MessageTool()
     {
@@ -120,8 +137,10 @@ public class MessageTool extends ServletContextTool
     
     
     /**
-     * For internal use only! Use method {@link #init(ViewContext context)} 
+     * For internal use only! Use method {@link #getInstance(ViewContext context)} 
      * to obtain instances of the tool.
+     *
+     * @param context the Velocity context
      */
     private MessageTool(ViewContext context)
     {
@@ -135,27 +154,26 @@ public class MessageTool extends ServletContextTool
     
 
 
-    // --------------------------------------------- ContextTool Interface ----
+    // ----------------------------------- Interface ServletContextTool -------
 
     /**
-     * A new tool object will be instantiated per-request by calling 
-     * this method. A context tool is effectively a factory used to 
-     * create objects for use in templates. Some tools may simply return
-     * themselves from this method others may instantiate new objects
-     * to hold the per-request state.
+     * Returns an initialized instance of this context tool.
      */
-    public Object init(ViewContext context)
+    public Object getInstance(ViewContext context)
     {
         return new MessageTool(context);
     }
 
 
     /**
-     * Perform any cleanup needed. This method is called after the template
-     * has been processed.
+     * <p>Returns the default life cycle for this tool. This is 
+     * {@link ServletContextTool#REQUEST}. Do not overwrite this
+     * per toolbox configuration. No alternative life cycles are 
+     * supported by this tool</p>
      */
-    public void destroy(Object o)
+    public String getDefaultLifecycle()
     {
+        return ServletContextTool.REQUEST; 
     }
 
 
@@ -168,6 +186,7 @@ public class MessageTool extends ServletContextTool
      * message.
      *
      * @param key message key
+     *
      * @return the localized message for the specified key or 
      * <code>null</code> if no such message exists
      */
@@ -190,6 +209,7 @@ public class MessageTool extends ServletContextTool
      *
      * @param key message key
      * @param args replacement parameters for this message
+     *
      * @return the localized message for the specified key or 
      * <code>null</code> if no such message exists
      */
@@ -217,6 +237,12 @@ public class MessageTool extends ServletContextTool
      * Same as {@link #get(String key, Object[] args)}, but takes a
      * <code>java.util.ArrayList</code> instead of an array. This is 
      * more Velocity compatible. 
+     *
+     * @param key message key
+     * @param args replacement parameters for this message
+     *
+     * @return the localized message for the specified key or
+     * <code>null</code> if no such message exists
      */
     public String get(String key, ArrayList args)
     {
@@ -229,6 +255,7 @@ public class MessageTool extends ServletContextTool
      * for the user's locale.
      *
      * @param key message key
+     *
      * @return <code>true</code> if a message strings exists, 
      * <code>false</code> otherwise
      */

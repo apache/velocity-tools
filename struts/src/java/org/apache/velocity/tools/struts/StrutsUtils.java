@@ -3,7 +3,7 @@
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2002 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,29 +55,29 @@
  *
  */
 
-
 package org.apache.velocity.tools.struts;
 
 
 import java.util.Locale;
 import java.util.Iterator;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import javax.sql.DataSource;
 
 import org.apache.struts.upload.MultipartRequestWrapper;
 import org.apache.struts.util.MessageResources;
 
 
-import org.apache.struts.action.*; // expediancy
+import org.apache.struts.action.*;
 
 
 /**
- * <p>A utility class to expose the Struts shared resources,
- * which are be stored in the application, session, or
- * request contexts, as appropriate. All methods are static.</p>
+ * <p>A package-internal utility class to expose the Struts shared 
+ * resources. All methods are static.</p>
  *
  * <p>This class is provided for use by Velocity context tools
  * that need access to Struts resources. By having all Struts-
@@ -90,19 +90,20 @@ import org.apache.struts.action.*; // expediancy
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>, based
  * on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class StrutsUtils
+class StrutsUtils
 {
 
-// ------------------------------------------------ Application Context
+// ------------------------------------- Struts ServletContext Resources ------
 
     /**
-     * Returns the <strong>default</strong> configured data source 
-     * (which must implement <code>javax.sql.DataSource</code>) or 
-     * <code>null</code> if not found.
+     * Returns the default configured data source (which must implement 
+     * <code>javax.sql.DataSource</code>) or <code>null</code> if not found.
+     *
+     * @param application the servlet context
      */
-    public static DataSource getDataSource(ServletContext application)
+    static DataSource getDataSource(ServletContext application)
     {
         if (application==null)
         {
@@ -115,7 +116,7 @@ public class StrutsUtils
 
 
     /* This method depends of features that are available in Struts 1.1+ only
-    public static ActionMessages getActionMessages(ServletContext application) 
+    static ActionMessages getActionMessages(ServletContext application) 
     {
         if (application==null)
             return null;
@@ -128,8 +129,10 @@ public class StrutsUtils
     /**
      * Returns the <code>org.apache.struts.action.ActionFormBeans</code> 
      * collection for this application or <code>null</code> if not found.
+     *
+     * @param application the servlet context
      */
-    public static ActionFormBeans getActionFormBeans(ServletContext application)
+    static ActionFormBeans getActionFormBeans(ServletContext application)
     {
         if (application==null)
         {
@@ -146,8 +149,9 @@ public class StrutsUtils
      * logical name or <code>null</code> if not found.
      *
      * @param name logical name of the requested form bean definition
+     * @param application the servlet context
      */
-    public static ActionFormBean getFormBean(String name, ServletContext application)
+    static ActionFormBean getFormBean(String name, ServletContext application)
     {
         ActionFormBeans formBeans = getActionFormBeans(application);
 
@@ -163,8 +167,10 @@ public class StrutsUtils
     /**
      * Returns the <code>org.apache.struts.action.ActionForwards</code> 
      * collection for this application or <code>null</code> if not found.
+     *
+     * @param application the servlet context
      */
-    public static ActionForwards getActionForwards(ServletContext application)
+    static ActionForwards getActionForwards(ServletContext application)
     {
         if (application==null)
         {
@@ -181,9 +187,9 @@ public class StrutsUtils
      * or <code>null</code> if not found.
      *
      * @param name Logical name of the requested forwarding
+     * @param appplication the servlet context
      */
-    public static ActionForward getActionForward(String name, 
-                                                 ServletContext application)
+    static ActionForward getActionForward(String name, ServletContext application)
     {
         ActionForwards forwards = getActionForwards(application);
 
@@ -199,8 +205,10 @@ public class StrutsUtils
     /**
      * Returns the <code>org.apache.struts.action.ActionMappings</code> 
      * collection for this application or <code>null</code> if not found.
+     *
+     * @param application the servlet context
      */
-    public static ActionMappings getActionMappings(ServletContext application)
+    static ActionMappings getActionMappings(ServletContext application)
     {
         if (application==null)
         {
@@ -217,9 +225,9 @@ public class StrutsUtils
      * or <code>null</code> if not found.
      *
      * @param path Request path for which a mapping is requested
+     * @param application the servlet context
      */
-    public static ActionMapping getActionMapping(String path, 
-                                                 ServletContext application)
+    static ActionMapping getActionMapping(String path, ServletContext application)
     {
         ActionMappings mappings = getActionMappings(application);
 
@@ -235,8 +243,10 @@ public class StrutsUtils
     /**
      * Returns the message resources for this application or <code>null</code>
      * if not found.
+     *
+     * @param application the servlet context
      */
-    public static MessageResources getMessageResources(ServletContext application)
+    static MessageResources getMessageResources(ServletContext application)
     {
         if (application==null)
         {
@@ -253,8 +263,10 @@ public class StrutsUtils
      * <code>null</code> if not found. The servlet mapping is
      * either a path-mapped pattern (<code>/action/*</code>) or an
      * extension mapped pattern (<code>*.do</code>).
+     *
+     * @param application the servlet context
      */
-    public static String getServletMapping(ServletContext application)
+    static String getServletMapping(ServletContext application)
     {
         if (application==null)
         {
@@ -266,16 +278,19 @@ public class StrutsUtils
     }
 
 
-// ---------------------------------------------------- Session Context
+// -------------------------------------------- Struts Session Resources ------
 
 
     /**
      * Returns the <code>java.util.Locale</code> for the user. If a 
      * locale object is not found in the user's session, the system 
      * default locale is returned.
+     *
+     * @param request the servlet request
+     * @param session the HTTP session
      */
-    public static Locale getLocale(HttpServletRequest request, 
-                                   HttpSession session)
+    static Locale getLocale(HttpServletRequest request, 
+                            HttpSession session)
     {
         Locale locale = null;
 
@@ -296,8 +311,10 @@ public class StrutsUtils
     /**
      * Returns the transaction token stored in this session or 
      * <code>null</code> if not used.
+     *
+     * @param session the HTTP session
      */
-    public static String getToken(HttpSession session)
+    static String getToken(HttpSession session)
     {
         if (session==null)
         {
@@ -308,14 +325,16 @@ public class StrutsUtils
     }
 
 
-// ---------------------------------------------------- Request Context
 
+// -------------------------------------------- Struts Request Resources ------
 
     /**
      * Returns the <code>org.apache.struts.action.ActionErrors</code> 
      * object for this request or <code>null</code> if none exists.
+     *
+     * @param request the servlet request
      */
-    public static ActionErrors getActionErrors(HttpServletRequest request)
+    static ActionErrors getActionErrors(HttpServletRequest request)
     {
         if (request==null)
         {
@@ -330,8 +349,10 @@ public class StrutsUtils
      * Returns the runtime Exception that may have been thrown by a 
      * Struts view tool or compatible presentation extension, and 
      * placed in the request. Returns <code>null</code> if none found.
+     *
+     * @param request the servlet request
      */
-    public static Throwable getException(HttpServletRequest request)
+    static Throwable getException(HttpServletRequest request)
     {
         if (request==null)
         {
@@ -346,8 +367,10 @@ public class StrutsUtils
     /**
      * Returns the multipart object for this request or <code>null</code>
      * if none exists.
+     *
+     * @param request the servlet request
      */
-    public static MultipartRequestWrapper getMultipartRequestWrapper(HttpServletRequest request)
+    static MultipartRequestWrapper getMultipartRequestWrapper(HttpServletRequest request)
     {
         if (request==null)
         {
@@ -359,11 +382,13 @@ public class StrutsUtils
     }
 
 
-   /**
+    /**
      * Returns the <code>org.apache.struts.ActionMapping</code> instance 
      * for this request or <code>null</code> if none exists.
+     *
+     * @param request the servlet request
      */
-    public static ActionMapping getMapping(HttpServletRequest request)
+    static ActionMapping getMapping(HttpServletRequest request)
     {
         if (request==null)
         {
@@ -378,9 +403,12 @@ public class StrutsUtils
     /**
      * Returns the <code>ActionForm</code> bean associated with
      * this request of <code>null</code> if none exists.
+     *
+     * @param request the servlet request
+     * @param session the HTTP session
      */
-    public static ActionForm getActionForm(HttpServletRequest request, 
-                                           HttpSession session)
+    static ActionForm getActionForm(HttpServletRequest request, 
+                                    HttpSession session)
     {
         // Is there a mapping associated with this request?
         ActionMapping mapping = (ActionMapping)request.getAttribute(Action.MAPPING_KEY);
@@ -410,13 +438,13 @@ public class StrutsUtils
     }
     
 
-// ---------------------------------------------------- Struts Static Fields --
+// -------------------------------------------- Important Struts Constants ----
     
     /**
      * Returns the query parameter name under which a cancel button press 
      * must be reported if form validation is to be skipped.
      */
-    public static String getCancelName()
+    static String getCancelName()
     {
         return org.apache.struts.taglib.html.Constants.CANCEL_PROPERTY;
     }
@@ -426,14 +454,14 @@ public class StrutsUtils
      * Returns the query parameter name under which a transaction token
      * must be reported.
      */
-    public static String getTokenName()
+    static String getTokenName()
     {
         return org.apache.struts.taglib.html.Constants.TOKEN_KEY;
     }
  
 
 
-// ------------------------------------------------ Utilities -----------------
+// ------------------------------------------------------------- Utilities ----
 
 
     /**
@@ -446,8 +474,10 @@ public class StrutsUtils
      * <li>If the resulting value does not start with a slash, then a
      *     slash is prepended.</li>
      * </ul>
+     *
+     * @param action the name of an action as per struts-config.xml
      */
-    public static String getActionMappingName(String action)
+    static String getActionMappingName(String action)
     {
 
         String value = action;
@@ -480,10 +510,14 @@ public class StrutsUtils
     /**
      * Returns the form action converted into a server-relative URI
      * reference.
+     *
+     * @param application the servlet context
+     * @param request the servlet request
+     * @param action the name of an action as per struts-config.xml
      */
-    public static String getActionMappingURL(ServletContext application, 
-                                             HttpServletRequest request, 
-                                             String action)
+    static String getActionMappingURL(ServletContext application, 
+                                      HttpServletRequest request, 
+                                      String action)
     {
         StringBuffer value = new StringBuffer(request.getContextPath());
 
@@ -537,18 +571,23 @@ public class StrutsUtils
 
 
     /**
-     * Returns a formatted error message. The value of message resource 
+     * Returns a formatted error message. The error message is assembled from
+     * the following three pieces: First, value of message resource 
      * "errors.header" is prepended. Then, the list of error messages is 
-     * rendered. The value of message resource "errors.footer" is appended.
+     * rendered. Finally, the value of message resource "errors.footer" is appended.
      *
-     * @param property Property name
-     * @return The formatted error message. If no error messages are queued, 
+     * @param property the category of errors to markup and return
+     * @param request the servlet request
+     * @param session the HTTP session
+     * @param application the servlet context
+     *
+     * @returns The formatted error message. If no error messages are queued, 
      * an empty string is returned. 
      */
-    public static String errorMarkup(String property, 
-                                     HttpServletRequest request,
-                                     HttpSession session,
-                                     ServletContext application) 
+    static String errorMarkup(String property, 
+                              HttpServletRequest request,
+                              HttpSession session,
+                              ServletContext application) 
     {        
         ActionErrors errors = getActionErrors(request);
         if (errors == null)

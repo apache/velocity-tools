@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+
+<document>
+
+    <properties>
+        <title>VelTools Project</title>
+        <author email="geirm@apache.org">Geir Magnusson Jr.</author>
+        <author email="sidler@apache.org">Gabriel Sidler</author>
+        <projectfile>xdocs/menue.xml</projectfile>
+    </properties>
+
+    <body>
+
+    <section name="Welcome to the VelTools Project">
+
+        <p>
+        VelTools is a subproject of Velocity. It is the umbrella project for 
+        several Velocity subprojects that have the goal to create tools and infrastructure
+        useful for creating applications using the Velocity template engine. 
+        </p>
+
+        <p><strong>Subprojects</strong></p>
+
+        <dl>
+            <dt><strong><a href="vellibrary.html">VelLibrary</a></strong></dt> 
+            <dd>VelLibrary is an effort to setup a library of reuseable and well documented
+                context tools. Most tools are optimized for use with an automatically managed
+                toolbox (see VelServlet).</dd>
+
+            <dt><strong><a href="../struts/docs/index.html">VelStruts</a></strong></dt>
+            <dd>The VelStruts package is a set of context tools, examples and documentation for 
+                using the Velocity template engine as a view layer technology for the 
+                <a href="http://jakarta.apache.org/struts/">Jakarta Struts</a> web 
+                application framework. It is based on the VelServlet project.</dd> 
+
+            <dt><strong><a href="../view/docs/velservlet.html">VelServlet</a></strong></dt>
+            <dd>VelServlet is a standalone servlet that can be used for template 
+                rendering in Web applications. It offers automatic population of the 
+                Velocity context and automatic, configurable management of context tools. 
+                Other efforts within this project are the development of a toolbox manager
+                and the definition of a set of interfaces for context tools, thereby enabling the
+                efficient handling and reuse of context tools.</dd>
+
+            <dt><strong>Utilities</strong></dt> 
+            <dd>When in place, this will be a library of Velocity-related utilities.</dd>
+    
+            <dt><strong>Velocimacros</strong></dt> 
+            <dd>When in place, this will be a repository of Velocimacros for use in 
+            Velocity templates.</dd>
+        </dl>
+    </section>
+
+    <section name="CVS Repository">
+
+        <p>
+        The code for all the efforts within the VelTools project is maintained
+        in the CVS repository jakarta-velocity-tools. It is available via:</p>
+        
+        <p>Web Browser: <a href="http://cvs.apache.org/viewcvs/jakarta-velocity-tools/">
+        http://cvs.apache.org/viewcvs/jakarta-velocity-tools/</a></p> 
+        
+        <p>CVS Client: <a href="http://jakarta.apache.org/getinvolved/cvsindex.html">http://jakarta.apache.org/getinvolved/cvsindex.html</a>.
+        </p>
+
+        <p>Since VelTools is an umbrella project for several subprojects, look for
+        status information, releases, documentation and application examples within 
+        the subprojects.</p>
+
+    </section>
+
+ </body>
+</document>
+
