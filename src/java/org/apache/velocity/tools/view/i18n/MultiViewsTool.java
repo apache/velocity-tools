@@ -19,10 +19,8 @@ package org.apache.velocity.tools.view.i18n;
 
 import java.util.Locale;
 import javax.servlet.ServletContext;
-
-import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
-
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
 
@@ -36,7 +34,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * See {@link #findLocalizedResource(String, String)} and {@link
  * #findLocalizedResource(String, Locale)} for usage.</p>
  *
- * @version $Id: MultiViewsTool.java,v 1.4 2004/03/12 20:30:32 nbubna Exp $
+ * @version $Id: MultiViewsTool.java,v 1.5 2004/11/11 06:22:45 nbubna Exp $
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  */
 public class MultiViewsTool implements ViewTool
@@ -53,6 +51,8 @@ public class MultiViewsTool implements ViewTool
      * language.
      */
     protected String defaultLanguage;
+
+    protected VelocityEngine engine;
 
     /**
      * Creates a new uninitialized instance.  Call {@link #init} 
@@ -82,6 +82,8 @@ public class MultiViewsTool implements ViewTool
 
         ViewContext context = (ViewContext)obj;
         Context vc = context.getVelocityContext();
+        this.engine = context.getVelocityEngine();
+
         defaultLanguage = (String) vc.get(DEFAULT_LANGUAGE_KEY);
         if (defaultLanguage == null || defaultLanguage.trim().equals(""))
         {
@@ -143,7 +145,7 @@ public class MultiViewsTool implements ViewTool
     {
         String localizedName = name + '.' + language;
         // templateExists() checks for static content as well
-        if (!Velocity.templateExists(localizedName))
+        if (!engine.templateExists(localizedName))
         {
             // Fall back to the default lanaguage.
             String defaultLangSuffix = '.' + defaultLanguage;
@@ -155,7 +157,7 @@ public class MultiViewsTool implements ViewTool
             else
             {
                 localizedName = name + defaultLangSuffix;
-                if (!Velocity.templateExists(localizedName))
+                if (!engine.templateExists(localizedName))
                 {
                     localizedName = name;
                 }
@@ -163,6 +165,5 @@ public class MultiViewsTool implements ViewTool
         }
         return localizedName;
     }
-
 
 }
