@@ -131,7 +131,7 @@ import org.apache.velocity.tools.view.context.ViewContext;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ServletToolboxManager.java,v 1.5 2003/01/27 17:17:20 nbubna Exp $
+ * @version $Id: ServletToolboxManager.java,v 1.6 2003/02/12 06:54:09 nbubna Exp $
  * 
  */
 public class ServletToolboxManager extends XMLToolboxManager
@@ -267,11 +267,11 @@ public class ServletToolboxManager extends XMLToolboxManager
 
 
     /**
-     * Overrides XMLToolboxManager to log to the servlet context
+     * Overrides XMLToolboxManager
      */
     protected void log(String s) 
     {
-        servletContext.log("ServletToolboxManager: " + s);
+        Velocity.info("ServletToolboxManager: " + s);
     }
 
 
