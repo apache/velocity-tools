@@ -19,6 +19,7 @@
 package org.apache.velocity.tools.generic;
 
 
+import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -62,7 +63,7 @@ import java.util.TimeZone;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Revision: 1.14 $ $Date: 2004/11/10 20:14:46 $
+ * @version $Revision$ $Date$
  */
 public class DateTool
 {
@@ -177,6 +178,146 @@ public class DateTool
     public String getFormat()
     {
         return DEFAULT_FORMAT;
+    }
+
+
+    // ------------------------- date value access ---------------------------
+
+    /**
+     * Returns the year value of the date returned by {@link #getCalendar()}.
+     *
+     * @since VelocityTools 1.2
+     */
+    public Integer getYear()
+    {
+        return getYear(getCalendar());
+    }
+
+    /**
+     * Returns the year value of the specified date.
+     *
+     * @since VelocityTools 1.2
+     */
+    public Integer getYear(Object date)
+    {
+        return getValue(Calendar.YEAR, date);
+    }
+
+    /**
+     * Returns the month value of the date returned by {@link #getCalendar()}.
+     *
+     * @since VelocityTools 1.2
+     */
+    public Integer getMonth()
+    {
+        return getMonth(getCalendar());
+    }
+
+    /**
+     * Returns the month value of the specified date.
+     *
+     * @since VelocityTools 1.2
+     */
+    public Integer getMonth(Object date)
+    {
+        return getValue(Calendar.MONTH, date);
+    }
+
+    /**
+     * Returns the day (of the month) value of the date 
+     * returned by {@link #getCalendar()}.
+     * <br><br>
+     * NOTE: Unlike java.util.Date, this returns the day of the month.
+     * It is equivalent to Date.getDate() and 
+     * Calendar.get(Calendar.DAY_OF_MONTH).  We could not call this method
+     * getDate() because that already exists in this class with a different
+     * function.
+     *
+     * @since VelocityTools 1.2
+     */
+    public Integer getDay()
+    {
+        return getDay(getCalendar());
+    }
+
+    /**
+     * Returns the day (of the month) value for the specified date.
+     * <br><br>
+     * NOTE: Unlike java.util.Date, this returns the day of the month.
+     * It is equivalent to Date.getDate() and 
+     * Calendar.get(Calendar.DAY_OF_MONTH).  We could not call this method
+     * getDate() because that already exists in this class with a different
+     * function.
+     *
+     * @since VelocityTools 1.2
+     */
+    public Integer getDay(Object date)
+    {
+        return getValue(Calendar.DAY_OF_MONTH, date);
+    }
+
+    /**
+     * Return the specified value of the date returned by 
+     * {@link #getCalendar()} or null if the field is invalid.
+     *
+     * @since VelocityTools 1.2
+     */
+    public Integer getValue(Object field)
+    {
+        return getValue(field, getCalendar());
+    }
+
+    /**
+     * Returns the specified value of the specified date,
+     * or null if the field or date is invalid.  The field may be
+     * an Integer or it may be the name of the field as a String.
+     *
+     * @param field the corresponding Integer value or String name of the desired value
+     * @param date the date/calendar from which the field value will be taken
+     * @since VelocityTools 1.2
+     */
+    public Integer getValue(Object field, Object date)
+    {
+        if (field == null)
+        {
+            return null;
+        }
+
+        int fieldValue;
+        if (field instanceof Integer)
+        {
+            fieldValue = ((Integer)field).intValue();
+        }
+        // all the public static field names are upper case
+        String fstr = field.toString().toUpperCase();
+        try
+        {
+            Field clsf = Calendar.class.getField(fstr);
+            fieldValue = clsf.getInt(Calendar.getInstance());
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+        return getValue(fieldValue, date);
+    }
+
+    /**
+     * Returns the specified value of the specified date,
+     * or null if the field or date is invalid.
+     *
+     * @param field the int for the desired field (e.g. Calendar.MONTH)
+     * @param date the date/calendar from which the field value will be taken
+     * @since VelocityTools 1.2
+     */
+    public Integer getValue(int field, Object date)
+    {
+        Calendar cal = toCalendar(date);
+        if (cal == null)
+        {
+            return null;
+        }
+        return new Integer(cal.get(field));
     }
 
 
