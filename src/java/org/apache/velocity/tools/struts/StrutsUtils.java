@@ -65,11 +65,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import javax.sql.DataSource;
-
-import org.apache.struts.upload.MultipartRequestWrapper;
-import org.apache.struts.util.MessageResources;
 
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionForm;
@@ -82,10 +78,12 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMappings;
 import org.apache.struts.action.ActionMessages;
+import org.apache.struts.upload.MultipartRequestWrapper;
+import org.apache.struts.util.MessageResources;
 
 
 /**
- * <p>A package-internal utility class to expose the Struts shared 
+ * <p>A utility class to expose the Struts shared 
  * resources. All methods are static.</p>
  *
  * <p>This class is provided for use by Velocity view tools
@@ -102,12 +100,12 @@ import org.apache.struts.action.ActionMessages;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>, based
  * on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class StrutsUtils
 {
 
-// ------------------------------------- Struts ServletContext Resources ------
+    /****************** Struts ServletContext Resources ****************/
 
     /**
      * Returns the default configured data source (which must implement 
@@ -115,15 +113,13 @@ public class StrutsUtils
      *
      * @param application the servlet context
      */
-    public static DataSource getDataSource(ServletContext application)
+    public static DataSource getDataSource(ServletContext app)
     {
-        if (application==null)
+        if (app == null)
         {
            return null;
         }
-
-        return (DataSource)
-            application.getAttribute(Globals.DATA_SOURCE_KEY);
+        return (DataSource)app.getAttribute(Globals.DATA_SOURCE_KEY);
     }
 
 
@@ -133,15 +129,13 @@ public class StrutsUtils
      *
      * @param application the servlet context
      */
-    public static ActionFormBeans getActionFormBeans(ServletContext application)
+    public static ActionFormBeans getActionFormBeans(ServletContext app)
     {
-        if (application==null)
+        if (app == null)
         {
             return null;
         }
-
-        return (ActionFormBeans)
-            application.getAttribute(Globals.FORM_BEANS_KEY);
+        return (ActionFormBeans)app.getAttribute(Globals.FORM_BEANS_KEY);
     }
 
 
@@ -152,15 +146,13 @@ public class StrutsUtils
      * @param name logical name of the requested form bean definition
      * @param application the servlet context
      */
-    public static ActionFormBean getFormBean(String name, ServletContext application)
+    public static ActionFormBean getFormBean(String name, ServletContext app)
     {
-        ActionFormBeans formBeans = getActionFormBeans(application);
-
-        if (formBeans==null)
+        ActionFormBeans formBeans = getActionFormBeans(app);
+        if (formBeans == null)
         {
             return null;
         }
-
         return formBeans.findFormBean(name);
     }
 
@@ -171,15 +163,13 @@ public class StrutsUtils
      *
      * @param application the servlet context
      */
-    public static ActionForwards getActionForwards(ServletContext application)
+    public static ActionForwards getActionForwards(ServletContext app)
     {
-        if (application==null)
+        if (app == null)
         {
             return null;
         }
-
-        return (ActionForwards)
-            application.getAttribute(Globals.FORWARDS_KEY);
+        return (ActionForwards)app.getAttribute(Globals.FORWARDS_KEY);
     }
 
 
@@ -190,15 +180,13 @@ public class StrutsUtils
      * @param name Logical name of the requested forwarding
      * @param appplication the servlet context
      */
-    public static ActionForward getActionForward(String name, ServletContext application)
+    public static ActionForward getActionForward(String name, ServletContext app)
     {
-        ActionForwards forwards = getActionForwards(application);
-
-        if (forwards==null)
+        ActionForwards forwards = getActionForwards(app);
+        if (forwards == null)
         {
             return null;
         }
-
         return forwards.findForward(name);
     }
 
@@ -209,15 +197,13 @@ public class StrutsUtils
      *
      * @param application the servlet context
      */
-    public static ActionMappings getActionMappings(ServletContext application)
+    public static ActionMappings getActionMappings(ServletContext app)
     {
-        if (application==null)
+        if (app == null)
         {
             return null;
         }
-
-        return (ActionMappings)
-            application.getAttribute(Globals.MAPPINGS_KEY);
+        return (ActionMappings)app.getAttribute(Globals.MAPPINGS_KEY);
     }
 
 
@@ -228,15 +214,13 @@ public class StrutsUtils
      * @param path Request path for which a mapping is requested
      * @param application the servlet context
      */
-    public static ActionMapping getActionMapping(String path, ServletContext application)
+    public static ActionMapping getActionMapping(String path, ServletContext app)
     {
-        ActionMappings mappings = getActionMappings(application);
-
-        if (mappings==null)
+        ActionMappings mappings = getActionMappings(app);
+        if (mappings == null)
         {
             return null;
         }
-
         return mappings.findMapping(path);
     }
 
@@ -247,15 +231,13 @@ public class StrutsUtils
      *
      * @param application the servlet context
      */
-    public static MessageResources getMessageResources(ServletContext application)
+    public static MessageResources getMessageResources(ServletContext app)
     {
-        if (application==null)
+        if (app == null)
         {
             return null;
         }
-
-        return (MessageResources)
-            application.getAttribute(Globals.MESSAGES_KEY);
+        return (MessageResources)app.getAttribute(Globals.MESSAGES_KEY);
     }
 
 
@@ -267,20 +249,17 @@ public class StrutsUtils
      *
      * @param application the servlet context
      */
-    public static String getServletMapping(ServletContext application)
+    public static String getServletMapping(ServletContext app)
     {
-        if (application==null)
+        if (app == null)
         {
             return null;
         }
-
-        return (String)
-            application.getAttribute(Globals.SERVLET_KEY);
+        return (String)app.getAttribute(Globals.SERVLET_KEY);
     }
 
 
-// -------------------------------------------- Struts Session Resources ------
-
+    /********************** Struts Session Resources ******************/
 
     /**
      * Returns the <code>java.util.Locale</code> for the user. If a 
@@ -291,20 +270,18 @@ public class StrutsUtils
      * @param session the HTTP session
      */
     public static Locale getLocale(HttpServletRequest request, 
-                            HttpSession session)
+                                   HttpSession session)
     {
         Locale locale = null;
 
-        if (session!=null)
+        if (session != null)
         {
-            locale = (Locale) session.getAttribute(Globals.LOCALE_KEY);
+            locale = (Locale)session.getAttribute(Globals.LOCALE_KEY);
         }
-
-        if ((locale==null) && (request!=null))
+        if (locale == null && request != null)
         {
             locale = request.getLocale();
         }
-
         return locale;
     }
 
@@ -317,17 +294,15 @@ public class StrutsUtils
      */
     public static String getToken(HttpSession session)
     {
-        if (session==null)
+        if (session == null)
         {
             return null;
         }
-
-        return (String) session.getAttribute(Globals.TRANSACTION_TOKEN_KEY);
+        return (String)session.getAttribute(Globals.TRANSACTION_TOKEN_KEY);
     }
 
 
-
-// -------------------------------------------- Struts Request Resources ------
+    /*********************** Struts Request Resources ****************/
 
     /**
      * Returns the <code>org.apache.struts.action.ActionErrors</code> 
@@ -337,12 +312,11 @@ public class StrutsUtils
      */
     public static ActionErrors getActionErrors(HttpServletRequest request)
     {
-        if (request==null)
+        if (request == null)
         {
             return null;
         }
-
-        return (ActionErrors) request.getAttribute(Globals.ERROR_KEY);
+        return (ActionErrors)request.getAttribute(Globals.ERROR_KEY);
     }
 
 
@@ -354,12 +328,11 @@ public class StrutsUtils
      */
     public static ActionMessages getActionMessages(HttpServletRequest request)
     {
-        if (request==null)
+        if (request == null)
         {
             return null;
         }
-
-        return (ActionMessages) request.getAttribute(Globals.MESSAGE_KEY);
+        return (ActionMessages)request.getAttribute(Globals.MESSAGE_KEY);
     }
 
 
@@ -372,13 +345,11 @@ public class StrutsUtils
      */
     public static Throwable getException(HttpServletRequest request)
     {
-        if (request==null)
+        if (request == null)
         {
             return null;
         }
-
-        return (Throwable)
-            request.getAttribute(Globals.EXCEPTION_KEY);
+        return (Throwable)request.getAttribute(Globals.EXCEPTION_KEY);
     }
 
 
@@ -390,13 +361,11 @@ public class StrutsUtils
      */
     public static MultipartRequestWrapper getMultipartRequestWrapper(HttpServletRequest request)
     {
-        if (request==null)
+        if (request == null)
         {
             return null;
         }
-
-        return (MultipartRequestWrapper)
-            request.getAttribute(Globals.MULTIPART_KEY);
+        return (MultipartRequestWrapper)request.getAttribute(Globals.MULTIPART_KEY);
     }
 
 
@@ -408,13 +377,11 @@ public class StrutsUtils
      */
     public static ActionMapping getMapping(HttpServletRequest request)
     {
-        if (request==null)
+        if (request == null)
         {
            return null;
         }
-
-        return (ActionMapping)
-            request.getAttribute(Globals.MAPPING_KEY);
+        return (ActionMapping)request.getAttribute(Globals.MAPPING_KEY);
     }
 
 
@@ -428,21 +395,22 @@ public class StrutsUtils
     public static ActionForm getActionForm(HttpServletRequest request, 
                                            HttpSession session)
     {
-        // Is there a mapping associated with this request?
-        ActionMapping mapping = (ActionMapping)request.getAttribute(Globals.MAPPING_KEY);
+        /* Is there a mapping associated with this request? */
+        ActionMapping mapping = 
+            (ActionMapping)request.getAttribute(Globals.MAPPING_KEY);
         if (mapping == null)
         {
-            return (null);
+            return null;
         }
 
-        // Is there a form bean associated with this mapping?
+        /* Is there a form bean associated with this mapping? */
         String attribute = mapping.getAttribute();
         if (attribute == null)
         {
-            return (null);
+            return null;
         }
 
-        // Look up the existing form bean
+        /* Look up the existing form bean */
         if ("request".equals(mapping.getScope()))
         {
             return (ActionForm)request.getAttribute(attribute);
@@ -456,7 +424,7 @@ public class StrutsUtils
     }
     
 
-// -------------------------------------------- Important Struts Constants ----
+    /********************* Important Struts Constants *****************/
     
     /**
      * Returns the query parameter name under which a cancel button press 
@@ -488,9 +456,7 @@ public class StrutsUtils
     }
  
 
-
-// ------------------------------------------------------------- Utilities ----
-
+    /*************************** Utilities *************************/
 
     /**
      * Returns the form action converted into an action mapping path. The
@@ -526,11 +492,11 @@ public class StrutsUtils
 
         if (value.startsWith("/"))
         {
-            return (value);
+            return value;
         }
         else
         {
-            return ("/" + value);
+            return "/" + value;
         }
     }
 
@@ -549,7 +515,7 @@ public class StrutsUtils
     {
         StringBuffer value = new StringBuffer(request.getContextPath());
 
-        // Use our servlet mapping, if one is specified
+        /* Use our servlet mapping, if one is specified */
         String servletMapping = getServletMapping(application);
 
         if (servletMapping != null)
@@ -583,18 +549,17 @@ public class StrutsUtils
         }
         else
         {
-            // Otherwise, assume extension mapping is in use and extension is
-            // already included in the action property
+            /* Otherwise, assume extension mapping is in use and extension is
+             * already included in the action property */
             if (!action.startsWith("/"))
             {
                 value.append("/");
             }
-
             value.append(action);
         }
 
-        // Return the completed value
-        return (value.toString());
+        /* Return the completed value */
+        return value.toString();
     }
 
 
@@ -623,7 +588,7 @@ public class StrutsUtils
             return "";
         }
         
-        // fetch the error messages
+        /* fetch the error messages */
         Iterator reports = null;
         if (property == null)
         {
@@ -634,12 +599,12 @@ public class StrutsUtils
             reports = errors.get(property);
         }
 
-        if (!(reports.hasNext()))
+        if (!reports.hasNext())
         {
             return "";
         }
                 
-        // Render the error messages appropriately if errors have been queued
+        /* Render the error messages appropriately if errors have been queued */
         StringBuffer results = new StringBuffer();
         String header = null;
         String footer = null;
@@ -667,7 +632,7 @@ public class StrutsUtils
         while (reports.hasNext()) 
         {
             message = null;
-            ActionError report = (ActionError) reports.next();
+            ActionError report = (ActionError)reports.next();
             if (resources != null)
             {
                 message = resources.getMessage(locale,
@@ -689,7 +654,7 @@ public class StrutsUtils
         results.append(footer);
         results.append("\r\n");
 
-        // return result
+        /* return result */
         return results.toString();
     }
  
