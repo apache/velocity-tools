@@ -107,7 +107,7 @@ import org.apache.struts.action.ActionMappings;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * based on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class StrutsUtils
 {
@@ -369,6 +369,28 @@ public class StrutsUtils
         ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
         return (MessageResources)app.getAttribute(Globals.MESSAGES_KEY + 
                                                   moduleConfig.getPrefix());
+    }
+
+
+    /**
+     * Select the module to which the specified request belongs, and
+     * add return the corresponding ModuleConfig.
+     *
+     * @param urlPath The requested URL
+     * @param app The ServletContext for this web application
+     * @return The ModuleConfig for the given URL path
+     */
+    public static ModuleConfig selectModule(String urlPath,
+                                            ServletContext app)
+    {
+        /* Match against the list of sub-application prefixes */
+        String prefix = RequestUtils.getModuleName(urlPath, app);
+
+        /* Expose the resources for this sub-application */
+        ModuleConfig config = (ModuleConfig)
+            app.getAttribute(Globals.MODULE_KEY + prefix);
+
+        return config;
     }
 
 
@@ -647,6 +669,38 @@ public class StrutsUtils
 
         /* Return the completed value */
         return value.toString();
+    }
+
+
+    /**
+     * Returns the action forward name converted into a server-relative URI
+     * reference.
+     *
+     * @param application the servlet context
+     * @param request the servlet request
+     * @param forward the name of a forward as per struts-config.xml
+     */
+    public static String getForwardURL(HttpServletRequest request, 
+                                       ServletContext app, 
+                                       String forward)
+    {
+        ForwardConfig fc = StrutsUtils.getForwardConfig(forward, request, app);
+        if (fc == null)
+        {
+            return null;
+        }
+
+        StringBuffer url = new StringBuffer();
+        if (fc.getPath().startsWith("/"))
+        {
+            url.append(request.getContextPath());
+            url.append(RequestUtils.forwardURL(request, fc));
+        }
+        else
+        {
+            url.append(fc.getPath());
+        }
+        return url.toString();
     }
 
 
