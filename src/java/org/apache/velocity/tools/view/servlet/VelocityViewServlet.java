@@ -139,7 +139,7 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.16 2003/10/07 00:19:04 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.17 2003/10/07 00:33:19 nbubna Exp $
  */
 
 public class VelocityViewServlet extends HttpServlet
@@ -183,9 +183,6 @@ public class VelocityViewServlet extends HttpServlet
     /** Cache of writers */
     private static SimplePool writerPool = new SimplePool(40);
 
-    /** The encoding to use when generating outputing. */
-    private String encoding = null;
-
     /** The default content type. */
     private String defaultContentType;
 
@@ -209,9 +206,30 @@ public class VelocityViewServlet extends HttpServlet
         // we can get these now that velocity is initialized
         defaultContentType = 
             RuntimeSingleton.getString(CONTENT_TYPE, DEFAULT_CONTENT_TYPE);
-        encoding = 
-            RuntimeSingleton.getString(RuntimeSingleton.OUTPUT_ENCODING, 
+
+        String encoding = 
+            RuntimeSingleton.getString(RuntimeSingleton.OUTPUT_ENCODING,
                                        DEFAULT_OUTPUT_ENCODING);
+
+        if (!DEFAULT_OUTPUT_ENCODING.equalsIgnoreCase(encoding))
+        {
+            int index = defaultContentType.lastIndexOf("charset");
+            if (index < 0)
+            {
+                // append character encoding to default content-type
+                defaultContentType += "; charset=" + encoding;
+            }
+            else
+            {
+                // they may have configuration issues
+                Velocity.warn("VelocityViewServlet: " +
+                              "Charset was already specified in content-type. " +
+                              "Output encoding property will be ignored.");
+            }
+        }
+
+        Velocity.info("VelocityViewServlet: Default content-type is: " + 
+                      defaultContentType);
     }
 
 
