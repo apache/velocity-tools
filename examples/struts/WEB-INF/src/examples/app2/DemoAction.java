@@ -22,8 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionError;
-import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -34,7 +32,7 @@ import org.apache.struts.action.ActionMessages;
  * <p>A simple action used to demonstrate the view tools.</p>
  *
  * @author <a href="mailto:sidler@teamup.com"/>Gabe Sidler</a>
- * @version $Id: DemoAction.java,v 1.4 2004/02/20 12:42:52 marino Exp $
+ * @version $Id: DemoAction.java,v 1.5 2004/03/12 19:41:08 marino Exp $
  */
 public class DemoAction extends Action
 {
@@ -60,11 +58,11 @@ public class DemoAction extends Action
 	    HttpSession session;
 
         // Create serveral error messages to demontrate the output in a template
-        ActionErrors errors = new ActionErrors();
+        ActionMessages errors = new ActionMessages();
 
         // Add some global errors
-        errors.add(ActionErrors.GLOBAL_ERROR, new ActionError("error01"));
-        errors.add(ActionErrors.GLOBAL_ERROR, new ActionError("error02"));
+        errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("error01"));
+        errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("error02"));
 
         // Add some specific errors
         errors.add("language", new ActionMessage("error10"));

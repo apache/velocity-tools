@@ -17,12 +17,6 @@
 package examples.app1;
 
 
-import javax.servlet.http.HttpServletRequest;
-import org.apache.struts.action.ActionError;
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMapping;
-
 import java.util.Properties;
 
 
@@ -30,7 +24,7 @@ import java.util.Properties;
  * <p>A simple bean that represent an address record.</p>
  *
  * @author <a href="mailto:sidler@teamup.com"/>Gabe Sidler</a>
- * @version $Id: AddressBean.java,v 1.2 2004/02/20 12:42:47 marino Exp $
+ * @version $Id: AddressBean.java,v 1.3 2004/03/12 19:41:01 marino Exp $
  */
 
 public class AddressBean extends Object
