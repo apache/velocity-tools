@@ -139,7 +139,7 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.15 2003/10/02 00:13:11 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.16 2003/10/07 00:19:04 nbubna Exp $
  */
 
 public class VelocityViewServlet extends HttpServlet
@@ -585,7 +585,7 @@ public class VelocityViewServlet extends HttpServlet
                MethodInvocationException, IOException, 
                UnsupportedEncodingException, Exception
     {
-        ServletOutputStream output = response.getOutputStream();
+        PrintWriter pw = response.getWriter();
         VelocityWriter vw = null;
         
         try
@@ -594,11 +594,11 @@ public class VelocityViewServlet extends HttpServlet
             
             if (vw == null)
             {
-                vw = new VelocityWriter(new OutputStreamWriter(output, encoding), 4*1024, true);
+                vw = new VelocityWriter(pw, 4*1024, true);
             }
             else
             {
-                vw.recycle(new OutputStreamWriter(output, encoding));
+                vw.recycle(pw);
             }
            
             template.merge(context, vw);
@@ -614,7 +614,7 @@ public class VelocityViewServlet extends HttpServlet
                     // nicely with others.
                     vw.flush();
                     /* This hack sets the VelocityWriter's internal ref to the 
-                     * OutputStreamWriter to null to keep memory free while
+                     * PrintWriter to null to keep memory free while
                      * the writer is pooled. See bug report #18951 */
                     vw.recycle(null);
                     writerPool.put(vw);
@@ -664,7 +664,7 @@ public class VelocityViewServlet extends HttpServlet
             html.append("</pre>");
             html.append("</body>");
             html.append("</html>");
-            response.getOutputStream().print(html.toString());
+            response.getWriter().print(html.toString());
         }
         catch (Exception e)
         {
