@@ -58,23 +58,27 @@ import javax.servlet.ServletContext;
 
 import java.io.InputStream;
 
+import org.apache.commons.collections.ExtendedProperties;
+
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 
-import org.apache.velocity.exception.ResourceNotFoundException;
-
 import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
-
-import org.apache.commons.collections.ExtendedProperties;
 
 /**
  *  
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
- * @version $Id: WebappLoader.java,v 1.1 2003/03/05 06:13:03 nbubna Exp $
+ * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @version $Id: WebappLoader.java,v 1.2 2003/03/07 03:44:38 nbubna Exp $
  */
 public class WebappLoader extends ResourceLoader
 {
+
+    /** The root path for templates (relative to webapp's root). */
+    protected String path = null;
+
     protected ServletContext servletContext = null;
 
     /**
@@ -83,15 +87,33 @@ public class WebappLoader extends ResourceLoader
     public void init( ExtendedProperties configuration)
     {
         rsvc.info("WebappLoader : initialization starting.");
+        
+        // get custom default path
+        path = configuration.getString("path");
+        if (path == null || path.length() == 0)
+        {
+            path = "/";
+        }
+        else
+        {
+            // make sure the path ends with a '/'
+            if (!path.endsWith("/"))
+            {
+                path += '/';
+            }
+            rsvc.info("WebappLoader : template path (relative to webapp root) is '" + path + "'");
+        }
 
+        // get the ServletContext
         Object obj = rsvc.getApplicationAttribute(VelocityViewServlet.SERVLET_CONTEXT_KEY);
-
         if (obj instanceof ServletContext)
         {
             servletContext = (ServletContext)obj;
         }
         else
+        {
             rsvc.error("WebappLoader : unable to retrieve ServletContext");
+        }
 
         rsvc.info("WebappLoader : initialization complete.");
     }
@@ -117,10 +139,14 @@ public class WebappLoader extends ResourceLoader
         
         try 
         {
-            if (!name.startsWith("/"))
-                name = "/" + name;
+            // since the path always ends in '/',
+            // make sure the name never ends in one
+            if (name.startsWith("/"))
+            {
+                name = name.substring(1);
+            }
 
-            result = servletContext.getResourceAsStream( name );
+            result = servletContext.getResourceAsStream(path + name);
         }
         catch( Exception fnfe )
         {
