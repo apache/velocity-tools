@@ -10,7 +10,7 @@
 
     <menu name="VelocityView">
         <item name="Overview"                 href="index.html"/>
-        <item name="Download"                 href="index.html#Download"/>
+        <item name="Download"                 href="../index.html#Download"/>
         <item name="Installation"             href="index.html#Installation"/>
         <item name="LayoutServlet"            href="index.html#VelocityLayoutServlet"/>
         <item name="Examples"                 href="index.html#Examples"/>
@@ -20,8 +20,8 @@
     <menu name="VelocityView Tools">
         <item name="LinkTool"              href="LinkTool.html"/>
         <item name="ParameterParser"       href="ParameterParser.html"/>
-        <item name="ViewRenderTool" />
-        <item name="AbstractSearchTool" />
+        <item name="ViewRenderTool"        href="../javadoc/org/apache/velocity/tools/view/tools/ViewRenderTool.html"/>
+        <item name="AbstractSearchTool"    href="../javadoc/org/apache/velocity/tools/view/tools/AbstractSearchTool.html"/>
     </menu>
 
     <printerversion/>

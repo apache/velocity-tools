@@ -13,10 +13,12 @@
   <body>
  
   <section name="Overview">
-    <p>VelocityViewServlet is a stand alone servlet that can render Velocity 
-       templates in Web applications. Web application developers can leverage 
-       this servlet to extend Servlet-based web application frameworks by using 
-       Velocity templates for the presentation layer.
+    <p>VelocityView provides support for rapidly and cleanly building web applications
+    using Velocity templates as the view layer.  The project is designed with the 
+    <a href="http://jakarta.apache.org/turbine/turbine-2.3/pullmodel.html">Pull-MVC Model</a>
+    in mind and works well in conjunction with web application frameworks that act
+    as the controller (e.g. <a href="../struts/index.html">Struts</a>), but can be used
+    quite effectively on its own for those creating simpler applications.
     </p>
     <p>Key features:</p>    
     <ul> 
@@ -259,14 +261,6 @@
 
 
     <p><b>http://&lt;your_server&gt;:&lt;port&gt;/simple/</b></p>
-    <br clear="all" />
-  </section>
-
-  <section name="Download">
-    <p>Velocity for Struts is currently in a pre-release phase. Currently, only 
-    the source is available from the CVS repository. The VelocityViewServlet code, 
-    and examples are located in the jakarta-velocity-tools module in the 
-    /examples directory (ant build targets are provided for them).</p>
     <br clear="all" />
   </section>
 

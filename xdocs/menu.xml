@@ -9,8 +9,11 @@
 
       <menu name="Velocity Tools">
           <item name="Overview"               href="index.html"/>
+          <item name="Download"               href="index.html#Download"/>
           <item name="CVS Repository"         href="index.html#CVS Repository"/>
           <item name="Javadoc"                href="javadoc/index.html"/>
+          <item name="Wiki"                   href="http://nagoya.apache.org/wiki/apachewiki.cgi?VelocityTools"/>
+          <item name="Report Issues"          href="http://issues.apache.org/bugzilla/enter_bug.cgi?product=Velocity&amp;component=Tools"/>
       </menu>
 
       <menu name="Sub-projects">

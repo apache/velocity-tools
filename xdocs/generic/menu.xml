@@ -11,7 +11,7 @@
 
     <menu name="Generic Tools">
         <item name="Overview"         href="index.html"/>
-        <item name="Download"         href="index.html#Download"/>
+        <item name="Download"         href="../index.html#Download"/>
         <item name="Contributions"    href="index.html#Contributions"/>
         <item name="Javadoc"          href="../javadoc/index.html"/>
     </menu>
@@ -19,8 +19,8 @@
     <menu name="Tool Documentation">
         <item name="DateTool"         href="DateTool.html"/>
         <item name="MathTool"         href="MathTool.html"/>
-        <item name="RenderTool" />
-        <item name="IteratorTool" />
+        <item name="RenderTool"       href="../javadoc/org/apache/velocity/tools/generic/RenderTool.html"/>
+        <item name="IteratorTool"     href="../javadoc/org/apache/velocity/tools/generic/IteratorTool.html"/> />
     </menu>
 
     <printerversion/>

@@ -12,7 +12,7 @@
     <menu name="VelocityStruts">
         <item name="Overview"                href="index.html"/>
         <item name="Benefits"                href="index.html#Benefits"/>
-        <item name="Download"                href="index.html#Download"/>
+        <item name="Download"                href="../index.html#Download"/>
         <item name="User Guide"              href="userguide.html"/>
         <item name="Installation"            href="userguide.html#Installation"/>
         <item name="Examples"                href="userguide.html#Examples"/>
