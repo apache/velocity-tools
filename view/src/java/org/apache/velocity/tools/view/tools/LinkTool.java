@@ -52,19 +52,16 @@
  * <http://www.apache.org/>.
  */
 
-package org.apache.velocity.tools.struts;
+package org.apache.velocity.tools.view.tools;
 
-import java.util.ArrayList;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
-
-import org.apache.struts.util.MessageResources;
-import org.apache.struts.action.*;
 
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.tools.view.context.ViewContext;
@@ -75,9 +72,9 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * <p>View tool to work with URI links in Struts.</p> 
  * 
  * <p>This class is equipped to be used with a toolbox manager, for example
- * the ServletToolboxManager included with VelServlet. This class implements 
- * interface ViewTool, which allows a toolbox manager to pass the required
- * context information.</p>
+ * the ServletToolboxManager included with VelocityViewServlet. This class 
+ * implements interface ViewTool, which allows a toolbox manager to pass the
+ * required context information.</p>
  *
  * <p>This class is not thread-safe by design. A new instance is needed for
  * the processing of every template request.</p>
@@ -85,45 +82,37 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: LinkTool.java,v 1.8 2003/02/13 00:22:55 nbubna Exp $
+ * @version $Id: LinkTool.java,v 1.1 2003/03/03 23:02:17 nbubna Exp $
  * 
  */
-public class LinkTool implements ViewTool
+public class LinkTool implements ViewTool, Cloneable
 {
 
-    // --------------------------------------------- Properties ---------------
 
-    /**
-     * A reference to the ServletContext
-     */ 
+    public static final String HTML_QUERY_DELIMITER = "&";
+
+    public static final String XHTML_QUERY_DELIMITER = "&amp;";
+
+
+    /** A reference to the ServletContext */ 
     protected ServletContext application;
 
-
-    /**
-     * A reference to the HttpServletRequest.
-     */ 
+    /** A reference to the HttpServletRequest. */ 
     protected HttpServletRequest request;
-    
 
-    /**
-     * A reference to the HttpServletResponse.
-     */ 
+    /** A reference to the HttpServletResponse. */ 
     protected HttpServletResponse response;
 
 
-    /**
-     * The URI reference set for this link.
-     */ 
-    protected final String uri;
+    /** The URI reference set for this link. */ 
+    private String uri;
 
+    /** A list of query string parameters. */ 
+    private ArrayList queryData;
 
-    /**
-     * A list of query string parameters.
-     */ 
-    protected final ArrayList queryData;
+    /** The current delimiter for query data */
+    private String queryDataDelim;
 
-    
-    // --------------------------------------------- Constructors -------------
 
     /**
      * Default constructor. Tool must be initialized before use.
@@ -132,9 +121,109 @@ public class LinkTool implements ViewTool
     {
         uri = null;
         queryData = null;
+        queryDataDelim = HTML_QUERY_DELIMITER;
     }
-    
-    
+
+
+    // --------------------------------------- Protected Methods -------------
+
+    /**
+     * <p>Controls the delimiter used for separating query data pairs.
+     *    By default, the standard '&' character is used.</p>
+     * <p>This is not exposed to templates as this decision is best not
+     *    made at that level.</p>
+     * <p>Subclasses may easily override the init() method to set this
+     *    appropriately and then call super.init()</p>
+     *
+     * @param useXhtml if true, the XHTML query data delimiter ("&amp;")
+     *        will be used.  if false, then '&' will be used.
+     * @see <a href="http://www.w3.org/TR/xhtml1/#C_12">Using Ampersands in Attribute Values (and Elsewhere)</a>
+     */
+    protected void setXhtml(boolean useXhtml)
+    {
+        queryDataDelim = 
+            (useXhtml) ? XHTML_QUERY_DELIMITER : HTML_QUERY_DELIMITER;
+    }
+
+
+    /**
+     * For internal use.
+     *
+     * Copies 'that' LinkTool into this one and adds the new query data.
+     *
+     * @param pair the query parameter to add
+     */
+    protected LinkTool copyWith(QueryPair pair)
+    {
+        LinkTool copy = duplicate();
+        if (copy.queryData != null)
+        {
+            // set the copy's query data to a shallow clone of 
+            // the current query data array
+            copy.queryData = (ArrayList)this.queryData.clone();
+        }
+        else
+        {
+            copy.queryData = new ArrayList();
+        }
+        //add new pair to this LinkTool's query data
+        copy.queryData.add(pair);
+        return copy;
+    }
+
+
+    /**
+     * For internal use.
+     *
+     * Copies 'that' LinkTool into this one and sets the new URI.
+     *
+     * @param uri uri string
+     */
+    protected LinkTool copyWith(String uri)
+    {
+        LinkTool copy = duplicate();
+        copy.uri = uri;
+        return copy;
+    }
+
+
+    /**
+     * This is just to avoid duplicating this code for both copyWith() methods
+     */
+    private LinkTool duplicate()
+    {
+        try
+        {
+            return (LinkTool)this.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            Velocity.warn("LinkTool: could not clone " + getClass() + " - " + e);
+
+            // "clone" manually
+            LinkTool copy;
+            try
+            {
+                // one last try for a subclass instance...
+                copy = (LinkTool)getClass().newInstance();
+            }
+            catch (Exception ee)
+            {
+                // fine, we'll use the base class
+                copy = new LinkTool();
+            }
+            copy.application = this.application;
+            copy.request = this.request;
+            copy.response = this.response;
+            copy.uri = this.uri;
+            copy.queryData = this.queryData;
+            return copy;
+        }
+    }
+
+
+    // --------------------------------------------- ViewTool Interface -------
+
     /**
      * Initializes this tool.
      *
@@ -155,133 +244,7 @@ public class LinkTool implements ViewTool
     }
 
 
-    /**
-     * For internal use.
-     *
-     * Copies 'that' LinkTool into this one and adds the new query data.
-     *
-     * @param that a reference to a link tool
-     * @param pair the query parameter to add
-     */
-    private LinkTool(LinkTool that, QueryPair pair)
-    {
-        this.request = that.request;
-        this.response = that.response;
-        this.application = that.application;    
-        this.uri = that.uri;
-        if (that.queryData != null)
-        {
-            //set this query data to a shallow clone of that query data
-            this.queryData = (ArrayList)that.queryData.clone();
-        }
-        else
-        {
-            this.queryData = new ArrayList();
-        }
-        //add new pair to this LinkTool's query data
-        this.queryData.add(pair);
-    }
-
-
-    /**
-     * For internal use.
-     *
-     * Copies 'that' LinkTool into this one and sets the new URI.
-     *
-     * @param that a reference to a link tool
-     * @param uri uri string
-     */
-    private LinkTool(LinkTool that, String uri)
-    {
-        this.request = that.request;
-        this.response = that.response;
-        this.application = that.application;    
-        //set to new uri
-        this.uri = uri;
-        //we don't need to clone here, this was not changed
-        this.queryData = that.queryData;
-    }
-
-    
-
-    
-    // --------------------------------------------- View Helpers -------------
-
-
-    /**
-     * <p>Returns a copy of the link with the given URI reference set. 
-     * No conversions are applied to the given URI reference. The URI 
-     * reference can be absolute, server-relative, relative and may
-     * contain query parameters. This method will overwrite any 
-     * previous URI reference settings but will copy the query 
-     * string.</p>
-     *
-     * <p>Note: It is Struts' recommended practice to forward to
-     * actions or forwards, but not directly to templates as this
-     * bypasses the Struts controller. Consider using setAction() 
-     * or setForward() instead.</p>
-     * 
-     * @param uri URI reference to set
-     *
-     * @return a new instance of LinkTool
-     */
-    public LinkTool setURI(String uri)
-    {
-        return new LinkTool(this, uri);
-    }
-
-
-    /**
-     * <p>Returns a copy of the link with the given action name
-     * converted into a server-relative URI reference. This method 
-     * does not check if the specified action really is defined. 
-     * This method will overwrite any previous URI reference settings 
-     * but will copy the query string.</p>
-     *
-     * @param action an action path as defined in struts-config.xml
-     *
-     * @return a new instance of LinkTool
-     */
-    public LinkTool setAction(String action)
-    {
-        return new LinkTool(this, 
-            StrutsUtils.getActionMappingURL(application, request, action));
-    }
-    
-    
-    /**
-     * <p>Returns a copy of the link with the given global forward name
-     * converted into a server-relative URI reference. If the parameter 
-     * does not map to an existing global forward name, <code>null</code> 
-     * is returned. This method will overwrite any previous URI reference 
-     * settings but will copy the query string.</p>
-     *
-     * @param forward a global forward name as defined in struts-config.xml
-     *
-     * @return a new instance of LinkTool
-     */
-    public LinkTool setForward(String forward)
-    {
-        ActionForward mapping = StrutsUtils.getActionForward(forward, application);
-        
-        if (mapping == null)
-        {
-            Velocity.warn("In method setForward(" + forward + "): Parameter does not map to a valid forward.");
-            return null;
-        }
-
-        String relPath = mapping.getPath();
-        if (relPath.startsWith("/"))
-        {
-            return new LinkTool(this, request.getContextPath() + relPath);
-        }
-        else
-        {
-            return new LinkTool(this, request.getContextPath() + "/" + relPath);
-        }        
-        
-    }
-        
+    // --------------------------------------------- Template Methods -----------
 
     /**
      * <p>Returns a copy of the link with the specified context-relative
@@ -290,7 +253,7 @@ public class LinkTool implements ViewTool
      * copy the query string.</p> 
      *
      * Example:<br>
-     * <code>&lt;a href='$link.setAbsolute("/templates/login/index.vm")'&gt;Login Page&lt;/a&gt;</code><br>
+     * <code>&lt;a href='$link.setRelative("/templates/login/index.vm")'&gt;Login Page&lt;/a&gt;</code><br>
      * produces something like</br>
      * <code>&lt;a href="/myapp/templates/login/index.vm"&gt;Login Page&lt;/a&gt;</code><br>
      *
@@ -299,32 +262,34 @@ public class LinkTool implements ViewTool
      *
      * @return a new instance of LinkTool
      */
-    public LinkTool setAbsolute(String uri)
+    public LinkTool setRelative(String uri)
     {
         if (uri.startsWith("/"))
         {
-            return new LinkTool(this, request.getContextPath() + uri);
+            return copyWith(request.getContextPath() + uri);
         }
         else
         {
-            return new LinkTool(this, request.getContextPath() + "/" + uri);
+            return copyWith(request.getContextPath() + '/' + uri);
         }        
     }
 
     
     /**
-     * <p>Adds a key=value pair to the query data. This returns a new LinkTool 
-     * containing both a copy of this LinkTool's query data and the new data.
-     * Query data is URL encoded before it is appended.</p>
-     *
-     * @param key key of new query parameter
-     * @param value value of new query parameter
+     * <p>Returns a copy of the link with the given URI reference set. 
+     * No conversions are applied to the given URI reference. The URI 
+     * reference can be absolute, server-relative, relative and may
+     * contain query parameters. This method will overwrite any 
+     * previous URI reference settings but will copy the query 
+     * string.</p>
+     * 
+     * @param uri URI reference to set
      *
      * @return a new instance of LinkTool
      */
-    public LinkTool addQueryData(String key, Object value)
+    public LinkTool setURI(String uri)
     {
-        return new LinkTool(this, new QueryPair(key, value));
+        return copyWith(uri);
     }
 
 
@@ -337,6 +302,22 @@ public class LinkTool implements ViewTool
     public String getURI()
     {
         return uri;
+    }
+
+
+    /**
+     * <p>Adds a key=value pair to the query data. This returns a new LinkTool 
+     * containing both a copy of this LinkTool's query data and the new data.
+     * Query data is URL encoded before it is appended.</p>
+     *
+     * @param key key of new query parameter
+     * @param value value of new query parameter
+     *
+     * @return a new instance of LinkTool
+     */
+    public LinkTool addQueryData(String key, Object value)
+    {
+        return copyWith(new QueryPair(key, value));
     }
 
     
@@ -355,7 +336,7 @@ public class LinkTool implements ViewTool
                 out.append(queryData.get(i));
                 if (i+1 < queryData.size())
                 {
-                    out.append('&');
+                    out.append(queryDataDelim);
                 }
             }
             return out.toString();
@@ -382,7 +363,7 @@ public class LinkTool implements ViewTool
         if ((scheme.equals("http") && port != 80) ||
             (scheme.equals("https") && port != 443))
         {
-            out.append(":");
+            out.append(':');
             out.append(port);
         }
         out.append(request.getContextPath());
@@ -444,12 +425,12 @@ public class LinkTool implements ViewTool
             if ( uri == null || uri.indexOf('?') < 0)
             {
                 // no query data yet, start query data with '?'    
-                out.append("?");
+                out.append('?');
             }
             else
             {
-                // there is already query data, delimiter is '&'
-                out.append("&");
+                // there is already query data, use data delimiter
+                out.append(queryDataDelim);
             }
             out.append(query);
         }
@@ -466,7 +447,7 @@ public class LinkTool implements ViewTool
      * Internal util class to handle representation and
      * encoding of key/value pairs in the query string
      */
-    final class QueryPair
+    protected final class QueryPair
     {
 
         private final String key;
@@ -498,6 +479,5 @@ public class LinkTool implements ViewTool
         }
     }
 
- 
-  
+
 }
