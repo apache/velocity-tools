@@ -73,7 +73,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * ServletRequest should have its own instance.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.1 $ $Date: 2003/03/05 06:13:03 $
+ * @version $Revision: 1.2 $ $Date: 2003/03/20 05:55:09 $
  */
 
 public class ParameterParser implements ViewTool
@@ -153,6 +153,19 @@ public class ParameterParser implements ViewTool
 
 
     // ----------------- public parsing methods --------------------------
+
+
+    /**
+     * Convenience method for checking whether a certain parameter exists.
+     *
+     * @param key the parameter's key
+     * @return <code>true</code> if a parameter exists for the specified
+     *         key; otherwise, returns <code>false</code>.
+     */
+    public boolean exists(String key)
+    {
+        return (getString(key) != null);
+    }
 
 
     /**
