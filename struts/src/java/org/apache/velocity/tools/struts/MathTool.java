@@ -1,4 +1,6 @@
 /*
+ * ====================================================================
+ * 
  * The Apache Software License, Version 1.1
  *
  * Copyright (c) 2001 The Apache Software Foundation.  All rights
@@ -51,6 +53,7 @@
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
+
 package org.apache.velocity.tools.struts;
 
 import org.apache.velocity.tools.view.context.ViewContext;
@@ -62,6 +65,8 @@ import org.apache.velocity.tools.view.tools.ContextTool;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabriel Sidler</a>, based on
  *   code from <a href="mailto:ebr@tcdi.com">Eric B. Ridge</a>.
+ *
+ * @version $Revision: 1.4 $ $Date: 2002/01/12 07:28:30 $
  */
 
 public class MathTool implements ContextTool 
@@ -76,34 +81,88 @@ public class MathTool implements ContextTool
     
     // -------------------------------------------- Public Utility Methods ----
 
-    /** the value of PI, as defined by <code>java.lang.Math.PI</code> */
+    /** 
+     * The value of PI, as defined by <code>java.lang.Math.PI</code> 
+     */
     public static final double PI = java.lang.Math.PI;
 
-    public static final double pi() { return java.lang.Math.PI; }
-    
+    /** 
+     * @return The value of PI, as defined by <code>java.lang.Math.PI</code> 
+     */
+    public static final double pi() 
+    { 
+        return java.lang.Math.PI; 
+    }
     
     /**
      * @return the smaller of the specified number
      */
-    public static final int min (int a, int b)          { return (a<b)?a:b; }
-    public static final long min (long a, long b)       { return (a<b)?a:b; }
-    public static final float min (float a, float b)    { return (a<b)?a:b; }
-    public static final double min (double a, double b) { return (a<b)?a:b; }
+    public static final int min(int a, int b)
+    { 
+        return (a<b)?a:b; 
+    }
     
+    /**
+     * @return the smaller of the specified number
+     */
+    public static final long min(long a, long b)
+    { 
+        return (a<b)?a:b;
+    }
+    
+    /**
+     * @return the smaller of the specified number
+     */
+    public static final float min(float a, float b)
+    { 
+        return (a<b)?a:b; 
+    }
+        
+    /**
+     * @return the smaller of the specified number
+     */
+    public static final double min(double a, double b)
+    { 
+        return (a<b)?a:b; 
+    }
     
     /**
      * @return the larger of the specified number
      */
-    public static final int max (int a, int b)          { return (a>b)?a:b; }
-    public static final long max (long a, long b)       { return (a>b)?a:b; }
-    public static final float max (float a, float b)    { return (a>b)?a:b; }
-    public static final double max (double a, double b) { return (a>b)?a:b; }
+    public static final int max(int a, int b)
+    { 
+        return (a>b)?a:b; 
+    }
+    
+    /**
+     * @return the larger of the specified number
+     */
+    public static final long max(long a, long b)
+    { 
+        return (a>b)?a:b; 
+    }
+    
+    /**
+     * @return the larger of the specified number
+     */
+    public static final float max(float a, float b)
+    { 
+        return (a>b)?a:b;
+    }
+    
+    /**
+     * @return the larger of the specified number
+     */
+    public static final double max(double a, double b)
+    { 
+        return (a>b)?a:b;
+    }
     
     /**
      * Creates a pseudo-random Integer between <code>start</code>
      * and <code>end</code>, inclusive
      */
-    public static final int random (int start, int end)
+    public static final int random(int start, int end)
     {
         return start+((int) (1000000.0*java.lang.Math.random()) % end);
     }
@@ -111,53 +170,96 @@ public class MathTool implements ContextTool
     /**
      * @return <code>base</code> raised to the specified <code>power</code>
      */
-    public static final int pow (int base, int power) { return (int)java.lang.Math.pow(base, power); }
-    public static final long pow (long base, long power) { return (long)java.lang.Math.pow(base, power); }
-    public static final float pow (float base, float power) { return (float)java.lang.Math.pow(base, power); }
-    public static final double pow (double base, double power) { return java.lang.Math.pow(base, power); }
-
+    public static final int pow(int base, int power) 
+    { 
+        return (int)java.lang.Math.pow(base, power);
+    }
     
+    /**
+     * @return <code>base</code> raised to the specified <code>power</code>
+     */
+    public static final long pow(long base, long power) 
+    { 
+        return (long)java.lang.Math.pow(base, power);
+    }
+    
+    /**
+     * @return <code>base</code> raised to the specified <code>power</code>
+     */
+    public static final float pow(float base, float power)
+    { 
+        return (float)java.lang.Math.pow(base, power); 
+    }
+    
+    /**
+     * @return <code>base</code> raised to the specified <code>power</code>
+     */
+    public static final double pow(double base, double power) 
+    { 
+        return java.lang.Math.pow(base, power); 
+    }
     
     /**
      * @return the absolute value of the specified number
      */
-    public static final int abs (int a)       { return java.lang.Math.abs (a); }
-    public static final long abs (long a)     { return java.lang.Math.abs (a); }
-    public static final float abs (float a)   { return java.lang.Math.abs (a); }
-    public static final double abs (double a) { return java.lang.Math.abs (a); }
+    public static final int abs(int a)
+    { 
+        return java.lang.Math.abs(a); 
+    }
     
+    /**
+     * @return the absolute value of the specified number
+     */
+    public static final long abs(long a)
+    { 
+        return java.lang.Math.abs(a); 
+    }
     
+    /**
+     * @return the absolute value of the specified number
+     */
+    public static final float abs(float a)
+    { 
+        return java.lang.Math.abs(a); 
+    }
+    
+    /**
+     * @return the absolute value of the specified number
+     */
+    public static final double abs(double a)
+    { 
+        return java.lang.Math.abs(a); 
+    }
+        
     /**
      * @return <code>a</code> modulo <code>b</code>
      */
-    public static final int mod (int a, int b) 
+    public static final int mod(int a, int b) 
     { 
         return a%b; 
     }
 
     
-    
     // -------------------------------------------- Constructors -------------
     
-    /** default contsructor.  Does nothing */
-    public MathTool () 
+    /** 
+     * Default contsructor. Does nothing.
+     */
+    public MathTool() 
     {
     }
-
 
 
     // -------------------------------------------- ContextTool Methods -------
 
     /**
-     * Tool initialization method.  The MathTool doesn't interact with the 
+     * Tool initialization method. The MathTool doesn't interact with the 
      * context, so the <code>context</code> parameter is ignored.
      */
-    public Object init( ViewContext context)
+    public Object init(ViewContext context)
     {
         return MathTool._instance;
     }
-
-
 
     /**
      * Perform necessary cleanup work
