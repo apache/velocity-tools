@@ -14,14 +14,14 @@
 
         <p>
         VelocityStruts includes four view tools that provide access
-        to Struts resources from within Velocity templates. This page is the 
+        to Struts resources from within Velocity templates. This page is the
         starting point to the reference documentation for the view tools.
-        Primary audience are the template designers.</p> 
-               
+        Primary audience are the template designers.</p>
+
         <p>
         Velocity for Struts currently supports the follwing four tools:
         </p>
-        
+
         <p>
         <strong><a href="MessageTool.html">MessageTool</a></strong><br />
         Provides access to the Struts message resources for internationalized output.
@@ -34,20 +34,27 @@
 
         <p>
         <strong><a href="FormTool.html">FormTool</a></strong><br />
-        Provides miscellaneous methods to work with forms and form beans in the context 
+        Provides miscellaneous methods to work with forms and form beans in the context
         of Struts applications.
         </p>
 
         <p>
         <strong><a href="StrutsLinkTool.html">StrutsLinkTool</a></strong><br />
-        Provides methods to work with URIs.
+        Extends <a href="../view/LinkTool.html">LinkTool</a> to to add methods
+        for working with Struts' Actions and Forwards.
         </p>
-        
+
+        <p>
+        <strong><a href="SecureLinkTool.html">SecureLinkTool</a></strong><br />
+        Has the same interface as <a href="StrutsLinkTool.html">StrutsLinkTool</a>
+        and should substitute it when using the SSL Ext. extension for Struts.
+        </p>
+
         <p>
         <strong>ActionMessagesTool</strong><br/>
         Provides methods to work with Struts action messages, a new feature in the
         upcoming 1.1. release. Will be added shortly.  For the present, an initial
-        version of this class can be found in CVS under 
+        version of this class can be found in CVS under
         "whiteboard/nathan/ActionMessagesTool.java"
         </p>
 
