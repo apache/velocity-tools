@@ -54,12 +54,12 @@
     <servlet-class>org.apache.velocity.tools.view.servlet.VelocityViewServlet</servlet-class>
 
     <init-param>
-      <param-name>toolbox</param-name>
+      <param-name>org.apache.velocity.toolbox</param-name>
       <param-value>/WEB-INF/toolbox.xml</param-value>
    </init-param>
 
     <init-param>
-      <param-name>properties</param-name>
+      <param-name>org.apache.velocity.properties</param-name>
       <param-value>/WEB-INF/velocity.properties</param-value>
    </init-param>
 
