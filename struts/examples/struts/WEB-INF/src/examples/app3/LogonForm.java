@@ -73,15 +73,16 @@ import org.apache.struts.action.ActionMapping;
  * </ul>
  *
  * @author Ted Husted
- * @version $Revision: 1.1 $ $Date: 2002/01/03 20:21:21 $
+ * @version $Revision: 1.2 $ $Date: 2002/01/09 11:25:43 $
  */
 
-public final class LogonForm extends ActionForm {
+public final class LogonForm extends ActionForm 
+{
 
 
 
 
-// ------------------------------------------------ Instance Variables
+    // ------------------------------------------------ Instance Variables
 
 
     /**
@@ -96,14 +97,15 @@ public final class LogonForm extends ActionForm {
     private String username = null;
 
 
-// ------------------------------------------------------ Properties
+    // ------------------------------------------------------ Properties
 
     /**
      * Return the password.
      */
-    public String getPassword() {
+    public String getPassword() 
+    {
 
-  return (this.password);
+        return (this.password);
 
     }
 
@@ -113,7 +115,8 @@ public final class LogonForm extends ActionForm {
      *
      * @param password The new password
      */
-    public void setPassword(String password) {
+    public void setPassword(String password) 
+    {
 
         this.password = password;
 
@@ -123,9 +126,10 @@ public final class LogonForm extends ActionForm {
     /**
      * Return the username.
      */
-    public String getUsername() {
+    public String getUsername() 
+    {
 
-  return (this.username);
+        return (this.username);
 
     }
 
@@ -135,14 +139,15 @@ public final class LogonForm extends ActionForm {
      *
      * @param username The new username
      */
-    public void setUsername(String username) {
+    public void setUsername(String username) 
+    {
 
         this.username = username;
 
     }
 
 
-// -------------------------------------------------- Public Methods
+    // -------------------------------------------------- Public Methods
 
 
     /**
@@ -152,7 +157,8 @@ public final class LogonForm extends ActionForm {
      * @param request The servlet request we are processing
      */
     public void reset(ActionMapping mapping,
-        HttpServletRequest request) {
+        HttpServletRequest request) 
+    {
 
         setPassword(null);
         setUsername(null);
@@ -167,17 +173,16 @@ public final class LogonForm extends ActionForm {
      * @param request The servlet request we are processing
      */
     public ActionErrors validate(ActionMapping mapping,
-                                 HttpServletRequest request) {
+                                 HttpServletRequest request) 
+    {
 
         ActionErrors errors = new ActionErrors();
 
         if ((username == null) || (username.length() < 1))
-            errors.add("username",
-                new ActionError("error.username.required"));
+            errors.add("username", new ActionError("error.username.required"));
 
         if ((password == null) || (password.length() < 1))
-            errors.add("password",
-                new ActionError("error.password.required"));
+            errors.add("password", new ActionError("error.password.required"));
 
         return errors;
 

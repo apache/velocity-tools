@@ -19,7 +19,7 @@ import org.apache.struts.action.ActionMapping;
  * <p>A simple form that allows a user to enter and modify an address.</p>
  *
  * @author <a href="mailto:sidler@teamup.com"/>Gabe Sidler</a>
- * @version $Id: AddressForm.java,v 1.1 2002/01/03 20:21:20 geirm Exp $
+ * @version $Id: AddressForm.java,v 1.2 2002/01/09 11:25:43 sidler Exp $
  */
 
 public final class AddressForm extends ActionForm 
@@ -134,7 +134,8 @@ public final class AddressForm extends ActionForm
      * @param mapping The mapping used to select this instance
      * @param request The servlet request we are processing
      */
-    public void reset(ActionMapping mapping, HttpServletRequest request) {
+    public void reset(ActionMapping mapping, HttpServletRequest request) 
+    {
 
         action = "";
         language = "";

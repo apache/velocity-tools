@@ -42,17 +42,18 @@ import org.apache.struts.util.MessageResources;
  * 
  *
  * @author <a href="mailto:sidler@teamup.com"/>Gabe Sidler</a>
- * @version $Id: AddressAction.java,v 1.1 2002/01/03 20:21:20 geirm Exp $
+ * @version $Id: AddressAction.java,v 1.2 2002/01/09 11:25:43 sidler Exp $
  */
-public class AddressAction extends Action {
+public class AddressAction extends Action 
+{
 
 
 
 
     // --------------------------------------------------------- Public Methods
 
-	/**
-	 * Handle server requests.
+    /**
+     * Handle server requests.
      *
      * @param mapping The ActionMapping used to select this instance
      * @param actionForm The optional ActionForm bean for this request (if any)
@@ -61,7 +62,7 @@ public class AddressAction extends Action {
      *
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet exception occurs
-	 */
+     */
     public ActionForward perform(ActionMapping mapping,
                                  ActionForm form,
                                  HttpServletRequest request,
@@ -69,37 +70,37 @@ public class AddressAction extends Action {
                                  throws IOException, ServletException
     {
         String action;
-	    HttpSession session;
+        HttpSession session;
 
         ActionErrors errors = new ActionErrors();
 
         try
         {
-	        session = request.getSession();
-	
-	        // fetch action from form
-	        action = ((AddressForm)form).getAction();
+            session = request.getSession();
+    
+            // fetch action from form
+            action = ((AddressForm)form).getAction();
 
             servlet.log("[DEBUG] AddressAction at perform(): Action ist " + action);
 
-	        // Determine what to do
-	        if ( action.equals("edit") )
-	        {
+            // Determine what to do
+            if ( action.equals("edit") )
+            {
                 // forward to edit formular
-	            return (mapping.findForward("editAddress"));
-	
-	        }
-	        else if (action.equals("save"))
-	        {
-	            // check if an address bean exits already
-	            AddressBean bean = (AddressBean)session.getAttribute("address");
-	            
-	            if (bean == null)
-	            {
-	                bean = new AddressBean();
-	                session.setAttribute("address", bean);
-	            }
-	             
+                return (mapping.findForward("editAddress"));
+    
+            }
+            else if (action.equals("save"))
+            {
+                // check if an address bean exits already
+                AddressBean bean = (AddressBean)session.getAttribute("address");
+                
+                if (bean == null)
+                {
+                    bean = new AddressBean();
+                    session.setAttribute("address", bean);
+                }
+                 
                 // update bean with the new values submitted
                 bean.setFirstname( ((AddressForm)form).getFirstname() );
                 bean.setLastname( ((AddressForm)form).getLastname() );
@@ -109,20 +110,20 @@ public class AddressAction extends Action {
                 bean.setCountry( ((AddressForm)form).getCountry() );
 
                 // forward to list
-	            return (mapping.findForward("showAddress"));
-	
-	        }
-	        else
-	        {
-	            String language = ((AddressForm)form).getLanguage();
-	            if (language.equals("Deutsch"))
+                return (mapping.findForward("showAddress"));
+    
+            }
+            else
+            {
+                String language = ((AddressForm)form).getLanguage();
+                if (language.equals("Deutsch"))
                     session.setAttribute(Action.LOCALE_KEY, new Locale("de", ""));
                 else
                     session.setAttribute(Action.LOCALE_KEY, new Locale("en", ""));
                 
                 // forward to edit formular
-	            return (mapping.findForward("showAddress"));	            
-	        }
+                return (mapping.findForward("showAddress"));                
+            }
         }
         catch (Exception e)
         {
@@ -132,8 +133,8 @@ public class AddressAction extends Action {
 
         }
 
-		// Default if everthing else fails
-		return (mapping.findForward("showAddress"));
+        // Default if everthing else fails
+        return (mapping.findForward("showAddress"));
 
     }
 }

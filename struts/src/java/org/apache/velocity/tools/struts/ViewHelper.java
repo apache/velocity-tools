@@ -1,7 +1,7 @@
 /*
- * $Header: /home/cvs/jakarta-velocity-tools/struts/src/java/org/apache/velocity/tools/struts/Attic/ViewHelper.java,v 1.1 2002/01/03 20:21:28 geirm Exp $
- * $Revision: 1.1 $
- * $Date: 2002/01/03 20:21:28 $
+ * $Header: /home/cvs/jakarta-velocity-tools/struts/src/java/org/apache/velocity/tools/struts/Attic/ViewHelper.java,v 1.2 2002/01/09 11:25:44 sidler Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/01/09 11:25:44 $
  *
  * ====================================================================
  *
@@ -86,7 +86,7 @@ import org.apache.struts.action.*; // expediancy
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>, based
  * on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Revision: 1.1 $ $Date: 2002/01/03 20:21:28 $
+ * @version $Revision: 1.2 $ $Date: 2002/01/09 11:25:44 $
  */
 public class ViewHelper
 {

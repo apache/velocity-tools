@@ -19,10 +19,11 @@ import org.apache.struts.action.ActionMapping;
  * <p>A simple bean that represent an address record.</p>
  *
  * @author <a href="mailto:sidler@teamup.com"/>Gabe Sidler</a>
- * @version $Id: AddressBean.java,v 1.1 2002/01/03 20:21:20 geirm Exp $
+ * @version $Id: AddressBean.java,v 1.2 2002/01/09 11:25:43 sidler Exp $
  */
 
-public class AddressBean extends Object {
+public class AddressBean extends Object 
+{
 
 
     // ---- Fields ------------------------------------------------------

@@ -127,7 +127,10 @@ public class MathTool implements ContextTool
     /**
      * @return <code>a</code> modulo <code>b</code>
      */
-    public static final int mod (int a, int b) { return a%b; }
+    public static final int mod (int a, int b) 
+    { 
+        return a%b; 
+    }
 
     
     

@@ -79,10 +79,11 @@ import org.apache.struts.util.MessageResources;
  *
  * @author Craig R. McClanahan
  * @author Ted Husted
- * @version $Revision: 1.1 $ $Date: 2002/01/03 20:21:21 $
+ * @version $Revision: 1.2 $ $Date: 2002/01/09 11:25:43 $
  */
 
-public final class LogonAction extends Action {
+public final class LogonAction extends Action 
+{
 
 
 // ---------------------------------------------------- Public Methods
@@ -100,10 +101,11 @@ public final class LogonAction extends Action {
      * @exception ServletException if a servlet exception occurs
      */
     public ActionForward perform(ActionMapping mapping,
-         ActionForm form,
-         HttpServletRequest request,
-         HttpServletResponse response)
-  throws IOException, ServletException {
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response)
+                                 throws IOException, ServletException 
+    {
 
       String username = ((LogonForm) form).getUsername();
       String password = ((LogonForm) form).getPassword();
@@ -114,7 +116,8 @@ public final class LogonAction extends Action {
       session.setAttribute(Constants.USER_KEY, form);
 
       // Log this event, if appropriate
-      if (servlet.getDebug() >= Constants.DEBUG) {
+      if (servlet.getDebug() >= Constants.DEBUG) 
+      {
           StringBuffer message =
             new StringBuffer("LogonAction: User '");
           message.append(username);
@@ -128,6 +131,5 @@ public final class LogonAction extends Action {
       return (mapping.findForward(Constants.CONTINUE));
 
   }
-
 
 }

@@ -71,10 +71,11 @@ import java.util.Iterator;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: StrutsHtmlTool.java,v 1.1 2002/01/03 20:21:28 geirm Exp $
+ * @version $Id: StrutsHtmlTool.java,v 1.2 2002/01/09 11:25:44 sidler Exp $
  * 
  */
-public class StrutsHtmlTool implements ContextTool {
+public class StrutsHtmlTool implements ContextTool 
+{
 
 
     // --------------------------------------------- Private Properties -------
@@ -106,7 +107,8 @@ public class StrutsHtmlTool implements ContextTool {
      * @author Luis Arias <luis@elysia.com>
      * @author Ted Husted
      */
-    public String baseRef() {
+    public String baseRef() 
+    {
 
         if (request==null) return null;
 
@@ -114,13 +116,16 @@ public class StrutsHtmlTool implements ContextTool {
         result.append(request.getScheme());
         result.append("://");
         result.append(request.getServerName());
-        if ("http".equals(request.getScheme()) &&
-            (80 == request.getServerPort())) {
+        if ("http".equals(request.getScheme()) && (80 == request.getServerPort())) 
+        {
             ;
-        } else if ("https".equals(request.getScheme()) &&
-                   (443 == request.getServerPort())) {
+        } 
+        else if ("https".equals(request.getScheme()) && (443 == request.getServerPort())) 
+        {
             ;
-        } else {
+        } 
+        else 
+        {
             result.append(":");
             result.append(request.getServerPort());
         }
@@ -133,7 +138,8 @@ public class StrutsHtmlTool implements ContextTool {
     /**
      * Return the number of error messages.
      */
-    public int errorSize() {
+    public int errorSize() 
+    {
 
         ActionErrors actionErrors = ContextHelper.getActionErrors(request);
 
@@ -147,7 +153,8 @@ public class StrutsHtmlTool implements ContextTool {
     /**
      * Return true if there are no errors queued
      */
-    public boolean errorsEmpty() {
+    public boolean errorsEmpty() 
+    {
 
         ActionErrors actionErrors = ContextHelper.getActionErrors(request);
 
@@ -161,7 +168,8 @@ public class StrutsHtmlTool implements ContextTool {
     /**
      * Return the error messages
      */
-    public Iterator errors() {
+    public Iterator errors() 
+    {
 
         ActionErrors actionErrors = ContextHelper.getActionErrors(request);
 
@@ -177,7 +185,8 @@ public class StrutsHtmlTool implements ContextTool {
      *
      * @param property Property name
      */
-    public Iterator errors(String property) {
+    public Iterator errors(String property) 
+    {
 
         ActionErrors actionErrors = ContextHelper.getActionErrors(request);
 
@@ -193,7 +202,8 @@ public class StrutsHtmlTool implements ContextTool {
      *
      * @param property Property name
      */
-    public int errorSize(String property) {
+    public int errorSize(String property) 
+    {
 
         ActionErrors actionErrors = ContextHelper.getActionErrors(request);
 
@@ -209,7 +219,8 @@ public class StrutsHtmlTool implements ContextTool {
      *
      * @param property Property name
      */
-    public String errorOutput(String property) {
+    public String errorOutput(String property) 
+    {
 
         ActionErrors errors = ContextHelper.getActionErrors(request);
 
@@ -234,15 +245,18 @@ public class StrutsHtmlTool implements ContextTool {
 
        // Render header if this is a global tag or there is an error for this property
        boolean propertyMsgPresent = reports.hasNext();
-       if ((message != null)&&(property == null) || propertyMsgPresent) {
+       if ((message != null)&&(property == null) || propertyMsgPresent) 
+       {
            results.append(message);
            results.append("\r\n");
        }
 
-        while (reports.hasNext()) {
+        while (reports.hasNext()) 
+        {
             ActionError report = (ActionError) reports.next();
             message = getMessage( report.getKey(), report.getValues());
-            if (message != null) {
+            if (message != null) 
+            {
                 results.append(message);
                 results.append("\r\n");
             }
@@ -251,7 +265,8 @@ public class StrutsHtmlTool implements ContextTool {
         if (footerPresent)
             message = getMessage("errors.footer");
 
-        if ((message != null)&&(property == null) || propertyMsgPresent) {
+        if ((message != null)&&(property == null) || propertyMsgPresent) 
+        {
             results.append(message);
             results.append("\r\n");
         }
@@ -265,7 +280,8 @@ public class StrutsHtmlTool implements ContextTool {
     /**
      * Wrapper for getErrorMarkup(null)
      */
-    public String errorMarkup() {
+    public String errorMarkup() 
+    {
         return errorOutput((String) null);
     }
 
@@ -273,23 +289,28 @@ public class StrutsHtmlTool implements ContextTool {
     /**
      * Return the form action converted into a server-relative URL.
      */
-    public String actionMappingURL(String action) {
+    public String actionMappingURL(String action) 
+    {
 
         StringBuffer value = new StringBuffer(this.request.getContextPath());
 
         // Use our servlet mapping, if one is specified
         String servletMapping = ContextHelper.getServletMapping(application);
 
-        if (servletMapping != null) {
+        if (servletMapping != null) 
+        {
             String queryString = null;
             int question = action.indexOf("?");
             if (question >= 0)
                 queryString = action.substring(question);
             String actionMapping = getActionMappingName(action);
-            if (servletMapping.startsWith("*.")) {
+            if (servletMapping.startsWith("*.")) 
+            {
                 value.append(actionMapping);
                 value.append(servletMapping.substring(1));
-            } else if (servletMapping.endsWith("/*")) {
+            } 
+            else if (servletMapping.endsWith("/*")) 
+            {
                 value.append(servletMapping.substring
                              (0, servletMapping.length() - 2));
                 value.append(actionMapping);
@@ -300,7 +321,8 @@ public class StrutsHtmlTool implements ContextTool {
 
         // Otherwise, assume extension mapping is in use and extension is
         // already included in the action property
-        else {
+        else 
+        {
             if (!action.startsWith("/"))
                 value.append("/");
             value.append(action);
@@ -318,7 +340,8 @@ public class StrutsHtmlTool implements ContextTool {
      *
      * @param name Name given to local or global forward.
      */
-     public String link(String name) {
+     public String link(String name) 
+     {
 
         ActionForward forward = ContextHelper.getActionForward(name, application);
         if (forward == null)
@@ -349,7 +372,8 @@ public class StrutsHtmlTool implements ContextTool {
      *     slash is prepended.</li>
      * </ul>
      */
-    private String getActionMappingName(String action) {
+    private String getActionMappingName(String action)
+    {
 
         String value = action;
         int question = action.indexOf("?");
@@ -373,8 +397,8 @@ public class StrutsHtmlTool implements ContextTool {
      *
      * @param key Message key
      */
-    private String getMessage(String key) {
-
+    private String getMessage(String key) 
+    {
         MessageResources resources = ContextHelper.getMessageResources(application);
         if (resources == null)
             return null;
@@ -389,11 +413,13 @@ public class StrutsHtmlTool implements ContextTool {
      * @param key Message key to be looked up and returned
      * @param args Replacement parameters for this message
      */
-    public String getMessage(String key, Object args[]) {
+    public String getMessage(String key, Object args[]) 
+    {
 
         MessageResources resources = ContextHelper.getMessageResources(application);
 
-        if (resources == null) return null;
+        if (resources == null) 
+            return null;
 
         // Return the requested message
         if (args == null)
@@ -410,7 +436,8 @@ public class StrutsHtmlTool implements ContextTool {
      *
      * @param key Message key
      */
-    private boolean isMessage(String key) {
+    private boolean isMessage(String key) 
+    {
 
         // Look up the requested MessageResources
         MessageResources resources = ContextHelper.getMessageResources(application);
