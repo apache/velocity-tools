@@ -57,6 +57,7 @@ package org.apache.velocity.tools.view.servlet;
 
 
 import org.apache.velocity.tools.view.ViewToolInfo;
+import org.apache.velocity.tools.view.context.ViewContext;
 
 
 /**
@@ -85,17 +86,17 @@ import org.apache.velocity.tools.view.ViewToolInfo;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: ServletToolInfo.java,v 1.4 2003/07/22 18:31:30 nbubna Exp $
+ * @version $Id: ServletToolInfo.java,v 1.5 2003/07/30 22:03:38 nbubna Exp $
  */
 public class ServletToolInfo extends ViewToolInfo
 {
 
-    /** @deprecated use ServletToolboxManager.REQUEST_SCOPE */
-    public static final String REQUEST_SCOPE = ServletToolboxManager.REQUEST_SCOPE;
-    /** @deprecated use ServletToolboxManager.SESSION_SCOPE */
-    public static final String SESSION_SCOPE = ServletToolboxManager.SESSION_SCOPE;
-    /** @deprecated use ServletToolboxManager.APPLICATION_SCOPE */
-    public static final String APPLICATION_SCOPE = ServletToolboxManager.APPLICATION_SCOPE;
+    /** @deprecated use ViewContext.REQUEST */
+    public static final String REQUEST_SCOPE = ViewContext.REQUEST;
+    /** @deprecated use ViewContext.SESSION */
+    public static final String SESSION_SCOPE = ViewContext.SESSION;
+    /** @deprecated use ViewContext.APPLICATION */
+    public static final String APPLICATION_SCOPE = ViewContext.APPLICATION;
         
     private String scope;
 

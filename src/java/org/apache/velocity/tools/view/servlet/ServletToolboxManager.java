@@ -131,17 +131,13 @@ import org.apache.velocity.tools.view.servlet.ServletToolboxRuleSet;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ServletToolboxManager.java,v 1.5 2003/07/22 18:34:28 nbubna Exp $
+ * @version $Id: ServletToolboxManager.java,v 1.6 2003/07/30 22:04:00 nbubna Exp $
  * 
  */
 public class ServletToolboxManager extends XMLToolboxManager
 {
 
     // --------------------------------------------------- Properties ---------
-
-    public static final String REQUEST_SCOPE = "request";
-    public static final String SESSION_SCOPE = "session";
-    public static final String APPLICATION_SCOPE = "application";
 
     public static final String SESSION_TOOLS_KEY = 
         "org.apache.velocity.tools.view.tools.ServletToolboxManager.SessionTools";
@@ -290,28 +286,28 @@ public class ServletToolboxManager extends XMLToolboxManager
         }
         else if (info instanceof ServletToolInfo)
         {
-            ServletToolInfo stInfo = (ServletToolInfo)info;
+            ServletToolInfo sti = (ServletToolInfo)info;
             
-            if (REQUEST_SCOPE.equalsIgnoreCase(stInfo.getScope()))
+            if (ViewContext.REQUEST.equalsIgnoreCase(sti.getScope()))
             {
-                requestToolInfo.add(stInfo);
+                requestToolInfo.add(sti);
             }
-            else if (SESSION_SCOPE.equalsIgnoreCase(stInfo.getScope()))
+            else if (ViewContext.SESSION.equalsIgnoreCase(sti.getScope()))
             {
-                sessionToolInfo.add(stInfo);
+                sessionToolInfo.add(sti);
             }
-            else if (APPLICATION_SCOPE.equalsIgnoreCase(stInfo.getScope()))
+            else if (ViewContext.APPLICATION.equalsIgnoreCase(sti.getScope()))
             {
-                //add application scoped tools to appTools and
-                //initialize them with the ServletContext
-                appTools.put(stInfo.getKey(), stInfo.getInstance(servletContext));
+                /* add application scoped tools to appTools and
+                 * initialize them with the ServletContext */
+                appTools.put(sti.getKey(), sti.getInstance(servletContext));
             }
             else
             {
                 Velocity.warn("ServletToolboxManager: Unknown scope '" +
-                              stInfo.getScope() + "' - " + stInfo.getKey() + 
+                              sti.getScope() + "' - " + sti.getKey() + 
                               " will be request scoped.");
-                requestToolInfo.add(stInfo);
+                requestToolInfo.add(sti);
             }
         }
         else
