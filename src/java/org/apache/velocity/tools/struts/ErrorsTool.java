@@ -45,7 +45,7 @@ import org.apache.struts.action.ActionErrors;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Id: ErrorsTool.java,v 1.13 2004/03/12 20:50:38 nbubna Exp $
+ * @version $Id: ErrorsTool.java,v 1.14 2004/03/12 23:43:08 nbubna Exp $
  */
 public class ErrorsTool extends ActionMessagesTool
 {
@@ -61,7 +61,7 @@ public class ErrorsTool extends ActionMessagesTool
         //setup superclass instance members
         super.init(obj);
 
-        this.actionMsgs = StrutsUtils.getActionErrors(this.request);
+        this.actionMsgs = StrutsUtils.getErrors(this.request);
     }
 
 
