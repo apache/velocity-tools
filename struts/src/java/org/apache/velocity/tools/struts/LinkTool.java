@@ -66,6 +66,7 @@ import javax.servlet.ServletContext;
 import org.apache.struts.util.MessageResources;
 import org.apache.struts.action.*;
 
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
 
@@ -84,7 +85,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: LinkTool.java,v 1.7 2002/05/10 05:42:17 sidler Exp $
+ * @version $Id: LinkTool.java,v 1.8 2003/02/13 00:22:55 nbubna Exp $
  * 
  */
 public class LinkTool implements ViewTool
@@ -151,14 +152,6 @@ public class LinkTool implements ViewTool
         this.request = context.getRequest();
         this.response = context.getResponse();
         this.application = context.getServletContext();    
-    }
-    
-    
-    /**
-     * Log messages are sent to the servlet context
-     */
-    private void log(String s) {
-        application.log(s);
     }
 
 
@@ -273,7 +266,7 @@ public class LinkTool implements ViewTool
         
         if (mapping == null)
         {
-            log("[Warn] In method setForward(" + forward + "): Parameter does not map to a valid forward.");
+            Velocity.warn("In method setForward(" + forward + "): Parameter does not map to a valid forward.");
             return null;
         }
 
