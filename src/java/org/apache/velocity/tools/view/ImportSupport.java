@@ -85,9 +85,10 @@ import java.net.HttpURLConnection;
 /**
  * <p>Title: ImportSupport</p>
  * <p>Description: provides methods to import arbitrary resources as String</p>
+ * <p>Based on ImportSupport from the JSTL taglib by Shawn Bayern</p>
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @version $Revision: 1.1 $ $Date: 2003/10/30 00:02:35 $
+ * @version $Revision: 1.2 $ $Date: 2003/10/30 00:17:56 $
  */
 public abstract class ImportSupport {
 
