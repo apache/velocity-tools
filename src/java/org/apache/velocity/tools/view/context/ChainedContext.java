@@ -18,14 +18,13 @@ package org.apache.velocity.tools.view.context;
 
 import java.util.HashMap;
 
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.context.Context;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
 
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.context.Context;
 
 /**
  * <p>Velocity context implementation specific to the Servlet environment.</p>
@@ -61,46 +60,27 @@ import javax.servlet.ServletContext;
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ChainedContext.java,v 1.6 2004/02/18 20:07:58 nbubna Exp $ 
+ * @version $Id: ChainedContext.java,v 1.7 2004/04/15 20:25:34 nbubna Exp $ 
  */
 public class ChainedContext extends VelocityContext implements ViewContext
 {
 
-    /**
-     * A local reference to the current servlet request.
-     */ 
+    /* the current toolbox, request, response, and session */
+    private ToolboxContext toolboxContext;
     private HttpServletRequest request;
-    
-    /**
-     * A local reference to the current servlet response.
-     */
     private HttpServletResponse response;
-    
-    /**
-     * A local reference to the servlet session.
-     */
     private HttpSession session;
-    
-    /**
-     * A local reference to the servlet context.
-     */
+
+    /* the servlet context */
     private ServletContext application;
 
-    /**
-     * The toolbox. 
-     */ 
-    private ToolboxContext toolboxContext = null;
 
-
-    /**
-     * Default constructor.
-     */
-    public ChainedContext(Context ctx, 
+    public ChainedContext(Context ctx,
                           HttpServletRequest request,
                           HttpServletResponse response,
                           ServletContext application)
     {
-        super(null, ctx );
+        super(null, ctx);
 
         this.request = request;
         this.response = response;
@@ -116,28 +96,26 @@ public class ChainedContext extends VelocityContext implements ViewContext
      */
     public void setToolbox(ToolboxContext box)
     {
-        toolboxContext = box;
-        // just in case the servlet toolbox manager
-        // had to create a new session to hold session tools
-        // let's make sure this context's session ref is current
-        session = request.getSession(false);
+        this.toolboxContext = box;
+        /* just in case the servlet toolbox manager
+         * had to create a new session to hold session tools
+         * let's make sure this context's session ref is current */
+        this.session = request.getSession(false);
     }
 
 
     /**
      * <p>Looks up and returns the object with the specified key.</p>
-     * 
      * <p>See the class documentation for more details.</p>
      *
      * @param key the key of the object requested
-     * 
      * @return the requested object or null if not found
      */
     public Object internalGet( String key )
     {
         Object o = null;
 
-        // search the toolbox
+        /* search the toolbox */
         if (toolboxContext != null)
         {
             o = toolboxContext.get(key);
@@ -147,32 +125,32 @@ public class ChainedContext extends VelocityContext implements ViewContext
             }
         }
 
-        // make the four scopes of the Apocalypse Read only
-        if ( key.equals( REQUEST ))
+        /* make the four scopes of the Apocalypse Read only */
+        if (key.equals(REQUEST))
         {
             return request;
         }
-        else if( key.equals(RESPONSE) )
+        else if(key.equals(RESPONSE))
         {
             return response;
         }
-        else if ( key.equals(SESSION) )
+        else if (key.equals(SESSION))
         {
             return session;
         }
-        else if ( key.equals(APPLICATION))
+        else if (key.equals(APPLICATION))
         {
             return application;
         }
 
-        // try the local hashtable
+        /* try the local hashtable */
         o = super.internalGet(key);
         if (o != null)
         {
             return o;
         }
 
-        // if not found, wander down the scopes...
+        /* if not found, wander down the scopes... */
         return getAttribute(key);
     }
 
@@ -211,7 +189,6 @@ public class ChainedContext extends VelocityContext implements ViewContext
         return request;
     }
 
-
     /**
      * <p>Returns the current servlet response.</p>
      */
@@ -219,7 +196,6 @@ public class ChainedContext extends VelocityContext implements ViewContext
     {
         return response;
     }
-
 
     /**
      * <p>Returns the servlet context.</p>
@@ -229,7 +205,6 @@ public class ChainedContext extends VelocityContext implements ViewContext
         return application;
     }
 
-
     /**
      * <p>Returns a reference to the Velocity context (this object).</p>
      */
@@ -238,5 +213,4 @@ public class ChainedContext extends VelocityContext implements ViewContext
         return this;
     }
 
-
-}  // ChainedContext
+}
