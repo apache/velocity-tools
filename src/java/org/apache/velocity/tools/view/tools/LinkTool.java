@@ -86,7 +86,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: LinkTool.java,v 1.9 2003/08/02 20:43:37 nbubna Exp $
+ * @version $Id: LinkTool.java,v 1.10 2003/09/22 23:07:38 nbubna Exp $
  */
 public class LinkTool implements ViewTool, Cloneable
 {
@@ -315,6 +315,15 @@ public class LinkTool implements ViewTool, Cloneable
     public LinkTool setAnchor(String anchor)
     {
         return copyWithAnchor(anchor);
+    }
+
+
+    /**
+     * Returns the anchor (internal document reference) set for this link.
+     */
+    public String getAnchor()
+    {
+        return anchor;
     }
 
 
