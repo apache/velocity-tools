@@ -65,6 +65,7 @@ import javax.servlet.ServletContext;
 import org.apache.struts.util.MessageResources;
 import org.apache.struts.action.*;
 
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
 
@@ -83,7 +84,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
 
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ErrorsTool.java,v 1.5 2002/05/10 05:42:17 sidler Exp $
+ * @version $Id: ErrorsTool.java,v 1.6 2003/02/13 00:22:55 nbubna Exp $
  * 
  */
 public class ErrorsTool implements ViewTool
@@ -158,14 +159,6 @@ public class ErrorsTool implements ViewTool
         resources = StrutsUtils.getMessageResources(application);
         locale = StrutsUtils.getLocale(request, session);
         errors = StrutsUtils.getActionErrors(request);
-    }
-    
-    
-    /**
-     * Log messages are sent to the servlet context
-     */
-    private void log(String s) {
-        application.log(s);
     }
 
 
@@ -264,7 +257,7 @@ public class ErrorsTool implements ViewTool
         
         if (resources == null) 
         {
-            log("[ERROR] Message resources are not available.");
+            Velocity.error("Message resources are not available.");
             //FIXME? should we return the list of error keys instead?
             return null;
         }
@@ -299,7 +292,7 @@ public class ErrorsTool implements ViewTool
             else
             {
                 // if error message cannot be found for a key, return key instead
-                log("[WARN] Message for key " + errormsg.getKey() + " could not be found in message resources.");
+                Velocity.warn("Message for key " + errormsg.getKey() + " could not be found in message resources.");
                 list.add(errormsg.getKey());
             }
         }
