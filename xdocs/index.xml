@@ -3,7 +3,7 @@
 <document>
 
     <properties>
-        <title>Tools Sub-Project</title>
+        <title>VelocityTools Project</title>
         <author email="geirm@apache.org">Geir Magnusson Jr.</author>
         <author email="sidler@apache.org">Gabriel Sidler</author>
         <projectfile>xdocs/menu.xml</projectfile>
@@ -12,10 +12,19 @@
     <body>
     <section name="Overview">
         <p>
-        Velocity Tools is a collection of Velocity sub-projects with a common goal
+        VelocityTools is a collection of Velocity subprojects with a common goal
         of creating tools and infrastructure for building both web and non-web
         applications using the Velocity template engine.
         </p>
+
+        <subsection name="GenericTools" >
+            <p><a href="generic/">GenericTools</a> is a group of reuseable and 
+            documented tools that can be added to a Velocity context. A 
+            <b>tool</b> is simply a class which can perform various tasks when 
+            made available to the Velocity engine. Most tools are optimized for use
+            with an automatically managed toolbox (see VelocityViewServlet).</p>
+            <br clear="all" />
+        </subsection>
 
         <subsection name="VelocityView" >
             <p><a href="view/">VelocityView</a>
@@ -29,15 +38,6 @@
             <a href="view/layoutservlet.html">VelocityLayoutServlet</a> is an 
             extension of the basic VelocityViewServlet that can render screen 
             content into common layout templates.</p>
-            <br clear="all" />
-        </subsection>
-
-        <subsection name="Generic Tools" >
-            <p><a href="generic/">Generic Tools</a> is a group of reuseable and 
-            documented tools that can be added to a Velocity context. A 
-            <b>tool</b> is simply a class which can perform various tasks when 
-            made available to the Velocity engine. Most tools are optimized for use
-            with an automatically managed toolbox (see VelocityViewServlet).</p>
             <br clear="all" />
         </subsection>
 
@@ -65,7 +65,7 @@
     <section name="Download">
         <p><strong>Releases</strong></p>
         <p>
-          Velocity Tools 1.0 has been released and is available 
+          VelocityTools 1.0 has been released and is available 
           <a href="http://jakarta.apache.org/builds/jakarta-velocity-tools/">here</a>.
         </p>
 
@@ -78,7 +78,7 @@
     </section>
 
     <section name="CVS Repository">
-        <p>All Velocity Tools project code is maintained in the 
+        <p>All VelocityTools project code is maintained in the 
         CVS repository <b>jakarta-velocity-tools</b>.</p>
 
         <p>Web Browser: <a href="http://cvs.apache.org/viewcvs/jakarta-velocity-tools/">
@@ -90,9 +90,7 @@
     </section>
 
     <section name="Wanna help?">
-        <p>This project is still young and has a growing user base.  With the publicity 
-        of this first release, we expect the growth to increase significantly.
-        We would like to encourage interested developers to evaluate the project
+        <p>We encourage interested developers to evaluate the project
         and send feedback to the velocity-user or velocity-dev mailing list.</p>
         <p>Those interested in furthering the development of this project are
         especially welcome to jump in and help out.  Patches can be sent to the 

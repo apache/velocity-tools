@@ -18,10 +18,16 @@
     </menu>
 
     <menu name="VelocityView Tools">
-        <item name="LinkTool"              href="LinkTool.html"/>
-        <item name="ParameterParser"       href="ParameterParser.html"/>
-        <item name="ViewRenderTool"        href="../javadoc/org/apache/velocity/tools/view/tools/ViewRenderTool.html"/>
-        <item name="AbstractSearchTool"    href="../javadoc/org/apache/velocity/tools/view/tools/AbstractSearchTool.html"/>
+      <item name="AbstractSearchTool"    href="../javadoc/org/apache/velocity/tools/view/tools/AbstractSearchTool.html"/>
+      <item name="CookieTool"            href="../javadoc/org/apache/velocity/tools/view/tools/CookieTool.html"/>
+      <item name="LinkTool"              href="LinkTool.html"/>
+      <item name="ParameterParser"       href="ParameterParser.html"/>
+      <item name="ViewRenderTool"        href="../javadoc/org/apache/velocity/tools/view/tools/ViewRenderTool.html"/>
+    </menu>
+
+    <menu name="Other Subprojects">
+      <item name="GenericTools"   href="../generic/"/>
+      <item name="VelocityStruts" href="../struts/"/>
     </menu>
 
     <printerversion/>

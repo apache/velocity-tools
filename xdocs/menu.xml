@@ -17,9 +17,9 @@
           <item name="Report Issues"          href="http://issues.apache.org/bugzilla/enter_bug.cgi?product=Velocity&amp;component=Tools"/>
       </menu>
 
-      <menu name="Sub-projects">
+      <menu name="Subprojects">
+          <item name="GenericTools"           href="generic/"/>
           <item name="VelocityView"           href="view/"/>
-          <item name="Generic Tools"          href="generic/"/>
           <item name="VelocityStruts"         href="struts/"/>
       </menu>
     </body>

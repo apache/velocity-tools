@@ -1,9 +1,7 @@
 <?xml version="1.0"?>
-
 <document>
-
   <properties>
-    <title>Tools - View Servlet</title>
+    <title>VelocityView</title>
     <author email="sidler@apache.org">Gabriel Sidler</author>
     <author email="geirm@apache.org">Geir Magnusson Jr.</author>  
     <author email="nbubna@apache.org">Nathan Bubna</author>  
@@ -22,31 +20,33 @@
     </p>
     <p>Key features:</p>    
     <ul> 
-      <li><b>VelocityViewServlet class</b> - standalone servlet that renders Velocity 
+      <li><b><a href="../javadoc/org/apache/velocity/tools/view/servlet/VelocityViewServlet.html">VelocityViewServlet</a> 
+          class</b> - standalone servlet that renders Velocity 
           templates. Invoked directly from web clients requests, or via servlet 
           forwarding similar to how JSP files are rendered by JSPServlet.</li>
-      <li>Attributes from ServletRequest, HttpSession, and ServletContext 
-          (request, session, application scopes - respectively) are automatically 
-          made available to the template.</li>
-      <li>Tools can also be made available to the template, through a 
+      <li>The HttpServletRequest, HttpSession, ServletContext,
+          and their attributes are automatically available in your templates.</li>
+      <li>Tools can also be made available to your templates, through a 
           <strong>toolbox</strong> configuration file.</li>
+      <li>A number of useful, extendable tools for developing web applications are 
+          already provided for your convenience.</li>
       <li>Logging can be directed to the log infrastructure of the Web application. 
           (default is the logging facility provided by the Servlet API).</li>
     </ul>
        
-    <p>Using VelocityViewServlet, it becomes possible to write Web applications that 
+    <p>Using VelocityViewServlet, it becomes possible to write web applications that 
     are independent of a particular view technology. This opens a straightforward
     migration path between JSP pages and Velocity templates as the view layer
     technology in web applications.</p>
 
     <p>A typical application use-case is to provide the view rendering layer for 
-    a Servlet-based web application framework. The
+    a servlet-based web application framework. The
     <a href="../struts/">VelocityStruts</a> subproject 
     uses the approach to bring Velocity templates to the Struts application framework.</p>
   </section>
 
   <section name="Installation">
-    <p>The VelocityViewServlet needs to be installed into our servlet container 
+    <p>The VelocityViewServlet needs to be installed into your servlet container 
     so it can handle all request for *.vm (velocity template) files. There are 
     only two additional configuration files necessary, and they are shown in 
     detail below.</p>
@@ -161,14 +161,14 @@
       <i>session</i>, or <i>application</i> scopes of your web app.</p>
       <p>The scope that you set for your tool will determine both its
       lifecycle and, if it implements the 
-      <code>org.apache.velocity.tools.view.tools.ViewTool</code> interface,
-      then the scope will also determine what data is passed to the 
+      <a href="../javadoc/org/apache/velocity/tools/view/tools/ViewTool.html">ViewTool</a>
+      interface, then the scope will also determine what data is passed to the 
       <code>init(Object)</code> method:</p>
       <ul>
         <li><i>application</i> scoped tools will be instantiated only once and then
         reused for each request.  Due to this, it is <em>strongly</em> encouraged 
         that your application scoped tools be completely threadsafe.  The MathTool
-        in the Generic Tools section is a good example of tool meant to be application
+        in the <a href="../generic/">GenericTools</a> section is a good example of tool meant to be application
         scoped.  If an application scoped tool implements ViewTool, then the 
         javax.servlet.ServletContext for the webapp will be passed to its 
         <code>init(Object)</code> method after it is instantiated.</li>
@@ -176,8 +176,9 @@
         <li><i>session</i> scoped tools are instantiated once per unique session and
         are then reused for every request associated with that particular session. If
         a session scoped tool implements ViewTool, then its <code>init(Object)</code>
-        method will be passed the ViewContext of the request during which the session
-        was created.</li>
+        method will be passed the 
+        <a href="../javadoc/org/apache/velocity/tools/view/context/ViewContext.html">ViewContext</a>
+        of the request during which the session was created.</li>
 
         <li><i>request</i> is the default scope.  If no scope is specified for a 
         &lt;tool&gt; in your toolbox.xml, then it will be automatically set as 
@@ -242,6 +243,11 @@
     (ex. $screen_content). Next, the servlet loads a 'layout' file. It 
     uses the existing data, including any additional variables set or 
     changed by the first template, to render a the layout template.</p>
+    
+    <p>The VelocityLayoutServlet also allows you to specify an 'error'
+    template to be displayed when an exception is thrown during the
+    processing of a requested template.  This allows you to provide
+    a customized error screen for a more user-friendly application.</p>
 
     <p>Detailed documentation here: <a href="layoutservlet.html">VelocityLayoutServlet</a>.</p>
     <br clear="all" />
