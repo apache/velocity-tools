@@ -207,15 +207,15 @@
 &lt;toolbox&gt;
   &lt;data type=&quot;number&quot;&gt;
      &lt;key&gt;app_version&lt;/key&gt;
-     &lt;value&gt;0.9&lt;/class&gt;
+     &lt;value&gt;0.9&lt;/value&gt;
   &lt;/data&gt;
   &lt;data type=&quot;string&quot;&gt;
      &lt;key&gt;app_name&lt;/key&gt;
-     &lt;value&gt;Jon's Tool Shop&lt;/class&gt;
+     &lt;value&gt;Jon's Tool Shop&lt;/value&gt;
   &lt;/data&gt;
   &lt;data type=&quot;boolean&quot;&gt;
      &lt;key&gt;debug&lt;/key&gt;
-     &lt;value&gt;true&lt;/class&gt;
+     &lt;value&gt;true&lt;/value&gt;
   &lt;/data&gt;
 &lt;/toolbox&gt;</sourcecode>
 
