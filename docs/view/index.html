@@ -51,7 +51,7 @@
 </p>
 <ul>
         <li><a href="index.html">Overview</a></li>
-    <li><a href="index.html#Download">Download</a></li>
+    <li><a href="../index.html#Download">Download</a></li>
     <li><a href="index.html#Installation">Installation</a></li>
     <li><a href="index.html#VelocityLayoutServlet">LayoutServlet</a></li>
     <li><a href="index.html#Examples">Examples</a></li>
@@ -64,8 +64,8 @@
 <ul>
         <li><a href="LinkTool.html">LinkTool</a></li>
     <li><a href="ParameterParser.html">ParameterParser</a></li>
-    <li>ViewRenderTool</li>
-    <li>AbstractSearchTool</li>
+    <li><a href="../javadoc/org/apache/velocity/tools/view/tools/ViewRenderTool.html">ViewRenderTool</a></li>
+    <li><a href="../javadoc/org/apache/velocity/tools/view/tools/AbstractSearchTool.html">AbstractSearchTool</a></li>
 
 </ul>
 
@@ -87,10 +87,12 @@
   <tr>
     <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
     <td>
-      <p>VelocityViewServlet is a stand alone servlet that can render Velocity 
-       templates in Web applications. Web application developers can leverage 
-       this servlet to extend Servlet-based web application frameworks by using 
-       Velocity templates for the presentation layer.
+      <p>VelocityView provides support for rapidly and cleanly building web applications
+    using Velocity templates as the view layer.  The project is designed with the 
+    <a href="http://jakarta.apache.org/turbine/turbine-2.3/pullmodel.html">Pull-MVC Model</a>
+    in mind and works well in conjunction with web application frameworks that act
+    as the controller (e.g. <a href="../struts/index.html">Struts</a>), but can be used
+    quite effectively on its own for those creating simpler applications.
     </p>
 <p>Key features:</p>
 <ul> 
@@ -404,26 +406,6 @@
     simple.war file  to the webapps directory of your servlet runner and restart. 
     Now point a web browser at the following url:</p>
 <p><b>http://&lt;your_server&gt;:&lt;port&gt;/simple/</b></p>
-<br clear="all"/>
-
-    </td>
-  </tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="2" width="100%">
-  <tr>
-    <td colspan="2" bgcolor="#525D76">
-      <font color="#ffffff" face="arial,helvetica.sanserif">
-      <a name="Download">
-      <strong>Download</strong></a></font>
-    </td>
-  </tr>
-  <tr>
-    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
-    <td>
-      <p>Velocity for Struts is currently in a pre-release phase. Currently, only 
-    the source is available from the CVS repository. The VelocityViewServlet code, 
-    and examples are located in the jakarta-velocity-tools module in the 
-    /examples directory (ant build targets are provided for them).</p>
 <br clear="all"/>
 
     </td>
