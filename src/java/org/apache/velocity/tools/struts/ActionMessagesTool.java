@@ -69,8 +69,8 @@ import org.apache.velocity.tools.struts.StrutsUtils;
  * <p>View tool to work with the Struts action messages.</p>
  * <p><pre>
  * Template example(s):
- *   #if( $actionmsgs.exist() )
- *     #foreach( $e in $actionmsgs.all )
+ *   #if( $messages.exist() )
+ *     #foreach( $e in $messages.all )
  *       $e &lt;br&gt;
  *     #end
  *   #end
@@ -78,7 +78,7 @@ import org.apache.velocity.tools.struts.StrutsUtils;
  * Toolbox configuration:
  *
  * &lt;tool&gt;
- *   &lt;key&gt;actionmsgs&lt;/key&gt;
+ *   &lt;key&gt;messages&lt;/key&gt;
  *   &lt;scope&gt;request&lt;/scope&gt;
  *   &lt;class&gt;org.apache.velocity.tools.struts.ActionMessagesTool&lt;/class&gt;
  * &lt;/tool&gt;
@@ -89,7 +89,7 @@ import org.apache.velocity.tools.struts.StrutsUtils;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.1
- * @version $Id: ActionMessagesTool.java,v 1.6 2004/01/07 19:08:57 nbubna Exp $
+ * @version $Id: ActionMessagesTool.java,v 1.7 2004/02/12 23:59:37 nbubna Exp $
  */
 public class ActionMessagesTool extends MessageResourcesTool
 {
@@ -183,7 +183,7 @@ public class ActionMessagesTool extends MessageResourcesTool
     /**
      * <p>
      * This a convenience method and the equivalent of 
-     * <code>$actionmsgs.get($actionmsgs.globalName)</code>. 
+     * <code>$messages.get($messages.globalName)</code>. 
      * </p>
      * <p>
      * Returns the set of localized action messages as an 
