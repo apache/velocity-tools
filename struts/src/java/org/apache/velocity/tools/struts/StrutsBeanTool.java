@@ -71,7 +71,7 @@ import org.apache.velocity.tools.view.tools.ContextTool;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: StrutsBeanTool.java,v 1.2 2002/01/07 16:28:31 jon Exp $
+ * @version $Id: StrutsBeanTool.java,v 1.3 2002/01/09 11:25:44 sidler Exp $
  * 
  */
 public class StrutsBeanTool implements ContextTool

@@ -63,7 +63,7 @@ import org.apache.velocity.context.Context;
  *
  *  @author<a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ToolboxContext.java,v 1.1 2002/01/03 20:21:55 geirm Exp $ 
+ * @version $Id: ToolboxContext.java,v 1.2 2002/01/09 11:26:40 sidler Exp $ 
  */
 public class ToolboxContext extends VelocityContext
 {

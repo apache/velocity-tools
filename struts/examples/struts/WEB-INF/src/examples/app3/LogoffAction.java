@@ -78,13 +78,13 @@ import org.apache.struts.util.MessageResources;
  *
  * @author Craig R. McClanahan
  * @author Ted Husted
- * @version $Revision: 1.1 $ $Date: 2002/01/03 20:21:21 $
+ * @version $Revision: 1.2 $ $Date: 2002/01/09 11:25:43 $
  */
 
-public final class LogoffAction extends Action {
+public final class LogoffAction extends Action 
+{
 
-
-// ---------------------------------------------------- Public Methods
+    // ---------------------------------------------------- Public Methods
 
     /**
      * Logoff the user.
@@ -99,10 +99,11 @@ public final class LogoffAction extends Action {
      * @exception ServletException if a servlet exception occurs
      */
     public ActionForward perform(ActionMapping mapping,
-         ActionForm form,
-         HttpServletRequest request,
-         HttpServletResponse response)
-  throws IOException, ServletException {
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response)
+                                 throws IOException, ServletException 
+    {
 
       // Extract attributes we will need
       HttpSession session = request.getSession();
@@ -110,9 +111,11 @@ public final class LogoffAction extends Action {
         session.getAttribute(Constants.USER_KEY);
 
       // Log this user logoff
-      if (user != null) {
+      if (user != null) 
+      {
 
-        if (servlet.getDebug() >= Constants.DEBUG) {
+        if (servlet.getDebug() >= Constants.DEBUG) 
+        {
             StringBuffer message =
                 new StringBuffer("LogoffAction: User '");
             message.append(user.getUsername());
@@ -120,12 +123,13 @@ public final class LogoffAction extends Action {
             message.append(session.getId());
             servlet.log(message.toString());
         }
-
       }
 
-      else {
+      else 
+      {
 
-        if (servlet.getDebug() >= Constants.DEBUG) {
+        if (servlet.getDebug() >= Constants.DEBUG) 
+        {
             StringBuffer message =
                 new StringBuffer("LogoffAction: User '");
             message.append(session.getId());

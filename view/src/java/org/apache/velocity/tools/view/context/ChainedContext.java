@@ -111,7 +111,7 @@ import javax.servlet.ServletContext;
  *  @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  *  @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
 v *
- * @version $Id: ChainedContext.java,v 1.1 2002/01/03 20:21:55 geirm Exp $ 
+ * @version $Id: ChainedContext.java,v 1.2 2002/01/09 11:26:40 sidler Exp $ 
  */
 public class ChainedContext extends VelocityContext implements ViewContext
 {

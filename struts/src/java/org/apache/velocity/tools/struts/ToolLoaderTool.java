@@ -80,7 +80,7 @@ import org.apache.velocity.tools.view.tools.ContextTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ToolLoaderTool.java,v 1.1 2002/01/03 20:21:28 geirm Exp $
+ * @version $Id: ToolLoaderTool.java,v 1.2 2002/01/09 11:25:44 sidler Exp $
  * 
  */
 

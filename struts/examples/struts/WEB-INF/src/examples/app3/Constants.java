@@ -62,10 +62,11 @@ package examples.app3;
  *
  * @author Craig R. McClanahan
  * @author Ted Husted
- * @version $Revision: 1.1 $ $Date: 2002/01/03 20:21:20 $
+ * @version $Revision: 1.2 $ $Date: 2002/01/09 11:25:43 $
  */
 
-public final class Constants {
+public final class Constants 
+{
 
 
     /**

@@ -30,11 +30,10 @@ import org.apache.struts.util.MessageResources;
  * <p>A simple action used to demonstrate the context tools.</p>
  *
  * @author <a href="mailto:sidler@teamup.com"/>Gabe Sidler</a>
- * @version $Id: ToolDemoAction.java,v 1.1 2002/01/03 20:21:20 geirm Exp $
+ * @version $Id: ToolDemoAction.java,v 1.2 2002/01/09 11:25:43 sidler Exp $
  */
-public class ToolDemoAction extends Action {
-
-
+public class ToolDemoAction extends Action 
+{
 
 
     // --------------------------------------------------------- Public Methods

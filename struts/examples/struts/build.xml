@@ -92,7 +92,7 @@
   </target>
            
 
-  <target name="devwar" depends="init, clean, compile, javadoc">
+  <target name="devwar" depends="init, clean, compile">
     <!-- Generate .war file, name it *.wa_ otherwise it will be unpacked -->
     <jar jarfile="${basedir}/../struts-velocity-${DSTAMP}.wa_" basedir="${DEV}"/>
   </target>

@@ -75,9 +75,10 @@ import org.apache.struts.action.ActionServlet;
  * Standard Action to render image.
  * @author Simon Oldeboershuis
  * @author Ted Husted
- * @version $Revision: 1.1 $ $Date: 2002/01/03 20:21:20 $
+ * @version $Revision: 1.2 $ $Date: 2002/01/09 11:25:43 $
  */
-public final class ContinueAction extends Action {
+public final class ContinueAction extends Action 
+{
 
     /**
      * @param mapping The ActionMapping used to select this instance
@@ -88,10 +89,11 @@ public final class ContinueAction extends Action {
      * @exception ServletException if a servlet exception occurs
      */
     public ActionForward perform(ActionMapping mapping,
-                 ActionForm form,
-                 HttpServletRequest request,
-                 HttpServletResponse response)
-    throws IOException, ServletException {
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response)
+                                 throws IOException, ServletException 
+    {
 
         return mapping.findForward(Constants.CONTINUE);
 
