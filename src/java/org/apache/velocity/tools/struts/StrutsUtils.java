@@ -32,6 +32,7 @@ import org.apache.struts.config.ForwardConfig;
 import org.apache.struts.config.ActionConfig;
 import org.apache.struts.util.MessageResources;
 import org.apache.struts.util.RequestUtils;
+import org.apache.struts.util.ModuleUtils;
 
 /**
  * <p>A utility class to expose the Struts shared
@@ -52,7 +53,7 @@ import org.apache.struts.util.RequestUtils;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * based on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Id: StrutsUtils.java,v 1.21 2004/03/12 23:44:51 nbubna Exp $
+ * @version $Id: StrutsUtils.java,v 1.22 2004/03/14 17:21:10 marino Exp $
  */
 public class StrutsUtils
 {
@@ -70,7 +71,7 @@ public class StrutsUtils
                                                        ServletContext app)
     {
         /* Identify the current module */
-        ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
+        ModuleConfig moduleConfig = ModuleUtils.getInstance().getModuleConfig(request, app);
         return (MessageResources)app.getAttribute(Globals.MESSAGES_KEY +
                                                   moduleConfig.getPrefix());
     }
@@ -92,7 +93,7 @@ public class StrutsUtils
         MessageResources resources = null;
 
         /* Identify the current module */
-        ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
+        ModuleConfig moduleConfig = ModuleUtils.getInstance().getModuleConfig(request, app);
 
 
         if (bundle == null) {
@@ -123,7 +124,7 @@ public class StrutsUtils
                                             ServletContext app)
     {
         /* Match against the list of sub-application prefixes */
-        String prefix = RequestUtils.getModuleName(urlPath, app);
+        String prefix = ModuleUtils.getInstance().getModuleName(urlPath, app);
 
         /* Expose the resources for this sub-application */
         ModuleConfig config = (ModuleConfig)
@@ -179,7 +180,7 @@ public class StrutsUtils
     /*********************** Struts Request Resources ****************/
 
     /**
-     * Returns the Struts errors for this request or <code>null</code> 
+     * Returns the Struts errors for this request or <code>null</code>
      * if none exist.
      *
      * @param request the servlet request
@@ -191,7 +192,7 @@ public class StrutsUtils
     }
 
     /**
-     * Returns the Struts messages for this request or <code>null</code> 
+     * Returns the Struts messages for this request or <code>null</code>
      * if none exist.
      *
      * @param request the servlet request
@@ -323,7 +324,7 @@ public class StrutsUtils
                                        ServletContext app,
                                        String forward)
     {
-        ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
+        ModuleConfig moduleConfig = ModuleUtils.getInstance().getModuleConfig(request, app);
         //TODO? beware of null module config if ActionServlet isn't init'ed?
         ForwardConfig fc = moduleConfig.findForwardConfig(forward);
         if (fc == null)
