@@ -1,0 +1,64 @@
+S T A T U S
+===========
+$Id: STATUS,v 1.1 2003/02/10 18:31:34 nbubna Exp $
+
+
+Known Issues/Bugs:
+    - Configuration issues. Currently, the resource loader and the logger
+        are hard-coded in VVS and overwrite the configuration in 
+        Velocity.properties.  This is inflexible and confusing.
+    - Inconsistent logging.  Some things (particularly the struts tools) use 
+        Velocity's main logging mechanism while others log directly to 
+        the ServletContext.  These are all velocity tools and should use
+        Velocity's log system by default.
+
+
+
+Documentation:
+   - Fix current tools documentation. Several files are out of sync.
+   - Complete user guide.
+   - Create a developer's guide?
+
+
+
+Proposed Features/Upgrades:
+    VelocityView:
+        - add a library of general velocimacros
+        - Convert XMLToolboxManager to use commons' Digester
+        - Pluggable toolbox manager in VelocityViewServlet
+
+    VelocityTools:
+        - add a library of velocimacros for use with these tools
+        - Tool pooling support (use commons-pool probably)
+        - Search/paging tool (from nathan)
+        - Improved ToolLoader? (from Bill?)
+        - Render/evaluate tool? (for perl or php prone people)
+        - Template debugging tool(s)/support
+
+    VelocityStruts:
+        - add a library of velocimacros for use with struts tools
+        - Struts 1.1 Support:
+            - ActionMessages
+                - add getActionMessages() to StrutsUtils
+                - add ActionMessagesTool
+            - Validator
+                - tool to access javascripts?
+                - integration with FormTool/MessagesTool?
+            - Tiles
+            - Modules (sub-apps)
+            - multiple config files
+            - multiple message resources
+            - etc.
+
+
+
+Examples:
+   - Create a blank Velocity-Struts application as the starting point
+     for development.
+   - Create a simple Velocity-Struts application to demonstrate use
+     of VelocityLayoutServlet (and any other newer features)
+   - Create a Struts 1.1 example. Take one of the existing Struts 1.1
+     examples and replace the view layer with Velocity.
+   - Create example app(s) that demonstrate the use of other new features.
+     (a macro-library example would be a good one to start with.)
+
