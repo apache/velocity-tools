@@ -29,6 +29,10 @@
       <param-value>/WEB-INF/struts-app4-config.xml</param-value>
     </init-param>
     <init-param>
+      <param-name>config/app5</param-name>
+      <param-value>/WEB-INF/struts-app5-config.xml</param-value>
+    </init-param>
+    <init-param>
       <param-name>debug</param-name>
       <param-value>2</param-value>
     </init-param>

@@ -65,6 +65,15 @@
 		</ul>
 		<p>&nbsp;</p>
 	</li>
+        <li><b><i></i> Struts App5: Struts Validator Example</b><br>
+		This application demonstrates the Velocity ValidatorTool for Struts.  It's functionality is a subset
+                of the functionality provided by the Struts HTML tag library for JSP.
+		<ul>
+			<li><a href="$link.setForward("app5")" target="demo">Velocity Version</a></li>
+			<li><a href="$link.setForward("app5Jsp")" target="demo">JSP Version</a></li>
+		</ul>
+		<p>&nbsp;</p>
+	</li>
 	<li>
 		<p><b>View Tool Demo: MathTool</b><br>
 			This example demonstrates how a view tool can be loaded from within a

@@ -6,9 +6,11 @@
 <form-validation>
    <formset>
       <form name="emailForm">
-         <field property="email" depends="email">
-            <arg0 key="label.email"/>
-         </field>
+         <field property="email"
+         	depends="required,email">
+            	<msg name="email" key="errors.invalid"/>
+        	<arg0 key="emailForm.label.email"/>
+	 </field>
       </form>
    </formset>
 </form-validation>
