@@ -64,7 +64,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.12 $ $Date: 2004/03/12 20:30:31 $
+ * @version $Revision: 1.13 $ $Date: 2004/04/14 20:08:28 $
  */
 public class TilesTool extends ImportSupport implements ViewTool
 {
@@ -216,7 +216,7 @@ public class TilesTool extends ImportSupport implements ViewTool
     }
 
     /**
-     * Imports all attributes in the current tiles-context into the 
+     * Imports all attributes in the current tiles-context into the
      * current velocity-context.
      *
      * <p>This is functionally equivalent to
@@ -312,7 +312,7 @@ public class TilesTool extends ImportSupport implements ViewTool
      * @return the fully processed attribute value as String.
      * @throws Exception - Throws by underlying nested call to processDefinitionName()
      */
-    protected String processTypedAttribute(AttributeDefinition value) 
+    protected String processTypedAttribute(AttributeDefinition value)
         throws Exception
     {
         if (value instanceof DirectStringAttribute)
@@ -467,7 +467,7 @@ public class TilesTool extends ImportSupport implements ViewTool
             /* Call controller if any */
             if (controller != null)
             {
-                controller.perform(subCompContext,
+                controller.execute(subCompContext,
                                    this.request,
                                    this.response,
                                    this.application);

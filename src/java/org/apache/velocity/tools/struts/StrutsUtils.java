@@ -32,6 +32,7 @@ import org.apache.struts.config.ForwardConfig;
 import org.apache.struts.config.ActionConfig;
 import org.apache.struts.util.MessageResources;
 import org.apache.struts.util.RequestUtils;
+import org.apache.struts.taglib.TagUtils;
 import org.apache.struts.util.ModuleUtils;
 
 /**
@@ -53,7 +54,7 @@ import org.apache.struts.util.ModuleUtils;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * based on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Id: StrutsUtils.java,v 1.22 2004/03/14 17:21:10 marino Exp $
+ * @version $Id: StrutsUtils.java,v 1.23 2004/04/14 20:08:28 marino Exp $
  */
 public class StrutsUtils
 {
@@ -277,7 +278,7 @@ public class StrutsUtils
                 queryString = action.substring(question);
             }
 
-            String actionMapping = RequestUtils.getActionMappingName(action);
+            String actionMapping = TagUtils.getInstance().getActionMappingName(action);
 
             if (servletMapping.startsWith("*."))
             {

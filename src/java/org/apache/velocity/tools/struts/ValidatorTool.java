@@ -32,14 +32,14 @@ import org.apache.commons.validator.Field;
 import org.apache.commons.validator.Form;
 import org.apache.commons.validator.ValidatorAction;
 import org.apache.commons.validator.ValidatorResources;
-import org.apache.commons.validator.ValidatorUtil;
+import org.apache.commons.validator.util.ValidatorUtils;
 import org.apache.commons.validator.Var;
 
 import org.apache.struts.Globals;
 import org.apache.struts.config.ActionConfig;
 import org.apache.struts.config.ModuleConfig;
 import org.apache.struts.util.MessageResources;
-import org.apache.struts.util.RequestUtils;
+import org.apache.struts.util.ModuleUtils;
 import org.apache.struts.validator.Resources;
 import org.apache.struts.validator.ValidatorPlugIn;
 
@@ -71,7 +71,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.9 $ $Date: 2004/02/18 23:34:50 $
+ * @version $Revision: 1.10 $ $Date: 2004/04/14 20:08:28 $
  */
 public class ValidatorTool implements ViewTool {
 
@@ -87,7 +87,7 @@ public class ValidatorTool implements ViewTool {
     /** A reference to the HttpSession. */
     protected HttpSession session;
 
-    /** A reference to the HttpSession. */
+    /** A reference to the ValidatorResources. */
     protected ValidatorResources resources;
 
 
@@ -144,7 +144,7 @@ public class ValidatorTool implements ViewTool {
             this.formName = config.getAttribute();
         }
 
-        ModuleConfig mconfig = RequestUtils.getModuleConfig(request, app);
+        ModuleConfig mconfig = ModuleUtils.getInstance().getModuleConfig(request, app);
         this.resources = (ValidatorResources)app.getAttribute(ValidatorPlugIn.
                 VALIDATOR_KEY +
                 mconfig.getPrefix());
@@ -370,7 +370,7 @@ public class ValidatorTool implements ViewTool {
 
         Locale locale = StrutsUtils.getLocale(request, session);
 
-        Form form = resources.get(locale, formName);
+        Form form = resources.getForm(locale, formName);
         if (form != null)
         {
             results.append(getDynamicJavascript(resources, locale, form));
@@ -486,7 +486,7 @@ public class ValidatorTool implements ViewTool {
                     results.append(varName);
 
                     String escapedVarValue =
-                        ValidatorUtil.replace(varValue, "\\", "\\\\");
+                        ValidatorUtils.replace(varValue, "\\", "\\\\");
 
                     if (Var.JSTYPE_INT.equalsIgnoreCase(jsType))
                     {
@@ -571,7 +571,7 @@ public class ValidatorTool implements ViewTool {
         for (Iterator i = form.getFields().iterator(); i.hasNext();)
         {
             Field field = (Field)i.next();
-            for (Iterator x = field.getDependencies().iterator(); x.hasNext();)
+            for (Iterator x = field.getDependencyList().iterator(); x.hasNext();)
             {
                 Object o = x.next();
                 if (o != null && !actionMethods.contains(o))
@@ -860,7 +860,7 @@ public class ValidatorTool implements ViewTool {
             }
             else
             {
-                return va1.getDependencies().size() - va2.getDependencies().size();
+                return va1.getDependencyList().size() - va2.getDependencyList().size();
             }
         }
     }
