@@ -9,51 +9,39 @@ When adding or updating libraries here please make sure
 that the file names include the library version.
 
 
+VelocityStruts:
+- dom4j.jar (1.1)
+- servlet.jar (2.2+)
+- struts.jar (1.0.2+)
+- velocity-dep-1.3.1.jar
 
-jakarta-velocity-tools/struts:
-- jdbc2_0-stdext.jar
-- jakarta-servlet-api-4.jar
-- struts.jar (1.0.2)
+VelocityView:
+- dom4j.jar (1.1)
+- servlet.jar (2.2+)
+- velocity-dep-1.3.1.jar
+
+Generic Tools:
+- velocity-dep-1.3.1.jar
 
 
-jakarta-velocity-tools/struts/examples/struts/WEB-INF/lib:
+VelStruts example:
 - commons-beanutils.jar
 - commons-collections.jar
 - commons-digester.jar
-- dom4j.jar
-- jdbc2_0-stdext.jar
-- jakarta-servlet-api-4.jar
+- dom4j.jar (1.1)
+- servlet.jar (2.2+)
 - struts.jar (1.0.2)
-- velocity-1.3-dev.jar
-- velocity-tools-library-0.2.jar
-- velocity-struts-0.8.jar
-- velocity-tools-view-0.7.jar
+- velocity-dep-1.3.1.jar
+- velocity-tools-1.0-dev.jar
 
+Layout example:
+- dom4j.jar (1.1)
+- servlet.jar (2.2+)
+- velocity-dep-1.3.1.jar
+- velocity-tools-view-1.0-dev.jar
 
-jakarta-velocity-tools/struts/examples/struts/WEB-INF/build-lib:
-- jakarta-servlet-api-4.jar
-
-
-jakarta-velocity-tools/tools:
-- jdbc2_0-stdext.jar
-- jakarta-servlet-api-4.jar
-
-
-jakarta-velocity-tools/view:
-- commons-beanutils.jar
-- commons-collections.jar
-- commons-digester.jar
-- jdbc2_0-stdext.jar
-- jakarta-servlet-api-4.jar
-- xalan.jar
-
-
-jakarta-velocity-tools/view/examples/simple/WEB-INF/lib:
-- commons-beansutils.jar
-- commons-collections.jar
-- commons-digester.jar
-- dom4j.jar
-- velocity-1.3-dev.jar
-- velocity-tools-view-0.7.jar
-
-
+Simple example:
+- dom4j.jar (1.1)
+- servlet.jar (2.2+)
+- velocity-dep-1.3.1.jar
+- velocity-tools-view-1.0-dev.jar
