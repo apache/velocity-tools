@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: changes.xml,v 1.20 2004/06/16 20:57:18 nbubna Exp $
+  $Id: changes.xml,v 1.21 2004/07/21 22:10:08 nbubna Exp $
 -->
 <document>
   <properties>
@@ -29,6 +29,7 @@
     <subsection name="1.2-dev">
       <p>This section describes changes after the 1.1 release.</p>
       <ul>
+      <li>Added MathTool methods for totalling or averaging lists or arrays of values (adapted from a contribution by Leon Messerschmidt). (ndb)</li>
       <li>Prevent NPE in RenderTool.recurse() when an evaluation fails. (ndb)</li>
       <li>Upgraded jars from Velocity 1.3.1 to Velocity 1.4 (ndb)</li>
       <li>Simplified MessageTool interface to support $text.this.that syntax instead of just $text.get('this.that') (ndb)</li>
