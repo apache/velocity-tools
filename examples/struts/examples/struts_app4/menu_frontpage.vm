@@ -1,0 +1,14 @@
+## import the menu items into page scope (velocity context = default)
+$tiles.importAttribute("items")
+
+<TABLE width="100%" border=1>
+<TBODY>
+	<TR>
+            <TD>
+                #foreach($item in $items)
+                    <a href="$item.link">$item.value</a><br>
+                #end
+            </TD>
+	</TR>
+</TBODY>
+</TABLE>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE tiles-definitions
+	PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+        "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+
+<tiles-definitions>
+
+  <!-- ========== Velocity Version ============================== -->
+  <definition name=".common">
+    <put name="title" value="TilesTool Demo!" />
+  </definition>
+
+  <definition name=".frontpage" path="/examples/struts_app4/layout/masterLayout.vm"
+      extends=".common">
+    <put name="menu" value=".frontpage.menu" />
+    <put name="footer" value="/examples/struts_app4/footer.vm" />
+    <put name="body" value=".frontpage.body" />
+  </definition>
+
+  <definition name=".frontpage.menu" path="/examples/struts_app4/menu_frontpage.vm">
+    <putList name="items">
+      <item link="http://www.link1.com" value="Link 1" />
+      <item link="http://www.link2.com" value="Link 2" />
+    </putList>
+  </definition>
+
+  <definition name=".frontpage.body" path="/examples/struts_app4/layout/bodyLayout.vm"
+      controllerClass="examples.app4.MyTileController">
+    <put name="header" value="/examples/struts_app4/header_frontpage.vm" />
+    <put name="body" value="/examples/struts_app4/body_frontpage.vm" />
+  </definition>
+
+  <!-- ========== JSP Version ============================== -->
+  <definition name=".common.jsp">
+    <put name="title" value="TilesTool Demo (JSP)!" />
+  </definition>
+
+  <definition name=".frontpage.jsp" path="/examples/struts_app4/layout/masterLayout.jsp"
+      extends=".common.jsp">
+    <put name="body" value=".frontpage.body.jsp" />
+    <put name="menu" value=".frontpage.menu.jsp" />
+    <put name="footer" value="/examples/struts_app4/footer.jsp" />
+  </definition>
+
+  <definition name=".frontpage.menu.jsp" path="/examples/struts_app4/menu_frontpage.jsp">
+    <putList name="items">
+      <item link="http://www.link1.com" value="Link 1" />
+      <item link="http://www.link2.com" value="Link 2" />
+    </putList>
+  </definition>
+
+  <definition name=".frontpage.body.jsp" path="/examples/struts_app4/layout/bodyLayout.jsp"
+      controllerClass="examples.app4.MyTileController">
+    <put name="header" value="/examples/struts_app4/header_frontpage.jsp" />
+    <put name="body" value="/examples/struts_app4/body_frontpage.jsp" />
+  </definition>
+
+  <!-- ========== Mixed Version ============================== -->
+  <definition name=".common.mixed">
+    <put name="title" value="TilesTool Demo (Mixed)!" />
+  </definition>
+
+  <definition name=".frontpage.mixed" path="/examples/struts_app4/layout/masterLayout.vm"
+      extends=".common.mixed">
+    <put name="body" value=".frontpage.body.jsp" />
+    <put name="menu" value=".frontpage.menu" />
+    <put name="footer" value="/examples/struts_app4/footer.jsp" />
+  </definition>
+
+</tiles-definitions>

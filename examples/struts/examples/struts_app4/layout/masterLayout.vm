@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+    <TITLE>$tiles.getAttribute("title")</TITLE>
+</HEAD>
+<BODY>
+
+<TABLE cellSpacing=0 cellPadding=0 width=70% align=center border=0>
+  <TR>
+    <TD valign="top" width="75" bgColor=#d9f1fc>
+
+	<!-- MENU -->
+	$tiles.menu
+
+    </TD>
+    <TD>
+
+	<!-- BODY -->
+	$tiles.body
+
+    </TD>
+  </TR>
+  <tr>
+    <td colspan="2">
+
+	<!-- FOOTER -->
+	$tiles.footer
+
+    </td>
+  </tr>
+</TABLE>
+</BODY>
+</HTML>
