@@ -5,7 +5,7 @@ Else display "Welcome World!"
 Display link to log in page; maintain session id if needed.
 If user is logged in, display a link to the sign-out page.
 
-Note: Only the minimum required html or Sruts custom tags 
+Note: Only the minimum required html or Sruts custom tags
 are used in this example.
 
 *#
@@ -31,9 +31,9 @@ are used in this example.
                 #end
                 </ul>
             #end
-        #end                    
+        #end
         #errorMarkup()
-        
+
         <ul>
             <li><a href="$link.setForward('logon_vm')">Sign in</a></li>
             #if( $user )
@@ -41,9 +41,9 @@ are used in this example.
             #end
         </ul>
 
-        <a href="$link.setAction('/welcome_jsp')">Switch to JSP</a><br>
+        <a href="$link.setAction('welcome_jsp')">Switch to JSP</a><br>
         <a href="index_vm.txt">View Template</a><br>
-        
+
     </body>
 
 </html>

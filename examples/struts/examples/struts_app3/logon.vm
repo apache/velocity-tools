@@ -5,12 +5,12 @@
     </head>
 
     <body>
-    
+
         #errorMarkup()
-        
+
         <h3>Sign in, Please! (Velocity Version)</h3>
 
-        <form method="POST" action="$link.setAction('/logonSubmit_vm')">
+        <form method="POST" action="$link.setAction('logonSubmit_vm')">
 
         <table border="0">
             <tr>
@@ -21,7 +21,7 @@
                     <input type="text" name="username" value="$!logonForm.username">
                 </td>
             </tr>
-        
+
             <tr>
                 <th align="right">
                     Password:
@@ -30,7 +30,7 @@
                     <input type="password" name="password" value="$!logonForm.password">
                 </td>
             </tr>
-        
+
             <tr>
                 <td align="right">
                     <input type="submit" value="Submit" name="submit">
@@ -39,13 +39,13 @@
                     <input type="reset" value="Reset" name="reset">
                 </td>
             </tr>
-        
+
         </table>
-        
+
         </form>
 
-        <a href="logon_vm.txt">View Template</a><br>
+        <a href="$link.setForward("logon_vm_src")">View Template</a><br>
 
     </body>
-    
+
 </html>
