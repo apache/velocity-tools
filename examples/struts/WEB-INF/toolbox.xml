@@ -1,24 +1,48 @@
 <?xml version="1.0"?>
 
 <toolbox>
+
   <tool>
      <key>toolLoader</key>
      <class>org.apache.velocity.tools.generic.ToolLoader</class>
   </tool>
+
   <tool>
      <key>link</key>
      <class>org.apache.velocity.tools.struts.StrutsLinkTool</class>
   </tool>
+
+  <!-- ordinarily the SecureLinkTool would simply replace the StrutsLinkTool
+  	if SSL Ext. is in use - in that case the key would be 'link' but it's
+        'slink' here to distinguish between the two. -->
+  <tool>
+     <key>slink</key>
+     <class>org.apache.velocity.tools.struts.SecureLinkTool</class>
+  </tool>
+
   <tool>
      <key>msg</key>
      <class>org.apache.velocity.tools.struts.MessageTool</class>
   </tool>
+
   <tool>
      <key>errors</key>
      <class>org.apache.velocity.tools.struts.ErrorsTool</class>
   </tool>
+
   <tool>
      <key>form</key>
      <class>org.apache.velocity.tools.struts.FormTool</class>
   </tool>
+
+  <tool>
+     <key>tiles</key>
+     <class>org.apache.velocity.tools.struts.TilesTool</class>
+  </tool>
+
+  <tool>
+     <key>validator</key>
+     <class>org.apache.velocity.tools.struts.ValidatorTool</class>
+  </tool>
+
 </toolbox>
