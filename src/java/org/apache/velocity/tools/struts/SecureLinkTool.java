@@ -90,7 +90,7 @@ import org.apache.struts.Globals;
  * </pre>
  * </p>
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @version $Revision: 1.3 $ $Date: 2003/10/15 20:23:46 $
+ * @version $Revision: 1.4 $ $Date: 2003/10/15 21:58:52 $
  */
 public class SecureLinkTool extends LinkTool
 {
@@ -139,8 +139,8 @@ public class SecureLinkTool extends LinkTool
         return (SecureLinkTool)copyWith(computeURL(request, application, url));
     }
 
-    public static String computeURL(HttpServletRequest request, 
-                                    ServletContext app, String link)
+    public String computeURL(HttpServletRequest request, 
+                             ServletContext app, String link)
     {
         StringBuffer url = new StringBuffer(link);
 
@@ -291,7 +291,7 @@ public class SecureLinkTool extends LinkTool
      * @param url URL to be encoded with the session id
      * @param sessionId Session id to be included in the encoded URL
      */
-    public static String toEncoded(String url, String sessionId)
+    public String toEncoded(String url, String sessionId)
     {
         if (url == null || sessionId == null)
         {
