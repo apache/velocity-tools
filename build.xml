@@ -1,5 +1,5 @@
 <!--
-  $Id: build.xml,v 1.30 2003/10/14 23:03:21 marino Exp $
+  $Id: build.xml,v 1.31 2003/10/15 19:09:21 nbubna Exp $
 -->
 <project name="velocity-tools" default="all" basedir=".">
 
@@ -53,7 +53,7 @@
     <pathelement location="${commons-logging.jar}"/>
     <pathelement location="${commons-validator.jar}"/>
     <pathelement location="${struts.jar}"/>
-	<pathelement location="${sslext.jar}"/>
+    <pathelement location="${sslext.jar}"/>
     <pathelement location="${servlet.jar}"/>
     <pathelement location="${velocity.jar}"/>
 
@@ -396,7 +396,9 @@
     <copy todir="${release.dir}/lib" file="${commons-collections.jar}"/>
     <copy todir="${release.dir}/lib" file="${commons-digester.jar}"/>
     <copy todir="${release.dir}/lib" file="${commons-logging.jar}"/>
+    <copy todir="${release.dir}/lib" file="${commons-validator.jar}"/>
     <copy todir="${release.dir}/lib" file="${servlet.jar}"/>
+    <copy todir="${release.dir}/lib" file="${sslext.jar}"/>
     <copy todir="${release.dir}/lib" file="${struts.jar}"/>
     <copy todir="${release.dir}/lib" file="${velocity.jar}"/>
 
