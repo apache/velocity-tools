@@ -16,6 +16,11 @@
 
 package org.apache.velocity.tools.generic;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import org.apache.commons.beanutils.PropertyUtils;
+
 /**
  * <p>Tool for performing math in Velocity.</p>
  *
@@ -41,7 +46,8 @@ package org.apache.velocity.tools.generic;
  * </pre></p>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.9 $ $Date: 2004/04/16 20:12:42 $
+ * @author Leon Messerschmidt
+ * @version $Revision: 1.10 $ $Date: 2004/07/21 21:57:59 $
  */
 public class MathTool
 {
@@ -560,6 +566,240 @@ public class MathTool
         {
             return new Double(value);
         }
+    }
+
+
+
+    // ------------------------- Aggregation methods ------------------
+
+    /**
+     * Get the sum of the values from a list
+     * 
+     * @param collection  A collection containing Java beans
+     * @param field A Java Bean field for the objects in <i>collection</i> that
+     *              will return a number.
+     * @return The sum of the values in <i>collection</i>. 
+     */
+    public Number getTotal(Collection collection, String field)
+    {
+        if (collection == null || field == null)
+        {
+            return null;
+        }
+        try
+        {
+            double result = 0;
+            // hold the first number and use it to match return type
+            Number first = null;
+            for (Iterator i = collection.iterator(); i.hasNext();)
+            {
+                Object property = PropertyUtils.getProperty(i.next(), field);
+                Number value = toNumber(property);
+                if (first == null)
+                {
+                    first = value;
+                }
+                result += value.doubleValue();
+            }
+            return matchType(first, result);
+        }
+        catch (Exception e)
+        {
+            //FIXME? Log this?
+            return null;
+        }
+    }
+  
+    /**
+     * Get the average of the values from a list
+     * 
+     * @param collection  A collection containing Java beans
+     * @param field A Java Bean field for the objects in <i>collection</i> that
+     *              will return a number.
+     * @return The average of the values in <i>collection</i>. 
+     */
+    public Number getAverage(Collection collection, String field)
+    {
+        Number result = getTotal(collection, field);
+        if (result == null)
+        {
+            return null;
+        }
+        double avg = result.doubleValue() / collection.size();
+        return matchType(result, avg);
+    }
+  
+    /**
+     * Get the sum of the values from a list
+     * 
+     * @param collection  A collection containing Java beans
+     * @param field A Java Bean field for the objects in <i>array</i> that
+     *              will return a number.
+     * @return The sum of the values in <i>array</i>. 
+     */
+    public Number getTotal(Object[] array, String field)
+    {
+        return getTotal(Arrays.asList(array), field);
+    }
+
+    /**
+     * Get the sum of the values from a list
+     * 
+     * @param array  A collection containing Java beans
+     * @param field A Java Bean field for the objects in <i>array</i> that
+     *      will return a number.
+     * @return The sum of the values in <i>array</i>. 
+     */
+    public Number getAverage(Object[] array, String field)
+    {
+        return getAverage(Arrays.asList(array), field);
+    }
+
+    /**
+     * Get the sum of the values
+     * 
+     * @param collection  A collection containing numeric values
+     * @return The sum of the values in <i>collection</i>. 
+     */
+    public Number getTotal(Collection collection)
+    {
+        if (collection == null)
+        {
+            return null;
+        }
+
+        double result = 0;
+        // grab the first number and use it to match return type
+        Number first = null;
+        for (Iterator i = collection.iterator(); i.hasNext();)
+        {
+            Number value = toNumber(i.next());
+            if (value == null)
+            {
+                //FIXME? or should we ignore this and keep adding?
+                return null;
+            }
+            if (first ==  null)
+            {
+                first = value;
+            }
+            result += value.doubleValue();
+        }
+        return matchType(first, result);
+    }
+  
+    /**
+     * Get the average of the values
+     * 
+     * @param collection  A collection containing number values
+     * @return The average of the values in <i>collection</i>. 
+     */
+    public Number getAverage(Collection collection)
+    {
+        Number result = getTotal(collection);
+        if (result == null)
+        {
+            return null;
+        }
+        double avg = result.doubleValue() / collection.size();
+        return matchType(result, avg);
+    }
+
+    /**
+     * Get the sum of the values
+     * 
+     * @param array  An array containing number values
+     * @return The sum of the values in <i>array</i>. 
+     */
+    public Number getTotal(Object[] array)
+    {
+        return getTotal(Arrays.asList(array));
+    }
+
+    /**
+     * Get the average of the values
+     * 
+     * @param array  An array containing number values
+     * @return The sum of the values in <i>array</i>. 
+     */
+    public Number getAverage(Object[] array)
+    {
+        return getAverage(Arrays.asList(array));
+    }
+
+    /**
+     * Get the sum of the values
+     * 
+     * @param values The list of double values to add up.
+     * @return The sum of the arrays
+     */
+    public Number getTotal(double[] values)
+    {
+        if (values == null)
+        {
+            return null;
+        }
+
+        double result = 0;
+        for (int i = 0; i < values.length; i++)
+        {
+            result += values[i];
+        }
+        return new Double(result);
+    }
+
+    /**
+     * Get the average of the values in an array of double values
+     * 
+     * @param values The list of double values
+     * @return The average of the array of values
+     */
+    public Number getAverage(double[] values)
+    {
+        Number total = getTotal(values);
+        if (total == null)
+        {
+            return null;
+        }
+        return new Double(total.doubleValue() / values.length);
+    }
+
+    /**
+     * Get the sum of the values
+     * 
+     * @param values The list of long values to add up.
+     * @return The sum of the arrays
+     */
+    public Number getTotal(long[] values)
+    {
+        if (values == null)
+        {
+            return null;
+        }
+
+        long result = 0;
+        for (int i = 0; i < values.length; i++)
+        {
+            result += values[i];
+        }
+        return new Long(result);
+    }
+
+    /**
+     * Get the average of the values in an array of long values
+     * 
+     * @param values The list of long values
+     * @return The average of the array of values
+     */
+    public Number getAverage(long[] values)
+    {
+        Number total = getTotal(values);
+        if (total == null)
+        {
+            return null;
+        }
+        double avg = total.doubleValue() / values.length;
+        return matchType(total, avg);
     }
 
 }
