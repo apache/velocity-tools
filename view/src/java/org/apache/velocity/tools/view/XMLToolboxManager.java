@@ -68,6 +68,7 @@ import org.dom4j.Node;
 import org.dom4j.datatype.InvalidSchemaException;
 import org.dom4j.io.SAXReader;
 
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.tools.view.context.ToolboxContext;
 
 
@@ -117,7 +118,7 @@ import org.apache.velocity.tools.view.context.ToolboxContext;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: XMLToolboxManager.java,v 1.2 2003/01/24 05:04:51 nbubna Exp $
+ * @version $Id: XMLToolboxManager.java,v 1.3 2003/02/12 06:54:09 nbubna Exp $
  */
 public abstract class XMLToolboxManager implements ToolboxManager
 {
@@ -172,10 +173,10 @@ public abstract class XMLToolboxManager implements ToolboxManager
 
 
     /**
-     * Default implementation logs messages to system out.
+     * Default implementation logs messages to Velocity's log system
      */
     protected void log(String s) {
-       System.out.println("XMLToolboxManager - "+s);
+       Velocity.info("XMLToolboxManager - "+s);
     }
 
 
