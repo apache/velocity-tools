@@ -50,7 +50,7 @@
             </signature>
             
             <signature>
-                String get(String key, ArrayList args)
+                String get(String key, List args)
             </signature>
 
             <parameters>
@@ -59,8 +59,10 @@
                 </parameter>
                 
                 <parameter name="args">
-                    Replacement parameters for this message. Typically an array of 
-                    Strings or an ArrayList of Strings. 
+                    Replacement parameters for this message. Typically
+                    an array of Strings or a List of Strings (but any
+                    Object with a reasonable <code>toString()</code>
+                    method can be used).
                 </parameter>
             </parameters>
     
