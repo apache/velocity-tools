@@ -1,5 +1,5 @@
 <!--
-  $Id: build.xml,v 1.28 2003/07/22 18:36:11 nbubna Exp $ 
+  $Id: build.xml,v 1.29 2003/07/25 20:10:23 nbubna Exp $ 
 -->
 <project name="velocity-tools" default="all" basedir=".">
 
@@ -287,7 +287,6 @@
     <copy todir="${simple.lib}" file="${commons-beanutils.jar}"/>
     <copy todir="${simple.lib}" file="${commons-logging.jar}"/>
     <copy todir="${simple.lib}" file="${velocity.jar}"/>
-    <copy todir="${simple.lib}" file="${log4j.jar}"/>
 
     <ant dir="${examples.home}/simple" target="war" inheritAll="false"/>
   </target>
