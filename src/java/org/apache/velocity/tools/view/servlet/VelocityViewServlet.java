@@ -43,6 +43,7 @@ import org.apache.velocity.io.VelocityWriter;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.util.SimplePool;
 
+import org.apache.velocity.tools.generic.log.LogSystemCommonsLog;
 import org.apache.velocity.tools.view.ToolboxManager;
 import org.apache.velocity.tools.view.context.ToolboxContext;
 import org.apache.velocity.tools.view.context.ChainedContext;
@@ -98,7 +99,7 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.23 2004/11/11 04:49:58 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.24 2004/11/11 07:02:24 nbubna Exp $
  */
 
 public class VelocityViewServlet extends HttpServlet
@@ -293,6 +294,9 @@ public class VelocityViewServlet extends HttpServlet
     protected void initVelocity(ServletConfig config) throws ServletException
     {
         velocity = new VelocityEngine();
+        // register this engine to be the default handler of log messages
+        // if the user points commons-logging to the LogSystemCommonsLog
+        LogSystemCommonsLog.setVelocityEngine(velocity);
 
         velocity.setApplicationAttribute(SERVLET_CONTEXT_KEY, getServletContext());
 
