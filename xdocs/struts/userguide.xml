@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: userguide.xml,v 1.6 2004/07/21 17:16:10 nbubna Exp $
+  $Id: userguide.xml,v 1.7 2004/11/10 20:23:32 nbubna Exp $
 -->
 <document>
 
@@ -246,7 +246,7 @@
 &lt;BODY&gt;
     &lt;h2>Order Confirmation&lt;/h2&gt;
 
-    &lt;h3&gt;Delivery Adress:&lt;/h3&gt;&lt;br&gt;
+    &lt;h3&gt;Delivery Address:&lt;/h3&gt;&lt;br&gt;
     Name: Peter Pan&lt;br&gt;
     Street: Crain St. 10&lt;br&gt;
     City: 60201 Evanston IL
