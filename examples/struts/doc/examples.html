@@ -1,0 +1,83 @@
+<HTML>
+<HEAD>
+  <TITLE>Velocity for Struts</TITLE>
+  <link rel="stylesheet" href="styles.css" type="text/css">
+</HEAD>
+
+<BODY>
+<table width="100%" border="0" cellspacing="0" cellpadding="5">
+  <tr bgcolor="#000066"> 
+    <td> 
+      <h2><font color="#FFFFFF"><img src="img/spacer.gif" width="520" height="1"><br>
+				Velocity for Struts</font></h2>
+      <font color="#FFFFFF">April 2. 2002</font></td>
+    <td align="right">&nbsp;</td>
+  </tr>
+</table>
+
+<div><a href="../index.html"><font color="#000000">Home</font></a> <font color="#000000">&gt; Examples</font></div>
+
+
+<h5><b>Examples</b></h5>
+<ul>
+	<li><b>Struts App1: Address Editor</b><br>
+		This application is a very simple address editor. It consists of two dynamic 
+		pages, one ActionForm, one Action class and an AddressBean. Address information 
+		is gathered through a form and associated with a HTTP session. This information 
+		can be displayed and modified. It demonstrates how the Struts control framework 
+		can be used independently of a specific view technology. JSP and Velocity 
+		templates can be mixed and matched within the same application. The support 
+		for multiple languages demonstrates how Struts resources may be accessed from 
+		within templates. 
+		<ul>
+			<li><a href="../address2.do" target="demo">Velocity Version</a></li>
+			<li><a href="../address1.do" target="demo">JSP Version</a></li>
+		</ul>
+		<p>&nbsp;</p>
+	</li>
+	<li><b>Struts App2: Struts View Tools Demo</b><br>
+		This application demonstrates the Velocity view tools for Struts. These view
+		tool enable view designers to access the resources of the Struts framework. Their
+		functionality is a subset of the functionality provided by the Struts custom tag
+		libraries for JSP. 
+		<ul>
+			<li><a href="../demo.do" target="demo">Struts View Tools Demo</a> 
+				(<a href="../examples/struts_app2/tool-demo.txt">template</a>)</li>
+		</ul>
+		<p>&nbsp;</p>
+	</li>
+	<li><b><i></i> Struts App3: Struts Logon Example</b><br>
+		This is the well known Struts logon example application by Ted Husted. Here 
+		it is implemented in both JSP and Velocity versions. 
+		<ul>
+			<li><a href="../welcome_vm.do" target="demo">Velocity Version</a></li>
+			<li><a href="../welcome_jsp.do" target="demo">JSP Version</a></li>
+		</ul>
+		<p>&nbsp;</p>
+	</li>
+	<li> 
+		<p><b>View Tool Demo: MathTool</b><br>
+			This example demonstrates how a view tool can be loaded from within a 
+			template by the view designer. The tool used to load view tools is  
+			a view tool itself. It is defined in toolbox.xml and pre-loaded during initialization. 
+		<ul>
+			<li><a href="../examples/context_tools/mathtool-demo.vm" target="demo">Math Tool Demo</a> 
+				(<a href="../examples/context_tools/mathtool-demo.txt">template</a>)</li>
+		</ul>
+		<p>&nbsp;</p>
+	</li>
+	<li><b>List HTTP Request Header</b><br>
+		This application simply lists the HTTP request headers. It demonstrates how 
+		to access functionality provided by the servlet API in Velocity and JSP templates. 
+		The JSP implementation uses the Struts bean and logic custom tag libraries. 
+		<ul>
+			<li><a href="../examples/request_headers/list.vm" target="demo">Velocity Version</a></li>
+			<li><a href="../examples/request_headers/list.jsp" target="demo">JSP Version</a><br>
+			</li>
+		</ul>
+		<br>
+	</li>
+</ul>
+
+</BODY>
+</HTML>

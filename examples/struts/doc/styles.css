@@ -1,0 +1,131 @@
+
+BODY { 
+  background-color: #C4CDEE;
+}
+
+
+
+A:link {
+  color: #0000FF;
+  text-decoration: underline;
+}
+
+
+A:visited {
+  color: #880088;
+  text-decoration: underline;
+}
+
+
+TD {  
+  font-family: sans-serif, Verdana, Arial, Helvetica, sans-serif; 
+  font-size: 10pt
+}
+
+
+P {  
+  font-family: sans-serif, Verdana, Arial, Helvetica, sans-serif; 
+  font-size: 10pt
+}
+
+
+UL {  
+  font-family: sans-serif, Verdana, Arial, Helvetica, sans-serif; 
+  font-size: 10pt
+}
+
+
+DIV {  
+  font-family: sans-serif, Verdana, Arial, Helvetica, sans-serif; 
+  font-size: 10pt
+}
+
+
+H1 {
+  font-family: sans-serif, Verdana, Arial, Helvetica, sans-serif; 
+  font-size: 20pt; 
+  font-weight: bold; 
+}   
+
+H2 {
+  font-family: sans-serif, Verdana, Arial, Helvetica, sans-serif; 
+  font-size: 18pt; 
+  font-weight: bold; 
+}   
+
+H3 {
+  font-family: sans-serif, Verdana, Arial, Helvetica, sans-serif; 
+  font-size: 16pt; 
+  font-weight: bold; 
+}   
+
+H4 {
+  font-family: sans-serif, Verdana, Arial, Helvetica, sans-serif; 
+  font-size: 14pt; 
+  font-weight: bold; 
+}   
+
+H5 {
+  font-family: sans-serif, Verdana, Arial, Helvetica, sans-serif; 
+  font-size: 12pt; 
+  font-weight: bold; 
+}   
+
+H6 {
+  font-family: sans-serif, Verdana, Arial, Helvetica, sans-serif; 
+  font-size: 10pt; 
+  font-weight: bold; 
+}   
+
+
+.menuecell {  
+  font-family: sans-serif, Verdana, Arial, Helvetica, sans-serif; 
+  font-size: 10pt; 
+  font-weight: bold; 
+  text-align: center
+}
+
+
+.errormsg {
+  font-family: sans-serif, Verdana, Arial, Helvetica, sans-serif; 
+  font-size: 10pt; 
+  font-weight: bold; 
+  color: #FF0000; 
+  vertical-align: middle
+}
+
+
+#.tableWithBorder { border-width: 1px; border-color: #FF0000; border-style: solid }
+#.cellWithBorder  { border-width: 1px; border-color: #FF0000; border-style: solid }
+#tableWithBorder  { border-width: 1px; border-color: #FF0000; border-style: solid }
+#cellWithBorder   { border-width: 1px; border-color: #FF0000; border-style: solid }
+
+
+.bg {
+  background-color: #808080
+}
+
+
+.fg {
+  background-color: #C4CDEE
+}
+
+
+.inactive { 
+  background-color: #BBBBBB
+}
+
+
+.op {
+  background-color: #DDDDDD
+}
+
+
+.opc {
+  background-color: #DDDDDD;
+  text-align: center
+}  
+
+.calendarTag {
+  font-size: 36pt
+}
