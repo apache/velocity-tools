@@ -32,6 +32,11 @@
   </tool>
 
   <tool>
+     <key>actionmsgs</key>
+     <class>org.apache.velocity.tools.struts.ActionMessagesTool</class>
+  </tool>
+
+  <tool>
      <key>form</key>
      <class>org.apache.velocity.tools.struts.FormTool</class>
   </tool>
