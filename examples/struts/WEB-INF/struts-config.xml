@@ -57,6 +57,16 @@
          redirect="true"
          contextRelative="true" />
 
+     <forward name="app5"
+         path="/app5/index_vm.do"
+         redirect="true"
+         contextRelative="true" />
+
+     <forward name="app5Jsp"
+         path="/app5/index_jsp.do"
+         redirect="true"
+         contextRelative="true" />
+
      <forward name="math"
          path="/examples/context_tools/mathtool-demo.vm"
          redirect="true"
