@@ -10,20 +10,49 @@ interfaces for view tools, thereby enabling the efficient handling
 and reuse of view tools.
 
 
-Build and JAR
+Build Package
 -------------
-An ant script is provided to build and jar the package.
+An ant script is provided to build and jar the package. Prerequisites are:
 
-> ant compile
-> ant jar
+o Ant 1.4.1 or higher 
+o JDK 1.3.1 or higher
+
+Simply execute ant with the default target:
+
+> ant 
+
+This generates a jar file velocity-tools-view-*.jar in the local directory,
+writes a copy of velocity-tools-view-*.jar to the project's jar library 
+(../lib/), and generates the documentation under the docs directory.
 
 
-Documentation
--------------
-To generate the documentation for this package, follow these steps:
 
-> ant docs
-> ant javadocs
-> ant javadocs-velservlet
+Application Example
+-------------------
 
-Then look for the generated documentation in the 'doc' subdirectory.
+A simple application example has been included to demonstrate the use of the
+VelocityViewServlet with automatically loaded view tools.
+
+To run the example you need:
+
+o Ant 1.4.1 or higher
+o JDK 1.3.1 or higher
+o Tomcat 3.X, Tomcat 4.X or a comparable servlet runner to run the
+  examples.
+
+To build a deployable version of the example follow these steps:
+
+1) Build the View package as outlined in the first section
+2) Change to directory examples/simple
+3) Use ant to build a deployable version: 
+   
+   > ant
+  
+This generates a file simple.war file in directory 'examples'.
+Deploy this .war file to the webapps directory of your servlet
+runner and restart. Now point a web browser at:
+
+http://<server>:<port>/simple/index.vm
+
+  
+Please send your feedback to velocity-user@jakarta.apache.org. 

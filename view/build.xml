@@ -43,6 +43,9 @@
   <!-- The docs destination directory  -->
   <property name="docs.dest"             value="${basedir}/docs"/>
 
+  <!-- Directory where examples are located  -->
+  <property name="examples.home"         value="${basedir}/examples"/>
+
 
 <!-- ========== Compiler Defaults ========================================= -->
 
@@ -144,6 +147,14 @@
     </delete>
 
     <delete>
+        <fileset dir="${examples.home}/simple/WEB-INF/lib" includes="velocity-tools-view*.jar"/>
+    </delete>
+
+    <delete>
+      <fileset dir="${examples.home}" includes="*.war"/>
+    </delete>
+
+    <delete>
       <fileset dir="${basedir}" includes="**/*.bak"/>
     </delete>
 
@@ -153,7 +164,7 @@
   <!-- ================================================================== -->
   <!-- A L L                                                              -->
   <!-- ================================================================== -->
-  <target name="all" depends="jar,install-jar,docs,javadocs"
+  <target name="all" depends="jar,install-jar,docs,javadocs,javadocs-velservlet,examples"
    description="Build entire project"/>
 
 
@@ -261,6 +272,32 @@
           <replacefilter token="@@@version@@@" value="${project.version}"/>
           <replacefilter token="@@@date@@@" value="${project.date}"/>
       </replace>
+
+  </target>
+
+
+  <!-- ================================================================== -->
+  <!-- E X A M P L E S                                                    -->
+  <!-- ================================================================== -->
+  <target name="examples" depends="jar,install-jar,docs,javadocs" 
+    description="Setup example application">
+
+      <!-- Setup example applications -->
+
+      <!-- Clean away old *.wars if any -->
+      <delete>
+        <fileset dir="${examples.home}" includes="*.war"/>
+      </delete>
+      
+      <!-- Deploy jars -->
+      <delete>
+          <fileset dir="${examples.home}/simple/WEB-INF/lib" includes="velocity-tools-view*.jar"/>
+      </delete>
+      <copy todir="${examples.home}/simple/WEB-INF/lib" filtering="no">
+        <fileset dir="${project.repository}">
+          <include name="velocity-tools-view*.jar"/>
+        </fileset>
+      </copy>
 
   </target>
 
