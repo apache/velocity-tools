@@ -106,19 +106,8 @@
       <fileset dir="${build.home}/classes" includes="**/*.class"/>
     </delete>
 
-    <delete>
-      <fileset dir="${build.home}/lib" includes="velocity-tools-struts-*"/>
-    </delete>
-
     <!-- remove jsp temporary cache -->
     <delete    dir="${build.home}/work"/>
-
-
-    <!-- remove old docs -->
-    <delete    dir="${docs.dest}/javadoc"/>
-    <delete>
-      <fileset dir="${docs.dest}" includes="tool*.html,index.html"/>
-    </delete>
 
     <!-- remove *.bak backups -->
     <delete>
