@@ -102,28 +102,29 @@ public class MultiViewsTool
 
     /**
      * Extracts the default language from the specified
-     * <code>ViewContext</code>, looking first at the servlet context,
-     * then the velocity context, then lastly at the JVM default.
+     * <code>ViewContext</code>, looking first at the Velocity
+     * context, then the servlet context, then lastly at the JVM
+     * default.  This "narrow scope to wide scope" pattern makes it
+     * easy to setup language overrides at different levels within
+     * your application.
      *
      * @param context The context to use.
-     * @return A reference to this object (i.e. ourself).
      * @see org.apache.velocity.view.tools.ContextTool
      */
-    public Object getInstance(ViewContext context)
+    public synchronized void init(ViewContext context)
     {
-        ServletContext sc = context.getServletContext();
-        defaultLanguage = (String) sc.getAttribute(DEFAULT_LANGUAGE_KEY);
+        Context vc = context.getVelocityContext();
+        defaultLanguage = (String) vc.get(DEFAULT_LANGUAGE_KEY);
         if (defaultLanguage == null || defaultLanguage.trim().equals(""))
         {
-            Context vc = context.getVelocityContext();
-            defaultLanguage = (String) vc.get(DEFAULT_LANGUAGE_KEY);
+            ServletContext sc = context.getServletContext();
+            defaultLanguage = (String) sc.getAttribute(DEFAULT_LANGUAGE_KEY);
             if (defaultLanguage == null || defaultLanguage.trim().equals(""))
             {
                 // Use JVM default.
                 defaultLanguage = Locale.getDefault().getLanguage();
             }
         }
-        return this;
     }
 
     /**
@@ -134,7 +135,7 @@ public class MultiViewsTool
      * FIXME: Since ContextTool was removed, this is not part of the
      * official interface.
      */
-    public void destroy(Object obj)
+    public synchronized void destroy(Object obj)
     {
         defaultLanguage = null;
     }
@@ -151,6 +152,17 @@ public class MultiViewsTool
     }
 
     /**
+     * Calls {@link #findLocalizedResource(String, String)} using the
+     * default language.
+     *
+     * @see #findLocalizedResource(String, String)
+     */
+    public String findLocalizedResource(String name)
+    {
+        return findLocalizedResource(defaultLanguage);
+    }
+
+    /**
      * <p>Finds the a localized version of the requested Velocity
      * resource (such as a file or template) which is most appropriate
      * for the locale of the current request.  Use in conjuction with
@@ -158,9 +170,9 @@ public class MultiViewsTool
      *
      * <p>Usage from a template would be something like the following:
      * <blockquote><code><pre>
-     * #parse ($multiviews.findLocalizedResource("header.vm"))
-     * #include ($multiviews.findLocalizedResource("my_page.html"))
-     * #parse ($multiviews.findLocalizedResource("footer.vm"))
+     * #parse ($multiviews.findLocalizedResource("header.vm", "en"))
+     * #include ($multiviews.findLocalizedResource("my_page.html", "en"))
+     * #parse ($multiviews.findLocalizedResource("footer.vm", "en"))
      * </pre></code></blockquote>
      *
      * You might also wrap this method using another pull/context tool
@@ -198,12 +210,26 @@ public class MultiViewsTool
     }
 
     /**
-     * Denotes request scope of this tool.
+     * Unneccessary cruft required by our interface.  Hopefully this
+     * method will go away soon.
      *
-     * @see org.apache.velocity.tools.view.tools.ServletContextTool.
+     * @see org.apache.velocity.tools.view.tools.ServletContextTool#getInstance(ViewContext)
+     */
+    public Object getInstance(ViewContext context)
+    {
+        init(context);
+        return this;
+    }
+
+    /**
+     * Denotes the global/application scope of this tool.  Note that
+     * this is merely to signify that it is thread-safe, and can
+     * actually be used in any scope.
+     *
+     * @see org.apache.velocity.tools.view.tools.ServletContextTool#getDefaultLifecycle()
      */
     public String getDefaultLifecycle()
     {
-        return REQUEST;
+        return APPLICATION;
     }
 }
