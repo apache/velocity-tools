@@ -67,7 +67,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: ViewToolInfo.java,v 1.4 2003/07/22 18:30:27 nbubna Exp $
+ * @version $Id: ViewToolInfo.java,v 1.5 2003/11/06 06:16:18 nbubna Exp $
  */
 public class ViewToolInfo implements ToolInfo
 {
@@ -78,6 +78,29 @@ public class ViewToolInfo implements ToolInfo
 
 
     public ViewToolInfo() {}
+
+
+    //TODO: if classloading becomes needed elsewhere, move this to a utils class
+    /**
+     * Return the <code>Class</code> object for the specified fully qualified
+     * class name, from this web application's class loader.  If no 
+     * class loader is set for the current thread, then the class loader
+     * that loaded this class will be used.
+     *
+     * @param className Fully qualified class name to be loaded
+     * @return Class object
+     * @exception ClassNotFoundException if the class cannot be found
+     * @since VelocityTools 1.1
+     */
+    protected Class getApplicationClass(String name) throws ClassNotFoundException
+    {
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        if (loader == null)
+        {
+            loader = ViewToolInfo.class.getClassLoader();
+        }
+        return loader.loadClass(name);
+    }
 
 
     /***********************  Mutators *************************/
@@ -96,7 +119,7 @@ public class ViewToolInfo implements ToolInfo
      */
     public void setClassname(String classname) throws Exception
     {
-        this.clazz = Class.forName(classname);
+        this.clazz = getApplicationClass(classname);
         /* create an instance and see if it is initializable */
         if (clazz.newInstance() instanceof ViewTool)
         {
