@@ -57,6 +57,7 @@ package org.apache.velocity.tools.view.context;
 import org.apache.velocity.context.Context;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletContext;
 
 
@@ -74,7 +75,7 @@ import javax.servlet.ServletContext;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  *
- * @version $Id: ViewContext.java,v 1.2 2002/04/02 16:46:31 sidler Exp $ 
+ * @version $Id: ViewContext.java,v 1.3 2002/04/15 10:45:32 sidler Exp $ 
  */
 public interface ViewContext
 {
@@ -82,6 +83,12 @@ public interface ViewContext
      * <p>Returns the instance of {@link HttpServletRequest} for this request.</p>
      */
     public HttpServletRequest getRequest();
+
+
+    /**
+     * <p>Returns the instance of {@link HttpServletResponse} for this request.</p>
+     */
+    public HttpServletResponse getResponse();
 
 
     /**

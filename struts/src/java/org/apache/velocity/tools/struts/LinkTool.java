@@ -59,6 +59,7 @@ import java.util.ArrayList;
 import java.net.URLEncoder;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
 
@@ -85,7 +86,7 @@ import org.apache.velocity.tools.view.tools.ServletContextTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: LinkTool.java,v 1.3 2002/04/02 16:46:30 sidler Exp $
+ * @version $Id: LinkTool.java,v 1.4 2002/04/15 10:45:32 sidler Exp $
  * 
  */
 public class LinkTool extends LogEnabledContextToolImpl 
@@ -101,13 +102,19 @@ public class LinkTool extends LogEnabledContextToolImpl
 
 
     /**
-     * A reference to the HtttpServletRequest.
+     * A reference to the HttpServletRequest.
      */ 
     protected HttpServletRequest request;
     
 
     /**
-     * A reference to the HtttpSession.
+     * A reference to the HttpServletResponse.
+     */ 
+    protected HttpServletResponse response;
+    
+
+    /**
+     * A reference to the HttpSession.
      */ 
     protected HttpSession session;
 
@@ -135,6 +142,7 @@ public class LinkTool extends LogEnabledContextToolImpl
     public LinkTool()
     {
         request = null;
+		response = null;
         session = null;
         application = null;
         
@@ -150,6 +158,7 @@ public class LinkTool extends LogEnabledContextToolImpl
     private LinkTool(ViewContext context)
     {
         this.request = context.getRequest();
+		this.response = context.getResponse();
         this.application = context.getServletContext();    
 
         this.uri = null;
@@ -168,6 +177,7 @@ public class LinkTool extends LogEnabledContextToolImpl
     private LinkTool(LinkTool that, QueryPair pair)
     {
         this.request = that.request;
+		this.response = that.response;
         this.application = that.application;    
         this.uri = that.uri;
         if (that.queryData != null)
@@ -195,6 +205,7 @@ public class LinkTool extends LogEnabledContextToolImpl
     private LinkTool(LinkTool that, String uri)
     {
         this.request = that.request;
+		this.response = that.response;
         this.application = that.application;    
         //set to new uri
         this.uri = uri;
@@ -477,8 +488,9 @@ public class LinkTool extends LogEnabledContextToolImpl
             }
             out.append(query);
         }
-
-        return out.toString();
+        // encode session ID into URL if sessions are used but cookies are
+        // not supported
+        return response.encodeURL(out.toString());
     }
 
 
