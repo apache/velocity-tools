@@ -19,9 +19,9 @@ package org.apache.velocity.tools.view.tools;
 
 
 import java.io.StringWriter;
-import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.generic.RenderTool;
+import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
 
 
@@ -73,7 +73,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * session scopes of a servlet environment.</p>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.5 $ $Date: 2004/03/12 20:30:32 $
+ * @version $Revision: 1.6 $ $Date: 2004/11/11 06:22:09 $
  */
 
 public class ViewRenderTool extends RenderTool implements ViewTool
@@ -97,6 +97,12 @@ public class ViewRenderTool extends RenderTool implements ViewTool
     public void init(Object obj)
     {
         context = (Context)obj;
+
+        // if ViewContext, try to retrieve a VelocityEngine for use
+        if (obj instanceof ViewContext)
+        {
+            setVelocityEngine(((ViewContext)obj).getVelocityEngine());
+        }
     }
 
     /**
