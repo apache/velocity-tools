@@ -89,7 +89,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @since VelocityTools 1.0
- * @version $Id: MessageTool.java,v 1.9 2003/11/06 06:19:44 nbubna Exp $
+ * @version $Id: MessageTool.java,v 1.10 2003/12/31 17:05:37 nbubna Exp $
  */
 public class MessageTool extends MessageResourcesTool
 {
@@ -257,6 +257,8 @@ public class MessageTool extends MessageResourcesTool
     /**
      * Returns the user's locale. If a locale is not found, the default
      * locale is returned.
+     * @deprecated This does not fit the purpose of MessageTool and will be
+     *             removed in VelocityTools 1.2
      */
     public Locale getLocale()
     {
