@@ -83,7 +83,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: MessageTool.java,v 1.3 2003/05/28 00:17:15 nbubna Exp $
+ * @version $Id: MessageTool.java,v 1.4 2003/07/25 16:54:40 nbubna Exp $
  */
 public class MessageTool implements ViewTool
 {
@@ -131,7 +131,7 @@ public class MessageTool implements ViewTool
         HttpSession session = request.getSession(false);
         ServletContext application = context.getServletContext();    
 
-        this.resources = StrutsUtils.getMessageResources(application);
+        this.resources = StrutsUtils.getMessageResources(request, application);
         this.locale = StrutsUtils.getLocale(request, session);
     }
 
