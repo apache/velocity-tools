@@ -84,7 +84,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ErrorsTool.java,v 1.5 2003/07/25 16:54:40 nbubna Exp $
+ * @version $Id: ErrorsTool.java,v 1.6 2003/10/20 02:23:25 nbubna Exp $
  */
 public class ErrorsTool implements ViewTool
 {
@@ -159,6 +159,33 @@ public class ErrorsTool implements ViewTool
         locale = StrutsUtils.getLocale(request, session);
         errors = StrutsUtils.getActionErrors(request);
     }
+
+
+    /**
+     * Retrieves the specified {@link MessageResources} bundle, or the
+     * application's default MessageResources if no bundle is specified.
+     */
+    protected MessageResources getResources(String bundle)
+    {
+        if (bundle == null)
+        {
+            if (resources == null) 
+            {
+                Velocity.error("Message resources are not available.");
+            }
+            return resources;
+        }
+        
+        MessageResources res = 
+            StrutsUtils.getMessageResources(request, application, bundle);
+        if (res == null)
+        {
+            Velocity.error("MessageResources bundle '" + bundle + 
+                           "' is not available.");
+        }
+        return res;
+    }
+        
 
 
     // --------------------------------------------- View Helpers -------------
@@ -255,7 +282,7 @@ public class ErrorsTool implements ViewTool
      */
     public ArrayList getAll() 
     {
-        return get(null);
+        return get(null, null);
     }
 
 
@@ -271,14 +298,31 @@ public class ErrorsTool implements ViewTool
      */
     public ArrayList get(String property) 
     {
+        return get(property, null);
+    }
+
+
+    /**
+     * Returns the set of localized error messages as an 
+     * <code>java.util.ArrayList</code> of <code> java.lang.String</code> 
+     * for all errors queued of the specified category or <code>null</code> 
+     * if no error are queued for the specified category. If the message 
+     * resources don't contain an error message for a particular error key, 
+     * the key itself is used as error message.
+     *
+     * @param property the category of errors to operate on
+     * @param bundle the message resource bundle to use
+     */
+    public ArrayList get(String property, String bundle) 
+    {
         if (errors == null || errors.isEmpty())
         {
             return null;
         }
         
+        MessageResources res = getResources(bundle);
         if (resources == null) 
         {
-            Velocity.error("Message resources are not available.");
             //FIXME? should we return the list of error keys instead?
             return null;
         }
@@ -299,13 +343,12 @@ public class ErrorsTool implements ViewTool
         }
 
         ArrayList list = new ArrayList();
-         
         while (errormsgs.hasNext())
         {
             ActionError errormsg = (ActionError)errormsgs.next();
-            String message = resources.getMessage(locale,
-                                                  errormsg.getKey(), 
-                                                  errormsg.getValues());
+            String message = res.getMessage(locale, 
+                                            errormsg.getKey(), 
+                                            errormsg.getValues());
             if (message != null)
             {
                 list.add(message);
@@ -313,7 +356,8 @@ public class ErrorsTool implements ViewTool
             else
             {
                 // if error message cannot be found for a key, return key instead
-                Velocity.warn("Message for key \"" + errormsg.getKey() + "\" could not be found.");
+                Velocity.warn("Message for key \"" + errormsg.getKey() + 
+                              "\" could not be found.");
                 list.add(errormsg.getKey());
             }
         }
@@ -333,9 +377,9 @@ public class ErrorsTool implements ViewTool
      */
     public String getMsgs()
     {
-        return StrutsUtils.errorMarkup(null, request, session, application);    
+        return getMsgs(null, null);    
     }
-     
+
 
     /**
      * <p>Renders the queued error messages of a particual category as a list. 
@@ -351,7 +395,27 @@ public class ErrorsTool implements ViewTool
      */
     public String getMsgs(String property)
     {
-        return StrutsUtils.errorMarkup(property, request, session, application);    
+        return getMsgs(property, null);
+    }
+
+
+    /**
+     * <p>Renders the queued error messages of a particual category as a list. 
+     * This method expects the message keys <code>errors.header</code> and 
+     * <code>errors.footer</code> in the message resources. The value of the 
+     * former is rendered before the list of error messages and the value of 
+     * the latter is rendered after the error messages.</p>
+     * 
+     * @param property the category of errors to render
+     * @param bundle the message resource bundle to use
+     * 
+     * @return The formatted error messages. If no error messages are queued, 
+     * an empty string is returned. 
+     */
+    public String getMsgs(String property, String bundle)
+    {
+        return StrutsUtils.errorMarkup(property, bundle, request, 
+                                       session, application);    
     }
 
 
