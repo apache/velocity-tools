@@ -45,7 +45,7 @@ import java.net.HttpURLConnection;
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.9 $ $Date: 2004/02/18 20:08:29 $
+ * @version $Revision: 1.10 $ $Date: 2004/09/09 19:37:26 $
  */
 public abstract class ImportSupport {
 
@@ -102,6 +102,8 @@ public abstract class ImportSupport {
             {
                 sb.append((char)i);
             }
+            r.close();
+
             return sb.toString();
         }
         else // handle relative URLs ourselves
@@ -120,7 +122,7 @@ public abstract class ImportSupport {
                 String sp = ((HttpServletRequest)request).getServletPath();
                 url = sp.substring(0, sp.lastIndexOf('/')) + '/' + url;
             }
-            
+
             // strip the session id from the url
             url = stripSession(url);
 
@@ -233,7 +235,7 @@ public abstract class ImportSupport {
                                     + url + "\". " + ex);
             }
             catch (RuntimeException ex)
-            { 
+            {
                 // because the spec makes us
                 throw new Exception("Problem accessing the absolute URL \""
                                     + url + "\". " + ex);
@@ -281,7 +283,7 @@ public abstract class ImportSupport {
         //************************************************************
         // Constructor and methods
 
-        /** 
+        /**
          * Constructs a new ImportResponseWrapper.
          * @param response the response to wrap
          */
@@ -317,7 +319,7 @@ public abstract class ImportSupport {
             }
             isStreamUsed = true;
             bos = new ByteArrayOutputStream();
-            ServletOutputStream sos = new ServletOutputStream() 
+            ServletOutputStream sos = new ServletOutputStream()
                 {
                     public void write(int b) throws IOException
                     {
@@ -339,7 +341,7 @@ public abstract class ImportSupport {
             // ignore
         }
 
-        /** 
+        /**
          * Sets the status of the response
          * @param status the status code
          */
@@ -438,7 +440,7 @@ public abstract class ImportSupport {
                 sessionEnd = u.toString().indexOf("?", sessionStart + 1);
             }
             if (sessionEnd == -1)
-            { 
+            {
                 // still
                 sessionEnd = u.length();
             }
