@@ -83,7 +83,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: MessageTool.java,v 1.5 2003/10/18 22:57:24 marino Exp $
+ * @version $Id: MessageTool.java,v 1.6 2003/10/20 02:24:03 nbubna Exp $
  */
 public class MessageTool implements ViewTool
 {
@@ -158,12 +158,7 @@ public class MessageTool implements ViewTool
      */
     public String get(String key)
     {
-        if (resources == null)
-        {
-            Velocity.error("Message resources are not available.");
-            return null;
-        }
-        return resources.getMessage(locale, key);
+        return get(key, (Object[])null);
     }
 
 
@@ -180,13 +175,7 @@ public class MessageTool implements ViewTool
      */
     public String get(String key, String bundle)
     {
-        MessageResources res = StrutsUtils.getMessageResources(this.request, app, bundle);
-        if (res == null)
-        {
-            Velocity.error("Message resources are not available.");
-            return null;
-        }
-        return res.getMessage(locale, key);
+        return get(key, bundle, (Object[])null);
     }
 
 
