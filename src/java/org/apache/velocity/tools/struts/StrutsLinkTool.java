@@ -54,7 +54,6 @@
 
 package org.apache.velocity.tools.struts;
 
-import org.apache.struts.config.ForwardConfig;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.tools.view.tools.LinkTool;
 import org.apache.velocity.tools.struts.StrutsUtils;
@@ -74,7 +73,7 @@ import org.apache.velocity.tools.struts.StrutsUtils;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: StrutsLinkTool.java,v 1.4 2003/07/25 16:54:02 nbubna Exp $
+ * @version $Id: StrutsLinkTool.java,v 1.5 2003/07/30 19:14:55 nbubna Exp $
  */
 public class StrutsLinkTool extends LinkTool
 {
@@ -111,24 +110,14 @@ public class StrutsLinkTool extends LinkTool
      */
     public StrutsLinkTool setForward(String forward)
     {
-        ForwardConfig mapping = StrutsUtils.getForwardConfig(forward, request, application);
-        
-        if (mapping == null)
+        String url = StrutsUtils.getForwardURL(request, application, forward);
+        if (url == null)
         {
-            Velocity.warn("In method setForward(" + forward + "): Parameter does not map to a valid forward.");
+            Velocity.warn("In method setForward(" + forward +
+                          "): Parameter does not map to a valid forward.");
             return null;
         }
-
-        String relPath = mapping.getPath();
-        if (relPath.startsWith("/"))
-        {
-            return (StrutsLinkTool)copyWith(request.getContextPath() + relPath);
-        }
-        else
-        {
-            return (StrutsLinkTool)copyWith(request.getContextPath() + '/' + relPath);
-        }        
-        
+        return (StrutsLinkTool)copyWith(url);
     }
 
 
