@@ -45,7 +45,7 @@ import java.net.HttpURLConnection;
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.10 $ $Date: 2004/09/09 19:37:26 $
+ * @version $Revision: 1.11 $ $Date: 2004/11/10 23:18:35 $
  */
 public abstract class ImportSupport {
 
@@ -303,7 +303,10 @@ public abstract class ImportSupport {
                                                 + "Target servlet called getWriter(), then getOutputStream()");
             }
             isWriterUsed = true;
-            sw = new StringWriter();
+            if (sw == null)
+            {
+                sw = new StringWriter();
+            }
             return new PrintWriter(sw);
         }
 
@@ -318,7 +321,10 @@ public abstract class ImportSupport {
                                                 + "Target servlet called getOutputStream(), then getWriter()");
             }
             isStreamUsed = true;
-            bos = new ByteArrayOutputStream();
+            if (bos == null)
+            {
+                bos = new ByteArrayOutputStream();
+            }
             ServletOutputStream sos = new ServletOutputStream()
                 {
                     public void write(int b) throws IOException
