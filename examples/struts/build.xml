@@ -12,7 +12,6 @@
 
  <!-- the local repository -->
  <property name="local.repository"            value="${basedir}/WEB-INF/lib" />
- <property name="project.repository"          value="${basedir}/WEB-INF/build-lib" />
 
 
 <!-- ========== Component Declarations ==================================== -->
@@ -58,11 +57,7 @@
     <fileset dir="${local.repository}">
       <include name="**/*.jar"/>
     </fileset>
-    <fileset dir="${project.repository}">
-      <include name="**/*.jar"/>
-    </fileset>
   </path>
-
 
 <!-- ========== Executable Targets ======================================== -->
 
