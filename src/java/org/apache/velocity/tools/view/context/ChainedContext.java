@@ -61,7 +61,7 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ChainedContext.java,v 1.8 2004/11/11 04:08:16 nbubna Exp $ 
+ * @version $Id$ 
  */
 public class ChainedContext extends VelocityContext implements ViewContext
 {
@@ -204,7 +204,15 @@ public class ChainedContext extends VelocityContext implements ViewContext
         {
             if (session != null)
             {
-                o = session.getAttribute(key);
+                try
+                {
+                    o = session.getAttribute(key);
+                }
+                catch (IllegalStateException ise)
+                {
+                    // Handle invalidated session state
+                    o = null;
+                }
             }
 
             if (o == null)
