@@ -1,7 +1,7 @@
 /*
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2002 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,19 +55,32 @@
 
 package org.apache.velocity.tools.tools;
 
+
 import javax.servlet.ServletRequest;
+
+import org.apache.velocity.tools.view.context.ViewContext;
+import org.apache.velocity.tools.view.tools.ViewTool;
 
 
 /**
  * Utility class for easy parsing of {@link ServletRequest} parameters
+ * <br>
+ * This class now implements the ViewTool interface to allow it
+ * to be used as a request based tool.
+ * <br>
+ * It should be noted that this class is not thread-safe.  As it 
+ * is wholly dependent upon the current ServletRequest, therefore each
+ * ServletRequest should have its own instance.
  *
- * @author <a href="mailto:sidler@teamup.com">Gabriel Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.3 $ $Date: 2002/05/10 05:42:17 $
+ * @version $Revision: 1.4 $ $Date: 2002/07/29 09:06:15 $
  */
 
-public class ParameterParser
+public class ParameterParser implements ViewTool
 {
+
+    private ServletRequest request;
+
 
     /**
      * Constructs a new instance
@@ -77,160 +90,223 @@ public class ParameterParser
 
 
     /**
-     * @param request the servlet request
+     * Constructs a new instance using the specified request
+     *
+     * @param the {@link ServletRequest} to be parsed
+     */
+    public ParameterParser(ServletRequest request)
+    {
+        setRequest(request);
+    }
+    
+    
+    /**
+     * Initializes this instance.
+     *
+     * @param obj the current ViewContext or ServletRequest
+     * @throws IllegalArgumentException if the param is not a 
+     *         ViewContext or ServletRequest
+     */
+    public void init(Object obj)
+    {
+        if (obj instanceof ViewContext)
+        {
+            setRequest(((ViewContext)obj).getRequest());
+        }
+        else if (obj instanceof ServletRequest)
+        {
+            setRequest((ServletRequest)obj);
+        }
+        else
+        {
+            throw new IllegalArgumentException("Was expecting " + ViewContext.class +
+                                               " or " + ServletRequest.class);
+        }
+    }
+
+
+    /**
+     * Sets the current {@link ServletRequest}
+     *
+     * @param the {@link ServletRequest} to be parsed
+     */
+    protected void setRequest(ServletRequest request)
+    {
+        this.request = request;
+    }
+
+
+    /**
+     * Returns the current {@link ServletRequest} for this instance.
+     *
+     * @return the current {@link ServletRequest}
+     * @throws UnsupportedOperationException if the request is null
+     */
+    protected ServletRequest getRequest()
+    {
+        if (request == null)
+        {
+            throw new UnsupportedOperationException("Request is null. ParameterParser must be initialized first!");
+        }
+        return request;
+    }
+
+
+    // -----------------  parsing methods -----------------------------
+
+
+    /**
      * @param key the parameter's key
      * @return parameter matching the specified key or
      *         <code>null</code> if there is no matching
      *         parameter
      */
-    public static String getString(ServletRequest request, String key)
+    public String getString(String key)
     {
-        return request.getParameter(key);
+        return getRequest().getParameter(key);
     }
 
 
     /**
-     * @param request the servlet request
      * @param the desired parameter's key
      * @param the alternate value
      * @return parameter matching the specified key or the 
      *         specified alternate String if there is no matching
      *         parameter
      */
-    public static String getString(ServletRequest request, String key, String alternate)
+    public String getString(String key, String alternate)
     {
-        String s = getString(request, key);
+        String s = getString(key);
         return (s != null) ? s : alternate;
     }
 
 
     /**
-     * @param request the servlet request
      * @param the desired parameter's key
      * @return a {@link Boolean} object for the specified key or 
      *         <code>null</code> if no matching parameter is found
      */
-    public static Boolean getBoolean(ServletRequest request, String key)
+    public Boolean getBoolean(String key)
     {
-        String s = getString(request, key);
+        String s = getString(key);
         return (s != null) ? Boolean.valueOf(s) : null;
     }
 
 
     /**
-     * @param request the servlet request
      * @param the desired parameter's key
      * @param the alternate boolean value
      * @return boolean value for the specified key or the 
      *         alternate boolean is no value is found
      */
-    public static boolean getBoolean(ServletRequest request, String key, boolean alternate)
+    public boolean getBoolean(String key, boolean alternate)
     {
-        Boolean bool = getBoolean(request, key);
+        Boolean bool = getBoolean(key);
         return (bool != null) ? bool.booleanValue() : alternate;
     }
 
 
     /**
-     * @param request the servlet request
      * @param the desired parameter's key
      * @param the alternate {@link Boolean}
      * @return a {@link Boolean} for the specified key or the specified
      *         alternate if no matching parameter is found
      */
-    public static Boolean getBoolean(ServletRequest request, String key, Boolean alternate)
+    public Boolean getBoolean(String key, Boolean alternate)
     {
-        Boolean bool = getBoolean(request, key);
+        Boolean bool = getBoolean(key);
         return (bool != null) ? bool : alternate;
     }
 
 
     /**
-     * @param request the servlet request
      * @param the desired parameter's key
      * @return a {@link Number} for the specified key or 
      *         <code>null</code> if no matching parameter is found
      */
-    public static Number getNumber(ServletRequest request, String key)
+    public Number getNumber(String key)
     {
-        String s = getString(request, key);
+        String s = getString(key);
         if (s == null || s.length() == 0)
         {
             return null;
         }
-        if (s.indexOf('.') >= 0)
+        try
         {
-            return new Double(s);
+            if (s.indexOf('.') >= 0)
+            {
+                return new Double(s);
+            }
+            return new Long(s);
         }
-        return new Long(s);
+        catch (Exception e)
+        {
+            //there is no Number with that key
+            return null;
+        }
     }
 
 
     /**
-     * @param request the servlet request
      * @param the desired parameter's key
      * @param the alternate Number
      * @return a Number for the specified key or the specified
      *         alternate if no matching parameter is found
      */
-    public static Number getNumber(ServletRequest request, String key, Number alternate)
+    public Number getNumber(String key, Number alternate)
     {
-        Number n = getNumber(request, key);
+        Number n = getNumber(key);
         return (n != null) ? n : alternate;
     }
 
 
     /**
-     * @param request the servlet request
      * @param the desired parameter's key
      * @param the alternate int value
      * @return the int value for the specified key or the specified
      *         alternate value if no matching parameter is found
      */
-    public static int getInt(ServletRequest request, String key, int alternate)
+    public int getInt(String key, int alternate)
     {
-        Number n = getNumber(request, key);
+        Number n = getNumber(key);
         return (n != null) ? n.intValue() : alternate;
     }
 
 
     /**
-     * @param request the servlet request
      * @param the desired parameter's key
      * @param the alternate double value
      * @return the double value for the specified key or the specified
      *         alternate value if no matching parameter is found
      */
-    public static double getDouble(ServletRequest request, String key, double alternate)
+    public double getDouble(String key, double alternate)
     {
-        Number n = getNumber(request, key);
+        Number n = getNumber(key);
         return (n != null) ? n.doubleValue() : alternate;
     }
 
 
     /**
-     * @param request the servlet request
      * @param the key for the desired parameter
      * @return an array of String objects containing all of the values
      *         the given request parameter has, or <code>null</code>
      *         if the parameter does not exist
      */
-    public static String[] getStrings(ServletRequest request, String key)
+    public String[] getStrings(String key)
     {
-        return request.getParameterValues(key);
+        return getRequest().getParameterValues(key);
     }
 
 
     /**
-     * @param request the servlet request
      * @param the key for the desired parameter
      * @return an array of Number objects for the specified key or 
      *         <code>null</code> if the parameter does not exist or the
      *         parameter does not contain Numbers.
      */
-    public static Number[] getNumbers(ServletRequest request, String key)
+    public Number[] getNumbers(String key)
     {
-        String[] strings = getStrings(request, key);
+        String[] strings = getStrings(key);
         if (strings == null)
         {
             return null;
@@ -263,15 +339,14 @@ public class ParameterParser
 
 
     /**
-     * @param request the servlet request
      * @param the key for the desired parameter
      * @return an array of int values for the specified key or 
      *         <code>null</code> if the parameter does not exist or the
      *         parameter does not contain ints.
      */
-    public static int[] getInts(ServletRequest request, String key)
+    public int[] getInts(String key)
     {
-        String[] strings = getStrings(request, key);
+        String[] strings = getStrings(key);
         if (strings == null)
         {
             return null;
@@ -297,15 +372,14 @@ public class ParameterParser
 
 
     /**
-     * @param request the servlet request
      * @param the key for the desired parameter
      * @return an array of double values for the specified key or 
      *         <code>null</code> if the parameter does not exist or the
      *         parameter does not contain doubles.
      */
-    public static double[] getDoubles(ServletRequest request, String key)
+    public double[] getDoubles(String key)
     {
-        String[] strings = getStrings(request, key);
+        String[] strings = getStrings(key);
         if (strings == null)
         {
             return null;
