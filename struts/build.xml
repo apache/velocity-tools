@@ -1,4 +1,4 @@
-<project name="velocity-view" default="jar" basedir=".">
+<project name="velocity-view" default="all" basedir=".">
 
 <!-- ========== Initialize Properties ===================================== -->
 
@@ -22,25 +22,31 @@
   <property name="project.title"         value=""/>
 
   <!-- The current version number of this component -->
-  <property name="project.version"       value="0.1"/>
+  <property name="project.version"       value="0.6"/>
+
+  <!-- The current version number of this component -->
+  <property name="project.date"          value="05-Mar-2002"/>
 
   <!-- The base directory for compilation targets -->
-  <property name="build.home"              value="target"/>
+  <property name="build.home"            value="target"/>
 
   <!-- The base directory for distribution targets -->
-  <property name="dist.home"               value="dist"/>
+  <property name="dist.home"             value="dist"/>
 
   <!-- The base directory for component sources -->
-  <property name="source.home"             value="src"/>
+  <property name="source.home"           value="src"/>
 
   <!-- The base directory for component sources -->
   <property name="conf.home"             value="src/conf"/>
 
   <!-- The docs source directory -->
-  <property name="docs.src"             value="xdocs"/>
+  <property name="docs.src"              value="xdocs"/>
 
   <!-- The docs destination directory  -->
   <property name="docs.dest"             value="docs"/>
+
+  <!-- The docs destination directory  -->
+  <property name="examples.home"         value="examples"/>
 
 <!-- ========== Compiler Defaults ========================================= -->
 
@@ -125,13 +131,29 @@
    description="Clean build and distribution directories">
     <delete    dir="${build.home}"/>
     <delete    dir="${dist.home}"/>
+    <delete>
+      <fileset dir="${basedir}" includes="*.jar"/>
+    </delete>
+    <delete>
+      <fileset dir="${docs.dest}" includes="**/*.html"/>
+    </delete>
+    <delete    dir="${examples.home}/velstruts"/>
+    <delete>
+      <fileset dir="${examples.home}" includes="*.war"/>
+    </delete>
+    <delete>
+      <fileset dir="${basedir}" includes="**/*.bak"/>
+    </delete>
+
   </target>
+
 
   <!-- ================================================================== -->
   <!-- A L L                                                              -->
   <!-- ================================================================== -->
-  <target name="all" depends="clean,jar,docs,javadocs"
+  <target name="all" depends="clean,jar,docs,javadocs,examples"
    description="Clean and compile all components"/>
+
 
   <!-- ================================================================== -->
   <!-- J A V A D O C S                                                    -->
@@ -152,6 +174,7 @@
 
      </javadoc>
   </target>
+
 
   <!-- ================================================================== -->
   <!-- J A R                                                              -->
@@ -179,13 +202,108 @@
       <dvsl
            basedir="${docs.src}"
            destdir="${docs.dest}/"
-    	   toolbox="../xdocs/toolbox.props"
+    	   toolboxfile="../xdocs/toolbox.props"
            extension=".html"
            style="../xdocs/site.dvsl"
-           excludes="**/project.xml"
+           excludes="**/project.xml,**/tools.xml"
            includes="**/*.xml"
       />
+
+      <replace dir="${docs.dest}">
+          <replacefilter token="@@@version@@@" value="${project.version}"/>
+          <replacefilter token="@@@date@@@" value="${project.date}"/>
+      </replace>
+
+
   </target>
+
+
+
+  <!-- ================================================================== -->
+  <!-- E X A M P L E S                                                    -->
+  <!-- ================================================================== -->
+  <target name="examples" depends="clean,jar,docs,javadocs" 
+    description="Setup example application">
+
+      <!-- Setup example applications -->
+
+      <!-- Clean away old *.wars if any -->
+      <delete>
+        <fileset dir="${examples.home}" includes="*.war"/>
+      </delete>
+      
+      <!-- Deploy jar -->
+      <delete>
+          <fileset dir="${examples.home}/struts/WEB-INF/lib" includes="${project.name}-*.jar"/>
+      </delete>
+      <copy todir="${examples.home}/struts/WEB-INF/lib" filtering="no">
+        <fileset dir="${basedir}">
+          <include name="${project.name}-*.jar"/>
+        </fileset>
+      </copy>
+
+      <!-- Copy javadoc -->
+      <copy todir="${examples.home}/struts/doc/javadoc/">
+        <fileset dir="${build.home}/javadoc"/>
+      </copy>
+
+      <!-- Copy reference documentation -->
+      <copy todir="${examples.home}/struts/doc/">
+        <fileset dir="${docs.dest}" includes="tool-*"/>
+      </copy>
+      <copy todir="${examples.home}/struts/doc/">
+        <fileset dir="${docs.dest}" includes="index.html"/>
+      </copy>
+
+  </target>
+
+
+
+  <!-- ================================================================== -->
+  <!-- D E M O  clean, compile, docs, javadocs                                                          -->
+  <!-- ================================================================== -->
+  <target name="demo" depends=""
+      description="Generate demo package">
+
+      <!-- Generate demo package -->
+      <!-- This is temporary and will be removed in the release versions -->
+
+      <!-- Clean away old demo if any 
+      <delete dir="${examples.home}/velstruts"/> -->
+      <delete>
+        <fileset dir="${examples.home}" includes="*.war"/>
+      </delete>
+      
+      <!-- Copy example application -->
+      <copy todir="${examples.home}/velstruts">
+        <fileset dir="${examples.home}/struts"/>
+      </copy>
+      
+      <!-- Remove jakarta-velocity-struts-XX.jar -->
+      <delete>
+        <fileset dir="${examples.home}/velstruts/WEB-INF/lib" includes="velocity-tools-struts-*"/>
+      </delete>
+
+      <!-- Copy source from src/java to WEB-INF/src -->
+      <copy todir="${examples.home}/velstruts/WEB-INF/src">
+        <fileset dir="${source.home}/java"/>
+      </copy>
+
+      <!-- Copy javadoc -->
+      <copy todir="${examples.home}/velstruts/doc/javadoc/">
+        <fileset dir="${build.home}/javadoc"/>
+      </copy>
+
+      <!-- Copy reference documentation -->
+      <copy todir="${examples.home}/velstruts/doc/">
+        <fileset dir="${docs.dest}" includes="tool-*"/>
+      </copy>
+      <copy todir="${examples.home}/velstruts/doc/">
+        <fileset dir="${docs.dest}" includes="index.html"/>
+      </copy>
+
+  </target>
+
 
   <!-- ================================================================== -->
   <!-- I N S T A L L  J A R                                               -->
@@ -198,5 +316,25 @@
       </fileset>
     </copy>
   </target>
+
+
+  <!-- ================================================================== -->
+  <!--  D E P L O Y   J A R                                               -->
+  <!-- ================================================================== -->
+  <target name="deploy-jar" depends="compile, jar"
+          description="Deploy jar to example applications">
+    
+    <delete>
+        <fileset dir="${examples.home}/struts/WEB-INF/lib" includes="${project.name}-*.jar"/>
+    </delete>
+
+    <copy todir="${examples.home}/struts/WEB-INF/lib" filtering="no">
+      <fileset dir="${basedir}">
+        <include name="${project.name}-*.jar"/>
+      </fileset>
+    </copy>
+  </target>
+
+
 </project>
 

@@ -43,17 +43,39 @@
                type="examples.app1.AddressForm"/>
 
 
+    <!-- Struts Example Application 2 -->
+
+     <form-bean
+        name="demoForm"
+        type= "examples.app2.DemoForm"/>
+
+
     <!-- Struts Example Application 3 -->
 
      <form-bean
         name="logonForm"
         type= "examples.app3.LogonForm"/>
 
+
+    <!-- Struts Example Application 4 -->
+    
+    <form-bean name="addrForm"
+               type="examples.app4.AddressForm"/>
+
+
   </form-beans>
 
 
   <!-- ========== Global Forward Definitions ============================== -->
   <global-forwards>
+
+    <!-- Struts Example Application 2 -->
+
+    <!-- Forward to home -->
+     <forward
+        name="start"
+        path="/home.do"/>
+
 
     <!-- Struts Example Application 3, JSP Version -->
 
@@ -119,10 +141,13 @@
 
 
     <!-- Struts Example Application 2, Velocity Version -->
-    <action path="/tooldemo"
-            type="examples.app2.ToolDemoAction">
-        <forward name="gotoStart" path="/examples/struts_app2/tool-demo.vm"/>
-        <forward name="gotoEnd" path="/examples/struts_app2/tool-demo.vm"/>
+    <action path="/demo"
+            type="examples.app2.DemoAction"
+            name="demoForm"
+            scope="request"
+            validate="false">
+        <forward name="home" path="/examples/struts_app2/tool-demo.vm"/>
+        <forward name="exit" path="/examples/struts_app2/tool-demo.vm"/>
     </action>
 
 
@@ -198,6 +223,18 @@
         type="examples.app3.LogoffAction">
       <forward name="continue" path="/examples/struts_app3/index.vm"/>
     </action>
+
+
+    <!-- Struts Example Application 4, Velocity Version --> 
+    <action path="/addressdb"
+            type="examples.app4.AddressAction"
+            name="addrForm"
+            scope="request">
+        <forward name="listAddresses" path="/examples/struts_app4/list-addresses.vm"/>
+        <forward name="editAddress" path="/examples/struts_app4/edit-address.vm"/>
+    </action>
+
+
 
 
 

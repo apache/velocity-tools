@@ -1,16 +1,16 @@
 <html>
     <head>
-	    <title>$bean.message("title")</title>
+	    <title>$msg.get("title")</title>
     	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">    
     </head>
 
     <body>
-        <p><b>$bean.message("title") (Velocity $bean.message("version"))</b></p>
+        <p><b>$msg.get("title") (Velocity $msg.get("version"))</b></p>
         
-        <p>$bean.message("intro")</p>
+        <p>$msg.get("intro")</p>
         
         <form name="form1" action="address2.do">
-        <p>$bean.message("language")
+        <p>$msg.get("language")
         <select name="language" size="1" onchange="form1.submit(); return false;">
             <option value="" SELECTED></option>
             <option value="English">English</option>             
@@ -18,40 +18,40 @@
         </select>
         </p></form>
         	
-        <p>$bean.message("header")</p>
+        <p>$msg.get("header")</p>
         <table width="300" border="1" cellspacing="" cellpadding="5">
         	<tr> 
-        		<td>$bean.message("firstname")</td>
+        		<td>$msg.get("firstname")</td>
         		<td>&nbsp; $!address.firstname </td>
         	</tr>
         	<tr> 
-        		<td>$bean.message("lastname")</td>
+        		<td>$msg.get("lastname")</td>
         		<td>&nbsp; $!address.lastname </td>
         	</tr>
         	<tr> 
-        		<td>$bean.message("street")</td>
+        		<td>$msg.get("street")</td>
         		<td>&nbsp; $!address.street </td>
         	</tr>
         	<tr> 
-        		<td>$bean.message("zip")</td>
+        		<td>$msg.get("zip")</td>
         		<td>&nbsp; $!address.zip </td>
         	</tr>
         	<tr> 
-        		<td>$bean.message("city")</td>
+        		<td>$msg.get("city")</td>
         		<td>&nbsp; $!address.city </td>
         	</tr>
         	<tr> 
-        		<td>$bean.message("country")</td>
+        		<td>$msg.get("country")</td>
         		<td>&nbsp; $!address.country </td>
         	</tr>
         </table>
         
         <br>
-        <a href="address1.do?action=edit">$bean.message("edit")</a> (JSP)<br><br>
-        <a href="address2.do?action=edit">$bean.message("edit")</a> (Velocity)
+        <a href="address1.do?action=edit">$msg.get("edit")</a> (JSP)<br><br>
+        <a href="address2.do?action=edit">$msg.get("edit")</a> (Velocity)
 
         <br><br>
-        <a href="examples/struts-app1/show-address.txt">Template</a>
+        <a href="examples/struts_app1/show-address.txt">Template</a>
         
     </body>
 </html>

@@ -30,9 +30,9 @@ import org.apache.struts.util.MessageResources;
  * <p>A simple action used to demonstrate the context tools.</p>
  *
  * @author <a href="mailto:sidler@teamup.com"/>Gabe Sidler</a>
- * @version $Id: ToolDemoAction.java,v 1.2 2002/01/09 11:25:43 sidler Exp $
+ * @version $Id: DemoAction.java,v 1.1 2002/03/12 11:36:48 sidler Exp $
  */
-public class ToolDemoAction extends Action 
+public class DemoAction extends Action 
 {
 
 
@@ -58,8 +58,25 @@ public class ToolDemoAction extends Action
         String action;
 	    HttpSession session;
 
+        // Create serveral error messages to demontrate the output in a template
+        ActionErrors errors = new ActionErrors();
+        
+        // Add some global errors
+        errors.add(ActionErrors.GLOBAL_ERROR, new ActionError("error01"));
+        errors.add(ActionErrors.GLOBAL_ERROR, new ActionError("error02"));
+
+        // Add some specific errors
+        errors.add("language", new ActionError("error10"));
+        errors.add("language", new ActionError("error11"));
+        
+        // Save error messages to request attributes
+        saveErrors(request, errors);
+
+        // Create and save a new transaction token
+        saveToken(request);
+
         // forward to edit formular
-        return (mapping.findForward("gotoStart"));
+        return (mapping.findForward("home"));
 
     }
 }
