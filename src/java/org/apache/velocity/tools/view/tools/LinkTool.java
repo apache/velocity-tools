@@ -86,7 +86,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: LinkTool.java,v 1.7 2003/05/28 00:17:16 nbubna Exp $
+ * @version $Id: LinkTool.java,v 1.8 2003/07/26 23:02:42 nbubna Exp $
  */
 public class LinkTool implements ViewTool, Cloneable
 {
@@ -243,7 +243,8 @@ public class LinkTool implements ViewTool, Cloneable
         }
         catch (CloneNotSupportedException e)
         {
-            Velocity.warn("LinkTool: could not clone " + getClass() + " - " + e);
+            Velocity.warn("LinkTool: could not properly clone " + getClass() + 
+                          " - " + e);
 
             // "clone" manually
             LinkTool copy;
@@ -263,6 +264,7 @@ public class LinkTool implements ViewTool, Cloneable
             copy.uri = this.uri;
             copy.anchor = this.anchor;
             copy.queryData = this.queryData;
+            copy.queryDataDelim = this.queryDataDelim;
             return copy;
         }
     }
@@ -286,7 +288,7 @@ public class LinkTool implements ViewTool, Cloneable
         ViewContext context = (ViewContext)obj;
         this.request = context.getRequest();
         this.response = context.getResponse();
-        this.application = context.getServletContext();    
+        this.application = context.getServletContext();
     }
 
 
