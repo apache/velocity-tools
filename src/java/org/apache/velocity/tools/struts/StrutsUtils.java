@@ -3,7 +3,7 @@
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2002 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -71,9 +71,17 @@ import javax.sql.DataSource;
 import org.apache.struts.upload.MultipartRequestWrapper;
 import org.apache.struts.util.MessageResources;
 
-
 import org.apache.struts.Globals;
-import org.apache.struts.action.*;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionFormBean;
+import org.apache.struts.action.ActionFormBeans;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionForwards;
+import org.apache.struts.action.ActionError;
+import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMappings;
+import org.apache.struts.action.ActionMessages;
 
 
 /**
@@ -90,12 +98,13 @@ import org.apache.struts.action.*;
  * <a href="http://nagoya.apache.org/bugzilla/show_bug.cgi?id=16814">Bug #16814</a>
  * for more on that.</p>
  *
+ * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>, based
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>, based
  * on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-class StrutsUtils
+public class StrutsUtils
 {
 
 // ------------------------------------- Struts ServletContext Resources ------
@@ -106,7 +115,7 @@ class StrutsUtils
      *
      * @param application the servlet context
      */
-    static DataSource getDataSource(ServletContext application)
+    public static DataSource getDataSource(ServletContext application)
     {
         if (application==null)
         {
@@ -114,7 +123,7 @@ class StrutsUtils
         }
 
         return (DataSource)
-            application.getAttribute(Action.DATA_SOURCE_KEY);
+            application.getAttribute(Globals.DATA_SOURCE_KEY);
     }
 
 
@@ -124,7 +133,7 @@ class StrutsUtils
      *
      * @param application the servlet context
      */
-    static ActionFormBeans getActionFormBeans(ServletContext application)
+    public static ActionFormBeans getActionFormBeans(ServletContext application)
     {
         if (application==null)
         {
@@ -132,7 +141,7 @@ class StrutsUtils
         }
 
         return (ActionFormBeans)
-            application.getAttribute(Action.FORM_BEANS_KEY);
+            application.getAttribute(Globals.FORM_BEANS_KEY);
     }
 
 
@@ -143,7 +152,7 @@ class StrutsUtils
      * @param name logical name of the requested form bean definition
      * @param application the servlet context
      */
-    static ActionFormBean getFormBean(String name, ServletContext application)
+    public static ActionFormBean getFormBean(String name, ServletContext application)
     {
         ActionFormBeans formBeans = getActionFormBeans(application);
 
@@ -162,7 +171,7 @@ class StrutsUtils
      *
      * @param application the servlet context
      */
-    static ActionForwards getActionForwards(ServletContext application)
+    public static ActionForwards getActionForwards(ServletContext application)
     {
         if (application==null)
         {
@@ -170,7 +179,7 @@ class StrutsUtils
         }
 
         return (ActionForwards)
-            application.getAttribute(Action.FORWARDS_KEY);
+            application.getAttribute(Globals.FORWARDS_KEY);
     }
 
 
@@ -181,7 +190,7 @@ class StrutsUtils
      * @param name Logical name of the requested forwarding
      * @param appplication the servlet context
      */
-    static ActionForward getActionForward(String name, ServletContext application)
+    public static ActionForward getActionForward(String name, ServletContext application)
     {
         ActionForwards forwards = getActionForwards(application);
 
@@ -200,7 +209,7 @@ class StrutsUtils
      *
      * @param application the servlet context
      */
-    static ActionMappings getActionMappings(ServletContext application)
+    public static ActionMappings getActionMappings(ServletContext application)
     {
         if (application==null)
         {
@@ -208,7 +217,7 @@ class StrutsUtils
         }
 
         return (ActionMappings)
-            application.getAttribute(Action.MAPPINGS_KEY);
+            application.getAttribute(Globals.MAPPINGS_KEY);
     }
 
 
@@ -219,7 +228,7 @@ class StrutsUtils
      * @param path Request path for which a mapping is requested
      * @param application the servlet context
      */
-    static ActionMapping getActionMapping(String path, ServletContext application)
+    public static ActionMapping getActionMapping(String path, ServletContext application)
     {
         ActionMappings mappings = getActionMappings(application);
 
@@ -238,7 +247,7 @@ class StrutsUtils
      *
      * @param application the servlet context
      */
-    static MessageResources getMessageResources(ServletContext application)
+    public static MessageResources getMessageResources(ServletContext application)
     {
         if (application==null)
         {
@@ -246,7 +255,7 @@ class StrutsUtils
         }
 
         return (MessageResources)
-            application.getAttribute(Action.MESSAGES_KEY);
+            application.getAttribute(Globals.MESSAGES_KEY);
     }
 
 
@@ -258,7 +267,7 @@ class StrutsUtils
      *
      * @param application the servlet context
      */
-    static String getServletMapping(ServletContext application)
+    public static String getServletMapping(ServletContext application)
     {
         if (application==null)
         {
@@ -266,7 +275,7 @@ class StrutsUtils
         }
 
         return (String)
-            application.getAttribute(Action.SERVLET_KEY);
+            application.getAttribute(Globals.SERVLET_KEY);
     }
 
 
@@ -281,14 +290,14 @@ class StrutsUtils
      * @param request the servlet request
      * @param session the HTTP session
      */
-    static Locale getLocale(HttpServletRequest request, 
+    public static Locale getLocale(HttpServletRequest request, 
                             HttpSession session)
     {
         Locale locale = null;
 
         if (session!=null)
         {
-            locale = (Locale) session.getAttribute(Action.LOCALE_KEY);
+            locale = (Locale) session.getAttribute(Globals.LOCALE_KEY);
         }
 
         if ((locale==null) && (request!=null))
@@ -306,14 +315,14 @@ class StrutsUtils
      *
      * @param session the HTTP session
      */
-    static String getToken(HttpSession session)
+    public static String getToken(HttpSession session)
     {
         if (session==null)
         {
             return null;
         }
 
-        return (String) session.getAttribute(Action.TRANSACTION_TOKEN_KEY);
+        return (String) session.getAttribute(Globals.TRANSACTION_TOKEN_KEY);
     }
 
 
@@ -326,14 +335,14 @@ class StrutsUtils
      *
      * @param request the servlet request
      */
-    static ActionErrors getActionErrors(HttpServletRequest request)
+    public static ActionErrors getActionErrors(HttpServletRequest request)
     {
         if (request==null)
         {
             return null;
         }
 
-        return (ActionErrors) request.getAttribute(Action.ERROR_KEY);
+        return (ActionErrors) request.getAttribute(Globals.ERROR_KEY);
     }
 
 
@@ -343,7 +352,7 @@ class StrutsUtils
      *
      * @param request the servlet request
      */
-    static ActionMessages getActionMessages(HttpServletRequest request)
+    public static ActionMessages getActionMessages(HttpServletRequest request)
     {
         if (request==null)
         {
@@ -361,7 +370,7 @@ class StrutsUtils
      *
      * @param request the servlet request
      */
-    static Throwable getException(HttpServletRequest request)
+    public static Throwable getException(HttpServletRequest request)
     {
         if (request==null)
         {
@@ -369,7 +378,7 @@ class StrutsUtils
         }
 
         return (Throwable)
-            request.getAttribute(Action.EXCEPTION_KEY);
+            request.getAttribute(Globals.EXCEPTION_KEY);
     }
 
 
@@ -379,7 +388,7 @@ class StrutsUtils
      *
      * @param request the servlet request
      */
-    static MultipartRequestWrapper getMultipartRequestWrapper(HttpServletRequest request)
+    public static MultipartRequestWrapper getMultipartRequestWrapper(HttpServletRequest request)
     {
         if (request==null)
         {
@@ -387,7 +396,7 @@ class StrutsUtils
         }
 
         return (MultipartRequestWrapper)
-            request.getAttribute(Action.MULTIPART_KEY);
+            request.getAttribute(Globals.MULTIPART_KEY);
     }
 
 
@@ -397,7 +406,7 @@ class StrutsUtils
      *
      * @param request the servlet request
      */
-    static ActionMapping getMapping(HttpServletRequest request)
+    public static ActionMapping getMapping(HttpServletRequest request)
     {
         if (request==null)
         {
@@ -405,7 +414,7 @@ class StrutsUtils
         }
 
         return (ActionMapping)
-            request.getAttribute(Action.MAPPING_KEY);
+            request.getAttribute(Globals.MAPPING_KEY);
     }
 
 
@@ -416,11 +425,11 @@ class StrutsUtils
      * @param request the servlet request
      * @param session the HTTP session
      */
-    static ActionForm getActionForm(HttpServletRequest request, 
-                                    HttpSession session)
+    public static ActionForm getActionForm(HttpServletRequest request, 
+                                           HttpSession session)
     {
         // Is there a mapping associated with this request?
-        ActionMapping mapping = (ActionMapping)request.getAttribute(Action.MAPPING_KEY);
+        ActionMapping mapping = (ActionMapping)request.getAttribute(Globals.MAPPING_KEY);
         if (mapping == null)
         {
             return (null);
@@ -453,7 +462,7 @@ class StrutsUtils
      * Returns the query parameter name under which a cancel button press 
      * must be reported if form validation is to be skipped.
      */
-    static String getCancelName()
+    public static String getCancelName()
     {
         return org.apache.struts.taglib.html.Constants.CANCEL_PROPERTY;
     }
@@ -463,7 +472,7 @@ class StrutsUtils
      * Returns the default "GLOBAL" category name that can be used with
      * messages that are not associated with a particular property.
      */
-    static String getGlobalErrorName()
+    public static String getGlobalErrorName()
     {
         return org.apache.struts.action.ActionErrors.GLOBAL_ERROR;
     }
@@ -473,7 +482,7 @@ class StrutsUtils
      * Returns the query parameter name under which a transaction token
      * must be reported.
      */
-    static String getTokenName()
+    public static String getTokenName()
     {
         return org.apache.struts.taglib.html.Constants.TOKEN_KEY;
     }
@@ -496,7 +505,7 @@ class StrutsUtils
      *
      * @param action the name of an action as per struts-config.xml
      */
-    static String getActionMappingName(String action)
+    public static String getActionMappingName(String action)
     {
 
         String value = action;
@@ -534,9 +543,9 @@ class StrutsUtils
      * @param request the servlet request
      * @param action the name of an action as per struts-config.xml
      */
-    static String getActionMappingURL(ServletContext application, 
-                                      HttpServletRequest request, 
-                                      String action)
+    public static String getActionMappingURL(ServletContext application, 
+                                             HttpServletRequest request, 
+                                             String action)
     {
         StringBuffer value = new StringBuffer(request.getContextPath());
 
@@ -603,10 +612,10 @@ class StrutsUtils
      * @return The formatted error message. If no error messages are queued, 
      * an empty string is returned. 
      */
-    static String errorMarkup(String property, 
-                              HttpServletRequest request,
-                              HttpSession session,
-                              ServletContext application) 
+    public static String errorMarkup(String property, 
+                                     HttpServletRequest request,
+                                     HttpSession session,
+                                     ServletContext application) 
     {        
         ActionErrors errors = getActionErrors(request);
         if (errors == null)
