@@ -71,6 +71,7 @@
   <!-- ================================================================== -->
   <target name="prepare" depends="init">
     <!-- Prepare build directory -->
+    <mkdir dir="${docs.dest}"/>
     <mkdir dir="${docs.dest}/javadoc"/>
   </target>
 
@@ -88,12 +89,8 @@
   <!-- ================================================================== -->
   <target name="clean"
     description="Clean build and distribution directories">
- 
-    <delete>
-      <fileset dir="${docs.dest}" includes="**/*.html"/>
-    </delete>
- 
-    <delete    dir="${docs.dest}/javadoc"/>
+  
+    <delete dir="${docs.dest}"/>
  
     <delete>
       <fileset dir="${basedir}" includes="**/*.bak"/>
@@ -115,7 +112,7 @@
   <!-- ================================================================== -->
   <!-- A L L                                                              -->
   <!-- ================================================================== -->
-  <target name="all" depends="clean,view,library,struts,docs,javadocs"
+  <target name="all" depends="view,library,struts,docs,javadocs"
     description="Build entire project, including all subprojects">
 
   </target>

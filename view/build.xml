@@ -86,6 +86,7 @@
     <mkdir dir="${build.home}/classes"/>
     <mkdir dir="${build.home}/conf"/>
     <mkdir dir="${build.home}/javadoc"/>
+    <mkdir dir="${docs.dest}"/>
     <mkdir dir="${docs.dest}/javadoc-velservlet"/>
   </target>
 
@@ -132,11 +133,7 @@
 
     <delete    dir="${dist.home}"/>
 
-    <delete>
-      <fileset dir="${docs.dest}" includes="**/*"/>
-    </delete>
-
-    <delete    dir="${docs.dest}/javadoc-velservlet"/>
+    <delete    dir="${docs.dest}"/>
 
     <delete>
       <fileset dir="${basedir}" includes="*.jar"/>
@@ -156,7 +153,7 @@
   <!-- ================================================================== -->
   <!-- A L L                                                              -->
   <!-- ================================================================== -->
-  <target name="all" depends="clean,jar,install-jar,docs,javadocs"
+  <target name="all" depends="jar,install-jar,docs,javadocs"
    description="Build entire project"/>
 
 
