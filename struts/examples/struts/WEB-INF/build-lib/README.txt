@@ -1,8 +1,0 @@
-R E A D M E
-===========
-
-Libraries in this directory are used only for the 
-build process but not to run the application.
-
-Library files will be copies here during the build process
-to avoid having many copies of the same library checked in.
