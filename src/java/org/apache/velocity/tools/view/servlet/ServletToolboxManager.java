@@ -56,9 +56,9 @@
 package org.apache.velocity.tools.view.servlet;
 
 
-import java.io.IOException;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import java.util.List;
 import java.util.Iterator;
@@ -69,15 +69,15 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
 
-import org.dom4j.Element;
-import org.dom4j.Node;
-
+import org.apache.commons.digester.Digester;
+import org.apache.commons.digester.RuleSet;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.tools.view.DataInfo;
 import org.apache.velocity.tools.view.ToolInfo;
 import org.apache.velocity.tools.view.XMLToolboxManager;
 import org.apache.velocity.tools.view.context.ToolboxContext;
 import org.apache.velocity.tools.view.context.ViewContext;
+import org.apache.velocity.tools.view.servlet.ServletToolboxRuleSet;
 
 
 /**
@@ -131,7 +131,7 @@ import org.apache.velocity.tools.view.context.ViewContext;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ServletToolboxManager.java,v 1.4 2003/05/28 00:17:16 nbubna Exp $
+ * @version $Id: ServletToolboxManager.java,v 1.5 2003/07/22 18:34:28 nbubna Exp $
  * 
  */
 public class ServletToolboxManager extends XMLToolboxManager
@@ -139,13 +139,12 @@ public class ServletToolboxManager extends XMLToolboxManager
 
     // --------------------------------------------------- Properties ---------
 
-    public static final String ELEMENT_SCOPE = "scope";
-    public static final String ELEMENT_CREATE_SESSION = "create-session";
+    public static final String REQUEST_SCOPE = "request";
+    public static final String SESSION_SCOPE = "session";
+    public static final String APPLICATION_SCOPE = "application";
 
-    public static final String VALUE_YES  = "yes";
-    public static final String VALUE_NO   = "no";
-
-    public static final String SESSION_TOOLS_KEY = "org.apache.velocity.tools.view.tools.ServletToolboxManager.SessionTools";
+    public static final String SESSION_TOOLS_KEY = 
+        "org.apache.velocity.tools.view.tools.ServletToolboxManager.SessionTools";
 
     private ServletContext servletContext;
     private Map appTools;
@@ -154,6 +153,7 @@ public class ServletToolboxManager extends XMLToolboxManager
     private boolean createSession;
 
     private static HashMap managersMap = new HashMap();
+    private static RuleSet servletRuleSet = new ServletToolboxRuleSet();
 
 
     // --------------------------------------------------- Constructor --------
@@ -172,6 +172,8 @@ public class ServletToolboxManager extends XMLToolboxManager
         createSession = true;
     }
 
+
+    // -------------------------------------------- Public Methods ------------
 
     /**
      * ServletToolboxManager factory method.
@@ -205,7 +207,8 @@ public class ServletToolboxManager extends XMLToolboxManager
 
                 if (is != null)
                 {
-                    Velocity.info("Using toolbox configuration file '" + toolboxFile +"'");
+                    Velocity.info("ServletToolboxManager: Using config file '" + 
+                                  toolboxFile +"'");
 
                     toolboxManager = new ServletToolboxManager(servletContext);
                     toolboxManager.load(is);
@@ -213,7 +216,7 @@ public class ServletToolboxManager extends XMLToolboxManager
                     // remember it
                     managersMap.put(pathname, toolboxManager);
 
-                    Velocity.info("Toolbox setup complete.");
+                    Velocity.info("ServletToolboxManager: Toolbox setup complete.");
                 }
             }
             catch(Exception e)
@@ -222,8 +225,8 @@ public class ServletToolboxManager extends XMLToolboxManager
 
                 // if this happens, it probably deserves
                 // to have the stack trace logged
-                java.io.StringWriter sw = new java.io.StringWriter();
-                e.printStackTrace(new java.io.PrintWriter(sw));
+                StringWriter sw = new StringWriter();
+                e.printStackTrace(new PrintWriter(sw));
                 Velocity.error(sw.toString());
             }
             finally
@@ -240,9 +243,7 @@ public class ServletToolboxManager extends XMLToolboxManager
         }
         return toolboxManager;
     }
-    
 
-    // --------------------------------------------------- Methods ------------
 
     /**
      * <p>Sets whether or not to create a new session when none exists for the
@@ -264,98 +265,15 @@ public class ServletToolboxManager extends XMLToolboxManager
     public void setCreateSession(boolean b)
     {
         createSession = b;
+        Velocity.debug("ServletToolboxManager: create-session is set to " + b);
     }
 
 
-    /**
-     * Overrides XMLToolboxManager
-     */
-    protected void log(String s) 
+    // ------------------------------ XMLToolboxManager Overrides -------------
+
+    protected RuleSet getRuleSet()
     {
-        Velocity.info("ServletToolboxManager: " + s);
-    }
-
-
-    /**
-     * Overrides XMLToolboxManager to handle the create-session element.
-     */
-    protected boolean readElement(Element e) throws Exception
-    {
-        String name = e.getName();
-
-        ToolInfo info = null;
-
-        if (name.equalsIgnoreCase(ELEMENT_TOOL))
-        {
-            info = readToolInfo(e);
-        }
-        else if (name.equalsIgnoreCase(ELEMENT_DATA)) 
-        {
-            info = readDataInfo(e);
-        }
-        else if (name.equalsIgnoreCase(ELEMENT_CREATE_SESSION))
-        {
-            readCreateSession(e);
-            return true;
-        }
-        else
-        {
-            log("Unreadable element: "+name);
-            return false;
-        }
-
-        addTool(info);
-        log("Added "+info.getClassname()+" as "+info.getKey());
-        return true;
-    }
-
-
-    /**
-     * Reads the value for create-session.
-     *
-     * @see #setCreateSession(boolean)
-     */
-    protected boolean readCreateSession(Element e) throws Exception
-    {
-        String csValue = e.getText();
-        if (VALUE_YES.equalsIgnoreCase(csValue))
-        {
-            setCreateSession(true);
-        }
-        else if (VALUE_NO.equalsIgnoreCase(csValue))
-        {
-            setCreateSession(false);
-        }
-        else
-        {
-            log("Unknown value for create-session.  Valid options are 'yes' or 'no'.");
-            return false;
-        }
-        log("create-session is set to "+createSession);
-        return true;
-    }
-
-
-    /**
-     * Overrides XMLToolboxManager to read a {@link ServletToolInfo}
-     * instead of a {@link org.apache.velocity.tools.view.ViewToolInfo}.
-     */
-    protected ToolInfo readToolInfo(Element e) throws Exception
-    {
-        Node n = e.selectSingleNode(ELEMENT_KEY);
-        String key = n.getText();
-
-        n = e.selectSingleNode(ELEMENT_CLASS);
-        String classname = n.getText();
-        
-        String scope = ServletToolInfo.REQUEST_SCOPE;
-        n = e.selectSingleNode(ELEMENT_SCOPE);
-        if (n != null)
-        {
-            scope = n.getText();
-        }
-
-        return new ServletToolInfo(key, classname, scope);
+        return servletRuleSet;
     }
 
 
@@ -374,15 +292,15 @@ public class ServletToolboxManager extends XMLToolboxManager
         {
             ServletToolInfo stInfo = (ServletToolInfo)info;
             
-            if (stInfo.getScope().equalsIgnoreCase(ServletToolInfo.REQUEST_SCOPE))
+            if (REQUEST_SCOPE.equalsIgnoreCase(stInfo.getScope()))
             {
                 requestToolInfo.add(stInfo);
             }
-            else if (stInfo.getScope().equalsIgnoreCase(ServletToolInfo.SESSION_SCOPE))
+            else if (SESSION_SCOPE.equalsIgnoreCase(stInfo.getScope()))
             {
                 sessionToolInfo.add(stInfo);
             }
-            else if (stInfo.getScope().equalsIgnoreCase(ServletToolInfo.APPLICATION_SCOPE))
+            else if (APPLICATION_SCOPE.equalsIgnoreCase(stInfo.getScope()))
             {
                 //add application scoped tools to appTools and
                 //initialize them with the ServletContext
@@ -390,7 +308,9 @@ public class ServletToolboxManager extends XMLToolboxManager
             }
             else
             {
-                log("Unknown scope: "+stInfo.getScope()+" "+stInfo.getKey()+" will be request scoped.");
+                Velocity.warn("ServletToolboxManager: Unknown scope '" +
+                              stInfo.getScope() + "' - " + stInfo.getKey() + 
+                              " will be request scoped.");
                 requestToolInfo.add(stInfo);
             }
         }

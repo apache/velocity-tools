@@ -62,13 +62,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.dom4j.Node;
-import org.dom4j.datatype.InvalidSchemaException;
-import org.dom4j.io.SAXReader;
 
+import org.apache.commons.digester.Digester;
+import org.apache.commons.digester.RuleSet;
 import org.apache.velocity.app.Velocity;
+import org.apache.velocity.tools.view.ToolboxRuleSet;
 import org.apache.velocity.tools.view.context.ToolboxContext;
 
 
@@ -118,20 +116,15 @@ import org.apache.velocity.tools.view.context.ToolboxContext;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: XMLToolboxManager.java,v 1.3 2003/05/28 00:17:15 nbubna Exp $
+ * @version $Id: XMLToolboxManager.java,v 1.4 2003/07/22 18:34:27 nbubna Exp $
  */
 public abstract class XMLToolboxManager implements ToolboxManager
 {
 
-    public static final String BASE_NODE        = "toolbox";
-    public static final String ELEMENT_TOOL     = "tool";
-    public static final String ELEMENT_DATA     = "data";
-    public static final String ELEMENT_KEY      = "key";
-    public static final String ELEMENT_CLASS    = "class";
-    public static final String ELEMENT_VALUE    = "value";
-    public static final String ATTRIBUTE_TYPE   = "type";
-
     private List toolinfo;
+    private Map toolbox;
+
+    private static RuleSet ruleSet = new ToolboxRuleSet();
 
 
     /**
@@ -140,23 +133,21 @@ public abstract class XMLToolboxManager implements ToolboxManager
     public XMLToolboxManager()
     {
         toolinfo = new ArrayList();
+        toolbox = new HashMap();
     }
-
 
 
     // ------------------------------- ToolboxManager interface ------------
 
-
     public void addTool(ToolInfo info)
     {
         toolinfo.add(info);
+        Velocity.info("Added "+info.getKey()+" ("+info.getClassname()+") to the toolbox.");
     }
 
 
     public ToolboxContext getToolboxContext(Object initData)
     {
-        Map toolbox = new HashMap();
-
         Iterator i = toolinfo.iterator();
         while(i.hasNext())
         {
@@ -168,22 +159,11 @@ public abstract class XMLToolboxManager implements ToolboxManager
     }
 
 
-
     // ------------------------------- toolbox loading methods ------------
-
-
-    /**
-     * Default implementation logs messages to Velocity's log system
-     */
-    protected void log(String s) {
-       Velocity.info("XMLToolboxManager - "+s);
-    }
-
 
     /**
      * <p>Reads an XML document from an {@link InputStream}
-     * using <a href="http://dom4j.org">dom4j</a> and
-     * sets up the toolbox from that.</p>
+     * and sets up the toolbox from that.</p>
      *
      * The DTD for toolbox schema is:
      * <pre>
@@ -201,78 +181,21 @@ public abstract class XMLToolboxManager implements ToolboxManager
      */
     public void load(InputStream input) throws Exception
     {
-        log("Loading toolbox...");
-        Document document = new SAXReader().read(input);
-        List elements = document.selectNodes("//"+BASE_NODE+"/*");
+        Velocity.debug("XMLToolboxManager: Loading toolbox...");
 
-        int elementsRead = 0;
-        Iterator i = elements.iterator();
-        while(i.hasNext())
-        {
-            Element e = (Element)i.next();
-            if (readElement(e)) {
-                elementsRead++;
-            }
-        }
+        Digester digester = new Digester();
+        digester.setValidating(false);
+        digester.push(this);
+        digester.addRuleSet(getRuleSet());
+        digester.parse(input);
 
-        log("Toolbox loaded.  Read "+elementsRead+" elements.");
+        Velocity.debug("XMLToolboxManager: Toolbox loaded.");
     }
 
 
-    /**
-     * Delegates the reading of an element's ToolInfo
-     * and adds the returned instance to the tool list.
-     */
-    protected boolean readElement(Element e) throws Exception
+    protected RuleSet getRuleSet()
     {
-        String name = e.getName();
-
-        ToolInfo info = null;
-
-        if (name.equalsIgnoreCase(ELEMENT_TOOL))
-        {
-            info = readToolInfo(e);
-        }
-        else if (name.equalsIgnoreCase(ELEMENT_DATA)) 
-        {
-            info = readDataInfo(e);
-        }
-        else 
-        {
-            log("Could not read element: "+name);
-            return false;
-        }
-
-        addTool(info);
-        log("Added "+info.getClassname()+" as "+info.getKey());
-        return true;
+        return ruleSet;
     }
-
-
-    protected ToolInfo readToolInfo(Element e) throws Exception
-    {
-        Node n = e.selectSingleNode(ELEMENT_KEY);
-        String key = n.getText();
-
-        n = e.selectSingleNode(ELEMENT_CLASS);
-        String classname = n.getText();
-
-        return new ViewToolInfo(key, classname);
-    }
-
-
-    protected ToolInfo readDataInfo(Element e) throws Exception
-    {
-        Node n = e.selectSingleNode(ELEMENT_KEY);
-        String key = n.getText();
-
-        n = e.selectSingleNode(ELEMENT_VALUE);
-        String value = n.getText();
-
-        String type = e.attributeValue(ATTRIBUTE_TYPE, DataInfo.TYPE_STRING);
-
-        return new DataInfo(key, type, value);
-    }
-
 
 }
