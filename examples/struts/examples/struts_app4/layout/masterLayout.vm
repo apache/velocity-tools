@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * $Id: masterLayout.vm,v 1.3 2004/03/12 01:24:06 marino Exp $
+ * $Id: masterLayout.vm,v 1.3.2.1 2004/03/14 16:50:02 marino Exp $
  *#
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
@@ -29,7 +29,7 @@
 
 	<!-- MENU -->
 	$tiles.menu
-	$text.get($tiles.getAttribute("some.attribute"))
+	$text.get($tiles.getAttribute("someAttribute"))
     </TD>
     <TD>
 

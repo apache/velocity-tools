@@ -29,8 +29,9 @@ import org.apache.struts.action.SecurePlugInInterface;
 import org.apache.struts.Globals;
 
 /**
- * <p>Tool to be able to use Struts SSL Extensions with Velocity</p>
- * <p>It has the same interface as StrutsLinkTool and can function as a substitute if Struts 1.1 and SSL Ext are installed. </p>
+ * Tool to be able to use Struts SSL Extensions with Velocity.
+ * <p>It has the same interface as StrutsLinkTool and can function as a
+ * substitute if Struts 1.1 and SSL Ext are installed. </p>
  * <p>Usage:
  * <pre>
  * Template example:
@@ -52,7 +53,7 @@ import org.apache.struts.Globals;
  * </p>
  * @since VelocityTools 1.1
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @version $Revision: 1.9 $ $Date: 2004/02/18 20:09:51 $
+ * @version $Revision: 1.9.2.1 $ $Date: 2004/03/12 20:16:27 $
  */
 public class SecureLinkTool extends LinkTool
 {

@@ -27,16 +27,16 @@ import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
- * <p>Allows for transparent content negotiation in a manner mimicking
+ * Allows for transparent content negotiation in a manner mimicking
  * Apache httpd's <a
- * href="http://httpd.apache.org/docs-2.0/content-negotiation.html">MultiViews</a></p>.
+ * href="http://httpd.apache.org/docs-2.0/content-negotiation.html">MultiViews</a>.
  *
  * <p>Reads the default language out of the ViewContext as
  * <code>org.apache.velocity.tools.view.i18n.defaultLanguage</code>.
  * See {@link #findLocalizedResource(String, String)} and {@link
  * #findLocalizedResource(String, Locale)} for usage.</p>
  *
- * @version $Id: MultiViewsTool.java,v 1.3 2004/02/18 20:07:32 nbubna Exp $
+ * @version $Id: MultiViewsTool.java,v 1.3.2.1 2004/03/12 20:16:28 nbubna Exp $
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  */
 public class MultiViewsTool implements ViewTool

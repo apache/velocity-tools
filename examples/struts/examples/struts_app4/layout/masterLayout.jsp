@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * $Id: masterLayout.jsp,v 1.2 2004/02/20 13:31:43 marino Exp $
+ * $Id: masterLayout.jsp,v 1.2.2.1 2004/03/14 14:33:05 marino Exp $
 --%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <%@ taglib uri="/WEB-INF/struts-tiles.tld" prefix="tiles" %>
@@ -30,7 +30,8 @@
 
 	<!-- MENU -->
 	<tiles:insert attribute="menu"/>
-
+	<tiles:importAttribute name="someAttribute"/>
+    	<bean:message name="someAttribute"/>
     </TD>
     <TD>
 

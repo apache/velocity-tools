@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: toolbox.xml,v 1.6 2004/02/20 13:13:42 marino Exp $
+  $Id: toolbox.xml,v 1.6.2.1 2004/03/13 18:50:30 marino Exp $
 -->
 <toolbox>
 
@@ -65,11 +65,6 @@
   <tool>
      <key>validator</key>
      <class>org.apache.velocity.tools.struts.ValidatorTool</class>
-  </tool>
-
-  <tool>
-     <key>valutils</key>
-     <class>org.apache.velocity.tools.struts.ValidatorUtils</class>
   </tool>
 
 </toolbox>

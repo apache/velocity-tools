@@ -64,7 +64,7 @@ import org.apache.struts.action.ActionMappings;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * based on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Id: StrutsUtils.java,v 1.16 2004/03/12 01:33:05 marino Exp $
+ * @version $Id: StrutsUtils.java,v 1.16.2.2 2004/03/12 23:36:19 nbubna Exp $
  */
 public class StrutsUtils
 {
@@ -75,7 +75,7 @@ public class StrutsUtils
      * Returns the default configured data source (which must implement
      * <code>javax.sql.DataSource</code>) or <code>null</code> if not found.
      *
-     * @param application the servlet context
+     * @param app the servlet context
      * @deprecated This will be removed in VelocityTools 1.2
      */
     public static DataSource getDataSource(ServletContext app)
@@ -88,7 +88,7 @@ public class StrutsUtils
      * Returns the <code>org.apache.struts.action.ActionFormBeans</code>
      * collection for this application or <code>null</code> if not found.
      *
-     * @param application the servlet context
+     * @param app the servlet context
      * @deprecated This will be removed in VelocityTools 1.2
      */
     public static ActionFormBeans getActionFormBeans(ServletContext app)
@@ -102,7 +102,7 @@ public class StrutsUtils
      * logical name or <code>null</code> if not found.
      *
      * @param name logical name of the requested form bean definition
-     * @param application the servlet context
+     * @param app the servlet context
      * @deprecated This will be removed in VelocityTools 1.2
      */
     public static FormBeanConfig getFormBean(String name, ServletContext app)
@@ -121,7 +121,7 @@ public class StrutsUtils
      * Returns the <code>org.apache.struts.action.ActionForwards</code>
      * collection for this application or <code>null</code> if not found.
      *
-     * @param application the servlet context
+     * @param app the servlet context
      * @deprecated This will be removed in VelocityTools 1.2
      */
     public static ActionForwards getActionForwards(ServletContext app)
@@ -135,7 +135,7 @@ public class StrutsUtils
      * or <code>null</code> if not found.
      *
      * @param name Logical name of the requested forwarding
-     * @param appplication the servlet context
+     * @param app the servlet context
      * @deprecated This will be removed in VelocityTools 1.2
      */
     public static ActionForward getActionForward(String name,
@@ -154,7 +154,7 @@ public class StrutsUtils
      * Returns the <code>org.apache.struts.action.ActionMappings</code>
      * collection for this application or <code>null</code> if not found.
      *
-     * @param application the servlet context
+     * @param app the servlet context
      * @deprecated This will be removed in VelocityTools 1.2
      */
     public static ActionMappings getActionMappings(ServletContext app)
@@ -168,7 +168,7 @@ public class StrutsUtils
      * or <code>null</code> if not found.
      *
      * @param path Request path for which a mapping is requested
-     * @param application the servlet context
+     * @param app the servlet context
      * @deprecated This will be removed in VelocityTools 1.2
      */
     public static ActionMapping getActionMapping(String path,
@@ -187,7 +187,7 @@ public class StrutsUtils
      * Returns the message resources for this application or <code>null</code>
      * if not found.
      *
-     * @param application the servlet context
+     * @param app the servlet context
      * @deprecated This will be removed in VelocityTools 1.2
      */
     public static MessageResources getMessageResources(ServletContext app)
@@ -200,7 +200,7 @@ public class StrutsUtils
      * Returns the message resources for this application or <code>null</code>
      * if not found.
      *
-     * @param application the servlet context
+     * @param app the servlet context
      * @since VelocityTools 1.1
      */
     public static MessageResources getMessageResources(HttpServletRequest request,
@@ -217,7 +217,7 @@ public class StrutsUtils
      * Returns the message resources with the specified bundle name for this application
      * or <code>null</code> if not found.
      *
-     * @param application the servlet context
+     * @param app the servlet context
      * @param bundle The bundle name to look for.  If this is <code>null</code>, the
      *               default bundle name is used.
      * @since VelocityTools 1.1
@@ -276,7 +276,7 @@ public class StrutsUtils
      * either a path-mapped pattern (<code>/action/*</code>) or an
      * extension mapped pattern (<code>*.do</code>).
      *
-     * @param application the servlet context
+     * @param app the servlet context
      * @deprecated This will be removed in VelocityTools 1.2
      */
     public static String getServletMapping(ServletContext app)
@@ -331,27 +331,44 @@ public class StrutsUtils
     /*********************** Struts Request Resources ****************/
 
     /**
-     * Returns the <code>org.apache.struts.action.ActionErrors</code>
-     * object for this request or <code>null</code> if none exists.
-     *
-     * @param request the servlet request
-     */
-    public static ActionErrors getActionErrors(HttpServletRequest request)
-    {
-        return (ActionErrors)request.getAttribute(Globals.ERROR_KEY);
-    }
-
-
-    /**
-     * Returns the <code>org.apache.struts.action.ActionMessages</code>
-     * object for this request or <code>null</code> if none exists.
+     * Returns the Struts errors for this request or <code>null</code> 
+     * if none exist.
      *
      * @param request the servlet request
      * @since VelocityTools 1.1
      */
-    public static ActionMessages getActionMessages(HttpServletRequest request)
+    public static ActionMessages getErrors(HttpServletRequest request)
+    {
+        return (ActionMessages)request.getAttribute(Globals.ERROR_KEY);
+    }
+
+    /**
+     * Returns the Struts messages for this request or <code>null</code> 
+     * if none exist.
+     *
+     * @param request the servlet request
+     * @since VelocityTools 1.1
+     */
+    public static ActionMessages getMessages(HttpServletRequest request)
     {
         return (ActionMessages)request.getAttribute(Globals.MESSAGE_KEY);
+    }
+
+
+    /**
+     * @deprecated use {@link #getErrors(HttpServletRequest request)}.
+     */
+    public static ActionErrors getActionErrors(HttpServletRequest request)
+    {
+        return (ActionErrors)getErrors(request);
+    }
+
+    /**
+     * @deprecated use {@link #getMessages(HttpServletRequest request)}.
+     */
+    public static ActionMessages getActionMessages(HttpServletRequest request)
+    {
+        return getMessages(request);
     }
 
 
@@ -553,7 +570,7 @@ public class StrutsUtils
      * Returns the action forward name converted into a server-relative URI
      * reference.
      *
-     * @param application the servlet context
+     * @param app the servlet context
      * @param request the servlet request
      * @param forward the name of a forward as per struts-config.xml
      */
