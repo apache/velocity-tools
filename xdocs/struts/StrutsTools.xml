@@ -24,7 +24,7 @@
 
         <p>
         <strong><a href="MessageTool.html">MessageTool</a></strong><br />
-        Provides access to the Struts message resources for internationalized output.
+        Provides access to the Struts application resources for internationalized text.
         </p>
 
         <p>
