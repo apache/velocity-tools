@@ -146,7 +146,7 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  * @author <a href="dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.2 2003/03/07 03:24:39 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.3 2003/03/07 03:28:20 nbubna Exp $
  */
 
 public class VelocityViewServlet extends HttpServlet
@@ -177,7 +177,8 @@ public class VelocityViewServlet extends HttpServlet
      * Key used to access the toolbox configuration file path from the
      * Servlet or webapp init parameters.
      */
-    protected static final String TOOLBOX_KEY = "toolbox";
+    protected static final String TOOLBOX_KEY = 
+        "org.apache.velocity.toolbox";
 
     /**
      * This is the string that is looked for when getInitParameter is
