@@ -85,7 +85,7 @@ import org.apache.velocity.app.Velocity;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @since VelocityTools 1.0
- * @version $Id: ErrorsTool.java,v 1.8 2003/11/06 06:19:44 nbubna Exp $
+ * @version $Id: ErrorsTool.java,v 1.9 2003/11/06 18:03:43 nbubna Exp $
  */
 public class ErrorsTool extends MessageResourcesTool
 {
@@ -352,7 +352,7 @@ public class ErrorsTool extends MessageResourcesTool
      */
     public String getGlobalName()
     {
-        return StrutsUtils.getGlobalErrorName();
+        return ActionErrors.GLOBAL_ERROR;
     }
 
 
