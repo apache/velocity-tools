@@ -100,11 +100,11 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * Toolbox configuration:
  *
- * <tool>
- *   <key>validator</key>
- *   <scope>request</scope>
- *   <class>package org.apache.velocity.tools.struts.ValidatorTool</class>
- * </tool>
+ * &lt;tool&gt;
+ *   &lt;key&gt;validator&lt;/key&gt;
+ *   &lt;scope&gt;request&lt;/scope&gt;
+ *   &lt;class&gt;package org.apache.velocity.tools.struts.ValidatorTool&lt;/class&gt;
+ * &lt;/tool&gt;
  * </pre>
  *
  * <p>This is an adaptation of the JavascriptValidator Tag
@@ -115,7 +115,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Revision: 1.2 $ $Date: 2003/10/29 23:59:24 $
+ * @version $Revision: 1.3 $ $Date: 2003/10/30 01:02:26 $
  */
 public class ValidatorTool implements ViewTool {
 

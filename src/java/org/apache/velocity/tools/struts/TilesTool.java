@@ -89,7 +89,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * from the current tiles-context.
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @version $Revision: 1.2 $ $Date: 2003/10/30 00:03:37 $
+ * @version $Revision: 1.3 $ $Date: 2003/10/30 01:02:26 $
  */
 public class TilesTool extends ImportSupport
     implements ViewTool {
