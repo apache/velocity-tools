@@ -1,5 +1,5 @@
 <!--
-  $Id: build.xml,v 1.15 2003/05/27 23:18:02 nbubna Exp $ 
+  $Id: build.xml,v 1.16 2003/06/26 02:08:16 nbubna Exp $ 
 -->
 <project name="velocity-tools" default="all" basedir=".">
 
@@ -10,15 +10,11 @@
   <property file="${user.home}/build.properties"/>   <!-- User local        -->
 
   <property name="project.name"     value="VelocityTools" />
-  <property name="project.version"  value="0.9"/>
-
-  <property name="struts.version"   value="${project.version}"/>
-  <property name="view.version"     value="0.8"/>
-  <property name="generic.version"  value="0.3"/>
+  <property name="project.version"  value="1.0-dev"/>
   
-  <property name="struts.name"      value="velocity-tools-${struts.version}"/>
-  <property name="view.name"        value="velocity-tools-view-${view.version}"/>
-  <property name="generic.name"     value="velocity-tools-generic-${generic.version}"/>
+  <property name="struts.name"      value="velocity-tools-${project.version}"/>
+  <property name="view.name"        value="velocity-tools-view-${project.version}"/>
+  <property name="generic.name"     value="velocity-tools-generic-${project.version}"/>
 
   <property name="source.home"      value="${basedir}/src"/>
   <property name="lib.home"         value="${basedir}/lib"/>
