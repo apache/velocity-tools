@@ -99,7 +99,7 @@ import java.util.TimeZone;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Revision: 1.6 $ $Date: 2003/11/11 00:33:32 $
+ * @version $Revision: 1.7 $ $Date: 2003/11/11 01:16:54 $
  */
 public class DateTool
 {
@@ -567,8 +567,8 @@ public class DateTool
         }
         catch (RuntimeException suppressed)
         {
+            return df;
         }
-        return df;
     }
 
     /**
