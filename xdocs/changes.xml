@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: changes.xml,v 1.23 2004/11/11 07:34:19 nbubna Exp $
+  $Id$
 -->
 <document>
   <properties>
@@ -29,6 +29,7 @@
     <subsection name="1.2-dev">
       <p>This section describes changes after the 1.1 release.</p>
       <ul>
+      <li>Added DateTool methods to provide easy access to date values (e.g. month, year, day). (ndb)</li>
       <li>Converted VelocityView and VelocityStruts to use a VelocityEngine instead of the Velocity singleton.
           This means only the servlets log directly to the VelocityEngine instance; the tools and other
           classes now use commons-logging (which can still be redirected to the VVS's VelocityEngine). Also, both
