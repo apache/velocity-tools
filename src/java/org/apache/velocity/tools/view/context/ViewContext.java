@@ -16,6 +16,7 @@
 
 package org.apache.velocity.tools.view.context;
 
+import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +36,7 @@ import javax.servlet.ServletContext;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  *
- * @version $Id: ViewContext.java,v 1.6 2004/02/18 20:07:58 nbubna Exp $ 
+ * @version $Id: ViewContext.java,v 1.7 2004/11/11 04:07:24 nbubna Exp $ 
  */
 public interface ViewContext
 {
@@ -87,5 +88,11 @@ public interface ViewContext
      * <p>Returns a reference to the current Velocity context.</p>
      */
     public Context getVelocityContext();
+
+
+    /**
+     * <p>Returns the current VelocityEngine instance.</p>
+     */
+    public VelocityEngine getVelocityEngine();
 
 }
