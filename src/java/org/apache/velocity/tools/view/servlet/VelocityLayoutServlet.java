@@ -82,7 +82,7 @@ import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
  * somewhere.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Id: VelocityLayoutServlet.java,v 1.4 2003/10/07 00:13:08 nbubna Exp $
+ * @version $Id: VelocityLayoutServlet.java,v 1.5 2003/10/07 04:53:44 nbubna Exp $
  */
 
 public class VelocityLayoutServlet extends VelocityViewServlet 
@@ -330,10 +330,6 @@ public class VelocityLayoutServlet extends VelocityViewServlet
             // retrieve and render the error template
             Template et = getTemplate(errorTemplate);
             mergeTemplate(et, ctx, response);
-
-            // ok, i know this is just a dummy method right now,
-            // but i'm liable to forget about this if that ever changes
-            requestCleanup(request, response, ctx);
 
         } 
         catch (Exception e2) 
