@@ -54,7 +54,7 @@ import org.apache.struts.util.ModuleUtils;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * based on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Id: StrutsUtils.java,v 1.24 2004/11/11 00:52:15 nbubna Exp $
+ * @version $Id$
  */
 public class StrutsUtils
 {
@@ -241,8 +241,58 @@ public class StrutsUtils
         return null;
     }
 
+    /**
+     * Returns the ActionForm name associated with
+     * this request of <code>null</code> if none exists.
+     *
+     * @param request the servlet request
+     * @param session the HTTP session
+     */
+    public static String getActionFormName(HttpServletRequest request,
+                                           HttpSession session)
+    {
+        /* Is there a mapping associated with this request? */
+        ActionConfig mapping =
+            (ActionConfig)request.getAttribute(Globals.MAPPING_KEY);
+        if (mapping == null)
+        {
+            return null;
+        }
+
+        return mapping.getAttribute();
+    }
+
+
 
     /*************************** Utilities *************************/
+
+    /**
+     * Return the form action converted into an action mapping path.  The
+     * value of the <code>action</code> property is manipulated as follows in
+     * computing the name of the requested mapping:
+     * <ul>
+     * <li>Any filename extension is removed (on the theory that extension
+     *     mapping is being used to select the controller servlet).</li>
+     * <li>If the resulting value does not start with a slash, then a
+     *     slash is prepended.</li>
+     * </ul>
+     */
+    public static String getActionMappingName(String action) {
+
+        String value = action;
+        int question = action.indexOf("?");
+        if (question >= 0) {
+            value = value.substring(0, question);
+        }
+
+        int slash = value.lastIndexOf("/");
+        int period = value.lastIndexOf(".");
+        if ((period >= 0) && (period > slash)) {
+            value = value.substring(0, period);
+        }
+
+        return value.startsWith("/") ? value : ("/" + value);
+    }
 
     /**
      * Returns the form action converted into a server-relative URI
