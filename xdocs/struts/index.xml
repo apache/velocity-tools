@@ -108,35 +108,6 @@
         </p>
     </section>
 
-    <section name="Download">
-        <p>Velocity for Struts is currently in a pre-release phase. Currently, 
-        only the source is available from the CVS repository. A binary release 
-        will be made after the API is mature, the software is stable, and additional 
-        documentation exists. (Note: As of Apr 2003, we have a significant and growing
-        user base.  Also, the API has been stable for some time; only documentation 
-        issues are holding up a 1.0 release.)</p>
-
-        <p><strong>Source Code</strong></p>
-        <p>
-          The source can be accessed with 
-          <a href="http://cvs.apache.org/viewcvs/jakarta-velocity-tools/">ViewCVS</a> 
-          or your favorite CVS client. See 
-          <a href="http://jakarta.apache.org/getinvolved/cvsindex.html">Jakarta CVS Repositories</a>
-          for instructions.
-        </p>
-        <p>Repository module name: <code>jakarta-velocity-tools</code></p>
-
-        <p><strong>Example Applications</strong></p>
-        <p>Several example applications are included in the source repository 
-        to demonstrate the use of Velocity as a view technology for Struts. 
-        The examples utilize both Velocity and JSP files for the view in parallel 
-        so that they can be compared easily. Also, resources bundle usage for 
-        language localization is demonstrated. </p>
-        
-        <p>We encourage interested developers to evaluate the software 
-        and give feedback via velocity-user or velocity-dev mailing lists.</p>
-    </section>
-
     <section name="License">
         <p>This software is licensed under the 
         <a href="http://jakarta.apache.org/velocity/license.html">Apache Software License</a></p>

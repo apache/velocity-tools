@@ -16,8 +16,6 @@
         of creating tools and infrastructure for building both web and non-web
         applications using the Velocity template engine.
         </p>
-        <p>Status information, releases, documentation and application examples 
-        will generally be located within the individual sub-projects.</p>
 
         <subsection name="VelocityView" >
             <p><a href="view/">VelocityView</a>
@@ -53,7 +51,31 @@
             <br clear="all" />
         </subsection>
 
-     </section>
+        <subsection name="Example Applications">
+            <p>Several example applications are currently available, including
+            one to demonstrate the use of Velocity as a view technology for Struts. 
+            The example utilizes both Velocity and JSP files for the view in parallel 
+            so that they can be compared easily. Also, resources bundle usage for 
+            language localization is demonstrated there. Other examples include a demonstration
+            of the use of the VelocityLayoutServlet and a minimal "simple" application.</p>
+            <br clear="all" />
+        </subsection>
+    </section>    
+
+    <section name="Download">
+        <p><strong>Releases</strong></p>
+        <p>
+          Velocity Tools 1.0 has been released and is available 
+          <a href="http://jakarta.apache.org/builds/jakarta-velocity-tools/">here</a>.
+        </p>
+
+        <p><strong>Source Code</strong></p>
+        <p>
+          Nightly snapshots of the project source are available as binaries
+          <a href="http://cvs.apache.org/builds/jakarta-velocity/nightly/">here</a>.
+        </p>
+        <br clear="all"/>
+    </section>
 
     <section name="CVS Repository">
         <p>All Velocity Tools project code is maintained in the 
@@ -64,6 +86,30 @@
 
         <p>CVS Client: <a href="http://jakarta.apache.org/getinvolved/cvsindex.html">http://jakarta.apache.org/getinvolved/cvsindex.html</a>.
         </p>
+        <br clear="all"/>
+    </section>
+
+    <section name="Wanna help?">
+        <p>This project is still young and has a growing user base.  With the publicity 
+        of this first release, we expect the growth to increase significantly.
+        We would like to encourage interested developers to evaluate the project
+        and send feedback to the velocity-user or velocity-dev mailing list.</p>
+        <p>Those interested in furthering the development of this project are
+        especially welcome to jump in and help out.  Patches can be sent to the 
+        mailing list or attached to a
+        <a href="http://issues.apache.org/bugzilla/enter_bug.cgi?product=Velocity&amp;component=Tools">bugzilla</a>
+        ticket.  The <a href="http://nagoya.apache.org/wiki/apachewiki.cgi?VelocityTools">Wiki</a>
+        can also be a good place to discuss and develop ideas.</p>
+
+        <p>A few good places to get started include:
+          <ul>
+            <li>Documentation (patches for the site or additions to the Wiki)</li>
+            <li>Improving the example apps</li>
+            <li>Support for Struts 1.1 features</li>
+          </ul>
+        Other project goals can be found in the project 
+        <a href="http://cvs.apache.org/viewcvs/jakarta-velocity-tools/STATUS">STATUS</a>
+        file.</p>
     </section>
  </body>
 
