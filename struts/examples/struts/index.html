@@ -10,89 +10,40 @@
     <td> 
       <h2><font color="#FFFFFF"><img src="doc/img/spacer.gif" width="520" height="1"><br>
 				Velocity for Struts</font></h2>
-      <font color="#FFFFFF">December 31. 2001, V 0.4</font></td>
+      <font color="#FFFFFF">January 10. 2002</font></td>
     <td align="right">&nbsp;</td>
   </tr>
 </table>
 
 <p>This is a play ground for experimenting with the integration of Velocity and 
-	Struts. </p>
-<p><b>Features</b></p>
+	Struts. Several applications examples are provided below. The goal is to grow 
+	this into a full blown example application that demonstrates all aspects of 
+	Struts applications based on Velocity views.</p>
+<h5><b>Highlights</b></h5>
 <ul>
-	<li>Context Tools: A generic mechanism to work with context tools is provided. 
-		Context tools are the basis for the Struts-Velocity integration. 
+	<li>Five example applications demonstrate the use of Velocity templates with 
+		Struts. Velocity templates have full access to the resources of the Struts 
+		framework (once we are done). JSP versions of the same examples have been 
+		provided, allowing a comparison of the two view technologies.</li>
+	<li>Several examples demonstrate the mixed use of Velocity and JSP templates 
+		in the same application example.</li>
+	<li>All examples are based on the new ViewVelocityServlet, a generic Velocity 
+		servlet with toolbox support. In fact, the Struts / Velocity integration has 
+		be implemented as a set of Velocity context tools.</li>
+	<li>The integration has been achieved without modification of the Struts framework. 
+		The current release version 1.0 is supported. </li>
+</ul>
+<h5><b>To Do</b></h5>
+<ul>
+	<li>extend the functionality of the Struts context tools</li>
+	<li>documentation
 		<ul>
-			<li>Context tools can be singletons or instances. </li>
-			<li>Context tools can be loaded automatically into the Velocity context 
-				OR they can be loaded from within the template through a loader tool (a 
-				context tool as well). The context tools to be loaded automatically are 
-				defined in the web.xml file.</li>
-			<li>Currently context tools need to conform to an interface <i>ContextTool</i>. 
-				This requirement will be lifted in the future.</li>
-			<li>A sample context tool <i>MathTool</i> is provided to demonstrate the 
-				use of context tools. See example applications.</li>
+			<li>of the context tools</li>
+			<li>of how to configure a Struts application for Velocity support</li>
 		</ul>
 	</li>
-	<li>Struts-Velocity Integration: The integration is achived through several 
-		context tools and some supporting classes. Currently the following Struts-specific 
-		context tools are available: 
-		<ul>
-			<li>StrutsBeanTool: Provides a subset of the functionality of the <i>Bean</i> 
-				JSP custom tag library provided with Struts.</li>
-			<li>StrutsHtmlTool: Provides a subset of the functionality of the <i>Html</i> 
-				JSP custom tag library provided with Struts.</li>
-		</ul>
-	</li>
-	<li>Access to Application Data: Access to application data from within Velocity 
-		template is provided through class <i>ChainedContext</i>, an implementation 
-		of org.apache.velocity.context.AbstractContext. ChainedContext chaines the 
-		servlet API scopes <i>request</i>, <i>session</i> and <i>application</i>. 
-		This means that when accessing an object in the Velocity context all three 
-		servlet scopes are searched in addition to the Velocity context itself. The 
-		search order is Velocity context, request scope, session scope and application 
-		scope. </li>
-	<li>Access to Servlet API: Access to all methods of the Servlet API is provided 
-		by automatically inserting references to the current instances of HttpServletRequest, 
-		HttpServletResponse and ServletContext into the Velocity context.</li>
-	<li>Struts 1.0 and Velocity 1.2 are supported (current release versions).</li>
 </ul>
-<p><b>New in this Version</b></p>
-<ul>
-	<li>Velocity templates work now with Struts 1.0 (current release version). Removed 
-		all dependencies with the latest development version of Struts. This is important 
-		to be able to make this package available to developers broadly.</li>
-	<li>Works now with Tomcat 4.01 and 3.23. (Previous version worked only with 
-		Tomcat 4.01))</li>
-	<li>Cleaned up and documented dependencies on various Java packages. It uses 
-		now the latest release versions of all componentes. See <a href="#TestedConfiguration">Tested 
-		Configuration</a>. </li>
-	<li>Added a new example application <i>Logon Example</i>.</li>
-</ul>
-<p><b>To Do</b></p>
-<ul>
-	<li>Move definition of context tools out of web.xml into a separate file. </li>
-	<li>Synchronize this prototype with Geir's work.</li>
-	<li>Extend the functionality of the Struts context tools (to cover approximately 
-		what the Struts JSP custom tag libraries provide)</li>
-	<li>Provide larger application examples </li>
-	<li>Documentation</li>
-</ul>
-<p><b>Getting Started</b></p>
-<p>To try out the examples, drop the struts-velocity.war file into the webapps 
-	directory of a Tomcat installation or any other servlet runner with support 
-	for auto-deployment of war files. Restart the servlet runner and access the 
-	the application using URL http://server:port/struts-velocity/.</p>
-	
-
-<p>Below you find simple example Struts applications. Each application has been 
-	implemented using Velocity and JSP templates to allow a comparison. The templates 
-	are located in directory <i>examples</i>.</p>
-<p>This application comes with an Ant script to compile, build and document the 
-	software. Type the 'ant' command without a target to see a list of supported 
-	targets.</p>
-<h5>&nbsp;</h5>
-
-<h5>Example Applications</h5>
+<h5><b>Examples</b></h5>
 <ul>
 	<li><b>Struts App1: Address Editor</b><br>
 		This application is a very simple address editor. It consists of two dynamic 
@@ -120,8 +71,8 @@
 		<p>&nbsp;</p>
 	</li>
 	<li><b><i><font color="#FF0000">New</font></i> Struts App3: Struts Logon Example</b><br>
-		This is a Struts logon example application by Ted Husted. Here as JSP and 
-		Velocity version. 
+		This is the well known Struts logon example application by Ted Husted. Here 
+		it is implemented in both JSP and Velocity versions. 
 		<ul>
 			<li><a href="welcome_vm.do">Velocity Version</a></li>
 			<li><a href="welcome_jsp.do">JSP Version</a></li>
@@ -148,18 +99,11 @@
 			<li><a href="examples/request_headers/list.jsp">JSP Version</a><br>
 			</li>
 		</ul>
+		<br>
 	</li>
 </ul>
 <h5>&nbsp;</h5>
-<h5>Documentation</h5>
-<ul>
-	<li>Javadoc (soon!)</li>
-	<li><a href="doc/config.html">Configuration of web.xml</a></li>
-</ul>
-
-
-<br>
-<h5>Tested Configuration<a name="TestedConfiguration"></a></h5>
+<h5>Tested Configuration</h5>
 <ul>
 	<li>Tomcat 4.01, Tomcat 3.23</li>
 	<li>Netscape 4.7, MS Explorer 5.0</li>
