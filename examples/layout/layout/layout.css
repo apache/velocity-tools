@@ -1,4 +1,20 @@
-/* $Id: layout.css,v 1.1 2003/05/27 23:15:39 nbubna Exp $ */
+/*
+ * Copyright 2003 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * $Id: layout.css,v 1.2 2004/02/20 12:54:09 marino Exp $
+ */
 
 body {
 	color:#333;
@@ -37,7 +53,7 @@ a {
 a:link {color:#09c;}
 a:visited {color:#07a;}
 a:hover {background-color:#eee;}
-  
+
 
 /* All the content boxes belong to the content class. */
 .content {
@@ -61,21 +77,21 @@ a:hover {background-color:#eee;}
 	padding:10px;
 	z-index:2;
 
-/* Here is the ugly brilliant hack that protects IE5/Win from its own stupidity. 
-Thanks to Tantek Celik for the hack and to Eric Costello for publicizing it. 
-IE5/Win incorrectly parses the "\"}"" value, prematurely closing the style 
-declaration. The incorrect IE5/Win value is above, while the correct value is 
+/* Here is the ugly brilliant hack that protects IE5/Win from its own stupidity.
+Thanks to Tantek Celik for the hack and to Eric Costello for publicizing it.
+IE5/Win incorrectly parses the "\"}"" value, prematurely closing the style
+declaration. The incorrect IE5/Win value is above, while the correct value is
 below. See http://glish.com/css/hacks.asp for details. */
 	voice-family: "\"}\"";
 	voice-family:inherit;
 	width:128px;
 	}
-/* I've heard this called the "be nice to Opera 5" rule. Basically, it feeds correct 
-length values to user agents that exhibit the parsing error exploited above yet get 
+/* I've heard this called the "be nice to Opera 5" rule. Basically, it feeds correct
+length values to user agents that exhibit the parsing error exploited above yet get
 the CSS box model right and understand the CSS2 parent-child selector. ALWAYS include
 a "be nice to Opera 5" rule every time you use the Tantek Celik hack (above). */
 body>#navAlpha {width:128px;}
-		
+
 #navBeta {
 	position:absolute;
 	width:190px;
@@ -102,7 +118,7 @@ body>#navBeta {width:168px;}
 	padding: 0 0 1em 0;
 	margin-bottom: 1em;
 	font-family: 'Trebuchet MS', 'Lucida Grande',
-	  Verdana, Lucida, Geneva, Helvetica, 
+	  Verdana, Lucida, Geneva, Helvetica,
 	  Arial, sans-serif;
 	background-color: #90bade;
 	color: #333;
@@ -114,7 +130,7 @@ body>#navBeta {width:168px;}
 		padding: 0;
 		border: none;
 		}
-		
+
 	#button li {
 		border-bottom: 1px solid #90bade;
 		margin: 0;
