@@ -132,9 +132,6 @@
         The examples utilize both Velocity and JSP files for the view in parallel 
         so that they can be compared easily. Also, resources bundle usage for 
         language localization is demonstrated. </p>
-        <p>See the file jakarta-velocity-tools/struts/README for instructions 
-        on how to build and deploy the examples. The included ant script 
-        makes this easy. </p>
         
         <p>We encourage interested developers to evaluate the software 
         and give feedback via velocity-user or velocity-dev mailing lists.</p>
