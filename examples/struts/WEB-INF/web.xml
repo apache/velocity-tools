@@ -1,36 +1,28 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-
-<!DOCTYPE web-app
-  PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
-  "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN" "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
 <web-app>
-
-
-  <!-- Example Database Initialization Servlet Configuration
-  <servlet>
-    <servlet-name>database</servlet-name>
-    <servlet-class>org.apache.struts.example.DatabaseServlet</servlet-class>
-    <init-param>
-      <param-name>debug</param-name>
-      <param-value>2</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  -->
-
-
-  <!-- Standard Action Servlet Configuration (with debugging) -->
   <servlet>
     <servlet-name>action</servlet-name>
     <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
     <init-param>
-      <param-name>application</param-name>
-      <param-value>ApplicationResources</param-value>
-    </init-param>
-    <init-param>
       <param-name>config</param-name>
       <param-value>/WEB-INF/struts-config.xml</param-value>
+    </init-param>
+    <init-param>
+      <param-name>config/admin</param-name>
+      <param-value>/WEB-INF/struts-admin-config.xml</param-value>
+    </init-param>
+    <init-param>
+      <param-name>config/app1</param-name>
+      <param-value>/WEB-INF/struts-app1-config.xml</param-value>
+    </init-param>
+    <init-param>
+      <param-name>config/app2</param-name>
+      <param-value>/WEB-INF/struts-app2-config.xml</param-value>
+    </init-param>
+    <init-param>
+      <param-name>config/app3</param-name>
+      <param-value>/WEB-INF/struts-app3-config.xml</param-value>
     </init-param>
     <init-param>
       <param-name>debug</param-name>
@@ -46,68 +38,54 @@
     </init-param>
     <load-on-startup>2</load-on-startup>
   </servlet>
-
-
-  <!-- Define Velocity template compiler -->
   <servlet>
     <servlet-name>velocity</servlet-name>
     <servlet-class>org.apache.velocity.tools.view.servlet.VelocityViewServlet</servlet-class>
-
     <init-param>
       <param-name>org.apache.velocity.toolbox</param-name>
       <param-value>/WEB-INF/toolbox.xml</param-value>
-   </init-param>
-
+    </init-param>
     <init-param>
       <param-name>org.apache.velocity.properties</param-name>
       <param-value>/WEB-INF/velocity.properties</param-value>
-   </init-param>
-
-   <load-on-startup>10</load-on-startup>
+    </init-param>
+    <load-on-startup>10</load-on-startup>
   </servlet>
-
-
-  <!-- Action Servlet Mapping -->
+  <servlet>
+    <servlet-name>debugjsp</servlet-name>
+    <description>Added to compile JSPs with debug info</description>
+    <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+    <init-param>
+      <param-name>classdebuginfo</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <load-on-startup>3</load-on-startup>
+  </servlet>
   <servlet-mapping>
     <servlet-name>action</servlet-name>
     <url-pattern>*.do</url-pattern>
   </servlet-mapping>
-
-
-  <!-- Map *.vm files to Velocity -->
   <servlet-mapping>
     <servlet-name>velocity</servlet-name>
     <url-pattern>*.vm</url-pattern>
   </servlet-mapping>
-
-
-
-  <!-- The Usual Welcome File List -->
+  <servlet-mapping>
+    <servlet-name>debugjsp</servlet-name>
+    <url-pattern>*.jsp</url-pattern>
+  </servlet-mapping>
   <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.vm</welcome-file>
   </welcome-file-list>
-
-  <!-- Example Application Tag Library Descriptor
-  <taglib>
-    <taglib-uri>/WEB-INF/app.tld</taglib-uri>
-    <taglib-location>/WEB-INF/app.tld</taglib-location>
-  </taglib>
-  -->
-
-  <!-- Struts Tag Library Descriptors -->
   <taglib>
     <taglib-uri>/WEB-INF/struts-bean.tld</taglib-uri>
     <taglib-location>/WEB-INF/struts-bean.tld</taglib-location>
   </taglib>
-
   <taglib>
     <taglib-uri>/WEB-INF/struts-html.tld</taglib-uri>
     <taglib-location>/WEB-INF/struts-html.tld</taglib-location>
   </taglib>
-
   <taglib>
     <taglib-uri>/WEB-INF/struts-logic.tld</taglib-uri>
     <taglib-location>/WEB-INF/struts-logic.tld</taglib-location>
   </taglib>
-
 </web-app>
