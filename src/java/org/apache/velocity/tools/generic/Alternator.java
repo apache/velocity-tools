@@ -32,18 +32,17 @@ import java.util.List;
  *      myColors.add("hip");
  *      myColors.add("fly");
  *      myColors.add("groovy");
- *      // use auto alternation
- *      context.put("style", new Alternator(true, myStyles));
+ *      // use manual alternation in this one
+ *      context.put("style", new Alternator(false, myStyles));
  *
  * or Java using Object array...
- *      context.put("color", new Alternator(true, new String[]
- *                                                { "red", "blue" }));
- *      context.put("style", new Alternator(true, new String[]
- *                                                { "hip", "fly", "groovy" }));
+ *      context.put("color", new Alternator(new String[]{"red","blue"}));
+ *      // use manual alternation in this one
+ *      context.put("style", new Alternator(false, new String[]{"hip","fly","groovy"}));
  *
  * template...
  *      #foreach( $foo in [1..5] )
- *       $foo is $color.next and $style
+ *       $foo is $color and $style.next
  *      #end
  *
  * output...
@@ -55,7 +54,7 @@ import java.util.List;
  * </pre></p>
  *
  * @since Velocity Tools 1.2
- * @version $Revision: 1.5 $ $Date: 2004/05/05 23:29:04 $
+ * @version $Revision: 1.6 $ $Date: 2004/05/06 00:01:27 $
  */
 public class Alternator
 {
