@@ -1,4 +1,3 @@
-
 <project name="velocity-tools-struts" default="all" basedir=".">
 
 <!-- ========== Initialize Properties ===================================== -->
@@ -46,7 +45,7 @@
   <!-- The docs destination directory  -->
   <property name="docs.dest"             value="${basedir}/docs"/>
 
-  <!-- The docs destination directory  -->
+  <!-- Directory where examples are located  -->
   <property name="examples.home"         value="${basedir}/examples"/>
 
 <!-- ========== Compiler Defaults ========================================= -->
@@ -294,53 +293,6 @@
 
 
   <!-- ================================================================== -->
-  <!-- D E M O                                                            -->
-  <!-- ================================================================== -->
-  <target name="demo" depends=""
-      description="Generate demo package">
-
-      <!-- Generate demo package -->
-      <!-- This is temporary and will be removed in the release versions -->
-
-      <!-- Clean away old demo if any 
-      <delete dir="${examples.home}/velstruts"/> -->
-      <delete>
-        <fileset dir="${examples.home}" includes="*.war"/>
-      </delete>
-      
-      <!-- Copy example application -->
-      <copy todir="${examples.home}/velstruts">
-        <fileset dir="${examples.home}/struts"/>
-      </copy>
-      
-      <!-- Remove jakarta-velocity-struts-XX.jar -->
-      <delete>
-        <fileset dir="${examples.home}/velstruts/WEB-INF/lib" includes="velocity-tools-struts-*"/>
-      </delete>
-
-      <!-- Copy source from src/java to WEB-INF/src -->
-      <copy todir="${examples.home}/velstruts/WEB-INF/src">
-        <fileset dir="${source.home}/java"/>
-      </copy>
-
-      <!-- Copy javadoc -->
-      <copy todir="${examples.home}/velstruts/doc/javadoc/">
-        <fileset dir="${build.home}/javadoc"/>
-      </copy>
-
-      <!-- Copy reference documentation -->
-      <copy todir="${examples.home}/velstruts/doc/">
-        <fileset dir="${docs.dest}" includes="tool-*"/>
-      </copy>
-      <copy todir="${examples.home}/velstruts/doc/">
-        <fileset dir="${docs.dest}" includes="index.html"/>
-      </copy>
-
-  </target>
-
-
-
-  <!-- ================================================================== -->
   <!--  D E P L O Y   J A R                                               -->
   <!-- ================================================================== -->
   <target name="deploy-jar" depends="compile, jar"
@@ -356,6 +308,7 @@
       </fileset>
     </copy>
   </target>
+
 
 
   <!-- ================================================================== -->
