@@ -1,5 +1,5 @@
 /*
- * Copyright 2003 The Apache Software Foundation.
+ * Copyright 2003-2004 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,28 +79,28 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *     &lt;input type="text"name="find" value="$!search.criteria"&gt;
  *     &lt;input type="submit" value="Find"&gt;
  *   &lt;/form&gt;
- *   #if( $search.hasResults() )
+ *   #if( $search.hasItems() )
  *   Showing $!search.pageDescription&lt;br&gt;
  *     #set( $i = $search.index )
- *     #foreach( $result in $search.page )
- *       ${i}. $!result &lt;br&gt;
+ *     #foreach( $item in $search.page )
+ *       ${i}. $!item &lt;br&gt;
  *       #set( $i = $i + 1 )
  *     #end
  *     &lt;br&gt;
  *     #if ( $search.pagesAvailable &gt; 1 )
- *       #set( $searchlink = $link.setRelative('search.vm').addQueryData("find",$!search.criteria).addQueryData("show",$!search.itemsPerPage) )
+ *       #set( $pagelink = $link.setRelative('search.vm').addQueryData("find",$!search.criteria).addQueryData("show",$!search.itemsPerPage) )
  *       #if( $search.prevIndex )
- *           &lt;a href="$searchlink.addQueryData('index',$!search.prevIndex)"&gt;Prev&lt;/a&gt;
+ *           &lt;a href="$pagelink.addQueryData('index',$!search.prevIndex)"&gt;Prev&lt;/a&gt;
  *       #end
  *       #foreach( $index in $search.slip )
  *         #if( $index == $search.index )
  *           &lt;b&gt;$search.pageNumber&lt;/b&gt;
  *         #else
- *           &lt;a href="$searchlink.addQueryData('index',$!index)"&gt;$!search.getPageNumber($index)&lt;/a&gt;
+ *           &lt;a href="$pagelink.addQueryData('index',$!index)"&gt;$!search.getPageNumber($index)&lt;/a&gt;
  *         #end
  *       #end
  *       #if( $search.nextIndex )
- *           &lt;a href="$searchlink.addQueryData('index',$!search.nextIndex)"&gt;Next&lt;/a&gt;
+ *           &lt;a href="$pagelink.addQueryData('index',$!search.nextIndex)"&gt;Next&lt;/a&gt;
  *       #end
  *     #end
  *   #elseif( $search.criteria )
@@ -128,76 +128,25 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * <pre>&lt;tool&gt;
  *   &lt;key&gt;search&lt;/key&gt;
  *   &lt;scope&gt;request&lt;/scope&gt;
- *   &lt;class&gt;com.foo.tools.MyAbstractSearchTool&lt;/class&gt;
+ *   &lt;class&gt;com.foo.tools.MySearchTool&lt;/class&gt;
  * &lt;/tool&gt;
  * </pre>
  * </p>
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Revision: 1.7 $ $Date: 2004/03/12 20:30:32 $
+ * @version $Revision: 1.8 $ $Date: 2004/11/11 03:46:44 $
  */
-public abstract class AbstractSearchTool implements ViewTool
+public abstract class AbstractSearchTool extends AbstractPagerTool
 {
-
-
-    /** the default number of results shown per page */
-    public static final int DEFAULT_ITEMS_PER_PAGE = 10;
-
-    /** the default max number of result page indices to list */
-    public static final int DEFAULT_SLIP_SIZE = 20;
-
     /** the key under which StoredResults are kept in session */
     protected static final String STORED_RESULTS_KEY = 
         StoredResults.class.getName();
 
-    private List results;
     private Object criteria;
-    private int index = 0;
-    private int slipSize = DEFAULT_SLIP_SIZE;
-    private int itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
-
-    protected HttpSession session;
-
-
-    /**
-     * Initializes this instance by grabbing the request
-     * and session objects from the current ViewContext.
-     *
-     * @param obj the current ViewContext
-     * @throws ClassCastException if the param is not a ViewContext
-     */
-    public void init(Object obj)
-    {
-        ViewContext context = (ViewContext)obj;
-        HttpServletRequest request = context.getRequest();
-        session = request.getSession(false);
-        setup(request);
-    }
-
-
-    /**
-     * Abstract method to make it as obvious as possible just
-     * where implementing classes should be retrieving and configuring
-     * search/display parameters. 
-     * <p>A simple implementation would be:
-     * <pre>
-     * public void setup(HttpServletRequest req)
-     * {
-     *     ParameterParser pp = new ParameterParser(req);
-     *     setCriteria(pp.getString("find"));
-     *     setIndex(pp.getInt("index", 0));
-     *     setItemsPerPage(pp.getInt("show", DEFAULT_ITEMS_PER_PAGE));
-     * }
-     * </pre>
-     *
-     * @param request the current HttpServletRequest
-     */
-    public abstract void setup(HttpServletRequest request);
 
 
     /*  ---------------------- mutators -----------------------------  */
-
 
     /**
      * Sets the criteria and results to null, page index to zero, and
@@ -205,77 +154,23 @@ public abstract class AbstractSearchTool implements ViewTool
      */
     public void reset()
     {
-        results = null;
+        super.reset();
         criteria = null;
-        index = 0;
-        itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
     }
 
 
     /**
-     * Sets the criteria for this search and clears existing results.
+     * Sets the criteria for this search.
      *
      * @param criteria - the criteria used for this search
      */
     public void setCriteria(Object criteria)
     {
         this.criteria = criteria;
-        this.results = null;
-    }
-
-
-    /**
-     * Sets the index of the first result in the current page
-     *
-     * @param index the result index to start the current page with
-     */
-    public void setIndex(int index)
-    {
-        if (index < 0)
-        {
-            /* quietly override to a reasonable value */
-            index = 0;
-        }
-        this.index = index;
-    }
-
-
-    /**
-     * Sets the number of items returned in a page of results
-     *
-     * @param itemsPerPage the number of items to be returned per page
-     */
-    public void setItemsPerPage(int itemsPerPage)
-    {
-        if (itemsPerPage < 1)
-        {
-            /* quietly override to a reasonable value */
-            itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
-        }
-        this.itemsPerPage = itemsPerPage;
-    }
-
-
-    /**
-     * Sets the number of result page indices for {@link #getSlip} to list.
-     * (for google-ish result page links).
-     *
-     * @see #getSlip
-     * @param slipSize - the number of result page indices to list
-     */
-    public void setSlipSize(int slipSize)
-    {
-        if (slipSize < 2)
-        {
-            /* quietly override to a reasonable value */
-            slipSize = DEFAULT_SLIP_SIZE;
-        }
-        this.slipSize = slipSize;
     }
 
 
     /*  ---------------------- accessors -----------------------------  */
-
 
     /**
      * Return the criteria object for this request.
@@ -291,264 +186,31 @@ public abstract class AbstractSearchTool implements ViewTool
 
 
     /**
-     * Return the set number of items to be displayed per page of results
-     *
-     * @return current number of results shown per page
-     */
-    public int getItemsPerPage()
-    {
-        return itemsPerPage;
-    }
-
-
-    /**
-     * Returns the number of result page indices {@link #getSlip} 
-     * will return per request (if available).
-     *
-     * @return the number of result page indices {@link #getSlip} 
-     *         will try to return
-     */
-    public int getSlipSize()
-    {
-        return slipSize;
-    }
-
-
-    /**
-     * Return the current search result index.
-     *
-     * @return the index for the beginning of the current page
-     */
-    public int getIndex()
-    {
-        return index;
-    }
-
-
-    /**
-     * Checks whether or not the result list is empty.
-     *
-     * @return <code>true</code> if the result list is not empty.
+     * @deprecated Use {@link AbstractPagerTool#hasItems()}
      */
     public boolean hasResults()
     {
-        return !getResults().isEmpty();
+        return hasItems();
     }
 
 
     /**
-     * Return the results for the given criteria.  This is guaranteed
-     * to never return <code>null</code>.
-     *
-     * @return {@link List} of all results for the criteria
+     * @deprecated Use {@link AbstractPagerTool#getItems()}.
      */
     public List getResults()
     {
-        if (results == null)
-        {
-            results = retrieveResults();
-        }
-        return results;
+        return getItems();
     }
-
-
-    /**
-     * Return the index for the next page of results
-     * (as determined by the current index, items per page, and 
-     * the number of results).  If no "next page" exists, then null is
-     * returned.
-     *
-     * @return index for the next page or <code>null</code> if none exists
-     */
-    public Integer getNextIndex()
-    {
-        int next = index + itemsPerPage;
-        if (next < getResults().size())
-        {
-            return new Integer(next);
-        }
-        return null;
-    }
-
-
-    /**
-     * Return the index for the previous page of results
-     * (as determined by the current index, items per page, and 
-     * the number of results).  If no "next page" exists, then null is
-     * returned.
-     *
-     * @return index for the previous page or <code>null</code> if none exists
-     */
-    public Integer getPrevIndex()
-    {
-        int prev = Math.min(index, getResults().size()) - itemsPerPage;
-        if (index > 0)
-        {
-            return new Integer(Math.max(0, prev));
-        }
-        return null;
-    }
-
-
-    /**
-     * Return the number of pages that can be made from this list
-     * given the set number of items per page.
-     */
-    public int getPagesAvailable()
-    {
-        return (int)Math.ceil(getResults().size() / (double)itemsPerPage);
-    }
-
-
-    /**
-     * Return the current "page" of search results.
-     *
-     * @return a {@link List} of results for the "current page"
-     */
-    public List getPage()
-    {
-        /* return null if we have no results */
-        if (!hasResults())
-        {
-            return null;
-        }
-        /* quietly keep the page indices to legal values for robustness' sake */
-        int start = Math.min(getResults().size() - 1, index);
-        int end = Math.min(getResults().size(), index + itemsPerPage);
-        return getResults().subList(start, end);
-    }
-
-
-    /**
-     * Returns the "page number" for the specified index.  Because the page
-     * number is used for the user interface, the page numbers are 1-based.
-     *
-     * @param i the index that you want the page number for
-     * @return the approximate "page number" for the specified index or 
-     *         <code>null</code> if there are no results
-     */
-    public Integer getPageNumber(int i)
-    {
-        if (!hasResults())
-        {
-            return null;
-        }
-        return new Integer(1 + i / itemsPerPage);
-    }
-
-
-    /**
-     * Returns the "page number" for the current index.  Because the page
-     * number is used for the user interface, the page numbers are 1-based.
-     *
-     * @return the approximate "page number" for the current index or 
-     *         <code>null</code> if there are no results
-     */
-    public Integer getPageNumber()
-    {
-        return getPageNumber(index);
-    }
-
-
-    /**
-     * <p>Returns a description of the current page.  This implementation
-     * displays a 1-based range of result indices and the total number 
-     * of results.  (e.g. "1 - 10 of 42" or "7 of 7")</p>
-     *
-     * <p>Sub-classes may override this to provide a customized 
-     * description (such as one in another language).</p>
-     *
-     * @return a description of the current page
-     */
-    public String getPageDescription()
-    {
-        StringBuffer out = new StringBuffer();
-        int first = index + 1;
-        int total = getResults().size();
-        if (first >= total)
-        {
-            out.append(total);
-            out.append(" of ");
-            out.append(total);
-        }
-        else
-        {
-            int last = Math.min(index + itemsPerPage, total);
-            out.append(first);
-            out.append(" - ");
-            out.append(last);
-            out.append(" of ");
-            out.append(total);
-        }
-        return out.toString();
-    }
-
-
-    /**
-     * Return a <b>S</b>liding <b>L</b>ist of <b>I</b>ndices for <b>P</b>ages
-     * of search results.
-     *
-     * <p>Essentially, this returns a list of result indices that correspond
-     * to available pages of search results (as based on the set 
-     * items-per-page). This makes it relativly easy to do a google-ish set 
-     * of links to result pages.</p>
-     *
-     * <p>Note that this list of Integers is 0-based to correspond with the
-     * underlying result indices and not the displayed page numbers (see
-     * {@link #getPageNumber}).</p>
-     *
-     * @return {@link List} of Integers representing the indices of result 
-     *         pages or empty list if there's one or less pages available
-     */
-    public List getSlip()
-    {
-        /* return an empty list if there's no pages to list */
-        int totalPgs = getPagesAvailable();
-        if (totalPgs <= 1)
-        {
-            return Collections.EMPTY_LIST;
-        }
-
-        /* page number is 1-based so decrement it */
-        int curPg = getPageNumber().intValue() - 1;
-
-        /* don't include current page in slip size calcs */
-        int adjSlipSize = slipSize - 1;
-
-        /* start at zero or just under half of max slip size 
-         * this keeps "forward" and "back" pages about even
-         * but gives preference to "forward" pages */
-        int slipStart = Math.max(0, (curPg - (adjSlipSize / 2)));
-
-        /* push slip end as far as possible */
-        int slipEnd = Math.min(totalPgs, (slipStart + adjSlipSize));
-
-        /* if we're out of "forward" pages, then push the 
-         * slip start toward zero to maintain slip size */
-        if (slipEnd - slipStart < adjSlipSize)
-        {
-            slipStart = Math.max(0, slipEnd - adjSlipSize);
-        }
-
-        /* convert 0-based page numbers to indices and create list */
-        List slip = new ArrayList((slipEnd - slipStart) + 1);
-        for (int i=slipStart; i < slipEnd; i++)
-        {
-            slip.add(new Integer(i * itemsPerPage));
-        }
-        return slip;
-    }
-
-
-    /*  ---------------------- private methods -----------------------------  */
 
 
     /**
      * Gets the results for the given criteria either in memory
-     * or by performing a new query for them.  This is guaranteed to
-     * NOT return null.
+     * or by performing a new query for them.  If the criteria
+     * is null, an empty list will be returned.
+     *
+     * @return {@link List} of all items for the criteria
      */
-    private List retrieveResults()
+    public List getItems()
     {
         /* return empty list if we have no criteria */
         if (criteria == null)
@@ -556,7 +218,26 @@ public abstract class AbstractSearchTool implements ViewTool
             return Collections.EMPTY_LIST;
         }
 
-        /* get any stored results */
+        /* get the current list */
+        List list = super.getItems();
+
+        /* if empty, execute a query for the criteria */
+        if (list.isEmpty())
+        {
+            /* perform a new query */
+            list = executeQuery(criteria);
+
+            /* save the new results */
+            setItems(list);
+        }
+        return list;
+    }
+
+
+    /*  ---------------------- protected methods -----------------------------  */
+
+    protected List getStoredItems()
+    {
         StoredResults sr = getStoredResults();
 
         /* if the criteria equals that of the stored results, 
@@ -565,21 +246,14 @@ public abstract class AbstractSearchTool implements ViewTool
         {
             return sr.getList();
         }
-
-        /* perform a new query and make sure we don't end up with a null list */
-        List list = executeQuery(criteria);
-        if (list == null)
-        {
-            list = Collections.EMPTY_LIST;
-        }
-
-        /* save the new results */
-        setStoredResults(new StoredResults(criteria, list));
-        return list;
+        return null;
     }
 
 
-    /*  ---------------------- protected methods -----------------------------  */
+    protected void setStoredItems(List items)
+    {
+        setStoredResults(new StoredResults(criteria, items));
+    }
 
 
     /**
@@ -635,7 +309,6 @@ public abstract class AbstractSearchTool implements ViewTool
 
 
     /*  ---------------------- utility class -----------------------------  */
-
 
     /**
      * Simple utility class to hold a criterion and its result list.
