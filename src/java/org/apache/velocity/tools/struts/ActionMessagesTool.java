@@ -89,7 +89,7 @@ import org.apache.velocity.tools.struts.StrutsUtils;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.1
- * @version $Id: ActionMessagesTool.java,v 1.4 2003/11/06 06:21:56 nbubna Exp $
+ * @version $Id: ActionMessagesTool.java,v 1.5 2003/11/06 18:25:28 nbubna Exp $
  */
 public class ActionMessagesTool extends MessageResourcesTool
 {
@@ -181,6 +181,28 @@ public class ActionMessagesTool extends MessageResourcesTool
 
 
     /**
+     * <p>
+     * This a convenience method and the equivalent of 
+     * <code>$actionmsgs.get($actionmsgs.globalName)</code>. 
+     * </p>
+     * <p>
+     * Returns the set of localized action messages as an 
+     * list of strings for all action messages queued of the 
+     * global category or <code>null</code> if no messages
+     * are queued for the specified category. If the message 
+     * resources don't contain an action message for a
+     * particular message key, the key itself is used.
+     * </p>
+     *
+     * @return a list of all messages stored under the "global" property
+     */
+    public List getGlobal() 
+    {
+        return get(getGlobalName());
+    }
+
+
+    /**
      * Returns the set of localized action messages as an 
      * <code>java.util.List</code> of strings for all actionMsgs 
      * queued or <code>null</code> if no messages are queued.
@@ -194,10 +216,10 @@ public class ActionMessagesTool extends MessageResourcesTool
 
 
     /**
-     * Returns the set of localized error messages as an 
+     * Returns the set of localized action messages as an 
      * <code>java.util.List</code> of strings for all actionMsgs 
      * queued of the specified category or <code>null</code> 
-     * if no error are queued for the specified category. If the 
+     * if no messages are queued for the specified category. If the 
      * message resources don't contain a message for a particular 
      * key, the key itself is used as the message.
      *
@@ -269,6 +291,16 @@ public class ActionMessagesTool extends MessageResourcesTool
             }
         }
         return list;
+    }
+
+
+    /**
+     * Returns the default "GLOBAL" category name that can be used for
+     * messages that are not associated with a particular property.
+     */
+    public String getGlobalName()
+    {
+        return ActionMessages.GLOBAL_MESSAGE;
     }
 
 }
