@@ -13,27 +13,27 @@
     <section name="ErrorsTool Reference Documentation">
 
         <p>
-        This tool deals with Struts error messages. Errors may stem from the validation 
-        of a submitted form or from the processing of a request. If there are errors, 
-        they are made available to the view to render. A few important aspects about errors 
+        This tool deals with Struts error messages. Errors may stem from the validation
+        of a submitted form or from the processing of a request. If there are errors,
+        they are made available to the view to render. A few important aspects about errors
         are:</p>
         <ul>
-            <li>Error message strings are looked up in the message resources. Support 
+            <li>Error message strings are looked up in the message resources. Support
                 for internationalized messages is provided.</li>
             <li>Error messages can have up to five replacement parameters.</li>
-            <li>Errors have an attribute <code>property</code> that describes the category of 
-                error. This allows the view designer to place error messages precisely where an 
-                error occurred. For example, errors that apply to the entire page can be rendered 
-                at the top of the page, errors that apply to a specific input field can be rendered 
-                next to this input field. Several methods of this tool provide a parameter 
+            <li>Errors have an attribute <code>property</code> that describes the category of
+                error. This allows the view designer to place error messages precisely where an
+                error occurred. For example, errors that apply to the entire page can be rendered
+                at the top of the page, errors that apply to a specific input field can be rendered
+                next to this input field. Several methods of this tool provide a parameter
                 <code>property</code> that allows to select a specific category of errors to operate
                 on. Without the <code>property</code> parameter, methods operate on all error messages.</li>
         </ul>
-       
-        <p>See the Struts User's Guide, section 
-        <a href="http://jakarta.apache.org/struts/userGuide/building_view.html">Building View Components</a> 
+
+        <p>See the Struts User's Guide, section
+        <a href="http://jakarta.apache.org/struts/userGuide/building_view.html">Building View Components</a>
         for more information on this topic.</p>
-        
+
         <toolinfo>
             <version>@@@version@@@, @@@date@@@</version>
             <clazz>org.apache.velocity.tools.struts.ErrorsTool</clazz>
@@ -52,15 +52,15 @@
 
     <section name="exist()">
         <method name="exist()">
-    
+
             <abstract>
-                Returns true if there are errors queued, otherwise false.
+                Returns <code>true</code> if there are errors queued, otherwise <code>false</code>.
             </abstract>
-    
+
             <signature>
                 boolean exist()
             </signature>
-            
+
             <signature>
                 boolean exist(String property)
             </signature>
@@ -70,35 +70,35 @@
                     The category of errors to check for.
                 </parameter>
             </parameters>
-    
+
             <returns>
-                <code>true</code> if there error message queued. <code>false</code> otherwise.
+                <code>true</code> if there error messages queued. <code>false</code> otherwise.
             </returns>
-                
+
             <description>
                 <p>Calling <code>exist()</code> without the <code>property</code> parameter checks for error messages of
-                any category. The <code>property</code> parameter can be used to limit the check to 
-                error message of a specific category.</p> 
-                                
+                any category. The <code>property</code> parameter can be used to limit the check to
+                error messages of a specific category.</p>
+
 <sourcecode>$errors.exist()
 $errors.exist("password")
 </sourcecode>
             </description>
-    
+
         </method>
     </section>
 
     <section name="getSize()">
         <method name="getSize()">
-    
+
             <abstract>
                 Returns the number of error messages queued.
             </abstract>
-    
+
             <signature>
                 int getSize()
             </signature>
-            
+
             <signature>
                 int getSize(String property)
             </signature>
@@ -108,15 +108,15 @@ $errors.exist("password")
                     The category of errors to operate on.
                 </parameter>
             </parameters>
-    
+
             <returns>
                 The number of error messages.
             </returns>
-       
+
             <description>
-                <p>Calling <code>getSize()</code> without the <code>property</code> parameter returns the total 
-                number of queued error messages. The <code>property</code> parameter can be used to 
-                obtain the number of queued error messages for a specific category.</p> 
+                <p>Calling <code>getSize()</code> without the <code>property</code> parameter returns the total
+                number of queued error messages. The <code>property</code> parameter can be used to
+                obtain the number of queued error messages for a specific category.</p>
 
 <sourcecode>$errors.getSize()
 $errors.size
@@ -126,23 +126,55 @@ $errors.getSize("password")</sourcecode>
         </method>
     </section>
 
+    <section name="getGlobal()">
+        <method name="getGlobal()">
+
+            <abstract>
+                This a convenience method and the equivalent of
+                <code>$errors.get($errors.globalName)</code>
+            </abstract>
+
+            <signature>
+                List getGlobal()
+            </signature>
+
+            <returns>
+                A list of all errors stored under the "global" property.
+            </returns>
+
+            <description>
+                <p>See the section on get() for more information.</p>
+            </description>
+        </method>
+    </section>
+
     <section name="getAll()">
         <method name="getAll()">
-    
+
             <abstract>
                 Returns a list of localized error messages for all errors queued.
             </abstract>
-    
+
             <signature>
-                HashMap getAll()
+                List getAll()
             </signature>
-            
+
+            <signature>
+                List getAll(String bundle)
+            </signature>
+
+            <parameters>
+                <parameter name="bundle">
+                    The (non-default) message-resources bundle that holds the error messages.
+                </parameter>
+            </parameters>
+
             <returns>
-                If the message resources are lacking an error message for a 
+                If the message resources are lacking an error message for a
                 particular message key, the key itself is used as error message
-                and an error is logged.
+                and a warning is logged.
             </returns>
-       
+
             <description>
                 <p>The following example shows a macro to render the error messages:</p>
 
@@ -170,14 +202,14 @@ $errors.getSize("password")</sourcecode>
 
     <section name="get()">
         <method name="get()">
-    
+
             <abstract>
                 Returns a list of localized error messages for a particular category
                 of errors.
             </abstract>
-    
+
             <signature>
-                ArrayList get(String property)
+                List get(String property)
             </signature>
 
             <parameters>
@@ -185,18 +217,32 @@ $errors.getSize("password")</sourcecode>
                     The category of errors to return.
                 </parameter>
             </parameters>
-            
+
+            <signature>
+                List get(String property, String bundle)
+            </signature>
+
+            <parameters>
+                <parameter name="property">
+                    The category of error messages to return.
+                </parameter>
+
+                <parameter name="bundle">
+                    The (non-default) message-resources bundle that holds the error messages.
+                </parameter>
+            </parameters>
+
             <returns>
-                A <code>java.util.ArrayList</code> of <code>java.lang.String</code>.
-                If no error messages exist for the specified category, 
-                <code>null</code> is returned. 
-                If the message resources are lacking an error message for a 
+                A <code>java.util.List</code> of <code>java.lang.String</code>.
+                If no error messages exist for the specified category,
+                <code>null</code> is returned.
+                If the message resources are lacking an error message for a
                 particular message key, the key itself is used as error message
-                and an error is logged.
+                and a warning is logged.
             </returns>
-       
+
             <description>
-                <p>The following example shows a macro to render the error messages for a 
+                <p>The following example shows a macro to render the error messages for a
                 particular category of errors:</p>
 
 <sourcecode>&#35;macro (errorMarkup &#36;property)
@@ -223,11 +269,11 @@ $errors.getSize("password")</sourcecode>
 
     <section name="getMsgs()">
         <method name="getMsgs()">
-    
+
             <abstract>
                 Renders the queued errors messages.
             </abstract>
-    
+
             <signature>
                 String getMsgs()
             </signature>
@@ -241,25 +287,39 @@ $errors.getSize("password")</sourcecode>
                     The category of errors messages to render.
                 </parameter>
             </parameters>
-            
+
+            <signature>
+                String getMsgs(String property, String bundle)
+            </signature>
+
+            <parameters>
+                <parameter name="property">
+                    The category of errors messages to render.
+                </parameter>
+
+                <parameter name="bundle">
+                    The (non-default) message-resources bundle that holds the error messages.
+                </parameter>
+            </parameters>
+
             <returns>
-                The formatted error messages. If no errors are queued, an 
-                empty <code>String</code> is returned. 
+                The formatted error messages. If no errors are queued, an
+                empty <code>String</code> is returned.
             </returns>
-       
+
             <description>
                 <p>This method renders the queued error messages as a list. If the method
-                is called without a parameter, all queued errors are rendered. With the 
-                parameter <code>property</code> the list of rendered messages can be 
+                is called without a parameter, all queued errors are rendered. With the
+                parameter <code>property</code> the list of rendered messages can be
                 limited to a specific category of errors. Error message texts
                 are looked up in the message resources. If a message text
                 cannot be found, the message key will be displayed instead.</p>
-                
-                <p>The method expects a message header and a message footer 
+
+                <p>The method expects a message header and a message footer
                 to be defined in the message resources. The corresponding
-                message keys are <code>errors.header</code> and 
+                message keys are <code>errors.header</code> and
                 <code>errors.footer</code>.</p>
-                
+
                 <p>Assuming that the message resources contain the following
                 definitions:</p>
 
@@ -279,7 +339,6 @@ error02=&lt;li&gt;The input is not a valid credit card number.&lt;/li&gt;
 
         </method>
     </section>
-
 
 
  </body>
