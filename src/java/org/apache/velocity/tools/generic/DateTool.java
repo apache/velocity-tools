@@ -99,7 +99,7 @@ import java.util.TimeZone;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Revision: 1.9 $ $Date: 2003/12/06 05:45:25 $
+ * @version $Revision: 1.10 $ $Date: 2004/01/05 20:29:01 $
  */
 public class DateTool
 {
@@ -618,7 +618,7 @@ public class DateTool
 
     /**
      * Converts an object to an instance of {@link Date} using the
-     * format returned by {@link getFormat()},the {@link Locale} returned 
+     * format returned by {@link #getFormat()},the {@link Locale} returned 
      * by {@link #getLocale()}, and the {@link TimeZone} returned by
      * {@link #getTimeZone()} if the object is not already an instance
      * of Date, Calendar, or Long.
