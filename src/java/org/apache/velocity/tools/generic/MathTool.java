@@ -41,7 +41,7 @@ package org.apache.velocity.tools.generic;
  * </pre></p>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.8 $ $Date: 2004/03/12 20:50:38 $
+ * @version $Revision: 1.9 $ $Date: 2004/04/16 20:12:42 $
  */
 public class MathTool
 {
@@ -142,6 +142,56 @@ public class MathTool
         }
         double value = Math.pow(n1.doubleValue(), n2.doubleValue());
         return matchType(n1, n2, value);
+    }
+
+
+    /**
+     * Does integer division on the int values of the specified numbers.
+     * 
+     * <p>So, $math.idiv('5.1',3) will return '1', 
+     *    and $math.idiv(6,'3.9') will return '2'.</p>
+     *
+     * @param num1 the first number
+     * @param num2 the second number
+     * @return the result of performing integer division
+     *         on the operands.
+     * @see #toInteger
+     */
+    public Integer idiv(Object num1, Object num2)
+    {
+        Number n1 = toNumber(num1);
+        Number n2 = toNumber(num2);
+        if (n1 == null || n2 == null || n2.intValue() == 0)
+        {
+            return null;
+        }
+        int value = n1.intValue() / n2.intValue();
+        return new Integer(value);
+    }
+
+
+    /**
+     * Does integer modulus on the int values of the specified numbers.
+     *
+     * <p>So, $math.mod('5.1',3) will return '2',
+     *    and $math.mod(6,'3.9') will return '0'.</p>
+     *
+     * @param num1 the first number
+     * @param num2 the second number
+     * @return the result of performing integer modulus
+     *         on the operands.
+     * @see #toInteger
+     */
+    public Integer mod(Object num1, Object num2)
+    {
+        Number n1 = toNumber(num1);
+        Number n2 = toNumber(num2);
+        if (n1 == null || n2 == null || n2.intValue() == 0)
+        {
+            return null;
+        }
+        int value = n1.intValue() % n2.intValue();
+        return new Integer(value);
     }
 
 
