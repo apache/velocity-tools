@@ -254,6 +254,18 @@ public class VelocityViewServlet extends HttpServlet
         return velocity;
     }
 
+    /**
+     * Sets the underlying VelocityEngine
+     */
+    protected void setVelocityEngine(VelocityEngine ve)
+    {
+        if (ve == null)
+        {
+            throw new NullPointerException("Cannot set the VelocityEngine to null");
+        }
+        this.velocity = ve;
+    }
+
 
     /**
      * Initializes the ServletToolboxManager for this servlet's
@@ -294,6 +306,8 @@ public class VelocityViewServlet extends HttpServlet
     protected void initVelocity(ServletConfig config) throws ServletException
     {
         velocity = new VelocityEngine();
+        setVelocityEngine(velocity);
+
         // register this engine to be the default handler of log messages
         // if the user points commons-logging to the LogSystemCommonsLog
         LogSystemCommonsLog.setVelocityEngine(velocity);
