@@ -62,7 +62,7 @@ import java.util.TimeZone;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Revision: 1.11 $ $Date: 2004/02/18 20:11:07 $
+ * @version $Revision: 1.12 $ $Date: 2004/03/12 20:30:31 $
  */
 public class DateTool
 {
@@ -538,8 +538,9 @@ public class DateTool
 
     /**
      * Checks a string to see if it matches one of the standard DateFormat
-     * style patterns: FULL, LONG, MEDIUM, SHORT, or DEFAULT. if it does it will return
-     * the integer constant for that pattern.  if not, it will return -1.
+     * style patterns: FULL, LONG, MEDIUM, SHORT, or DEFAULT.  If it does,
+     * it will return the integer constant for that pattern.  If not, it
+     * will return -1.
      *
      * @see DateFormat
      * @param style the string to be checked

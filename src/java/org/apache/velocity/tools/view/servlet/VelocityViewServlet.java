@@ -99,7 +99,7 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.20 2004/02/18 20:07:02 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.21 2004/03/12 20:30:32 nbubna Exp $
  */
 
 public class VelocityViewServlet extends HttpServlet
@@ -625,7 +625,7 @@ public class VelocityViewServlet extends HttpServlet
      * 
      * @param request original HttpServletRequest from servlet container.
      * @param response HttpServletResponse object from servlet container.
-     * @param cause  Exception that was thrown by some other part of process.
+     * @param e  Exception that was thrown by some other part of process.
      */
     protected void error(HttpServletRequest request, 
                          HttpServletResponse response, 

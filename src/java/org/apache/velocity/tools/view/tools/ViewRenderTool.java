@@ -28,8 +28,8 @@ import org.apache.velocity.tools.view.tools.ViewTool;
 /**
  * This tool expose methods to evaluate the given
  * strings as VTL (Velocity Template Language)
- * and automatically using the current context.<br>
- * 
+ * and automatically using the current context.
+ * <br />
  * <pre>
  * Example of eval():
  *      Input
@@ -73,7 +73,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * session scopes of a servlet environment.</p>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.4 $ $Date: 2004/02/18 20:06:11 $
+ * @version $Revision: 1.5 $ $Date: 2004/03/12 20:30:32 $
  */
 
 public class ViewRenderTool extends RenderTool implements ViewTool

@@ -27,7 +27,7 @@ import org.apache.velocity.app.Velocity;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: ViewToolInfo.java,v 1.7 2004/02/18 20:08:29 nbubna Exp $
+ * @version $Id: ViewToolInfo.java,v 1.8 2004/03/12 20:30:32 nbubna Exp $
  */
 public class ViewToolInfo implements ToolInfo
 {
@@ -47,7 +47,7 @@ public class ViewToolInfo implements ToolInfo
      * class loader is set for the current thread, then the class loader
      * that loaded this class will be used.
      *
-     * @param className Fully qualified class name to be loaded
+     * @param name Fully qualified class name to be loaded
      * @return Class object
      * @exception ClassNotFoundException if the class cannot be found
      * @since VelocityTools 1.1
