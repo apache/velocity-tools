@@ -68,10 +68,6 @@ import java.util.Properties;
 import java.util.HashMap;
 import java.util.Properties;
 
-import java.io.IOException;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-
 import org.apache.commons.collections.ExtendedProperties;
 
 import org.apache.velocity.servlet.VelocityServlet;
@@ -116,7 +112,7 @@ import org.apache.velocity.tools.view.servlet.ServletToolboxManager;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author  <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.5 2002/05/07 10:23:33 sidler Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.6 2003/01/27 17:17:20 nbubna Exp $
  */
 
 public class VelocityViewServlet extends VelocityServlet
@@ -152,63 +148,27 @@ public class VelocityViewServlet extends VelocityServlet
     {
         super.init( config );
 
-       	/*
-   		 *  setup the toolbox if there is one
-         */
+        ServletContext servletContext = config.getServletContext();
 
-	    String key = config.getInitParameter( TOOLBOX_PARAM );
+        /* check the servlet config for a toolbox */
+        String key = config.getInitParameter(TOOLBOX_PARAM);
 
-        if ( key != null )
+        /* check the servlet context for a toolbox */
+        if (key == null || key.length() == 0) 
         {
-            InputStream is = null;
+            key = servletContext.getInitParameter(TOOLBOX_PARAM);
+        }
 
-            try
-            {
-                /*
-                 *  little fix up
-                 */
-
-                if ( !key.startsWith("/") )
-                {
-            	   key = "/" + key;
-            	}
-
-               /*
-                *  get the bits
-                */
-
-               is = getServletContext().getResourceAsStream( key );
-
-               if ( is != null)
-               {
-                    Velocity.info("Using toolbox configuration file '" + key +"'");
-
-                    toolboxManager = new ServletToolboxManager(getServletContext());
-                    toolboxManager.load( is );
-
-                    Velocity.info("Toolbox setup complete.");
-               }
-           }
-           catch( Exception e )
-           {
-               Velocity.error("Problem reading toolbox file properties file '" + key +"' : " + e );
-           }
-
-           finally
-           {
-               try
-               {
-                   if ( is != null)
-                       is.close();
-               }
-               catch(Exception ee )
-                   {}
-           }
-       }
-       else
-       {
+        /* if we have a toolbox, get a manager for it */
+        if (key != null)
+        {
+            toolboxManager = 
+                ServletToolboxManager.getInstance(servletContext, key);
+        }
+        else
+        {
             Velocity.info("No toolbox entry in configuration.");
-       }
+        }
     }
 
 
@@ -220,7 +180,7 @@ public class VelocityViewServlet extends VelocityServlet
     protected void initVelocity( ServletConfig config )
          throws ServletException
     {
-   		// Try reading Velocity configuration
+        // Try reading Velocity configuration
         try
         {
             Properties p = super.loadConfiguration(config);
