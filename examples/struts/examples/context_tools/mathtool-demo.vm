@@ -7,14 +7,6 @@
 
         <h2>MathTool Demo (Velocity)</h2>
 
-        This example demonstrates the loading of tools from within the template
-        using a tool loader tool.<br>
-        <br>
-        Example: Load the MathTool into the context with key "math":<br>
-        <code>&#35;set (&#36;math = &#36;toolLoader.load("org.apache.velocity.tools.generic.MathTool"))</code><br><br>
-
-        #set ($math = $toolLoader.load("org.apache.velocity.tools.generic.MathTool"))
-    
         Some of the functions provided by MathTool:<br>
     
         <table border="1" cellspacing="0" cellpadding="4">
