@@ -62,12 +62,12 @@ import org.apache.velocity.tools.view.tools.ViewTool;
 /**
  * ToolInfo implementation for view tools. New instances
  * are returned for every call to getInstance(obj), and tools
- * that implement (@link ViewTool} are initialized with the
+ * that implement {@link ViewTool} are initialized with the
  * given object before being returned.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: ViewToolInfo.java,v 1.1 2003/03/05 06:13:03 nbubna Exp $
+ * @version $Id: ViewToolInfo.java,v 1.2 2003/03/22 20:33:09 nbubna Exp $
  */
 public class ViewToolInfo implements ToolInfo
 {

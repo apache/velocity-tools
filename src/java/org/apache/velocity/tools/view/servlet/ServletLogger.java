@@ -63,7 +63,8 @@ import org.apache.velocity.runtime.RuntimeServices;
 
 
 /**
- *  Simple wrapper for the servlet log
+ * Simple wrapper for the servlet log.  This has Velocity log
+ * messages to ServletContext.log(String).
  *
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  */

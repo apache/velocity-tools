@@ -70,7 +70,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
 
 
 /** 
- * View tool that provides methods to render Struts message resources.</p>
+ * <p>View tool that provides methods to render Struts message resources.</p>
  *
  * <p>This class is equipped to be used with a toolbox manager, for example
  * the ServletToolboxManager included with VelServlet. This class implements
@@ -78,12 +78,12 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * required context information.</p>
  *
  * <p>This class is not thread-safe by design. A new instance is needed for
- * the processing of every template request.</p>
+ * the processing of every template request.  This means this tool should
+ * only be used in the request scope, not application or session scopes.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: MessageTool.java,v 1.1 2003/03/05 06:13:02 nbubna Exp $
- * 
+ * @version $Id: MessageTool.java,v 1.2 2003/03/22 20:33:09 nbubna Exp $
  */
 public class MessageTool implements ViewTool
 {

@@ -63,17 +63,18 @@ import org.apache.velocity.tools.view.tools.ViewTool;
 
 
 /**
- * Utility class for easy parsing of {@link ServletRequest} parameters
- * <br>
- * This class now implements the ViewTool interface to allow it
- * to be used as a request based tool.
- * <br>
- * It should be noted that this class is not thread-safe.  As it 
+ * <p>Utility class for easy parsing of {@link ServletRequest} parameters.</p>
+ * 
+ * <p>This class implements the ViewTool interface to allow it
+ * to be used as a request scoped tool.</p>
+ * 
+ * <p>It should be noted that this class is not thread-safe.  As it 
  * is wholly dependent upon the current ServletRequest, therefore each
- * ServletRequest should have its own instance.
+ * ServletRequest should have its own instance.  This tool should not
+ * be used in the session or application scopes of your webapp.</p>
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.3 $ $Date: 2003/03/20 05:56:42 $
+ * @version $Revision: 1.4 $ $Date: 2003/03/22 20:33:09 $
  */
 
 public class ParameterParser implements ViewTool
@@ -90,7 +91,7 @@ public class ParameterParser implements ViewTool
 
 
     /**
-     * Constructs a new instance using the specified request
+     * Constructs a new instance using the specified request.
      *
      * @param the {@link ServletRequest} to be parsed
      */

@@ -69,7 +69,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
 
 
 /**
- * <p>View tool to work with URI links</p> 
+ * <p>View tool to make building URIs pleasant and fun! :)</p>
  * 
  * <p>This class is equipped to be used with a toolbox manager, for example
  * the ServletToolboxManager included with VelocityViewServlet. This class 
@@ -77,20 +77,22 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * required context information.</p>
  *
  * <p>This class is not thread-safe by design. A new instance is needed for
- * the processing of every template request.</p>
+ * the processing of every template request.  This means this tool should
+ * only be used in the request scope, not application or session scopes.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: LinkTool.java,v 1.2 2003/03/20 05:56:42 nbubna Exp $
- * 
+ * @version $Id: LinkTool.java,v 1.3 2003/03/22 20:33:09 nbubna Exp $
  */
 public class LinkTool implements ViewTool, Cloneable
 {
 
 
+    /** Standard HTML delimiter for query data ('&') */ 
     public static final String HTML_QUERY_DELIMITER = "&";
 
+    /** XHTML delimiter for query data ('&amp;amp;') */ 
     public static final String XHTML_QUERY_DELIMITER = "&amp;";
 
 
@@ -135,7 +137,7 @@ public class LinkTool implements ViewTool, Cloneable
      * <p>Subclasses may easily override the init() method to set this
      *    appropriately and then call super.init()</p>
      *
-     * @param useXhtml if true, the XHTML query data delimiter ("&amp;")
+     * @param useXhtml if true, the XHTML query data delimiter ('&amp;amp;')
      *        will be used.  if false, then '&' will be used.
      * @see <a href="http://www.w3.org/TR/xhtml1/#C_12">Using Ampersands in Attribute Values (and Elsewhere)</a>
      */
@@ -260,7 +262,7 @@ public class LinkTool implements ViewTool, Cloneable
      * @param uri A context-relative URI reference. A context-relative URI 
      * is a URI that is relative to the root of this web application.
      *
-     * @return a new instance of LinkTool
+     * @return a new instance of LinkTool with the specified URI
      */
     public LinkTool setRelative(String uri)
     {

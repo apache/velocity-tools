@@ -85,12 +85,14 @@ import org.apache.struts.action.*;
  * and reuse fostered.</p>
  *
  * <p>It is the aim, that sooner or later the functionality in
- * this class is integrated into Struts itself.</p>
+ * this class is integrated into Struts itself.  Ideally, they will
+ * yank the JSP-centric code (PageContext, etc.) out of their RequestUtils 
+ * to allow other view layers to leverage that code.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>, based
  * on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 class StrutsUtils
 {

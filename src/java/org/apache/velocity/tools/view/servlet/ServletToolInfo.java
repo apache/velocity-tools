@@ -60,12 +60,32 @@ import org.apache.velocity.tools.view.ViewToolInfo;
 
 
 /**
- * ToolInfo implementation that holds scope information for tools
- * used in a servlet environment.
+ * <p>ToolInfo implementation that holds scope information for tools
+ * used in a servlet environment.  The ServletToolboxManager uses
+ * this to allow tool definitions to specify the scope/lifecycle
+ * of individual view tools.</p>
+ *
+ * <p>Example of toolbox.xml definitions for servlet tools:<pre>
+ *  &lt;tool&gt;
+ *    &lt;key&gt;link&lt;/key&gt;
+ *    &lt;scope&gt;request&lt;/scope&gt;
+ *    &lt;class&gt;org.apache.velocity.tools.struts.StrutsLinkTool&lt;/class&gt;
+ *  &lt;/tool&gt;
+ *  &lt;tool&gt;
+ *    &lt;key&gt;math&lt;/key&gt;
+ *    &lt;scope&gt;application&lt;/scope&gt;
+ *    &lt;class&gt;org.apache.velocity.tools.generic.MathTool&lt;/class&gt;
+ *  &lt;/tool&gt;
+ *  &lt;tool&gt;
+ *    &lt;key&gt;user&lt;/key&gt;
+ *    &lt;scope&gt;session&lt;/scope&gt;
+ *    &lt;class&gt;com.mycompany.tools.MyUserTool&lt;/class&gt;
+ *  &lt;/tool&gt;
+ *  </pre></p>
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: ServletToolInfo.java,v 1.1 2003/03/05 06:13:03 nbubna Exp $
+ * @version $Id: ServletToolInfo.java,v 1.2 2003/03/22 20:33:09 nbubna Exp $
  */
 public class ServletToolInfo extends ViewToolInfo
 {
