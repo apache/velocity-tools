@@ -54,8 +54,8 @@
 
 package org.apache.velocity.tools.struts;
 
+import java.util.List;
 import java.util.Locale;
-import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -83,7 +83,7 @@ import org.apache.velocity.tools.view.tools.ServletContextTool;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: MessageTool.java,v 1.2 2002/04/02 16:46:30 sidler Exp $
+ * @version $Id: MessageTool.java,v 1.3 2002/04/03 15:30:51 dlr Exp $
  * 
  */
 public class MessageTool extends LogEnabledContextToolImpl 
@@ -235,8 +235,8 @@ public class MessageTool extends LogEnabledContextToolImpl
 
     /**
      * Same as {@link #get(String key, Object[] args)}, but takes a
-     * <code>java.util.ArrayList</code> instead of an array. This is 
-     * more Velocity compatible. 
+     * <code>java.util.List</code> instead of an array. This is more
+     * Velocity friendly.
      *
      * @param key message key
      * @param args replacement parameters for this message
@@ -244,7 +244,7 @@ public class MessageTool extends LogEnabledContextToolImpl
      * @return the localized message for the specified key or
      * <code>null</code> if no such message exists
      */
-    public String get(String key, ArrayList args)
+    public String get(String key, List args)
     {
         return get(key, args.toArray());        
     }
