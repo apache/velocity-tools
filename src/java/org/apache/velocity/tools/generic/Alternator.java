@@ -23,22 +23,12 @@ import java.util.List;
  *
  * <p><b>Example usage:</b>
  * <pre>
- * Java using a List...
- *      List myColors = new ArrayList();
- *      myColors.add("red");
- *      myColors.add("blue");
+ * java...
+ *      String[] myColors = new String[]{"red", "blue"};
  *      context.put("color", new Alternator(myColors));
- *      List myStyles = new ArrayList();
- *      myColors.add("hip");
- *      myColors.add("fly");
- *      myColors.add("groovy");
- *      // use manual alternation in this one
+ *      String[] myStyles = new String[]{"hip", "fly", "groovy"};
+ *      // demonstrate manual alternation with this one
  *      context.put("style", new Alternator(false, myStyles));
- *
- * or Java using Object array...
- *      context.put("color", new Alternator(new String[]{"red","blue"}));
- *      // use manual alternation in this one
- *      context.put("style", new Alternator(false, new String[]{"hip","fly","groovy"}));
  *
  * template...
  *      #foreach( $foo in [1..5] )
@@ -54,7 +44,7 @@ import java.util.List;
  * </pre></p>
  *
  * @since Velocity Tools 1.2
- * @version $Revision: 1.6 $ $Date: 2004/05/06 00:01:27 $
+ * @version $Revision: 1.7 $ $Date: 2004/05/06 00:36:40 $
  */
 public class Alternator
 {
