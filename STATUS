@@ -1,6 +1,6 @@
 S T A T U S
 ===========
-$Id: STATUS,v 1.13 2003/11/06 23:39:18 nbubna Exp $
+$Id: STATUS,v 1.14 2003/11/19 22:05:12 nbubna Exp $
 
 
 Known Issues/Bugs:
@@ -33,7 +33,6 @@ Proposed Features/Upgrades:
           from the toolbox config file (pooling support might help here)
         - add chooseCharacterEncoding(req) to VVS to make dynamic encoding
           selection easier
-        - in VVS, fall back to response.getOutputStream() if getWriter() fails
 
     Generic tools:
         - add a library of general-use velocimacros
