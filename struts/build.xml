@@ -5,11 +5,12 @@
   <property file="build/build.properties"/>          <!-- Component local   -->
   <property file="../build.properties"/>             <!-- Commons local     -->
   <property file="${user.home}/.build.properties"/>  <!-- User local        -->
- 
+
 <!-- ========== External Dependencies ===================================== -->
 
  <!-- the local repository -->
  <property name="local.repository"            value="./lib" />
+ <property name="project.repository"          value="../lib" />
 
 <!-- ========== Component Declarations ==================================== -->
 
@@ -58,11 +59,17 @@
     <fileset dir="${local.repository}">
       <include name="**/*.jar"/>
     </fileset>
+    <fileset dir="${project.repository}">
+      <include name="**/*.jar"/>
+    </fileset>
   </path>
 
 <!-- ========== Executable Targets ======================================== -->
 
 
+  <!-- ================================================================== -->
+  <!-- I N I T                                                            -->
+  <!-- ================================================================== -->
   <target name="init"
    description="Initialize and evaluate conditionals">
     <echo message="-------- ${project.name} ${project.version} --------"/>
@@ -70,14 +77,20 @@
     <filter  token="version"               value="${project.version}"/>
   </target>
 
+  <!-- ================================================================== -->
+  <!-- P R E P A R E                                                      -->
+  <!-- ================================================================== -->
   <target name="prepare" depends="init"
    description="Prepare build directory">
     <mkdir dir="${build.home}"/>
     <mkdir dir="${build.home}/classes"/>
     <mkdir dir="${build.home}/conf"/>
-    <mkdir dir="${build.home}/javadoc"/> 
+    <mkdir dir="${build.home}/javadoc"/>
   </target>
 
+  <!-- ================================================================== -->
+  <!-- S T A T I C                                                        -->
+  <!-- ================================================================== -->
   <target name="static" depends="prepare"
    description="Copy static files to build directory">
     <tstamp/>
@@ -86,9 +99,11 @@
     </copy>
   </target>
 
-
+  <!-- ================================================================== -->
+  <!-- C O M P I L E                                                      -->
+  <!-- ================================================================== -->
   <target name="compile" depends="static" description="Compile">
-  
+
     <javac  srcdir="${source.home}/java"
             destdir="${build.home}/classes"
             debug="${compile.debug}"
@@ -103,66 +118,85 @@
 
   </target>
 
-
+  <!-- ================================================================== -->
+  <!-- C L E A N                                                          -->
+  <!-- ================================================================== -->
   <target name="clean"
    description="Clean build and distribution directories">
     <delete    dir="${build.home}"/>
     <delete    dir="${dist.home}"/>
   </target>
 
-  <target name="all" depends="clean,compile"
+  <!-- ================================================================== -->
+  <!-- A L L                                                              -->
+  <!-- ================================================================== -->
+  <target name="all" depends="clean,jar,docs,javadocs"
    description="Clean and compile all components"/>
 
-  <target name="javadoc" depends="compile"
+  <!-- ================================================================== -->
+  <!-- J A V A D O C S                                                    -->
+  <!-- ================================================================== -->
+  <target name="javadocs" depends="compile"
    description="Create Javadoc documentation">
     <javadoc sourcepath="${source.home}/java"
                 destdir="${build.home}/javadoc"
-           packagenames="org.apache.taglibs.velocity.*"
+           packagenames="org.apache.velocity.tools.struts.*"
                  author="true"
                 private="true"
                 version="true"
                doctitle="&lt;h1&gt;${project.title}&lt;/h1&gt;"
             windowtitle="${project.title} (Version ${project.version})"
-                 bottom="Copyright (c) 2001 Apache Software Foundation" >
+                 bottom="Copyright (c) 2002 Apache Software Foundation" >
 
       <classpath refid="classpath"/>
- 
+
      </javadoc>
   </target>
 
+  <!-- ================================================================== -->
+  <!-- J A R                                                              -->
+  <!-- ================================================================== -->
   <target name="jar" depends="compile">
     <jar    jarfile="${project.name}-${project.version}.jar"
             basedir="${build.home}/classes"
             manifest="${conf.home}/MANIFEST.MF"/>
   </target>
 
- <target name="jar-templates" depends="compile">
-    <jar    jarfile="${project.name}-${project.version}-templates.jar"
-            basedir="${source.home}/templates"
-            manifest="${conf.home}/MANIFEST.MF"/>
-  </target>
 
-
+  <!-- ================================================================== -->
+  <!-- D O C S                                                            -->
+  <!-- ================================================================== -->
   <target name="docs">
-  
+
       <taskdef name="dvsl" classname="org.apache.tools.dvsl.DVSLTask">
-                        
+
           <classpath>
              <path refid="classpath"/>
           </classpath>
 
       </taskdef>
 
-      <dvsl 
-           basedir="${docs.src}" 
+      <dvsl
+           basedir="${docs.src}"
            destdir="${docs.dest}/"
-    	   toolbox="${docs.src}/toolbox.props"
-           extension=".html" 
-           style="${docs.src}/site.dvsl"
+    	   toolbox="../xdocs/toolbox.props"
+           extension=".html"
+           style="../xdocs/site.dvsl"
            excludes="**/project.xml"
-           includes="**/*.xml" 
+           includes="**/*.xml"
       />
   </target>
 
+  <!-- ================================================================== -->
+  <!-- I N S T A L L  J A R                                               -->
+  <!-- ================================================================== -->
+  <target name="install-jar" depends="jar"
+          description="--> Installs .jar file in ${lib.repo}">
+    <copy todir="${lib.repo}" filtering="no">
+      <fileset dir="${basedir}">
+        <include name="${project.name}-${project.version}.jar"/>
+      </fileset>
+    </copy>
+  </target>
 </project>
 
