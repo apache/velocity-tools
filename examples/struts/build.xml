@@ -87,7 +87,7 @@
   <!-- C O M P I L E                                                      -->
   <!-- ================================================================== -->
   <target name="compile" depends="init" description="Compile">
-    <mkdir name="${build.home}/classes"/>
+    <mkdir dir="${build.home}/classes"/>
     <javac  srcdir="${source.home}/"
             destdir="${build.home}/classes"
             debug="${compile.debug}"
