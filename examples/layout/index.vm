@@ -1,0 +1,50 @@
+#*
+ * $Id: index.vm,v 1.1 2003/05/27 23:15:39 nbubna Exp $  
+ *#
+<TABLE BORDER=1>
+<TR>
+<TD BGCOLOR="#FFFFCC"><H2> Main Screen Content </H2>
+I'm a Velocity template using a layout file!
+<P>
+
+
+#if( !$layout )
+<H3>Example Layouts</H3>
+<A HREF="$link.setLayout('Printable.vm')">Printable layout</A>: same as adding &quot;?layout=Printable.vm&quot; to the URL
+<BR>
+<A HREF="$link.setLayout('TableBased.vm')">Table based layout</A>: same as adding &quot;?layout=TableBased.vm&quot; to the URL
+<BR>
+<A HREF="$link.setLayout('CSS.vm')">CSS based layout</A>: same as adding &quot;?layout=CSS.vm&quot; to the URL
+
+#title( "Default" )
+
+#else 
+
+#if( $layout == "CSS.vm" ) 
+ #title( "CSS 3 Column" )
+#elseif( $layout == "TableBased.vm" )
+ #title( "Table Based" )
+#elseif( $layout == "Printable.vm" )
+ #title( "Printable" )
+#end
+
+<P>
+<B>Currently using: $page_title layout </B><BR>
+Notice how the web page title (\$page_title) is set from within the main content, but displayed by the layout in the web page "title".</P>
+
+
+
+<B>Return to <A HREF="$link.setRelative('index.vm')">Default layout</A></B>
+
+#end
+</P>
+
+<H3>Some sample template content</H3>
+This page request was made from: $request.remoteAddr
+<BR>
+Lets count : #foreach( $i in [1..5] )$i #end
+<BR>
+The author of this example was $author
+</TD>
+</TR>
+</TABLE>
