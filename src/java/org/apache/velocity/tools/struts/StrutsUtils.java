@@ -107,7 +107,7 @@ import org.apache.struts.action.ActionMappings;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * based on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class StrutsUtils
 {
@@ -162,8 +162,8 @@ public class StrutsUtils
 
 
     /**
-     * Returns the <code>org.apache.struts.action.ActionFormBeans</code>
-     * collection for this application or <code>null</code> if not found.
+     * Returns the <code>org.apache.struts.config.FormBeanConfig</code>
+     * array for this application or <code>null</code> if not found.
      *
      * @param application the servlet context
      */
@@ -227,8 +227,8 @@ public class StrutsUtils
 
 
     /**
-     * Returns the <code>org.apache.struts.action.ActionForwards</code>
-     * collection for this application or <code>null</code> if not found.
+     * Returns the <code>org.apache.struts.config.ForwardConfig</code>
+     * array for this application or <code>null</code> if not found.
      *
      * @param application the servlet context
      */
@@ -292,8 +292,8 @@ public class StrutsUtils
 
 
     /**
-     * Returns the <code>org.apache.struts.action.ActionMappings</code>
-     * collection for this application or <code>null</code> if not found.
+     * Returns the <code>org.apache.struts.config.ActionConfig</code>
+     * array for this application or <code>null</code> if not found.
      *
      * @param application the servlet context
      */
@@ -481,7 +481,7 @@ public class StrutsUtils
 
 
     /**
-     * Returns the <code>org.apache.struts.ActionMapping</code> instance
+     * Returns the <code>org.apache.struts.config.ActionConfig</code> instance
      * for this request or <code>null</code> if none exists.
      *
      * @param request the servlet request
