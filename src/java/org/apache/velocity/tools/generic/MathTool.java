@@ -1,7 +1,7 @@
 /*
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2003 The Apache Software Foundation.  All rights
+ * Copyright (c) 2004 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,27 +54,14 @@
 
 package org.apache.velocity.tools.generic;
 
-
-import java.lang.Math;
-
-
 /**
- * <p>Tool for performing floating point math in Velocity.</p>
+ * <p>Tool for performing math in Velocity.</p>
  *
- * <p>Several things should be noted here:</p>
- *
+ * <p>Some things should be noted here:</p>
  * <ul>
  * <li>This class does not have methods that take
  * primitives.  This is simply because Velocity
  * wraps all primitives for us automagically.</li>
- *
- * <li>Most methods return {@link Double} wrappers
- * which automatically render the decimal places even
- * for whole numbers (e.g. new Double(1).toString() -> '1.0')
- * This is intentional.  This tool is for floating 
- * point arithmetic.  Integer arithmetic is already supported
- * in Velocity syntax.  if you really need '1' instead of '1.0',
- * just call intValue() on the result.</li>
  *
  * <li>No null pointer, number format, or divide by zero
  * exceptions are thrown here.  This is because such exceptions
@@ -92,9 +79,8 @@ import java.lang.Math;
  * </pre></p>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.4 $ $Date: 2003/11/06 06:48:32 $
+ * @version $Revision: 1.5 $ $Date: 2004/01/08 18:58:09 $
  */
-
 public class MathTool
 {
     /**
@@ -102,17 +88,18 @@ public class MathTool
      * @param num2 the second number
      * @return the sum of the numbers or 
      *         <code>null</code> if they're invalid
-     * @see #toDouble
+     * @see #toNumber
      */
-    public Double add(Object num1, Object num2)
+    public Number add(Object num1, Object num2)
     {
-        Double d1 = toDouble(num1);
-        Double d2 = toDouble(num2);
-        if (d1 == null || d2 == null)
+        Number n1 = toNumber(num1);
+        Number n2 = toNumber(num2);
+        if (n1 == null || n2 == null)
         {
             return null;
         }
-        return new Double(d1.doubleValue() + d2.doubleValue());
+        double value = n1.doubleValue() + n2.doubleValue();
+        return matchType(n1, n2, value);
     }
 
 
@@ -121,17 +108,18 @@ public class MathTool
      * @param num2 the second number
      * @return the difference of the numbers or 
      *         <code>null</code> if they're invalid
-     * @see #toDouble
+     * @see #toNumber
      */
-    public Double sub(Object num1, Object num2)
+    public Number sub(Object num1, Object num2)
     {
-        Double d1 = toDouble(num1);
-        Double d2 = toDouble(num2);
-        if (d1 == null || d2 == null)
+        Number n1 = toNumber(num1);
+        Number n2 = toNumber(num2);
+        if (n1 == null || n2 == null)
         {
             return null;
         }
-        return new Double(d1.doubleValue() - d2.doubleValue());
+        double value = n1.doubleValue() - n2.doubleValue();
+        return matchType(n1, n2, value);
     }
 
 
@@ -140,17 +128,18 @@ public class MathTool
      * @param num2 the second number
      * @return the product of the numbers or 
      *         <code>null</code> if they're invalid
-     * @see #toDouble
+     * @see #toNumber
      */
-    public Double mul(Object num1, Object num2)
+    public Number mul(Object num1, Object num2)
     {
-        Double d1 = toDouble(num1);
-        Double d2 = toDouble(num2);
-        if (d1 == null || d2 == null)
+        Number n1 = toNumber(num1);
+        Number n2 = toNumber(num2);
+        if (n1 == null || n2 == null)
         {
             return null;
         }
-        return new Double(d1.doubleValue() * d2.doubleValue());
+        double value = n1.doubleValue() * n2.doubleValue();
+        return matchType(n1, n2, value);
     }
 
 
@@ -159,17 +148,18 @@ public class MathTool
      * @param num2 the second number
      * @return the quotient of the numbers or 
      *         <code>null</code> if they're invalid
-     * @see #toDouble
+     * @see #toNumber
      */
-    public Double div(Object num1, Object num2)
+    public Number div(Object num1, Object num2)
     {
-        Double d1 = toDouble(num1);
-        Double d2 = toDouble(num2);
-        if (d1 == null || d2 == null || d2.doubleValue() == 0.0)
+        Number n1 = toNumber(num1);
+        Number n2 = toNumber(num2);
+        if (n1 == null || n2 == null || n2.doubleValue() == 0.0)
         {
             return null;
         }
-        return new Double(d1.doubleValue() / d2.doubleValue());
+        double value = n1.doubleValue() / n2.doubleValue();
+        return matchType(n1, n2, value);
     }
 
 
@@ -178,17 +168,18 @@ public class MathTool
      * @param num2 the second number
      * @return the first number raised to the power of the
      *         second or <code>null</code> if they're invalid
-     * @see #toDouble
+     * @see #toNumber
      */
-    public Double pow(Object num1, Object num2)
+    public Number pow(Object num1, Object num2)
     {
-        Double d1 = toDouble(num1);
-        Double d2 = toDouble(num2);
-        if (d1 == null || d2 == null)
+        Number n1 = toNumber(num1);
+        Number n2 = toNumber(num2);
+        if (n1 == null || n2 == null)
         {
             return null;
         }
-        return new Double(Math.pow(d1.doubleValue(), d2.doubleValue()));
+        double value = Math.pow(n1.doubleValue(), n2.doubleValue());
+        return matchType(n1, n2, value);
     }
 
 
@@ -197,17 +188,18 @@ public class MathTool
      * @param num2 the second number
      * @return the largest of the numbers or 
      *         <code>null</code> if they're invalid
-     * @see #toDouble
+     * @see #toNumber
      */
-    public Double max(Object num1, Object num2)
+    public Number max(Object num1, Object num2)
     {
-        Double d1 = toDouble(num1);
-        Double d2 = toDouble(num2);
-        if (d1 == null || d2 == null)
+        Number n1 = toNumber(num1);
+        Number n2 = toNumber(num2);
+        if (n1 == null || n2 == null)
         {
             return null;
         }
-        return new Double(Math.max(d1.doubleValue(), d2.doubleValue()));
+        double value = Math.max(n1.doubleValue(), n2.doubleValue());
+        return matchType(n1, n2, value);
     }
 
 
@@ -216,85 +208,86 @@ public class MathTool
      * @param num2 the second number
      * @return the smallest of the numbers or 
      *         <code>null</code> if they're invalid
-     * @see #toDouble
+     * @see #toNumber
      */
-    public Double min(Object num1, Object num2)
+    public Number min(Object num1, Object num2)
     {
-        Double d1 = toDouble(num1);
-        Double d2 = toDouble(num2);
-        if (d1 == null || d2 == null)
+        Number n1 = toNumber(num1);
+        Number n2 = toNumber(num2);
+        if (n1 == null || n2 == null)
         {
             return null;
         }
-        return new Double(Math.min(d1.doubleValue(), d2.doubleValue()));
+        double value = Math.min(n1.doubleValue(), n2.doubleValue());
+        return matchType(n1, n2, value);
     }
 
 
     /**
      * @param num1 the number
-     * @return the absolute value of the number 
+     * @return the absolute value of the number or
      *         <code>null</code> if it's invalid
      * @see #toDouble
      */
-    public Double abs(Object num)
+    public Number abs(Object num)
     {
-        Double d = toDouble(num);
-        if (d == null)
+        Number n = toNumber(num);
+        if (n == null)
         {
             return null;
         }
-        return new Double(Math.abs(d.doubleValue()));
+        double value = Math.abs(n.doubleValue());
+        return matchType(n, value);
     }
 
 
     /**
-     * Converts an object with a numeric value into a Double
-     * Valid formats are {@link Number} or a {@link String}
-     * representation of a number
-     *
-     * @param num the number to be converted
-     * @return a {@link Double} representation of the number
-     *         or <code>null</code> if it's invalid
+     * @param num the number
+     * @return the smallest integer that is not 
+     *         less than the given number
      */
-    public Double toDouble(Object num)
+    public Integer ceil(Object num)
     {
-        double value;
-        try
-        {
-            if (num instanceof Number)
-            {
-                value = ((Number)num).doubleValue();
-            }
-            else
-            {
-                value = Double.parseDouble(String.valueOf(num));
-            }
-        }
-        catch (NumberFormatException nfe)
+        Number n = toNumber(num);
+        if (n == null)
         {
             return null;
         }
-        return new Double(value);
+        return new Integer((int)Math.ceil(n.doubleValue()));
     }
 
 
     /**
-     * Converts an object with a numeric value into an Integer
-     * Valid formats are {@link Number} or a {@link String}
-     * representation of a number
-     *
-     * @param num the number to be converted
-     * @return a {@link Integer} representation of the number
-     *         or <code>null</code> if it's invalid
+     * @param num the number
+     * @return the integer portion of the number 
      */
-    public Integer toInteger(Object num)
+    public Integer floor(Object num)
     {
-        Double d = toDouble(num);
-        if (d == null)
+        Number n = toNumber(num);
+        if (n == null)
         {
             return null;
         }
-        return new Integer(d.intValue());
+        return new Integer((int)Math.floor(n.doubleValue()));
+    }
+
+
+    /**
+     * Rounds a number to the nearest whole Integer
+     *
+     * @param num the number to round
+     * @return the number rounded to the nearest whole Integer
+     *         or <code>null</code> if it's invalid
+     * @see java.lang.Math.rint(double)
+     */
+    public Integer round(Object num)
+    {
+        Number n = toNumber(num);
+        if (n == null)
+        {
+            return null;
+        }
+        return new Integer((int)Math.rint(n.doubleValue()));
     }
 
 
@@ -302,20 +295,19 @@ public class MathTool
      * Rounds a number to the specified number of decimal places.
      * This is particulary useful for simple display formatting.
      * If you want to round an number to the nearest integer, it
-     * is better to use {@link #roundToInt}, as that will return
+     * is better to use {@link #round}, as that will return
      * an {@link Integer} rather than a {@link Double}.
      *
      * @param decimals the number of decimal places
      * @param value the number to round
      * @return the value rounded to the specified number of
      *         decimal places or <code>null</code> if it's invalid
-     * @see #toDouble
-     * @see #toInteger
+     * @see #toNumber
      */
     public Double roundTo(Object decimals, Object num)
     {
-        Integer i = toInteger(decimals);
-        Double d = toDouble(num);
+        Number i = toNumber(decimals);
+        Number d = toNumber(num);
         if (i == null || d == null)
         {
             return null;
@@ -345,15 +337,12 @@ public class MathTool
      * @return the number rounded to the nearest whole Integer
      *         or <code>null</code> if it's invalid
      * @see #toDouble
+     * @deprecated This will be removed in VelocityTools 1.2.
+     *             Use #round(Object num) instead.
      */
     public Integer roundToInt(Object num)
     {
-        Double d = toDouble(num);
-        if (d == null)
-        {
-            return null;
-        }
-        return new Integer((int)Math.rint(d.doubleValue()));
+        return round(num);
     }
 
 
@@ -369,35 +358,212 @@ public class MathTool
 
 
     /**
-     * This returns a random {@link Integer} within the
-     * specified range.  The return Integer will have a
-     * value greater than or equal to the first number
-     * and less than the second number.
+     * This returns a random {@link Number} within the
+     * specified range.  The returned value will be
+     * greater than or equal to the first number
+     * and less than the second number.  If both arguments
+     * are whole numbers then the returned number will
+     * also be, otherwise a {@link Double} will
+     * be returned.
      *
      * @param num1 the first number
      * @param num2 the second number
-     * @return a pseudo-random {@link Integer} greater than
+     * @return a pseudo-random {@link Number} greater than
      *         or equal to the first number and less than
      *         the second
-     * @see #toInteger
      * @see Math#random()
      */
-    public Integer random(Object num1, Object num2)
+    public Number random(Object num1, Object num2)
     {
-        Integer i1 = toInteger(num1);
-        Integer i2 = toInteger(num2);
-        if (i1 == null || i2 == null)
+        Number n1 = toNumber(num1);
+        Number n2 = toNumber(num2);
+        if (n1 == null || n2 == null)
         {
             return null;
         }
-        //get the difference
-        double diff = i2.intValue() - i1.intValue();
-        //multiply the difference by a pseudo-random 
-        //double from 0.0 to 1.0 and round to the nearest int
-        int random = (int)Math.rint(diff * Math.random());
-        //add the first value to the random int and return as an Integer
-        return new Integer(random + i1.intValue());
+
+        double diff = n2.doubleValue() - n1.doubleValue();
+        // multiply the difference by a pseudo-random double from 
+        // 0.0 to 1.0, round to the nearest int, and add the first
+        // value to the random int and return as an Integer
+        double random = (diff * Math.random()) + n1.doubleValue();
+
+        // check if either of the args were floating points
+        String in = n1.toString() + n2.toString();
+        if (in.indexOf('.') < 0)
+        {
+            // args were whole numbers, so return the same
+            return matchType(n1, n2, Math.floor(random));
+        }
+        // one of the args was a floating point,
+        // so don't floor the result
+        return new Double(random);
     }
 
+
+    // --------------- public type conversion methods ---------
+
+    /**
+     * Converts an object with a numeric value into an Integer
+     * Valid formats are {@link Number} or a {@link String}
+     * representation of a number
+     *
+     * @param num the number to be converted
+     * @return a {@link Integer} representation of the number
+     *         or <code>null</code> if it's invalid
+     */
+    public Integer toInteger(Object num)
+    {
+        Number n = toNumber(num);
+        if (n == null)
+        {
+            return null;
+        }
+        return new Integer(n.intValue());
+    }
+
+
+    /**
+     * Converts an object with a numeric value into a Double
+     * Valid formats are {@link Number} or a {@link String}
+     * representation of a number
+     *
+     * @param num the number to be converted
+     * @return a {@link Double} representation of the number
+     *         or <code>null</code> if it's invalid
+     */
+    public Double toDouble(Object num)
+    {
+        Number n = toNumber(num);
+        if (n == null)
+        {
+            return null;
+        }
+        return new Double(n.intValue());
+    }
+
+        
+    /**
+     * Converts an object with a numeric value into a Number
+     * Valid formats are {@link Number} or a {@link String}
+     * representation of a number.  Note that this does not
+     * handle localized number formats.  Use the {@link NumberTool}
+     * to handle such conversions.
+     *
+     * @param num the number to be converted
+     * @return a {@link Number} representation of the number
+     *         or <code>null</code> if it's invalid
+     */
+    public Number toNumber(Object num)
+    {
+        if (num == null)
+        {
+            return null;
+        }
+        if (num instanceof Number)
+        {
+            return (Number)num;
+        }
+        try
+        {
+            return parseNumber(String.valueOf(num));
+        }
+        catch (NumberFormatException nfe)
+        {
+            return null;
+        }
+    }
+
+
+    // --------------------------- protected methods ------------------
+
+    /**
+     * @see #matchType(Number,Number,double)
+     */
+    protected Number matchType(Number in, double out)
+    {
+        return matchType(in, null, out);
+    }
+
+
+    /**
+     * Takes the original argument(s) and returns the resulting value as
+     * an instance of the best matching type (Integer, Long, or Double).
+     * If either an argument or the result is not an integer (i.e. has no
+     * decimal when rendered) the result will be returned as a Double.  
+     * If not and the result is < -2147483648 or > 2147483647, then a 
+     * Long will be returned.  Otherwise, an Integer will be returned.
+     */
+    protected Number matchType(Number in1, Number in2, double out)
+    {
+        //NOTE: if we just checked class types, we could miss custom
+        //      extensions of java.lang.Number, and if we only checked
+        //      the mathematical value, $math.div('3.0', 1) would render
+        //      as '3'.  To get the expected result, we check what we're
+        //      concerned about: the rendered string.
+
+        // first check if the result is a whole number
+        boolean isWhole = (Math.rint(out) == out);
+
+        if (isWhole)
+        {
+            // assume that 1st arg is not null,
+            // check for floating points
+            String in = in1.toString();
+            isWhole = (in.indexOf('.') < 0);
+
+            // if we don't have a decimal yet but do have a second arg
+            if (isWhole && in2 != null)
+            {
+                in = in2.toString();
+                isWhole = (in.indexOf('.') < 0);
+            }
+        }
+
+        if (!isWhole)
+        {
+            return new Double(out);
+        }
+        else if (out > Integer.MAX_VALUE || out < Integer.MIN_VALUE)
+        {
+            return new Long((long)out);
+        }
+        else
+        {
+            return new Integer((int)out);
+        }
+    }
+
+
+    /**
+     * Converts an object into a {@link Number} (if it can)
+     * This is used as the base for all numeric parsing methods. So,
+     * sub-classes can override to allow for customized number parsing.
+     * (e.g. for i18n, fractions, compound numbers, bigger numbers, etc.)
+     *
+     * @param value the string to be parsed
+     * @return the value as a {@link Number}
+     */
+    protected Number parseNumber(String value) throws NumberFormatException
+    {
+        // check for the floating point
+        if (value.indexOf('.') < 0)
+        {
+            // check for large numbers
+            long i = new Long(value).longValue();
+            if (i > Integer.MAX_VALUE || i < Integer.MIN_VALUE)
+            {
+                return new Long(i);
+            }
+            else
+            {
+                return new Integer((int)i);
+            }
+        }
+        else 
+        {
+            return new Double(value);
+        }
+    }
 
 }
