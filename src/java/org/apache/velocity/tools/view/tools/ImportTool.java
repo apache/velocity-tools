@@ -43,7 +43,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.4 $ $Date: 2004/02/18 20:06:11 $
+ * @version $Revision: 1.5 $ $Date: 2004/03/12 01:33:02 $
  */
 public class ImportTool extends ImportSupport
     implements ViewTool {
@@ -71,6 +71,7 @@ public class ImportTool extends ImportSupport
     }
 
     /**
+     * Returns the supplied URL rendered as a String.
      *
      * @param url the URL to import
      * @return the URL as a string
