@@ -1,0 +1,563 @@
+<?xml version="1.0"?>
+<!--
+  Copyright 2003-2004 The Apache Software Foundation.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  $Id$
+-->
+<document>
+
+    <properties>
+        <title>EscapeTool</title>
+        <author email="shinobu@ieee.org">Shinobu Kawai</author>
+        <projectfile>xdocs/generic/menu.xml</projectfile>
+    </properties>
+
+    <body>
+
+    <section name="EscapeTool Reference Documentation">
+
+        <p>Tool for working with escaping in Velocity templates.</p>
+
+        <p>
+        It provides methods to escape outputs for Java, JavaScript, HTML, XML and SQL.
+        Also provides methods to render VTL characters that otherwise needs escaping.
+        </p>
+
+        <toolinfo>
+            <version>@@@version@@@, @@@date@@@</version>
+            <clazz>org.apache.velocity.tools.generic.EscapeTool</clazz>
+            <name>$esc</name>
+            <author email="shinobu@ieee.org">Shinobu Kawai</author>
+            <config-example>&lt;tool&gt;
+  &lt;key&gt;esc&lt;/key&gt;
+  &lt;scope&gt;application&lt;/scope&gt;
+  &lt;class&gt;org.apache.velocity.tools.generic.EscapeTool&lt;/class&gt;
+&lt;/tool&gt;</config-example>
+        </toolinfo>
+
+        <methods/>
+
+    </section>
+
+    <section name="java()">
+        <method name="java()">
+
+            <abstract>
+                Escapes the characters in a <code>String</code> using Java String rules.
+            </abstract>
+
+            <signature>
+                String java(Object string)
+            </signature>
+
+            <parameters>
+                <parameter name="string">
+                    the string to escape values, may be null.
+                </parameter>
+            </parameters>
+
+            <returns>
+                String with escaped values, <code>null</code> if null string input.
+            </returns>
+
+            <description>
+                <p>Delegates the process to
+                <a href="http://jakarta.apache.org/commons/lang/api/org/apache/commons/lang/StringEscapeUtils.html#escapeJava(java.lang.String)">StringEscapeUtils#escapeJava(String)</a>.
+                </p>
+
+<p>If <code>$java</code> had the following value:</p>
+<sourcecode>He didn't say, "Stop!"</sourcecode>
+
+<p>then the following Velocity script:</p>
+<sourcecode>$esc.java($java)</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>He didn't say, \"Stop!\"</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="javascript()">
+        <method name="javascript()">
+
+            <abstract>
+                Escapes the characters in a <code>String</code> using JavaScript String rules.
+            </abstract>
+
+            <signature>
+                String javascript(Object string)
+            </signature>
+
+            <parameters>
+                <parameter name="string">
+                    the string to escape values, may be null.
+                </parameter>
+            </parameters>
+
+            <returns>
+                String with escaped values, <code>null</code> if null string input.
+            </returns>
+
+            <description>
+                <p>Delegates the process to
+                <a href="http://jakarta.apache.org/commons/lang/api/org/apache/commons/lang/StringEscapeUtils.html#escapeJavaScript(java.lang.String)">StringEscapeUtils#escapeJavaScript(String)</a>.
+                </p>
+
+<p>If <code>$javascript</code> had the following value:</p>
+<sourcecode>He didn't say, "Stop!"</sourcecode>
+
+<p>then the following Velocity script:</p>
+<sourcecode>$esc.javascript($javascript)</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>He didn\'t say, \"Stop!\"</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="html()">
+        <method name="html()">
+
+            <abstract>
+                Escapes the characters in a <code>String</code> using HTML entities.
+            </abstract>
+
+            <signature>
+                String html(Object string)
+            </signature>
+
+            <parameters>
+                <parameter name="string">
+                    the string to escape values, may be null.
+                </parameter>
+            </parameters>
+
+            <returns>
+                a new escaped <code>String</code>, <code>null</code> if null string input
+            </returns>
+
+            <description>
+                <p>Delegates the process to
+                <a href="http://jakarta.apache.org/commons/lang/api/org/apache/commons/lang/StringEscapeUtils.html#escapeHtml(java.lang.String)">StringEscapeUtils#escapeHtml(String)</a>.
+                </p>
+
+<p>If <code>$html</code> had the following value:</p>
+<sourcecode>"bread" &amp; "butter"</sourcecode>
+
+<p>then the following Velocity script:</p>
+<sourcecode>$esc.html($html)</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>&amp;quot;bread&amp;quot; &amp;amp; &amp;quot;butter&amp;quot;</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="xml()">
+        <method name="xml()">
+
+            <abstract>
+                Escapes the characters in a <code>String</code> using XML entities.
+            </abstract>
+
+            <signature>
+                String xml(Object string)
+            </signature>
+
+            <parameters>
+                <parameter name="string">
+                    the string to escape values, may be null.
+                </parameter>
+            </parameters>
+
+            <returns>
+                a new escaped <code>String</code>, <code>null</code> if null string input
+            </returns>
+
+            <description>
+                <p>Delegates the process to
+                <a href="http://jakarta.apache.org/commons/lang/api/org/apache/commons/lang/StringEscapeUtils.html#escapeXml(java.lang.String)">StringEscapeUtils#escapeXml(String)</a>.
+                </p>
+
+<p>If <code>$xml</code> had the following value:</p>
+<sourcecode>"bread" &amp; "butter"</sourcecode>
+
+<p>then the following Velocity script:</p>
+<sourcecode>$esc.xml($xml)</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>&amp;quot;bread&amp;quot; &amp;amp; &amp;quot;butter&amp;quot;</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="sql()">
+        <method name="sql()">
+
+            <abstract>
+                Escapes the characters in a <code>String</code> to be suitable to pass to an SQL query.
+            </abstract>
+
+            <signature>
+                String sql(Object string)
+            </signature>
+
+            <parameters>
+                <parameter name="string">
+                    the string to escape values, may be null.
+                </parameter>
+            </parameters>
+
+            <returns>
+                a new String, escaped for SQL, <code>null</code> if null string input
+            </returns>
+
+            <description>
+                <p>Delegates the process to
+                <a href="http://jakarta.apache.org/commons/lang/api/org/apache/commons/lang/StringEscapeUtils.html#escapeSql(java.lang.String)">StringEscapeUtils#escapeSql(String)</a>.
+                </p>
+
+<p>If <code>$sql</code> had the following value:</p>
+<sourcecode>McHale's Navy</sourcecode>
+
+<p>then the following Velocity script:</p>
+<sourcecode>$esc.sql($sql)</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>McHale''s Navy</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="getDollar()">
+        <method name="getDollar()">
+
+            <abstract>
+                Renders a dollar sign ($).
+            </abstract>
+
+            <signature>
+                String getDollar()
+            </signature>
+
+            <returns>
+                a dollar sign ($).
+            </returns>
+
+            <description>
+<p>The following Velocity script:</p>
+<sourcecode>${esc.dollar}</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>$</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="getD()">
+        <method name="getD()">
+
+            <abstract>
+                Renders a dollar sign ($).
+            </abstract>
+
+            <signature>
+                String getD()
+            </signature>
+
+            <returns>
+                a dollar sign ($).
+            </returns>
+
+            <description>
+<p>The following Velocity script:</p>
+<sourcecode>${esc.d}</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>$</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="getHash()">
+        <method name="getHash()">
+
+            <abstract>
+                Renders a hash (#).
+            </abstract>
+
+            <signature>
+                String getHash()
+            </signature>
+
+            <returns>
+                a hash (#).
+            </returns>
+
+            <description>
+<p>The following Velocity script:</p>
+<sourcecode>${esc.hash}</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>#</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="getH()">
+        <method name="getH()">
+
+            <abstract>
+                Renders a hash (#).
+            </abstract>
+
+            <signature>
+                String getH()
+            </signature>
+
+            <returns>
+                a hash (#).
+            </returns>
+
+            <description>
+<p>The following Velocity script:</p>
+<sourcecode>${esc.h}</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>#</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="getBackslash()">
+        <method name="getBackslash()">
+
+            <abstract>
+                Renders a backslash (\).
+            </abstract>
+
+            <signature>
+                String getBackslash()
+            </signature>
+
+            <returns>
+                a backslash (\).
+            </returns>
+
+            <description>
+<p>The following Velocity script:</p>
+<sourcecode>${esc.backslash}</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>\</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="getB()">
+        <method name="getB()">
+
+            <abstract>
+                Renders a backslash (\).
+            </abstract>
+
+            <signature>
+                String getB()
+            </signature>
+
+            <returns>
+                a backslash (\).
+            </returns>
+
+            <description>
+<p>The following Velocity script:</p>
+<sourcecode>${esc.b}</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>\</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="getQuote()">
+        <method name="getQuote()">
+
+            <abstract>
+                Renders a double quotation mark (").
+            </abstract>
+
+            <signature>
+                String getQuote()
+            </signature>
+
+            <returns>
+                a double quotation mark (").
+            </returns>
+
+            <description>
+<p>The following Velocity script:</p>
+<sourcecode>${esc.quote}</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>"</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="getQ()">
+        <method name="getQ()">
+
+            <abstract>
+                Renders a double quotation mark (").
+            </abstract>
+
+            <signature>
+                String getQ()
+            </signature>
+
+            <returns>
+                a double quotation mark (").
+            </returns>
+
+            <description>
+<p>The following Velocity script:</p>
+<sourcecode>${esc.q}</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>"</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="getSingleQuote()">
+        <method name="getSingleQuote()">
+
+            <abstract>
+                Renders a single quotation mark (').
+            </abstract>
+
+            <signature>
+                String getSingleQuote()
+            </signature>
+
+            <returns>
+                a single quotation mark (').
+            </returns>
+
+            <description>
+<p>The following Velocity script:</p>
+<sourcecode>${esc.singleQuote}</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>'</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="getS()">
+        <method name="getS()">
+
+            <abstract>
+                Renders a single quotation mark (').
+            </abstract>
+
+            <signature>
+                String getS()
+            </signature>
+
+            <returns>
+                a single quotation mark (').
+            </returns>
+
+            <description>
+<p>The following Velocity script:</p>
+<sourcecode>${esc.s}</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>'</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="getExclamation()">
+        <method name="getExclamation()">
+
+            <abstract>
+                Renders an exclamation mark (!).
+            </abstract>
+
+            <signature>
+                String getExclamation()
+            </signature>
+
+            <returns>
+                an exclamation mark (!).
+            </returns>
+
+            <description>
+<p>The following Velocity script:</p>
+<sourcecode>${esc.exclamation}</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>!</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="getE()">
+        <method name="getE()">
+
+            <abstract>
+                Renders an exclamation mark (!).
+            </abstract>
+
+            <signature>
+                String getE()
+            </signature>
+
+            <returns>
+                an exclamation mark (!).
+            </returns>
+
+            <description>
+<p>The following Velocity script:</p>
+<sourcecode>${esc.e}</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>!</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    </body>
+</document>
+
