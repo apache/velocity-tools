@@ -110,6 +110,16 @@
 
 
   <!-- ================================================================== -->
+  <!-- J A R S                                                            -->
+  <!-- ================================================================== -->
+  <target name="jars" description="Build and install all subproject jars">
+    <ant dir="view" target="install-jar" inheritAll="false"/>
+    <ant dir="tools" target="install-jar" inheritAll="false"/>
+    <ant dir="struts" target="install-jar" inheritAll="false"/>
+  </target>
+
+
+  <!-- ================================================================== -->
   <!-- V I E W                                                            -->
   <!-- ================================================================== -->
   <target name="view" depends=""
