@@ -175,7 +175,7 @@ $screen_content
     <section name="Error Screen">
       <p>Ok, the idea here is pretty simple.  If an uncaught exception or error is thrown
       at some point during the processing of your screen and layout, the error() method
-      of the VLS is called.  This overrides the default error() method of the VelocityServlet
+      of the VLS is called.  This overrides the default error() method of the VelocityViewServlet
       to render a template instead of hardcoded html.
       </p>
 
