@@ -16,9 +16,6 @@
 
 package org.apache.velocity.tools.generic;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -50,7 +47,7 @@ import java.util.List;
  * </pre></p>
  *
  * @since Velocity Tools 1.2
- * @version $Revision: 1.3 $ $Date: 2004/05/05 21:22:01 $
+ * @version $Revision: 1.4 $ $Date: 2004/05/05 23:19:11 $
  */
 public class AlternatorTool
 {
@@ -78,31 +75,6 @@ public class AlternatorTool
             return null;
         }
         return new Alternator(auto, list);
-    }
-
-    /**
-     * Make a non-automatic {@link Alternator} from the values 
-     * in the specified collection.
-     */
-    public Alternator make(Collection collection)
-    {
-        return make(false, collection);
-    }
-
-    /**
-     * Make an {@link Alternator} from the values 
-     * in the specified collection.
-     *
-     * @return The new Alternator, or <code>null</code> if arguments
-     * were illegal.
-     */
-    public Alternator make(boolean auto, Collection collection)
-    {
-        if (collection == null)
-        {
-            return null;
-        }
-        return make(auto, new ArrayList(collection));
     }
 
     /**
