@@ -56,6 +56,10 @@
 package org.apache.velocity.tools.view.servlet;
 
 
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 import java.util.List;
 import java.util.Iterator;
 import java.util.HashMap;
@@ -68,6 +72,7 @@ import javax.servlet.ServletContext;
 import org.dom4j.Element;
 import org.dom4j.Node;
 
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.tools.view.DataInfo;
 import org.apache.velocity.tools.view.ToolInfo;
 import org.apache.velocity.tools.view.XMLToolboxManager;
@@ -126,7 +131,7 @@ import org.apache.velocity.tools.view.context.ViewContext;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ServletToolboxManager.java,v 1.4 2003/01/24 05:04:51 nbubna Exp $
+ * @version $Id: ServletToolboxManager.java,v 1.5 2003/01/27 17:17:20 nbubna Exp $
  * 
  */
 public class ServletToolboxManager extends XMLToolboxManager
@@ -148,14 +153,17 @@ public class ServletToolboxManager extends XMLToolboxManager
     private ArrayList requestToolInfo;
     private boolean createSession;
 
+    private static HashMap managersMap = new HashMap();
 
 
     // --------------------------------------------------- Constructor --------
 
     /**
-     * Default constructor
+     * Use getInstance(ServletContext,String) instead
+     * to ensure there is exactly one ServletToolboxManager
+     * per xml toolbox configuration file.
      */
-    public ServletToolboxManager(ServletContext servletContext)
+    private ServletToolboxManager(ServletContext servletContext)
     {
         this.servletContext = servletContext;
         appTools = new HashMap();
@@ -165,6 +173,74 @@ public class ServletToolboxManager extends XMLToolboxManager
     }
 
 
+    /**
+     * ServletToolboxManager factory method.
+     * This method will ensure there is exactly one ServletToolboxManager
+     * per xml toolbox configuration file.
+     */
+    public static synchronized ServletToolboxManager getInstance(ServletContext servletContext,
+                                                                 String toolboxFile)
+    {
+        // little fix up
+        if (!toolboxFile.startsWith("/"))
+        {
+            toolboxFile = "/" + toolboxFile;
+        }
+
+        // get config file pathname
+        String pathname = servletContext.getRealPath(toolboxFile);
+
+        // check if a previous instance exists
+        ServletToolboxManager toolboxManager = 
+            (ServletToolboxManager)managersMap.get(pathname);
+
+        if (toolboxManager == null)
+        {
+            // if not, build one
+            InputStream is = null;
+            try
+            {
+                // get the bits
+                is = servletContext.getResourceAsStream(toolboxFile);
+
+                if (is != null)
+                {
+                    Velocity.info("Using toolbox configuration file '" + toolboxFile +"'");
+
+                    toolboxManager = new ServletToolboxManager(servletContext);
+                    toolboxManager.load(is);
+
+                    // remember it
+                    managersMap.put(pathname, toolboxManager);
+
+                    Velocity.info("Toolbox setup complete.");
+                }
+            }
+            catch(Exception e)
+            {
+                Velocity.error("Problem reading toolbox file properties file '" + toolboxFile +"' : " + e );
+
+                // if this happens, it probably deserves
+                // to have the stack trace logged
+                java.io.StringWriter sw = new java.io.StringWriter();
+                e.printStackTrace(new java.io.PrintWriter(sw));
+                Velocity.error(sw.toString());
+            }
+            finally
+            {
+                try
+                {
+                    if (is != null)
+                    {
+                        is.close();
+                    }
+                }
+                catch(Exception ee) {}
+            }
+        }
+        return toolboxManager;
+    }
+    
 
     // --------------------------------------------------- Methods ------------
 
@@ -192,7 +268,6 @@ public class ServletToolboxManager extends XMLToolboxManager
 
     /**
      * Overrides XMLToolboxManager to log to the servlet context
-     * and to Velocity's main log
      */
     protected void log(String s) 
     {
