@@ -64,8 +64,13 @@ import org.apache.velocity.context.Context;
 /**
  * This tool exposes methods to evaluate the given
  * strings as VTL (Velocity Template Language)
- * using the given context.<br>
- * 
+ * using the given context.
+ * <p>
+ *   NOTE: These examples assume you have placed an
+ *   instance of the current context within itself
+ *   as 'ctx'. And, of course, the RenderTool is
+ *   assumed to be available as 'render'.
+ * </p>
  * <pre>
  * Example of eval():
  *      Input
@@ -102,7 +107,7 @@ import org.apache.velocity.context.Context;
  * scope of a servlet environment.</p>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.3 $ $Date: 2003/11/06 00:26:54 $
+ * @version $Revision: 1.4 $ $Date: 2003/11/20 05:43:18 $
  */
 
 public class RenderTool
