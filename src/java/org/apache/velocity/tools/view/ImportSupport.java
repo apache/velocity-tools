@@ -54,15 +54,10 @@
 
 package org.apache.velocity.tools.view;
 
-import java.util.Stack;
-import java.util.Map;
 import java.util.Locale;
-import java.util.List;
-import java.util.LinkedList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
-import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletOutputStream;
@@ -88,7 +83,7 @@ import java.net.HttpURLConnection;
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.5 $ $Date: 2003/11/06 00:26:54 $
+ * @version $Revision: 1.6 $ $Date: 2003/12/09 18:24:01 $
  */
 public abstract class ImportSupport {
 
@@ -105,103 +100,111 @@ public abstract class ImportSupport {
     protected static final String DEFAULT_ENCODING = "ISO-8859-1";
 
     //*********************************************************************
-     // URL importation logic
+    // URL importation logic
 
-     /*
-      * Overall strategy:  we have two entry points, acquireString() and
-      * acquireReader().  The latter passes data through unbuffered if
-      * possible (but note that it is not always possible -- specifically
-      * for cases where we must use the RequestDispatcher.  The remaining
-      * methods handle the common.core logic of loading either a URL or a local
-      * resource.
-      *
-      * We consider the 'natural' form of absolute URLs to be Readers and
-      * relative URLs to be Strings.  Thus, to avoid doing extra work,
-      * acquireString() and acquireReader() delegate to one another as
-      * appropriate.  (Perhaps I could have spelled things out more clearly,
-      * but I thought this implementation was instructive, not to mention
-      * somewhat cute...)
-      */
+    /*
+     * Overall strategy:  we have two entry points, acquireString() and
+     * acquireReader().  The latter passes data through unbuffered if
+     * possible (but note that it is not always possible -- specifically
+     * for cases where we must use the RequestDispatcher.  The remaining
+     * methods handle the common.core logic of loading either a URL or a local
+     * resource.
+     *
+     * We consider the 'natural' form of absolute URLs to be Readers and
+     * relative URLs to be Strings.  Thus, to avoid doing extra work,
+     * acquireString() and acquireReader() delegate to one another as
+     * appropriate.  (Perhaps I could have spelled things out more clearly,
+     * but I thought this implementation was instructive, not to mention
+     * somewhat cute...)
+     */
 
-     /**
-      *
-      * @param url the URL resource to return as string
-      * @return the URL resource as string
-      * @throws IOException
-      * @throws java.lang.Exception
-      */
-     protected String acquireString(String url) throws IOException, Exception {
-         // Record whether our URL is absolute or relative
-         this.isAbsoluteUrl = isAbsoluteUrl(url);
-         if (this.isAbsoluteUrl) {
-             // for absolute URLs, delegate to our peer
-             BufferedReader r = new BufferedReader(acquireReader(url));
-             StringBuffer sb = new StringBuffer();
-             int i;
+    /**
+     *
+     * @param url the URL resource to return as string
+     * @return the URL resource as string
+     * @throws IOException
+     * @throws java.lang.Exception
+     */
+    protected String acquireString(String url) throws IOException, Exception {
+        // Record whether our URL is absolute or relative
+        this.isAbsoluteUrl = isAbsoluteUrl(url);
+        if (this.isAbsoluteUrl)
+        {
+            // for absolute URLs, delegate to our peer
+            BufferedReader r = new BufferedReader(acquireReader(url));
+            StringBuffer sb = new StringBuffer();
+            int i;
+            // under JIT, testing seems to show this simple loop is as fast
+            // as any of the alternatives
+            while ((i = r.read()) != -1)
+            {
+                sb.append( (char) i);
+            }
+            return sb.toString();
+        }
+        else // handle relative URLs ourselves
+        {
+            // URL is relative, so we must be an HTTP request
+            if (!(request instanceof HttpServletRequest
+                  && response instanceof HttpServletResponse))
+            {
+                throw new Exception("Relative import from non-HTTP request not allowed");
+            }
 
-             // under JIT, testing seems to show this simple loop is as fast
-             // as any of the alternatives
-             while ( (i = r.read()) != -1) {
-                 sb.append( (char) i);
-             }
+            // retrieve an appropriate ServletContext
+            // normalize the URL if we have an HttpServletRequest
+            if (!url.startsWith("/"))
+            {
+                String sp = ((HttpServletRequest)request).getServletPath();
+                url = sp.substring(0, sp.lastIndexOf('/')) + '/' + url;
+            }
 
-             return sb.toString();
-         }
-         else {
-             // handle relative URLs ourselves
+            // from this context, get a dispatcher
+            RequestDispatcher rd = application.getRequestDispatcher(stripSession(url));
+            if (rd == null)
+            {
+                throw new Exception(stripSession(url));
+            }
 
-             // URL is relative, so we must be an HTTP request
-             if (! (request instanceof HttpServletRequest
-                    && response instanceof HttpServletResponse)) {
-                 throw new Exception("Relative import from non-HTTP request not allowed");
-             }
+            // include the resource, using our custom wrapper
+            ImportResponseWrapper irw =
+                new ImportResponseWrapper((HttpServletResponse)response);
+            // spec mandates specific error handling form include()
+            try
+            {
+                rd.include(request, irw);
+            }
+            catch (IOException ex)
+            {
+                throw new Exception(ex);
+            }
+            catch (RuntimeException ex)
+            {
+                throw new Exception(ex);
+            }
+            catch (ServletException ex)
+            {
+                Throwable rc = ex.getRootCause();
+                if (rc == null)
+                {
+                    throw new Exception(ex);
+                }
+                else
+                {
+                    throw new Exception(rc);
+                }
+            }
 
-             // retrieve an appropriate ServletContext
-             // normalize the URL if we have an HttpServletRequest
-             if (!url.startsWith("/")) {
-                 String sp = ( (HttpServletRequest) request).getServletPath();
-                 url = sp.substring(0, sp.lastIndexOf('/')) + '/' + url;
-             }
+            // disallow inappropriate response codes per JSTL spec
+            if (irw.getStatus() < 200 || irw.getStatus() > 299)
+            {
+                throw new Exception(irw.getStatus() + " " + stripSession(url));
+            }
 
-             // from this context, get a dispatcher
-             RequestDispatcher rd = application.getRequestDispatcher(stripSession(url));
-             if (rd == null) {
-                 throw new Exception(stripSession(url));
-             }
-
-             // include the resource, using our custom wrapper
-             ImportResponseWrapper irw =
-                new ImportResponseWrapper( (HttpServletResponse) response);
-
-             // spec mandates specific error handling form include()
-             try {
-                 rd.include(request, irw);
-             }
-             catch (IOException ex) {
-                 throw new Exception(ex);
-             }
-             catch (RuntimeException ex) {
-                 throw new Exception(ex);
-             }
-             catch (ServletException ex) {
-                 Throwable rc = ex.getRootCause();
-                 if (rc == null) {
-                     throw new Exception(ex);
-                 }
-                 else {
-                     throw new Exception(rc);
-                 }
-             }
-
-             // disallow inappropriate response codes per JSTL spec
-             if (irw.getStatus() < 200 || irw.getStatus() > 299) {
-                 throw new Exception(irw.getStatus() + " " + stripSession(url));
-             }
-
-             // recover the response String from our wrapper
-             return irw.getString();
-         }
-     }
+            // recover the response String from our wrapper
+            return irw.getString();
+        }
+    }
 
     /**
      *
@@ -210,14 +213,18 @@ public abstract class ImportSupport {
      * @throws IOException
      * @throws java.lang.Exception
      */
-    protected Reader acquireReader(String url) throws IOException, Exception {
-        if (!this.isAbsoluteUrl) {
+    protected Reader acquireReader(String url) throws IOException, Exception
+    {
+        if (!this.isAbsoluteUrl)
+        {
             // for relative URLs, delegate to our peer
             return new StringReader(acquireString(url));
         }
-        else {
+        else
+        {
             // absolute URL
-            try {
+            try
+            {
                 // handle absolute URLs ourselves, using java.net.URL
                 URL u = new URL(url);
                 //URL u = new URL("http", "proxy.hi.is", 8080, target);
@@ -230,46 +237,57 @@ public abstract class ImportSupport {
 
                 // charSet extracted according to RFC 2045, section 5.1
                 String contentType = uc.getContentType();
-                if (contentType != null) {
+                if (contentType != null)
+                {
                     charSet = this.getContentTypeAttribute(contentType, "charset");
-                    if (charSet == null) {
+                    if (charSet == null)
+                    {
                         charSet = DEFAULT_ENCODING;
                     }
                 }
-                else {
+                else
+                {
                     charSet = DEFAULT_ENCODING;
                 }
 
-                try {
+                try
+                {
                     r = new InputStreamReader(i, charSet);
                 }
-                catch (Exception ex) {
+                catch (Exception ex)
+                {
                     r = new InputStreamReader(i, DEFAULT_ENCODING);
                 }
 
                 // check response code for HTTP URLs before returning, per spec,
                 // before returning
-                if (uc instanceof HttpURLConnection) {
-                    int status = ( (HttpURLConnection) uc).getResponseCode();
-                    if (status < 200 || status > 299) {
+                if (uc instanceof HttpURLConnection)
+                {
+                    int status = ((HttpURLConnection)uc).getResponseCode();
+                    if (status < 200 || status > 299)
+                    {
                         throw new Exception(status + " " + url);
                     }
                 }
-
                 return r;
             }
-            catch (IOException ex) {
-                throw new Exception("Problem accessing the absolute URL \"" + url + "\". " + ex.toString(), ex);
+            catch (IOException ex)
+            {
+                throw new Exception("Problem accessing the absolute URL \""
+                                    + url + "\". " + ex.toString(), ex);
             }
-            catch (RuntimeException ex) { // because the spec makes us
-                throw new Exception("Problem accessing the absolute URL \"" + url + "\". " + ex.toString(), ex);
+            catch (RuntimeException ex)
+            { 
+                // because the spec makes us
+                throw new Exception("Problem accessing the absolute URL \""
+                                    + url + "\". " + ex.toString(), ex);
             }
         }
     }
 
     /** Wraps responses to allow us to retrieve results as Strings. */
-    protected class ImportResponseWrapper
-        extends HttpServletResponseWrapper {
+    protected class ImportResponseWrapper extends HttpServletResponseWrapper
+    {
         /*
          * We provide either a Writer or an OutputStream as requested.
          * We actually have a true Writer and an OutputStream backing
@@ -296,11 +314,13 @@ public abstract class ImportSupport {
         private ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         /** A ServletOutputStream we convey, tied to this Writer. */
-        private ServletOutputStream sos = new ServletOutputStream() {
-            public void write(int b) throws IOException {
-                bos.write(b);
-            }
-        };
+        private ServletOutputStream sos = new ServletOutputStream()
+            {
+                public void write(int b) throws IOException
+                {
+                    bos.write(b);
+                }
+            };
 
         /** 'True' if getWriter() was called; false otherwise. */
         private boolean isWriterUsed;
@@ -312,20 +332,24 @@ public abstract class ImportSupport {
         private int status = 200;
 
         //************************************************************
-         // Constructor and methods
+        // Constructor and methods
 
-         /** Constructs a new ImportResponseWrapper.
-          * @param response the response to wrap
-          */
-         public ImportResponseWrapper(HttpServletResponse response) {
-             super(response);
-         }
+        /** 
+         * Constructs a new ImportResponseWrapper.
+         * @param response the response to wrap
+         */
+        public ImportResponseWrapper(HttpServletResponse response)
+        {
+            super(response);
+        }
 
         /**
          * @return a Writer designed to buffer the output.
          */
-        public PrintWriter getWriter() {
-            if (isStreamUsed) {
+        public PrintWriter getWriter()
+        {
+            if (isStreamUsed)
+            {
                 throw new IllegalStateException("Unexpected internal error during import: "
                                                 + "Target servlet called getWriter(), then getOutputStream()");
             }
@@ -336,8 +360,10 @@ public abstract class ImportSupport {
         /**
          * @return a ServletOutputStream designed to buffer the output.
          */
-        public ServletOutputStream getOutputStream() {
-            if (isWriterUsed) {
+        public ServletOutputStream getOutputStream()
+        {
+            if (isWriterUsed)
+            {
                 throw new IllegalStateException("Unexpected internal error during import: "
                                                 + "Target servlet called getOutputStream(), then getWriter()");
             }
@@ -345,31 +371,38 @@ public abstract class ImportSupport {
             return sos;
         }
 
-        /** Has no effect.
+        /** 
+         * Has no effect.
          * @param x never mind :)
          */
-        public void setContentType(String x) {
+        public void setContentType(String x)
+        {
             // ignore
         }
 
-        /** Has no effect.
+        /** 
+         * Has no effect.
          * @param x never mind :)
          */
-        public void setLocale(Locale x) {
+        public void setLocale(Locale x)
+        {
             // ignore
         }
 
-        /** Sets the status of the response
+        /** 
+         * Sets the status of the response
          * @param status the status code
          */
-        public void setStatus(int status) {
+        public void setStatus(int status)
+        {
             this.status = status;
         }
 
         /**
          * @return the status of the response
          */
-        public int getStatus() {
+        public int getStatus()
+        {
             return status;
         }
 
@@ -380,52 +413,59 @@ public abstract class ImportSupport {
          * @return the buffered output
          * @throws UnsupportedEncodingException if the encoding is not supported
          */
-        public String getString() throws UnsupportedEncodingException {
-            if (isWriterUsed) {
+        public String getString() throws UnsupportedEncodingException
+        {
+            if (isWriterUsed)
+            {
                 return sw.toString();
             }
-            else if (isStreamUsed) {
+            else if (isStreamUsed)
+            {
                 return bos.toString(DEFAULT_ENCODING);
             }
-            else {
+            else
+            {
                 return ""; // target didn't write anything
             }
         }
     }
 
-//*********************************************************************
-// Public utility methods
+    //*********************************************************************
+    // Public utility methods
 
-     /**
-      * Returns <tt>true</tt> if our current URL is absolute,
-      * <tt>false</tt> otherwise.
-      *
-      * @param url the url to check out
-      * @return true if the url is absolute
-      */
-     public static boolean isAbsoluteUrl(String url) {
-         // a null URL is not absolute, by our definition
-         if (url == null) {
-             return false;
-         }
+    /**
+     * Returns <tt>true</tt> if our current URL is absolute,
+     * <tt>false</tt> otherwise.
+     *
+     * @param url the url to check out
+     * @return true if the url is absolute
+     */
+    public static boolean isAbsoluteUrl(String url) {
+        // a null URL is not absolute, by our definition
+        if (url == null)
+        {
+            return false;
+        }
 
-         // do a fast, simple check first
-         int colonPos;
-         if ( (colonPos = url.indexOf(":")) == -1) {
-             return false;
-         }
+        // do a fast, simple check first
+        int colonPos;
+        if ((colonPos = url.indexOf(":")) == -1)
+        {
+            return false;
+        }
 
-         // if we DO have a colon, make sure that every character
-         // leading up to it is a valid scheme character
-         for (int i = 0; i < colonPos; i++) {
-             if (VALID_SCHEME_CHARS.indexOf(url.charAt(i)) == -1) {
-                 return false;
-             }
-         }
-
-         // if so, we've got an absolute url
-         return true;
-     }
+        // if we DO have a colon, make sure that every character
+        // leading up to it is a valid scheme character
+        for (int i = 0; i < colonPos; i++)
+        {
+            if (VALID_SCHEME_CHARS.indexOf(url.charAt(i)) == -1)
+            {
+                return false;
+            }
+        }
+        // if so, we've got an absolute url
+        return true;
+    }
 
     /**
      * Strips a servlet session ID from <tt>url</tt>.  The session ID
@@ -436,21 +476,25 @@ public abstract class ImportSupport {
      * @param url the url to strip the session id from
      * @return the stripped url
      */
-    public static String stripSession(String url) {
+    public static String stripSession(String url)
+    {
         StringBuffer u = new StringBuffer(url);
         int sessionStart;
-        while ( (sessionStart = u.toString().indexOf(";jsessionid=")) != -1) {
+        while ((sessionStart = u.toString().indexOf(";jsessionid=")) != -1)
+        {
             int sessionEnd = u.toString().indexOf(";", sessionStart + 1);
-            if (sessionEnd == -1) {
+            if (sessionEnd == -1)
+            {
                 sessionEnd = u.toString().indexOf("?", sessionStart + 1);
             }
-            if (sessionEnd == -1) { // still
+            if (sessionEnd == -1)
+            { 
+                // still
                 sessionEnd = u.length();
             }
             u.delete(sessionStart, sessionEnd);
         }
         return u.toString();
-
     }
 
     /**
@@ -461,36 +505,44 @@ public abstract class ImportSupport {
      * @param name the name of the content-type attribute
      * @return the value associated with a content-type attribute
      */
-    public static String getContentTypeAttribute(String input, String name) {
+    public static String getContentTypeAttribute(String input, String name)
+    {
         int begin;
         int end;
         int index = input.toUpperCase().indexOf(name.toUpperCase());
-        if (index == -1) {
+        if (index == -1)
+        {
             return null;
         }
         index = index + name.length(); // positioned after the attribute name
         index = input.indexOf('=', index); // positioned at the '='
-        if (index == -1) {
+        if (index == -1)
+        {
             return null;
         }
         index += 1; // positioned after the '='
         input = input.substring(index).trim();
 
-        if (input.charAt(0) == '"') {
+        if (input.charAt(0) == '"')
+        {
             // attribute value is a quoted string
             begin = 1;
             end = input.indexOf('"', begin);
-            if (end == -1) {
+            if (end == -1)
+            {
                 return null;
             }
         }
-        else {
+        else
+        {
             begin = 0;
             end = input.indexOf(';');
-            if (end == -1) {
+            if (end == -1)
+            {
                 end = input.indexOf(' ');
             }
-            if (end == -1) {
+            if (end == -1)
+            {
                 end = input.length();
             }
         }
