@@ -73,7 +73,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * ServletRequest should have its own instance.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.4 $ $Date: 2002/07/29 09:06:15 $
+ * @version $Revision: 1.5 $ $Date: 2002/07/31 13:24:48 $
  */
 
 public class ParameterParser implements ViewTool
@@ -152,7 +152,23 @@ public class ParameterParser implements ViewTool
     }
 
 
-    // -----------------  parsing methods -----------------------------
+    // ----------------- public parsing methods --------------------------
+
+
+    /**
+     * Convenience method for use in Velocity templates.
+     * This allows for easy "dot" access to parameters.
+     *
+     * e.g. $params.foo instead of $params.getString('foo')
+     *
+     * @param key the parameter's key
+     * @return parameter matching the specified key or
+     *         <code>null</code> if there is no matching
+     *         parameter
+     */
+    public String get(String key) {
+        return getString(key);
+    }
 
 
     /**
@@ -233,11 +249,7 @@ public class ParameterParser implements ViewTool
         }
         try
         {
-            if (s.indexOf('.') >= 0)
-            {
-                return new Double(s);
-            }
-            return new Long(s);
+            return parseNumber(s);
         }
         catch (Exception e)
         {
@@ -319,14 +331,7 @@ public class ParameterParser implements ViewTool
             {
                 if (strings[i] != null && strings[i].length() > 0)
                 {
-                    if (strings[i].indexOf('.') >= 0)
-                    {
-                        nums[i] = new Double(strings[i]);
-                    }
-                    else
-                    {
-                        nums[i] = new Long(strings[i]);
-                    }
+                    nums[i] = parseNumber(strings[i]);
                 }
             }
         }
@@ -359,7 +364,7 @@ public class ParameterParser implements ViewTool
             {
                 if (strings[i] != null && strings[i].length() > 0)
                 {
-                    ints[i] = Integer.parseInt(strings[i]);
+                    ints[i] = parseNumber(strings[i]).intValue();
                 }
             }
         }
@@ -392,7 +397,7 @@ public class ParameterParser implements ViewTool
             {
                 if (strings[i] != null && strings[i].length() > 0)
                 {
-                    doubles[i] = Double.parseDouble(strings[i]);
+                    doubles[i] = parseNumber(strings[i]).doubleValue();
                 }
             }
         }
@@ -404,4 +409,25 @@ public class ParameterParser implements ViewTool
     }
 
 
+     // --------------------------- protected methods ------------------
+ 
+ 
+     /**
+      * Converts a parameter value into a {@link Number}
+      * This is used as the base for all numeric parsing methods. So,
+      * sub-classes can override to allow for customized number parsing.
+      * (e.g. to handle fractions, compound numbers, etc.)
+      *
+      * @param value the string to be parsed
+      * @return the value as a {@link Number}
+      */
+     protected Number parseNumber(String value) throws NumberFormatException {
+         if (value.indexOf('.') >= 0)
+         {
+             return new Double(value);
+         }
+         return new Long(value);
+     }
+ 
+ 
 }
