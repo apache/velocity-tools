@@ -85,7 +85,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: LinkTool.java,v 1.4 2003/04/19 20:08:11 nbubna Exp $
+ * @version $Id: LinkTool.java,v 1.5 2003/04/21 18:53:11 nbubna Exp $
  */
 public class LinkTool implements ViewTool, Cloneable
 {
@@ -110,6 +110,9 @@ public class LinkTool implements ViewTool, Cloneable
 
     /** The URI reference set for this link. */ 
     private String uri;
+
+    /** The anchor set for this link. */ 
+    private String anchor;
 
     /** A list of query string parameters. */ 
     private ArrayList queryData;
@@ -144,6 +147,7 @@ public class LinkTool implements ViewTool, Cloneable
     public LinkTool()
     {
         uri = null;
+        anchor = null;
         queryData = null;
         queryDataDelim = HTML_QUERY_DELIMITER;
     }
@@ -212,6 +216,22 @@ public class LinkTool implements ViewTool, Cloneable
 
 
     /**
+     * For internal use.
+     *
+     * Copies 'that' LinkTool into this one and sets the new 
+     * anchor for the link.
+     *
+     * @param uri uri string
+     */
+    protected LinkTool copyWithAnchor(String anchor)
+    {
+        LinkTool copy = duplicate();
+        copy.anchor = anchor;
+        return copy;
+    }
+
+
+    /**
      * This is just to avoid duplicating this code for both copyWith() methods
      */
     private LinkTool duplicate()
@@ -240,6 +260,7 @@ public class LinkTool implements ViewTool, Cloneable
             copy.request = this.request;
             copy.response = this.response;
             copy.uri = this.uri;
+            copy.anchor = this.anchor;
             copy.queryData = this.queryData;
             return copy;
         }
@@ -271,6 +292,25 @@ public class LinkTool implements ViewTool, Cloneable
     // --------------------------------------------- Template Methods -----------
 
     /**
+     * <p>Returns a copy of the link with the specified anchor to be 
+     *    added to the end of the generated hyperlink.</p>
+     *
+     * Example:<br>
+     * <code>&lt;a href='$link.setAnchor("foo")'&gt;Foo&lt;/a&gt;</code><br>
+     * produces something like</br>
+     * <code>&lt;a href="#foo"&gt;Foo&lt;/a&gt;</code><br>
+     *
+     * @param anchor an internal document reference
+     *
+     * @return a new instance of LinkTool with the set anchor
+     */
+    public LinkTool setAnchor(String anchor)
+    {
+        return copyWithAnchor(anchor);
+    }
+
+
+    /**
      * <p>Returns a copy of the link with the specified context-relative
      * URI reference converted to a server-relative URI reference. This 
      * method will overwrite any previous URI reference settings but will 
@@ -298,7 +338,7 @@ public class LinkTool implements ViewTool, Cloneable
         }        
     }
 
-    
+
     /**
      * <p>Returns a copy of the link with the given URI reference set. 
      * No conversions are applied to the given URI reference. The URI 
@@ -347,7 +387,7 @@ public class LinkTool implements ViewTool, Cloneable
     
     /**
      * <p>Returns this link's query data as a url-encoded string e.g. 
-     * <cpde>key=value&foo=this+is+encoded</code>.</p>
+     * <code>key=value&foo=this+is+encoded</code>.</p>
      */
     public String getQueryData()
     {
@@ -427,8 +467,8 @@ public class LinkTool implements ViewTool, Cloneable
 
     /** 
      * Returns the full URI reference that's been built with this tool, 
-     * including the query string, e.g. 
-     * <code>http://myserver.net/myapp/stuff/View.vm?id=42&type=blue</code>.
+     * including the query string and anchor, e.g. 
+     * <code>http://myserver.net/myapp/stuff/View.vm?id=42&type=blue#foo</code>.
      * Typically, it is not necessary to call this method explicitely.
      * Velocity will call the toString() method automatically to obtain 
      * a representable version of an object.
@@ -458,6 +498,13 @@ public class LinkTool implements ViewTool, Cloneable
             }
             out.append(query);
         }
+
+        if (anchor != null)
+        {
+            out.append('#');
+            out.append(encodeURL(anchor));
+        }
+
         // encode session ID into URL if sessions are used but cookies are
         // not supported
         return response.encodeURL(out.toString());
