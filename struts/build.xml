@@ -62,9 +62,10 @@
 
   <!-- Construct compile classpath -->
   <path id="classpath">
-    <fileset dir="${local.repository}">
-      <include name="**/*.jar"/>
-    </fileset>
+    <!-- <fileset dir="${local.repository}">
+           <include name="**/*.jar"/>
+         </fileset>
+    -->
     <fileset dir="${project.repository}">
       <include name="**/*.jar"/>
     </fileset>
