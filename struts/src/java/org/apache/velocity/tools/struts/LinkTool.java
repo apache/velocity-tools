@@ -86,7 +86,7 @@ import org.apache.velocity.tools.view.tools.ServletViewTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: LinkTool.java,v 1.5 2002/04/15 18:30:28 sidler Exp $
+ * @version $Id: LinkTool.java,v 1.6 2002/04/29 05:20:51 sidler Exp $
  * 
  */
 public class LinkTool extends LogEnabledViewToolImpl 
@@ -142,7 +142,7 @@ public class LinkTool extends LogEnabledViewToolImpl
     public LinkTool()
     {
         request = null;
-		response = null;
+        response = null;
         session = null;
         application = null;
         
@@ -158,7 +158,7 @@ public class LinkTool extends LogEnabledViewToolImpl
     private LinkTool(ViewContext context)
     {
         this.request = context.getRequest();
-		this.response = context.getResponse();
+        this.response = context.getResponse();
         this.application = context.getServletContext();    
 
         this.uri = null;
@@ -177,7 +177,7 @@ public class LinkTool extends LogEnabledViewToolImpl
     private LinkTool(LinkTool that, QueryPair pair)
     {
         this.request = that.request;
-		this.response = that.response;
+        this.response = that.response;
         this.application = that.application;    
         this.uri = that.uri;
         if (that.queryData != null)
@@ -205,7 +205,7 @@ public class LinkTool extends LogEnabledViewToolImpl
     private LinkTool(LinkTool that, String uri)
     {
         this.request = that.request;
-		this.response = that.response;
+        this.response = that.response;
         this.application = that.application;    
         //set to new uri
         this.uri = uri;
