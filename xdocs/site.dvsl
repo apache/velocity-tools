@@ -16,7 +16,11 @@
 #match( "document" )
 
     #set( $document = $node )
-    #set( $projectfile = $node.properties.projectfile )
+    #if ($context.toolbox.basedir)
+      #set( $projectfile = "$context.toolbox.basedir/$node.properties.projectfile" )
+    #else
+      #set( $projectfile = $node.properties.projectfile )
+    #end    
     #set( $project = $node.selectSingleNode("document('$projectfile')/project" ) )
 
     <html>
@@ -27,6 +31,7 @@
         <meta name="author" value="$n"/>
         <meta name="email" value="$n.attribute("email")" />
        #end
+       
     
     </head>
 

@@ -1,19 +1,21 @@
-<project name="velocity-view" default="jar" basedir=".">
+<project name="velocity-view" default="all" basedir=".">
 
 <!-- ========== Initialize Properties ===================================== -->
 
-  <property file="build/build.properties"/>          <!-- Component local   -->
-  <property file="../build.properties"/>             <!-- Commons local     -->
-  <property file="${user.home}/.build.properties"/>  <!-- User local        -->
+  <property file="${basedir}/build/build.properties"/>  <!-- Component local   -->
+  <property file="${basedir}/../build.properties"/>     <!-- Commons local     -->
+  <property file="${user.home}/.build.properties"/>     <!-- User local        -->
+
+
 
 <!-- ========== External Dependencies ===================================== -->
 
  <!-- the local repository -->
- <property name="local.repository"            value="WEB-INF/lib" />
- <property name="project.repository"          value="WEB-INF/build-lib" />
+ <property name="local.repository"            value="${basedir}/WEB-INF/lib" />
+ <property name="project.repository"          value="${basedir}/WEB-INF/build-lib" />
+
 
 <!-- ========== Component Declarations ==================================== -->
-
 
   <!-- The name of this component -->
   <property name="project.name"          value="VelocityStruts Example" />
@@ -22,26 +24,25 @@
   <property name="project.title"         value="VelocityStruts Example"/>
 
   <!-- The base directory for compilation targets -->
-  <property name="build.home"            value="WEB-INF"/>
+  <property name="build.home"            value="${basedir}/WEB-INF"/>
 
   <!-- The base directory for distribution targets -->
-  <property name="dist.home"             value="dist"/>
+  <property name="dist.home"             value="${basedir}/dist"/>
 
   <!-- The base directory for component sources -->
-  <property name="source.home"           value="WEB-INF/src"/>
+  <property name="source.home"           value="${basedir}/WEB-INF/src"/>
 
   <!-- The base directory for component sources -->
-  <property name="conf.home"             value="src/conf"/>
+  <property name="conf.home"             value="${basedir}/src/conf"/>
 
   <!-- The docs source directory -->
-  <property name="docs.src"              value="xdocs"/>
+  <property name="docs.src"              value="${basedir}/xdocs"/>
 
   <!-- The docs destination directory  -->
-  <property name="docs.dest"             value="doc"/>
+  <property name="docs.dest"             value="${basedir}/doc"/>
 
 
 <!-- ========== Compiler Defaults ========================================= -->
-
 
   <!-- Should Java compilations set the 'debug' compiler option? -->
   <property name="compile.debug"           value="true"/>
@@ -62,8 +63,8 @@
     </fileset>
   </path>
 
-<!-- ========== Executable Targets ======================================== -->
 
+<!-- ========== Executable Targets ======================================== -->
 
   <!-- ================================================================== -->
   <!-- I N I T                                                            -->
@@ -73,6 +74,13 @@
     <echo message="-------- ${project.name} --------"/>
     <tstamp/>
   </target>
+
+
+  <!-- ================================================================== -->
+  <!-- A L L                                                              -->
+  <!-- ================================================================== -->
+  <target name="all" depends="clean,init,compile,war"
+   description="Build entire example"/>
 
 
   <!-- ================================================================== -->
@@ -98,7 +106,7 @@
   <!-- ================================================================== -->
   <!-- C L E A N                                                          -->
   <!-- ================================================================== -->
-  <target name="clean" depends="init" 
+  <target name="clean" depends="" 
    description="Clean build and distribution directories">
 
     <!-- remove old class files -->
@@ -125,7 +133,6 @@
     <!-- Generate .war file, name it velstruts.war -->
     <jar jarfile="${basedir}/../velstruts.war" basedir="${basedir}"/>
   </target>
-
 
 
 </project>

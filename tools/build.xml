@@ -3,15 +3,15 @@
 
 <!-- ========== Initialize Properties ===================================== -->
 
-  <property file="build/build.properties"/>          <!-- Component local   -->
-  <property file="../build.properties"/>             <!-- Commons local     -->
-  <property file="${user.home}/.build.properties"/>  <!-- User local        -->
+  <property file="${basedir}/build/build.properties"/> <!-- Component local   -->
+  <property file="${basedir}/../build.properties"/>    <!-- Commons local     -->
+  <property file="${user.home}/.build.properties"/>    <!-- User local        -->
 
 <!-- ========== External Dependencies ===================================== -->
 
  <!-- the local repository -->
- <property name="local.repository"            value="./lib" />
- <property name="project.repository"          value="../lib" />
+ <property name="local.repository"            value="${basedir}/lib" />
+ <property name="project.repository"          value="${basedir}/../lib" />
 
 <!-- ========== Component Declarations ==================================== -->
 
@@ -29,25 +29,25 @@
   <property name="project.date"          value="24-Mar-2002"/>
 
   <!-- The base directory for compilation targets -->
-  <property name="build.home"            value="target"/>
+  <property name="build.home"            value="${basedir}/target"/>
 
   <!-- The base directory for distribution targets -->
-  <property name="dist.home"             value="dist"/>
+  <property name="dist.home"             value="${basedir}/dist"/>
 
   <!-- The base directory for component sources -->
-  <property name="source.home"           value="src"/>
+  <property name="source.home"           value="${basedir}/src"/>
 
   <!-- The base directory for component sources -->
-  <property name="conf.home"             value="src/conf"/>
+  <property name="conf.home"             value="${basedir}/src/conf"/>
 
   <!-- The docs source directory -->
-  <property name="docs.src"              value="xdocs"/>
+  <property name="docs.src"              value="${basedir}/xdocs"/>
 
   <!-- The docs destination directory  -->
-  <property name="docs.dest"             value="docs"/>
+  <property name="docs.dest"             value="${basedir}/docs"/>
 
   <!-- The docs destination directory  -->
-  <property name="examples.home"         value="examples"/>
+  <property name="examples.home"         value="${basedir}/examples"/>
 
 <!-- ========== Compiler Defaults ========================================= -->
 
@@ -129,15 +129,24 @@
   <!-- C L E A N                                                          -->
   <!-- ================================================================== -->
   <target name="clean"
-   description="Clean build and distribution directories">
+    description="Clean build and distribution directories">
+
     <delete    dir="${build.home}"/>
+
     <delete    dir="${dist.home}"/>
+
     <delete>
       <fileset dir="${basedir}" includes="*.jar"/>
     </delete>
+
+    <delete>
+        <fileset dir="${project.repository}" includes="${project.name}-*.jar"/>
+    </delete>
+
     <delete>
       <fileset dir="${docs.dest}" includes="**/*.html"/>
     </delete>
+
     <delete>
       <fileset dir="${basedir}" includes="**/*.bak"/>
     </delete>
@@ -148,8 +157,8 @@
   <!-- ================================================================== -->
   <!-- A L L                                                              -->
   <!-- ================================================================== -->
-  <target name="all" depends="clean,jar,docs,javadocs"
-   description="Clean and compile all components"/>
+  <target name="all" depends="clean,jar,install-jar,docs,javadocs"
+   description="Build entire project"/>
 
 
   <!-- ================================================================== -->
@@ -157,9 +166,10 @@
   <!-- ================================================================== -->
   <target name="javadocs" depends="compile"
    description="Create Javadoc documentation">
+
     <javadoc sourcepath="${source.home}/java"
                 destdir="${build.home}/javadoc"
-           packagenames="org.apache.velocity.tools.struts.*"
+           packagenames="org.apache.velocity.tools.tools.*"
                  author="true"
                 private="true"
                 version="true"
@@ -199,12 +209,13 @@
       <dvsl
            basedir="${docs.src}"
            destdir="${docs.dest}/"
-    	   toolboxfile="../xdocs/toolbox.props"
+    	   toolboxfile="${basedir}/../xdocs/toolbox.props"
            extension=".html"
-           style="../xdocs/site.dvsl"
+           style="${basedir}/../xdocs/site.dvsl"
            excludes="*menue.xml"
-           includes="**/*.xml"
-      />
+           includes="**/*.xml">
+         <tool name="toolbox.string.basedir" value="${basedir}" />
+      </dvsl>
 
       <replace dir="${docs.dest}">
           <replacefilter token="@@@version@@@" value="${project.version}"/>
@@ -219,30 +230,14 @@
   <!-- I N S T A L L  J A R                                               -->
   <!-- ================================================================== -->
   <target name="install-jar" depends="jar"
-          description="--> Installs .jar file in ${lib.repo}">
-    <copy todir="${lib.repo}" filtering="no">
+          description="--> Installs .jar file in ${project.repository}">
+
+    <copy todir="${project.repository}" filtering="no">
       <fileset dir="${basedir}">
         <include name="${project.name}-${project.version}.jar"/>
       </fileset>
     </copy>
-  </target>
 
-
-  <!-- ================================================================== -->
-  <!--  D E P L O Y   J A R                                               -->
-  <!-- ================================================================== -->
-  <target name="deploy-jar" depends="compile, jar"
-          description="Deploy jar to example applications">
-    
-    <delete>
-        <fileset dir="${examples.home}/struts/WEB-INF/lib" includes="${project.name}-*.jar"/>
-    </delete>
-
-    <copy todir="${examples.home}/struts/WEB-INF/lib" filtering="no">
-      <fileset dir="${basedir}">
-        <include name="${project.name}-*.jar"/>
-      </fileset>
-    </copy>
   </target>
 
 
