@@ -84,6 +84,7 @@ import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeSingleton;
 import org.apache.velocity.util.SimplePool;
 
+import org.apache.velocity.tools.view.ToolboxManager;
 import org.apache.velocity.tools.view.context.ToolboxContext;
 import org.apache.velocity.tools.view.context.ChainedContext;
 import org.apache.velocity.tools.view.servlet.ServletToolboxManager;
@@ -138,7 +139,7 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.10 2003/05/28 00:17:16 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.11 2003/07/22 21:14:58 nbubna Exp $
  */
 
 public class VelocityViewServlet extends HttpServlet
@@ -180,6 +181,11 @@ public class VelocityViewServlet extends HttpServlet
     protected static final String INIT_PROPS_KEY =
         "org.apache.velocity.properties";
 
+    /**
+     * A reference to the toolbox manager.
+     */
+    protected ToolboxManager toolboxManager = null;
+
 
     /**
      * Cache of writers
@@ -195,11 +201,6 @@ public class VelocityViewServlet extends HttpServlet
      * The default content type.
      */
     private String defaultContentType;
-
-    /**
-     * A reference to the toolbox manager.
-     */
-    private ServletToolboxManager toolboxManager = null;
 
 
     /**
