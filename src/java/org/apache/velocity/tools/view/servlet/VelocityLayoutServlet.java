@@ -82,7 +82,7 @@ import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
  * somewhere.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Id: VelocityLayoutServlet.java,v 1.2 2003/05/28 00:17:16 nbubna Exp $
+ * @version $Id: VelocityLayoutServlet.java,v 1.3 2003/10/02 00:14:08 nbubna Exp $
  */
 
 public class VelocityLayoutServlet extends VelocityViewServlet 
@@ -301,7 +301,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
     protected void error(HttpServletRequest request, 
                          HttpServletResponse response, 
                          Exception e)
-        throws ServletException, IOException 
+        throws ServletException 
     {
         try 
         {
