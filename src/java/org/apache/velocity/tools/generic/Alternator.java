@@ -55,7 +55,7 @@ import java.util.List;
  * </pre></p>
  *
  * @since Velocity Tools 1.2
- * @version $Revision: 1.4 $ $Date: 2004/05/05 23:23:51 $
+ * @version $Revision: 1.5 $ $Date: 2004/05/05 23:29:04 $
  */
 public class Alternator
 {
@@ -155,9 +155,9 @@ public class Alternator
 
     /**
      * Returns a string representation of the current item or
-     * <code>null</code> if the current item is null.  <b>If
-     * <i>auto</i> is true, this will shift after returning the
-     * current item</b>.
+     * <code>null</code> if the current item is null.  <b>If {@link
+     * #auto} is true, this will shift after returning the current
+     * item</b>.
      */
     public String toString()
     {
