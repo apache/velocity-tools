@@ -1,6 +1,6 @@
 S T A T U S
 ===========
-$Id: STATUS,v 1.4 2003/02/19 20:06:19 nbubna Exp $
+$Id: STATUS,v 1.5 2003/03/05 06:57:13 nbubna Exp $
 
 
 Known Issues/Bugs:
@@ -22,12 +22,11 @@ Proposed Features/Upgrades:
         - add a library of general velocimacros
         - Convert XMLToolboxManager to use commons' Digester
         - Pluggable toolbox manager in VelocityViewServlet
+        - add Search/paging tool (from nathan)
 
-    VelocityTools:
-        - Fold this library into VelocityView
+    Generic tools:
         - add a library of velocimacros for use with these tools
         - Tool pooling support (use commons-pool probably)
-        - Search/paging tool (from nathan)
         - Improved ToolLoader? (from Bill?)
         - Render/evaluate tool? (for perl or php prone people)
         - Template debugging tool(s)/support
