@@ -46,7 +46,7 @@ been included to allow a direct comparison of the two view technologies.
 
 <h5>Documentation</h5>
 <p>This project is hosted at <a href="http://jakarta.apache.org/velocity/tools/">jakarta.apache.org</a>. There you find the latest news and instructions to download the software.</p>
-<p>The project <a href="http://jakarta.apache.org/velocity/tools/struts/">documentation</a> is available online. This is a work in progress but I guess it is better than no documentation at all.</p>
+<p>The project <a href="http://jakarta.apache.org/velocity/tools/struts/">documentation</a> is available online.</p>
 
 <h5>Feedback</h5>
 <p>We really appreciated your feedback. Please send your feedback and questions to the Velocity Users Mailing List at <a href="mailto:velocity-user@jakarta.apache.org">velocity-user@jakarta.apache.org</a>.</p>
