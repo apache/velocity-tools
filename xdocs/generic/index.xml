@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: index.xml,v 1.7 2004/02/18 20:23:01 nbubna Exp $
+  $Id$
 -->
 <document>
 
@@ -51,7 +51,7 @@
             to let the designer specify a condition to terminate the loop, 
             and reuse the same list in different loops.</dd>
 
-            <dt><a href="../javadoc/org/apache/velocity/tools/generic/RenderTool.html"><strong>RenderTool</strong></a></dt>
+            <dt><a href="RenderTool.html"><strong>RenderTool</strong></a></dt>
             <dd>A tool to evaluate and render arbitrary strings of VTL (Velocity
             Template Language).</dd>
           </dl>
