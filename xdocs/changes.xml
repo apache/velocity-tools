@@ -31,7 +31,7 @@
       <li>Added TilesTool (maj)</li>
       <li>Allow subclasses of VelocityViewServlet to use different ToolboxManager implementations (ndb)</li>
       <li>Added CookieTool (contributed by Dmitri Colebatch) (ndb)</li>
-      <li>Added demo of &lt;data&gt; elements to simple VelocityStruts example (ndb)</li>
+      <li>Added demo of &lt;data&gt; elements to simple VelocityView example (ndb)</li>
       <li>Made simple VelocityStruts example catch Commons-Logging output with LogSystemCommonsLog (ndb)</li>
       <li>Convert toolbox setup to use Digester instead of dom4j (ndb)</li>
       <li>Added LogSystemCommonsLog and CommonsLogLogSystem to provide bridges between Commons-Logging and Velocity's LogSystem (ndb)</li>
