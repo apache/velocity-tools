@@ -1,5 +1,5 @@
 <!--
-  $Id: build.xml,v 1.20 2003/06/28 05:10:56 nbubna Exp $ 
+  $Id: build.xml,v 1.21 2003/07/04 19:42:32 nbubna Exp $ 
 -->
 <project name="velocity-tools" default="all" basedir=".">
 
@@ -67,10 +67,9 @@
 
 
   <!-- Clean Target -->
-  <target name="clean" description="Deletes the build, doc, and dist directories">
+  <target name="clean" description="Deletes the build and dist directories">
     <delete dir="${build.dir}"/>
     <delete dir="${dist.dir}"/>
-    <delete dir="${docs.dir}"/>
 
     <!-- Clean example applications  -->
     <ant dir="${examples.home}/simple" target="clean" inheritAll="false"/>
