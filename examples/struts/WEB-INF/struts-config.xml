@@ -93,17 +93,17 @@
          contextRelative="true" />
 
      <forward name="mathSrc"
-         path="examples/context_tools/mathtool-demo.txt"
+         path="/examples/context_tools/mathtool-demo.txt"
          redirect="true"
          contextRelative="true" />
 
      <forward name="header"
-         path="examples/request_headers/list.vm"
+         path="/examples/request_headers/list.vm"
          redirect="true"
          contextRelative="true" />
 
      <forward name="headerJsp"
-         path="examples/request_headers/list.jsp"
+         path="/examples/request_headers/list.jsp"
          redirect="true"
          contextRelative="true" />
 
