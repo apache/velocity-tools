@@ -7,7 +7,7 @@
 <web-app>
 
 
-  <!-- Define Velocity template rendererr -->
+  <!-- Define Velocity template renderer -->
   <servlet>
     <servlet-name>velocity</servlet-name>
     <servlet-class>org.apache.velocity.tools.view.servlet.VelocityViewServlet</servlet-class>
@@ -15,7 +15,7 @@
     <init-param>
       <param-name>org.apache.velocity.toolbox</param-name>
       <param-value>/WEB-INF/toolbox.xml</param-value>
-   </init-param>
+    </init-param>
 
    <load-on-startup>10</load-on-startup>
   </servlet>
