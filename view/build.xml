@@ -22,7 +22,7 @@
   <property name="project.title"         value=""/>
 
   <!-- The current version number of this component -->
-  <property name="project.version"       value="0.4"/>
+  <property name="project.version"       value="0.5"/>
 
   <!-- The base directory for compilation targets -->
   <property name="build.home"              value="target"/>
