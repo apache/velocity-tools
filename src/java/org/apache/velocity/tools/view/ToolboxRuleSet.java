@@ -17,9 +17,11 @@
 package org.apache.velocity.tools.view;
 
 import org.apache.commons.digester.Digester;
+import org.apache.commons.digester.Rule;
 import org.apache.commons.digester.RuleSetBase;
 import org.apache.velocity.tools.view.DataInfo;
 import org.apache.velocity.tools.view.ViewToolInfo;
+import org.xml.sax.Attributes;
 
 /**
  * <p>The set of Digester rules required to parse a toolbox
@@ -28,7 +30,7 @@ import org.apache.velocity.tools.view.ViewToolInfo;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.1
- * @version $Id: ToolboxRuleSet.java,v 1.3 2004/02/18 20:08:29 nbubna Exp $
+ * @version $Id: ToolboxRuleSet.java,v 1.4 2004/04/16 20:36:12 nbubna Exp $
  */
 public class ToolboxRuleSet extends RuleSetBase
 {
@@ -59,6 +61,7 @@ public class ToolboxRuleSet extends RuleSetBase
         digester.addObjectCreate("toolbox/tool", getToolInfoClass());
         digester.addBeanPropertySetter("toolbox/tool/key", "key");
         digester.addBeanPropertySetter("toolbox/tool/class", "classname");
+        digester.addRule("toolbox/tool/parameter", new ParameterRule());
         digester.addSetNext("toolbox/tool", "addTool");
     }
 
@@ -91,6 +94,24 @@ public class ToolboxRuleSet extends RuleSetBase
     protected Class getDataInfoClass()
     {
         return DataInfo.class;
+    }
+
+
+    /****************************** Custom Rules *****************************/
+
+    /**
+     * 
+     */
+    protected class ParameterRule extends Rule
+    {
+        public void begin(String ns, String ln, Attributes attributes) 
+            throws Exception
+        {
+            ViewToolInfo toolinfo = (ViewToolInfo)digester.peek();
+            String name = attributes.getValue("name");
+            String value = attributes.getValue("value");
+            toolinfo.setParameter(name, value);
+        }
     }
 
 }

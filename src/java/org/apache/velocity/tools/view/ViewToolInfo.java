@@ -1,5 +1,5 @@
 /*
- * Copyright 2003 The Apache Software Foundation.
+ * Copyright 2004 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,9 @@
 
 package org.apache.velocity.tools.view;
 
+import java.util.HashMap;
+import java.util.Map;
+import org.apache.velocity.tools.view.tools.Configurable;
 import org.apache.velocity.tools.view.tools.ViewTool;
 import org.apache.velocity.app.Velocity;
 
@@ -27,15 +30,16 @@ import org.apache.velocity.app.Velocity;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: ViewToolInfo.java,v 1.8 2004/03/12 20:30:32 nbubna Exp $
+ * @version $Id: ViewToolInfo.java,v 1.9 2004/04/16 20:36:12 nbubna Exp $
  */
 public class ViewToolInfo implements ToolInfo
 {
 
     private String key;
     private Class clazz;
+    private Map parameters;
     private boolean initializable = false;
-
+    private boolean configurable = false;
 
     public ViewToolInfo() {}
 
@@ -75,16 +79,45 @@ public class ViewToolInfo implements ToolInfo
      * If an instance of the tool cannot be created from
      * the classname passed to this method, it will throw an exception.
      *
-     * @param classname the fully qualified java.lang.Class of the tool
+     * @param classname the fully qualified java.lang.Class name of the tool
      */
     public void setClassname(String classname) throws Exception
     {
         this.clazz = getApplicationClass(classname);
-        /* create an instance and see if it is initializable */
-        if (clazz.newInstance() instanceof ViewTool)
+        /* create an instance and see if it is a ViewTool or Configurable */
+        Object instance = clazz.newInstance();
+        if (instance instanceof ViewTool)
         {
             this.initializable = true;
         }
+        if (instance instanceof Configurable)
+        {
+            this.configurable = true;
+        }
+    }
+
+    /**
+     * Set parameter map for this tool.
+     *
+     * @since VelocityTools 1.1
+     */
+    public void setParameters(Map parameters)
+    {
+        this.parameters = parameters;
+    }
+
+    /**
+     * Set/add new parameter for this tool.
+     *
+     * @since VelocityTools 1.1
+     */
+    public void setParameter(String name, String value)
+    {
+        if (parameters == null)
+        {
+            parameters = new HashMap();
+        }
+        parameters.put(name, value);
     }
 
 
@@ -101,6 +134,15 @@ public class ViewToolInfo implements ToolInfo
         return clazz.getName();
     }
 
+
+    /**
+     * Get parameters for this tool.
+     * @since VelocityTools 1.1
+     */
+    public Map getParameters()
+    {
+        return parameters;
+    }
 
     /**
      * Returns a new instance of the tool. If the tool
@@ -128,8 +170,12 @@ public class ViewToolInfo implements ToolInfo
             Velocity.error("Exception while instantiating instance of \"" +
                            getClassname() + "\": " + e);
         }
-        
-        if (initializable) {
+        if (configurable)
+        {
+            ((Configurable)tool).configure(parameters);
+        }
+        if (initializable)
+        {
             ((ViewTool)tool).init(initData);
         }
         return tool;
