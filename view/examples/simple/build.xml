@@ -1,13 +1,13 @@
-<project name="Velocity-Struts" default="compile" basedir=".">
+<project name="Velocity Tools" default="war" basedir=".">
 
 
 <!--
- * 
+ *
  *      Build file for Struts Velocity.
  *
  *      Gabriel Sidler, sidler@teamup.ch
  *      December 8. 2001
- * 
+ *
 -->
 
   <!-- *** ENVIRONMENT ******************************************************* -->
@@ -36,7 +36,6 @@
 
   <target name="help" depends="init">
     <!-- Print usage information -->
-    <echo>WEBPROJEKTO BUILD TOOL</echo>
     <echo> </echo>
     <echo>Usage: ant &lt;target&gt;                                         </echo>
     <echo>                                                                  </echo>
@@ -44,11 +43,9 @@
     <echo>                                                                  </echo>
     <echo>  compile  Compile all sources.                                   </echo>
     <echo>                                                                  </echo>
-    <echo>  javadoc  Generate javadoc documentation.                        </echo>
-    <echo>                                                                  </echo>
     <echo>  clean    Clean dev tree and previously generated distributions. </echo>
     <echo>                                                                  </echo>
-    <echo>  devwar   Pack the entire application into a war file.           </echo>
+    <echo>  war   Pack the entire application into a war file.              </echo>
     <echo>                                                                  </echo>
     <echo>  help     Print this help information.                           </echo>
     <echo>                                                                  </echo>
@@ -63,38 +60,28 @@
        <classpath refid="classpath"/>
     </javac>
 
-    <!-- classpath="${LIB}/struts.jar;${LIB}/servlet.jar;${LIB}/velocity-1.1.jar;${LIB}/jdbc2_0-stdext.jar" -->
   </target>
 
 
-  <target name="javadoc">
-    <!-- Remove any old documentation -->
-    <!-- <delete dir="${JAVADOC}"/> -->
+  <target name="war" depends="init, clean, compile">
+    <jar jarfile="${basedir}/../simple.war" basedir="${DEV}"/>
 
-    <!-- (Re)Create javadoc directory -->
-    <mkdir dir="${JAVADOC}"/>
+    <echo>  A WAR file (Web ARchive) was created for you in </echo>
+    <echo>  the directory above. (/examples)  It is called  </echo>
+    <echo>                                                  </echo>
+    <echo>      simple.war                                  </echo>
+    <echo>                                                  </echo>
+    <echo>  To use it with Tomcat, copy the .war file to    </echo>
+    <echo>  the webapps directory in the tomcat tree        </echo>
+    <echo>  (assuming a standard tomcat installation)  and  </echo>
+    <echo>  then restart Tomcat.  To access the page        </echo>
+    <echo>  point you browser to                            </echo>
+    <echo>                                                  </echo>
+    <echo>     http://localhost:8080/simple/index.vm        </echo>
+    <echo>                                                  </echo>
+    <echo>  If you have any questions, don't hesitate to    </echo>
+    <echo>  ask on the Velocity user list.                  </echo>
 
-    <!-- Generate Javadoc -->
-    <javadoc sourcepath="${SRC}"
-           packagenames="org.*"
-           destdir="${JAVADOC}"
-           author="true"
-           version="true"
-           use="true"
-           windowtitle="Velocity for Struts"
-           doctitle="Velocity for Struts">
-           <classpath refid="classpath"/>
-           <link href="http://jakarta.apache.org/struts/api/"/>
-           <link href="http://java.sun.com/products/servlet/2.3/javadoc/"/>
-           <link href="http://java.sun.com/j2ee/sdk_1.3/techdocs/api"/>
-           <link href="http://jakarta.apache.org/velocity/api/"/>
-    </javadoc>
-  </target>
-           
-
-  <target name="devwar" depends="init, clean, compile, javadoc">
-    <!-- Generate .war file, name it *.wa_ otherwise it will be unpacked -->
-    <jar jarfile="${basedir}/../vel-example-${DSTAMP}.wa_" basedir="${DEV}"/>
   </target>
 
 
@@ -113,6 +100,6 @@
     <delete dir="${JAVADOC}"/>
 
   </target>
-  
+
 
 </project>
