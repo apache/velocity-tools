@@ -28,6 +28,11 @@
         </p>
 
         <p>
+        <strong><a href="ActionMessagesTool.html">ActionMessagesTool</a></strong><br/>
+        Provides methods to work with Struts action messages
+        </p>
+
+        <p>
         <strong><a href="ErrorsTool.html">ErrorsTool</a></strong><br />
         Provides methods to work with Struts error messages.
         </p>
@@ -47,15 +52,19 @@
         <p>
         <strong><a href="SecureLinkTool.html">SecureLinkTool</a></strong><br />
         Has the same interface as <a href="StrutsLinkTool.html">StrutsLinkTool</a>
-        and should substitute it when using the SSL Ext. extension for Struts.
+        and should substitute it when the SSL Ext. extension for Struts is installed.
         </p>
 
         <p>
-        <strong>ActionMessagesTool</strong><br/>
-        Provides methods to work with Struts action messages, a new feature in the
-        upcoming 1.1. release. Will be added shortly.  For the present, an initial
-        version of this class can be found in CVS under
-        "whiteboard/nathan/ActionMessagesTool.java"
+        <strong><a href="TilesTool.html">TilesTool</a></strong><br />
+        Provides miscellaneous methods to work with Tiles in the context
+        of Struts applications.
+        </p>
+
+        <p>
+        <strong><a href="ValidatorTool.html">ValidatorTool</a></strong><br />
+        Provides methods to dynamically generate javascript validation in the context
+        of Struts applications.
         </p>
 
     </section>
