@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+
+<document>
+
+    <properties>
+        <title>ImportTool</title>
+        <author email="marino@apache.org">Marino A. Jonsson</author>
+        <projectfile>xdocs/view/menu.xml</projectfile>
+     </properties>
+
+    <body>
+
+    <section name="ImportTool Reference Documentation">
+
+        <p>General-purpose text-importing view tool for templates.</p>
+
+        <toolinfo>
+            <version>@@@version@@@, @@@date@@@</version>
+            <clazz>org.apache.velocity.tools.view.tools.ImportTool</clazz>
+            <name>$import</name>
+            <author email="marinoj@centrum.is">Marino A. Jonsson</author>
+            <config-example>&lt;tool&gt;
+  &lt;key&gt;import&lt;/key&gt;
+  &lt;scope&gt;session&lt;/scope&gt;
+  &lt;class&gt;org.apache.velocity.tools.view.tools.ImportTool&lt;/class&gt;
+&lt;/tool&gt;</config-example>
+        </toolinfo>
+
+        <methods/>
+
+    </section>
+
+
+    <section name="read()">
+        <method name="read()">
+
+            <abstract>
+                Returns the supplied URL rendered as a String.
+            </abstract>
+
+            <signature>
+                String read(String url)
+            </signature>
+
+            <parameters>
+                <parameter name="url">
+                    The URL to import.
+                </parameter>
+            </parameters>
+
+            <returns>
+                The supplied URL rendered as a String.
+            </returns>
+
+            <description>
+                <p>This method takes an arbitrary URL or URI and renders it as a String.
+                This tool can also be used to import local .vm resources without sharing
+                the current velocity-context (as opposed to the #parse directive).</p>
+
+<sourcecode>$import.read("http://jakarta.apache.org/velocity/tools")
+$import.read("/wookie.jsp")</sourcecode>
+		</description>
+            </method>
+    </section>
+ </body>
+</document>
+
