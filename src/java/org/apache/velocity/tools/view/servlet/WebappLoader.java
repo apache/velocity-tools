@@ -65,13 +65,11 @@ import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 
-import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
-
 /**
  *  
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Id: WebappLoader.java,v 1.2 2003/03/07 03:44:38 nbubna Exp $
+ * @version $Id: WebappLoader.java,v 1.3 2003/03/20 06:07:27 nbubna Exp $
  */
 public class WebappLoader extends ResourceLoader
 {
@@ -82,7 +80,14 @@ public class WebappLoader extends ResourceLoader
     protected ServletContext servletContext = null;
 
     /**
-     *  This is abstract in the base class, so we need it
+     *  This is abstract in the base class, so we need it.
+     *  <br>
+     *  NOTE: this expects that the ServletContext has already
+     *        been placed in the runtime's application attributes
+     *        under its full class name (i.e. "javax.servlet.ServletContext").
+     *
+     * @param configuration the {@link ExtendedProperties} associated with 
+     *        this resource loader.
      */
     public void init( ExtendedProperties configuration)
     {
@@ -105,7 +110,7 @@ public class WebappLoader extends ResourceLoader
         }
 
         // get the ServletContext
-        Object obj = rsvc.getApplicationAttribute(VelocityViewServlet.SERVLET_CONTEXT_KEY);
+        Object obj = rsvc.getApplicationAttribute(ServletContext.class.getName());
         if (obj instanceof ServletContext)
         {
             servletContext = (ServletContext)obj;
