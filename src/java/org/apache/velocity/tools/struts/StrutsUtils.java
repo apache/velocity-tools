@@ -72,6 +72,7 @@ import org.apache.struts.upload.MultipartRequestWrapper;
 import org.apache.struts.util.MessageResources;
 
 
+import org.apache.struts.Globals;
 import org.apache.struts.action.*;
 
 
@@ -85,14 +86,14 @@ import org.apache.struts.action.*;
  * and reuse fostered.</p>
  *
  * <p>It is the aim, that sooner or later the functionality in
- * this class is integrated into Struts itself.  Ideally, they will
- * yank the JSP-centric code (PageContext, etc.) out of their RequestUtils 
- * to allow other view layers to leverage that code.</p>
+ * this class is integrated into Struts itself.  See
+ * <a href="http://nagoya.apache.org/bugzilla/show_bug.cgi?id=16814">Bug #16814</a>
+ * for more on that.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>, based
  * on code by <a href="mailto:ted@husted.org">Ted Husted</a>
  *
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 class StrutsUtils
 {
@@ -115,17 +116,6 @@ class StrutsUtils
         return (DataSource)
             application.getAttribute(Action.DATA_SOURCE_KEY);
     }
-
-
-    /* This method depends of features that are available in Struts 1.1+ only
-    static ActionMessages getActionMessages(ServletContext application) 
-    {
-        if (application==null)
-            return null;
-        return (ActionMessages)
-            application.getAttribute(Action.MESSAGE_KEY);
-    }
-    */
 
 
     /**
@@ -344,6 +334,23 @@ class StrutsUtils
         }
 
         return (ActionErrors) request.getAttribute(Action.ERROR_KEY);
+    }
+
+
+    /**
+     * Returns the <code>org.apache.struts.action.ActionMessages</code> 
+     * object for this request or <code>null</code> if none exists.
+     *
+     * @param request the servlet request
+     */
+    static ActionMessages getActionMessages(HttpServletRequest request)
+    {
+        if (request==null)
+        {
+            return null;
+        }
+
+        return (ActionMessages) request.getAttribute(Globals.MESSAGE_KEY);
     }
 
 
