@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: index.xml,v 1.19 2004/06/16 21:12:26 nbubna Exp $
+  $Id$
 -->
 <document>
 
@@ -117,14 +117,14 @@
         <br clear="all"/>
     </section>
 
-    <section name="CVS Repository">
+    <section name="Subversion Repository">
         <p>All VelocityTools project code is maintained in the 
-        CVS repository <b>jakarta-velocity-tools</b>.</p>
+        Subversion repository <b>jakarta/velocity-tools</b>.</p>
 
-        <p>Web Browser: <a href="http://cvs.apache.org/viewcvs/jakarta-velocity-tools/">
-        http://cvs.apache.org/viewcvs/jakarta-velocity-tools/</a></p>
+        <p>Web Browser: <a href="http://svn.apache.org/viewcvs.cgi/jakarta/velocity-tools/trunk/">
+        http://svn.apache.org/viewcvs.cgi/jakarta/velocity-tools/trunk/</a></p>
 
-        <p>CVS Client: <a href="http://jakarta.apache.org/site/cvsindex.html">http://jakarta.apache.org/site/cvsindex.html</a>.
+        <p>Subversion Client: <a href="http://www.apache.org/dev/version-control.html">http://www.apache.org/dev/version-control.html</a>.
         </p>
         <br clear="all"/>
     </section>
@@ -146,7 +146,7 @@
             <li>Contributing to the <a href="http://nagoya.apache.org/wiki/apachewiki.cgi?VelocimacroLibraries">VelocimacroLibraries</a></li>
           </ul>
         Other project goals and proposals can be found in the project 
-        <a href="http://cvs.apache.org/viewcvs/jakarta-velocity-tools/STATUS">STATUS</a>
+        <a href="http://svn.apache.org/viewcvs.cgi/jakarta/velocity-tools/trunk/STATUS">STATUS</a>
         file.</p>
     </section>
  </body>
