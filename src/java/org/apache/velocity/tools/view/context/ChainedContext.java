@@ -91,7 +91,7 @@ import javax.servlet.ServletContext;
  * <p>The purpose of this class is to make it easy for web designer to work 
  * with Java servlet based web applications. They do not need to be concerned 
  * with the concepts of request, session or application attributes and the 
- * live time of objects in these scopes.</p>
+ * lifetime of objects in these scopes.</p>
  *  
  * <p>Note that the put() method always puts objects into the local hashtable.
  * </p>
@@ -99,7 +99,7 @@ import javax.servlet.ServletContext;
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ChainedContext.java,v 1.1 2003/03/05 06:13:03 nbubna Exp $ 
+ * @version $Id: ChainedContext.java,v 1.2 2003/03/22 20:33:09 nbubna Exp $ 
  */
 public class ChainedContext extends VelocityContext implements ViewContext
 {

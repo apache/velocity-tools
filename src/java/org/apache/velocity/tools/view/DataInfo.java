@@ -57,12 +57,33 @@ package org.apache.velocity.tools.view;
 
 
 /**
- * ToolInfo implementation to handle "primitive" data types.
- * It currently supports String, Number, and Boolean data.
+ * <p>ToolInfo implementation to handle "primitive" data types.
+ * It currently supports String, Number, and Boolean data.</p>
+ *
+ * <p>An example of data elements specified in your toolbox.xml
+ * might be:
+ * <pre>
+ *  &lt;data type="string"&gt;
+ *    &lt;key&gt;app_name&lt;/key&gt;
+ *    &lt;value&gt;FooWeb Deluxe&lt;/value&gt;
+ *  &lt;/data&gt;
+ *  &lt;data type="number"&gt;
+ *    &lt;key&gt;app_version&lt;/key&gt;
+ *    &lt;value&gt;4.2&lt;/value&gt;
+ *  &lt;/data&gt;
+ *  &lt;data type="boolean"&gt;
+ *    &lt;key&gt;debug&lt;/key&gt;
+ *    &lt;value&gt;true&lt;/value&gt;
+ *  &lt;/data&gt;
+ *  &lt;data type="number"&gt;
+ *    &lt;key&gt;screen_width&lt;/key&gt;
+ *    &lt;value&gt;400&lt;/value&gt;
+ *  &lt;/data&gt;
+ * </pre></p>
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: DataInfo.java,v 1.1 2003/03/05 06:13:03 nbubna Exp $
+ * @version $Id: DataInfo.java,v 1.2 2003/03/22 20:33:09 nbubna Exp $
  */
 public class DataInfo implements ToolInfo
 {

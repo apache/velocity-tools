@@ -114,24 +114,24 @@ import org.apache.velocity.tools.view.context.ViewContext;
  *      &lt;scope&gt;application&lt;/scope&gt;
  *      &lt;class&gt;org.apache.velocity.tools.tools.MathTool&lt;/class&gt;
  *   &lt;/tool&gt;
- *   &lt;data type="Number"&gt;
+ *   &lt;data type="number"&gt;
  *      &lt;key&gt;luckynumber&lt;/key&gt;
  *      &lt;value&gt;1.37&lt;/class&gt;
  *   &lt;/data&gt;
- *   &lt;data type="String"&gt;
+ *   &lt;data type="string"&gt;
  *      &lt;key&gt;greeting&lt;/key&gt;
  *      &lt;value&gt;Hello World!&lt;/class&gt;
  *   &lt;/data&gt;
  * &lt;/toolbox&gt;    
  * </pre>
  * <p>The recommended location for the configuration file is the WEB-INF directory of the
- * web application. 
+ * web application.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabriel Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ServletToolboxManager.java,v 1.1 2003/03/05 06:13:03 nbubna Exp $
+ * @version $Id: ServletToolboxManager.java,v 1.2 2003/03/22 20:33:09 nbubna Exp $
  * 
  */
 public class ServletToolboxManager extends XMLToolboxManager
@@ -245,18 +245,19 @@ public class ServletToolboxManager extends XMLToolboxManager
     // --------------------------------------------------- Methods ------------
 
     /**
-     * Sets whether or not to create a new session when none exists for the
+     * <p>Sets whether or not to create a new session when none exists for the
      * current request and session-scoped tools have been defined for this
-     * toolbox.
+     * toolbox.</p>
      *
-     * If true, then a call to {@link getToolboxContext} will 
+     * <p>If true, then a call to {@link #getToolboxContext(Object)} will 
      * create a new session if none currently exists for this request and
-     * the toolbox has one or more session-scoped tools designed.
+     * the toolbox has one or more session-scoped tools designed.</p>
      *
-     * If false, then a call to {@link getToolboxContext} will never
+     * <p>If false, then a call to getToolboxContext(Object) will never
      * create a new session for the current request.
      * This effectively means that no session-scoped tools will be added to 
      * the ToolboxContext for a request that does not have a session object.
+     * </p>
      *
      * The default value is true.
      */
@@ -312,7 +313,7 @@ public class ServletToolboxManager extends XMLToolboxManager
     /**
      * Reads the value for create-session.
      *
-     * @see setCreateSession(boolean)
+     * @see #setCreateSession(boolean)
      */
     protected boolean readCreateSession(Element e) throws Exception
     {
@@ -360,7 +361,7 @@ public class ServletToolboxManager extends XMLToolboxManager
 
     /**
      * Overrides XMLToolboxManager to separate tools by scope.
-     * For this to work, we obviously override getToolboxContext as well.
+     * For this to work, we obviously override getToolboxContext(Object) as well.
      */
     public void addTool(ToolInfo info)
     {
@@ -410,6 +411,7 @@ public class ServletToolboxManager extends XMLToolboxManager
      * map in the session attributes.
      * Request scope tools are initialized on every request.
      * 
+     * @param initData the {@link ViewContext} for the current servlet request
      */
     public ToolboxContext getToolboxContext(Object initData)
     {

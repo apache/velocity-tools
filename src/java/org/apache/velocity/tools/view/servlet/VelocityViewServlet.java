@@ -105,9 +105,9 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  * </ul>
  *
  * <p>VelocityViewServlet supports the following configuration parameters
- * in webl.xml:</p>
+ * in web.xml:</p>
  * <dl>
- *   <dt>toolbox</dt>
+ *   <dt>org.apache.velocity.toolbox</dt>
  *   <dd>Path and name of the toolbox configuration file. The path must be
  *     relative to the web application root directory. If this parameter is
  *     not found, no toolbox is instantiated.</dd>
@@ -117,35 +117,28 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  *     is not present, Velocity is initialized with default settings.</dd>
  * </dl>
  * 
- * <p>There are methods you can override to access, alter or control
+ * <p>There are methods you may wish to override to access, alter or control
  * any part of the request processing chain.  Please see the javadocs for
  * more information on :
  * <ul>
- * <li> loadConfiguration() : for setting up the Velocity runtime
- * <li> createContext() : for creating and loading the Context
- * <li> setContentType() : for changing the content type on a request
- *                         by request basis
- * <li> handleRequest() : you <b>must</b> implement this 
- * <li> mergeTemplate()  : the template rendering process
- * <li> requestCleanup() : post rendering resource or other cleanup
- * <li> error() : error handling
+ * <li> {@link #loadConfiguration} : <br>for loading Velocity properties and
+ *                                     configuring the Velocity runtime
+ * <li> {@link #setContentType} : <br>for changing the content type on a request
+ *                                  by request basis
+ * <li> {@link #requestCleanup} : <br>post rendering resource or other cleanup
+ * <li> {@link #error} : <br>error handling
  * </ul>
- * <br>
- * If you put a contentType object into the context within either your
- * serlvet or within your template, then that will be used to override
- * the default content type specified in the properties file.
- *
- * "contentType" - The value for the Content-Type: header
+ * </p>
  *
  * @author Dave Bryson
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
- * @author <a href="kjohnson@transparent.com">Kent Johnson</a>
- * @author <a href="dlr@finemaltcoding.com">Daniel Rall</a>
- * @author <a href="nathan@esha.com">Nathan Bubna</a>
+ * @author <a href="mailto:kjohnson@transparent.com">Kent Johnson</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.6 2003/03/20 06:07:27 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.7 2003/03/22 20:33:09 nbubna Exp $
  */
 
 public class VelocityViewServlet extends HttpServlet
@@ -162,26 +155,27 @@ public class VelocityViewServlet extends HttpServlet
     public static final String DEFAULT_CONTENT_TYPE = "text/html";
   
     /**
-     * Encoding for the output stream
+     * Default encoding for the output stream
      */
     public static final String DEFAULT_OUTPUT_ENCODING = "ISO-8859-1";
 
     /**
-     * Key used to access the ServletContext in the Velocity
+     * Key used to access the ServletContext in 
+     * the Velocity application attributes.
      */
     public static final String SERVLET_CONTEXT_KEY = ServletContext.class.getName();
 
 
     /**
      * Key used to access the toolbox configuration file path from the
-     * Servlet or webapp init parameters.
+     * Servlet or webapp init parameters ("org.apache.velocity.toolbox").
      */
     protected static final String TOOLBOX_KEY = 
         "org.apache.velocity.toolbox";
 
     /**
      * This is the string that is looked for when getInitParameter is
-     * called (<code>org.apache.velocity.properties</code>).
+     * called ("org.apache.velocity.properties").
      */
     protected static final String INIT_PROPS_KEY =
         "org.apache.velocity.properties";

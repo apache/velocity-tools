@@ -66,10 +66,13 @@ import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 
 /**
- *  
+ * Resource loader that uses the ServletContext of a webapp to
+ * load Velocity templates.  (it's much easier to use with servlets than
+ * the standard FileResourceLoader.)
+ *
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Id: WebappLoader.java,v 1.3 2003/03/20 06:07:27 nbubna Exp $
+ * @version $Id: WebappLoader.java,v 1.4 2003/03/22 20:33:09 nbubna Exp $
  */
 public class WebappLoader extends ResourceLoader
 {
