@@ -56,30 +56,21 @@ package org.apache.velocity.tools.struts;
 
 import java.util.List;
 import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.servlet.ServletContext;
-
 import org.apache.struts.util.MessageResources;
-import org.apache.struts.action.*;
-
-import org.apache.velocity.app.Velocity;
-import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ViewTool;
-
 
 /**
- * <p>View tool that provides methods to render Struts message resources.</p>
+ * <p>View tool that provides methods to render Struts
+ * application resources for internationalized text.</p>
+ * 
  * <p><pre>
  * Template example(s):
- *   #if( $msg.exists('greeting') )
- *     $msg.greeting
+ *   #if( $text.exists('greeting') )
+ *     $text.greeting
  *   #end
  *
  * Toolbox configuration:
  * &lt;tool&gt;
- *   &lt;key&gt;msg&lt;/key&gt;
+ *   &lt;key&gt;text&lt;/key&gt;
  *   &lt;scope&gt;request&lt;/scope&gt;
  *   &lt;class&gt;org.apache.velocity.tools.struts.MessageTool&lt;/class&gt;
  * &lt;/tool&gt;
@@ -89,7 +80,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @since VelocityTools 1.0
- * @version $Id: MessageTool.java,v 1.10 2003/12/31 17:05:37 nbubna Exp $
+ * @version $Id: MessageTool.java,v 1.11 2004/02/12 23:59:03 nbubna Exp $
  */
 public class MessageTool extends MessageResourcesTool
 {
