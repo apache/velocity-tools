@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<project href="http://jakarta.apache.org/velocity">
+
+  <title>VelocityStruts</title>
+  <logo href="http://jakarta.apache.org/velocity/images/logo.gif"> &lt;  :)  /&gt;</logo>
+
+  <body>
+
+    <uplink name="Velocity Tools Home"       href="../docs/index.html" alt="top"/>
+
+    <menu name="About VelocityStruts">
+        <item name="Overview"                href="index.html"/>
+        <item name="Documentation"           href="#Documentation"/>
+        <item name="Download"                href="#Download"/>
+        <item name="License"                 href="#License"/>
+    </menu>
+
+    <menu name="VelocityStruts User Guide">
+        <item name="Overview"                href="userguide.html"/>
+        <item name="Documentation"           href="userguide.html#Documentation"/>
+        <item name="Model 2 Applications"    href="userguide.html#Model 2 Applications"/>
+        <item name="Velocity Context"        href="userguide.html#Velocity Context"/>
+        <item name="View Tools"              href="userguide.html#View Tools"/>
+        <item name="Velocity and JSP"        href="userguide.html#Velocity and JSP"/>
+        <item name="Velocity vs. JSP"        href="userguide.html#Velocity vs. JSP"/>
+        <item name="Velocity Configuration"  href="userguide.html#Velocity Configuration"/>
+        <item name="Velocity Configuration"  href="userguide.html#Velocity Configuration"/>
+    </menu>
+
+    <menu name="VelocityStruts Tool Reference" href="StrutsTools.html">
+        <item name="ErrorsTool"               href="ErrorsTool.html"/>
+        <item name="FormTool"                 href="FormTool.html"/>
+        <item name="LinkTool"                 href="LinkTool.html"/>
+        <item name="MessageTool"              href="MessageTool.html"/>
+    </menu>
+
+    <printerversion/>
+
+
+  </body>
+</project>
+

@@ -6,7 +6,7 @@
         <title>Velocity Tools Project</title>
         <author email="geirm@apache.org">Geir Magnusson Jr.</author>
         <author email="sidler@apache.org">Gabriel Sidler</author>
-        <projectfile>xdocs/menue.xml</projectfile>
+        <projectfile>xdocs/menu.xml</projectfile>
     </properties>
 
     <body>
@@ -22,18 +22,13 @@
         <p><strong>Subprojects</strong></p>
 
         <dl>
-            <dt><strong><a href="../tools/docs/index.html">VelocityLibrary</a></strong></dt> 
-            <dd>VelocityLibrary is an effort to setup a library of reuseable and well documented
-                view tools. Most tools are optimized for use with an automatically managed
-                toolbox (see VelocityServlet).</dd>
-
             <dt><strong><a href="../struts/docs/index.html">VelocityStruts</a></strong></dt>
             <dd>The VelocityStruts package is a set of view tools, examples and documentation for 
                 using the Velocity template engine as a view layer technology for the 
                 <a href="http://jakarta.apache.org/struts/">Jakarta Struts</a> web 
                 application framework. It is based on the VelocityServlet project.</dd> 
 
-            <dt><strong><a href="../view/docs/velservlet.html">VelocityServlet</a></strong></dt>
+            <dt><strong><a href="../view/docs/velservlet.html">VelocityView</a></strong></dt>
             <dd>VelocityServlet is a standalone servlet that can be used for template 
                 rendering in Web applications. It offers automatic population of the 
                 Velocity context and automatic, configurable management of view tools. 
@@ -41,8 +36,10 @@
                 and the definition of a set of interfaces for view tools, thereby enabling the
                 efficient handling and reuse of view tools.</dd>
 
-            <dt><strong>Utilities</strong></dt> 
-            <dd>When in place, this will be a library of Velocity-related utilities.</dd>
+            <dt><strong><a href="../view/docs/tools-index.html">VelocityView - Tools</a></strong></dt> 
+            <dd>VelocityView - Tools is an effort to setup a library of reuseable and well documented
+                view tools. Most tools are optimized for use with an automatically managed
+                toolbox (see VelocityServlet).</dd>
     
             <dt><strong>Velocimacros</strong></dt> 
             <dd>When in place, this will be a repository of Velocimacros for use in 

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<project href="http://jakarta.apache.org/velocity/">
+
+  <title>VelocityServlet Menu</title>
+  <logo href="http://jakarta.apache.org/velocity/images/logo.gif">&lt;  :)  /&gt;</logo>
+
+  <body>
+
+    <uplink name="Velocity Tools Home"        href="index.html" alt="top"/>
+
+    <menu name="About VelocityServlet">
+        <item name="Overview"                 href="velservlet.html"/>
+        <item name="Examples"/>
+        <item name="Servlet Configuration"/>
+        <item name="Toolbox Configuration"/>
+        <item name="Download"/>
+        <item name="Javadoc"                  href="javadoc/index.html"/>
+    </menu>
+
+    <printerversion/>
+
+  </body>
+</project>
+

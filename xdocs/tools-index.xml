@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+
+<document>
+
+    <properties>
+        <title>Project VelocityLibrary</title>
+        <author email="sidler@apache.org">Gabriel Sidler</author>
+        <projectfile>xdocs/menu.xml</projectfile>
+    </properties>
+
+    <body>
+
+    <section name="Welcome to the VelocityLibrary Project">
+
+        <p>VelocityLibrary is a Velocity subproject that aims to build of collection
+        of reusable and well documented view tools.</p>
+
+        <p>Emphasis is being put on providing tool documentation that is 
+        suitable for template designers. To achive this goal, a documenation
+        format has been defined that captures all information relevant to the
+        template designer. It is being supplied in addition to the customary
+        Javadoc. This should help to achive what we always claim for Velocity:
+        "Decouple the work of template designers from the work of software
+        developers". Look at the <a href="MessageTool.html">Struts MessageTool</a> for a good example of the
+        new documentation format. We are keen on your feedback. </p>
+        
+        <p>Your contribution of useful view tools to the VelocityLibrary
+        project are welcome. See <a href="#Contributions">below</a> for more details.</p>
+        
+        <p><strong>VelocityLibrary Content:</strong></p>
+
+        <dl>
+            <dt><a href="DateTool.html"><strong>DateTool</strong></a></dt>
+            <dd>A tool for manipulating and formating dates.</dd>
+                
+            <dt><a href="MathTool.html"><strong>MathTool</strong></a></dt>
+            <dd>A tool for performing floating point math.</dd>
+                
+            <dt><a href="ParameterParser.html"><strong>ParameterParser</strong></a></dt>
+            <dd>A tool for easy parsing of servlet request parameters.</dd>
+                
+            <dt><a href="ToolLoader.html"><strong>ToolLoader</strong></a></dt>
+            <dd>A tool allowing template designers to load view tools 
+            from within the template.</dd>
+        </dl>
+
+    </section>
+
+
+    <section name="Download">
+
+        <p>There is no release available at this point in time.</p>
+        
+        <pre> </pre>
+
+
+    </section>
+
+
+    <section name="Contributions">
+
+        <p>We welcome your contributions to this library. Please post your offer
+        to contribute a tool to the 
+        <a href="mailto:velocity-user@jakarta.apache.org">Velocity mailing list</a>.</p>
+
+        <p><strong>Checklist for Contributions</strong></p>
+        <ul>
+            <li><a href="http://jakarta.apache.org/velocity/code-standards.html">Velocity coding conventions</a></li>
+            <li>JavaDoc included (the more detailed the better)</li>
+            <li>Examples included (in JavaDoc or as stand-alone template example)</li>
+        </ul>
+        
+                        
+    </section>
+
+
+ </body>
+</document>
+

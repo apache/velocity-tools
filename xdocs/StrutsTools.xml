@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+
+<document>
+
+    <properties>
+        <title>Tools Reference</title>
+        <author email="sidler@apache.org">Gabriel Sidler</author>
+        <projectfile>xdocs/menu.xml</projectfile>
+    </properties>
+
+    <body>
+
+    <section name="VelocityStruts - Reference Documentation">
+
+        <p>
+        VelocityStruts includes four view tools that provide access
+        to Struts resources from within Velocity templates. This page is the 
+        starting point to the reference documentation for the view tools.
+        Primary audience are the template designers.</p> 
+               
+        <p>
+        Velocity for Struts currently supports the follwing four tools:
+        </p>
+        
+        <p>
+        <strong><a href="MessageTool.html">MessageTool</a></strong><br />
+        Provides access to the Struts message resources for internationalized output.
+        </p>
+
+        <p>
+        <strong><a href="ErrorsTool.html">ErrorsTool</a></strong><br />
+        Provides methods to work with Struts error messages.
+        </p>
+
+        <p>
+        <strong><a href="FormTool.html">FormTool</a></strong><br />
+        Provides miscellaneous methods to work with forms and form beans in the context 
+        of Struts applications.
+        </p>
+
+        <p>
+        <strong><a href="LinkTool.html">LinkTool</a></strong><br />
+        Provides methods to work with URIs.
+        </p>
+        
+        <p>
+        <strong>ActionMessagesTool</strong><br/>
+        Provides methods to work with Struts action messages, a new feature in the
+        upcoming 1.1. release. Will be added shortly.
+        </p>
+
+
+
+    </section>
+
+
+ </body>
+</document>
+
