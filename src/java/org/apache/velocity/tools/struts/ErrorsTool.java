@@ -54,12 +54,7 @@
 
 package org.apache.velocity.tools.struts;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import org.apache.struts.util.MessageResources;
-import org.apache.struts.action.ActionError;
 import org.apache.struts.action.ActionErrors;
-import org.apache.velocity.app.Velocity;
 
 /**
  * <p>View tool to work with the Struts error messages.</p>
@@ -82,24 +77,15 @@ import org.apache.velocity.app.Velocity;
  * </pre></p>
  *
  * <p>This tool should only be used in the request scope.</p>
+ * <p>Since VelocityTools 1.1, ErrorsTool extends ActionMessagesTool.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
+ * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Id: ErrorsTool.java,v 1.9 2003/11/06 18:03:43 nbubna Exp $
+ * @version $Id: ErrorsTool.java,v 1.10 2004/01/06 00:53:06 nbubna Exp $
  */
-public class ErrorsTool extends MessageResourcesTool
+public class ErrorsTool extends ActionMessagesTool
 {
-
-    /** A reference to the queued action messages. */
-    protected ActionErrors errors;
-
-
-    /**
-     * Default constructor. Tool must be initialized before use.
-     */
-    public ErrorsTool()
-    {}
-    
     
     /**
      * Initializes this tool.
@@ -112,182 +98,7 @@ public class ErrorsTool extends MessageResourcesTool
         //setup superclass instance members
         super.init(obj);
 
-        this.errors = StrutsUtils.getActionErrors(this.request);
-    }
-
-
-    // --------------------------------------------- View Helpers -------------
-
-    /**
-     * <p>Returns <code>true</code> if there are action errors queued, 
-     * otherwise <code>false</code>.</p>
-     */
-    public boolean exist() 
-    {
-        if (errors == null)
-        {
-            return false;
-        }
-        return !errors.isEmpty();
-    }
-
-
-    /**
-     * <p>Returns true if there are action errors queued for the specified 
-     * category of errors, otherwise <code>false</code>.</p>
-     *
-     * @param property the category of errors to check for
-     */
-    public boolean exist(String property) 
-    {
-        if (errors == null)
-        {
-            return false;
-        }
-        return (errors.size(property) > 0);
-    }
-
-
-    /**
-     * Returns the number of action errors queued.
-     */
-    public int getSize() 
-    {
-        if (errors == null)
-        {
-            return 0;
-        }        
-        return errors.size();
-    }
-
-
-    /**
-     * Returns the number of action errors queued for a particular property.
-     *
-     * @param property the category of errors to check for
-     */
-    public int getSize(String property) 
-    {
-        if (errors == null)
-        {
-            return 0;
-        }
-        return errors.size(property);
-    }
-
-
-    /**
-     * <p>
-     * This a convenience method and the equivalent of 
-     * <code>$errors.get($errors.globalName)</code>. 
-     * </p>
-     * <p>
-     * Returns the set of localized error messages as an 
-     * <code>java.util.ArrayList</code> of <code> java.lang.String</code> 
-     * for all errors queued of the global category or <code>null</code> 
-     * if no error are queued for the specified category.
-     * </p>
-     * <p>
-     * If the message resources don't contain an error message for a
-     * particular error key, the key itself is used as error message.
-     * </p>
-     */
-    public ArrayList getGlobal() 
-    {
-        return get(getGlobalName());
-    }
-
-
-    /**
-     * Returns the set of localized error messages as an 
-     * <code>java.util.ArrayList</code> of <code> java.lang.String</code> 
-     * for all errors queued or <code>null</code> if no errors are queued.
-     * If the message resources don't contain an error message for a 
-     * particular error key, the key itself is used as error message.
-     */
-    public ArrayList getAll() 
-    {
-        return get(null, null);
-    }
-
-
-    /**
-     * Returns the set of localized error messages as an 
-     * <code>java.util.ArrayList</code> of <code> java.lang.String</code> 
-     * for all errors queued of the specified category or <code>null</code> 
-     * if no error are queued for the specified category. If the message 
-     * resources don't contain an error message for a particular error key, 
-     * the key itself is used as error message.
-     *
-     * @param property the category of errors to operate on
-     */
-    public ArrayList get(String property) 
-    {
-        return get(property, null);
-    }
-
-
-    /**
-     * Returns the set of localized error messages as an 
-     * <code>java.util.ArrayList</code> of <code>java.lang.String</code> 
-     * for all errors queued of the specified category or <code>null</code> 
-     * if no error are queued for the specified category. If the message 
-     * resources don't contain an error message for a particular error key, 
-     * the key itself is used as error message.
-     *
-     * @param property the category of errors to operate on
-     * @param bundle the message resource bundle to use
-     * @since VelocityTools 1.1
-     */
-    public ArrayList get(String property, String bundle) 
-    {
-        if (errors == null || errors.isEmpty())
-        {
-            return null;
-        }
-        
-        MessageResources res = getResources(bundle);
-        if (resources == null) 
-        {
-            //FIXME? should we return the list of error keys instead?
-            return null;
-        }
-        
-        Iterator errormsgs;
-        if (property == null)
-        {
-            errormsgs = errors.get();
-        }
-        else
-        {
-            errormsgs = errors.get(property);
-        }
-        
-        if (!(errormsgs.hasNext())) 
-        {
-            return null;
-        }
-
-        ArrayList list = new ArrayList();
-        while (errormsgs.hasNext())
-        {
-            ActionError errormsg = (ActionError)errormsgs.next();
-            String message = res.getMessage(this.locale, 
-                                            errormsg.getKey(), 
-                                            errormsg.getValues());
-            if (message != null)
-            {
-                list.add(message);
-            }
-            else
-            {
-                // if error message cannot be found for a key, return key instead
-                Velocity.warn("Message for key \"" + errormsg.getKey() + 
-                              "\" could not be found.");
-                list.add(errormsg.getKey());
-            }
-        }
-        return list;
+        this.actionMsgs = StrutsUtils.getActionErrors(this.request);
     }
 
 
@@ -347,13 +158,15 @@ public class ErrorsTool extends MessageResourcesTool
 
 
     /**
-     * Returns the default "GLOBAL" category name that can be used for
-     * messages that are not associated with a particular property.
+     * Overrrides {@link ActionMessagesTool#getGlobalName()}
+     * to return the "global" key for action errors.
+     *
+     * @see org.apache.struts.action.ActionErrors.GLOBAL_ERROR
+     * @deprecated This will be removed after VelocityTools 1.1.
      */
     public String getGlobalName()
     {
         return ActionErrors.GLOBAL_ERROR;
     }
-
 
 }
