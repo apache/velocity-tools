@@ -17,14 +17,17 @@
     </menu>
 
     <menu name="Tool Documentation">
-        <item name="DateTool"         href="DateTool.html"/>
-        <item name="MathTool"         href="MathTool.html"/>
-        <item name="RenderTool"       href="../javadoc/org/apache/velocity/tools/generic/RenderTool.html"/>
-        <item name="IteratorTool"     href="../javadoc/org/apache/velocity/tools/generic/IteratorTool.html"/> />
+      <item name="DateTool"     href="../javadoc/org/apache/velocity/tools/generic/DateTool.html"/>
+      <item name="IteratorTool" href="../javadoc/org/apache/velocity/tools/generic/IteratorTool.html"/> />
+      <item name="MathTool"     href="MathTool.html"/>
+      <item name="RenderTool"   href="../javadoc/org/apache/velocity/tools/generic/RenderTool.html"/>
+    </menu>
+
+    <menu name="Other Subprojects">
+      <item name="VelocityView"   href="../view/"/>
+      <item name="VelocityStruts" href="../struts/"/>
     </menu>
 
     <printerversion/>
-
-
   </body>
 </project>

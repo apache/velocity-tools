@@ -6,6 +6,7 @@
         <title>Overview</title> 
         <author email="sidler@apache.org">Gabriel Sidler</author>
         <author email="tcolson@cisco.com">Tim Colson</author>
+        <author email="nbubna@apache.org">Nathan Bubna</author>
         <projectfile>xdocs/struts/menu.xml</projectfile>
     </properties>
 
@@ -61,8 +62,13 @@
             people report being productive within a day.</li>
 
             <li>Velocity is easy to extend with <i>Tools</i> which are simply 
-            any class which has public methods. These are typically easier to 
-            develop than JSP custom tag libraries.</li>
+            any class which has public methods. These are typically much cleaner
+            and easier to develop than JSP custom tag libraries.</li>
+            
+            <li>Using the new TilesTool it is now possible
+            to mix Velocity and JSP tiles in the same page/layout. For those
+            using Tiles, this makes gradual migration between or integration of
+            the two view technologies trivially easy!</li>
 
             <li>Velocity 'macros' are a powerful tool for the View Designer. 
             They enable the creation of reusable snippets of markup, often 
@@ -104,26 +110,33 @@
           development time.</i>&quot;</p>
           <p>&quot;<i>Struts is a solid framework and Velocity makes it 
           even better.</i>&quot;</p>    
+          <p>&quot;<i>I find that the Velocity Tools for Struts works as well, or better, with 
+          Struts than another other presentation technology, bar none. In fact, 
+          most of the tools work just as well with any other framework you might 
+          care to name.</i>&quot; 
+          --<a href="http://nagoya.apache.org/eyebrowse/ReadMsg?listName=velocity-user@jakarta.apache.org&amp;msgNo=11255">Ted Husted</a>
+          (author of <a href="http://husted.com/struts/book.html">Struts in Action</a>)</p>
         </blockquote>
         </p>
     </section>
 
     <section name="What About Struts 1.1?">
-        <p>Well, since our 1.0 release, we've been <a href="../changes.html">busy</a>.  Thanks in large part to the
-        efforts of our newest committer on the project (Marino), we've now
-        implemented support for all of the new features in Struts 1.1.  The latest
-        nightly builds include support for ActionMessages, Tiles, javascript validation, 
+        <p>Well, since our 1.0 release, we've been <a href="../changes.html">busy</a>!  
+        Thanks mostly to the efforts of our newest committer on the project (Marino), 
+        we've now implemented support for all of the new features in Struts 1.1.  
+        VelocityStruts now supports ActionMessages, Tiles, javascript validation, 
         and modules, among numerous other improvements.</p>
         
-        <p>In the meantime, here's a few tips for using Velocity Tools with Struts 1.1:
+        <p>For those not yet ready to step out and use a nightly build,
+        here's a few tips for using VelocityTools 1.0 with Struts 1.1:
         
         <ol>
           <li>Tiles alternatives:
-          <a href="http://jakarta.apache.org/velocity/tools/view/layoutservlet.html">VelocityLayoutServlet</a>
+          <a href="../view/layoutservlet.html">VelocityLayoutServlet</a>
           or the disscusion <a href="http://www.mail-archive.com/struts-user@jakarta.apache.org/msg63487.html">here</a></li>
           <li>Wanna use Validator? There's some example code 
           <a href="http://www.mail-archive.com/velocity-user@jakarta.apache.org/msg09167.html">here</a></li>
-          (though this doesn't demonstrate new client-side validation feature).
+          (note that this doesn't use the newly added support for javascript validation).
         </ol>
         </p>
         
