@@ -115,7 +115,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Revision: 1.1 $ $Date: 2003/10/14 22:08:57 $
+ * @version $Revision: 1.2 $ $Date: 2003/10/29 23:59:24 $
  */
 public class ValidatorTool implements ViewTool {
 
@@ -184,6 +184,8 @@ public class ValidatorTool implements ViewTool {
      * Gets the key (form name) that will be used
      * to retrieve a set of validation rules to be
      * performed on the bean passed in for validation.
+     *
+     * @return the key (form name)
      */
     public String getFormName()
     {
@@ -196,6 +198,8 @@ public class ValidatorTool implements ViewTool {
      * performed on the bean passed in for validation.
      * Specifying a form name places a
      * <script> </script> tag around the javascript.
+     *
+     * @param formName the key (form name)
      */
     public void setFormName(String formName)
     {
@@ -207,6 +211,8 @@ public class ValidatorTool implements ViewTool {
      * Only field validations with a matching page numer
      * will be generated that match the current page number.
      * Only valid when the formName attribute is set.
+     *
+     * @return the current page number of a multi-part form
      */
     public int getPage()
     {
@@ -218,6 +224,8 @@ public class ValidatorTool implements ViewTool {
      * Only field validations with a matching page numer
      * will be generated that match the current page number.
      * Only valid when the formName attribute is set.
+     *
+     * @param page the current page number of a multi-part form
      */
     public void setPage(int page)
     {
@@ -229,6 +237,8 @@ public class ValidatorTool implements ViewTool {
      * validation method name if it has a value.  This overrides
      * the auto-generated method name based on the key (form name)
      * passed in.
+     *
+     * @return the method name that will be used for the Javascript validation method
      */
     public String getMethod()
     {
@@ -240,6 +250,8 @@ public class ValidatorTool implements ViewTool {
      * validation method name if it has a value.  This overrides
      * the auto-generated method name based on the key (form name)
      * passed in.
+     *
+     * @param methodName the method name that will be used for the Javascript validation method name
      */
     public void setMethod(String methodName)
     {
@@ -250,6 +262,8 @@ public class ValidatorTool implements ViewTool {
      * Gets whether or not to generate the static
      * JavaScript.  If this is set to 'true', which
      * is the default, the static JavaScript will be generated.
+     *
+     * @return true to generate the static JavaScript.
      */
     public boolean getStaticJavascript()
     {
@@ -260,6 +274,8 @@ public class ValidatorTool implements ViewTool {
      * Sets whether or not to generate the static
      * JavaScript.  If this is set to 'true', which
      * is the default, the static JavaScript will be generated.
+     *
+     * @param staticJavascript whether or not to generate the static JavaScript
      */
     public void setStaticJavascript(boolean staticJavascript)
     {
@@ -270,6 +286,8 @@ public class ValidatorTool implements ViewTool {
      * Gets whether or not to generate the dynamic
      * JavaScript.  If this is set to 'true', which
      * is the default, the dynamic JavaScript will be generated.
+     *
+     * @return true to generate the dynamic JavaScript
      */
     public boolean getDynamicJavascript()
     {
@@ -280,6 +298,8 @@ public class ValidatorTool implements ViewTool {
      * Sets whether or not to generate the dynamic
      * JavaScript.  If this is set to 'true', which
      * is the default, the dynamic JavaScript will be generated.
+     *
+     * @param dynamicJavascript whether or not to generate the dynamic JavaScript
      */
     public void setDynamicJavascript(boolean dynamicJavascript)
     {
@@ -290,6 +310,8 @@ public class ValidatorTool implements ViewTool {
      * Gets whether or not to delimit the
      * JavaScript with html comments.  If this is set to 'true', which
      * is the default, html comments will surround the JavaScript.
+     *
+     * @return true if the JavaScript should be delimited with html comments
      */
     public boolean getHtmlComment()
     {
@@ -300,6 +322,8 @@ public class ValidatorTool implements ViewTool {
      * Sets whether or not to delimit the
      * JavaScript with html comments.  If this is set to 'true', which
      * is the default, html comments will surround the JavaScript.
+     *
+     * @param htmlComment whether or not to delimit the JavaScript with html comments
      */
     public void setHtmlComment(boolean htmlComment)
     {
@@ -309,6 +333,8 @@ public class ValidatorTool implements ViewTool {
     /**
      * Gets the src attribute's value when defining
      * the html script element.
+     *
+     * @return the src attribute's value
      */
     public String getSrc()
     {
@@ -320,6 +346,8 @@ public class ValidatorTool implements ViewTool {
      * an external script resource) when defining
      * the html script element. The src attribute is only recognized
      * when the formName attribute is specified.
+     *
+     * @param src the src attribute's value
      */
     public void setSrc(String src)
     {
@@ -328,6 +356,7 @@ public class ValidatorTool implements ViewTool {
 
     /**
      * Returns the cdata setting "true" or "false".
+     *
      * @return boolean - "true" if JavaScript will be hidden in a CDATA section
      */
     public boolean getCdata()
@@ -349,6 +378,10 @@ public class ValidatorTool implements ViewTool {
 
     /**
      * Render the JavaScript for to perform validations based on the form name.
+     *
+     * @param formName the key (form name)
+     * @return the Javascript for the specified key
+     * @throws Exception
      */
     public String getJavascript(String formName) throws Exception
     {
@@ -397,6 +430,11 @@ public class ValidatorTool implements ViewTool {
 
     /**
      * Generates the dynamic JavaScript for the form.
+     *
+     * @param resources the validator resources
+     * @param locale the locale for the current request
+     * @param form the form to generate javascript for
+     * @return the dynamic javascript
      */
     protected String getDynamicJavascript(ValidatorResources resources,
                                           Locale locale,
@@ -558,6 +596,9 @@ public class ValidatorTool implements ViewTool {
 
     /**
      * Get List of actions for the given Form.
+     *
+     * @param resources the validator resources
+     * @param form the form for which the actions are requested
      * @return A sorted List of ValidatorAction objects.
      */
     protected List createActionList(ValidatorResources resources, Form form)
@@ -613,6 +654,9 @@ public class ValidatorTool implements ViewTool {
 
     /**
      * Returns the opening script element and some initial javascript.
+     *
+     * @param methods javascript validation methods
+     * @return  the opening script element and some initial javascript
      */
     protected String getJavascriptBegin(String methods)
     {
@@ -666,7 +710,11 @@ public class ValidatorTool implements ViewTool {
         return sb.toString();
     }
 
-
+    /**
+     *
+     * @param resources the validation resources
+     * @return the static javascript methods
+     */
     protected String getJavascriptStaticMethods(ValidatorResources resources)
     {
         StringBuffer sb = new StringBuffer("\n\n");
@@ -690,6 +738,8 @@ public class ValidatorTool implements ViewTool {
 
     /**
      * Returns the closing script element.
+     *
+     * @return the closing script element
      */
     protected String getJavascriptEnd()
     {
@@ -714,6 +764,9 @@ public class ValidatorTool implements ViewTool {
     /**
      * The value <code>null</code> will be returned at the end of the sequence.
      *     ex: "zz" will return <code>null</code>
+     *
+     * @param input the string to process
+     * @return the next var
      */
     private String getNextVar(String input)
     {
@@ -758,6 +811,11 @@ public class ValidatorTool implements ViewTool {
 
     /**
      * Replaces a single character in a <code>String</code>
+     *
+     * @param input the string to process
+     * @param pos the position of the caracter to replace
+     * @param c the substitute char
+     * @return the input string with the specified char replaced
      */
     private String replaceChar(String input, int pos, char c)
     {
@@ -779,6 +837,8 @@ public class ValidatorTool implements ViewTool {
 
     /**
      * Constructs the beginning <script> element depending on xhtml status.
+     *
+     * @return the beginning <script> element depending on xhtml status
      */
     private String getStartElement()
     {
@@ -805,6 +865,12 @@ public class ValidatorTool implements ViewTool {
      */
     protected class ValidatorActionComparator implements Comparator
     {
+        /**
+         *
+         * @param o1 the first object to compare with regard to depends
+         * @param o2 the second object to compare with regard to depends
+         * @return -1, 0 or 1
+         */
         public int compare(Object o1, Object o2)
         {
             ValidatorAction va1 = (ValidatorAction)o1;
