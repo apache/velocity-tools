@@ -39,7 +39,7 @@
 
     <p>A typical application use-case is to provide the view rendering layer for 
     a Servlet-based web application framework. The
-    <a href="../../struts/docs/index.html">VelocityStruts</a> subproject 
+    <a href="../struts/">VelocityStruts</a> subproject 
     uses the approach to bring Velocity templates to the Struts application framework.</p>
   </section>
 
