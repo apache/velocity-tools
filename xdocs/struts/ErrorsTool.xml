@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: ErrorsTool.xml,v 1.5 2004/11/10 20:24:19 nbubna Exp $
+  $Id: ErrorsTool.xml,v 1.6 2004/11/11 00:57:40 nbubna Exp $
 -->
 <document>
 
@@ -319,18 +319,20 @@ $errors.getSize("password")</sourcecode>
                 are looked up in the message resources. If a message text
                 cannot be found, the message key will be displayed instead.</p>
 
-                <p>The method expects a message header and a message footer
-                to be defined in the message resources. The corresponding
-                message keys are <code>errors.header</code> and
-                <code>errors.footer</code>.</p>
+                <p>The method expects a message header, a message footer, a message prefix
+                and a message suffix to be defined in the message resources. The corresponding
+                message keys are <code>errors.header</code>, <code>errors.footer</code>,
+                <code>errors.prefix</code> and <code>errors.suffix</code>.</p>
 
                 <p>Assuming that the message resources contain the following
                 definitions:</p>
 
-<sourcecode>errors.header=Please correct the following errors:&lt;ul&gt;
+<sourcecode>errors.header=Please correct the following errors before proceeding:&lt;ul&gt;
 errors.footer=&lt;/ul&gt;
-error01=&lt;li&gt;The field Expiration Date is required.&lt;/li&gt;
-error02=&lt;li&gt;The input is not a valid credit card number.&lt;/li&gt;
+errors.prefix=&lt;li&gt;
+errors.suffix=&lt;/li&gt;
+error01=The field Expiration Date is required.
+error02=The input is not a valid credit card number.
 ...</sourcecode>
 
 <p>an error message would be rendered as follows:</p>
