@@ -63,10 +63,10 @@ import org.apache.velocity.context.Context;
  *
  * <p>Writes get dropped.</p>
  *
- * @author<a href="mailto:sidler@apache.org">Gabriel Sidler</a>
- * @author<a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
+ * @author <a href="mailto:sidler@apache.org">Gabriel Sidler</a>
+ * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ToolboxContext.java,v 1.3 2002/04/02 16:46:31 sidler Exp $ 
+ * @version $Id: ToolboxContext.java,v 1.4 2002/04/02 17:48:05 dlr Exp $ 
  */
 public class ToolboxContext extends VelocityContext
 {
