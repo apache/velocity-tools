@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.collections.ExtendedProperties;
 
 import org.apache.velocity.Template;
-import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.exception.ResourceNotFoundException;
@@ -99,7 +98,7 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.22 2004/11/11 04:12:24 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.23 2004/11/11 04:49:58 nbubna Exp $
  */
 
 public class VelocityViewServlet extends HttpServlet
@@ -143,7 +142,8 @@ public class VelocityViewServlet extends HttpServlet
     /** Cache of writers */
     private static SimplePool writerPool = new SimplePool(40);
 
-    private VelocityEngine velocity = new VelocityEngine();
+    /* The engine used to process templates. */
+    private VelocityEngine velocity = null;
 
     /**
      * The default content type.  When necessary, includes the
@@ -157,6 +157,7 @@ public class VelocityViewServlet extends HttpServlet
      * @since VelocityTools 1.1
      */
     private boolean warnOfOutputStreamDeprecation = true;
+
 
 
     /**
@@ -176,18 +177,12 @@ public class VelocityViewServlet extends HttpServlet
         initToolbox(config);
 
         // we can get these now that velocity is initialized
-        defaultContentType = (String)velocity.getProperty(CONTENT_TYPE);
-        if (defaultContentType == null)
-        {
-            defaultContentType = DEFAULT_CONTENT_TYPE;
-        }
+        defaultContentType = 
+            (String)getVelocityProperty(CONTENT_TYPE, DEFAULT_CONTENT_TYPE);
 
         String encoding = 
-            (String)velocity.getProperty(RuntimeConstants.OUTPUT_ENCODING);
-        if (encoding == null)
-        {
-            encoding = DEFAULT_OUTPUT_ENCODING;
-        }
+            (String)getVelocityProperty(RuntimeConstants.OUTPUT_ENCODING,
+                                        DEFAULT_OUTPUT_ENCODING);
 
         // For non Latin-1 encodings, ensure that the charset is
         // included in the Content-Type header.
@@ -215,6 +210,51 @@ public class VelocityViewServlet extends HttpServlet
 
 
     /**
+     * Looks up an init parameter with the specified key in either the
+     * ServletConfig or, failing that, in the ServletContext.
+     */
+    protected String findInitParameter(ServletConfig config, String key)
+    {
+        // check the servlet config
+        String param = config.getInitParameter(key);
+
+        if (param == null || param.length() == 0) 
+        {
+            // check the servlet context
+            ServletContext servletContext = config.getServletContext();
+            param = servletContext.getInitParameter(key);
+        }
+        return param;
+    }
+
+
+    /**
+     * Simplifies process of getting a property from VelocityEngine,
+     * because the VelocityEngine interface sucks compared to the singleton's.
+     * Use of this method assumes that {@link #initVelocity(ServletConfig)}
+     * has already been called.
+     */
+    protected String getVelocityProperty(String key, String alternate)
+    {
+        String prop = (String)velocity.getProperty(key);
+        if (prop == null || prop.length() == 0)
+        {
+            return alternate;
+        }
+        return prop;
+    }
+
+
+    /**
+     * Returns the underlying VelocityEngine being used.
+     */
+    protected VelocityEngine getVelocityEngine()
+    {
+        return velocity;
+    }
+
+
+    /**
      * Initializes the ServletToolboxManager for this servlet's
      * toolbox (if any).
      *
@@ -222,22 +262,14 @@ public class VelocityViewServlet extends HttpServlet
      */
     protected void initToolbox(ServletConfig config) throws ServletException
     {
-        ServletContext servletContext = config.getServletContext();
-
-        /* check the servlet config for a toolbox */
-        String file = config.getInitParameter(TOOLBOX_KEY);
-
-        /* check the servlet context for a toolbox */
-        if (file == null || file.length() == 0) 
-        {
-            file = servletContext.getInitParameter(TOOLBOX_KEY);
-        }
+        /* check the servlet config and context for a toolbox param */
+        String file = findInitParameter(config, TOOLBOX_KEY);
 
         /* if we have a toolbox, get a manager for it */
         if (file != null)
         {
             toolboxManager = 
-                ServletToolboxManager.getInstance(servletContext, file);
+                ServletToolboxManager.getInstance(getServletContext(), file);
         }
         else
         {
@@ -260,6 +292,8 @@ public class VelocityViewServlet extends HttpServlet
      */
     protected void initVelocity(ServletConfig config) throws ServletException
     {
+        velocity = new VelocityEngine();
+
         velocity.setApplicationAttribute(SERVLET_CONTEXT_KEY, getServletContext());
 
         // default to servletlogger, which logs to the servlet engines log
@@ -346,19 +380,13 @@ public class VelocityViewServlet extends HttpServlet
     protected ExtendedProperties loadConfiguration(ServletConfig config)
         throws IOException
     {
-        ServletContext servletContext = config.getServletContext();
-
         // grab the path to the custom props file (if any)
-        String propsFile = config.getInitParameter(INIT_PROPS_KEY);
-        if (propsFile == null || propsFile.length() == 0)
-        {
-            propsFile = servletContext.getInitParameter(INIT_PROPS_KEY);
-        }
+        String propsFile = findInitParameter(config, INIT_PROPS_KEY);
         
         ExtendedProperties p = new ExtendedProperties();
         if (propsFile != null)
         {
-            p.load(servletContext.getResourceAsStream(propsFile));
+            p.load(getServletContext().getResourceAsStream(propsFile));
 
             velocity.info("VelocityViewServlet: Custom Properties File: "+propsFile);
         }
