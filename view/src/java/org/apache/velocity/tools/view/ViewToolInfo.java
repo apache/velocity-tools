@@ -52,52 +52,87 @@
  * <http://www.apache.org/>.
  */
 
-package org.apache.velocity.tools.view.context;
 
-import org.apache.velocity.context.Context;
+package org.apache.velocity.tools.view;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletContext;
+
+import org.apache.velocity.tools.view.tools.ViewTool;
 
 
 /**
- * <p>Objects implementing this interface are passed to view tools
- * upon initialization by the 
- *{@link org.apache.velocity.tools.view.servlet.ServletToolboxManager}.</p> 
- * 
- * <p>The interface provides view tools in a servlet environment 
- * access to relevant context information, like servlet request, servlet 
- * context and the velocity context.</p>
+ * ToolInfo implementation for view tools. New instances
+ * are returned for every call to getInstance(obj), and tools
+ * that implement (@link ViewTool} are initialized with the
+ * given object before being returned.
  *
- * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
- * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
+ * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: ViewContext.java,v 1.5 2002/05/10 05:42:18 sidler Exp $ 
+ * @version $Id: ViewToolInfo.java,v 1.1 2002/05/10 05:42:18 sidler Exp $
  */
-public interface ViewContext
+public class ViewToolInfo implements ToolInfo
 {
-    /**
-     * <p>Returns the instance of {@link HttpServletRequest} for this request.</p>
-     */
-    public HttpServletRequest getRequest();
+
+    private String key;
+    private Class clazz;
+    private boolean initializable = false;
 
 
     /**
-     * <p>Returns the instance of {@link HttpServletResponse} for this request.</p>
+     * Constructor.  If an instance of the tool cannot be created from
+     * the classname, it will throw an exception.
+     *
+     * @param key the context key for the tool
+     * @param classname the fully qualified java.lang.Class of the tool
      */
-    public HttpServletResponse getResponse();
+    public ViewToolInfo(String key, String classname) throws Exception
+    {
+        this.key = key;
+        this.clazz = Class.forName(classname);
+
+        //create an instance and see if it is initializable
+        if (clazz.newInstance() instanceof ViewTool)
+        {
+            this.initializable = true;
+        }
+    }
+
+
+    public String getKey()
+    {
+        return key;
+    }
+
+
+    public String getClassname()
+    {
+        return clazz.getName();
+    }
 
 
     /**
-     * <p>Returns the instance of {@link ServletContext} for this request.</p>
+     * Returns a new instance of the tool. If the tool
+     * implements {@link ViewTool}, the new instance
+     * will be initialized using the given data.
      */
-    public ServletContext getServletContext();
+    public Object getInstance(Object initData)
+    {
+        Object tool = null;
+        try
+        {
+            tool = clazz.newInstance();
+        }
+        catch (Exception e)
+        {
+            //we should never get here since we
+            //got a new instance just fine when we
+            //created this tool info
+        }
+        
+        if (initializable) {
+            ((ViewTool)tool).init(initData);
+        }
+        return tool;
+    }
 
-
-    /**
-     * <p>Returns a reference to the current Velocity context.</p>
-     */
-    public Context getVelocityContext();
 
 }

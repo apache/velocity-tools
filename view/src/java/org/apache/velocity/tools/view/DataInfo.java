@@ -1,7 +1,7 @@
 /*
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2002 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,47 +52,85 @@
  * <http://www.apache.org/>.
  */
 
-package org.apache.velocity.tools.view.tools;
+
+package org.apache.velocity.tools.view;
 
 
 /**
- * <p>An interface that marks a view tool class as capable of logging.</p>
- * 
- * <p>The only method defined by this interface is 
- * <code>{@link #setLogger(ViewToolLogger logger)}</code>. This method allows 
- * a toolbox manager to pass an instance of a logger object to the context 
- * tool. This logger can be used subsequently to log messages.</p>
- * 
- * <p>The following implementation guidelines are to be noted:</p>
- * <ul>
- *   <li>Implementing this interface by a view tool does not garantuee
- *       that a logger will be passed. It is up to the implementation of the
- *       toolbox manager if a logger is passed or not.</li>
- *   <li>If a logger is passed using setLogger(), it will be passed only
- *       to one instance of a view tool class. It has to be made sure, that
- *       a reference to the logger is stored in a static variable, such that
- *       the logger is available to all instances of the class.</li>
- *   <li>Logging in view tools typically should be used only for serious 
- *       errors. Most application environments already implement usage
- *       logging, etc.</li>
- * </ul>
+ * ToolInfo implementation to handle "primitive" data types.
+ * It currently supports String, Number, and Boolean data.
  *
- * @author <a href="mailto:sidler@teamup.com">Gabriel Sidler</a>
+ * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: LogEnabledViewTool.java,v 1.1 2002/04/15 18:30:29 sidler Exp $
- * 
+ * @version $Id: DataInfo.java,v 1.1 2002/05/10 05:42:18 sidler Exp $
  */
-public interface LogEnabledViewTool 
+public class DataInfo implements ToolInfo
 {
 
+    public static String TYPE_STRING = "string";
+    public static String TYPE_NUMBER = "number";
+    public static String TYPE_BOOLEAN = "boolean";
+
+    private String key;
+    private Object data;
+
+
     /**
-     * <p>Sets a logger instance for this class of view tools.</p>
+     * Parses the value string into a recognized type. If
+     * the type specified is not supported, the data will
+     * be held and returned as a string.
      *
-     * <p>This logger can be used subsequently by instances to to log 
-     * messages to the logging infrastructor of th underlying framework.</p>
-     *
-     * @param logger the logger instance to be set
+     * @param key the context key for the data
+     * @param type the data type
+     * @param value the data
      */
-    public void setLogger(ViewToolLogger logger);
+    public DataInfo(String key, String type, String value)
+    {
+        this.key = key;
+
+        if (type.equalsIgnoreCase(TYPE_BOOLEAN))
+        {
+            this.data = Boolean.valueOf(value);
+        }
+        else if (type.equalsIgnoreCase(TYPE_NUMBER))
+        {
+            if (value.indexOf('.') >= 0)
+            {
+                this.data = new Double(value);
+            }
+            else
+            {
+                this.data = new Integer(value);
+            }
+        }
+        else
+        {
+            this.data = value;
+        }
+    }
+
+
+    public String getKey()
+    {
+        return key;
+    }
+
+
+    public String getClassname()
+    {
+        return data.getClass().getName();
+    }
+
+
+    /**
+     * Returns the data. Always returns the same
+     * object since the data is a constant. Initialization
+     * data is ignored.
+     */
+    public Object getInstance(Object initData)
+    {
+        return data;
+    }
+
 
 }

@@ -66,18 +66,16 @@ import org.apache.struts.util.MessageResources;
 import org.apache.struts.action.*;
 
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.LogEnabledViewToolImpl;
-import org.apache.velocity.tools.view.tools.ServletViewTool;
+import org.apache.velocity.tools.view.tools.ViewTool;
 
 
 /**
  * <p>View tool to work with the Struts error messages.</p>
  *
  * <p>This class is equipped to be used with a toolbox manager, for example
- * the ServletToolboxManager included with VelServlet. The class extends 
- * ServletViewToolLogger to profit from the logging facilities of that class.
- * Furthermore, this class implements interface ServletViewTool, which allows
- * a toolbox manager to pass the required context information.</p>
+ * the ServletToolboxManager included with VelServlet. This class implements 
+ * interface ViewTool, which allows a toolbox manager to pass the required
+ * context information.</p>
  *
  * <p>This class is not thread-safe by design. A new instance is needed for
  * the processing of every template request.</p>
@@ -85,11 +83,10 @@ import org.apache.velocity.tools.view.tools.ServletViewTool;
 
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ErrorsTool.java,v 1.4 2002/04/15 18:30:28 sidler Exp $
+ * @version $Id: ErrorsTool.java,v 1.5 2002/05/10 05:42:17 sidler Exp $
  * 
  */
-public class ErrorsTool extends LogEnabledViewToolImpl 
-    implements ServletViewTool
+public class ErrorsTool implements ViewTool
 {
 
     // --------------------------------------------- Properties ---------------
@@ -134,21 +131,26 @@ public class ErrorsTool extends LogEnabledViewToolImpl
     // --------------------------------------------- Constructors -------------
 
     /**
-     * Returns a factory for instances of this class. Use method 
-     * {@link #getInstance(ViewContext context)} to obtain instances 
-     * of this class. Do not use instance obtained from this method
-     * in templates. They are not properly initialized.
+     * Default constructor. Tool must be initialized before use.
      */
     public ErrorsTool()
     {}
     
     
     /**
-     * For internal use only! Use method {@link #getInstance(ViewContext context)} 
-     * to obtain instances of the tool.
+     * Initializes this tool.
+     *
+     * @param obj the current ViewContext
+     * @throws IllegalArgumentException if the param is not a ViewContext
      */
-    private ErrorsTool(ViewContext context)
+    public void init(Object obj)
     {
+        if (!(obj instanceof ViewContext))
+        {
+            throw new IllegalArgumentException("Tool can only be initialized with a ViewContext");
+        }
+
+        ViewContext context = (ViewContext)obj;
         this.request = context.getRequest();
         this.session = request.getSession(false);
         this.application = context.getServletContext();    
@@ -158,28 +160,12 @@ public class ErrorsTool extends LogEnabledViewToolImpl
         errors = StrutsUtils.getActionErrors(request);
     }
     
-
-
-    // ----------------------------------- Interface ServletViewTool ----------
-
-    /**
-     * Returns an initialized instance of this view tool.
-     */
-    public Object getInstance(ViewContext context)
-    {
-        return new ErrorsTool(context);
-    }
-
     
     /**
-     * <p>Returns the default life cycle for this tool. This is 
-     * {@link ServletViewTool#REQUEST}. Do not overwrite this
-     * per toolbox configuration. No alternative life cycles are 
-     * supported by this tool</p>
+     * Log messages are sent to the servlet context
      */
-    public String getDefaultLifecycle()
-    {
-        return ServletViewTool.REQUEST; 
+    private void log(String s) {
+        application.log(s);
     }
 
 
@@ -278,7 +264,7 @@ public class ErrorsTool extends LogEnabledViewToolImpl
         
         if (resources == null) 
         {
-            log(ERROR, "Message resources are not available.");
+            log("[ERROR] Message resources are not available.");
             //FIXME? should we return the list of error keys instead?
             return null;
         }
@@ -313,7 +299,7 @@ public class ErrorsTool extends LogEnabledViewToolImpl
             else
             {
                 // if error message cannot be found for a key, return key instead
-                log(WARN, "Message for key " + errormsg.getKey() + " could not be found in message resources.");
+                log("[WARN] Message for key " + errormsg.getKey() + " could not be found in message resources.");
                 list.add(errormsg.getKey());
             }
         }

@@ -54,112 +54,46 @@
 
 package org.apache.velocity.tools.tools;
 
-import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ContextViewTool;
-import org.apache.velocity.tools.view.tools.LogEnabledViewToolImpl;
-import org.apache.velocity.context.Context;
-
-
 /**
  * <p>A view tool that allows template designers to load
- * other view tools from within the template. Any object
+ * an arbitrary object into the context. Any object
  * with a public constructor without parameters can be used
  * as a view tool.</p>
  *
- * <p>Example: Assuming that an instance of this class has
- * been loaded into the Velocity context under key "toolloader",
- * then from within a template a designer would call:<br>
- * <br>
- * <code>$toolloader.load("math", "xxx.yyy.zzz.MathTool")</code><br>
- * <br>
- * to load a math tool into the context under key "math". This tool
- * is then available for use within the template, for example:<br>
- * <br>
- * <code>$math.random(1, 100)</code><br>
- * </p>
- *
- * <p>THIS CLASS IS HERE AS A PROOF OF CONCEPT ONLY. IT NEEDS TO BE
- * REFACTORED.</p>
+ * <p>THIS CLASS IS HERE AS A PROOF OF CONCEPT ONLY. IT IS NOT
+ * INTENDED FOR USE IN PRODUCTION ENVIRONMENTS. USE AT YOUR OWN RISK.</p>
  * 
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  *
- * @version $Id: ToolLoader.java,v 1.2 2002/04/15 18:30:28 sidler Exp $
+ * @version $Id: ToolLoader.java,v 1.3 2002/05/10 05:42:17 sidler Exp $
  * 
  */
 
-public class ToolLoader extends LogEnabledViewToolImpl 
-    implements ContextViewTool
+public class ToolLoader
 {
 
-    // -------------------------------------------- Properties ----------------
-
-    /**
-     * <p>A reference to the Velocity context.</p>
-     */
-    private Context ctx;
-    
-
-    
-    // -------------------------------------------- Constructors --------------
-    
-    /**
-     * Returns a factory for instances of this class. Use method 
-     * {@link #getInstance(Context context)} to obtain instances 
-     * of this class. Do not use instance obtained from this method
-     * in templates. They are not properly initialized.
-     */
     public ToolLoader()
     {
     }
 
-    
     /**
-     * Contructor for internal use only. 
-     */
-    private ToolLoader(Context context)
-    {
-        this.ctx = context;
-    }
-
-    
-
-    // --------------------------------------- Interface ContextViewTool ---
-    
-    /**
-     * Returns an initialized instance of this view tool.
-     */
-    public Object getInstance(Context context)
-    {
-        return new ToolLoader(context);
-    }
-
-
-
-    // -------------------------------------------- Public Utility Methods ----
-
-    /**
-     * <p>Loads a view tool of class <i>clazz</i> and inserts it
-     * into the Velocity context with key <i>key</i>. On order to be
-     * loadable, view tools must provide a constructor with no 
-     * parameters. The life cycle of a view tool loaded using
-     * this method is the current request.</p>
+     * Creates and returns an object of the specified classname.
+     * The object must have a valid default constructor.
      *
-     * @param key the key used to add the tool to the context
-     * @param clazz the fully qualified class name of the tool that
-     *     is to be instantiated and added to the context
+     * @param clazz the fully qualified class name of the object
+     * @return an instance of the specified class or null if the class
+     *         could not be instantiated.
      */
-    public void load(String key, String clazz)
+    public Object load(String clazz)
     {
         try
         {
-            Object tool = Class.forName(clazz).newInstance();
-            ctx.put(key, tool);
-            log(INFO, "Loaded tool: Key: " + key + " Class: " + clazz);
+            return Class.forName(clazz).newInstance();
         }
         catch (Exception e)
         {
-            log(ERROR, "Error loading view tool: " + clazz + " with key: " + key + ". " + e);            
+            return null; 
         }
     }
 

@@ -1,7 +1,7 @@
 /*
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2002 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,55 +52,49 @@
  * <http://www.apache.org/>.
  */
 
+
 package org.apache.velocity.tools.view.servlet;
 
 
-import javax.servlet.ServletContext;
-
-import org.apache.velocity.tools.view.tools.ViewToolLogger;
+import org.apache.velocity.tools.view.ViewToolInfo;
 
 
 /**
- * <p>A logger for view tools in a servlet environment.</p> 
- * 
- * <p>This class implements interface {@link ViewToolLogger}.
- * The logged messages are forwarded to the standard log facilities
- * provided by the Servlet API, namely {@link ServletContext#log(String msg)}
+ * ToolInfo implementation that holds scope information for tools
+ * used in a servlet environment.
  *
- * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
+ * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: ServletViewToolLogger.java,v 1.1 2002/04/15 18:30:29 sidler Exp $
- * 
+ * @version $Id: ServletToolInfo.java,v 1.1 2002/05/10 05:42:18 sidler Exp $
  */
-public class ServletViewToolLogger implements ViewToolLogger
+public class ServletToolInfo extends ViewToolInfo
 {
-    
+
+    public static final String REQUEST_SCOPE = "request";
+    public static final String SESSION_SCOPE = "session";
+    public static final String APPLICATION_SCOPE = "application";
+        
+    private String scope;
+
+
     /**
-     * A reference to the servlet context.
+     * Creates a new tool of the specified class with the given key and scope.
      */
-    private ServletContext ctx;
-    
-    
-    /**
-     * <p>Default constructor.</p>
-     *
-     * @param ctx A reference to the servlet context of the web
-     *     application.
-     */
-    public ServletViewToolLogger(ServletContext ctx)
+    public ServletToolInfo(String key, String classname, String scope)
+        throws Exception
     {
-        this.ctx = ctx; 
+        super(key, classname);
+        this.scope = scope;
     }
 
 
     /**
-     * <p>Logs a message to the standard servlet log facility.</p>
-     *
-     * @param msg message to be logged, no formatting is applied
+     * @return the scope of the tool
      */
-    public void log(String msg)
+    public String getScope()
     {
-        ctx.log(msg);
+        return scope;
     }
-    
+
+
 }

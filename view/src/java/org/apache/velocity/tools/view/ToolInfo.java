@@ -53,28 +53,49 @@
  */
 
 
-package org.apache.velocity.tools.view.tools;
+package org.apache.velocity.tools.view;
 
 
 /**
- * <p>A marker interface that indicates that a view tool is thread-safe. </p>
+ * Interface to simplify and abstract tool handling.
  *
- * <p>The handling of thread-safe view tools can be optimized by 
- * compatible toolbox managers like 
- * {@link org.apache.velocity.tools.view.servlet.ServletToolboxManager}. 
- * The same instance of the view tool can be reused for the entire runtime.
- * </p>
+ * Implementations of this class should hold both the context
+ * key for the tool and sufficient information to return 
+ * an instance of the tool.
  *
- * <p>This class does not define any methods or fields. Thread-safe context
- * tools should simply add the 'implements ThreadSafeViewTool' statement
- * to the class definition to signal the toolbox manager that it is 
- * safe to reuse the same instance for multiple template processing requests.
- * </p>
+ * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
- *
- * @version $Id: ThreadSafeViewTool.java,v 1.1 2002/04/15 18:30:29 sidler Exp $
- * 
+ * @version $Id: ToolInfo.java,v 1.1 2002/05/10 05:42:18 sidler Exp $
  */
-public interface ThreadSafeViewTool
-{}
+public interface ToolInfo
+{
+
+
+    /**
+     * @return the context key for the tool
+     */
+    String getKey();
+
+
+    /**
+     * @return the fully qualified classname for the tool
+     */
+    String getClassname();
+
+
+    /**
+     * Returns an instance of the tool.
+     *
+     * Instances returned may be new on each call, pooled, or 
+     * the be same instance every time depending on the
+     * implementation.  The object passed to this method may
+     * be used to initialize or create the tool that is returned,
+     * or it may be null if no such data is required.
+     *
+     * @param initData an object that may be used to initialize the instance
+     * @return an instance of the tool
+     */
+    Object getInstance(Object initData);
+
+
+}
