@@ -3,11 +3,8 @@
 
 <!--
  * 
- *      Build file for Struts Velocity.
+ *      Build file for Struts Velocity examples.
  *
- *      Gabriel Sidler, sidler@teamup.ch
- *      December 8. 2001
- * 
 -->
 
   <!-- *** ENVIRONMENT ******************************************************* -->
@@ -93,8 +90,8 @@
            
 
   <target name="devwar" depends="init, clean, compile">
-    <!-- Generate .war file, name it *.wa_ otherwise it will be unpacked -->
-    <jar jarfile="${basedir}/../struts-velocity-${DSTAMP}.wa_" basedir="${DEV}"/>
+    <!-- Generate .war file, name it velstruts.war -->
+    <jar jarfile="${basedir}/../velstruts.war" basedir="${DEV}"/>
   </target>
 
 
