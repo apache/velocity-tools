@@ -1,4 +1,5 @@
 org.apache.velocity.tools.generic
+org.apache.velocity.tools.generic.log
 org.apache.velocity.tools.struts
 org.apache.velocity.tools.view
 org.apache.velocity.tools.view.context
