@@ -5,7 +5,7 @@
   <title>VelocityStruts</title>
   <logo href="../images/velocitystruts.png">&lt; Velocity Tools - Struts &gt;</logo>
 
-  <body> 
+  <body>
 
     <uplink name="Velocity Tools"       href="../" alt="top"/>
 
@@ -21,14 +21,14 @@
     </menu>
 
     <menu name="VelocityStruts Tools" href="StrutsTools.html">
-      <item name="ActionMessagesTool" href="../javadoc/org/apache/velocity/tools/struts/ActionMessagesTool.html"/>
+      <item name="ActionMessagesTool" href="ActionMessagesTool.html"/>
       <item name="ErrorsTool"         href="ErrorsTool.html"/>
       <item name="FormTool"           href="FormTool.html"/>
       <item name="MessageTool"        href="MessageTool.html"/>
-      <item name="SecureLinkTool"     href="../javadoc/org/apache/velocity/tools/struts/SecureLinkTool.html"/>
       <item name="StrutsLinkTool"     href="StrutsLinkTool.html"/>
-      <item name="TilesTool"          href="../javadoc/org/apache/velocity/tools/struts/TilesTool.html"/>
-      <item name="ValidatorTool"      href="../javadoc/org/apache/velocity/tools/struts/ValidatorTool.html"/>
+      <item name="SecureLinkTool"     href="SecureLinkTool.html"/>
+      <item name="TilesTool"          href="TilesTool.html"/>
+      <item name="ValidatorTool"      href="ValidatorTool.html"/>
     </menu>
 
     <menu name="Other Subprojects">

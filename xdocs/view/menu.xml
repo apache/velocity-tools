@@ -19,11 +19,11 @@
 
     <menu name="VelocityView Tools">
       <item name="AbstractSearchTool"    href="../javadoc/org/apache/velocity/tools/view/tools/AbstractSearchTool.html"/>
-      <item name="CookieTool"            href="../javadoc/org/apache/velocity/tools/view/tools/CookieTool.html"/>
-      <item name="ImportTool"            href="../javadoc/org/apache/velocity/tools/view/tools/ImportTool.html"/>
+      <item name="CookieTool"            href="CookieTool.html"/>
+      <item name="ImportTool"            href="ImportTool.html"/>
       <item name="LinkTool"              href="LinkTool.html"/>
       <item name="ParameterParser"       href="ParameterParser.html"/>
-      <item name="ViewRenderTool"        href="../javadoc/org/apache/velocity/tools/view/tools/ViewRenderTool.html"/>
+      <item name="ViewRenderTool"        href="ViewRenderTool.html"/>
     </menu>
 
     <menu name="Other Subprojects">
