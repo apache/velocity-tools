@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<!--
+     This is a blank Struts configuration file for a single example module,
+     with commented examples of some items.
+
+     NOTE: If you have a generator tool to create the corresponding Java classes
+     for you, you could include the details in the "form-bean" declarations.
+     Otherwise, you would only define the "form-bean" element itself, with the
+     corresponding "name" and "type" attributes, as shown here.
+-->
+
+
+<struts-config>
+
+  <!-- ========== Action Mapping Definitions ============================== -->
+  <action-mappings>
+
+    <!-- Velocity Version -->
+
+    <action path="/index_vm"
+            type="org.apache.struts.actions.ForwardAction"
+            parameter=".frontpage"/>
+
+    <!-- JSP Version -->
+
+    <action path="/index_jsp"
+            type="org.apache.struts.actions.ForwardAction"
+            parameter=".frontpage.jsp"/>
+
+    <!-- Mixed Version -->
+
+    <action path="/index_mixed"
+            type="org.apache.struts.actions.ForwardAction"
+            parameter=".frontpage.mixed"/>
+
+  </action-mappings>
+
+  <!-- ========== PlugIn Definitions ============================== -->
+
+  <plug-in className="org.apache.struts.tiles.TilesPlugin">
+    <set-property property="definitions-config"
+                  value="/WEB-INF/tiles-app4-defs.xml"/>
+    <set-property property="definitions-debug"
+                  value="1"/>
+    <set-property property="moduleAware"
+                  value="true"/>
+    <set-property property="definitions-parser-details"
+                  value="100"/>
+    <set-property property="definitions-parser-validate"
+                  value="true"/>
+  </plug-in>
+</struts-config>

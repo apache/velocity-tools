@@ -1,0 +1,20 @@
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+	<TBODY>
+	<TR>
+	  <TD>
+
+		<!-- HEADER -->
+		$tiles.header
+
+	  </TD>
+	</TR>
+	<TR>
+	  <TD>
+
+	  	<!-- BODY -->
+		$tiles.body
+
+	  </TD>
+	</TR>
+	</TBODY>
+</TABLE>
