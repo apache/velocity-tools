@@ -1,6 +1,6 @@
 S T A T U S
 ===========
-$Id: STATUS,v 1.6 2003/03/10 21:47:08 nbubna Exp $
+$Id: STATUS,v 1.7 2003/04/26 15:45:04 nbubna Exp $
 
 
 Known Issues/Bugs:
@@ -9,11 +9,11 @@ Known Issues/Bugs:
 
 
 Documentation:
-   - Fix current tools documentation. Several files are out of sync.
-   - Drop the non-existent 'Utilities' package
-   - Update plan for Velocimacro libraries
+   - get docs up on jakarta public site
    - Complete user guide.
-   - Create a developer's guide?
+   - Document RenderTool, ViewRenderTool, IteratorTool, AbstractSearchTool
+   - Create a developer's guide.
+   - Update plan for Velocimacro libraries
 
 
 
@@ -23,23 +23,22 @@ Proposed Features/Upgrades:
         - Convert XMLToolboxManager to use commons' Digester
         - Pluggable toolbox manager in VelocityViewServlet
         - Tool pooling support (use commons-pool probably)
-        - add Search/paging tool (from nathan)
 
     Generic tools:
         - add a library of velocimacros for use with these tools
-        - Improved ToolLoader? (from Bill?)
         - Template debugging tool(s)/support
 
     VelocityStruts:
         - add a library of velocimacros for use with struts tools
+          (ideally these would be roughly parallel to struts tags to ease transition)
         - Struts 1.1 Support:
             - ActionMessages
                 - add getActionMessages() to StrutsUtils
-                - add ActionMessagesTool
+                - move ActionMessagesTool from whiteboard/nathan to main
             - Validator
                 - tool to access javascripts?
                 - integration with FormTool/MessagesTool?
-            - Tiles
+            - Tiles?
             - Modules (sub-apps)
             - multiple config files
             - multiple message resources
@@ -51,7 +50,7 @@ Examples:
    - Create a blank Velocity-Struts application as the starting point
      for development.
    - Create a simple Velocity-Struts application to demonstrate use
-     of VelocityLayoutServlet (and any other newer features)
+     of VelocityLayoutServlet (and other new features like the search tool)
    - Create a Struts 1.1 example. Take one of the existing Struts 1.1
      examples and replace the view layer with Velocity.
    - Create example app(s) that demonstrate the use of other new features.
