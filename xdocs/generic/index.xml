@@ -11,53 +11,43 @@
     <body> 
 
     <section name="Overview">
-
-        <p>GenericTools contain a collection of reusable and well 
-        documented tools and utility classes of general interest
-        to Velocity users...</p>
-
-        <p>Emphasis is being put on providing tool documentation that is 
-        suitable for template designers. To achive this goal, a documentation
-        format has been defined that captures all information relevant to the
-        template designer. It is being supplied in addition to the customary
-        Javadoc. This should help to achieve what we always claim for Velocity:
-        "Decouple the work of template designers from the work of software
-        developers". Look at the Struts <a href="../struts/MessageTool.html">MessageTool</a>
-        for a good example of the new documentation format. </p>
-        <p>We are interested in Designer and Developer feedback on the format. </p>
-        
-        <p>Contributions are welcome, see <a href="#Contributions">below</a> for more details.</p>
-          
-        <p><strong>Tools:</strong></p>
-
-        <dl>
+        <p>
+          GenericTools contains a collection of reusable and well 
+          documented tools and utility classes of general interest
+          to Velocity users.  These classes and tools have no dependency
+          on the VelocityView or VelocityStruts sub-projects. The tools may 
+          be used as you would any other POJO ("plain old java object").
+        </p>
+        <p>
+          <strong>Tools:</strong>
+          <dl>
             <dt><a href="../javadoc/org/apache/velocity/tools/generic/DateTool.html"><strong>DateTool</strong></a></dt>
             <dd>A tool for manipulating and formating dates.</dd>
                 
             <dt><a href="MathTool.html"><strong>MathTool</strong></a></dt>
             <dd>A tool for performing floating point math.</dd>
 
-            <dt><strong>IteratorTool</strong></dt>
+            <dt><a href="../javadoc/org/apache/velocity/tools/generic/IteratorTool.html"><strong>IteratorTool</strong></a></dt>
             <dd>A convenience tool to use with #foreach loops. It wraps a list
             to let the designer specify a condition to terminate the loop, 
             and reuse the same list in different loops.</dd>
 
-            <dt><strong>RenderTool</strong></dt>
+            <dt><a href="../javadoc/org/apache/velocity/tools/generic/RenderTool.html"><strong>RenderTool</strong></a></dt>
             <dd>A tool to evaluate and render arbitrary strings of VTL (Velocity
             Template Language).</dd>
-        </dl>
-        <br clear="all" />
-
-        <p><strong>Utilities:</strong></p>
-        <dl>
-            <dt><strong>CommonsLogLogSystem</strong></dt>
+          </dl>
+          <br clear="all"/>
+          <strong>Utilities:</strong>
+          <dl>
+            <dt><a href="../javadoc/org/apache/velocity/tools/generic/log/CommonsLogLogSystem.html"><strong>CommonsLogLogSystem</strong></a></dt>
             <dd>An implementation of Velocity's LogSystem interface that redirects
             log output to a Commons-Logging Log instance.</dd>
 
-            <dt><strong>LogSystemCommonsLog</strong></dt>
+            <dt><a href="../javadoc/org/apache/velocity/tools/generic/log/LogSystemCommonsLog.html"><strong>LogSystemCommonsLog</strong></a></dt>
             <dd>An implementation of Commons-Logging's Log interface that redirects
             log output to Velocity's LogSystem.</dd>
-        </dl>
+          </dl>
+        </p>
         <br clear="all" />
     </section>
 
