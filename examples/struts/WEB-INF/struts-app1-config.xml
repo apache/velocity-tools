@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<!--
+     This is a blank Struts configuration file for a single example module,
+     with commented examples of some items.
+
+     NOTE: If you have a generator tool to create the corresponding Java classes
+     for you, you could include the details in the "form-bean" declarations.
+     Otherwise, you would only define the "form-bean" element itself, with the
+     corresponding "name" and "type" attributes, as shown here.
+-->
+
+
+<struts-config>
+
+  <!-- ========== Form Bean Definitions =================================== -->
+  <form-beans>
+
+    <!-- Struts Example Application 1 -->
+
+    <form-bean name="addressForm"
+               type="examples.app1.AddressForm"/>
+
+  </form-beans>
+
+  <!-- ========== Global Forward Definitions ============================== -->
+  <global-forwards>
+
+    <!-- Forward to source pages -->
+     <forward
+        name="editAddressSrcJsp"
+        path="/examples/struts_app1/edit-addressjsp.txt"
+        contextRelative="true"/>
+
+     <forward
+        name="showAddressSrcJsp"
+        path="/examples/struts_app1/show-addressjsp.txt"
+        contextRelative="true"/>
+
+     <forward
+        name="editAddressSrc"
+        path="/examples/struts_app1/edit-address.txt"
+        contextRelative="true"/>
+
+     <forward
+        name="showAddressSrc"
+        path="/examples/struts_app1/show-address.txt"
+        contextRelative="true"/>
+
+  </global-forwards>
+
+
+  <!-- ========== Action Mapping Definitions ============================== -->
+  <action-mappings>
+
+    <!-- Struts Example Application 1, JSP Version -->
+    <action path="/address1"
+            type="examples.app1.AddressAction"
+            name="addressForm"
+            scope="request">
+        <forward name="showAddress"
+            path="/examples/struts_app1/show-address.jsp"
+            contextRelative="true"/>
+        <forward name="editAddress"
+            path="/examples/struts_app1/edit-address.jsp"
+            contextRelative="true"/>
+    </action>
+
+    <!-- Struts Example Application 1, Velocity Version -->
+    <action path="/address2"
+            type="examples.app1.AddressAction"
+            name="addressForm"
+            scope="request">
+        <forward name="showAddress"
+            path="/examples/struts_app1/show-address.vm"
+            contextRelative="true"/>
+        <forward name="editAddress"
+            path="/examples/struts_app1/edit-address.vm"
+            contextRelative="true"/>
+    </action>
+
+  </action-mappings>
+
+  <message-resources parameter="examples.app1.ApplicationResources" />
+
+</struts-config>
