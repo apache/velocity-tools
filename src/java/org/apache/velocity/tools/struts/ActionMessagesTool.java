@@ -56,11 +56,7 @@ package org.apache.velocity.tools.struts;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.servlet.ServletContext;
+import java.util.List;
 
 import org.apache.struts.util.MessageResources;
 import org.apache.struts.action.ActionMessage;
@@ -68,8 +64,6 @@ import org.apache.struts.action.ActionMessages;
 
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.tools.struts.StrutsUtils;
-import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
  * <p>View tool to work with the Struts action messages.</p>
@@ -95,16 +89,10 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.1
- * @version $Id: ActionMessagesTool.java,v 1.3 2003/11/06 00:26:54 nbubna Exp $
+ * @version $Id: ActionMessagesTool.java,v 1.4 2003/11/06 06:21:56 nbubna Exp $
  */
-public class ActionMessagesTool implements ViewTool
+public class ActionMessagesTool extends MessageResourcesTool
 {
-
-    /** A reference to the Struts message resources. */
-    protected MessageResources resources;
-
-    /** A reference to the user's locale. */
-    protected Locale locale;
 
     /** A reference to the queued action messages. */
     protected ActionMessages actionMsgs;
@@ -125,19 +113,10 @@ public class ActionMessagesTool implements ViewTool
      */
     public void init(Object obj)
     {
-        if (!(obj instanceof ViewContext))
-        {
-            throw new IllegalArgumentException("Tool can only be initialized with a ViewContext");
-        }
+        //setup superclass instance members
+        super.init(obj);
 
-        ViewContext context = (ViewContext)obj;
-        HttpServletRequest request = context.getRequest();
-        HttpSession session = request.getSession(false);
-        ServletContext application = context.getServletContext();    
-
-        this.locale = StrutsUtils.getLocale(request, session);
-        this.resources = StrutsUtils.getMessageResources(request, application);
-        this.actionMsgs = StrutsUtils.getActionMessages(request);
+        this.actionMsgs = StrutsUtils.getActionMessages(this.request);
     }
 
 
@@ -203,12 +182,12 @@ public class ActionMessagesTool implements ViewTool
 
     /**
      * Returns the set of localized action messages as an 
-     * <code>java.util.ArrayList</code> of <code> java.lang.String</code> 
-     * for all actionMsgs queued or <code>null</code> if no messages are queued.
+     * <code>java.util.List</code> of strings for all actionMsgs 
+     * queued or <code>null</code> if no messages are queued.
      * If the message resources don't contain a message for a 
      * particular key, the key itself is used as the message.
      */
-    public ArrayList getAll() 
+    public List getAll() 
     {
         return get(null);
     }
@@ -216,24 +195,41 @@ public class ActionMessagesTool implements ViewTool
 
     /**
      * Returns the set of localized error messages as an 
-     * <code>java.util.ArrayList</code> of <code> java.lang.String</code> 
-     * for all actionMsgs queued of the specified category or <code>null</code> 
-     * if no error are queued for the specified category. If the message 
-     * resources don't contain a message for a particular key, 
-     * the key itself is used as the message.
+     * <code>java.util.List</code> of strings for all actionMsgs 
+     * queued of the specified category or <code>null</code> 
+     * if no error are queued for the specified category. If the 
+     * message resources don't contain a message for a particular 
+     * key, the key itself is used as the message.
      *
      * @param property the category of actionMsgs to operate on
      */
-    public ArrayList get(String property) 
+    public List get(String property) 
+    {
+        return get(property, null);
+    }
+
+
+    /**
+     * Returns the set of localized action messages as a 
+     * <code>java.util.List</code> of strings for all action messages 
+     * queued of the specified category or <code>null</code> 
+     * if no action messages are queued for the specified category. If the 
+     * message resources don't contain an action message for a particular 
+     * action key, the key itself is used as action message.
+     *
+     * @param property the category of actionMsgs to operate on
+     * @param bundle the message resource bundle to use
+     */
+    public List get(String property, String bundle) 
     {
         if (actionMsgs == null || actionMsgs.isEmpty())
         {
             return null;
         }
         
-        if (resources == null) 
+        MessageResources res = getResources(bundle);
+        if (res == null) 
         {
-            Velocity.error("Message resources are not available.");
             //FIXME? should we return the list of message keys instead?
             return null;
         }
@@ -253,14 +249,13 @@ public class ActionMessagesTool implements ViewTool
             return null;
         }
 
-        ArrayList list = new ArrayList();
+        List list = new ArrayList();
          
         while (msgs.hasNext())
         {
             ActionMessage msg = (ActionMessage)msgs.next();
-            String message = resources.getMessage(locale,
-                                                  msg.getKey(), 
-                                                  msg.getValues());
+            String message = 
+                res.getMessage(this.locale, msg.getKey(), msg.getValues());
             if (message != null)
             {
                 list.add(message);
