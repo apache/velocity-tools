@@ -45,15 +45,6 @@
     <fileset dir="${project.repository}">
       <include name="**/*.jar"/>
     </fileset>
-    <fileset dir="${basedir}/view/lib">
-      <include name="**/*.jar"/>
-    </fileset>
-    <fileset dir="${basedir}/struts/lib">
-      <include name="**/*.jar"/>
-    </fileset>
-    <fileset dir="${basedir}/tools/lib">
-      <include name="**/*.jar"/>
-    </fileset>
   </path>
 
 <!-- ========== Executable Targets ======================================== -->

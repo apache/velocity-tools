@@ -31,6 +31,14 @@
 
 
   <!-- ================================================================== -->
+  <!-- P R E P A R E                                                      -->
+  <!-- ================================================================== -->
+  <target name="prepare" depends="init">
+    <mkdir dir="${basedir}/WEB-INF/classes"/>
+  </target>
+
+
+  <!-- ================================================================== -->
   <!-- A L L                                                              -->
   <!-- ================================================================== -->
   <target name="all" depends="war"
@@ -40,7 +48,7 @@
   <!-- ================================================================== -->
   <!-- C O M P I L E                                                              -->
   <!-- ================================================================== -->
-  <target name="compile" depends="init">
+  <target name="compile" depends="prepare">
     <!-- Compile the java code from ${SRC} into ${CLASSES} -->
     <javac srcdir="${SRC}"
            includes="*/**"
@@ -85,9 +93,7 @@
   <!-- ================================================================== -->
   <target name="clean">
     <!-- remove old class files -->
-    <delete>
-      <fileset dir="${CLASSES}" includes="**/*.class"/>
-    </delete>
+    <delete dir="${CLASSES}"/>
 
     <!-- remove *.bak backups -->
     <delete>
