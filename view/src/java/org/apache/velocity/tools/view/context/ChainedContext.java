@@ -81,8 +81,8 @@ import javax.servlet.ServletContext;
  * <p>The {@link #internalGet(String key)} method implements the following search order
  * for objects:</p>
  * <ol>
- *   <li>servlet request, servlet response, servlet session, servlet context</li>
  *   <li>toolbox</li>
+ *   <li>servlet request, servlet response, servlet session, servlet context</li>
  *   <li>local hashtable of objects (traditional use)</li>
  *   <li>servlet request attribues, servlet session attribute, servlet context
  *     attributes</li>
@@ -99,7 +99,7 @@ import javax.servlet.ServletContext;
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  *
- * @version $Id: ChainedContext.java,v 1.7 2003/01/24 04:15:43 nbubna Exp $ 
+ * @version $Id: ChainedContext.java,v 1.8 2003/02/10 19:18:20 nbubna Exp $ 
  */
 public class ChainedContext extends VelocityContext implements ViewContext
 {
