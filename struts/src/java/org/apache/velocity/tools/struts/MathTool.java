@@ -111,8 +111,11 @@ public class MathTool implements ContextTool
     /**
      * @return <code>base</code> raised to the specified <code>power</code>
      */
-    public static final int pow (int base, int power)    { return base^power; }
-    public static final long pow (long base, long power) { return base^power; }
+    public static final int pow (int base, int power) { return (int)java.lang.Math.pow(base, power); }
+    public static final long pow (long base, long power) { return (long)java.lang.Math.pow(base, power); }
+    public static final float pow (float base, float power) { return (float)java.lang.Math.pow(base, power); }
+    public static final double pow (double base, double power) { return java.lang.Math.pow(base, power); }
+
     
     
     /**
