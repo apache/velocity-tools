@@ -1,7 +1,17 @@
 /*
- * Struts Example Application 1
- *  
- * This demonstrates the use of Velocity templates with the Struts framework.
+ * Copyright 2003-2004 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package examples.app2;
@@ -24,9 +34,9 @@ import org.apache.struts.action.ActionMessages;
  * <p>A simple action used to demonstrate the view tools.</p>
  *
  * @author <a href="mailto:sidler@teamup.com"/>Gabe Sidler</a>
- * @version $Id: DemoAction.java,v 1.3 2004/02/12 00:20:25 nbubna Exp $
+ * @version $Id: DemoAction.java,v 1.4 2004/02/20 12:42:52 marino Exp $
  */
-public class DemoAction extends Action 
+public class DemoAction extends Action
 {
 
 	/**
@@ -51,7 +61,7 @@ public class DemoAction extends Action
 
         // Create serveral error messages to demontrate the output in a template
         ActionErrors errors = new ActionErrors();
-        
+
         // Add some global errors
         errors.add(ActionErrors.GLOBAL_ERROR, new ActionError("error01"));
         errors.add(ActionErrors.GLOBAL_ERROR, new ActionError("error02"));
@@ -59,14 +69,14 @@ public class DemoAction extends Action
         // Add some specific errors
         errors.add("language", new ActionMessage("error10"));
         errors.add("language", new ActionMessage("error11"));
-        
+
         // Save error messages to request attributes
         saveErrors(request, errors);
 
 
         // Create serveral error messages to demontrate the output in a template
         ActionMessages messages = new ActionMessages();
-        
+
         // Add some global messages
         messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("message01"));
         messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("message02"));
@@ -74,7 +84,7 @@ public class DemoAction extends Action
         // Add some specific messages
         messages.add("foobar", new ActionMessage("message10"));
         messages.add("foobar", new ActionMessage("message11"));
-        
+
         // Save messages to request attributes
         saveMessages(request, messages);
 
