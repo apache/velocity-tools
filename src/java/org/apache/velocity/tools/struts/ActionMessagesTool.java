@@ -50,7 +50,7 @@ import org.apache.velocity.tools.struts.StrutsUtils;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.1
- * @version $Id: ActionMessagesTool.java,v 1.10 2004/11/11 06:26:27 nbubna Exp $
+ * @version $Id$
  */
 public class ActionMessagesTool extends MessageResourcesTool
 {
@@ -259,9 +259,11 @@ public class ActionMessagesTool extends MessageResourcesTool
                              " could not be found in message resources.");
                 }
             }
-            else
+
+            if (message == null)
             {
-                // if the resource bundle wasn't found, use the key
+                // if the resource bundle wasn't found or the key 
+                // wasn't found in the resources, then use the key
                 message = msg.getKey();
             }
             list.add(message);
