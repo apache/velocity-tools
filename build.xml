@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: build.xml,v 1.41 2004/07/21 21:58:42 nbubna Exp $
+  $Id: build.xml,v 1.42 2004/10/03 16:17:58 marino Exp $
 -->
 <project name="velocity-tools" default="all" basedir=".">
 
@@ -68,6 +68,7 @@
     <pathelement location="${commons-logging.jar}"/>
     <pathelement location="${commons-validator.jar}"/>
     <pathelement location="${struts.jar}"/>
+    <pathelement location="${oro.jar}"/>
     <pathelement location="${sslext.jar}"/>
     <pathelement location="${servlet.jar}"/>
     <pathelement location="${velocity.jar}"/>
@@ -235,6 +236,8 @@
     <taskdef name="dvsl" classname="org.apache.tools.dvsl.DVSLTask">
       <classpath>
         <pathelement location="${dom4j.jar}"/>
+        <pathelement location="${commons-collections.jar}"/>
+        <pathelement location="${oro.jar}"/>
         <pathelement location="${velocity.jar}"/>
         <pathelement location="${velocity-dvsl.jar}"/>
       </classpath>
@@ -294,6 +297,7 @@
     <copy todir="${simple.lib}" file="${commons-digester.jar}"/>
     <copy todir="${simple.lib}" file="${commons-beanutils.jar}"/>
     <copy todir="${simple.lib}" file="${commons-logging.jar}"/>
+    <copy todir="${simple.lib}" file="${oro.jar}"/>
     <copy todir="${simple.lib}" file="${velocity.jar}"/>
 
     <ant dir="${examples.home}/simple" target="war" inheritAll="false"/>
@@ -320,10 +324,12 @@
     <copy todir="${velstruts.lib}" file="${commons-beanutils.jar}"/>
     <copy todir="${velstruts.lib}" file="${commons-collections.jar}"/>
     <copy todir="${velstruts.lib}" file="${commons-digester.jar}"/>
+    <copy todir="${velstruts.lib}" file="${commons-logging.jar}"/>
     <copy todir="${velstruts.lib}" file="${commons-validator.jar}"/>
     <copy todir="${velstruts.lib}" file="${servlet.jar}"/>
     <copy todir="${velstruts.lib}" file="${sslext.jar}"/>
     <copy todir="${velstruts.lib}" file="${struts.jar}"/>
+    <copy todir="${velstruts.lib}" file="${oro.jar}"/>
     <copy todir="${velstruts.lib}" file="${velocity.jar}"/>
 
     <!-- Build VelocityStruts examples -->
@@ -349,6 +355,7 @@
     <copy todir="${layout.lib}" file="${commons-beanutils.jar}"/>
     <copy todir="${layout.lib}" file="${commons-collections.jar}"/>
     <copy todir="${layout.lib}" file="${commons-digester.jar}"/>
+    <copy todir="${layout.lib}" file="${oro.jar}"/>
     <copy todir="${layout.lib}" file="${velocity.jar}"/>
 
     <ant dir="${examples.home}/layout" target="war" inheritAll="false"/>
@@ -416,6 +423,7 @@
     <copy todir="${release.dir}/lib" file="${commons-validator.jar}"/>
     <copy todir="${release.dir}/lib" file="${sslext.jar}"/>
     <copy todir="${release.dir}/lib" file="${struts.jar}"/>
+    <copy todir="${release.dir}/lib" file="${oro.jar}"/>
     <copy todir="${release.dir}/lib" file="${velocity.jar}"/>
 
     <!-- Gather example war files -->
