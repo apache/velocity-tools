@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+
+<document>
+
+    <properties>
+        <title>RenderTool</title>
+        <author email="shinobu.kawai@gmail.com">Shinobu Kawai</author>
+        <projectfile>xdocs/generic/menu.xml</projectfile>
+     </properties>
+
+    <body>
+
+    <section name="RenderTool Reference Documentation">
+
+        <p>This tool exposes methods to evaluate the given strings as VTL
+        (Velocity Template Language) and automatically using the current context.</p>
+
+        <toolinfo>
+            <version>@@@version@@@, @@@date@@@</version>
+            <clazz>org.apache.velocity.tools.generic.RenderTool</clazz>
+            <name>$render</name>
+            <author email="nathan@esha.com">Nathan Bubna</author>
+            <config-example>&lt;tool&gt;
+  &lt;key&gt;render&lt;/key&gt;
+  &lt;scope&gt;application&lt;/scope&gt;
+  &lt;class&gt;org.apache.velocity.tools.generic.RenderTool&lt;/class&gt;
+&lt;/tool&gt;</config-example>
+        </toolinfo>
+
+        <methods/>
+
+    </section>
+
+
+    <section name="eval()">
+        <method name="eval()">
+
+            <abstract>
+                Evaluates a String containing VTL using the current context, and
+                returns the result as a String.
+            </abstract>
+
+            <signature>
+                String eval(Context ctx, String vtl)
+            </signature>
+
+            <parameters>
+                <parameter name="ctx">
+                    The Context to be evaluate the vtl with.
+                </parameter>
+                <parameter name="vtl">
+                    The code to be evaluated.
+                </parameter>
+            </parameters>
+
+            <returns>
+                The evaluated code as a String.
+            </returns>
+
+            <description>
+                <p>Evaluates a String containing VTL using the given context, and
+                returns the result as a String.  If this fails, then <code>null</code>
+                will be returned.  This evaluation is not recursive.</p>
+
+<sourcecode>#set( $list = [1,2,3] )
+#set( $object = '$list' )
+#set( $method = 'size()' )
+$render.eval($ctx, "${object}.$method")</sourcecode>
+
+<p>This will produce the following output:</p>
+
+<sourcecode>3</sourcecode>
+
+        </description>
+            </method>
+    </section>
+
+    <section name="recurse()">
+        <method name="recurse()">
+
+            <abstract>
+                Recursively evaluates a String containing VTL using the
+                current context, and returns the result as a String.
+
+            </abstract>
+
+            <signature>
+                String recurse(Context ctx, String vtl)
+            </signature>
+
+            <parameters>
+                <parameter name="vtl">
+                    The code to be evaluated.
+                </parameter>
+                <parameter name="ctx">
+                    The Context to be evaluate the vtl with.
+                </parameter>
+            </parameters>
+
+            <returns>
+                The evaluated code as a String.
+            </returns>
+
+            <description>
+                <p>Recursively evaluates a String containing VTL using the
+                given context, and returns the result as a String. It
+                will continue to re-evaluate the output of the last
+                evaluation until an evaluation returns the same code
+                that was fed into it.</p>
+
+<sourcecode>#macro( say_hi )hello world!#end
+#set( $foo = '#say_hi()' )
+#set( $bar = '$foo' )
+$render.recurse($ctx, '$bar')</sourcecode>
+
+<p>This will produce the following output:</p>
+
+<sourcecode>hello world!</sourcecode>
+
+        </description>
+            </method>
+    </section>
+ </body>
+</document>
+
