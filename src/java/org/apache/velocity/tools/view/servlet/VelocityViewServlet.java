@@ -139,7 +139,7 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: VelocityViewServlet.java,v 1.14 2003/10/01 23:46:45 nbubna Exp $
+ * @version $Id: VelocityViewServlet.java,v 1.15 2003/10/02 00:13:11 nbubna Exp $
  */
 
 public class VelocityViewServlet extends HttpServlet
@@ -425,6 +425,9 @@ public class VelocityViewServlet extends HttpServlet
         }
         catch (Exception e)
         {
+            // log the exception
+            Velocity.error("Exception processing the template: "+e);
+
             // call the error handler to let the derived class
             // do something useful with this failure.
             error(request, response, e);
@@ -637,29 +640,40 @@ public class VelocityViewServlet extends HttpServlet
     protected void error(HttpServletRequest request, 
                          HttpServletResponse response, 
                          Exception cause)
-        throws ServletException, IOException
+        throws ServletException
     {
-        StringBuffer html = new StringBuffer();
-        html.append("<html>");
-        html.append("<title>Error</title>");
-        html.append("<body bgcolor=\"#ffffff\">");
-        html.append("<h2>VelocityViewServlet : Error processing the template</h2>");
-        html.append("<pre>");
-        String why = cause.getMessage();
-        if (why != null && why.trim().length() > 0)
+        try
         {
-            html.append(why);
-            html.append("<br>");
+            StringBuffer html = new StringBuffer();
+            html.append("<html>");
+            html.append("<title>Error</title>");
+            html.append("<body bgcolor=\"#ffffff\">");
+            html.append("<h2>VelocityViewServlet : Error processing the template</h2>");
+            html.append("<pre>");
+            String why = cause.getMessage();
+            if (why != null && why.trim().length() > 0)
+            {
+                html.append(why);
+                html.append("<br>");
+            }
+
+            StringWriter sw = new StringWriter();
+            cause.printStackTrace(new PrintWriter(sw));
+
+            html.append(sw.toString());
+            html.append("</pre>");
+            html.append("</body>");
+            html.append("</html>");
+            response.getOutputStream().print(html.toString());
         }
-
-        StringWriter sw = new StringWriter();
-        cause.printStackTrace(new PrintWriter(sw));
-
-        html.append(sw.toString());
-        html.append("</pre>");
-        html.append("</body>");
-        html.append("</html>");
-        response.getOutputStream().print(html.toString());
+        catch (Exception e)
+        {
+            // clearly something is quite wrong.
+            // let's log the new exception then give up and
+            // throw a servlet exception that wraps the first one
+            Velocity.error("Exception while printing error screen: "+e);
+            throw new ServletException(cause);
+        }
     }
 
 
