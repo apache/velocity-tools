@@ -3,68 +3,68 @@
 <document>
 
     <properties>
-        <title>Velocity Tools Project</title>
+        <title>Tools Sub-Project</title>
         <author email="geirm@apache.org">Geir Magnusson Jr.</author>
         <author email="sidler@apache.org">Gabriel Sidler</author>
         <projectfile>xdocs/menu.xml</projectfile>
     </properties>
 
     <body>
-
-    <section name="Welcome to the Velocity Tools Project">
-
+    <section name="Overview">
         <p>
-        Velocity Tools is a subproject of Velocity. It is the umbrella project for 
-        several Velocity subprojects that have the goal to create tools and infrastructure
-        useful for creating applications using the Velocity template engine. 
+        Velocity Tools is a collection of Velocity sub-projects with a common goal
+        of creating tools and infrastructure for building both web and non-web
+        applications using the Velocity template engine.
         </p>
+        <p>Status information, releases, documentation and application examples 
+        will generally be located within the individual sub-projects.</p>
 
-        <p><strong>Subprojects</strong></p>
+        <subsection name="VelocityView" >
+            <p><a href="view/">VelocityView</a>
+            contains a standalone servlet (VelocityViewServlet) which can render 
+            templates for web applications. </p>
+            <p> Also included is a Toolbox Manager which can automatically make 
+            &quot;view tools&quot; and data available to the templates. Any class 
+            with public methods can be used as a tool in the template.
+            </p>
+            <p>
+            <a href="view/layoutservlet.html">VelocityLayoutServlet</a> is an 
+            extension of the basic VelocityViewServlet that can render screen 
+            content into common layout templates.</p>
+            <br clear="all" />
+        </subsection>
 
-        <dl>
-            <dt><strong><a href="struts-index.html">VelocityStruts</a></strong></dt>
-            <dd>The VelocityStruts package is a set of view tools, examples and documentation for 
-                using the Velocity template engine as a view layer technology for the 
-                <a href="http://jakarta.apache.org/struts/">Jakarta Struts</a> web 
-                application framework. It is based on the VelocityServlet project.</dd> 
+        <subsection name="Generic Tools" >
+            <p><a href="generic/">Generic Tools</a> is a group of reuseable and 
+            documented tools that can be added to a Velocity context. A 
+            <b>tool</b> is simply a class which can perform various tasks when 
+            made available to the Velocity engine. Most tools are optimized for use
+            with an automatically managed toolbox (see VelocityViewServlet).</p>
+            <br clear="all" />
+        </subsection>
 
-            <dt><strong><a href="velservlet.html">VelocityView</a></strong></dt>
-            <dd>VelocityServlet is a standalone servlet that can be used for template 
-                rendering in Web applications. It offers automatic population of the 
-                Velocity context and automatic, configurable management of view tools. 
-                Other efforts within this project are the development of a toolbox manager
-                and the definition of a set of interfaces for view tools, thereby enabling the
-                efficient handling and reuse of view tools.</dd>
+        <subsection name="VelocityStruts" >
+            <p><a href="struts/">VelocityStruts</a> is a set of tools for using the 
+            Velocity template engine as the view layer for a web application built upon the
+            <a href="http://jakarta.apache.org/struts/">Jakarta Struts</a> framework.</p>
+            <p>This work leverages the <strong>VelocityViewServlet</strong> and 
+            additional tools which make it easy to integrate the Velocity with 
+            Struts. Several example hybrid applications are included.</p>
+            <br clear="all" />
+        </subsection>
 
-            <dt><strong><a href="tools-index.html">VelocityView - Tools</a></strong></dt> 
-            <dd>VelocityView - Tools is an effort to setup a library of reuseable and well documented
-                view tools. Most tools are optimized for use with an automatically managed
-                toolbox (see VelocityServlet).</dd>
-    
-            <dt><strong>Velocimacros</strong></dt> 
-            <dd>When in place, this will be a repository of Velocimacros for use in 
-            Velocity templates.</dd>
-        </dl>
-    </section>
+     </section>
 
     <section name="CVS Repository">
+        <p>All Velocity Tools project code is maintained in the 
+        CVS repository <b>jakarta-velocity-tools</b>.</p>
 
-        <p>
-        The code for all the efforts within the Velocity Tools project is maintained
-        in the CVS repository jakarta-velocity-tools. It is available via:</p>
-        
         <p>Web Browser: <a href="http://cvs.apache.org/viewcvs/jakarta-velocity-tools/">
-        http://cvs.apache.org/viewcvs/jakarta-velocity-tools/</a></p> 
-        
+        http://cvs.apache.org/viewcvs/jakarta-velocity-tools/</a></p>
+
         <p>CVS Client: <a href="http://jakarta.apache.org/getinvolved/cvsindex.html">http://jakarta.apache.org/getinvolved/cvsindex.html</a>.
         </p>
-
-        <p>Since Velocity Tools is an umbrella project for several subprojects, look for
-        status information, releases, documentation and application examples within 
-        the subprojects.</p>
-
     </section>
-
  </body>
-</document>
 
+</document>
