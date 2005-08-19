@@ -26,15 +26,6 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.util.regex.PatternSyntaxException;
 
-/* for testing : */
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
-
 /**
  *  <p>browser-sniffing tool (session or request scope requested, session scope advised).</p>
  *  <p></p>
@@ -57,21 +48,14 @@ import java.util.Iterator;
  * wget getright yahoo altavista lycos infoseek lwp webcrawler linkexchange slurp google java)
  * </ul>
  *
+ * Thanks to Lee Semel (lee@semel.net), the author of the HTTP::BrowserDetect Perl module.
+ * See also http://www.zytrax.com/tech/web/browser_ids.htm and http://www.mozilla.org/docs/web-developer/sniffer/browser_type.html
  *
  * @author <a href="mailto:claude@renegat.net">Claude Brisson</a>
  * @since VelocityTools 1.2
  * @version $Revision$ $Date$
- *
  */
-
-/**
- * Thanks to Lee Semel (lee@semel.net), the author of the HTTP::BrowserDetect Perl module.
- * See also http://www.zytrax.com/tech/web/browser_ids.htm and http://www.mozilla.org/docs/web-developer/sniffer/browser_type.html
- */
-
-
-public class BrowserSnifferTool
-        implements ViewTool
+public class BrowserSnifferTool implements ViewTool
 {
     private String userAgent = null;
     private String version = null;
@@ -85,11 +69,10 @@ public class BrowserSnifferTool
 
     public void init(Object initData)
     {
-
         HttpServletRequest req;
         if(initData instanceof ViewContext)
         {
-            req = ( (ViewContext)initData).getRequest();
+            req = ((ViewContext)initData).getRequest();
         }
         else if(initData instanceof HttpServletRequest)
         {
@@ -155,10 +138,9 @@ public class BrowserSnifferTool
 
     public boolean getNetscape()
     {
-        return!getFirefox() && !getSafari() && test("mozilla") &&
-                !test("spoofer")
-                && !test("compatible") && !test("opera") && !test("webtv") &&
-                !test("hotjava");
+        return !getFirefox() && !getSafari() && test("mozilla") &&
+               !test("spoofer") && !test("compatible") && !test("opera") && 
+               !test("webtv") && !test("hotjava");
     }
 
     public boolean getNav2()
@@ -184,13 +166,13 @@ public class BrowserSnifferTool
     public boolean getNav45()
     {
         return getNetscape() && getMajorVersion() == 4 &&
-                getMinorVersion() == 5;
+               getMinorVersion() == 5;
     }
 
     public boolean getNav45up()
     {
         return getNetscape() && getMajorVersion() >= 5 ||
-                getNav4() && getMinorVersion() >= 5;
+               getNav4() && getMinorVersion() >= 5;
     }
 
     public boolean getNavgold()
@@ -216,7 +198,7 @@ public class BrowserSnifferTool
     public boolean getIe()
     {
         return test("msie") && !test("opera") ||
-                test("microsoft internet explorer");
+               test("microsoft internet explorer");
     }
 
     public boolean getIe3()
@@ -251,8 +233,8 @@ public class BrowserSnifferTool
 
     public boolean getIe55up()
     {
-        return(getIe5() && getMinorVersion() >= 5) ||
-                (getIe() && getMajorVersion() >= 6);
+        return (getIe5() && getMinorVersion() >= 5) ||
+               (getIe() && getMajorVersion() >= 6);
     }
 
     public boolean getIe6()
@@ -468,15 +450,13 @@ public class BrowserSnifferTool
     public boolean getRobot()
     {
         return getWget() || getGetright() || getLwp() || getYahoo() ||
-                getGoogle() || getAltavista()
-                || getScooter() || getLycos() || getInfoseek() || getWebcrawler() ||
-                getLinkexchange()
-                || test("bot") || test("spider") || test("crawl") ||
-                test("agent") || test("seek")
-                || test("search") || test("reap") || test("worm") ||
-                test("find") || test("index")
-                || test("copy") || test("fetch") || test("ia_archive") ||
-                test("zyborg");
+               getGoogle() || getAltavista() || getScooter() || getLycos() || 
+               getInfoseek() || getWebcrawler() || getLinkexchange() || 
+               test("bot") || test("spider") || test("crawl") ||
+               test("agent") || test("seek") || test("search") || 
+               test("reap") || test("worm") || test("find") || test("index") ||
+               test("copy") || test("fetch") || test("ia_archive") ||
+               test("zyborg");
     }
 
     /* Devices */
@@ -509,12 +489,11 @@ public class BrowserSnifferTool
     public boolean getWap()
     {
         return test("up.browser") || test("nokia") || test("alcatel") ||
-                test("ericsson")
-                || userAgent.indexOf("sie-") == 0 || test("wmlib") ||
-                test(" wap") || test("wap ")
-                || test("wap/") || test("-wap") || test("wap-") ||
-                userAgent.indexOf("wap") == 0
-                || test("wapper") || test("zetor");
+               test("ericsson") || userAgent.indexOf("sie-") == 0 || 
+               test("wmlib") || test(" wap") || test("wap ") || 
+               test("wap/") || test("-wap") || test("wap-") ||
+               userAgent.indexOf("wap") == 0 || 
+               test("wapper") || test("zetor");
     }
 
     /* Operating System */
@@ -522,7 +501,7 @@ public class BrowserSnifferTool
     public boolean getWin16()
     {
         return test("win16") || test("16bit") || test("windows 3") ||
-                test("windows 16-bit");
+               test("windows 16-bit");
     }
 
     public boolean getWin3x()
@@ -572,15 +551,15 @@ public class BrowserSnifferTool
 
     public boolean getWin32()
     {
-        return getWin95() || getWin98() || getWinnt() || getWin2k()
-                || getWinxp() || getWinme() || test("win32");
+        return getWin95() || getWin98() || getWinnt() || getWin2k() || 
+               getWinxp() || getWinme() || test("win32");
     }
 
     public boolean getWindows()
     {
-        return getWin16() || getWin31() || getWin95() || getWin98() || getWinnt() ||
-                getWin32()
-                || getWin2k() || getWinme() || test("win");
+        return getWin16() || getWin31() || getWin95() || getWin98() || 
+               getWinnt() || getWin32() || getWin2k() || getWinme() || 
+               test("win");
     }
 
     public boolean getMac()
@@ -721,7 +700,7 @@ public class BrowserSnifferTool
     public boolean getDec()
     {
         return test("dec") || test("osf1") || test("delalpha") ||
-                test("alphaserver") || test("ultrix") || test("alphastation");
+               test("alphaserver") || test("ultrix") || test("alphastation");
     }
 
     public boolean getSinix()
@@ -747,9 +726,8 @@ public class BrowserSnifferTool
     public boolean getUnix()
     {
         return getX11() || getSun() || getIrix() || getHpux() || getSco() ||
-                getUnixware()
-                || getMpras() || getReliant() || getDec() || getLinux() ||
-                getBsd() || test("unix");
+               getUnixware() || getMpras() || getReliant() || getDec() || 
+               getLinux() || getBsd() || test("unix");
     }
 
     public boolean getVMS()
@@ -764,13 +742,13 @@ public class BrowserSnifferTool
 
     public boolean getCss()
     {
-        return getIe() && getMajorVersion() >= 4
-                || getNetscape() && getMajorVersion() >= 4
-                || getGecko()
-                || getKonqueror()
-                || getOpera() && getMajorVersion() >= 3
-                || getSafari()
-                || getLinks();
+        return (getIe() && getMajorVersion() >= 4) || 
+               (getNetscape() && getMajorVersion() >= 4) || 
+               getGecko() || 
+               getKonqueror() || 
+               (getOpera() && getMajorVersion() >= 3) || 
+               getSafari() || 
+               getLinks();
     }
 
     public boolean getCss1()
@@ -781,40 +759,39 @@ public class BrowserSnifferTool
     public boolean getCss2()
     {
         return getIe() &&
-                (getMac() && getMajorVersion() >= 5 ||
-                 getWin32() && getMajorVersion() >= 6)
-                || getGecko() // && version >= ?
-                || getOpera() && getMajorVersion() >= 4
-                || getSafari() && getMajorVersion() >= 2
-                || getKonqueror() && getMajorVersion() >= 2;
-
+               (getMac() && getMajorVersion() >= 5 ||
+               (getWin32() && getMajorVersion() >= 6) || 
+               getGecko() // && version >= ? || 
+               (getOpera() && getMajorVersion() >= 4) || 
+               (getSafari() && getMajorVersion() >= 2) || 
+               (getKonqueror() && getMajorVersion() >= 2);
     }
 
     public boolean getDom0()
     {
-        return getIe() && getMajorVersion() >= 3
-                || getNetscape() && getMajorVersion() >= 2
-                || getOpera() && getMajorVersion() >= 3
-                || getGecko()
-                || getSafari()
-                || getKonqueror();
+        return (getIe() && getMajorVersion() >= 3) || 
+               (getNetscape() && getMajorVersion() >= 2) || 
+               (getOpera() && getMajorVersion() >= 3) || 
+               getGecko() || 
+               getSafari() || 
+               getKonqueror();
     }
 
     public boolean getDom1()
     {
-        return getIe() && getMajorVersion() >= 5
-                || getGecko()
-                || getSafari() && getMajorVersion() >= 2
-                || getOpera() && getMajorVersion() >= 4
-                || getKonqueror() && getMajorVersion() >= 2;
+        return (getIe() && getMajorVersion() >= 5) || 
+               getGecko() || 
+               (getSafari() && getMajorVersion() >= 2) || 
+               (getOpera() && getMajorVersion() >= 4) || 
+               (getKonqueror() && getMajorVersion() >= 2);
     }
 
     public boolean getDom2()
     {
-        return getIe() && getMajorVersion() >= 6
-                || getMozilla() && getMajorVersion() >= 5.0
-                || getOpera() && getMajorVersion() >= 7
-                || getFirefox();
+        return (getIe() && getMajorVersion() >= 6) || 
+               (getMozilla() && getMajorVersion() >= 5.0) || 
+               (getOpera() && getMajorVersion() >= 7) || 
+               getFirefox();
     }
 
     public boolean getJavascript()
@@ -833,7 +810,6 @@ public class BrowserSnifferTool
     {
         try
         {
-
             if(version != null)
             {
                 return; /* parsing of version already done */
