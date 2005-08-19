@@ -759,9 +759,9 @@ public class BrowserSnifferTool implements ViewTool
     public boolean getCss2()
     {
         return getIe() &&
-               (getMac() && getMajorVersion() >= 5 ||
+               (getMac() && getMajorVersion() >= 5) ||
                (getWin32() && getMajorVersion() >= 6) || 
-               getGecko() // && version >= ? || 
+               getGecko() || // && version >= ?
                (getOpera() && getMajorVersion() >= 4) || 
                (getSafari() && getMajorVersion() >= 2) || 
                (getKonqueror() && getMajorVersion() >= 2);
