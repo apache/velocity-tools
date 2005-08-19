@@ -72,7 +72,7 @@ import org.apache.velocity.util.EnumerationIterator;
  * </p>
  *
  * @author <a href="mailto:jido@respublica.fr">Denis Bredelet</a>
- * @version $Id: IteratorTool.java,v 1.3 2004/02/18 20:11:07 nbubna Exp $
+ * @version $Id$
  */
 
 public class IteratorTool implements Iterator {
@@ -148,7 +148,6 @@ public class IteratorTool implements Iterator {
      * can be used only once.
      * 
      * @param wrapped The list to wrap.
-     * @return This object, wrapped around the list.
      */
     private void internalWrap(Object wrapped)
     {
