@@ -47,7 +47,7 @@ import org.apache.commons.beanutils.PropertyUtils;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author Leon Messerschmidt
- * @version $Revision: 1.11 $ $Date: 2004/10/04 01:55:17 $
+ * @version $Revision$ $Date$
  */
 public class MathTool
 {
@@ -441,7 +441,7 @@ public class MathTool
         {
             return null;
         }
-        return new Double(n.intValue());
+        return new Double(n.doubleValue());
     }
 
 
