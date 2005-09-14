@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: menu.xml,v 1.7 2004/02/18 20:22:36 nbubna Exp $
+  $Id$
 -->
 <project href="index.html">
 
@@ -31,7 +31,7 @@
         <item name="Download"                href="../index.html#Download"/>
         <item name="User Guide"              href="userguide.html"/>
         <item name="Installation"            href="userguide.html#Installation"/>
-        <item name="Examples"                href="userguide.html#Examples"/>
+        <item name="Examples"                href="../index.html#Example Applications"/>
         <item name="Javadoc"                 href="../javadoc/index.html"/>
     </menu>
 
