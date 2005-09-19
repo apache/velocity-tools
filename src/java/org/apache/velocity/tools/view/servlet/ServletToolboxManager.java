@@ -94,8 +94,8 @@ import org.apache.velocity.tools.view.servlet.ServletToolboxRuleSet;
  * @author <a href="mailto:sidler@teamup.com">Gabriel Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
- *
- * @version $Id: ServletToolboxManager.java,v 1.16 2004/11/11 06:26:27 nbubna Exp $
+ * @author <a href="mailto:henning@schmiedehausen.org">Henning P. Schmiedehausen</a>
+ * @version $Id$
  */
 public class ServletToolboxManager extends XMLToolboxManager
 {
@@ -281,43 +281,53 @@ public class ServletToolboxManager extends XMLToolboxManager
      */
     public void addTool(ToolInfo info)
     {
-        if (info instanceof DataInfo)
+        if (validateToolInfo(info))
         {
-            //add static data to the appTools map
-            appTools.put(info.getKey(), info.getInstance(null));
-        }
-        else if (info instanceof ServletToolInfo)
-        {
-            ServletToolInfo sti = (ServletToolInfo)info;
-            
-            if (ViewContext.REQUEST.equalsIgnoreCase(sti.getScope()))
+            if (info instanceof ServletToolInfo)
             {
-                requestToolInfo.add(sti);
-            }
-            else if (ViewContext.SESSION.equalsIgnoreCase(sti.getScope()))
-            {
-                sessionToolInfo.add(sti);
-            }
-            else if (ViewContext.APPLICATION.equalsIgnoreCase(sti.getScope()))
-            {
-                /* add application scoped tools to appTools and
-                 * initialize them with the ServletContext */
-                appTools.put(sti.getKey(), sti.getInstance(servletContext));
+                ServletToolInfo sti = (ServletToolInfo)info;
+                
+                if (ViewContext.REQUEST.equalsIgnoreCase(sti.getScope()))
+                {
+                    requestToolInfo.add(sti);
+                    return;
+                }
+                else if (ViewContext.SESSION.equalsIgnoreCase(sti.getScope()))
+                {
+                    sessionToolInfo.add(sti);
+                    return;
+                }
+                else if (ViewContext.APPLICATION.equalsIgnoreCase(sti.getScope()))
+                {
+                    /* add application scoped tools to appTools and
+                     * initialize them with the ServletContext */
+                    appTools.put(sti.getKey(), sti.getInstance(servletContext));
+                    return;
+                }
+                else
+                {
+                    LOG.warn("Unknown scope '" + sti.getScope() + "' - " + 
+                            sti.getKey() + " will be request scoped.");
+                }
             }
             else
             {
-                LOG.warn("Unknown scope '" + sti.getScope() + "' - " + 
-                         sti.getKey() + " will be request scoped.");
-                requestToolInfo.add(sti);
+                //default is request scope
+                requestToolInfo.add(info);
             }
-        }
-        else
-        {
-            //default is request scope
-            requestToolInfo.add(info);
         }
     }
 
+    /**
+     * Overrides XMLToolboxManager to put data into appTools map
+     */
+    public void addData(ToolInfo info)
+    {
+        if (validateToolInfo(info))
+        {
+            appTools.put(info.getKey(), info.getInstance(null));
+        }
+    }
 
     /**
      * Overrides XMLToolboxManager to handle the separate
