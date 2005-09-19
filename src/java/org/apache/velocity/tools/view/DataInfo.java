@@ -45,7 +45,7 @@ package org.apache.velocity.tools.view;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: DataInfo.java,v 1.5 2004/02/18 20:08:29 nbubna Exp $
+ * @version $Id$
  */
 public class DataInfo implements ToolInfo
 {
@@ -58,9 +58,9 @@ public class DataInfo implements ToolInfo
     private static final int TYPE_ID_NUMBER = 1;
     private static final int TYPE_ID_BOOLEAN = 2;
 
-    private String key;
-    private int type_id;
-    private Object data;
+    private String key = null;
+    private int type_id = TYPE_ID_STRING;
+    private Object data = null;
 
 
     public DataInfo() {}
@@ -125,7 +125,7 @@ public class DataInfo implements ToolInfo
 
     public String getClassname()
     {
-        return data.getClass().getName();
+        return data != null ? data.getClass().getName() : null;
     }
 
 
