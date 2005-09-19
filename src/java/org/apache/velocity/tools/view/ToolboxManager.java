@@ -25,7 +25,8 @@ import org.apache.velocity.tools.view.context.ToolboxContext;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
- * @version $Id: ToolboxManager.java,v 1.4 2004/11/11 04:03:38 nbubna Exp $
+ * @author <a href="mailto:henning@schmiedehausen.org">Henning P. Schmiedehausen</a>
+ * @version $Id$
  */
 public interface ToolboxManager
 {
@@ -35,6 +36,12 @@ public interface ToolboxManager
      */
     void addTool(ToolInfo info);
 
+    /**
+     * Adds a data object for the context.
+     *
+     * @param info An object that implements ToolInfo
+     */
+    void addData(ToolInfo info);
 
     /**
      * @deprecated Use getToolbox(Object initData)
