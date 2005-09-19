@@ -73,8 +73,8 @@ import org.apache.velocity.tools.view.context.ToolboxContext;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
- *
- * @version $Id: XMLToolboxManager.java,v 1.13 2004/11/11 06:26:27 nbubna Exp $
+ * @author <a href="mailto:henning@schmiedehausen.org">Henning P. Schmiedehausen</a>
+ * @version $Id$
  */
 public class XMLToolboxManager implements ToolboxManager
 {
@@ -98,19 +98,50 @@ public class XMLToolboxManager implements ToolboxManager
 
     // ------------------------------- ToolboxManager interface ------------
 
+
     public void addTool(ToolInfo info)
     {
-        if (info instanceof DataInfo)
+        if (validateToolInfo(info))
+        {
+            toolinfo.add(info);
+            LOG.info("Added "+info.getKey()+" ("+info.getClassname()+") to the toolbox.");
+        }
+    }
+
+    public void addData(ToolInfo info)
+    {
+        if (validateToolInfo(info))
         {
             data.put(info.getKey(), info.getInstance(null));
         }
-        else
-        {
-            toolinfo.add(info);
-        }
-        LOG.info("Added "+info.getKey()+" ("+info.getClassname()+") to the toolbox.");
     }
 
+    /**
+     * Checks whether an object described by a ToolInfo passes
+     * some basic sanity checks.
+     *
+     * @param info A ToolInfo object
+     *
+     * @return true if the ToolInfo is valid
+     */
+    protected boolean validateToolInfo(ToolInfo info)
+    {
+        if (info == null)
+        {
+            return false;
+        }
+        if (info.getKey() == null || info.getKey().length() == 0)
+        {
+            LOG.error("Tool has no key defined!");
+            return false;
+        }
+        if (info.getClassname() == null)
+        {
+            LOG.error("Tool " + info.getKey() + " has no Class definition!");
+            return false;
+        }
+        return true;
+    }
 
     /**
      * @deprecated Use getToolbox(Object) instead.
