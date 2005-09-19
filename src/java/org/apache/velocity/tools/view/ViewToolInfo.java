@@ -30,8 +30,8 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * given object before being returned.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- *
- * @version $Id: ViewToolInfo.java,v 1.10 2004/11/11 06:26:27 nbubna Exp $
+ * @author <a href="mailto:henning@schmiedehausen.org">Henning P. Schmiedehausen</a>
+ * @version $Id$
  */
 public class ViewToolInfo implements ToolInfo
 {
@@ -76,7 +76,6 @@ public class ViewToolInfo implements ToolInfo
         this.key = key;
     }
 
-
     /**
      * If an instance of the tool cannot be created from
      * the classname passed to this method, it will throw an exception.
@@ -85,16 +84,23 @@ public class ViewToolInfo implements ToolInfo
      */
     public void setClassname(String classname) throws Exception
     {
-        this.clazz = getApplicationClass(classname);
-        /* create an instance and see if it is a ViewTool or Configurable */
-        Object instance = clazz.newInstance();
-        if (instance instanceof ViewTool)
+        if (classname != null && classname.length() != 0)
         {
-            this.initializable = true;
+            this.clazz = getApplicationClass(classname);
+            /* create an instance and see if it is a ViewTool or Configurable */
+            Object instance = clazz.newInstance();
+            if (instance instanceof ViewTool)
+            {
+                this.initializable = true;
+            }
+            if (instance instanceof Configurable)
+            {
+                this.configurable = true;
+            }
         }
-        if (instance instanceof Configurable)
+        else
         {
-            this.configurable = true;
+            this.clazz = null;
         }
     }
 
@@ -133,9 +139,8 @@ public class ViewToolInfo implements ToolInfo
 
     public String getClassname()
     {
-        return clazz.getName();
+        return clazz != null ? clazz.getName() : null;
     }
-
 
     /**
      * Get parameters for this tool.
@@ -153,6 +158,12 @@ public class ViewToolInfo implements ToolInfo
      */
     public Object getInstance(Object initData)
     {
+        if (clazz == null)
+        {
+            LOG.error("Tool "+this.key+" has no Class definition!");
+            return null;
+        }
+
         Object tool = null;
         try
         {
@@ -165,12 +176,12 @@ public class ViewToolInfo implements ToolInfo
         catch (IllegalAccessException e)
         {
             LOG.error("Exception while instantiating instance of \"" +
-                      getClassname() + "\": " + e);
+                    getClassname() + "\": " + e);
         }
         catch (InstantiationException e)
         {
             LOG.error("Exception while instantiating instance of \"" +
-                      getClassname() + "\": " + e);
+                    getClassname() + "\": " + e);
         }
         if (configurable)
         {
@@ -182,5 +193,4 @@ public class ViewToolInfo implements ToolInfo
         }
         return tool;
     }
-
 }
