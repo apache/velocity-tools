@@ -29,8 +29,9 @@ import org.xml.sax.Attributes;
  * XMLToolboxManager class.</p> 
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author <a href="mailto:henning@schmiedehausen.org">Henning P. Schmiedehausen</a>
  * @since VelocityTools 1.1
- * @version $Id: ToolboxRuleSet.java,v 1.4 2004/04/16 20:36:12 nbubna Exp $
+ * @version $Id$
  */
 public class ToolboxRuleSet extends RuleSetBase
 {
@@ -75,7 +76,7 @@ public class ToolboxRuleSet extends RuleSetBase
         digester.addSetProperties("toolbox/data");
         digester.addBeanPropertySetter("toolbox/data/key", "key");
         digester.addBeanPropertySetter("toolbox/data/value", "value");
-        digester.addSetNext("toolbox/data", "addTool");
+        digester.addSetNext("toolbox/data", "addData");
     }
 
 
