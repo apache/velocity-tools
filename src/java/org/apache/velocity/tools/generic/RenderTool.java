@@ -1,5 +1,5 @@
 /*
- * Copyright 2003 The Apache Software Foundation.
+ * Copyright 2003-2005 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-
 package org.apache.velocity.tools.generic;
-
 
 import java.io.StringWriter;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
-
 
 /**
  * This tool exposes methods to evaluate the given
@@ -70,15 +67,20 @@ import org.apache.velocity.context.Context;
  * scope of a servlet environment.</p>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.10 $ $Date: 2004/11/12 02:02:25 $
+ * @version $Revision$ $Date$
  */
-
 public class RenderTool
 {
+    /**
+     * The maximum number of loops allowed when recursing.
+     * @since VelocityTools 1.2
+     */
+    public static final int DEFAULT_PARSE_DEPTH = 20;
 
     private static final String LOG_TAG = "RenderTool.eval()";
 
     private VelocityEngine engine = null;
+    private int parseDepth = DEFAULT_PARSE_DEPTH;
 
     /**
      * Allow user to specify a VelocityEngine to be used
@@ -87,6 +89,26 @@ public class RenderTool
     public void setVelocityEngine(VelocityEngine ve)
     {
         this.engine = ve;
+    }
+
+    /**
+     * Set the maximum number of loops allowed when recursing.
+     * 
+     * @since VelocityTools 1.2
+     */
+    public void setParseDepth(int depth)
+    {
+        this.parseDepth = depth;
+    }
+
+    /**
+     * Get the maximum number of loops allowed when recursing.
+     * 
+     * @since VelocityTools 1.2
+     */
+    public int getParseDepth()
+    {
+        return this.parseDepth;
     }
 
     /**
@@ -128,15 +150,19 @@ public class RenderTool
      * current context, and returns the result as a String. It
      * will continue to re-evaluate the output of the last
      * evaluation until an evaluation returns the same code
-     * that was fed into it.</p>
-     *
-     * FIXME? add a parse-depth to prevent infinite recursion?
+     * that was fed into it or the number of recursive loops
+     * exceeds the set parse depth.</p>
      * 
      * @param ctx the current Context
      * @param vtl the code to be evaluated
      * @return the evaluated code as a String
      */
     public String recurse(Context ctx, String vtl) throws Exception
+    {
+        return internalRecurse(ctx, vtl, 0);
+    }
+
+    protected String internalRecurse(Context ctx, String vtl, int count) throws Exception
     {
         String result = eval(ctx, vtl);
         if (result == null || result.equals(vtl))
@@ -145,7 +171,18 @@ public class RenderTool
         }
         else
         {
-            return recurse(ctx, result);
+            // if we haven't reached our parse depth...
+            if (count < parseDepth)
+            {
+                // continue recursing
+                return internalRecurse(ctx, result, count++);
+            }
+            else
+            {
+                // abort and return what we have so far
+                //FIXME: notify the developer or user somehow??
+                return result;
+            }
         }
     }
 
