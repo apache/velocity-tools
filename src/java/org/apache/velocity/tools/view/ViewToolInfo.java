@@ -183,7 +183,7 @@ public class ViewToolInfo implements ToolInfo
             LOG.error("Exception while instantiating instance of \"" +
                     getClassname() + "\": " + e);
         }
-        if (configurable)
+        if (configurable && parameters != null)
         {
             ((Configurable)tool).configure(parameters);
         }
