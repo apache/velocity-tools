@@ -194,14 +194,30 @@ public class StrutsUtils
 
     /**
      * Returns the Struts messages for this request or <code>null</code>
-     * if none exist.
+     * if none exist.  Since VelocityTools 1.2, this will also check
+     * the session for messages (if there is a session).
      *
      * @param request the servlet request
      * @since VelocityTools 1.1
      */
     public static ActionMessages getMessages(HttpServletRequest request)
     {
-        return (ActionMessages)request.getAttribute(Globals.MESSAGE_KEY);
+        ActionMessages messages = new ActionMessages();
+        HttpSession session = request.getSession(false);
+        if (session != null)
+        {
+            ActionMessages sessionMessages = 
+                (ActionMessages)session.getAttribute(Globals.MESSAGE_KEY);
+            if (sessionMessages != null) {
+                messages.add(sessionMessages);
+            }
+        }
+        ActionMessages requestMessages = 
+            (ActionMessages)request.getAttribute(Globals.MESSAGE_KEY);
+        if (requestMessages != null) {
+            messages.add(requestMessages);
+        }
+        return messages;
     }
 
     /**
