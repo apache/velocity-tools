@@ -406,7 +406,8 @@ public class ServletToolboxManager extends XMLToolboxManager
                 lock = session.getAttribute("session.mutex");
                 if (lock == null)
                 {
-                    lock = new Object();
+                    // use a Boolean because it is serializable and small
+                    lock = new Boolean(true);
                     session.setAttribute("session.mutex", lock);
                 }
             }
