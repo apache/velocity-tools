@@ -29,8 +29,10 @@ public interface Configurable
 {
 
     /**
-     * Configure this tool using the specified parameters. The
+     * Configures this tool using the specified parameters. The
      * map of parameters passed in is guaranteed not to be null.
+     * If there are no parameters specified for this tool in your
+     * toolbox definition, then this method will NOT be called at all.
      *
      * @param parameters the configuration data for this tool
      */
