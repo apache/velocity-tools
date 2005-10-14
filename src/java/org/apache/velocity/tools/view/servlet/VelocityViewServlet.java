@@ -651,7 +651,7 @@ public class VelocityViewServlet extends HttpServlet
             {
                 vw.recycle(writer);
             }
-            template.merge(context, vw);
+            performMerge(template, context, vw);
         }
         finally
         {
@@ -677,6 +677,24 @@ public class VelocityViewServlet extends HttpServlet
                 }                
             }
         }
+    }
+
+
+    /**
+     * This is here so developers may override it and gain access to the 
+     * Writer which the template will be merged into.  See
+     * <a href="http://issues.apache.org/jira/browse/VELTOOLS-7">VELTOOLS-7</a>
+     * for discussion of this.
+     *
+     * @param template template object returned by the handleRequest() method
+     * @param context Context created by the {@link #createContext}
+     * @param writer a VelocityWriter that the template is merged into
+     */
+    protected void performMerge(Template template, Context context, Writer writer)
+        throws ResourceNotFoundException, ParseErrorException,
+               MethodInvocationException, Exception
+    {
+        template.merge(context, writer);
     }
 
  
