@@ -22,14 +22,15 @@ import java.util.Map;
  * Interface for tools that can be passed configuration parameters.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Id: Configurable.java,v 1.2 2004/05/06 00:39:37 nbubna Exp $
+ * @version $Id$
  * @since VelocityTools 1.2
  */
 public interface Configurable
 {
 
     /**
-     * Configure this tool using the specified parameters.
+     * Configure this tool using the specified parameters. The
+     * map of parameters passed in is guaranteed not to be null.
      *
      * @param parameters the configuration data for this tool
      */
