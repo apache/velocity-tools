@@ -165,6 +165,12 @@ public class VelocityViewServlet extends HttpServlet
      * <p>Initializes servlet, toolbox and Velocity template engine.
      * Called by the servlet container on loading.</p>
      *
+     * <p>NOTE: If no charset is specified in the default.contentType
+     * property (in your velocity.properties) and you have specified
+     * an output.encoding property, then that will be used as the
+     * charset for the default content-type of pages served by this
+     * servlet.</p>
+     *
      * @param config servlet configuation
      */
     public void init(ServletConfig config) throws ServletException
