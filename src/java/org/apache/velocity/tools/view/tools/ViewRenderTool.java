@@ -1,5 +1,5 @@
 /*
- * Copyright 2003 The Apache Software Foundation.
+ * Copyright 2003-2005 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-
 package org.apache.velocity.tools.view.tools;
 
-
 import java.io.StringWriter;
+import java.util.Map;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.generic.RenderTool;
+import org.apache.velocity.tools.generic.ValueParser;
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.tools.ViewTool;
-
 
 /**
  * This tool expose methods to evaluate the given
@@ -61,6 +60,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *   &lt;key&gt;render&lt;/key&gt;
  *   &lt;scope&gt;request&lt;/scope&gt;
  *   &lt;class&gt;org.apache.velocity.tools.view.tools.ViewRenderTool&lt;/class&gt;
+ *   &lt;parameter name="parse.depth" value="10"/&gt;
  * &lt;/tool&gt;
  * </pre>
  *
@@ -73,14 +73,13 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * session scopes of a servlet environment.</p>
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Revision: 1.6 $ $Date: 2004/11/11 06:22:09 $
+ * @version $Revision$ $Date$
  */
-
-public class ViewRenderTool extends RenderTool implements ViewTool
+public class ViewRenderTool extends RenderTool implements ViewTool, Configurable
 {
+    public static final String KEY_PARSE_DEPTH = "parse.depth";
 
     private Context context;
-
 
     /**
      * Constructs a new instance
@@ -105,6 +104,13 @@ public class ViewRenderTool extends RenderTool implements ViewTool
         }
     }
 
+    public void configure(Map params)
+    {
+        ValueParser parser = new ValueParser(params);
+        int depth = parser.getInt(KEY_PARSE_DEPTH, DEFAULT_PARSE_DEPTH);
+        setParseDepth(depth);
+    }
+
     /**
      * <p>Evaluates a String containing VTL using the current context,
      * and returns the result as a String.  If this fails, then 
@@ -126,8 +132,6 @@ public class ViewRenderTool extends RenderTool implements ViewTool
      * will continue to re-evaluate the output of the last
      * evaluation until an evaluation returns the same code
      * that was fed into it.</p>
-     *
-     * TODO? add a parse-depth to prevent infinite recursion?
      * 
      * @param vtl the code to be evaluated
      * @return the evaluated code as a String
