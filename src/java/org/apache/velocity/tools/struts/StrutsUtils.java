@@ -532,7 +532,7 @@ public class StrutsUtils
         {
             message = null;
             ActionMessage report = (ActionMessage)reports.next();
-            if (resources != null)
+            if (resources != null && report.isResource())
             {
                 message = resources.getMessage(locale,
                                                report.getKey(),

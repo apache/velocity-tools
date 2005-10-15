@@ -248,7 +248,7 @@ public class ActionMessagesTool extends MessageResourcesTool
             ActionMessage msg = (ActionMessage)msgs.next();
 
             String message = null;
-            if (res != null)
+            if (res != null && msg.isResource())
             {
                 message = 
                     res.getMessage(this.locale, msg.getKey(), msg.getValues());
@@ -262,7 +262,8 @@ public class ActionMessagesTool extends MessageResourcesTool
 
             if (message == null)
             {
-                // if the resource bundle wasn't found or the key 
+                // if the resource bundle wasn't found or 
+                // ActionMessage.isResource() returned false or the key
                 // wasn't found in the resources, then use the key
                 message = msg.getKey();
             }
