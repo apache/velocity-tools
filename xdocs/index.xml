@@ -121,8 +121,8 @@
         <p>All VelocityTools project code is maintained in the 
         Subversion repository <b>jakarta/velocity-tools</b>.</p>
 
-        <p>Web Browser: <a href="http://svn.apache.org/viewcvs.cgi/jakarta/velocity-tools/trunk/">
-        http://svn.apache.org/viewcvs.cgi/jakarta/velocity-tools/trunk/</a></p>
+        <p>Web Browser: <a href="http://svn.apache.org/viewcvs.cgi/jakarta/velocity/tools/trunk/">
+        http://svn.apache.org/viewcvs.cgi/jakarta/velocity/tools/trunk/</a></p>
 
         <p>Subversion Client: <a href="http://www.apache.org/dev/version-control.html">http://www.apache.org/dev/version-control.html</a>.
         </p>
