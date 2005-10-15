@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: toolbox.xml,v 1.7 2004/03/13 18:49:28 marino Exp $
+  $Id$
 -->
 <toolbox>
 
@@ -26,6 +26,7 @@
 
   <tool>
      <key>link</key>
+     <scope>request</scope>
      <class>org.apache.velocity.tools.struts.StrutsLinkTool</class>
   </tool>
 
@@ -34,36 +35,43 @@
         'slink' here to distinguish between the two. -->
   <tool>
      <key>slink</key>
+     <scope>request</scope>
      <class>org.apache.velocity.tools.struts.SecureLinkTool</class>
   </tool>
 
   <tool>
      <key>text</key>
+     <scope>request</scope>
      <class>org.apache.velocity.tools.struts.MessageTool</class>
   </tool>
 
   <tool>
      <key>errors</key>
+     <scope>request</scope>
      <class>org.apache.velocity.tools.struts.ErrorsTool</class>
   </tool>
 
   <tool>
      <key>messages</key>
+     <scope>request</scope>
      <class>org.apache.velocity.tools.struts.ActionMessagesTool</class>
   </tool>
 
   <tool>
      <key>form</key>
+     <scope>request</scope>
      <class>org.apache.velocity.tools.struts.FormTool</class>
   </tool>
 
   <tool>
      <key>tiles</key>
+     <scope>request</scope>
      <class>org.apache.velocity.tools.struts.TilesTool</class>
   </tool>
 
   <tool>
      <key>validator</key>
+     <scope>request</scope>
      <class>org.apache.velocity.tools.struts.ValidatorTool</class>
   </tool>
 
