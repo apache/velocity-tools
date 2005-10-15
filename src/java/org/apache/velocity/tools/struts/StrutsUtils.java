@@ -182,40 +182,48 @@ public class StrutsUtils
 
     /**
      * Returns the Struts errors for this request or <code>null</code>
-     * if none exist.
+     * if none exist. Since VelocityTools 1.2, this will also check
+     * the session (if there is one) for errors if there are no errors
+     * in the request.
      *
      * @param request the servlet request
      * @since VelocityTools 1.1
      */
     public static ActionMessages getErrors(HttpServletRequest request)
     {
-        return (ActionMessages)request.getAttribute(Globals.ERROR_KEY);
+        ActionMessages errors = (ActionMessages)request.getAttribute(Globals.ERROR_KEY);
+        if (errors == null || errors.isEmpty())
+        {
+            // then check the session
+            HttpSession session = request.getSession(false);
+            if (session != null)
+            {
+                errors = (ActionMessages)session.getAttribute(Globals.ERROR_KEY);
+            }
+        }
+        return errors;
     }
 
     /**
      * Returns the Struts messages for this request or <code>null</code>
      * if none exist.  Since VelocityTools 1.2, this will also check
-     * the session for messages (if there is a session).
+     * the session (if there is one) for messages if there are no messages
+     * in the request.
      *
      * @param request the servlet request
      * @since VelocityTools 1.1
      */
     public static ActionMessages getMessages(HttpServletRequest request)
     {
-        ActionMessages messages = new ActionMessages();
-        HttpSession session = request.getSession(false);
-        if (session != null)
+        ActionMessages messages = (ActionMessages)request.getAttribute(Globals.MESSAGE_KEY);
+        if (messages == null || messages.isEmpty())
         {
-            ActionMessages sessionMessages = 
-                (ActionMessages)session.getAttribute(Globals.MESSAGE_KEY);
-            if (sessionMessages != null) {
-                messages.add(sessionMessages);
+            // then check the session
+            HttpSession session = request.getSession(false);
+            if (session != null)
+            {
+                messages = (ActionMessages)session.getAttribute(Globals.MESSAGE_KEY);
             }
-        }
-        ActionMessages requestMessages = 
-            (ActionMessages)request.getAttribute(Globals.MESSAGE_KEY);
-        if (requestMessages != null) {
-            messages.add(requestMessages);
         }
         return messages;
     }
