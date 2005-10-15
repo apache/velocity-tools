@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: build.xml,v 1.2 2004/02/20 12:54:14 marino Exp $
+  $Id$
 -->
 <project name="VelocityTools- Example Layout Application" default="war" basedir=".">
 
@@ -47,7 +47,7 @@
   <target name="war" depends="compile">
     <jar jarfile="${basedir}/../layout.war"
          basedir="${basedir}"
-         excludes="**/MANIFEST.MF"/>
+         excludes="**/MANIFEST.MF,**/servlet.jar"/>
 
     <echo>                                                  </echo>
     <echo>  A WAR file (Web ARchive) was created for you in </echo>

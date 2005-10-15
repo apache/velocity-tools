@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: build.xml,v 1.4 2004/02/20 13:13:38 marino Exp $
+  $Id$
 -->
 <project name="velocity-view" default="all" basedir=".">
 
@@ -142,7 +142,7 @@
     <!-- Generate .war file, name it velstruts.war -->
     <jar jarfile="${basedir}/../velstruts.war"
          basedir="${basedir}"
-         excludes="**/MANIFEST.MF"/>
+         excludes="**/MANIFEST.MF,**/servlet.jar"/>
   </target>
 
 </project>
