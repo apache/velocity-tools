@@ -308,6 +308,9 @@ public class ServletToolboxManager extends XMLToolboxManager
                 {
                     LOG.warn("Unknown scope '" + sti.getScope() + "' - " + 
                             sti.getKey() + " will be request scoped.");
+
+                    //default is request scope
+                    requestToolInfo.add(info);
                 }
             }
             else
