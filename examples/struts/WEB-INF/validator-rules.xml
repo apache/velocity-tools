@@ -1,10 +1,8 @@
 <!DOCTYPE form-validation PUBLIC
-          "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN"
-          "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+          "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
+          "http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
 <!--
-  $Header: /home/cvs/jakarta-velocity-tools/examples/struts/WEB-INF/validator-rules.xml,v 1.3 2004/03/12 19:36:16 marino Exp $
-  $Revision: 1.3 $
-  $Date: 2004/03/12 19:36:16 $
+  $Id$
 
    This file contains the default Struts Validator pluggable validator
    definitions.  It should be placed somewhere under /WEB-INF and
@@ -58,6 +56,7 @@
                        org.apache.commons.validator.ValidatorAction,
                        org.apache.commons.validator.Field,
                        org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
                   msg="errors.required"/>
 
@@ -91,6 +90,7 @@
                        org.apache.commons.validator.ValidatorAction,
                        org.apache.commons.validator.Field,
                        org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
               depends=""
                   msg="errors.minlength"
@@ -104,6 +104,7 @@
                        org.apache.commons.validator.ValidatorAction,
                        org.apache.commons.validator.Field,
                        org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
               depends=""
                   msg="errors.maxlength"
@@ -118,6 +119,7 @@
                        org.apache.commons.validator.ValidatorAction,
                        org.apache.commons.validator.Field,
                        org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
               depends=""
                   msg="errors.invalid"/>
@@ -130,6 +132,7 @@
                        org.apache.commons.validator.ValidatorAction,
                        org.apache.commons.validator.Field,
                        org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
               depends=""
                   msg="errors.byte"
@@ -143,6 +146,7 @@
                        org.apache.commons.validator.ValidatorAction,
                        org.apache.commons.validator.Field,
                        org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
               depends=""
                   msg="errors.short"
@@ -156,6 +160,7 @@
                        org.apache.commons.validator.ValidatorAction,
                        org.apache.commons.validator.Field,
                        org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
               depends=""
                   msg="errors.integer"
@@ -170,6 +175,7 @@
                        org.apache.commons.validator.ValidatorAction,
                        org.apache.commons.validator.Field,
                        org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
               depends=""
                   msg="errors.long"/>
@@ -182,6 +188,7 @@
                        org.apache.commons.validator.ValidatorAction,
                        org.apache.commons.validator.Field,
                        org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
               depends=""
                   msg="errors.float"
@@ -194,6 +201,7 @@
                        org.apache.commons.validator.ValidatorAction,
                        org.apache.commons.validator.Field,
                        org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
               depends=""
                   msg="errors.double"/>
@@ -206,6 +214,7 @@
                        org.apache.commons.validator.ValidatorAction,
                        org.apache.commons.validator.Field,
                        org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
               depends=""
                   msg="errors.date"
@@ -219,6 +228,7 @@
                        org.apache.commons.validator.ValidatorAction,
                        org.apache.commons.validator.Field,
                        org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
               depends="integer"
                   msg="errors.range"/>
@@ -231,10 +241,22 @@
                        org.apache.commons.validator.ValidatorAction,
                        org.apache.commons.validator.Field,
                        org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
               depends="float"
                   msg="errors.range"/>
 
+      <validator name="doubleRange"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateDoubleRange"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
+                       javax.servlet.http.HttpServletRequest"
+              depends="double"
+                  msg="errors.range"/>
 
 
       <validator name="creditCard"
@@ -244,6 +266,7 @@
                        org.apache.commons.validator.ValidatorAction,
                        org.apache.commons.validator.Field,
                        org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
               depends=""
                   msg="errors.creditcard"/>
@@ -256,10 +279,34 @@
                        org.apache.commons.validator.ValidatorAction,
                        org.apache.commons.validator.Field,
                        org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
               depends=""
                   msg="errors.email"/>
 
+      <validator name="url"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateUrl"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.url"/>
+
+     <!--
+       This simply allows struts to include the validateUtilities into a page, it should
+       not be used as a validation rule.
+     -->
+     <validator name="includeJavaScriptUtilities"
+            classname=""
+               method=""
+         methodParams=""
+              depends=""
+                  msg=""
+           jsFunction="org.apache.commons.validator.javascript.validateUtilities"/>
 
    </global>
 
