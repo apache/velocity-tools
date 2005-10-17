@@ -45,11 +45,6 @@
                 <td>$text.exists("tutle")</td>
             </tr>
             <tr>
-            <tr>
-                <td>\$text.getLocale()<br>
-                    \$text.locale</td>
-                <td>$text.getLocale()</td>
-            </tr>
         </table>
 
 
