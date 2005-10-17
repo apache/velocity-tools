@@ -41,7 +41,7 @@ import org.apache.velocity.runtime.log.LogSystem;
  * 
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.1
- * @version $Id: CommonsLogLogSystem.java,v 1.3 2004/02/18 20:10:38 nbubna Exp $
+ * @version $Id$
  */
 public class CommonsLogLogSystem implements LogSystem
 {
@@ -87,12 +87,15 @@ public class CommonsLogLogSystem implements LogSystem
             case LogSystem.INFO_ID:
                 log.info(message);
                 break;
-            case LogSystem.DEBUG_ID:
-                log.debug(message);
+            //NOTE: this is a hack to offer minor support for the
+            //      new trace level in Velocity 1.5
+            case -1:
+                log.trace(message);
                 break;
             case LogSystem.ERROR_ID:
                 log.error(message);
                 break;
+            case LogSystem.DEBUG_ID:
             default:
                 log.debug(message);
                 break;
