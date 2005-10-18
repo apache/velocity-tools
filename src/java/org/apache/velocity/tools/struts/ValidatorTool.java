@@ -513,9 +513,9 @@ public class ValidatorTool implements ViewTool {
                 results.append("     this.a");
                 results.append(jscriptVar++);
                 results.append(" = new Array(\"");
-                results.append(field.getKey());
+                results.append(field.getKey()); // TODO: escape?
                 results.append("\", \"");
-                results.append(escapeQuotes(message));
+                results.append(escapeJavascript(message));
                 results.append("\", ");
                 results.append("new Function (\"varName\", \"");
 
@@ -524,7 +524,7 @@ public class ValidatorTool implements ViewTool {
                 Iterator varsIterator = vars.keySet().iterator();
                 while (varsIterator.hasNext())
                 {
-                    String varName = (String)varsIterator.next();
+                    String varName = (String)varsIterator.next(); // TODO: escape?
                     Var var = (Var)vars.get(varName);
                     String varValue = var.getValue();
                     String jsType = var.getJsType();
@@ -539,8 +539,7 @@ public class ValidatorTool implements ViewTool {
                     results.append("this.");
                     results.append(varName);
 
-                    String escapedVarValue =
-                        ValidatorUtils.replace(varValue, "\\", "\\\\");
+                    String escapedVarValue = escapeJavascript(varValue);
 
                     if (Var.JSTYPE_INT.equalsIgnoreCase(jsType))
                     {
@@ -583,26 +582,48 @@ public class ValidatorTool implements ViewTool {
     }
 
 
-    private String escapeQuotes(String in)
+    /**
+     * <p>Backslash-escapes the following characters from the input string:
+     * &quot;, &apos;, \, \r, \n.</p>
+     *
+     * <p>This method escapes characters that will result in an invalid
+     * Javascript statement within the validator Javascript.</p>
+     *
+     * @param str The string to escape.
+     * @return The string <code>s</code> with each instance of a double quote,
+     *         single quote, backslash, carriage-return, or line feed escaped
+     *         with a leading backslash.
+     * @since VelocityTools 1.2
+     */
+    protected String escapeJavascript(String str)
     {
-        if (in == null || in.indexOf("\"") == -1)
+        if (str == null)
         {
-            return in;
+            return null;
         }
-        StringBuffer buffer = new StringBuffer();
-        StringTokenizer tokenizer = new StringTokenizer(in, "\"", true);
-
-        while (tokenizer.hasMoreTokens())
+        int length = str.length();
+        if (length == 0)
         {
-            String token = tokenizer.nextToken();
-            if (token.equals("\""))
+            return str;
+        }
+
+        // guess at how many chars we'll be adding...
+        StringBuffer out = new StringBuffer(length + 4);
+        // run through the string escaping sensitive chars
+        for (int i=0; i < length; i++)
+        {
+            char c = str.charAt(i);
+            if (c == '"'  ||
+                c == '\'' ||
+                c == '\\' || 
+                c == '\n' || 
+                c == '\r')
             {
-                buffer.append("\\");
+                out.append('\\');
             }
-            buffer.append(token);
+            out.append(c);
         }
-
-        return buffer.toString();
+        return out.toString();
     }
 
 
