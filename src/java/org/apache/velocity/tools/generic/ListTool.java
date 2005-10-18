@@ -52,6 +52,7 @@ import java.util.List;
  *
  * @author <a href="mailto:shinobu@ieee.org">Shinobu Kawai</a>
  * @version $Id: $
+ * @since VelocityTools 1.2
  */
 public class ListTool
 {
