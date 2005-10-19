@@ -824,32 +824,6 @@ public class ValidatorTool implements ViewTool {
 
 
     /**
-     * Replaces a single character in a <code>String</code>
-     *
-     * @param input the string to process
-     * @param pos the position of the caracter to replace
-     * @param c the substitute char
-     * @return the input string with the specified char replaced
-     */
-    private String replaceChar(String input, int pos, char c)
-    {
-        if (pos == 0)
-        {
-            return c + input.substring(pos, input.length());
-        }
-        else if (pos == input.length())
-        {
-            return input.substring(0, pos) + c;
-        }
-        else
-        {
-            return input.substring(0, pos) + c +
-                   input.substring(pos, input.length() - 1);
-        }
-    }
-
-
-    /**
      * Constructs the beginning <script> element depending on xhtml status.
      *
      * @return the beginning <script> element depending on xhtml status
