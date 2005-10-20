@@ -51,7 +51,7 @@
     <li><a href="../index.html#Download">Download</a></li>
     <li><a href="userguide.html">User Guide</a></li>
     <li><a href="userguide.html#Installation">Installation</a></li>
-    <li><a href="userguide.html#Examples">Examples</a></li>
+    <li><a href="../index.html#Example Applications">Examples</a></li>
     <li><a href="../javadoc/index.html">Javadoc</a></li>
 
 </ul>
@@ -140,6 +140,15 @@
             
                 Returns the query parameter name under which a cancel button press 
                 must be reported if form validation is to be skipped.
+            
+          </td>
+        </tr>
+                        <tr>
+          <td bgcolor="EEEEEE" nowrap>
+            <a href="#getName()">getName()</a></td>
+          <td bgcolor="EEEEEE">
+            
+                Returns the form bean name associated with this action mapping.
             
           </td>
         </tr>
@@ -257,7 +266,7 @@
     <table width="100%"><tr><td bgcolor="EEEEEE">
     <font size="+1"><code>
         <signature>
-                int getCancelName()
+                String getCancelName()
             </signature>
     </code></font>
     </td></tr></table>
@@ -292,6 +301,48 @@
 value="Cancel"&gt;</sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
+
+
+    <br clear="all">
+
+    </td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+  <tr>
+    <td colspan="2" bgcolor="#525D76">
+      <font color="#ffffff" face="arial,helvetica.sanserif">
+      <a name="getName()">
+      <strong>getName()</strong></a></font>
+    </td>
+  </tr>
+  <tr>
+    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td>
+      
+        <p>
+        <abstract>
+                Returns the form bean name associated with this action mapping.
+            </abstract>
+    </p>
+    <p>
+    <table width="100%"><tr><td bgcolor="EEEEEE">
+    <font size="+1"><code>
+        <signature>
+                String getName()
+            </signature>
+    </code></font>
+    </td></tr></table>
+    </p>
+    <dl>
+    <dt><strong>Returns</strong></dt>
+    <dd>
+        <returns>
+                The name of the ActionForm associated with this request or
+                <code>null</code> if there is no form bean associated with this mapping.
+            </returns>
+    </dd>
+    </dl>
 
 
     <br clear="all">
