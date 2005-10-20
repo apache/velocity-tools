@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  Copyright 2003-2004 The Apache Software Foundation.
+  Copyright 2003-2005 The Apache Software Foundation.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: MessageTool.xml,v 1.4 2004/02/18 20:22:36 nbubna Exp $
+  $Id$
 -->
 <document>
 
@@ -58,7 +58,7 @@
             </abstract>
 
             <signature>
-                String get(String key)
+                TextKey get(String key)
             </signature>
 
             <signature>
@@ -114,21 +114,26 @@
                 message. The third, fourth, fifth and sixth signatures take a list
                 of up to five replacement parameters. The third and fourth signatures
                 are provided for compatibility with existing applications. The fifth and
-                sixth signatures are Velocity-friendlier.</p>
+                sixth signatures are more Velocity friendly.</p>
 
 <p>Assuming that the message resource files contain the following messages:</p>
 <sourcecode>title=Welcome to Velocity for Struts
-test=This message has five replacement parameters: {0}, {1}, {2}, {3}, {4}</sourcecode>
+test=This message has five replacement parameters: {0}, {1}, {2}, {3}, {4}
+label.one=foobar
+label.two=woogie!</sourcecode>
 
 <p>then the following Velocity script:</p>
-<sourcecode>$text.get("title")
-$text.title
-$text.get("test", ["bear", "wolf", "tiger"])</sourcecode>
+<sourcecode>$text.title
+$text.get('test', ['bear', 'wolf', 'tiger'])
+$text.label.one
+$text.label.two</sourcecode>
 
 <p>produces this output:</p>
 <sourcecode>Welcome to Velocity for Struts
 Welcome to Velocity for Struts
-This message has five replacement parameters: bear, wolf, tiger, {3}, {4}</sourcecode>
+This message has five replacement parameters: bear, wolf, tiger, {3}, {4}
+foobar
+woogie!</sourcecode>
             </description>
 
         </method>
@@ -171,42 +176,6 @@ This message has five replacement parameters: bear, wolf, tiger, {3}, {4}</sourc
 
         </method>
     </section>
-
-    <section name="getLocale()">
-        <method name="getLocale()">
-
-            <abstract>
-                Returns the user's locale. If a locale is not found, the default
-                locale is returned (deprecated - will be removed in VelocityTools 1.2).
-            </abstract>
-
-            <signature>
-                Locale getLocale()
-            </signature>
-
-            <returns>
-                An instance of class <code>java.util.Locale</code>.
-            </returns>
-
-            <description>
-<sourcecode>$text.getLocale()
-$text.locale
-$text.getLocale().getDisplayLanguage()</sourcecode>
-
-<p>produces:</p>
-<sourcecode>en
-en
-English</sourcecode>
-
-<p>The returned object of class <code>Locale</code> is automatically rendered by Velocity by
-calling its <code>toString()</code> method. The third example calls method
-<code>getDisplayLanguage()</code> of class <code>Locale</code></p>
-
-            </description>
-
-        </method>
-    </section>
-
 
  </body>
 </document>

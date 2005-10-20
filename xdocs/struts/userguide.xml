@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  Copyright 2003-2004 The Apache Software Foundation.
+  Copyright 2003-2005 The Apache Software Foundation.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: userguide.xml,v 1.7 2004/11/10 20:23:32 nbubna Exp $
+  $Id$
 -->
 <document>
 
@@ -493,6 +493,7 @@ session.setAttribute("foo", "session foo");</sourcecode>
 <sourcecode>
 title=Struts Example Application
 test=This string has 4 replacement parameters: {1}, {2}, {3}, {4}
+foo.bar=whatever
 </sourcecode>
 
 <p>Then, the following script...</p>
@@ -501,6 +502,7 @@ test=This string has 4 replacement parameters: {1}, {2}, {3}, {4}
 $text.title
 $text.get('test', ['bear', 'dog', 'cat'])
 $text.exists('tutle')
+$text.foo.bar
 </sourcecode>
 
 <p>..will produce this output:</p>
@@ -509,6 +511,7 @@ $text.exists('tutle')
 Struts Example Application
 This string has 4 replacement parameters: bear, dog, cat, {4}
 false
+whatever
 </sourcecode>
 
             <p>Please see the <a href="StrutsTools.html">Tool Reference Documentation</a>

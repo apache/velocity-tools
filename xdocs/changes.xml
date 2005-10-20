@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  Copyright 2003-2004 The Apache Software Foundation.
+  Copyright 2003-2005 The Apache Software Foundation.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -29,6 +29,17 @@
     <subsection name="1.2-dev">
       <p>This section describes changes after the 1.1 release.</p>
       <ul>
+      <li>Updated documentation to cover new features and sync to many infrastructure changes. (ndb)</li>
+      <li>Fixed incomplete escaping in ValidatorTool (patch from Christopher Schultz. Jira Issue VELTOOLS-52). (ndb)</li>
+      <li>Fixed infinite loop logging problem with Tomcat 5.5 in the "simple" example webapp. (ndb)</li>
+      <li>Upgraded jars to Struts 1.2.7, Commons-Logging 1.0.4, Commons-Validator 1.1.4, Digester 1.7, Commons-Collections 3.1, Beanutils 1.7.0, Struts SSL Extension for 1.2, and Commons-Lang 2.1. (ndb)</li>
+      <li>Added VelocityStruts support for non-resource and session-scoped action messages (patch and help from Niall Pemberton. See Jira issues VELTOOLS-1 and VELTOOLS-51). (ndb)</li>
+      <li>Factored generic parsing code out of ParameterParser into new ValueParser for parsing strings pulled from any Map. (ndb)</li>
+      <li>Improved error handling/recovery in toolbox xml parsing by adding validation of tool info. (henning)</li>
+      <li>Added BrowserSnifferTool for identifying browsers and their features (contributed by Claude Brisson). This 
+          depends on Java 1.4's regexp support for use. (ndb)</li>
+      <li>Added EscapeTool for commons escaping needs (contributed by Shinobu Kawai). This requires commons-lang for use. (ndb)</li>
+      <li>Added ListTool as utility for using arrays like Lists in templates (contributed by Shinobu Kawai). (ndb)</li>
       <li>Added DateTool methods to provide easy access to date values (e.g. month, year, day). (ndb)</li>
       <li>Converted VelocityView and VelocityStruts to use a VelocityEngine instead of the Velocity singleton.
           This means only the servlets log directly to the VelocityEngine instance; the tools and other

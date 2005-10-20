@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  Copyright 2003-2004 The Apache Software Foundation.
+  Copyright 2003-2005 The Apache Software Foundation.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@
         <subsection name="VelocityStruts" >
             <p><a href="struts/">VelocityStruts</a> is a set of tools for using the 
             Velocity template engine as the view layer for a web application built upon the
-            <a href="http://jakarta.apache.org/struts/">Jakarta Struts</a> framework.</p>
+            <a href="http://struts.apache.org/">Apache Struts</a> framework.</p>
             <p>This work leverages the <strong>VelocityViewServlet</strong> and 
             additional tools which make it easy to integrate the Velocity with 
             Struts. Several example hybrid applications are included.</p>
@@ -109,9 +109,9 @@
     <section name="Download">
         <p><strong>Releases</strong></p>
         <p>
-          VelocityTools 1.1 is now available in
-          <a href="http://jakarta.apache.org/site/sourceindex.cgi#velocity-tools">source</a> or
-          <a href="http://jakarta.apache.org/site/binindex.cgi#velocity-tools">binary</a> form.
+          VelocityTools 1.2 is now available for
+          <a href="http://jakarta.apache.org/site/downloads/downloads_velocity-tools.cgi">download</a>
+          in source or binary form.
         </p>
 
         <br clear="all"/>
@@ -135,18 +135,18 @@
         <p>Those interested in furthering the development of this project are
         especially welcome to jump in and help out.  Patches can be sent to the 
         mailing list or attached to a
-        <a href="http://issues.apache.org/bugzilla/enter_bug.cgi?product=Velocity&amp;component=Tools">bugzilla</a>
-        ticket.  The <a href="http://nagoya.apache.org/wiki/apachewiki.cgi?VelocityTools">Wiki</a>
+        <a href="http://issues.apache.org/jira/browse/VELTOOLS">JIRA</a>
+        issue.  The <a href="http://wiki.apache.org/jakarta-velocity/VelocityTools">Wiki</a>
         can also be a good place to discuss and develop ideas.</p>
 
         <p>A few good places to get started include:
           <ul>
             <li>Documentation (patches for the site or additions to the Wiki)</li>
             <li>Improving the example apps</li>
-            <li>Contributing to the <a href="http://nagoya.apache.org/wiki/apachewiki.cgi?VelocimacroLibraries">VelocimacroLibraries</a></li>
+            <li>Contributing to the <a href="http://wiki.apache.org/jakarta-velocity/VelocimacroLibrary">VelocimacroLibrary</a></li>
           </ul>
         Other project goals and proposals can be found in the project 
-        <a href="http://svn.apache.org/viewcvs.cgi/jakarta/velocity-tools/trunk/STATUS">STATUS</a>
+        <a href="http://svn.apache.org/viewcvs.cgi/jakarta/velocity/tools/trunk/STATUS?view=markup">STATUS</a>
         file.</p>
     </section>
  </body>
