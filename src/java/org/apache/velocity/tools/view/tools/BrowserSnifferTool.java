@@ -31,7 +31,7 @@ import java.util.regex.PatternSyntaxException;
  *  <p></p>
  * <p><b>Usage:</b></p>
  * <p>BrowserSniffer defines properties that are used to test the client browser, operating system, device...
- * Apart from properties related to versionning, all properties are booleans.</p>
+ * Apart from properties related to versioning, all properties are booleans.</p>
  * <p>The following properties are available:</p>
  * <ul>
  * <li><i>Versioning:</i>version majorVersion minorVersion geckoVersion</li>
