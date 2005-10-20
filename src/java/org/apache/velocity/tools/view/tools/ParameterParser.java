@@ -28,14 +28,14 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * <p>Utility class for easy parsing of {@link ServletRequest} parameters.</p>
  * <p><pre>
  * Template example(s):
- *   $pp.foo                ->  bar
- *   $pp.getNumber('baz')   ->  12.6
- *   $pp.getInt('baz')      ->  12
- *   $pp.getNumbers('foo')  ->  [12.6]
+ *   $params.foo                ->  bar
+ *   $params.getNumber('baz')   ->  12.6
+ *   $params.getInt('baz')      ->  12
+ *   $params.getNumbers('foo')  ->  [12.6]
  *
  * Toolbox configuration:
  * &lt;tool&gt;
- *   &lt;key&gt;pp&lt;/key&gt;
+ *   &lt;key&gt;params&lt;/key&gt;
  *   &lt;scope&gt;request&lt;/scope&gt;
  *   &lt;class&gt;org.apache.velocity.tools.view.tools.ParameterParser&lt;/class&gt;
  * &lt;/tool&gt;
