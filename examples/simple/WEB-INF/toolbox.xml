@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  Copyright 2003 The Apache Software Foundation.
+  Copyright 2003-2005 The Apache Software Foundation.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,12 +14,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: toolbox.xml,v 1.4 2004/02/20 13:00:39 marino Exp $
+  $Id$
 -->
 <toolbox>
   <xhtml>true</xhtml>
   <tool>
      <key>toytool</key>
+     <scope>request</scope>
      <class>ToyTool</class>
   </tool>
   <data type="number">
@@ -40,6 +41,7 @@
   </data>
   <tool>
     <key>map</key>
+    <scope>session</scope>
     <class>java.util.HashMap</class>
   </tool>
   <tool>
