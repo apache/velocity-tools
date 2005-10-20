@@ -51,7 +51,7 @@
     <li><a href="../index.html#Download">Download</a></li>
     <li><a href="userguide.html">User Guide</a></li>
     <li><a href="userguide.html#Installation">Installation</a></li>
-    <li><a href="userguide.html#Examples">Examples</a></li>
+    <li><a href="../index.html#Example Applications">Examples</a></li>
     <li><a href="../javadoc/index.html">Javadoc</a></li>
 
 </ul>
@@ -142,16 +142,6 @@
             
           </td>
         </tr>
-                        <tr>
-          <td bgcolor="EEEEEE" nowrap>
-            <a href="#getLocale()">getLocale()</a></td>
-          <td bgcolor="EEEEEE">
-            
-                Returns the user's locale. If a locale is not found, the default
-                locale is returned (deprecated - will be removed in VelocityTools 1.2).
-            
-          </td>
-        </tr>
               </table>
   </dd>
 </dl>
@@ -180,7 +170,7 @@
     <table width="100%"><tr><td bgcolor="EEEEEE">
     <font size="+1"><code>
         <signature>
-                String get(String key)
+                TextKey get(String key)
             </signature>
     </code></font>
     </td></tr></table>
@@ -286,20 +276,23 @@
                 message. The third, fourth, fifth and sixth signatures take a list
                 of up to five replacement parameters. The third and fourth signatures
                 are provided for compatibility with existing applications. The fifth and
-                sixth signatures are Velocity-friendlier.</p>
+                sixth signatures are more Velocity friendly.</p>
 <p>Assuming that the message resource files contain the following messages:</p>
 <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
     <pre><sourcecode>title=Welcome to Velocity for Struts
-test=This message has five replacement parameters: {0}, {1}, {2}, {3}, {4}</sourcecode></pre>
+test=This message has five replacement parameters: {0}, {1}, {2}, {3}, {4}
+label.one=foobar
+label.two=woogie!</sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
 <p>then the following Velocity script:</p>
 <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>$text.get("title")
-$text.title
-$text.get("test", ["bear", "wolf", "tiger"])</sourcecode></pre>
+    <pre><sourcecode>$text.title
+$text.get('test', ['bear', 'wolf', 'tiger'])
+$text.label.one
+$text.label.two</sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
 <p>produces this output:</p>
@@ -307,7 +300,9 @@ $text.get("test", ["bear", "wolf", "tiger"])</sourcecode></pre>
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
     <pre><sourcecode>Welcome to Velocity for Struts
 Welcome to Velocity for Struts
-This message has five replacement parameters: bear, wolf, tiger, {3}, {4}</sourcecode></pre>
+This message has five replacement parameters: bear, wolf, tiger, {3}, {4}
+foobar
+woogie!</sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
 
@@ -390,67 +385,6 @@ This message has five replacement parameters: bear, wolf, tiger, {3}, {4}</sourc
     <pre><sourcecode>$text.exists("title")</sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
-
-
-    <br clear="all">
-
-    </td>
-  </tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="2" width="100%">
-  <tr>
-    <td colspan="2" bgcolor="#525D76">
-      <font color="#ffffff" face="arial,helvetica.sanserif">
-      <a name="getLocale()">
-      <strong>getLocale()</strong></a></font>
-    </td>
-  </tr>
-  <tr>
-    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
-    <td>
-      
-        <p>
-        <abstract>
-                Returns the user's locale. If a locale is not found, the default
-                locale is returned (deprecated - will be removed in VelocityTools 1.2).
-            </abstract>
-    </p>
-    <p>
-    <table width="100%"><tr><td bgcolor="EEEEEE">
-    <font size="+1"><code>
-        <signature>
-                Locale getLocale()
-            </signature>
-    </code></font>
-    </td></tr></table>
-    </p>
-    <dl>
-    <dt><strong>Returns</strong></dt>
-    <dd>
-        <returns>
-                An instance of class <code>java.util.Locale</code>.
-            </returns>
-    </dd>
-    </dl>
-
-      <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
-  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>$text.getLocale()
-$text.locale
-$text.getLocale().getDisplayLanguage()</sourcecode></pre>
-  </td></tr></table>
-</td></tr></table>
-<p>produces:</p>
-<table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
-  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode>en
-en
-English</sourcecode></pre>
-  </td></tr></table>
-</td></tr></table>
-<p>The returned object of class <code>Locale</code> is automatically rendered by Velocity by
-calling its <code>toString()</code> method. The third example calls method
-<code>getDisplayLanguage()</code> of class <code>Locale</code></p>
 
 
     <br clear="all">

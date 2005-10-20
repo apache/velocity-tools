@@ -51,7 +51,7 @@
     <li><a href="../index.html#Download">Download</a></li>
     <li><a href="userguide.html">User Guide</a></li>
     <li><a href="userguide.html#Installation">Installation</a></li>
-    <li><a href="userguide.html#Examples">Examples</a></li>
+    <li><a href="../index.html#Example Applications">Examples</a></li>
     <li><a href="../javadoc/index.html">Javadoc</a></li>
 
 </ul>
@@ -852,6 +852,7 @@ session.setAttribute("foo", "session foo");</sourcecode></pre>
     <pre><sourcecode>
 title=Struts Example Application
 test=This string has 4 replacement parameters: {1}, {2}, {3}, {4}
+foo.bar=whatever
 </sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
@@ -862,6 +863,7 @@ test=This string has 4 replacement parameters: {1}, {2}, {3}, {4}
 $text.title
 $text.get('test', ['bear', 'dog', 'cat'])
 $text.exists('tutle')
+$text.foo.bar
 </sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
@@ -872,6 +874,7 @@ $text.exists('tutle')
 Struts Example Application
 This string has 4 replacement parameters: bear, dog, cat, {4}
 false
+whatever
 </sourcecode></pre>
   </td></tr></table>
 </td></tr></table>

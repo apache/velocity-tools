@@ -58,7 +58,9 @@
     <strong>VelocityView Tools</strong>
 </p>
 <ul>
-        <li><a href="../javadoc/org/apache/velocity/tools/view/tools/AbstractSearchTool.html">AbstractSearchTool</a></li>
+        <li><a href="../javadoc/org/apache/velocity/tools/view/tools/AbstractPagerTool.html">AbstractPagerTool</a></li>
+    <li><a href="../javadoc/org/apache/velocity/tools/view/tools/AbstractSearchTool.html">AbstractSearchTool</a></li>
+    <li><a href="../javadoc/org/apache/velocity/tools/view/tools/BrowserSnifferTool.html">BrowserSnifferTool</a></li>
     <li><a href="CookieTool.html">CookieTool</a></li>
     <li><a href="ImportTool.html">ImportTool</a></li>
     <li><a href="LinkTool.html">LinkTool</a></li>
@@ -177,6 +179,16 @@
           <td bgcolor="EEEEEE">
             
                 Returns an array of Strings of all the values of the specified servlet 
+                request parameter
+            
+          </td>
+        </tr>
+                        <tr>
+          <td bgcolor="EEEEEE" nowrap>
+            <a href="#getBooleans()">getBooleans()</a></td>
+          <td bgcolor="EEEEEE">
+            
+                Returns an array of Booleans of all the values of the specified servlet 
                 request parameter
             
           </td>
@@ -700,6 +712,65 @@
                A array of Strings that represent all the values of the desired
                request parameter or <code>null</code> if the parameter does not
                exist.
+            </returns>
+    </dd>
+    </dl>
+
+
+    <br clear="all">
+
+    </td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+  <tr>
+    <td colspan="2" bgcolor="#525D76">
+      <font color="#ffffff" face="arial,helvetica.sanserif">
+      <a name="getBooleans()">
+      <strong>getBooleans()</strong></a></font>
+    </td>
+  </tr>
+  <tr>
+    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td>
+      
+        <p>
+        <abstract>
+                Returns an array of Booleans of all the values of the specified servlet 
+                request parameter
+            </abstract>
+    </p>
+    <p>
+    <table width="100%"><tr><td bgcolor="EEEEEE">
+    <font size="+1"><code>
+        <signature>
+                Boolean[] getBooleans(String key)
+            </signature>
+    </code></font>
+    </td></tr></table>
+    </p>
+    <dl>
+    <dt><strong>Parameters</strong></dt>
+    <dd>
+      <dl>
+              <dt>key</dt>
+    <dd>
+        <parameter name="key">
+                    The key of the desired string parameter
+                </parameter>
+    </dd>
+
+
+      </dl>
+    </dd>
+    </dl>
+    <dl>
+    <dt><strong>Returns</strong></dt>
+    <dd>
+        <returns>
+               A array of <code>java.lang.Boolean</code> that represent all the 
+               values of the desired request parameter or <code>null</code> if 
+               the parameter does not exist.
             </returns>
     </dd>
     </dl>
