@@ -284,6 +284,10 @@ public class ValueParser
     }
 
 
+    /**
+     * @param key the key for the desired parameter
+     * @return an array of Boolean objects associated with the given key.
+     */
     public Boolean[] getBooleans(String key)
     {
         String[] strings = getStrings(key);
