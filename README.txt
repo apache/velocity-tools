@@ -66,16 +66,16 @@ To build the VelocityStruts example, execute:
 
 > ant example.struts
 
+To build the VelocityLayoutServlet example, execute:
+
+> ant example.layout
+
 
 Please note:
 
-- To compile VelocityStruts with JDK 1.3, you *must* define a jdbc.jar property
-  somewhere in your build.properties or the build.properties provided with this
-  project.
-  
-- When building the javadoc with JDK 1.3, you will get a number of warnings if you
-  do not have a xerces.jar property defined somewhere in the build.properties.  
-  However, these warnings can generally be ignored.
+- Due to new compile-time dependencies, VelocityTools can only be compiled on JDK 1.4 
+  or higher.  But can still be run on JDK 1.3, provided you are willing to do without
+  some newer features, like the BrowserSnifferTool.
 
 - During the documentation build process DVSL emits several of the following error
   messages. They can be ingnored. A bug report has already been filed.
@@ -86,9 +86,9 @@ Please note:
   involving java.net.URLEncoder.  This is to maintain compatibility with JDK 1.3.
   However, when running the code on 1.4, the new, non-deprecated method is used.
 
-The build process has been tested with JDK 1.3.1 and JDK 1.4.1. The 
-included example applications have been tested with Tomcat 4.0.4, 
-Tomcat 4.1.24, and Resin 2.1.0.
+The build process has been tested with JDK 1.4.2 and JDK 1.5.0. The 
+included example applications have been tested with Tomcat 5.0.30 
+and Tomcat 5.5.9, but should work with any servlet engine.
 
 If you observe any problems with the build process, please report this
 to the Velocity users mailing list, velocity-user@jakarta.apache.org, and
@@ -111,4 +111,4 @@ Feedback
 We welcome your feedback to velocity-user@jakarta.apache.org.
 
 
-$Revision: 1.10 $ $Date: 2003/07/10 21:18:22 $
+$Revision$ $Date$
