@@ -4,7 +4,7 @@ $Id$
 
 
 Known Issues/Bugs:
-    - see bugzilla
+    - see http://issues.apache.org/jira/browse/VELTOOLS
 
 
 
@@ -23,6 +23,7 @@ Proposed Features/Upgrades:
         
     VelocityView:
         - add a library of velocimacros for use with these tools
+        - Add a standalone toolbox manager
         - Pluggable toolbox manager in VelocityViewServlet
         - Tool pooling support (use commons-pool probably)
         - add chooseCharacterEncoding(req) to VVS to make dynamic encoding
@@ -41,12 +42,18 @@ Proposed Features/Upgrades:
           (this would probably work in concert with the velocimacro libraries)
 
 
+Ideas being considered for version 2.0:
+    - Toolbox support for non-servlet environments
+    - Pluggable toolbox readers
+    - Support for reading toolbox from properties files
+    - Drop ViewTool and Configurable interfaces in favor of finding required methods by reflection
+
 
 Example Ideas:
    - a blank Velocity-Struts application as the starting point for development.
    - an application to demonstrate use of more obscure features like the 
      AbstractSearchTool, MultiViewsTool, IteratorTool, and the like.
-   - Struts 1.1 example(s). Take the existing Struts 1.1 examples and replace 
+   - Struts 1.3 example(s). Take the existing Struts 1.3 examples and replace 
      the view layer with Velocity. (show off Tiles, modules, Validator, etc.)
    - example app(s) to demonstrate the velocimacro libraries
    - self-documenting apps to explain and demonstrate key features
