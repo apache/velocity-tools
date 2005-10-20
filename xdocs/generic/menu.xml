@@ -33,12 +33,17 @@
     </menu>
 
     <menu name="Tool Documentation">
-      <item name="DateTool"     href="../javadoc/org/apache/velocity/tools/generic/DateTool.html"/>
-      <item name="IteratorTool" href="../javadoc/org/apache/velocity/tools/generic/IteratorTool.html"/> />
-      <item name="MathTool"     href="MathTool.html"/>
-      <item name="NumberTool"   href="../javadoc/org/apache/velocity/tools/generic/NumberTool.html"/>
-      <item name="RenderTool"   href="RenderTool.html"/>
-      <item name="EscapeTool"   href="EscapeTool.html"/>
+      <item name="DateTool"       href="../javadoc/org/apache/velocity/tools/generic/DateTool.html"/>
+      <item name="MathTool"       href="MathTool.html"/>
+      <item name="NumberTool"     href="../javadoc/org/apache/velocity/tools/generic/NumberTool.html"/>
+      <item name="RenderTool"     href="RenderTool.html"/>
+      <item name="EscapeTool"     href="EscapeTool.html"/>
+      <item name="Alternator"     href="../javadoc/org/apache/velocity/tools/generic/Alternator.html"/> />
+      <item name="AlternatorTool" href="../javadoc/org/apache/velocity/tools/generic/AlternatorTool.html"/> />
+      <item name="ValueParser"    href="../javadoc/org/apache/velocity/tools/generic/ValueParser.html"/>
+      <item name="ListTool"       href="../javadoc/org/apache/velocity/tools/generic/ListTool.html"/>
+      <item name="SortTool"       href="../javadoc/org/apache/velocity/tools/generic/SortTool.html"/>
+      <item name="IteratorTool"   href="../javadoc/org/apache/velocity/tools/generic/IteratorTool.html"/> />
     </menu>
 
     <menu name="Other Subprojects">

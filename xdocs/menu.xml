@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  Copyright 2003-2004 The Apache Software Foundation.
+  Copyright 2003-2005 The Apache Software Foundation.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@
           <item name="Javadoc"                href="javadoc/index.html"/>
           <item name="Wiki"                   href="http://wiki.apache.org/jakarta-velocity/VelocityTools"/>
           <item name="FAQ"                    href="http://wiki.apache.org/jakarta-velocity/VelocityFAQ"/>
-          <item name="Report Issues"          href="http://issues.apache.org/bugzilla/enter_bug.cgi?product=Velocity&amp;component=Tools"/>
+          <item name="Report Issues"          href="http://issues.apache.org/jira/browse/VELTOOLS"/>
       </menu>
 
       <menu name="Subprojects">

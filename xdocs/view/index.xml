@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  Copyright 2003-2004 The Apache Software Foundation.
+  Copyright 2003-2005 The Apache Software Foundation.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: index.xml,v 1.6 2004/02/18 20:21:49 nbubna Exp $
+  $Id$
 -->
 <document>
   <properties>
@@ -30,7 +30,7 @@
   <section name="Overview">
     <p>VelocityView provides support for rapidly and cleanly building web applications
     using Velocity templates as the view layer.  The project is designed with the 
-    <a href="http://jakarta.apache.org/turbine/turbine-2.3/pullmodel.html">Pull-MVC Model</a>
+    <a href="http://jakarta.apache.org/turbine/further-reading/pullmodel.html">Pull-MVC Model</a>
     in mind and works well in conjunction with web application frameworks that act
     as the controller (e.g. <a href="../struts/index.html">Struts</a>), but can be used
     quite effectively on its own for those creating simpler applications.
@@ -164,6 +164,7 @@
 &lt;toolbox&gt;
   &lt;tool&gt;
      &lt;key&gt;wrench&lt;/key&gt;
+     &lt;scope&gt;application&lt;/scope&gt;
      &lt;class&gt;PipeWrench&lt;/class&gt;
   &lt;/tool&gt;
 &lt;/toolbox&gt;</sourcecode>
@@ -215,6 +216,29 @@
 
       <br clear="all"/>
 
+      <p><b>Tool Parameters</b></p>
+
+      <p>The toolbox support built into the VelocityViewServlet also provides
+      support for passing configuration parameters to tools that implement
+      the <a href="../javadoc/org/apache/velocity/tools/view/tools/Configurable.html">Configurable</a>
+      interface. This interface consists of only a 
+      <code>void configure(java.util.Map params)</code> method which will only be called
+      if parameters have been specified for the tool.</p>
+
+      <p>You can specify parameters for your tools by adding a &lt;parameter&gt;
+      element to your toolbox.xml entries like this:</p>
+
+      <sourcecode>&lt;tool&gt;
+   &lt;key&gt;math&lt;/key&gt;
+   &lt;scope&gt;application&lt;/scope&gt;
+   &lt;class&gt;com.foo.tools.MyTool&lt;/class&gt;
+   &lt;parameter name="my.parameter.name" value="my.parameter.value"/&gt;
+&lt;/tool&gt;</sourcecode> 
+
+      <br clear="all"/>
+
+      <p><b>Toolbox Data</b></p>
+
       <p>In addition to specifiying arbitrary Java classes as <b>tools</b>
       to be automatically available to your templates, the toolbox support
       also includes the ability to specify arbitrary strings, booleans, and 
@@ -247,10 +271,9 @@
   
   <section name="VelocityLayoutServlet">
     <p>One derivative of the VelocityViewServlet is the 
-    <a href="layoutservlet.html"><strong>VelocityLayoutServlet</strong></a>
-    written by Nathan Bubna. This servlet performs a simplified 
-    'two-pass render' in order to apply a shared, common layout to all 
-    of the web pages in an application.</p>
+    <a href="layoutservlet.html"><strong>VelocityLayoutServlet</strong></a>.
+    This servlet performs a simplified 'two-pass render' in order to apply a 
+    shared, common layout to all of the web pages in an application.</p>
   
     <p>The Struts &quot;template&quot; tag library does something similar, 
     but requires a separate file to define which 'layout' file to use and 
@@ -274,7 +297,7 @@
     <p>A simple application example has been included to demonstrate the use 
     of the VelocityViewServlet with automatically loaded view tools.</p>
 
-    <p>To run the examples you need Tomcat 4.X (note: Tomcat 3.x may work) 
+    <p>To run the examples you need Tomcat 4.x, Tomcat 5.0.x, Tomcat 5.5.x, 
      or a compatible servlet runner.</p>
 
     <p>The build process automatically generates a ready-to-deploy <b>simple.war</b> 

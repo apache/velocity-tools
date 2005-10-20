@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  Copyright 2003 The Apache Software Foundation.
+  Copyright 2003-2005 The Apache Software Foundation.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: ParameterParser.xml,v 1.2 2004/02/18 20:21:49 nbubna Exp $
+  $Id$
 -->
 <document>
 
@@ -287,6 +287,37 @@
                A array of Strings that represent all the values of the desired
                request parameter or <code>null</code> if the parameter does not
                exist.
+            </returns>
+       
+        </method>
+    </section>
+
+
+
+
+    <section name="getBooleans()">
+        <method name="getBooleans()">
+    
+            <abstract>
+                Returns an array of Booleans of all the values of the specified servlet 
+                request parameter
+            </abstract>
+    
+            <signature>
+                Boolean[] getBooleans(String key)
+            </signature>
+            
+            <parameters>
+                <parameter name="key">
+                    The key of the desired string parameter
+                </parameter>
+                
+            </parameters>
+    
+            <returns>
+               A array of <code>java.lang.Boolean</code> that represent all the 
+               values of the desired request parameter or <code>null</code> if 
+               the parameter does not exist.
             </returns>
        
         </method>

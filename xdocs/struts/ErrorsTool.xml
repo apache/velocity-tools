@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: ErrorsTool.xml,v 1.6 2004/11/11 00:57:40 nbubna Exp $
+  $Id$
 -->
 <document>
 
@@ -47,7 +47,7 @@
         </ul>
 
         <p>See the Struts User's Guide, section
-        <a href="http://jakarta.apache.org/struts/userGuide/building_view.html">Building View Components</a>
+        <a href="http://struts.apache.org/struts-doc-1.2.7/userGuide/building_view.html">Building View Components</a>
         for more information on this topic.</p>
 
         <toolinfo>
