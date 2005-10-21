@@ -1,5 +1,5 @@
 <%--
- * Copyright 2003-2004 The Apache Software Foundation.
+ * Copyright 2003-2005 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 <%@ page language="java" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <html>
     <head>
     	<title><bean:message key="title"/> </title>
@@ -68,6 +69,17 @@
         		<td><bean:message key="country"/></td>
         		<td>&nbsp;<bean:write name="address" property="country"/></td>
         	</tr>
+            <tr>
+                <td><bean:message key="languages"/></td>
+                <td>
+                       <logic:present name="address" property="languages">
+                           <logic:iterate id="language" name="address" property="languages">
+                               &nbsp; <bean:message name="language"/><br>
+                           </logic:iterate>
+                       </logic:present>
+                       &nbsp;
+                </td>
+            </tr>
         </table>
 
         <br>

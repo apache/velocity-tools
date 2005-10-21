@@ -1,5 +1,5 @@
 <%--
- * Copyright 2003-2004 The Apache Software Foundation.
+ * Copyright 2003-2005 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@
 
         <p><b><bean:message key="edit"/> (JSP <bean:message key="version"/>)</b></p>
 
-        <html:form name="address" method="POST" scope="session" type="examples.app1.AddressBean" action="address1.do">
+        <html:form action="address1.do">
         <input type="hidden" name="action" value="list">
 
         <table width="300" border="1" cellspacing="" cellpadding="5">
@@ -56,12 +56,25 @@
         		<td><bean:message key="country"/></td>
         		<td><html:text name="address" property="country"/></td>
         	</tr>
+            <tr>
+                <td><bean:message key="languages"/></td>
+                <td>
+                    <html:select name="address" property="languages" multiple="true" size="5">
+                        <html:option value="chinese" key="chinese"/>
+                        <html:option value="english" key="english"/>
+                        <html:option value="french"  key="french"/>
+                        <html:option value="german"  key="german"/>
+                        <html:option value="russian" key="russian"/>
+                        <html:option value="spanish" key="spanish"/>
+                    </html:select>
+                    <br><bean:message key="multiple"/>
+                </td>
+            </tr>
         </table>
         <br>
 
-        <input type="submit" name="Submit" value="<bean:message key="save"/>  " onclick="address.action.value='save'; document.address.submit(); return false;">
-        <input type="submit" name="Submit2" value="<bean:message key="cancel"/>"  onclick="address.action.value='list'; document.address.submit(); return false;">
-
+        <html:submit property="Submit" onclick="addressForm.action.value='save'; document.address.submit(); return false;"><bean:message key="save"/></html:submit>
+        <html:submit property="Submit2" onclick="addressForm.action.value='list'; document.address.submit(); return false;"><bean:message key="cancel"/></html:submit>
         </html:form>
 
         <br>
