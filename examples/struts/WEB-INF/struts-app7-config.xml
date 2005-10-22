@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
 <struts-config>
   <form-beans>
     <form-bean name="testForm" type="org.apache.struts.action.DynaActionForm">
@@ -56,8 +56,5 @@
     <set-property property="moduleAware" value="true" />
     <set-property property="definitions-parser-details" value="0" />
     <set-property property="definitions-parser-validate" value="true" />
-  </plug-in>
-  <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
-    <set-property property="pathnames" value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml" />
   </plug-in>
 </struts-config>
