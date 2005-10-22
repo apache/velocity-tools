@@ -30,7 +30,7 @@
 
         <html:form action="address1.do">
         <input type="hidden" name="action" value="list">
-
+        <jsp:useBean id="address" scope="session" class="examples.app1.AddressBean"></jsp:useBean>
         <table width="300" border="1" cellspacing="" cellpadding="5">
         	<tr>
         		<td><bean:message key="firstname"/>:</td>

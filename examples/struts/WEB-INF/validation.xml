@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE form-validation PUBLIC "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.0//EN"
-          "http://jakarta.apache.org/commons/dtds/validator_1_0.dtd">
+<!DOCTYPE form-validation PUBLIC "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
+          "http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
 <!--
-  Copyright 2004 The Apache Software Foundation.
+  Copyright 2005 The Apache Software Foundation.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  $Id: validation.xml,v 1.3 2004/02/20 13:13:42 marino Exp $
+  $Id$
 -->
 <form-validation>
    <formset>
@@ -24,7 +24,7 @@
          <field property="email"
          	depends="required,email">
             	<msg name="email" key="errors.invalid"/>
-        	<arg0 key="emailForm.label.email"/>
+            <arg key="emailForm.label.email"/>
 	 </field>
       </form>
    </formset>
