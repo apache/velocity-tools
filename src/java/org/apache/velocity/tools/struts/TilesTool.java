@@ -66,7 +66,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.14 $ $Date: 2004/11/11 06:26:27 $
+ * @version $Revision$ $Date$
  */
 public class TilesTool extends ImportSupport implements ViewTool
 {
@@ -142,8 +142,7 @@ public class TilesTool extends ImportSupport implements ViewTool
         }
         catch (Exception e)
         {
-            LOG.error("Exeption while rendering Tile "
-                      + obj + ": " + e.getMessage());
+            LOG.error("Exeption while rendering Tile " + obj + ": ", e);
             return null;
         }
     }
