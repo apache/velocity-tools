@@ -24,7 +24,7 @@
   <property file="${user.home}/build.properties"/>   <!-- User local        -->
 
   <property name="project.name"     value="Velocity Tools" />
-  <property name="project.version"  value="1.2-dev"/>
+  <property name="project.version"  value="1.2"/>
   <property name="project.id"       value="velocity-tools-${project.version}"/>
 
   <property name="struts.name"      value="velocity-tools-${project.version}"/>
