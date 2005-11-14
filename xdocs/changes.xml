@@ -26,7 +26,11 @@
   <section name="Velocity Tools Changes">
     <p>This document tracks the changes in Velocity Tools between releases.</p>
 
-    <subsection name="1.2-dev">
+    <subsection name="1.3-dev">
+        <p>None so far...</p>
+    </subsection>
+
+    <subsection name="1.2">
       <p>This section describes changes after the 1.1 release.</p>
       <ul>
       <li>Updated documentation to cover new features and sync to many infrastructure changes. (ndb)</li>
