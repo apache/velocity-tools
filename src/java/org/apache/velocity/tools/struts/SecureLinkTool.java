@@ -36,8 +36,8 @@ import org.apache.struts.Globals;
  * <pre>
  * Template example:
  * &lt;!-- Use just like a regular StrutsLinkTool --&gt;
- * $link.setAction("nameOfAction")
- * $link.setForward("nameOfForward")
+ * $link.action.nameOfAction
+ * $link.action.nameOfForward
  *
  * If the action or forward is marked as secure, or not,
  * in your struts-config then the link will be rendered
