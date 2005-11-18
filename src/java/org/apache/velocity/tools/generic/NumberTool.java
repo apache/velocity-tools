@@ -50,7 +50,7 @@ import java.util.Locale;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:mkienenb@alaska.net">Mike Kienenberger</a>
  * @since VelocityTools 1.2
- * @version $Id: NumberTool.java,v 1.3 2004/02/18 20:11:07 nbubna Exp $
+ * @version $Id$
  */
 public class NumberTool
 {
@@ -119,6 +119,42 @@ public class NumberTool
     public String format(Object obj)
     {
         return format(getFormat(), obj);
+    }
+
+    /**
+     * Convenience method equivalent to $number.format("currency", $foo).
+     * @since VelocityTools 1.3
+     */
+    public String currency(Object obj)
+    {
+        return format("currency", obj);
+    }
+
+    /**
+     * Convenience method equivalent to $number.format("integer", $foo).
+     * @since VelocityTools 1.3
+     */
+    public String integer(Object obj)
+    {
+        return format("integer", obj);
+    }
+
+    /**
+     * Convenience method equivalent to $number.format("number", $foo).
+     * @since VelocityTools 1.3
+     */
+    public String number(Object obj)
+    {
+        return format("number", obj);
+    }
+
+    /**
+     * Convenience method equivalent to $number.format("percent", $foo).
+     * @since VelocityTools 1.3
+     */
+    public String percent(Object obj)
+    {
+        return format("percent", obj);
     }
 
     /**
