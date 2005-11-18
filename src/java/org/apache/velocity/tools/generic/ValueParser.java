@@ -26,14 +26,14 @@ import java.util.Map;
  * <p><pre>
  * Template example(s):
  *   $parser.foo                ->  bar
- *   $parser.getNumber('baz')   ->  12.6
- *   $parser.getInt('baz')      ->  12
- *   $parser.getNumbers('foo')  ->  [12.6]
+ *   $parser.baz.number         ->  12.6
+ *   $parser.baz.int            ->  12
+ *   $parser.baz.numbers        ->  [12.6]
  *
  * Toolbox configuration:
  * &lt;tool&gt;
  *   &lt;key&gt;parser&lt;/key&gt;
- *   &lt;class&gt;org.apache.velocity.generic.Parser&lt;/class&gt;
+ *   &lt;class&gt;org.apache.velocity.generic.ValueParser&lt;/class&gt;
  * &lt;/tool&gt;
  * </pre></p>
  *
@@ -93,9 +93,89 @@ public class ValueParser
      *         <code>null</code> if there is no matching
      *         parameter
      */
-    public String get(String key)
+    public Object get(String key)
     {
-        return getString(key);
+        return new ValueParserSub(this, key);
+    }
+
+    /**
+     * A helper class to enable simplified syntax for 
+     * using a ValueParser in a template.
+     * @since VelocityTools 1.3
+     */
+    public class ValueParserSub
+    {
+        private ValueParser parser;
+        private String key;
+
+        public ValueParserSub(ValueParser parser, String key)
+        {
+            this.parser = parser;
+            this.key = key;
+        }
+
+        public Object get(String key)
+        {
+            if (key == null)
+            {
+                return null;
+            }
+            else if (key.equalsIgnoreCase("string"))
+            {
+                return toString();
+            }
+            else if (key.equalsIgnoreCase("number"))
+            {
+                return parser.getNumber(key);
+            }
+            else if (key.equalsIgnoreCase("boolean"))
+            {
+                return parser.getBoolean(key);
+            }
+            else if (key.equalsIgnoreCase("int"))
+            {
+                return parser.getInteger(key);
+            }
+            else if (key.equalsIgnoreCase("double"))
+            {
+                return parser.getDouble(key);
+            }
+            else if (key.equalsIgnoreCase("strings"))
+            {
+                return parser.getStrings(key);
+            }
+            else if (key.equalsIgnoreCase("numbers"))
+            {
+                return parser.getNumbers(key);
+            }
+            else if (key.equalsIgnoreCase("ints"))
+            {
+                return parser.getInts(key);
+            }
+            else if (key.equalsIgnoreCase("doubles"))
+            {
+                return parser.getDoubles(key);
+            }
+            else if (key.equalsIgnoreCase("booleans"))
+            {
+                return parser.getBooleans(key);
+            }
+            else if (key.equalsIgnoreCase("string"))
+            {
+                return toString();
+            }
+            else
+            {
+                // assume the key had a period in it and reconstruct
+                return new ValueParserSub(parser, this.key+'.'+key);
+            }
+        }
+
+        public String toString()
+        {
+            return parser.getString(key);
+        }
+
     }
 
     /**
@@ -178,6 +258,68 @@ public class ValueParser
     {
         Boolean bool = getBoolean(key);
         return (bool != null) ? bool : alternate;
+    }
+
+    /**
+     * @param key the desired parameter's key
+     * @return a {@link Integer} for the specified key or 
+     *         <code>null</code> if no matching parameter is found
+     */
+    public Integer getInteger(String key)
+    {
+        Number num = getNumber(key);
+        if (num == null || num instanceof Integer)
+        {
+            return (Integer)num;
+        }
+        return new Integer(num.intValue());
+    }
+
+    /**
+     * @param key the desired parameter's key
+     * @param alternate The alternate Integer
+     * @return an Integer for the specified key or the specified
+     *         alternate if no matching parameter is found
+     */
+    public Integer getInteger(String key, Integer alternate)
+    {
+        Integer num = getInteger(key);
+        if (num == null)
+        {
+            return alternate;
+        }
+        return num;
+    }
+
+    /**
+     * @param key the desired parameter's key
+     * @return a {@link Double} for the specified key or 
+     *         <code>null</code> if no matching parameter is found
+     */
+    public Double getDouble(String key)
+    {
+        Number num = getNumber(key);
+        if (num == null || num instanceof Double)
+        {
+            return (Double)num;
+        }
+        return new Double(num.intValue());
+    }
+
+    /**
+     * @param key the desired parameter's key
+     * @param alternate The alternate Double
+     * @return an Double for the specified key or the specified
+     *         alternate if no matching parameter is found
+     */
+    public Double getDouble(String key, Double alternate)
+    {
+        Double num = getDouble(key);
+        if (num == null)
+        {
+            return alternate;
+        }
+        return num;
     }
 
     /**
