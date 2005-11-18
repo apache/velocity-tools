@@ -26,7 +26,7 @@ import org.apache.struts.util.MessageResources;
  * 
  * <p><pre>
  * Template example(s):
- *   #if( $text.exists('greeting') )
+ *   #if( $text.greeting.exists )
  *     $text.greeting
  *   #end
  *
@@ -42,7 +42,7 @@ import org.apache.struts.util.MessageResources;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @since VelocityTools 1.0
- * @version $Id: MessageTool.java,v 1.14 2004/05/28 18:51:16 nbubna Exp $
+ * @version $Id$
  */
 public class MessageTool extends MessageResourcesTool
 {
@@ -148,7 +148,7 @@ public class MessageTool extends MessageResourcesTool
      */
     public String get(String key, List args)
     {
-        return get(key, args.toArray());
+        return get(key, null, args);
     }
 
     /**
@@ -215,9 +215,11 @@ public class MessageTool extends MessageResourcesTool
      * you can just type <code>$text.forms.profile.title</code>. Also,
      * this lets you do things like:
      * <pre>
-     *   #set( $profiletext = $text.forms.profile )
-     *   <h1>$profiletext.title</h1>
-     *   <h3>$profiletext.subtitle</h3>
+     *   #if( $text.forms.profile.exists )
+     *      #set( $profiletext = $text.forms.profile )
+     *      &lt;h1&gt;$profiletext.title&lt;/h1&gt;
+     *      &lt;h3&gt;$profiletext.subtitle&lt;/h3&gt;
+     *   #end
      * </pre>
      * </p>
      *
@@ -227,11 +229,26 @@ public class MessageTool extends MessageResourcesTool
     {
         private MessageTool tool;
         private String key;
+        private String bundle;
+        private Object[] args;
 
+        /**
+         * @deprecated
+         */
         public TextKey(MessageTool tool, String key)
+        {
+            this(tool, key, null, null);
+        }
+
+        /**
+         * @since VelocityTools 1.3
+         */
+        public TextKey(MessageTool tool, String key, String bundle, Object[] args)
         {
             this.tool = tool;
             this.key = key;
+            this.bundle = bundle;
+            this.args = args;
         }
 
         /**
@@ -239,18 +256,142 @@ public class MessageTool extends MessageResourcesTool
          * key and returns a new TextKey instance with the
          * combined result as its key.
          */
-        public TextKey get(String key)
+        public TextKey get(String appendme)
         {
             StringBuffer sb = new StringBuffer(this.key);
             sb.append('.');
-            sb.append(key);
-            return new TextKey(this.tool, sb.toString());
+            sb.append(appendme);
+            return new TextKey(this.tool, sb.toString(), this.bundle, this.args);
         }
 
+        /**
+         * Returns a new TextKey with the specified resource bundle set.
+         * @since VelocityTools 1.3
+         */
+        public TextKey bundle(String setme)
+        {
+            return new TextKey(this.tool, this.key, setme, this.args);
+        }
+
+        /**
+         * Returns a new TextKey with the specified argument
+         * to be inserted into the text output.  If arguments already 
+         * exist for this TextKey, the new arguments will be appended
+         * to the old ones in the new TextKey that is returned.
+         *
+         * @since VelocityTools 1.3
+         */
+        public TextKey insert(Object addme)
+        {
+            return insert(new Object[] { addme });
+        }
+
+        /**
+         * Returns a new TextKey with the specified arguments
+         * to be inserted into the text output.  If arguments already 
+         * exist for this TextKey, the new arguments will be appended
+         * to the old ones in the new TextKey that is returned.
+         *
+         * @since VelocityTools 1.3
+         */
+        public TextKey insert(Object addme, Object metoo)
+        {
+            return insert(new Object[] { addme, metoo });
+        }
+
+        /**
+         * Returns a new TextKey with the specified arguments
+         * to be inserted into the text output.  If arguments already 
+         * exist for this TextKey, the new arguments will be appended
+         * to the old ones in the new TextKey that is returned.
+         *
+         * @since VelocityTools 1.3
+         */
+        public TextKey insert(Object addme, Object metoo, Object methree)
+        {
+            return insert(new Object[] { addme, metoo, methree });
+        }
+
+        /**
+         * Returns a new TextKey with the specified List of arguments
+         * to be inserted into the text output.  If arguments already 
+         * exist for this TextKey, the new arguments will be appended
+         * to the old ones in the new TextKey that is returned.
+         *
+         * @since VelocityTools 1.3
+         */
+        public TextKey insert(List addme)
+        {
+            // convert the list to an array
+            Object[] newargs = ((List)addme).toArray();
+            return insert(newargs);
+        }
+
+        /**
+         * Returns a new TextKey with the specified array of arguments
+         * to be inserted into the text output.  If arguments already 
+         * exist for this TextKey, the new arguments will be appended
+         * to the old ones in the new TextKey that is returned.
+         *
+         * @since VelocityTools 1.3
+         */
+        public TextKey insert(Object[] addme)
+        {
+            Object[] newargs;
+            if (this.args == null)
+            {
+                // we can just use the ones we're adding
+                newargs = addme;
+            }
+            else
+            {
+                // create the new array to hold both the new and old ones
+                newargs = new Object[this.args.length + addme.length];
+                // copy the old args into the newargs array
+                System.arraycopy(this.args, 0, newargs, 0, this.args.length);
+                // copy the args to be inserted into the newargs array
+                System.arraycopy(addme, 0, newargs, this.args.length, addme.length);
+            }
+            // return an new TextKey
+            return new TextKey(this.tool, this.key, this.bundle, newargs);
+        }
+
+        /**
+         * This will return a new TextKey that has <b>no</b> arguments to
+         * be inserted into the text output.
+         *
+         * @since VelocityTools 1.3
+         */
+        public TextKey clearArgs()
+        {
+            return new TextKey(this.tool, this.key, this.bundle, null);
+        }
+
+        /**
+         * Convenience method to allow <code>$text.key.exists</code> syntax.
+         * @since VelocityTools 1.3
+         */
+        public boolean getExists()
+        {
+            return exists();
+        }
+
+        /**
+         * Checks for the existence of the key that we've built up.
+         * @since VelocityTools 1.3
+         */
+        public boolean exists()
+        {
+            return tool.exists(key, bundle);
+        }
+
+        /**
+         * Renders the text output according to the collected key value,
+         * bundle, and arguments.
+         */
         public String toString()
         {
-            // don't recurse infinitely
-            return tool.get(key, (Object[])null);
+            return tool.get(key, bundle, args);
         }
     }
 
