@@ -25,7 +25,7 @@
 We are on the form page.  View the page source to see the difference in the action attribute values between the two forms.
 <br>
 <br>
-<form action="$slink.setAction('secureSubmit')" >
+<form action="$slink.action.secureSubmit" >
 This posts to a secure action.
 <br>
    <input type="text" name="propA" value="" size="8" maxlength="8" />
@@ -34,7 +34,7 @@ This posts to a secure action.
 <br>
 <input type="submit"/>
 </form>
-<form action="$slink.setAction('nonsecureSubmit')" >
+<form action="$slink.action.nonsecureSubmit" >
 This posts to a non-secure action.
 <br>
    <input type="text" name="propA" value="" size="8" maxlength="8" />

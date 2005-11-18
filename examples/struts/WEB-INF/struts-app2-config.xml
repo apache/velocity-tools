@@ -4,9 +4,9 @@
   <form-beans>
     <form-bean name="demoForm" type="examples.app2.DemoForm" />
   </form-beans>
-  <!--global-forwards>
+  <global-forwards>
     <forward name="src" path="/tool-demo.vm" />
-  </global-forwards-->
+  </global-forwards>
   <action-mappings>
     <action name="demoForm" path="/demo" scope="request" type="examples.app2.DemoAction" validate="false">
       <forward name="home" path="/tool-demo.vm" />

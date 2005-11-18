@@ -27,7 +27,7 @@
 
         <h3>Sign in, Please! (Velocity Version)</h3>
 
-        <form method="POST" action="$link.setAction('logonSubmit_vm')">
+        <form method="POST" action="$link.action.logonSubmit_vm">
 
         <table border="0">
             <tr>
@@ -61,7 +61,7 @@
 
         </form>
 
-        <a href="$link.setForward("logon_vm_src")">View Template</a><br>
+        <a href="$link.forward.logon_vm_src">View Template</a><br>
 
     </body>
 

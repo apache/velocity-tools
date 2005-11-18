@@ -29,13 +29,13 @@ $testForm.propA
 $testForm.propB
 <br>
 <br>
-Return to <a href="$slink.setAction('formAction')">form</a> test page.
+Return to <a href="$slink.action.formAction">form</a> test page.
 <br>
 <br>
-Go to <a href="$slink.setAction('true')">true</a> page.
+Go to <a href="$slink.action.true">true</a> page.
 <br>
-Go to <a href="$slink.setAction('false')">false</a> page.
+Go to <a href="$slink.action.false">false</a> page.
 <br>
-Go to <a href="$slink.setAction('any')">any</a> page.
+Go to <a href="$slink.action.any">any</a> page.
 </body>
 </html>

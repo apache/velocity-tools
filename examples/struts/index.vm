@@ -56,7 +56,7 @@ to support Struts 1.2.  For a more
 complete listing, see the project <a href="http://jakarta.apache.org/velocity/tools/changes.html">change log</a>.</p>
 
 <h5>Application Examples</h5>
-<p>Seven small <a href="$link.setAction('examples')">application examples</a> have
+<p>Seven small <a href="$link.action.examples">application examples</a> have
 been included. Look at example 2 for a demonstration of the Velocity
 view tools for Struts. JSP versions of some of the examples have
 been included to allow a direct comparison of the two view technologies.

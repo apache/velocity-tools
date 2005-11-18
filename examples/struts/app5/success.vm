@@ -23,6 +23,6 @@
 
     <body>
         <h2>The e-mail address is valid!</h2>
-        <p><a href='$link.setAction("index_vm")'>Try again?</a></p>
+        <p><a href='$link.action.index_vm'>Try again?</a></p>
     </body>
 </html>

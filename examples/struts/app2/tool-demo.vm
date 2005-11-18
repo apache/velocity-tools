@@ -32,17 +32,17 @@
         <h3>MessageTool</h3>
         <table border="1" cellspacing="0" cellpadding="4">
             <tr>
-                <td>\$text.get("title")<br>
+                <td>\$text.title<br>
                     \$text.title</td>
-                <td>$text.get("title")</td>
+                <td>$text.title</td>
             </tr>
             <tr>
-                <td>\$text.get("test", ["bear", "dog", "cat"])</td>
-                <td>$text.get("test", ["bear", "dog", "cat"])</td>
+                <td>\$text.test.insert('bear','dog','cat')</td>
+                <td>$text.test.insert('bear','dog','cat')</td>
             </tr>
             <tr>
-                <td>\$text.exists("tutle")</td>
-                <td>$text.exists("tutle")</td>
+                <td>\$text.tutle.exists</td>
+                <td>$text.tutle.exists</td>
             </tr>
             <tr>
         </table>
@@ -55,8 +55,8 @@
                 <td>$errors.exist()</td>
             </tr>
             <tr>
-                <td>\$errors.exist("language")</td>
-                <td>$errors.exist("language")</td>
+                <td>\$errors.exist('language')</td>
+                <td>$errors.exist('language')</td>
             </tr>
             <tr>
                 <td>\$errors.getSize()<br>
@@ -64,8 +64,8 @@
                 <td>$errors.getSize()</td>
             </tr>
             <tr>
-                <td>\$errors.getSize("language")</td>
-                <td>$errors.getSize("language")</td>
+                <td>\$errors.getSize('language')</td>
+                <td>$errors.getSize('language')</td>
             </tr>
             <tr>
                 <td>\$errors.getAll()<br>
@@ -74,19 +74,19 @@
                     $errors.getAll()</td>
             </tr>
             <tr>
-                <td>\$errors.get("language")<br>
+                <td>\$errors.get('language')<br>
                     \$errors.language</td>
                 <td>[This is a String representation of the ArrayList that is returned]<br>
-                    $errors.get("language")</td>
+                    $errors.language</td>
             </tr>
             <tr>
                 <td>\$errors.getMsgs()<br>
-                    \$errors.texts</td>
-                <td>$errors.getMsgs()</td>
+                    \$errors.msgs</td>
+                <td>$errors.msgs</td>
             </tr>
             <tr>
-                <td>\$errors.getMsgs("language")</td>
-                <td>$errors.getMsgs("language")</td>
+                <td>\$errors.getMsgs('language')</td>
+                <td>$errors.getMsgs('language')</td>
             </tr>
             <tr>
                 <td>A Velocity macro to render all error messages:<br>
@@ -118,7 +118,7 @@
 &#35;end</code></pre>
                 </td>
                 <td>
-                    #errorMarkupForProperty("language")
+                    #errorMarkupForProperty('language')
                 </td>
             </tr>
 
@@ -153,34 +153,34 @@
         <h3>StrutsLinkTool</h3>
         <table border="1" cellspacing="0" cellpadding="4">
             <tr>
-                <td>\$link.setURI("template/login.vm")</td>
-                <td>$link.setURI("template/login.vm")</td>
+                <td>\$link.uri('template/login.vm')</td>
+                <td>$link.uri('template/login.vm')</td>
             </tr>
             <tr>
-                <td>\$link.setAction("demo")</td>
-                <td>$link.setAction("demo") &nbsp;</td>
+                <td>\$link.action.demo</td>
+                <td>$link.action.demo &nbsp;</td>
             </tr>
             <tr>
-                <td>\$link.setForward("src")</td>
-                <td>$link.setForward("src") &nbsp;</td>
+                <td>\$link.forward.src</td>
+                <td>$link.forward.src &nbsp;</td>
             </tr>
             <tr>
-                <td>\$link.setRelative("examples/index.html")</td>
-                <td>$link.setRelative("examples/index.html")</td>
+                <td>\$link.relative('examples/index.html')</td>
+                <td>$link.relative('examples/index.html')</td>
             </tr>
             <tr>
-                <td>\$link.setURI("index.html").addQueryData("key1", "val 1")</td>
-                <td>$link.setURI("index.html").addQueryData("key1", "val 1")</td>
+                <td>\$link.uri('index.html').param('key1', 'val 1')</td>
+                <td>$link.uri('index.html').param('key1', 'val 1')</td>
             </tr>
             <tr>
-                <td>\$link.setURI("index.html").addQueryData("key1", "val 1").getURI()<br>
-                    \$link.setURI("index.html").addQueryData("key1", "val 1").URI</td>
-                <td>$link.setURI("index.html").addQueryData("key1", "val 1").getURI()</td>
+                <td>\$link.uri('index.html').param('key1', 'val 1').getURI()<br>
+                    \$link.uri('index.html').param('key1', 'val 1').URI</td>
+                <td>$link.uri('index.html').param('key1', 'val 1').getURI()</td>
             </tr>
             <tr>
-                <td>\$link.setURI("/index.html").addQueryData("key1", "val 1").getQueryData()<br>
-                    \$link.setURI("/index.html").addQueryData("key1", "val 1").queryData</td>
-                <td>$link.setURI("/index.html").addQueryData("key1", "val 1").getQueryData()</td>
+                <td>\$link.uri('/index.html').param('key1', 'val 1').getQueryData()<br>
+                    \$link.uri('/index.html').param('key1', 'val 1').queryData</td>
+                <td>$link.uri('/index.html').param('key1', 'val 1').getQueryData()</td>
             </tr>
             <tr>
                 <td>\$link.getContextURL()<br>
@@ -198,8 +198,8 @@
                 <td>$link.getBaseRef()</td>
             </tr>
             <tr>
-                <td>\$link.setURI("index.vm").toString()</td>
-                <td>$link.setURI("index.vm").toString()</td>
+                <td>\$link.setURI('index.vm').toString()</td>
+                <td>$link.setURI('index.vm').toString()</td>
             </tr>
         </table>
 
@@ -211,8 +211,8 @@
                 <td>$messages.exist()</td>
             </tr>
             <tr>
-                <td>\$messages.exist("foobar")</td>
-                <td>$messages.exist("foobar")</td>
+                <td>\$messages.exist('foobar')</td>
+                <td>$messages.exist('foobar')</td>
             </tr>
             <tr>
                 <td>\$messages.getSize()<br>
@@ -220,8 +220,8 @@
                 <td>$messages.getSize()</td>
             </tr>
             <tr>
-                <td>\$messages.getSize("foobar")</td>
-                <td>$messages.getSize("foobar")</td>
+                <td>\$messages.getSize('foobar')</td>
+                <td>$messages.getSize('foobar')</td>
             </tr>
             <tr>
                 <td>\$messages.getAll()<br>
@@ -230,10 +230,10 @@
                     $messages.getAll()</td>
             </tr>
             <tr>
-                <td>\$messages.get("foobar")<br>
-                    \$messages.language</td>
+                <td>\$messages.get('foobar')<br>
+                    \$messages.foobar</td>
                 <td>[This is a String representation of the ArrayList that is returned]<br>
-                    $messages.get("foobar")</td>
+                    $messages.get('foobar')</td>
             </tr>
             <tr>
                 <td>A Velocity macro to render all actiontext messages:<br>
@@ -265,7 +265,7 @@
 &#35;end</code></pre>
                 </td>
                 <td>
-                    #messageMarkupForProperty("foobar")
+                    #messageMarkupForProperty('foobar')
                 </td>
             </tr>
         </table>
