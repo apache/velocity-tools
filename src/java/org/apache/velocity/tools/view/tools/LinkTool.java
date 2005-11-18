@@ -34,9 +34,9 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * View tool to make building URIs pleasant and fun! 
  * <p><pre>
  * Template example(s):
- *   #set( $base = $link.setRelative('MyPage.vm').setAnchor('view') )
- *   &lt;a href="$base.addQueryData('select','this')"&gt;this&lt;/a&gt;
- *   &lt;a href="$base.addQueryData('select','that')"&gt;that&lt;/a&gt;
+ *   #set( $base = $link.relative('MyPage.vm').anchor('view') )
+ *   &lt;a href="$base.param('select','this')"&gt;this&lt;/a&gt;
+ *   &lt;a href="$base.param('select','that')"&gt;that&lt;/a&gt;
  *
  * Toolbox configuration:
  * &lt;tool&gt;
@@ -51,7 +51,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.0
- * @version $Id: LinkTool.java,v 1.17 2004/11/11 06:26:27 nbubna Exp $
+ * @version $Id$
  */
 public class LinkTool implements ViewTool, Cloneable
 {
@@ -200,7 +200,7 @@ public class LinkTool implements ViewTool, Cloneable
     /**
      * This is just to avoid duplicating this code for both copyWith() methods
      */
-    private LinkTool duplicate()
+    protected LinkTool duplicate()
     {
         try
         {
@@ -281,6 +281,14 @@ public class LinkTool implements ViewTool, Cloneable
         return copyWithAnchor(anchor);
     }
 
+    /**
+     * Convenience method equivalent to {@link #setAnchor}.
+     * @since VelocityTools 1.3
+     */
+    public LinkTool anchor(String anchor)
+    {
+        return setAnchor(anchor);
+    }
 
     /**
      * Returns the anchor (internal document reference) set for this link.
@@ -326,6 +334,15 @@ public class LinkTool implements ViewTool, Cloneable
         }
     }
 
+    /**
+     * Convenience method equivalent to {@link #setRelative}.
+     * @since VelocityTools 1.3
+     */
+    public LinkTool relative(String uri)
+    {
+        return setRelative(uri);
+    }
+
 
     /**
      * <p>Returns a copy of the link with the given URI reference set. 
@@ -344,6 +361,14 @@ public class LinkTool implements ViewTool, Cloneable
         return copyWith(uri);
     }
 
+    /**
+     * Convenience method equivalent to {@link #setURI}.
+     * @since VelocityTools 1.3
+     */
+    public LinkTool uri(String uri)
+    {
+        return setURI(uri);
+    }
 
     /**
      * <p>Returns the current URI of this link as set by the setURI(String) 
@@ -372,6 +397,14 @@ public class LinkTool implements ViewTool, Cloneable
         return copyWith(new QueryPair(key, value));
     }
 
+    /**
+     * Convenience method equivalent to {@link #addQueryData}.
+     * @since VelocityTools 1.3
+     */
+    public LinkTool param(Object key, Object value)
+    {
+        return addQueryData(String.valueOf(key), value);
+    }
     
     /**
      * <p>Returns this link's query data as a url-encoded string e.g. 
