@@ -48,19 +48,39 @@ import java.util.List;
  * </pre></p>
  *
  * @since Velocity Tools 1.2
- * @version $Revision: 1.5 $ $Date: 2004/05/06 00:01:27 $
+ * @version $Revision$ $Date$
  */
 public class AlternatorTool
 {
+    // it's true by default in Alternator
+    private boolean autoAlternateDefault = true;
 
     public AlternatorTool() {}
+
+    /**
+     * Returns true if the default for auto-alternating is true.
+     * @since VelocityTools 1.3
+     */
+    public boolean getAutoAlternateDefault()
+    {
+        return autoAlternateDefault;
+    }
+
+    /**
+     * Sets the default for auto-alternating.
+     * @since VelocityTools 1.3
+     */
+    public void setAutoAlternateDefault(boolean bool)
+    {
+        this.autoAlternateDefault = bool;
+    }
 
     /**
      * Make an automatic {@link Alternator} from a List.
      */
     public Alternator make(List list)
     {
-        return make(false, list);
+        return make(autoAlternateDefault, list);
     }
 
     /**
@@ -83,7 +103,7 @@ public class AlternatorTool
      */
     public Alternator make(Object[] array)
     {
-        return make(false, array);
+        return make(autoAlternateDefault, array);
     }
 
     /**
@@ -110,7 +130,7 @@ public class AlternatorTool
      */
     public Alternator make(Object o1, Object o2)
     {
-        return make(false, o1, o2);
+        return make(autoAlternateDefault, o1, o2);
     }
 
     /**
