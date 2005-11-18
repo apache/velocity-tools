@@ -25,10 +25,10 @@ import org.apache.velocity.tools.struts.StrutsUtils;
  * <p>View tool to work with URI links in Struts.</p> 
  * <p><pre>
  * Template example(s):
- *   &lt;a href="$link.setAction('update')"&gt;update something&lt;/a&gt;
- *   #set( $base = $link.setForward('MyPage.vm').setAnchor('view') )
- *   &lt;a href="$base.addQueryData('select','this')"&gt;view this&lt;/a&gt;
- *   &lt;a href="$base.addQueryData('select','that')"&gt;view that&lt;/a&gt;
+ *   &lt;a href="$link.action.update"&gt;update something&lt;/a&gt;
+ *   #set( $base = $link.forward.MyPage.anchor('view') )
+ *   &lt;a href="$base.param('select','this')"&gt;view this&lt;/a&gt;
+ *   &lt;a href="$base.param('select','that')"&gt;view that&lt;/a&gt;
  *
  * Toolbox configuration:
  * &lt;tool&gt;
@@ -43,12 +43,44 @@ import org.apache.velocity.tools.struts.StrutsUtils;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: StrutsLinkTool.java,v 1.8 2004/11/11 06:26:27 nbubna Exp $
+ * @version $Id$
  */
 public class StrutsLinkTool extends LinkTool
 {
-
     protected static final Log LOG = LogFactory.getLog(StrutsLinkTool.class);
+
+    private String get;
+
+    /**
+     * <p>This exists to enable a simplified syntax for using this tool in a
+     * template. Now, users can do <code>$link.action.saveFoo</code> instead of
+     * <code>$link.setAction('saveFoo')</code> and 
+     * <code>$link.forward.profile</code> instead of
+     * <code>$link.setForward('profile')</code>. Neat, eh? :)</p>
+     * @since VelocityTools 1.3
+     */
+    public StrutsLinkTool get(String getme)
+    {
+        StrutsLinkTool sub = null;
+        if ("action".equalsIgnoreCase(this.get))
+        {
+            sub = setAction(getme);
+        }
+        else if ("forward".equalsIgnoreCase(this.get))
+        {
+            sub = setForward(getme);
+        }
+        else
+        {
+            sub = (StrutsLinkTool)this.duplicate();
+        }
+        if (sub == null)
+        {
+            return null;
+        }
+        sub.get = getme;
+        return sub;
+    }
 
 
     /**
@@ -64,11 +96,18 @@ public class StrutsLinkTool extends LinkTool
      */
     public StrutsLinkTool setAction(String action)
     {
-        return (StrutsLinkTool)copyWith(
-            StrutsUtils.getActionMappingURL(application, request, action));
+        String url = 
+            StrutsUtils.getActionMappingURL(application, request, action);
+        if (url == null)
+        {
+            LOG.warn("In method setAction("+action+
+                     "): Parameter does not map to a valid action.");
+            return null;
+        }
+        return (StrutsLinkTool)copyWith(url);
     }
-    
-    
+
+
     /**
      * <p>Returns a copy of the link with the given global forward name
      * converted into a server-relative URI reference. If the parameter 
@@ -91,6 +130,5 @@ public class StrutsLinkTool extends LinkTool
         }
         return (StrutsLinkTool)copyWith(url);
     }
-
 
 }
