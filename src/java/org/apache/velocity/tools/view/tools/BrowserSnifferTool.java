@@ -998,7 +998,7 @@ public class BrowserSnifferTool implements ViewTool
             if(getGecko())
             {
                 Matcher g = Pattern.compile(
-                        "\\([^)]*rv:(.*)\\)"
+                        "\\([^)]*rv:(.*?)\\)"
                         ).matcher(userAgent);
                 if(g.find())
                 {
@@ -1011,5 +1011,4 @@ public class BrowserSnifferTool implements ViewTool
             // where should I log ?!
         }
     }
-
 }
