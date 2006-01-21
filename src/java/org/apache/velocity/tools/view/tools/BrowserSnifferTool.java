@@ -62,6 +62,8 @@ public class BrowserSnifferTool implements ViewTool
     private int majorVersion = -1;
     private int minorVersion = -1;
     private String geckoVersion = null;
+    private int geckoMajorVersion = -1;
+    private int geckoMinorVersion = -1;
 
     public BrowserSnifferTool()
     {
@@ -117,6 +119,18 @@ public class BrowserSnifferTool implements ViewTool
     {
         parseVersion();
         return geckoVersion;
+    }
+
+    public int getGeckoMajorVersion()
+    {
+        parseVersion();
+        return geckoMajorVersion;
+    }
+
+    public int getGeckoMinorVersion()
+    {
+        parseVersion();
+        return geckoMinorVersion;
     }
 
     /* Browsers */
@@ -997,12 +1011,21 @@ public class BrowserSnifferTool implements ViewTool
             /* gecko engine version */
             if(getGecko())
             {
-                Matcher g = Pattern.compile(
-                        "\\([^)]*rv:(.*?)\\)"
+            	Matcher g = Pattern.compile(
+                        "\\([^)]*rv:(([\\d]*)\\.([\\d]*).*?)\\)"
                         ).matcher(userAgent);
                 if(g.find())
                 {
                     geckoVersion = g.group(1);
+                    try
+                    {
+                    	geckoMajorVersion = Integer.parseInt(g.group(2));
+                    	String minor = g.group(3);
+                        if(minor.startsWith("0"))geckoMinorVersion = 0;
+                        else geckoMinorVersion = Integer.parseInt(minor);
+                    }
+                    catch(NumberFormatException nfe)
+                    {}
                 }
             }
         }
@@ -1011,4 +1034,6 @@ public class BrowserSnifferTool implements ViewTool
             // where should I log ?!
         }
     }
+    
+    
 }
