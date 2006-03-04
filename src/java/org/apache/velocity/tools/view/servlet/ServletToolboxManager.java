@@ -38,7 +38,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.view.DataInfo;
 import org.apache.velocity.tools.view.ToolInfo;
 import org.apache.velocity.tools.view.XMLToolboxManager;
-import org.apache.velocity.tools.view.context.ToolboxContext;
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.servlet.ServletToolboxRuleSet;
 
@@ -150,12 +149,12 @@ public class ServletToolboxManager extends XMLToolboxManager
             toolboxFile = "/" + toolboxFile;
         }
 
-        // get config file pathname
-        String pathname = servletContext.getRealPath(toolboxFile);
+        // get the unique key for this toolbox file in this servlet context
+        String uniqueKey = servletContext.hashCode() + ':' + toolboxFile;
 
-        // check if a previous instance exists
+        // check if an instance already exists
         ServletToolboxManager toolboxManager = 
-            (ServletToolboxManager)managersMap.get(pathname);
+            (ServletToolboxManager)managersMap.get(uniqueKey);
 
         if (toolboxManager == null)
         {
@@ -174,7 +173,7 @@ public class ServletToolboxManager extends XMLToolboxManager
                     toolboxManager.load(is);
 
                     // remember it
-                    managersMap.put(pathname, toolboxManager);
+                    managersMap.put(uniqueKey, toolboxManager);
 
                     LOG.info("Toolbox setup complete.");
                 }
@@ -210,11 +209,11 @@ public class ServletToolboxManager extends XMLToolboxManager
      * current request and session-scoped tools have been defined for this
      * toolbox.</p>
      *
-     * <p>If true, then a call to {@link #getToolboxContext(Object)} will 
+     * <p>If true, then a call to {@link #getToolbox(Object)} will 
      * create a new session if none currently exists for this request and
      * the toolbox has one or more session-scoped tools designed.</p>
      *
-     * <p>If false, then a call to getToolboxContext(Object) will never
+     * <p>If false, then a call to getToolbox(Object) will never
      * create a new session for the current request.
      * This effectively means that no session-scoped tools will be added to 
      * the ToolboxContext for a request that does not have a session object.
@@ -277,7 +276,7 @@ public class ServletToolboxManager extends XMLToolboxManager
 
     /**
      * Overrides XMLToolboxManager to separate tools by scope.
-     * For this to work, we obviously override getToolboxContext(Object) as well.
+     * For this to work, we obviously override getToolbox(Object) as well.
      */
     public void addTool(ToolInfo info)
     {
