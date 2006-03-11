@@ -114,6 +114,11 @@ public class ValueParser
             this.key = key;
         }
 
+        public boolean getExists()
+        {
+            return parser.exists(key);
+        }
+
         public Object get(String key)
         {
             if (key == null)
