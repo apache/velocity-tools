@@ -20,9 +20,7 @@ import java.io.StringWriter;
 import java.util.Map;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.generic.RenderTool;
-import org.apache.velocity.tools.generic.ValueParser;
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
  * This tool expose methods to evaluate the given
@@ -75,10 +73,8 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @version $Revision$ $Date$
  */
-public class ViewRenderTool extends RenderTool implements ViewTool, Configurable
+public class ViewRenderTool extends RenderTool
 {
-    public static final String KEY_PARSE_DEPTH = "parse.depth";
-
     private Context context;
 
     /**
@@ -102,13 +98,6 @@ public class ViewRenderTool extends RenderTool implements ViewTool, Configurable
         {
             setVelocityEngine(((ViewContext)obj).getVelocityEngine());
         }
-    }
-
-    public void configure(Map params)
-    {
-        ValueParser parser = new ValueParser(params);
-        int depth = parser.getInt(KEY_PARSE_DEPTH, DEFAULT_PARSE_DEPTH);
-        setParseDepth(depth);
     }
 
     /**
