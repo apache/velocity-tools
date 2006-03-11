@@ -26,8 +26,8 @@ package org.apache.velocity.tools.view.tools;
  * {@link org.apache.velocity.tools.view.ViewToolInfo} for more on this.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- *
- * @version $Id: ViewTool.java,v 1.3 2004/02/18 20:06:11 nbubna Exp $
+ * @version $Id$
+ * @deprecated Your tools now only need to have an init(Object) method.
  */
 public interface ViewTool
 {

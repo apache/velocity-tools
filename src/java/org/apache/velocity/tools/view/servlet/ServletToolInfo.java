@@ -48,7 +48,7 @@ import org.apache.velocity.tools.view.context.ViewContext;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: ServletToolInfo.java,v 1.7 2004/03/12 20:50:38 nbubna Exp $
+ * @version $Id$
  */
 public class ServletToolInfo extends ViewToolInfo
 {

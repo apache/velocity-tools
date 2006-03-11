@@ -1,5 +1,5 @@
 /*
- * Copyright 2004 The Apache Software Foundation.
+ * Copyright 2004-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,20 @@
 
 package org.apache.velocity.tools.view;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.velocity.tools.view.tools.Configurable;
-import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
  * ToolInfo implementation for view tools. New instances
  * are returned for every call to getInstance(obj), and tools
- * that implement {@link ViewTool} are initialized with the
- * given object before being returned.
+ * that have an init(Object) method are initialized with the
+ * given object before being returned. And tools that have a
+ * configure(Map) method will be configured before being returned
+ * if there are parameters specified for the tool.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:henning@schmiedehausen.org">Henning P. Schmiedehausen</a>
@@ -40,8 +42,8 @@ public class ViewToolInfo implements ToolInfo
     private String key;
     private Class clazz;
     private Map parameters;
-    private boolean initializable = false;
-    private boolean configurable = false;
+    private Method init = null;
+    private Method configure = null;
 
     public ViewToolInfo() {}
 
@@ -87,15 +89,25 @@ public class ViewToolInfo implements ToolInfo
         if (classname != null && classname.length() != 0)
         {
             this.clazz = getApplicationClass(classname);
-            /* create an instance and see if it is a ViewTool or Configurable */
+            // create an instance to make sure we can
             Object instance = clazz.newInstance();
-            if (instance instanceof ViewTool)
+            try
             {
-                this.initializable = true;
+                // try to get an init(Object) method
+                this.init = clazz.getMethod("init", new Class[]{ Object.class });
             }
-            if (instance instanceof Configurable)
+            catch (NoSuchMethodException nsme)
             {
-                this.configurable = true;
+                // ignore
+            }
+            try
+            {
+                // check for a configure(Map) method
+                this.configure = clazz.getMethod("configure", new Class[]{ Map.class });
+            }
+            catch (NoSuchMethodException nsme)
+            {
+                // ignore
             }
         }
         else
@@ -153,8 +165,10 @@ public class ViewToolInfo implements ToolInfo
 
     /**
      * Returns a new instance of the tool. If the tool
-     * implements {@link ViewTool}, the new instance
-     * will be initialized using the given data.
+     * has an init(Object) method, the new instance
+     * will be initialized using the given data. If parameters
+     * have been specified and the tool has a configure(Map)
+     * method, the tool will be passed the parameters also.
      */
     public Object getInstance(Object initData)
     {
@@ -164,6 +178,7 @@ public class ViewToolInfo implements ToolInfo
             return null;
         }
 
+        /* Get the tool instance */
         Object tool = null;
         try
         {
@@ -176,21 +191,50 @@ public class ViewToolInfo implements ToolInfo
         catch (IllegalAccessException e)
         {
             LOG.error("Exception while instantiating instance of \"" +
-                    getClassname() + "\": " + e);
+                    getClassname() + "\"", e);
         }
         catch (InstantiationException e)
         {
             LOG.error("Exception while instantiating instance of \"" +
-                    getClassname() + "\": " + e);
+                    getClassname() + "\"", e);
         }
-        if (configurable && parameters != null)
+
+        /* if the tool is configurable and we have parameters... */
+        if (configure != null && parameters != null)
         {
-            ((Configurable)tool).configure(parameters);
+            try
+            {
+                // call the configure method on the instance
+                configure.invoke(tool, new Object[]{ parameters });
+            }
+            catch (IllegalAccessException iae)
+            {
+                LOG.error("Exception when calling configure(Map) on "+tool, iae);
+            }
+            catch (InvocationTargetException ite)
+            {
+                LOG.error("Exception when calling configure(Map) on "+tool, ite);
+            }
         }
-        if (initializable)
+
+        /* if the tool is initializable... */
+        if (init != null)
         {
-            ((ViewTool)tool).init(initData);
+            try
+            {
+                // call the init method on the instance
+                init.invoke(tool, new Object[]{ initData });
+            }
+            catch (IllegalAccessException iae)
+            {
+                LOG.error("Exception when calling init(Object) on "+tool, iae);
+            }
+            catch (InvocationTargetException ite)
+            {
+                LOG.error("Exception when calling init(Object) on "+tool, ite);
+            }
         }
         return tool;
     }
+
 }

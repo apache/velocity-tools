@@ -24,6 +24,7 @@ import java.util.Map;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @version $Id$
  * @since VelocityTools 1.2
+ * @deprecated Your tools now only need to have a configure(Map) method.
  */
 public interface Configurable
 {
