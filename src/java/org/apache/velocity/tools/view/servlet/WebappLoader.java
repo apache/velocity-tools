@@ -1,5 +1,5 @@
 /*
- * Copyright 2003-2004 The Apache Software Foundation.
+ * Copyright 2003-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ import org.apache.velocity.runtime.resource.loader.ResourceLoader;
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @author <a href="mailto:claude@savoirweb.com">Claude Brisson</a>
- * @version $Id: WebappLoader.java,v 1.9 2004/10/04 15:00:51 marino Exp $  */
+ * @version $Id$  */
 
 public class WebappLoader extends ResourceLoader
 {
@@ -73,7 +73,7 @@ public class WebappLoader extends ResourceLoader
      */
     public void init(ExtendedProperties configuration)
     {
-        rsvc.info("WebappLoader : initialization starting.");
+        rsvc.debug("WebappLoader : initialization starting.");
 
         /* get configured paths */
         paths = configuration.getStringArray("path");
@@ -109,7 +109,7 @@ public class WebappLoader extends ResourceLoader
         /* init the template paths map */
         templatePaths = new HashMap();
 
-        rsvc.info("WebappLoader : initialization complete.");
+        rsvc.debug("WebappLoader : initialization complete.");
     }
 
     /**
