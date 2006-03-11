@@ -22,7 +22,6 @@ import javax.servlet.ServletContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
  * Allows for transparent content negotiation in a manner mimicking
@@ -34,10 +33,10 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * See {@link #findLocalizedResource(String, String)} and {@link
  * #findLocalizedResource(String, Locale)} for usage.</p>
  *
- * @version $Id: MultiViewsTool.java,v 1.5 2004/11/11 06:22:45 nbubna Exp $
+ * @version $Id$
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  */
-public class MultiViewsTool implements ViewTool
+public class MultiViewsTool
 {
     /**
      * The key used to search initialization, context, and JVM

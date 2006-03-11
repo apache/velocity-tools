@@ -22,7 +22,6 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import org.apache.velocity.tools.generic.ValueParser;
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
  * <p>Utility class for easy parsing of {@link ServletRequest} parameters.</p>
@@ -48,7 +47,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @version $Revision$ $Date$
  */
-public class ParameterParser extends ValueParser implements ViewTool
+public class ParameterParser extends ValueParser
 {
     private ServletRequest request;
 

@@ -24,7 +24,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.view.ImportSupport;
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
  * General-purpose text-importing view tool for templates.
@@ -43,9 +42,10 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 1.1
- * @version $Revision: 1.7 $ $Date: 2004/11/11 06:26:27 $
+ * @version $Revision$ $Date$
  */
-public class ImportTool extends ImportSupport implements ViewTool {
+public class ImportTool extends ImportSupport
+{
 
     protected static final Log LOG = LogFactory.getLog(ImportTool.class);
 

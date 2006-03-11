@@ -39,7 +39,6 @@ import org.apache.struts.tiles.Controller;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.view.ImportSupport;
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
  * View tool to use struts-tiles with Velocity.
@@ -68,7 +67,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @since VelocityTools 1.1
  * @version $Revision$ $Date$
  */
-public class TilesTool extends ImportSupport implements ViewTool
+public class TilesTool extends ImportSupport
 {
     protected static final Log LOG = LogFactory.getLog(TilesTool.class);
 

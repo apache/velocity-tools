@@ -44,8 +44,6 @@ import org.apache.struts.validator.Resources;
 import org.apache.struts.validator.ValidatorPlugIn;
 
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ViewTool;
-import java.util.StringTokenizer;
 
 /**
  * <p>View tool that works with Struts Validator to
@@ -74,7 +72,8 @@ import java.util.StringTokenizer;
  * @since VelocityTools 1.1
  * @version $Revision$ $Date$
  */
-public class ValidatorTool implements ViewTool {
+public class ValidatorTool
+{
 
     /** A reference to the ViewContext */
     protected ViewContext context;

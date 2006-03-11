@@ -25,7 +25,6 @@ import org.apache.struts.util.MessageResources;
 import org.apache.struts.action.*;
 
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ViewTool;
 import org.apache.struts.util.ModuleUtils;
 
 
@@ -51,7 +50,7 @@ import org.apache.struts.util.ModuleUtils;
  * @since VelocityTools 1.0
  * @version $Id$
  */
-public class FormTool implements ViewTool
+public class FormTool
 {
 
     // --------------------------------------------- Properties ---------------

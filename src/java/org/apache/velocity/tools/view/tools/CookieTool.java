@@ -42,9 +42,9 @@ import org.apache.velocity.tools.view.context.ViewContext;
  * @author <a href="mailto:dim@colebatch.com">Dmitri Colebatch</a>
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.1
- * @version $Id: CookieTool.java,v 1.3 2004/02/18 20:06:11 nbubna Exp $
+ * @version $Id$
  */
-public class CookieTool implements ViewTool
+public class CookieTool
 {
 
     protected HttpServletRequest request;
