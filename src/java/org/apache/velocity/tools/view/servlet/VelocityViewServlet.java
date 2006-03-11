@@ -45,7 +45,6 @@ import org.apache.velocity.util.SimplePool;
 
 import org.apache.velocity.tools.generic.log.LogSystemCommonsLog;
 import org.apache.velocity.tools.view.ToolboxManager;
-import org.apache.velocity.tools.view.context.ToolboxContext;
 import org.apache.velocity.tools.view.context.ChainedContext;
 import org.apache.velocity.tools.view.servlet.ServletToolboxManager;
 import org.apache.velocity.tools.view.servlet.WebappLoader;
