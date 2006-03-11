@@ -28,7 +28,6 @@ import javax.servlet.ServletContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
  * View tool to make building URIs pleasant and fun! 
@@ -53,7 +52,7 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  * @since VelocityTools 1.0
  * @version $Id$
  */
-public class LinkTool implements ViewTool, Cloneable
+public class LinkTool implements Cloneable
 {
     protected static final Log LOG = LogFactory.getLog(LinkTool.class);
 
@@ -234,8 +233,6 @@ public class LinkTool implements ViewTool, Cloneable
     }
 
 
-    // --------------------------------------------- ViewTool Interface -------
-
     /**
      * Initializes this tool.
      *
@@ -341,6 +338,58 @@ public class LinkTool implements ViewTool, Cloneable
     public LinkTool relative(String uri)
     {
         return setRelative(uri);
+    }
+
+
+    /**
+     * <p>Returns a copy of the link with the specified URI reference
+     * either used as or converted to an absolute (non-relative)
+     * URI reference. This method will overwrite any previous URI 
+     * reference settings but will copy the query string.</p> 
+     *
+     * Example:<br>
+     * <code>&lt;a href='$link.setAbsolute("/templates/login/index.vm")'&gt;Login Page&lt;/a&gt;</code><br>
+     * produces something like<br/>
+     * <code>&lt;a href="http://myserver.net/myapp/templates/login/index.vm"&gt;Login Page&lt;/a&gt;</code><br>
+     * and<br>
+     * <code>&lt;a href='$link.setAbsolute("http://theirserver.com/index.jsp")'&gt;Their, Inc.&lt;/a&gt;</code><br>
+     * produces something like<br/>
+     * <code>&lt;a href="http://theirserver.net/index.jsp"&gt;Their, Inc.&lt;/a&gt;</code><br>
+     *
+     * @param uri A context-relative URI reference or absolute URL.
+     * @return a new instance of LinkTool with the specified URI
+     * @since VelocityTools 1.3
+     */
+    public LinkTool setAbsolute(String uri)
+    {
+        // if they're creating a url for a separate site
+        if (uri.startsWith("http"))
+        {
+            // just set the URI
+            return setURI(uri);
+        }
+        else
+        {
+            // otherwise, prepend this webapp's context url
+            String fullCtx = getContextURL();
+            if (uri.startsWith("/"))
+            {
+                return copyWith(fullCtx + uri);
+            }
+            else
+            {
+                return copyWith(fullCtx + '/' + uri);
+            }
+        }
+    }
+
+    /**
+     * Convenience method equivalent to {@link #setAbsolute}.
+     * @since VelocityTools 1.3
+     */
+    public LinkTool absolute(String uri)
+    {
+        return setAbsolute(uri);
     }
 
 
