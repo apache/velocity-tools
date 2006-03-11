@@ -17,7 +17,6 @@
 package org.apache.velocity.tools.view;
 
 import java.util.Map;
-import org.apache.velocity.tools.view.context.ToolboxContext;
 
 /**
  * Common interface for toolbox manager implementations.
@@ -44,17 +43,11 @@ public interface ToolboxManager
     void addData(ToolInfo info);
 
     /**
-     * @deprecated Use getToolbox(Object initData)
-     */
-    ToolboxContext getToolboxContext(Object initData);
-
-
-    /**
      * Retrieves a map of the tools and data being managed. Tools
-     * that implement the ViewTool interface will be (re)initialized
+     * that have an init(Object) method will be (re)initialized
      * using the specified initData.
      *
-     * @param initData data used to initialize ViewTools
+     * @param initData data used to initialize tools
      * @return the created ToolboxContext
      * @since VelocityTools 1.2
      */
