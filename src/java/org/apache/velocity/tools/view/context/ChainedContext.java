@@ -80,7 +80,7 @@ public class ChainedContext extends VelocityContext implements ViewContext
 
 
     /**
-     * @deprecated
+     * @deprecated This will be removed after VelocityTools 1.3
      */
     public ChainedContext(Context ctx,
                           HttpServletRequest request,
@@ -112,15 +112,6 @@ public class ChainedContext extends VelocityContext implements ViewContext
         this.response = response;
         this.session = request.getSession(false);
         this.application = application;
-    }
-
-
-    /**
-     * @deprecated Use setToolbox(Map) instead.
-     */
-    public void setToolbox(ToolboxContext box)
-    {
-        setToolbox(box.getToolbox());
     }
 
 
