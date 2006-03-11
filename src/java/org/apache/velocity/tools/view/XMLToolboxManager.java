@@ -30,7 +30,6 @@ import org.apache.commons.digester.RuleSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.view.ToolboxRuleSet;
-import org.apache.velocity.tools.view.context.ToolboxContext;
 
 
 /**
@@ -101,10 +100,14 @@ public class XMLToolboxManager implements ToolboxManager
 
     public void addTool(ToolInfo info)
     {
+        System.out.println("addTool("+info);
         if (validateToolInfo(info))
         {
             toolinfo.add(info);
-            LOG.info("Added "+info.getKey()+" ("+info.getClassname()+") to the toolbox.");
+            if (LOG.isDebugEnabled())
+            {
+                LOG.debug("Added "+info.getClassname()+" to the toolbox as "+info.getKey());
+            }
         }
     }
 
@@ -113,6 +116,10 @@ public class XMLToolboxManager implements ToolboxManager
         if (validateToolInfo(info))
         {
             data.put(info.getKey(), info.getInstance(null));
+            if (LOG.isDebugEnabled())
+            {
+                LOG.debug("Added '"+info.getInstance(null)+"' to the toolbox as "+info.getKey());
+            }
         }
     }
 
@@ -128,6 +135,7 @@ public class XMLToolboxManager implements ToolboxManager
     {
         if (info == null)
         {
+            LOG.error("ToolInfo is null!");
             return false;
         }
         if (info.getKey() == null || info.getKey().length() == 0)
@@ -141,14 +149,6 @@ public class XMLToolboxManager implements ToolboxManager
             return false;
         }
         return true;
-    }
-
-    /**
-     * @deprecated Use getToolbox(Object) instead.
-     */
-    public ToolboxContext getToolboxContext(Object initData)
-    {
-        return new ToolboxContext(getToolbox(initData));
     }
 
 
