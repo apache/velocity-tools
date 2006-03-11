@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 
@@ -52,12 +53,11 @@ import java.util.TimeZone;
  *   &lt;key&gt;date&lt;/key&gt;
  *   &lt;scope&gt;application&lt;/scope&gt;
  *   &lt;class&gt;org.apache.velocity.tools.generic.DateTool&lt;/class&gt;
+ *   &lt;parameter name="format" value="yyyy-M-d"/&gt;
  * &lt;/tool&gt;
  * </pre></p>
  *
- * <p>This tool is entirely threadsafe, and has no instance members.
- * It may be used in any scope (request, session, or application).
- * As such, the methods are highly interconnected, and overriding 
+ * <p>The methods of this tool are highly interconnected, and overriding 
  * key methods provides an easy way to create subclasses that use 
  * a non-default format, calendar, locale, or timezone.</p>
  *
@@ -70,10 +70,17 @@ public class DateTool
 
     /** 
      * The default format to be used when none is specified. 
-     *
      * @since VelocityTools 1.1
      */
     public static final String DEFAULT_FORMAT = "default";
+
+    /**
+     * The key used for specifying a default format via toolbox params.
+     * @since VelocityTools 1.3
+     */
+    public static final String DEFAULT_FORMAT_KEY = "format";
+
+    private String format = DEFAULT_FORMAT;
 
     /**
      * Default constructor.
@@ -82,6 +89,21 @@ public class DateTool
     {
         // do nothing
     }
+
+    /**
+     * Looks for a default format value in the given params.
+     * @since VelocityTools 1.3
+     */
+    public void configure(Map params)
+    {
+        ValueParser parser = new ValueParser(params);
+        String format = parser.getString(DEFAULT_FORMAT_KEY);
+        if (format != null)
+        {
+            setFormat(format);
+        }
+    }
+        
 
 
     // ------------------------- system date access ------------------
@@ -168,18 +190,28 @@ public class DateTool
      * is specified. This implementation gives a 'default' date-time format. 
      * Subclasses may override this to provide a different default format.
      *
-     * <p>NOTE: At some point in the future it may be feasible to configure
-     * this value via the toolbox definition, but at present, it is not possible
-     * to specify custom tool configurations there.  For now you should just 
-     * override this in a subclass to have a different default.</p>
+     * <p>This can now be configured via the toolbox definition.
+     * Add a <code>&lt;parameter name="format" value="short"/&gt;<code>
+     * to your date tool configuration.</p>
      *
      * @since VelocityTools 1.1
      */
     public String getFormat()
     {
-        return DEFAULT_FORMAT;
+        return format;
     }
 
+    /**
+     * Sets the default format for this instance. This is protected,
+     * because templates ought not to be using it; hat would not
+     * be threadsafe so far as templates are concerned.
+     *
+     * @since VelocityTools 1.3
+     */
+    protected void setFormat(String format)
+    {
+        this.format = format;
+    }
 
     // ------------------------- date value access ---------------------------
 
