@@ -97,7 +97,7 @@ import org.apache.commons.beanutils.PropertyUtils;
  * @author S. Brett Sutton
  * @author Nathan Bubna
  * @since VelocityTools 1.2
- * @version $Id: SortTool.java,v 1.1 2004/07/22 01:27:12 nbubna Exp $
+ * @version $Id$
  */
 public class SortTool
 {

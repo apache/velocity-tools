@@ -27,7 +27,7 @@ package org.apache.velocity.tools.view;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  *
- * @version $Id: ToolInfo.java,v 1.3 2004/02/18 20:08:29 nbubna Exp $
+ * @version $Id$
  */
 public interface ToolInfo
 {
