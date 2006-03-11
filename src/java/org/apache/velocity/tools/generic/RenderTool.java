@@ -17,6 +17,7 @@
 package org.apache.velocity.tools.generic;
 
 import java.io.StringWriter;
+import java.util.Map;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
@@ -56,6 +57,12 @@ import org.apache.velocity.context.Context;
  *      ------
  *      hello world!
  *
+ *
+ * Toolbox configuration:
+ * &lt;tool&gt;
+ *   &lt;key&gt;render&lt;/key&gt;
+ *   &lt;class&gt;org.apache.velocity.tools.generic.RenderTool&lt;/class&gt;
+ * &lt;/tool&gt;
  * </pre>
  *
  * <p>Ok, so these examples are really lame.  But, it seems like
@@ -76,11 +83,19 @@ public class RenderTool
      * @since VelocityTools 1.2
      */
     public static final int DEFAULT_PARSE_DEPTH = 20;
+    public static final String KEY_PARSE_DEPTH = "parse.depth";
 
     private static final String LOG_TAG = "RenderTool.eval()";
 
     private VelocityEngine engine = null;
     private int parseDepth = DEFAULT_PARSE_DEPTH;
+
+    public void configure(Map params)
+    {
+        ValueParser parser = new ValueParser(params);
+        int depth = parser.getInt(KEY_PARSE_DEPTH, DEFAULT_PARSE_DEPTH);
+        setParseDepth(depth);
+    }
 
     /**
      * Allow user to specify a VelocityEngine to be used
