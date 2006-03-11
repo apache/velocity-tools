@@ -36,7 +36,7 @@ import javax.servlet.ServletContext;
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  *
- * @version $Id: ViewContext.java,v 1.7 2004/11/11 04:07:24 nbubna Exp $ 
+ * @version $Id$ 
  */
 public interface ViewContext
 {

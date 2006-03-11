@@ -44,7 +44,7 @@ import java.util.List;
  * </pre></p>
  *
  * @since Velocity Tools 1.2
- * @version $Revision: 1.7 $ $Date: 2004/05/06 00:36:40 $
+ * @version $Id$
  */
 public class Alternator
 {

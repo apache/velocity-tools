@@ -29,7 +29,7 @@ import org.apache.velocity.tools.view.servlet.ServletToolInfo;
  *
  * @since VelocityTools 1.1
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Id: ServletToolboxRuleSet.java,v 1.5 2004/04/15 17:32:06 nbubna Exp $
+ * @version $Id$
  */
 public class ServletToolboxRuleSet extends ToolboxRuleSet
 {
