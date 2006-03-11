@@ -233,7 +233,7 @@ public class MessageTool extends MessageResourcesTool
         private Object[] args;
 
         /**
-         * @deprecated
+         * @deprecated This will be removed after VelocityTools 1.3
          */
         public TextKey(MessageTool tool, String key)
         {
