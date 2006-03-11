@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
  * <p>Abstract view tool for doing request-based pagination of 
@@ -105,9 +104,9 @@ import org.apache.velocity.tools.view.tools.ViewTool;
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.2
- * @version $Revision: 1.1 $ $Date: 2004/11/11 03:45:19 $
+ * @version $Revision$ $Date$
  */
-public abstract class AbstractPagerTool implements ViewTool
+public abstract class AbstractPagerTool
 {
 
     /** the default number of items shown per page */

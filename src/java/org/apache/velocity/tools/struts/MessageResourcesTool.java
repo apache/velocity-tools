@@ -23,16 +23,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts.util.MessageResources;
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ViewTool;
 
 /**
  * <p>Abstract view tool that provides access to Struts' message resources.</p>
  *
  * @author <a href="mailto:nbubna@apache.org">Nathan Bubna</a>
  * @since VelocityTools 1.1
- * @version $Id: MessageResourcesTool.java,v 1.4 2004/11/11 06:26:27 nbubna Exp $
+ * @version $Id$
  */
-public abstract class MessageResourcesTool implements ViewTool
+public abstract class MessageResourcesTool
 {
 
     protected static final Log LOG = LogFactory.getLog(MessageResourcesTool.class);

@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletRequest;
 
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.ViewTool;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -55,7 +54,7 @@ import java.util.regex.PatternSyntaxException;
  * @since VelocityTools 1.2
  * @version $Revision$ $Date$
  */
-public class BrowserSnifferTool implements ViewTool
+public class BrowserSnifferTool
 {
     private String userAgent = null;
     private String version = null;
