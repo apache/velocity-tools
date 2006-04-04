@@ -1,5 +1,5 @@
 /*
- * Copyright 2003-2004 The Apache Software Foundation.
+ * Copyright 2003-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ import java.util.TimeZone;
  * the tool can be used to retrieve {@link DateFormat} instances
  * or make conversions to and from various date types.
  * <p><pre>
- * Example uses:
+ * Example of formatting the "current" date:
  *  $date                         -> Oct 19, 2003 9:54:50 PM
  *  $date.long                    -> October 19, 2003 9:54:50 PM PDT
  *  $date.medium_time             -> 9:54:50 PM
@@ -45,6 +45,7 @@ import java.util.TimeZone;
  *  $date.get('default','short')  -> Oct 19, 2003 9:54 PM
  *  $date.get('yyyy-M-d H:m:s')   -> 2003-10-19 21:54:50
  * 
+ * Example of formatting an arbitrary date:
  *  $myDate                        -> Tue Oct 07 03:14:50 PDT 2003
  *  $date.format('medium',$myDate) -> Oct 7, 2003 3:14:50 AM 
  *
