@@ -181,6 +181,20 @@ public class WebappLoader extends ResourceLoader
         return result;
     }
 
+    private File getCachedFile(String rootPath, String fileName)
+    {
+        // we do this when we cache a resource,
+        // so do it again to ensure a match
+        while (fileName.startsWith("/"))
+        {
+            fileName = fileName.substring(1);
+        }
+
+        String savedPath = (String)templatePaths.get(fileName);
+        return new File(rootPath + savedPath, fileName);
+    }
+
+
     /**
      * Checks to see if a resource has been deleted, moved or modified.
      *
@@ -190,19 +204,16 @@ public class WebappLoader extends ResourceLoader
     public boolean isSourceModified(Resource resource)
     {
         String rootPath = servletContext.getRealPath("/");
-        if(rootPath == null) {
-           /*
-            * rootPath is null if the servlet container cannot translate the
-            * virtual path to a real path for any reason (such as when the
-            * content is being made available from a .war archive)
-            */
+        if (rootPath == null) {
+            // rootPath is null if the servlet container cannot translate the
+            // virtual path to a real path for any reason (such as when the
+            // content is being made available from a .war archive)
             return false;
         }
 
-        /* first, try getting the previously found file */
+        // first, try getting the previously found file
         String fileName = resource.getName();
-        String savedPath = (String)templatePaths.get(fileName);
-        File cachedFile = new File(rootPath + savedPath, fileName);
+        File cachedFile = getCachedFile(rootPath, fileName);
         if (!cachedFile.exists())
         {
             /* then the source has been moved and/or deleted */
@@ -246,20 +257,17 @@ public class WebappLoader extends ResourceLoader
     public long getLastModified(Resource resource)
     {
         String rootPath = servletContext.getRealPath("/");
-        if(rootPath == null) {
-           /*
-            * rootPath is null if the servlet container cannot translate the
-            * virtual path to a real path for any reason (such as when the
-            * content is being made available from a .war archive)
-            */
+        if (rootPath == null) {
+            // rootPath is null if the servlet container cannot translate the
+            // virtual path to a real path for any reason (such as when the
+            // content is being made available from a .war archive)
             return 0;
         }
 
-        String path = (String)templatePaths.get(resource.getName());
-        File file = new File(rootPath + path, resource.getName());
-        if (file.canRead())
+        File cachedFile = getCachedFile(rootPath, resource.getName());
+        if (cachedFile.canRead())
         {
-            return file.lastModified();
+            return cachedFile.lastModified();
         }
         else
         {
