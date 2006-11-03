@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * $Id: MyTileController.java,v 1.3 2004/03/12 19:41:06 marino Exp $
+ * $Id$
  */
 
 package examples.app4;
@@ -30,8 +30,8 @@ import java.io.IOException;
  * <p>A simple tile-controller that puts a string into the request scope.
 *     Check out the tiles-defs to see the definition that uses the controller</p>
  *
- * @author <a href="mailto:marinoj@centrum.is"/>Marinó A. Jónsson</a>
- * @version $Id: MyTileController.java,v 1.3 2004/03/12 19:41:06 marino Exp $
+ * @author <a href="mailto:marinoj@centrum.is"/>MarinÃ³ A. JÃ³nsson</a>
+ * @version $Id$
  */
 
 public class MyTileController extends ControllerSupport {
