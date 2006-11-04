@@ -17,13 +17,14 @@
 package org.apache.velocity.tools.view.servlet;
 
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.app.VelocityEngine;
@@ -31,7 +32,6 @@ import org.apache.velocity.context.Context;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
-import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
 
 
 /**
@@ -43,11 +43,14 @@ import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
  * somewhere.
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
- * @version $Id: VelocityLayoutServlet.java,v 1.10 2004/11/11 07:01:21 nbubna Exp $
+ * @version $Id$
  */
 
 public class VelocityLayoutServlet extends VelocityViewServlet 
 {
+
+    /** serial version id */
+    private static final long serialVersionUID = -4521817395157483487L;
 
     /**
      * The velocity.properties key for specifying the

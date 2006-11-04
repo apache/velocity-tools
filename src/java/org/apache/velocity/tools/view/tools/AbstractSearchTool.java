@@ -18,14 +18,8 @@
 package org.apache.velocity.tools.view.tools;
 
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.apache.velocity.tools.view.context.ViewContext;
 
 
 /**
@@ -329,7 +323,10 @@ public abstract class AbstractSearchTool extends AbstractPagerTool
     public class StoredResults implements java.io.Serializable
     {
 
-        private transient Object crit;
+        /** serial version id */
+	private static final long serialVersionUID = 4503130168585978169L;
+
+	private transient Object crit;
         private transient List list;
 
         /**

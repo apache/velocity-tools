@@ -19,13 +19,9 @@ package org.apache.velocity.tools.struts;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.servlet.ServletContext;
 
-import org.apache.struts.util.MessageResources;
-import org.apache.struts.action.*;
-
+import org.apache.struts.action.ActionForm;
 import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.struts.util.ModuleUtils;
 
 
 /**

@@ -16,8 +16,6 @@
 
 package org.apache.velocity.tools.view.tools;
 
-import java.io.StringWriter;
-import java.util.Map;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.generic.RenderTool;
 import org.apache.velocity.tools.view.context.ViewContext;

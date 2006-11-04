@@ -17,16 +17,14 @@
 package org.apache.velocity.tools.struts;
 
 import java.util.Iterator;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.velocity.tools.view.tools.LinkTool;
-import org.apache.velocity.tools.struts.StrutsUtils;
-
+import org.apache.struts.action.SecurePlugInInterface;
 import org.apache.struts.config.ModuleConfig;
 import org.apache.struts.config.SecureActionConfig;
-import org.apache.struts.action.SecurePlugInInterface;
-import org.apache.struts.Globals;
+import org.apache.velocity.tools.view.tools.LinkTool;
 
 /**
  * Tool to be able to use Struts SSL Extensions with Velocity.

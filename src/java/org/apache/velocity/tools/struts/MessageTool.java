@@ -17,7 +17,7 @@
 package org.apache.velocity.tools.struts;
 
 import java.util.List;
-import java.util.Locale;
+
 import org.apache.struts.util.MessageResources;
 
 /**
