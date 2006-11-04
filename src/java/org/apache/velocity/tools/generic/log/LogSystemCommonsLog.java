@@ -33,7 +33,7 @@ import org.apache.velocity.runtime.log.LogSystem;
  * </code>
  * </p>
  * 
- * @version $Id: LogSystemCommonsLog.java,v 1.4 2004/11/11 07:00:54 nbubna Exp $
+ * @version $Id$
  */
 public class LogSystemCommonsLog implements Log
 {
@@ -52,7 +52,6 @@ public class LogSystemCommonsLog implements Log
     // ********************  begin non-static stuff *******************
 
     private boolean printStackTrace = false;
-    private String name;
 
     public LogSystemCommonsLog() 
     {

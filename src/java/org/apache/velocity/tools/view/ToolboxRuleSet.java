@@ -19,8 +19,6 @@ package org.apache.velocity.tools.view;
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.Rule;
 import org.apache.commons.digester.RuleSetBase;
-import org.apache.velocity.tools.view.DataInfo;
-import org.apache.velocity.tools.view.ViewToolInfo;
 import org.xml.sax.Attributes;
 
 /**

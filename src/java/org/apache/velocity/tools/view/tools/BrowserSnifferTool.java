@@ -16,14 +16,13 @@
 
 package org.apache.velocity.tools.view.tools;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.ServletRequest;
 
 import org.apache.velocity.tools.view.context.ViewContext;
-
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-import java.util.regex.PatternSyntaxException;
 
 /**
  *  <p>browser-sniffing tool (session or request scope requested, session scope advised).</p>

@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Vector;
 
 import org.apache.velocity.util.ArrayIterator;
 import org.apache.velocity.util.EnumerationIterator;

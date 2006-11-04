@@ -16,16 +16,14 @@
 
 package org.apache.velocity.tools.view.servlet;
 
-import javax.servlet.ServletContext;
-
-import java.io.InputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 
-import org.apache.commons.collections.ExtendedProperties;
+import javax.servlet.ServletContext;
 
+import org.apache.commons.collections.ExtendedProperties;
 import org.apache.velocity.exception.ResourceNotFoundException;
-import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 

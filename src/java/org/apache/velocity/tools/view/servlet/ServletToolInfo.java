@@ -19,7 +19,6 @@ package org.apache.velocity.tools.view.servlet;
 
 
 import org.apache.velocity.tools.view.ViewToolInfo;
-import org.apache.velocity.tools.view.context.ViewContext;
 
 
 /**

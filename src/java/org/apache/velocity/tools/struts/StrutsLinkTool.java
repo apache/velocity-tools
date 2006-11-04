@@ -19,7 +19,6 @@ package org.apache.velocity.tools.struts;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.view.tools.LinkTool;
-import org.apache.velocity.tools.struts.StrutsUtils;
 
 /**
  * <p>View tool to work with URI links in Struts.</p> 
