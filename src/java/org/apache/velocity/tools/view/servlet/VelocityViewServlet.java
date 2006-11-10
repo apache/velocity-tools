@@ -17,13 +17,14 @@
 package org.apache.velocity.tools.view.servlet;
 
 
+import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-
+import java.util.Properties;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -32,22 +33,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.ExtendedProperties;
-
 import org.apache.velocity.Template;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
-import org.apache.velocity.exception.ResourceNotFoundException;
-import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.MethodInvocationException;
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.io.VelocityWriter;
 import org.apache.velocity.runtime.RuntimeConstants;
-import org.apache.velocity.util.SimplePool;
-
 import org.apache.velocity.tools.generic.log.LogSystemCommonsLog;
 import org.apache.velocity.tools.view.ToolboxManager;
 import org.apache.velocity.tools.view.context.ChainedContext;
-import org.apache.velocity.tools.view.servlet.ServletToolboxManager;
-import org.apache.velocity.tools.view.servlet.WebappLoader;
+import org.apache.velocity.util.SimplePool;
 
 
 /**
@@ -104,6 +101,9 @@ import org.apache.velocity.tools.view.servlet.WebappLoader;
 public class VelocityViewServlet extends HttpServlet
 {
 
+    /** serial version id */
+    private static final long serialVersionUID = -3329444102562079189L;
+
     /** The HTTP content type context key. */
     public static final String CONTENT_TYPE = "default.contentType";
 
@@ -119,6 +119,12 @@ public class VelocityViewServlet extends HttpServlet
      */
     public static final String SERVLET_CONTEXT_KEY = 
         ServletContext.class.getName();
+
+    /**
+     * Default Runtime properties.
+     */
+    public static final String DEFAULT_TOOLS_PROPERTIES =
+        "/org/apache/velocity/tools/view/servlet/velocity.properties";
 
 
     /**
@@ -319,16 +325,21 @@ public class VelocityViewServlet extends HttpServlet
 
         velocity.setApplicationAttribute(SERVLET_CONTEXT_KEY, getServletContext());
 
-        // default to servletlogger, which logs to the servlet engines log
-        velocity.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, 
-                             ServletLogger.class.getName());
+        // Try reading the VelocityTools default configuration
+        try
+        {
+            ExtendedProperties defaultProperties = loadDefaultProperties();
+            velocity.setExtendedProperties(defaultProperties);
+        }
+        catch(Exception e)
+        {
+            log("VelocityViewServlet: Unable to read Velocity Servlet configuration file: ", e);
 
-        // by default, load resources with webapp resource loader
-        velocity.setProperty(RuntimeConstants.RESOURCE_LOADER, "webapp");
-        velocity.setProperty("webapp.resource.loader.class", 
-                             WebappLoader.class.getName());
-
-        // Try reading an overriding Velocity configuration
+            // This is a fatal error...
+            throw new ServletException(e);
+        }   
+ 
+        // Try reading an overriding user Velocity configuration
         try
         {
             ExtendedProperties p = loadConfiguration(config);
@@ -336,8 +347,8 @@ public class VelocityViewServlet extends HttpServlet
         }
         catch(Exception e)
         {
-            getServletContext().log("VelocityViewServlet: Unable to read Velocity configuration file: "+e);
-            getServletContext().log("VelocityViewServlet: Using default Velocity configuration.");
+            log("VelocityViewServlet: Unable to read Velocity configuration file: ", e);
+            log("VelocityViewServlet: Using default Velocity configuration.");
         }   
 
         // now all is ready - init Velocity
@@ -347,9 +358,44 @@ public class VelocityViewServlet extends HttpServlet
         }
         catch(Exception e)
         {
-            getServletContext().log("VelocityViewServlet: PANIC! unable to init() - "+e);
+            log("VelocityViewServlet: PANIC! unable to init()", e);
             throw new ServletException(e);
         }
+    }
+
+    private ExtendedProperties loadDefaultProperties()
+    {
+        InputStream inputStream = null;
+        ExtendedProperties defaultProperties = new ExtendedProperties();
+
+        try
+        {
+            inputStream = getClass()
+                    .getResourceAsStream(DEFAULT_TOOLS_PROPERTIES);
+            if (inputStream != null)
+            {
+                defaultProperties.load(inputStream);
+            }
+        }
+        catch (IOException ioe)
+        {
+            log("Cannot load default extendedProperties!", ioe);
+        }
+        finally
+        {
+            try
+            {
+                if (inputStream != null)
+                {
+                    inputStream.close();
+                }
+            }
+            catch (IOException ioe)
+            {
+                log("Cannot close default extendedProperties!", ioe);
+            }
+        }
+        return defaultProperties;
     }
 
      
