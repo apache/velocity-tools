@@ -168,6 +168,12 @@
       <include name="org/**"/>
       <exclude name="**/struts/**"/>
     </javac>
+
+    <copy todir="${classes.dir}" filtering="yes">
+      <fileset dir="${classes.src}">
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
   </target>
 
   <!-- Compile Just Generic Tools (generic) -->
