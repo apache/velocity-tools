@@ -568,22 +568,7 @@ public class VelocityViewServlet extends HttpServlet
                                      Context ctx)
         throws Exception
     {
-        // If we get here from RequestDispatcher.include(), getServletPath()
-        // will return the original (wrong) URI requested.  The following special
-        // attribute holds the correct path.  See section 8.3 of the Servlet
-        // 2.3 specification.
-        String path = (String)request.getAttribute("javax.servlet.include.servlet_path");
-        // also take into account the PathInfo stated on SRV.4.4 Request Path Elements
-        String info = (String)request.getAttribute("javax.servlet.include.path_info");
-        if (path == null)
-        {
-            path = request.getServletPath();
-            info = request.getPathInfo();
-        }
-        if (info != null)
-        {
-            path += info;
-        }
+        String path = ServletUtils.getPath(request);
         return getTemplate(path);
     }
 
