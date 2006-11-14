@@ -154,6 +154,12 @@
       <classpath refid="compile.classpath" />
       <include name="org/**"/>
     </javac>
+
+    <copy todir="${classes.dir}" filtering="yes">
+      <fileset dir="${classes.src}">
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
   </target>
 
   <!-- Compile Just VelocityView (view, generic) -->
