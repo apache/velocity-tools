@@ -369,7 +369,7 @@ public class ServletToolboxManager extends XMLToolboxManager
         //we know the initData is a ViewContext
         ViewContext ctx = (ViewContext)initData;
         String requestPath = ServletUtils.getPath(ctx.getRequest());
-System.out.println("path: "+requestPath);
+
         //create the toolbox map with the application tools in it
         Map toolbox = new HashMap(appTools);
 
