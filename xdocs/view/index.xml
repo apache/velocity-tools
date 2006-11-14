@@ -216,6 +216,28 @@
 
       <br clear="all"/>
 
+      <p><b>Tool Request Paths</b></p>
+      
+      <p>You can specify a restriction on the request URIs for which the tool
+      will be put in the context using the &lt;request-path&gt; element.
+      It can be an exact request path (matching one page) or end with the 
+      <code>*</code> wildard, meaning that incoming request paths need only
+      start with the provided value for the tool to be available in the context.
+      For instance:</p>
+
+      <sourcecode>&lt;tool&gt;
+   &lt;key&gt;catalog&lt;/key&gt;
+   &lt;scope&gt;request&lt;/scope&gt;
+   &lt;request-path&gt;/catalog/*&lt;/request-path&gt;
+   &lt;class&gt;com.mycompany.tools.CatalogTool&lt;/class&gt;
+&lt;/tool&gt;</sourcecode>
+
+      <p>For now, this request-path filter is only valid for request scoped tools.
+      In VelocityTools 2.0, we plan to support this for session and application
+      scoped tools as well.</p>
+
+      <br clear="all"/>
+
       <p><b>Tool Parameters</b></p>
 
       <p>The toolbox support built into the VelocityViewServlet also provides
