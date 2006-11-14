@@ -268,6 +268,33 @@ public class ServletToolboxManager extends XMLToolboxManager
         return servletRuleSet;
     }
 
+    /**
+     * Ensures that application-scoped tools do not have request path
+     * restrictions set for them, as those will not be enforced.
+     *
+     * @param info a ToolInfo object
+     * @return true if the ToolInfo is valid
+     * @since VelocityTools 1.3
+     */
+    protected boolean validateToolInfo(ToolInfo info)
+    {
+        if (!super.validateToolInfo(info))
+        {
+            return false;
+        }
+        if (info instanceof ServletToolInfo)
+        {
+            ServletToolInfo sti = (ServletToolInfo)info;
+            if (ViewContext.APPLICATION.equalsIgnoreCase(sti.getScope()) &&
+                sti.getRequestPath() != null)
+            {
+                LOG.error("Application-scoped tool " + sti.getKey() + " cannot have a request path restriction!");
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     /**
      * Overrides XMLToolboxManager to separate tools by scope.
@@ -341,7 +368,8 @@ public class ServletToolboxManager extends XMLToolboxManager
     {
         //we know the initData is a ViewContext
         ViewContext ctx = (ViewContext)initData;
-        
+        String requestPath = ServletUtils.getPath(ctx.getRequest());
+System.out.println("path: "+requestPath);
         //create the toolbox map with the application tools in it
         Map toolbox = new HashMap(appTools);
 
@@ -362,8 +390,11 @@ public class ServletToolboxManager extends XMLToolboxManager
                         Iterator i = sessionToolInfo.iterator();
                         while(i.hasNext())
                         {
-                            ToolInfo ti = (ToolInfo)i.next();
-                            stmap.put(ti.getKey(), ti.getInstance(ctx));
+                            ServletToolInfo sti = (ServletToolInfo)i.next();
+                            if (sti.allowsRequestPath(requestPath))
+                            {
+                                stmap.put(sti.getKey(), sti.getInstance(ctx));
+                            }
                         }
                         session.setAttribute(SESSION_TOOLS_KEY, stmap);
                     }
@@ -378,6 +409,14 @@ public class ServletToolboxManager extends XMLToolboxManager
         while(i.hasNext())
         {
             ToolInfo info = (ToolInfo)i.next();
+            if (info instanceof ServletToolInfo)
+            {
+                ServletToolInfo sti = (ServletToolInfo)info;
+                if (!sti.allowsRequestPath(requestPath))
+                {
+                    continue;
+                }
+            }
             toolbox.put(info.getKey(), info.getInstance(ctx));
         }
 

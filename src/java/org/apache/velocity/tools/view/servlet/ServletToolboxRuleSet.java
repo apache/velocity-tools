@@ -57,6 +57,7 @@ public class ServletToolboxRuleSet extends ToolboxRuleSet
     {
         super.addToolRules(digester);
         digester.addBeanPropertySetter("toolbox/tool/scope", "scope");
+        digester.addBeanPropertySetter("toolbox/tool/request-path", "requestPath");
     }
 
 
