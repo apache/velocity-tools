@@ -285,10 +285,10 @@ public class ServletToolboxManager extends XMLToolboxManager
         if (info instanceof ServletToolInfo)
         {
             ServletToolInfo sti = (ServletToolInfo)info;
-            if (ViewContext.APPLICATION.equalsIgnoreCase(sti.getScope()) &&
-                sti.getRequestPath() != null)
+            if (sti.getRequestPath() != null &&
+                !ViewContext.REQUEST.equalsIgnoreCase(sti.getScope()))
             {
-                LOG.error("Application-scoped tool " + sti.getKey() + " cannot have a request path restriction!");
+                LOG.error(sti.getKey() + " must be a request-scoped tool to have a request path restriction!");
                 return false;
             }
         }
@@ -391,10 +391,7 @@ public class ServletToolboxManager extends XMLToolboxManager
                         while(i.hasNext())
                         {
                             ServletToolInfo sti = (ServletToolInfo)i.next();
-                            if (sti.allowsRequestPath(requestPath))
-                            {
-                                stmap.put(sti.getKey(), sti.getInstance(ctx));
-                            }
+                            stmap.put(sti.getKey(), sti.getInstance(ctx));
                         }
                         session.setAttribute(SESSION_TOOLS_KEY, stmap);
                     }
