@@ -38,6 +38,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * <p>Provides methods to import arbitrary local or remote resources as strings.</p>
  * <p>Based on ImportSupport from the JSTL taglib by Shawn Bayern</p>
@@ -48,11 +51,11 @@ import javax.servlet.http.HttpServletResponseWrapper;
  */
 public abstract class ImportSupport {
 
+    protected static final Log LOG = LogFactory.getLog(ImportSupport.class);
+
     protected ServletContext application;
     protected HttpServletRequest request;
     protected HttpServletResponse response;
-
-    protected boolean isAbsoluteUrl; // is our URL absolute?
 
     protected static final String VALID_SCHEME_CHARS =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+.-";
@@ -88,22 +91,37 @@ public abstract class ImportSupport {
      */
     protected String acquireString(String url) throws IOException, Exception {
         // Record whether our URL is absolute or relative
-        this.isAbsoluteUrl = isAbsoluteUrl(url);
-        if (this.isAbsoluteUrl)
+        if (isAbsoluteUrl(url))
         {
             // for absolute URLs, delegate to our peer
-            BufferedReader r = new BufferedReader(acquireReader(url));
-            StringBuffer sb = new StringBuffer();
-            int i;
-            // under JIT, testing seems to show this simple loop is as fast
-            // as any of the alternatives
-            while ((i = r.read()) != -1)
+            BufferedReader r = null;
+            try
             {
-                sb.append((char)i);
+                r = new BufferedReader(acquireReader(url));
+                StringBuffer sb = new StringBuffer();
+                int i;
+                // under JIT, testing seems to show this simple loop is as fast
+                // as any of the alternatives
+                while ((i = r.read()) != -1)
+                {
+                    sb.append((char)i);
+                }
+                return sb.toString();
             }
-            r.close();
-
-            return sb.toString();
+            finally
+            {
+                if(r != null)
+                {
+                    try
+                    {
+                        r.close();
+                    }
+                    catch (IOException ioe)
+                    {
+                        LOG.error("Could not close reader.", ioe);
+                    }
+                }
+	        }
         }
         else // handle relative URLs ourselves
         {
@@ -172,7 +190,7 @@ public abstract class ImportSupport {
      */
     protected Reader acquireReader(String url) throws IOException, Exception
     {
-        if (!this.isAbsoluteUrl)
+        if (!isAbsoluteUrl(url))
         {
             // for relative URLs, delegate to our peer
             return new StringReader(acquireString(url));
@@ -180,13 +198,29 @@ public abstract class ImportSupport {
         else
         {
             // absolute URL
+            URLConnection uc = null;
+            HttpURLConnection huc = null;
+            InputStream i = null;
+
             try
             {
                 // handle absolute URLs ourselves, using java.net.URL
                 URL u = new URL(url);
-                //URL u = new URL("http", "proxy.hi.is", 8080, target);
-                URLConnection uc = u.openConnection();
-                InputStream i = uc.getInputStream();
+                // URL u = new URL("http", "proxy.hi.is", 8080, target);
+                uc = u.openConnection();
+                i = uc.getInputStream();
+
+                // check response code for HTTP URLs, per spec,
+                if (uc instanceof HttpURLConnection)
+                {
+                    huc = (HttpURLConnection)uc;
+
+                    int status = huc.getResponseCode();
+                    if (status < 200 || status > 299)
+                    {
+                        throw new Exception(status + " " + url);
+                    }
+                }
 
                 // okay, we've got a stream; encode it appropriately
                 Reader r = null;
@@ -211,36 +245,129 @@ public abstract class ImportSupport {
                 {
                     r = new InputStreamReader(i, charSet);
                 }
-                catch (Exception ex)
+                catch (UnsupportedEncodingException ueex)
                 {
                     r = new InputStreamReader(i, DEFAULT_ENCODING);
                 }
 
-                // check response code for HTTP URLs before returning, per spec,
-                // before returning
-                if (uc instanceof HttpURLConnection)
+                if (huc == null)
                 {
-                    int status = ((HttpURLConnection)uc).getResponseCode();
-                    if (status < 200 || status > 299)
-                    {
-                        throw new Exception(status + " " + url);
-                    }
+                    return r;
                 }
-                return r;
+                else
+                {
+                    return new SafeClosingHttpURLConnectionReader(r, huc);
+                }
             }
             catch (IOException ex)
             {
+                if (i != null)
+                {
+                    try
+                    {
+                        i.close();
+                    }
+                    catch (IOException ioe)
+                    {
+                        LOG.error("Could not close InputStream", ioe);
+                    }
+                }
+
+                if (huc != null)
+                {
+                    huc.disconnect();
+                }
                 throw new Exception("Problem accessing the absolute URL \""
                                     + url + "\". " + ex);
             }
             catch (RuntimeException ex)
             {
+                if (i != null)
+                {
+                    try
+                    {
+                        i.close();
+                    }
+                    catch (IOException ioe)
+                    {
+                        LOG.error("Could not close InputStream", ioe);
+                    }
+                }
+
+                if (huc != null)
+                {
+                    huc.disconnect();
+                }
                 // because the spec makes us
                 throw new Exception("Problem accessing the absolute URL \""
                                     + url + "\". " + ex);
             }
         }
     }
+
+    protected static class SafeClosingHttpURLConnectionReader extends Reader
+    {
+        private HttpURLConnection huc;
+        private Reader wrappedReader;
+
+        SafeClosingHttpURLConnectionReader(Reader r, HttpURLConnection huc)
+        {
+            this.wrappedReader = r;
+            this.huc = huc;
+        }
+
+        public void close() throws IOException
+        {
+            if(null != huc)
+            {
+                huc.disconnect();
+            }
+
+            wrappedReader.close();
+        }
+
+        // Pass-through methods.
+        public void mark(int readAheadLimit) throws IOException
+        {
+            wrappedReader.mark(readAheadLimit);
+        }
+
+        public boolean markSupported()
+        {
+            return wrappedReader.markSupported();
+        }
+
+        public int read() throws IOException
+        {
+            return wrappedReader.read();
+        }
+
+        public int read(char[] buf) throws IOException
+        {
+            return wrappedReader.read(buf);
+        }
+
+        public int read(char[] buf, int off, int len) throws IOException
+        {
+            return wrappedReader.read(buf, off, len);
+        }
+
+        public boolean ready() throws IOException
+        {
+            return wrappedReader.ready();
+        }
+
+        public void reset() throws IOException
+        {
+            wrappedReader.reset();
+        }
+
+        public long skip(long n) throws IOException
+        {
+            return wrappedReader.skip(n);
+        }
+    }
+
 
     /** Wraps responses to allow us to retrieve results as Strings. */
     protected class ImportResponseWrapper extends HttpServletResponseWrapper
