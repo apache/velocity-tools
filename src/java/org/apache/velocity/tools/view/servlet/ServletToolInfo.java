@@ -18,6 +18,7 @@
 package org.apache.velocity.tools.view.servlet;
 
 
+import javax.servlet.http.HttpServletRequest;
 import org.apache.velocity.tools.view.ViewToolInfo;
 
 
@@ -53,15 +54,13 @@ public class ServletToolInfo extends ViewToolInfo
 {
         
     private String scope;
-
-
-    public ServletToolInfo() {}
+    private boolean exactPath;
+    private String path;
 
 
     public void setScope(String scope) { 
         this.scope = scope;
     }
-
 
     /**
      * @return the scope of the tool
@@ -69,6 +68,72 @@ public class ServletToolInfo extends ViewToolInfo
     public String getScope()
     {
         return scope;
+    }
+
+    /**
+     * @param path the full or partial request path restriction of the tool
+     * @since VelocityTools 1.3
+     */
+    public void setRequestPath(String path)
+    {
+        // make sure all paths begin with slash
+        if (!path.startsWith("/"))
+        {
+            path = "/" + path;
+        }
+
+        if (path.equals("/*"))
+        {
+            // match all paths
+            this.path = null;
+        }
+        else if(path.endsWith("*"))
+        {
+            // match some paths
+            exactPath = false;
+            this.path = path.substring(0, scope.length() - 1);
+        }
+        else
+        {
+            // match one path
+            exactPath = true;
+            this.path = path;
+        }
+    }
+
+    /**
+     * @return request path restriction for this tool
+     * @since VelocityTools 1.3
+     */
+    public String getRequestPath()
+    {
+        return this.path;
+    }
+
+    /**
+     * @param requestedPath the path of the current servlet request
+     * @return <code>true</code> if the path of the specified
+     *         request path matches the request path of this tool.
+     *         If there is no request path restriction for this tool,
+     *         it will always return <code>true</code>.
+     * @since VelocityTools 1.3
+     */
+    public boolean allowsRequestPath(String requestedPath)
+    {
+        if (this.path == null)
+        {
+            return true;
+        }
+
+        if (exactPath)
+        {
+            return this.path.equals(requestedPath);
+        }
+        else if (requestedPath != null)
+        {
+            return requestedPath.startsWith(this.path);
+        }
+        return false;
     }
 
 }
