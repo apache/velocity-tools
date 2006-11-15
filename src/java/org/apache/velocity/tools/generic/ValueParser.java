@@ -26,9 +26,9 @@ import java.util.Map;
  * <p><pre>
  * Template example(s):
  *   $parser.foo                ->  bar
- *   $parser.baz.number         ->  12.6
- *   $parser.baz.int            ->  12
- *   $parser.baz.numbers        ->  [12.6]
+ *   $parser.getNumber('baz')   ->  12.6
+ *   $parser.getInt('baz')      ->  12
+ *   $parser.getNumbers('baz')  ->  [12.6]
  *
  * Toolbox configuration:
  * &lt;tool&gt;
@@ -95,92 +95,7 @@ public class ValueParser
      */
     public Object get(String key)
     {
-        return new ValueParserSub(this, key);
-    }
-
-    /**
-     * A helper class to enable simplified syntax for 
-     * using a ValueParser in a template.
-     * @since VelocityTools 1.3
-     */
-    public class ValueParserSub
-    {
-        private ValueParser parser;
-        private String key;
-
-        public ValueParserSub(ValueParser parser, String key)
-        {
-            this.parser = parser;
-            this.key = key;
-        }
-
-        public boolean getExists()
-        {
-            return parser.exists(key);
-        }
-
-        public Object get(String key)
-        {
-            if (key == null)
-            {
-                return null;
-            }
-            else if (key.equalsIgnoreCase("string"))
-            {
-                return toString();
-            }
-            else if (key.equalsIgnoreCase("number"))
-            {
-                return parser.getNumber(key);
-            }
-            else if (key.equalsIgnoreCase("boolean"))
-            {
-                return parser.getBoolean(key);
-            }
-            else if (key.equalsIgnoreCase("int"))
-            {
-                return parser.getInteger(key);
-            }
-            else if (key.equalsIgnoreCase("double"))
-            {
-                return parser.getDouble(key);
-            }
-            else if (key.equalsIgnoreCase("strings"))
-            {
-                return parser.getStrings(key);
-            }
-            else if (key.equalsIgnoreCase("numbers"))
-            {
-                return parser.getNumbers(key);
-            }
-            else if (key.equalsIgnoreCase("ints"))
-            {
-                return parser.getInts(key);
-            }
-            else if (key.equalsIgnoreCase("doubles"))
-            {
-                return parser.getDoubles(key);
-            }
-            else if (key.equalsIgnoreCase("booleans"))
-            {
-                return parser.getBooleans(key);
-            }
-            else if (key.equalsIgnoreCase("string"))
-            {
-                return toString();
-            }
-            else
-            {
-                // assume the key had a period in it and reconstruct
-                return new ValueParserSub(parser, this.key+'.'+key);
-            }
-        }
-
-        public String toString()
-        {
-            return parser.getString(key);
-        }
-
+        return getString(key);
     }
 
     /**
