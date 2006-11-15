@@ -28,9 +28,9 @@ import org.apache.velocity.tools.view.context.ViewContext;
  * <p><pre>
  * Template example(s):
  *   $params.foo                ->  bar
- *   $params.baz                ->  12.6
- *   $params.baz.int            ->  12
- *   $params.baz.numbers        ->  [12.6]
+ *   $params.getNumber('baz')   ->  12.6
+ *   $params.getInt('baz')      ->  12
+ *   $params.getNumbers('baz')  ->  [12.6]
  *
  * Toolbox configuration:
  * &lt;tool&gt;
