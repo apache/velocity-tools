@@ -17,6 +17,7 @@
 package org.apache.velocity.tools.generic;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Simple tool to provide easy in-template instantiation of
@@ -29,6 +30,7 @@ import java.util.List;
  *   &lt;key&gt;alternator&lt;/key&gt;
  *   &lt;scope&gt;application&lt;/scope&gt;
  *   &lt;class&gt;org.apache.velocity.tools.generic.AlternatorTool&lt;/class&gt;
+ *   &lt;parameter name="auto-alternate" value="true"/&gt;
  * &lt;/tool&gt;
  *
  * template...
@@ -52,10 +54,24 @@ import java.util.List;
  */
 public class AlternatorTool
 {
+    /** @since VelocityTools 1.3 */
+    public static final String AUTO_ALTERNATE_DEFAULT_KEY = "auto-alternate";
+
     // it's true by default in Alternator
     private boolean autoAlternateDefault = true;
 
-    public AlternatorTool() {}
+    /**
+     * Looks for a default auto-alternate value in the given params,
+     * if not, set the default to true.
+     * @since VelocityTools 1.3
+     */
+    public void configure(Map params)
+    {
+        ValueParser parser = new ValueParser(params);
+        // it's true by default in Alternator
+        autoAlternateDefault =
+            parser.getBoolean(AUTO_ALTERNATE_DEFAULT_KEY, true);
+    }
 
     /**
      * Returns true if the default for auto-alternating is true.
@@ -70,7 +86,7 @@ public class AlternatorTool
      * Sets the default for auto-alternating.
      * @since VelocityTools 1.3
      */
-    public void setAutoAlternateDefault(boolean bool)
+    protected void setAutoAlternateDefault(boolean bool)
     {
         this.autoAlternateDefault = bool;
     }
