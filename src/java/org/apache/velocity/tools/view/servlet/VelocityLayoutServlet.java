@@ -1,21 +1,23 @@
-/*
- * Copyright 2003 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.apache.velocity.tools.view.servlet;
 
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -35,7 +37,7 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 
 
 /**
- * Extension of the VelocityViewServlet to perform "two-pass" 
+ * Extension of the VelocityViewServlet to perform "two-pass"
  * layout rendering and allow for a customized error screen.
  *
  * For a brief user-guide to this, i suggest trying to track down
@@ -46,7 +48,7 @@ import org.apache.velocity.exception.ResourceNotFoundException;
  * @version $Id$
  */
 
-public class VelocityLayoutServlet extends VelocityViewServlet 
+public class VelocityLayoutServlet extends VelocityViewServlet
 {
 
     /** serial version id */
@@ -56,31 +58,31 @@ public class VelocityLayoutServlet extends VelocityViewServlet
      * The velocity.properties key for specifying the
      * servlet's error template.
      */
-    public static final String PROPERTY_ERROR_TEMPLATE = 
+    public static final String PROPERTY_ERROR_TEMPLATE =
         "tools.view.servlet.error.template";
 
     /**
      * The velocity.properties key for specifying the
      * relative directory holding layout templates.
      */
-    public static final String PROPERTY_LAYOUT_DIR = 
+    public static final String PROPERTY_LAYOUT_DIR =
         "tools.view.servlet.layout.directory";
 
     /**
      * The velocity.properties key for specifying the
-     * servlet's default layout template's filename. 
+     * servlet's default layout template's filename.
      */
-    public static final String PROPERTY_DEFAULT_LAYOUT = 
+    public static final String PROPERTY_DEFAULT_LAYOUT =
         "tools.view.servlet.layout.default.template";
 
 
     /**
-     * The default error template's filename. 
+     * The default error template's filename.
      */
     public static String DEFAULT_ERROR_TEMPLATE = "Error.vm";
 
     /**
-     * The default layout directory 
+     * The default layout directory
      */
     public static String DEFAULT_LAYOUT_DIR = "layout/";
 
@@ -90,14 +92,14 @@ public class VelocityLayoutServlet extends VelocityViewServlet
     public static String DEFAULT_DEFAULT_LAYOUT = "Default.vm";
 
 
-    //TODO? if demand for it exists, these context keys can be 
+    //TODO? if demand for it exists, these context keys can be
     //      made configurable by the velocity.properties
     //      until such time, if anyone really needs to change these,
     //      they are public and aren't final and can be altered
 
     /**
      * The context key that will hold the content of the screen.
-     * 
+     *
      * This key ($screen_content) must be present in the layout
      * template for the current screen to be rendered.
      */
@@ -123,7 +125,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
     public static String KEY_ERROR_STACKTRACE = "stack_trace";
 
     /**
-     * The context key that holds the {@link MethodInvocationException} 
+     * The context key that holds the {@link MethodInvocationException}
      * that broke the rendering of the requested screen.
      *
      * If this value is placed in the context, then $error_cause
@@ -140,12 +142,12 @@ public class VelocityLayoutServlet extends VelocityViewServlet
     private VelocityEngine velocity;
 
     /**
-     * Initializes Velocity, the view servlet and checks for changes to 
+     * Initializes Velocity, the view servlet and checks for changes to
      * the initial layout configuration.
      *
      * @param config servlet configuration parameters
      */
-    public void init(ServletConfig config) throws ServletException 
+    public void init(ServletConfig config) throws ServletException
     {
         // first do VVS' init()
         super.init(config);
@@ -154,15 +156,15 @@ public class VelocityLayoutServlet extends VelocityViewServlet
         velocity = super.getVelocityEngine();
 
         // check for default template path overrides
-        errorTemplate = 
+        errorTemplate =
             getVelocityProperty(PROPERTY_ERROR_TEMPLATE, DEFAULT_ERROR_TEMPLATE);
-        layoutDir = 
+        layoutDir =
             getVelocityProperty(PROPERTY_LAYOUT_DIR, DEFAULT_LAYOUT_DIR);
-        defaultLayout = 
+        defaultLayout =
             getVelocityProperty(PROPERTY_DEFAULT_LAYOUT, DEFAULT_DEFAULT_LAYOUT);
 
         // preventive error checking! directory must end in /
-        if (!layoutDir.endsWith("/")) 
+        if (!layoutDir.endsWith("/"))
         {
             layoutDir += '/';
         }
@@ -178,7 +180,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
 
 
     /**
-     * Overrides VelocityViewServlet to check the request for 
+     * Overrides VelocityViewServlet to check the request for
      * an alternate layout
      *
      * @param request client request
@@ -186,15 +188,15 @@ public class VelocityLayoutServlet extends VelocityViewServlet
      * @return the Context to fill
      */
     protected Context createContext(HttpServletRequest request,
-                                    HttpServletResponse response) 
+                                    HttpServletResponse response)
     {
 
         Context ctx = super.createContext(request, response);
 
-        // check if an alternate layout has been specified 
+        // check if an alternate layout has been specified
         // by way of the request parameters
         String layout = request.getParameter(KEY_LAYOUT);
-        if (layout != null) 
+        if (layout != null)
         {
             // let the template know what its new layout is
             ctx.put(KEY_LAYOUT, layout);
@@ -204,15 +206,15 @@ public class VelocityLayoutServlet extends VelocityViewServlet
 
 
     /**
-     * Overrides VelocityViewServlet.mergeTemplate to do a two-pass 
+     * Overrides VelocityViewServlet.mergeTemplate to do a two-pass
      * render for handling layouts
      */
-    protected void mergeTemplate(Template template, 
-                                 Context context, 
+    protected void mergeTemplate(Template template,
+                                 Context context,
                                  HttpServletResponse response)
-        throws ResourceNotFoundException, ParseErrorException, 
+        throws ResourceNotFoundException, ParseErrorException,
                MethodInvocationException, IOException,
-               UnsupportedEncodingException, Exception 
+               UnsupportedEncodingException, Exception
     {
         //
         // this section is based on Tim Colson's "two pass render"
@@ -225,34 +227,34 @@ public class VelocityLayoutServlet extends VelocityViewServlet
 
         // Check for an alternate layout
         //
-        // we check after merging the screen template so the screen 
+        // we check after merging the screen template so the screen
         // can overrule any layout set in the request parameters
         // by doing #set( $layout = "MyLayout.vm" )
         Object obj = context.get(KEY_LAYOUT);
         String layout = (obj == null) ? null : obj.toString();
-        if (layout == null) 
+        if (layout == null)
         {
             // no alternate, use default
             layout = defaultLayout;
-        } 
-        else 
+        }
+        else
         {
             // make it a full(er) path
             layout = layoutDir + layout;
         }
 
-        try 
+        try
         {
             //load the layout template
             template = getTemplate(layout);
-        } 
-        catch (Exception e) 
+        }
+        catch (Exception e)
         {
-            velocity.error("VelocityLayoutServlet: Can't load layout \"" + 
+            velocity.error("VelocityLayoutServlet: Can't load layout \"" +
                            layout + "\": " + e);
 
             // if it was an alternate layout we couldn't get...
-            if (!layout.equals(defaultLayout)) 
+            if (!layout.equals(defaultLayout))
             {
                 // try to get the default layout
                 // if this also fails, let the exception go
@@ -268,12 +270,12 @@ public class VelocityLayoutServlet extends VelocityViewServlet
     /**
      * Overrides VelocityViewServlet to display user's custom error template
      */
-    protected void error(HttpServletRequest request, 
-                         HttpServletResponse response, 
+    protected void error(HttpServletRequest request,
+                         HttpServletResponse response,
                          Exception e)
-        throws ServletException 
+        throws ServletException
     {
-        try 
+        try
         {
             // get a velocity context
             Context ctx = createContext(request, response);
@@ -281,7 +283,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
             Throwable cause = e;
 
             // if it's an MIE, i want the real cause and stack trace!
-            if (cause instanceof MethodInvocationException) 
+            if (cause instanceof MethodInvocationException)
             {
                 // put the invocation exception in the context
                 ctx.put(KEY_ERROR_INVOCATION_EXCEPTION, e);
@@ -291,7 +293,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
 
             // add the cause to the context
             ctx.put(KEY_ERROR_CAUSE, cause);
-                
+
             // grab the cause's stack trace and put it in the context
             StringWriter sw = new StringWriter();
             cause.printStackTrace(new java.io.PrintWriter(sw));
@@ -301,11 +303,11 @@ public class VelocityLayoutServlet extends VelocityViewServlet
             Template et = getTemplate(errorTemplate);
             mergeTemplate(et, ctx, response);
 
-        } 
-        catch (Exception e2) 
+        }
+        catch (Exception e2)
         {
             // d'oh! log this
-            velocity.error("VelocityLayoutServlet: " + 
+            velocity.error("VelocityLayoutServlet: " +
                            " Error during error template rendering - " + e2);
             // then punt the original to a higher authority
             super.error(request, response, e);

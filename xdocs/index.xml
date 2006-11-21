@@ -1,21 +1,24 @@
 <?xml version="1.0"?>
+
 <!--
-  Copyright 2003-2005 The Apache Software Foundation.
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+   http://www.apache.org/licenses/LICENSE-2.0
 
-     http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-
-  $Id$
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
 -->
+
 <document>
 
     <properties>
@@ -34,9 +37,9 @@
         </p>
 
         <subsection name="GenericTools" >
-            <p><a href="generic/">GenericTools</a> is a group of reuseable and 
-            documented tools that can be added to a Velocity context. A 
-            <b>tool</b> is simply a class which can perform various tasks when 
+            <p><a href="generic/">GenericTools</a> is a group of reuseable and
+            documented tools that can be added to a Velocity context. A
+            <b>tool</b> is simply a class which can perform various tasks when
             made available to the Velocity engine. Most tools are optimized for use
             with an automatically managed toolbox (see VelocityViewServlet).</p>
             <br clear="all" />
@@ -44,34 +47,34 @@
 
         <subsection name="VelocityView" >
             <p><a href="view/">VelocityView</a>
-            contains a standalone servlet (VelocityViewServlet) which can render 
+            contains a standalone servlet (VelocityViewServlet) which can render
             templates for web applications. </p>
-            <p> Also included is a Toolbox Manager which can automatically make 
-            &quot;view tools&quot; and data available to the templates. Any class 
+            <p> Also included is a Toolbox Manager which can automatically make
+            &quot;view tools&quot; and data available to the templates. Any class
             with public methods can be used as a tool in the template.
             </p>
             <p>
-            <a href="view/layoutservlet.html">VelocityLayoutServlet</a> is an 
-            extension of the basic VelocityViewServlet that can render screen 
+            <a href="view/layoutservlet.html">VelocityLayoutServlet</a> is an
+            extension of the basic VelocityViewServlet that can render screen
             content into common layout templates.</p>
             <br clear="all" />
         </subsection>
 
         <subsection name="VelocityStruts" >
-            <p><a href="struts/">VelocityStruts</a> is a set of tools for using the 
+            <p><a href="struts/">VelocityStruts</a> is a set of tools for using the
             Velocity template engine as the view layer for a web application built upon the
             <a href="http://struts.apache.org/">Apache Struts</a> framework.</p>
-            <p>This work leverages the <strong>VelocityViewServlet</strong> and 
-            additional tools which make it easy to integrate the Velocity with 
+            <p>This work leverages the <strong>VelocityViewServlet</strong> and
+            additional tools which make it easy to integrate the Velocity with
             Struts. Several example hybrid applications are included.</p>
             <br clear="all" />
         </subsection>
 
         <subsection name="Example Applications">
             <p>Several example applications are currently available, including
-            one to demonstrate the use of Velocity as a view technology for Struts. 
-            The example utilizes both Velocity and JSP files for the view in parallel 
-            so that they can be compared easily. Also, resources bundle usage for 
+            one to demonstrate the use of Velocity as a view technology for Struts.
+            The example utilizes both Velocity and JSP files for the view in parallel
+            so that they can be compared easily. Also, resources bundle usage for
             language localization is demonstrated there. Other examples include a demonstration
             of the use of the VelocityLayoutServlet and a minimal "simple" application.</p>
             <br clear="all" />
@@ -79,32 +82,32 @@
 
         <subsection name="Documentation">
           <p>
-            Emphasis <s>is</s> was being put on providing tool documentation that 
+            Emphasis <s>is</s> was being put on providing tool documentation that
             is suitable for template designers. To achive this goal, a documentation
             format has been defined that captures all information relevant to the
             template designer. It is being supplied in addition to the customary
             Javadoc. This should help to achieve what we always claim for Velocity:
             "Decouple the work of template designers from the work of software
-            developers". Look at the Struts 
+            developers". Look at the Struts
             <a href="struts/MessageTool.html">MessageTool</a>
             for a good example of the new documentation format.
           </p>
           <p>
-            <b>Update:</b> 
-            While we value the look and readability of this format, we are presently 
-            drifting away from the use of it. The primary reason for this is that the 
+            <b>Update:</b>
+            While we value the look and readability of this format, we are presently
+            drifting away from the use of it. The primary reason for this is that the
             developers have found it difficult to maintain (i.e. no one
-            has been motivated enough to put in the extra work).  If you feel this 
+            has been motivated enough to put in the extra work).  If you feel this
             documentation format is valuable and wish to help us create and maintain
-            it for the various individual tools, please see 
-            <a href="#Wanna help?">below</a> 
+            it for the various individual tools, please see
+            <a href="#Wanna help?">below</a>
             for more details on getting involved.  Meanwhile, we'll be putting effort
-            into improving javadoc for individual tools and overview documents for 
+            into improving javadoc for individual tools and overview documents for
             the sub-projects.
           </p>
         </subsection>
         <br clear="all"/>
-    </section>    
+    </section>
 
     <section name="Download">
         <p><strong>Releases</strong></p>
@@ -118,7 +121,7 @@
     </section>
 
     <section name="Subversion Repository">
-        <p>All VelocityTools project code is maintained in the 
+        <p>All VelocityTools project code is maintained in the
         Subversion repository <b>jakarta/velocity-tools</b>.</p>
 
         <p>Web Browser: <a href="http://svn.apache.org/viewcvs.cgi/jakarta/velocity/tools/trunk/">
@@ -133,7 +136,7 @@
         <p>We encourage interested developers to evaluate the project
         and send feedback to the velocity-user or velocity-dev mailing list.</p>
         <p>Those interested in furthering the development of this project are
-        especially welcome to jump in and help out.  Patches can be sent to the 
+        especially welcome to jump in and help out.  Patches can be sent to the
         mailing list or attached to a
         <a href="http://issues.apache.org/jira/browse/VELTOOLS">JIRA</a>
         issue.  The <a href="http://wiki.apache.org/jakarta-velocity/VelocityTools">Wiki</a>
@@ -145,7 +148,7 @@
             <li>Improving the example apps</li>
             <li>Contributing to the <a href="http://wiki.apache.org/jakarta-velocity/VelocimacroLibrary">VelocimacroLibrary</a></li>
           </ul>
-        Other project goals and proposals can be found in the project 
+        Other project goals and proposals can be found in the project
         <a href="http://svn.apache.org/viewcvs.cgi/jakarta/velocity/tools/trunk/STATUS?view=markup">STATUS</a>
         file.</p>
     </section>

@@ -1,23 +1,23 @@
-/*
- * Copyright 2003-2006 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-
-
 package org.apache.velocity.tools.generic;
 
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import java.lang.reflect.Field;
 import java.text.DateFormat;
@@ -44,10 +44,10 @@ import java.util.TimeZone;
  *  $date.full_date               -> Sunday, October 19, 2003
  *  $date.get('default','short')  -> Oct 19, 2003 9:54 PM
  *  $date.get('yyyy-M-d H:m:s')   -> 2003-10-19 21:54:50
- * 
+ *
  * Example of formatting an arbitrary date:
  *  $myDate                        -> Tue Oct 07 03:14:50 PDT 2003
- *  $date.format('medium',$myDate) -> Oct 7, 2003 3:14:50 AM 
+ *  $date.format('medium',$myDate) -> Oct 7, 2003 3:14:50 AM
  *
  * Example toolbox.xml config (if you want to use this with VelocityView):
  * &lt;tool&gt;
@@ -58,8 +58,8 @@ import java.util.TimeZone;
  * &lt;/tool&gt;
  * </pre></p>
  *
- * <p>The methods of this tool are highly interconnected, and overriding 
- * key methods provides an easy way to create subclasses that use 
+ * <p>The methods of this tool are highly interconnected, and overriding
+ * key methods provides an easy way to create subclasses that use
  * a non-default format, calendar, locale, or timezone.</p>
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
@@ -69,8 +69,8 @@ import java.util.TimeZone;
 public class DateTool
 {
 
-    /** 
-     * The default format to be used when none is specified. 
+    /**
+     * The default format to be used when none is specified.
      * @since VelocityTools 1.1
      */
     public static final String DEFAULT_FORMAT = "default";
@@ -104,7 +104,7 @@ public class DateTool
             setFormat(format);
         }
     }
-        
+
 
 
     // ------------------------- system date access ------------------
@@ -172,12 +172,12 @@ public class DateTool
      *
      * <p>Sub-classes may override this method to return a Calendar instance
      * not based on the system date.
-     * Doing so will also cause the getDate(), get(String), get(String,String), 
-     * and toString() methods to return dates equivalent to the Calendar 
-     * returned by this method, because those methods return values derived 
+     * Doing so will also cause the getDate(), get(String), get(String,String),
+     * and toString() methods to return dates equivalent to the Calendar
+     * returned by this method, because those methods return values derived
      * from the result of this method.</p>
      *
-     * @return a {@link Calendar} instance created using the results of 
+     * @return a {@link Calendar} instance created using the results of
      *         {@link #getTimeZone()} and {@link #getLocale()}.
      * @see Calendar#getInstance(TimeZone zone, Locale aLocale)
      */
@@ -188,7 +188,7 @@ public class DateTool
 
     /**
      * Return the pattern or style to be used for formatting dates when none
-     * is specified. This implementation gives a 'default' date-time format. 
+     * is specified. This implementation gives a 'default' date-time format.
      * Subclasses may override this to provide a different default format.
      *
      * <p>This can now be configured via the toolbox definition.
@@ -257,11 +257,11 @@ public class DateTool
     }
 
     /**
-     * Returns the day (of the month) value of the date 
+     * Returns the day (of the month) value of the date
      * returned by {@link #getCalendar()}.
      * <br><br>
      * NOTE: Unlike java.util.Date, this returns the day of the month.
-     * It is equivalent to Date.getDate() and 
+     * It is equivalent to Date.getDate() and
      * Calendar.get(Calendar.DAY_OF_MONTH).  We could not call this method
      * getDate() because that already exists in this class with a different
      * function.
@@ -277,7 +277,7 @@ public class DateTool
      * Returns the day (of the month) value for the specified date.
      * <br><br>
      * NOTE: Unlike java.util.Date, this returns the day of the month.
-     * It is equivalent to Date.getDate() and 
+     * It is equivalent to Date.getDate() and
      * Calendar.get(Calendar.DAY_OF_MONTH).  We could not call this method
      * getDate() because that already exists in this class with a different
      * function.
@@ -290,7 +290,7 @@ public class DateTool
     }
 
     /**
-     * Return the specified value of the date returned by 
+     * Return the specified value of the date returned by
      * {@link #getCalendar()} or null if the field is invalid.
      *
      * @since VelocityTools 1.2
@@ -358,11 +358,11 @@ public class DateTool
 
     /**
      * Returns a formatted string representing the date returned by
-     * {@link #getDate()}.  In its default implementation, this method 
+     * {@link #getDate()}.  In its default implementation, this method
      * allows you to retrieve the current date in standard formats by
-     * simply doing things like <code>$date.medium</code> or 
+     * simply doing things like <code>$date.medium</code> or
      * <code>$date.full</code>.  If you want only the date or time portion
-     * you can specify that along with the standard formats. (e.g. 
+     * you can specify that along with the standard formats. (e.g.
      * <code>$date.medium_date</code> or <code>$date.short_time</code>)
      * More complex or custom formats can be retrieved
      * by using the full method syntax. (e.g. $date.get('E, MMMM d'))
@@ -399,7 +399,7 @@ public class DateTool
     /**
      * Converts the specified object to a date and formats it according to
      * the pattern or style returned by {@link #getFormat()}.
-     * 
+     *
      * @param obj the date object to be formatted
      * @return the specified date formatted as a string
      * @see #format(String format, Object obj, Locale locale, TimeZone timezone)
@@ -456,8 +456,8 @@ public class DateTool
      * (e.g. 'full_date' or 'long_time')
      * </p>
      * <p>
-     * If the format fits neither of these patterns, then the output 
-     * will be formatted according to the symbols defined by 
+     * If the format fits neither of these patterns, then the output
+     * will be formatted according to the symbols defined by
      * {@link SimpleDateFormat}:
      * <pre>
      *   Symbol   Meaning                 Presentation        Example
@@ -487,7 +487,7 @@ public class DateTool
      *             "EEE, M-d (H:m)" will result in "Tuesday, 7-24 (14:12)"
      * </pre>
      * </p>
-     * 
+     *
      * @param format the custom or standard pattern to be used
      * @param obj the date to format
      * @param locale the {@link Locale} to format the date for
@@ -496,7 +496,7 @@ public class DateTool
      *         <code>null</code> if the parameters are invalid
      * @since VelocityTools 1.1
      */
-    public String format(String format, Object obj, 
+    public String format(String format, Object obj,
                          Locale locale, TimeZone timezone)
     {
         Date date = toDate(obj);
@@ -516,7 +516,7 @@ public class DateTool
      * @param dateStyle the style pattern for the date
      * @param timeStyle the style pattern for the time
      * @param obj the date to be formatted
-     * @return a formatted representation of the given date 
+     * @return a formatted representation of the given date
      * @see #format(String dateStyle, String timeStyle, Object obj, Locale locale, TimeZone timezone)
      * @since VelocityTools 1.1
      */
@@ -533,7 +533,7 @@ public class DateTool
      * @param timeStyle the style pattern for the time
      * @param obj the date to be formatted
      * @param locale the {@link Locale} to be used for formatting the date
-     * @return a formatted representation of the given date 
+     * @return a formatted representation of the given date
      * @see #format(String dateStyle, String timeStyle, Object obj, Locale locale, TimeZone timezone)
      * @since VelocityTools 1.1
      */
@@ -552,7 +552,7 @@ public class DateTool
      * @param obj the date to be formatted
      * @param locale the {@link Locale} to be used for formatting the date
      * @param timezone the {@link TimeZone} the date should be formatted for
-     * @return a formatted representation of the given date 
+     * @return a formatted representation of the given date
      * @see java.text.DateFormat
      * @see #format(String dateStyle, String timeStyle, Object obj, Locale locale, TimeZone timezone)
      * @since VelocityTools 1.1
@@ -576,10 +576,10 @@ public class DateTool
      * Returns a {@link DateFormat} instance for the specified
      * format, {@link Locale}, and {@link TimeZone}.  If the format
      * specified is a standard style pattern, then a date-time instance
-     * will be returned with both the date and time styles set to the 
+     * will be returned with both the date and time styles set to the
      * specified style.  If it is a custom format, then a customized
      * {@link SimpleDateFormat} will be returned.
-     * 
+     *
      * @param format the custom or standard formatting pattern to be used
      * @param locale the {@link Locale} to be used
      * @param timezone the {@link TimeZone} to be used
@@ -588,7 +588,7 @@ public class DateTool
      * @see DateFormat
      * @since VelocityTools 1.1
      */
-    public DateFormat getDateFormat(String format, Locale locale, 
+    public DateFormat getDateFormat(String format, Locale locale,
                                     TimeZone timezone)
     {
         if (format == null)
@@ -633,9 +633,9 @@ public class DateTool
     /**
      * Returns a {@link DateFormat} instance for the specified
      * date style, time style, {@link Locale}, and {@link TimeZone}.
-     * 
-     * @param dateStyle the date style 
-     * @param timeStyle the time style 
+     *
+     * @param dateStyle the date style
+     * @param timeStyle the time style
      * @param locale the {@link Locale} to be used
      * @param timezone the {@link TimeZone} to be used
      * @return an instance of {@link DateFormat}
@@ -653,7 +653,7 @@ public class DateTool
     /**
      * Returns a {@link DateFormat} instance for the specified
      * time style, date style, {@link Locale}, and {@link TimeZone}.
-     * 
+     *
      * @param dateStyle the date style (date will be ignored if this is
      *        less than zero and the date style is not)
      * @param timeStyle the time style (time will be ignored if this is
@@ -665,7 +665,7 @@ public class DateTool
      *         parameters
      * @since VelocityTools 1.1
      */
-    protected DateFormat getDateFormat(int dateStyle, int timeStyle, 
+    protected DateFormat getDateFormat(int dateStyle, int timeStyle,
                                        Locale locale, TimeZone timezone)
     {
         try
@@ -688,7 +688,7 @@ public class DateTool
             }
             else
             {
-                df = DateFormat.getDateTimeInstance(dateStyle, timeStyle, 
+                df = DateFormat.getDateTimeInstance(dateStyle, timeStyle,
                                                     locale);
             }
             df.setTimeZone(timezone);
@@ -747,7 +747,7 @@ public class DateTool
 
     /**
      * Converts an object to an instance of {@link Date} using the
-     * format returned by {@link #getFormat()},the {@link Locale} returned 
+     * format returned by {@link #getFormat()},the {@link Locale} returned
      * by {@link #getLocale()}, and the {@link TimeZone} returned by
      * {@link #getTimeZone()} if the object is not already an instance
      * of Date, Calendar, or Long.
@@ -763,7 +763,7 @@ public class DateTool
 
     /**
      * Converts an object to an instance of {@link Date} using the
-     * specified format,the {@link Locale} returned by 
+     * specified format,the {@link Locale} returned by
      * {@link #getLocale()}, and the {@link TimeZone} returned by
      * {@link #getTimeZone()} if the object is not already an instance
      * of Date, Calendar, or Long.
@@ -798,7 +798,7 @@ public class DateTool
 
     /**
      * Converts an object to an instance of {@link Date} using the
-     * specified format, {@link Locale}, and {@link TimeZone} if the 
+     * specified format, {@link Locale}, and {@link TimeZone} if the
      * object is not already an instance of Date, Calendar, or Long.
      *
      * @param format - the format the date is in
@@ -810,7 +810,7 @@ public class DateTool
      * @see #getDateFormat
      * @see SimpleDateFormat#parse
      */
-    public Date toDate(String format, Object obj, 
+    public Date toDate(String format, Object obj,
                        Locale locale, TimeZone timezone)
     {
         if (obj == null)
@@ -825,7 +825,7 @@ public class DateTool
         {
             return ((Calendar)obj).getTime();
         }
-        if (obj instanceof Number) 
+        if (obj instanceof Number)
         {
             Date d = new Date();
             d.setTime(((Number)obj).longValue());

@@ -1,20 +1,23 @@
-/*
- * Copyright 2003-2004 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.apache.velocity.tools.generic.log;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import java.io.StringWriter;
 import java.io.PrintWriter;
@@ -32,7 +35,7 @@ import org.apache.velocity.runtime.log.LogSystem;
  * org.apache.commons.logging.Log=org.apache.velocity.tools.log.LogSystemCommonsLog
  * </code>
  * </p>
- * 
+ *
  * @version $Id$
  */
 public class LogSystemCommonsLog implements Log
@@ -53,12 +56,12 @@ public class LogSystemCommonsLog implements Log
 
     private boolean printStackTrace = false;
 
-    public LogSystemCommonsLog() 
+    public LogSystemCommonsLog()
     {
         this("");
     }
 
-    public LogSystemCommonsLog(String name) 
+    public LogSystemCommonsLog(String name)
     {
         if (name == null)
         {
@@ -96,12 +99,12 @@ public class LogSystemCommonsLog implements Log
         this(name);
         this.printStackTrace = pst;
     }
-    
+
     private void log(int level, Object message)
     {
         if (handler != null)
         {
-            switch (level) 
+            switch (level)
             {
                 case LogSystem.WARN_ID:
                     handler.warn(message);
@@ -122,7 +125,7 @@ public class LogSystemCommonsLog implements Log
         }
         else
         {
-            switch (level) 
+            switch (level)
             {
                 case LogSystem.WARN_ID:
                     Velocity.warn(message);
@@ -143,7 +146,7 @@ public class LogSystemCommonsLog implements Log
         }
     }
 
-    
+
     private void log(int level, Object message, Throwable t)
     {
         if (printStackTrace)
@@ -265,49 +268,49 @@ public class LogSystemCommonsLog implements Log
         log(LogSystem.ERROR_ID, message, t);
     }
 
-    /** 
-     * Always returns true since Velocity's LogSystem 
-     * doesn't provide this information. 
+    /**
+     * Always returns true since Velocity's LogSystem
+     * doesn't provide this information.
      *
      * @return true
      */
     public boolean isTraceEnabled() { return true; }
 
-    /** 
-     * Always returns true since Velocity's LogSystem 
-     * doesn't provide this information. 
+    /**
+     * Always returns true since Velocity's LogSystem
+     * doesn't provide this information.
      *
      * @return true
      */
     public boolean isDebugEnabled() { return true; }
 
-    /** 
-     * Always returns true since Velocity's LogSystem 
-     * doesn't provide this information. 
+    /**
+     * Always returns true since Velocity's LogSystem
+     * doesn't provide this information.
      *
      * @return true
      */
     public boolean isInfoEnabled() { return true; }
 
-    /** 
-     * Always returns true since Velocity's LogSystem 
-     * doesn't provide this information. 
+    /**
+     * Always returns true since Velocity's LogSystem
+     * doesn't provide this information.
      *
      * @return true
      */
     public boolean isWarnEnabled() { return true; }
 
-    /** 
-     * Always returns true since Velocity's LogSystem 
-     * doesn't provide this information. 
+    /**
+     * Always returns true since Velocity's LogSystem
+     * doesn't provide this information.
      *
      * @return true
      */
     public boolean isErrorEnabled() { return true; }
 
-    /** 
-     * Always returns true since Velocity's LogSystem 
-     * doesn't provide this information. 
+    /**
+     * Always returns true since Velocity's LogSystem
+     * doesn't provide this information.
      *
      * @return true
      */

@@ -1,44 +1,47 @@
 <?xml version="1.0"?>
+
 <!--
-  Copyright 2003-2004 The Apache Software Foundation.
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+   http://www.apache.org/licenses/LICENSE-2.0
 
-     http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-
-  $Id: layoutservlet.xml,v 1.6 2004/02/18 20:21:49 nbubna Exp $
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
 -->
+
 <document>
 
     <properties>
         <title>Velocity Tools - Layout Servlet</title>
         <author email="nathan@esha.com">Nathan Bubna</author>
         <projectfile>xdocs/view/menu.xml</projectfile>
-    </properties> 
+    </properties>
 
-    <body> 
+    <body>
 
     <section name="VelocityLayoutServlet (VLS) Overview">
         <p>
-        This is an extension to the basic VelocityViewServlet.  It provides 
-        a simple layout control and customizable error screens for Velocity 
+        This is an extension to the basic VelocityViewServlet.  It provides
+        a simple layout control and customizable error screens for Velocity
         Tools based projects.  Velocity Tools is distributed with an example
         app demonstrating the use of this servlet.
         </p>
     </section>
 
-    <section name="Installation"> 
+    <section name="Installation">
         <p>
-        Since this class is an extension of the VelocityViewServlet (VVS), 
-        to use it simply change the servlet-class value of the web.xml entry 
+        Since this class is an extension of the VelocityViewServlet (VVS),
+        to use it simply change the servlet-class value of the web.xml entry
         to the following class:</p>
 
         <p>
@@ -46,19 +49,19 @@
         </p>
 
         <subsection name="Configuration Settings" >
-          <p>Three settings can be added to velocity.properties to control 
+          <p>Three settings can be added to velocity.properties to control
           the VLS, or the following default values will be used:</p>
 
-<sourcecode># Filepath for error template, 
+<sourcecode># Filepath for error template,
 #  relative to web application root directory
 tools.view.servlet.error.template = Error.vm
 
-# Directory for layout templates, 
+# Directory for layout templates,
 #  relative to web application root directory
 tools.view.servlet.layout.directory = layout/
 
-# Filepath of the default layout template 
-#  relative to the layout directory 
+# Filepath of the default layout template
+#  relative to the layout directory
 #  NOT relative to the root directory of the webapp!
 tools.view.servlet.layout.default.template =  Default.vm</sourcecode>
 
@@ -101,7 +104,7 @@ $screen_content
     </section>
 
     <section name="Alternative Layouts">
-        <p>VLS provides two ways to specify an alternate 
+        <p>VLS provides two ways to specify an alternate
         template for a requested page:</p>
 
         <p><b>1. Specify the layout in the request parameters</b></p>
@@ -109,7 +112,7 @@ $screen_content
           Just add the query string "layout=MyOtherLayout.vm" to any request params
           and the VLS will find it and render your screen within that layout instead
           of the default layout.  It don't matter how you get the layout param into
-          the query data, only that it's there.  If you're using the struts tools, the 
+          the query data, only that it's there.  If you're using the struts tools, the
           most common will likely be:
         </p>
         <p>
@@ -134,7 +137,7 @@ $screen_content
     </section>
 
     <section name="'Navigations', 'Tiles', and How">
-        <p>Those of you who are (or were) Turbine or Struts users will probably want to 
+        <p>Those of you who are (or were) Turbine or Struts users will probably want to
         do more than just set the layout and screen content.  You want to include
         arbitrary "tiles" or "navigations", right?  Well, thanks to Velocity's built-in
         <code>#parse</code> directive, this is easy.</p>
@@ -181,12 +184,12 @@ $screen_content
 &lt;/html&gt;
 </sourcecode>
 
-        <p>and in your screen, just do 
+        <p>and in your screen, just do
         <code>#set( $screen_footer = 'FooFooter.vm' ).</code></p>
 
-        <p>Remember, your #parsed footer template will have access to the same 
-        velocity context as your layout, which gets the screen's context 
-        once the screen is done with it.  This lets you set variables for 
+        <p>Remember, your #parsed footer template will have access to the same
+        velocity context as your layout, which gets the screen's context
+        once the screen is done with it.  This lets you set variables for
         the layout and footer to use from your screens.</p>
         <br clear="all" />
     </section>
@@ -218,7 +221,7 @@ $screen_content
           <td>$stack_trace</td>
           <td>captured output of $error_cause.printStackTrace()</td>
         </tr>
-      </table>              
+      </table>
 
       <p>In the event that a MethodInvocationException is behind the calling of error(),
       the root cause is extracted from it and dealt with as described above.  But, since

@@ -1,20 +1,23 @@
-/*
- * Copyright 2003-2004 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.apache.velocity.tools.struts;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 /**
  * <p>View tool to work with the Struts error messages.</p>
@@ -46,7 +49,7 @@ package org.apache.velocity.tools.struts;
  */
 public class ErrorsTool extends ActionMessagesTool
 {
-    
+
     /**
      * Initializes this tool.
      *
@@ -68,27 +71,27 @@ public class ErrorsTool extends ActionMessagesTool
      * in the message resources. The value of the former is rendered before
      * the list of error messages and the value of the latter is rendered
      * after the error messages.</p>
-     * 
-     * @return The formatted error messages. If no error messages are queued, 
+     *
+     * @return The formatted error messages. If no error messages are queued,
      * an empty string is returned.
      */
     public String getMsgs()
     {
-        return getMsgs(null, null);    
+        return getMsgs(null, null);
     }
 
 
     /**
-     * <p>Renders the queued error messages of a particual category as a list. 
-     * This method expects the message keys <code>errors.header</code> and 
-     * <code>errors.footer</code> in the message resources. The value of the 
-     * former is rendered before the list of error messages and the value of 
+     * <p>Renders the queued error messages of a particual category as a list.
+     * This method expects the message keys <code>errors.header</code> and
+     * <code>errors.footer</code> in the message resources. The value of the
+     * former is rendered before the list of error messages and the value of
      * the latter is rendered after the error messages.</p>
-     * 
+     *
      * @param property the category of errors to render
-     * 
-     * @return The formatted error messages. If no error messages are queued, 
-     * an empty string is returned. 
+     *
+     * @return The formatted error messages. If no error messages are queued,
+     * an empty string is returned.
      */
     public String getMsgs(String property)
     {
@@ -97,22 +100,22 @@ public class ErrorsTool extends ActionMessagesTool
 
 
     /**
-     * <p>Renders the queued error messages of a particual category as a list. 
-     * This method expects the message keys <code>errors.header</code> and 
-     * <code>errors.footer</code> in the message resources. The value of the 
-     * former is rendered before the list of error messages and the value of 
+     * <p>Renders the queued error messages of a particual category as a list.
+     * This method expects the message keys <code>errors.header</code> and
+     * <code>errors.footer</code> in the message resources. The value of the
+     * former is rendered before the list of error messages and the value of
      * the latter is rendered after the error messages.</p>
-     * 
+     *
      * @param property the category of errors to render
      * @param bundle the message resource bundle to use
-     * 
-     * @return The formatted error messages. If no error messages are queued, 
-     * an empty string is returned. 
+     *
+     * @return The formatted error messages. If no error messages are queued,
+     * an empty string is returned.
      * @since VelocityTools 1.1
      */
     public String getMsgs(String property, String bundle)
     {
-        return StrutsUtils.errorMarkup(property, bundle, request, 
+        return StrutsUtils.errorMarkup(property, bundle, request,
                                        request.getSession(false), application);
     }
 

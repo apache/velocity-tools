@@ -1,20 +1,23 @@
-/*
- * Copyright 2003 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.apache.velocity.tools.generic.log;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,7 +41,7 @@ import org.apache.velocity.runtime.log.LogSystem;
  * runtime.log.logsystem.commons.logging.name = org.apache.velocity
  * </code>
  * </p>
- * 
+ *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @since VelocityTools 1.1
  * @version $Id$
@@ -53,7 +56,7 @@ public class CommonsLogLogSystem implements LogSystem
     /** Default name for the commons-logging instance */
     public static final String DEFAULT_LOG_NAME = "org.apache.velocity";
 
-    
+
     /** the commons-logging Log instance */
     protected Log log;
 
@@ -62,15 +65,15 @@ public class CommonsLogLogSystem implements LogSystem
 
     public void init(RuntimeServices rs) throws Exception
     {
-        String name = 
+        String name =
             (String)rs.getProperty(LOGSYSTEM_COMMONS_LOG_NAME);
-        
+
         if (name == null)
         {
             name = DEFAULT_LOG_NAME;
         }
         log = LogFactory.getLog(name);
-        logVelocityMessage(LogSystem.DEBUG_ID, 
+        logVelocityMessage(LogSystem.DEBUG_ID,
                            "CommonsLogLogSystem name is '" + name + "'");
     }
 
@@ -79,7 +82,7 @@ public class CommonsLogLogSystem implements LogSystem
      */
     public void logVelocityMessage(int level, String message)
     {
-        switch (level) 
+        switch (level)
         {
             case LogSystem.WARN_ID:
                 log.warn(message);

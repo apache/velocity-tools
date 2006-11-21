@@ -96,8 +96,8 @@
     <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
     <td>
       <p>
-        This is an extension to the basic VelocityViewServlet.  It provides 
-        a simple layout control and customizable error screens for Velocity 
+        This is an extension to the basic VelocityViewServlet.  It provides
+        a simple layout control and customizable error screens for Velocity
         Tools based projects.  Velocity Tools is distributed with an example
         app demonstrating the use of this servlet.
         </p>
@@ -117,8 +117,8 @@
     <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
     <td>
       <p>
-        Since this class is an extension of the VelocityViewServlet (VVS), 
-        to use it simply change the servlet-class value of the web.xml entry 
+        Since this class is an extension of the VelocityViewServlet (VVS),
+        to use it simply change the servlet-class value of the web.xml entry
         to the following class:</p>
 <p>
         <a href="../javadoc/org/apache/velocity/tools/view/servlet/VelocityLayoutServlet.html">org.apache.velocity.tools.view.servlet.VelocityLayoutServlet</a>
@@ -134,20 +134,20 @@
   <tr>
     <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
     <td>
-      <p>Three settings can be added to velocity.properties to control 
+      <p>Three settings can be added to velocity.properties to control
           the VLS, or the following default values will be used:</p>
 <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
-    <pre><sourcecode># Filepath for error template, 
+    <pre><sourcecode># Filepath for error template,
 #  relative to web application root directory
 tools.view.servlet.error.template = Error.vm
 
-# Directory for layout templates, 
+# Directory for layout templates,
 #  relative to web application root directory
 tools.view.servlet.layout.directory = layout/
 
-# Filepath of the default layout template 
-#  relative to the layout directory 
+# Filepath of the default layout template
+#  relative to the layout directory
 #  NOT relative to the root directory of the webapp!
 tools.view.servlet.layout.default.template =  Default.vm</sourcecode></pre>
   </td></tr></table>
@@ -221,14 +221,14 @@ $screen_content
   <tr>
     <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
     <td>
-      <p>VLS provides two ways to specify an alternate 
+      <p>VLS provides two ways to specify an alternate
         template for a requested page:</p>
 <p><b>1. Specify the layout in the request parameters</b></p>
 <p>
           Just add the query string "layout=MyOtherLayout.vm" to any request params
           and the VLS will find it and render your screen within that layout instead
           of the default layout.  It don't matter how you get the layout param into
-          the query data, only that it's there.  If you're using the struts tools, the 
+          the query data, only that it's there.  If you're using the struts tools, the
           most common will likely be:
         </p>
 <p>
@@ -264,7 +264,7 @@ $screen_content
   <tr>
     <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
     <td>
-      <p>Those of you who are (or were) Turbine or Struts users will probably want to 
+      <p>Those of you who are (or were) Turbine or Struts users will probably want to
         do more than just set the layout and screen content.  You want to include
         arbitrary "tiles" or "navigations", right?  Well, thanks to Velocity's built-in
         <code>#parse</code> directive, this is easy.</p>
@@ -315,11 +315,11 @@ $screen_content
 </sourcecode></pre>
   </td></tr></table>
 </td></tr></table>
-<p>and in your screen, just do 
+<p>and in your screen, just do
         <code>#set( $screen_footer = 'FooFooter.vm' ).</code></p>
-<p>Remember, your #parsed footer template will have access to the same 
-        velocity context as your layout, which gets the screen's context 
-        once the screen is done with it.  This lets you set variables for 
+<p>Remember, your #parsed footer template will have access to the same
+        velocity context as your layout, which gets the screen's context
+        once the screen is done with it.  This lets you set variables for
         the layout and footer to use from your screens.</p>
 <br clear="all"/>
 

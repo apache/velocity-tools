@@ -1,20 +1,23 @@
-/*
- * Copyright 2003 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.apache.velocity.tools.view.tools;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -33,7 +36,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.view.context.ViewContext;
 
 /**
- * View tool to make building URIs pleasant and fun! 
+ * View tool to make building URIs pleasant and fun!
  * <p><pre>
  * Template example(s):
  *   #set( $base = $link.relative('MyPage.vm').anchor('view') )
@@ -59,39 +62,39 @@ public class LinkTool implements Cloneable
 {
     protected static final Log LOG = LogFactory.getLog(LinkTool.class);
 
-    /** Standard HTML delimiter for query data ('&') */ 
+    /** Standard HTML delimiter for query data ('&') */
     public static final String HTML_QUERY_DELIMITER = "&";
 
-    /** XHTML delimiter for query data ('&amp;amp;') */ 
+    /** XHTML delimiter for query data ('&amp;amp;') */
     public static final String XHTML_QUERY_DELIMITER = "&amp;";
 
 
-    /** A reference to the ServletContext */ 
+    /** A reference to the ServletContext */
     protected ServletContext application;
 
-    /** A reference to the HttpServletRequest. */ 
+    /** A reference to the HttpServletRequest. */
     protected HttpServletRequest request;
 
-    /** A reference to the HttpServletResponse. */ 
+    /** A reference to the HttpServletResponse. */
     protected HttpServletResponse response;
 
 
-    /** The URI reference set for this link. */ 
+    /** The URI reference set for this link. */
     private String uri;
 
-    /** The anchor set for this link. */ 
+    /** The anchor set for this link. */
     private String anchor;
 
-    /** A list of query string parameters. */ 
+    /** A list of query string parameters. */
     private ArrayList queryData;
 
     /** The current delimiter for query data */
     private String queryDataDelim;
 
-    
+
     /** Java 1.4 encode method to use instead of deprecated 1.3 version. */
     private static Method encode = null;
-    
+
     /* Initialize the encode variable with the 1.4 method if available.
      * this code was adapted from org.apache.struts.utils.RequestUtils */
     static
@@ -137,7 +140,7 @@ public class LinkTool implements Cloneable
      */
     protected void setXhtml(boolean useXhtml)
     {
-        queryDataDelim = 
+        queryDataDelim =
             (useXhtml) ? XHTML_QUERY_DELIMITER : HTML_QUERY_DELIMITER;
     }
 
@@ -154,7 +157,7 @@ public class LinkTool implements Cloneable
         LinkTool copy = duplicate();
         if (copy.queryData != null)
         {
-            // set the copy's query data to a shallow clone of 
+            // set the copy's query data to a shallow clone of
             // the current query data array
             copy.queryData = (ArrayList)this.queryData.clone();
         }
@@ -181,7 +184,7 @@ public class LinkTool implements Cloneable
         LinkTool copy = duplicate();
         if (copy.queryData != null)
         {
-            // set the copy's query data to a shallow clone of 
+            // set the copy's query data to a shallow clone of
             // the current query data array
             copy.queryData = (ArrayList)this.queryData.clone();
         }
@@ -217,7 +220,7 @@ public class LinkTool implements Cloneable
     /**
      * For internal use.
      *
-     * Copies 'that' LinkTool into this one and sets the new 
+     * Copies 'that' LinkTool into this one and sets the new
      * anchor for the link.
      *
      * @param anchor URI string
@@ -279,7 +282,7 @@ public class LinkTool implements Cloneable
         {
             throw new IllegalArgumentException("Tool can only be initialized with a ViewContext");
         }
- 
+
         ViewContext context = (ViewContext)obj;
         this.request = context.getRequest();
         this.response = context.getResponse();
@@ -295,7 +298,7 @@ public class LinkTool implements Cloneable
     // --------------------------------------------- Template Methods -----------
 
     /**
-     * <p>Returns a copy of the link with the specified anchor to be 
+     * <p>Returns a copy of the link with the specified anchor to be
      *    added to the end of the generated hyperlink.</p>
      *
      * Example:<br>
@@ -332,16 +335,16 @@ public class LinkTool implements Cloneable
 
     /**
      * <p>Returns a copy of the link with the specified context-relative
-     * URI reference converted to a server-relative URI reference. This 
-     * method will overwrite any previous URI reference settings but will 
-     * copy the query string.</p> 
+     * URI reference converted to a server-relative URI reference. This
+     * method will overwrite any previous URI reference settings but will
+     * copy the query string.</p>
      *
      * Example:<br>
      * <code>&lt;a href='$link.setRelative("/templates/login/index.vm")'&gt;Login Page&lt;/a&gt;</code><br>
      * produces something like</br>
      * <code>&lt;a href="/myapp/templates/login/index.vm"&gt;Login Page&lt;/a&gt;</code><br>
      *
-     * @param uri A context-relative URI reference. A context-relative URI 
+     * @param uri A context-relative URI reference. A context-relative URI
      * is a URI that is relative to the root of this web application.
      *
      * @return a new instance of LinkTool with the specified URI
@@ -378,8 +381,8 @@ public class LinkTool implements Cloneable
     /**
      * <p>Returns a copy of the link with the specified URI reference
      * either used as or converted to an absolute (non-relative)
-     * URI reference. This method will overwrite any previous URI 
-     * reference settings but will copy the query string.</p> 
+     * URI reference. This method will overwrite any previous URI
+     * reference settings but will copy the query string.</p>
      *
      * Example:<br>
      * <code>&lt;a href='$link.setAbsolute("/templates/login/index.vm")'&gt;Login Page&lt;/a&gt;</code><br>
@@ -428,13 +431,13 @@ public class LinkTool implements Cloneable
 
 
     /**
-     * <p>Returns a copy of the link with the given URI reference set. 
-     * No conversions are applied to the given URI reference. The URI 
+     * <p>Returns a copy of the link with the given URI reference set.
+     * No conversions are applied to the given URI reference. The URI
      * reference can be absolute, server-relative, relative and may
-     * contain query parameters. This method will overwrite any 
-     * previous URI reference settings but will copy the query 
+     * contain query parameters. This method will overwrite any
+     * previous URI reference settings but will copy the query
      * string.</p>
-     * 
+     *
      * @param uri URI reference to set
      *
      * @return a new instance of LinkTool
@@ -454,9 +457,9 @@ public class LinkTool implements Cloneable
     }
 
     /**
-     * <p>Returns the current URI of this link as set by the setURI(String) 
-     * or setRelative(String) methods. Any conversions 
-     * have been applied. The returned URI reference does not include query 
+     * <p>Returns the current URI of this link as set by the setURI(String)
+     * or setRelative(String) methods. Any conversions
+     * have been applied. The returned URI reference does not include query
      * data that was added with method addQueryData().</p>
      */
     public String getURI()
@@ -466,7 +469,7 @@ public class LinkTool implements Cloneable
 
 
     /**
-     * <p>Adds a key=value pair to the query data. This returns a new LinkTool 
+     * <p>Adds a key=value pair to the query data. This returns a new LinkTool
      * containing both a copy of this LinkTool's query data and the new data.
      * Query data is URL encoded before it is appended.</p>
      *
@@ -481,7 +484,7 @@ public class LinkTool implements Cloneable
     }
 
     /**
-     * <p>Adds multiple key=value pairs to the query data. 
+     * <p>Adds multiple key=value pairs to the query data.
      * This returns a new LinkTool containing both a copy of
      * this LinkTool's query data and the new data.
      * Query data is URL encoded before it is appended.</p>
@@ -513,9 +516,9 @@ public class LinkTool implements Cloneable
     {
         return copyWith(parameters);
     }
-    
+
     /**
-     * <p>Returns this link's query data as a url-encoded string e.g. 
+     * <p>Returns this link's query data as a url-encoded string e.g.
      * <code>key=value&foo=this+is+encoded</code>.</p>
      */
     public String getQueryData()
@@ -539,9 +542,9 @@ public class LinkTool implements Cloneable
 
 
     /**
-     * <p>Returns the URI that addresses this web application. E.g. 
-     * <code>http://myserver.net/myapp</code>. This string does not end 
-     * with a "/".  Note! This will not represent any URI reference or 
+     * <p>Returns the URI that addresses this web application. E.g.
+     * <code>http://myserver.net/myapp</code>. This string does not end
+     * with a "/".  Note! This will not represent any URI reference or
      * query data set for this LinkTool.</p>
      */
     public String getContextURL()
@@ -565,10 +568,10 @@ public class LinkTool implements Cloneable
 
 
     /**
-     * <p>Returns the context path that addresses this web 
-     * application, e.g. <code>/myapp</code>. This string starts 
-     * with a "/" but does not end with a "/" Note! This will not 
-     * represent any URI reference or query data set for this 
+     * <p>Returns the context path that addresses this web
+     * application, e.g. <code>/myapp</code>. This string starts
+     * with a "/" but does not end with a "/" Note! This will not
+     * represent any URI reference or query data set for this
      * LinkTool.</p>
      */
     public String getContextPath()
@@ -580,9 +583,9 @@ public class LinkTool implements Cloneable
     /**
      * Returns the full URI of this template without any query data.
      * e.g. <code>http://myserver.net/myapp/stuff/View.vm</code>
-     * Note! The returned String will not represent any URI reference 
-     * or query data set for this LinkTool. A typical application of 
-     * this method is with the HTML base tag. For example:  
+     * Note! The returned String will not represent any URI reference
+     * or query data set for this LinkTool. A typical application of
+     * this method is with the HTML base tag. For example:
      * <code>&lt;base href="$link.baseRef"&gt;</code>
      */
     public String getBaseRef()
@@ -594,12 +597,12 @@ public class LinkTool implements Cloneable
     }
 
 
-    /** 
-     * Returns the full URI reference that's been built with this tool, 
-     * including the query string and anchor, e.g. 
+    /**
+     * Returns the full URI reference that's been built with this tool,
+     * including the query string and anchor, e.g.
      * <code>http://myserver.net/myapp/stuff/View.vm?id=42&type=blue#foo</code>.
      * Typically, it is not necessary to call this method explicitely.
-     * Velocity will call the toString() method automatically to obtain 
+     * Velocity will call the toString() method automatically to obtain
      * a representable version of an object.
      */
     public String toString()
@@ -609,7 +612,7 @@ public class LinkTool implements Cloneable
         if (uri != null)
         {
             out.append(uri);
-        } 
+        }
 
         String query = getQueryData();
         if (query != null)
@@ -617,7 +620,7 @@ public class LinkTool implements Cloneable
             // Check if URI already contains query data
             if ( uri == null || uri.indexOf('?') < 0)
             {
-                // no query data yet, start query data with '?'    
+                // no query data yet, start query data with '?'
                 out.append('?');
             }
             else
@@ -655,7 +658,7 @@ public class LinkTool implements Cloneable
         {
             try
             {
-                Object[] args = 
+                Object[] args =
                     new Object[] { url, this.response.getCharacterEncoding() };
                 return (String)encode.invoke(null, args);
             }
@@ -677,9 +680,9 @@ public class LinkTool implements Cloneable
     }
 
 
-  
+
     // --------------------------------------------- Internal Class -----------
- 
+
     /**
      * Internal util class to handle representation and
      * encoding of key/value pairs in the query string
@@ -697,7 +700,7 @@ public class LinkTool implements Cloneable
          * @param key query pair
          * @param value query value
          */
-        public QueryPair(String key, Object value) 
+        public QueryPair(String key, Object value)
         {
             this.key = key;
             this.value = value;
@@ -705,7 +708,7 @@ public class LinkTool implements Cloneable
 
         /**
          * Return the URL-encoded query string.
-         */ 
+         */
         public String toString()
         {
             StringBuffer out = new StringBuffer();
@@ -721,7 +724,7 @@ public class LinkTool implements Cloneable
             }
             else if (value instanceof Object[])
             {
-                appendAsArray(out, key, (Object[])value); 
+                appendAsArray(out, key, (Object[])value);
             }
             else
             {

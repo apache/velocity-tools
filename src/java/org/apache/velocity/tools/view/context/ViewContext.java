@@ -1,20 +1,23 @@
-/*
- * Copyright 2003 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.apache.velocity.tools.view.context;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
@@ -26,17 +29,17 @@ import javax.servlet.ServletContext;
 
 /**
  * <p>Objects implementing this interface are passed to view tools
- * upon initialization by the 
- * {@link org.apache.velocity.tools.view.servlet.ServletToolboxManager}.</p> 
- * 
- * <p>The interface provides view tools in a servlet environment 
- * access to relevant context information, like servlet request, servlet 
+ * upon initialization by the
+ * {@link org.apache.velocity.tools.view.servlet.ServletToolboxManager}.</p>
+ *
+ * <p>The interface provides view tools in a servlet environment
+ * access to relevant context information, like servlet request, servlet
  * context and the velocity context.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  *
- * @version $Id$ 
+ * @version $Id$
  */
 public interface ViewContext
 {
@@ -75,8 +78,8 @@ public interface ViewContext
 
 
     /**
-     * <p>Searches for the named attribute in request, session (if valid), 
-     * and application scope(s) in order and returns the value associated 
+     * <p>Searches for the named attribute in request, session (if valid),
+     * and application scope(s) in order and returns the value associated
      * or null.</p>
      *
      * @since VelocityTools 1.1

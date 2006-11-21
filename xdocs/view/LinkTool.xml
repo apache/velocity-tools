@@ -1,21 +1,24 @@
 <?xml version="1.0"?>
+
 <!--
-  Copyright 2003 The Apache Software Foundation.
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+   http://www.apache.org/licenses/LICENSE-2.0
 
-     http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-
-  $Id: LinkTool.xml,v 1.5 2004/02/18 20:21:49 nbubna Exp $
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
 -->
+
 <document>
 
     <properties>
@@ -40,35 +43,35 @@
               setAnchor()</a></li>
             <li>encode session ID into URL, see method <a href="#toString()">toString()</a></li>
             <li>retrieve server, port and path info for the current request, see methods
-              <a href="#getURI()">getURI()</a>, <a href="#getContextURL()">getContextURL()</a>, 
-              <a href="#getContextPath()">getContextPath()</a> and 
+              <a href="#getURI()">getURI()</a>, <a href="#getContextURL()">getContextURL()</a>,
+              <a href="#getContextPath()">getContextPath()</a> and
               <a href="#getBaseRef()">getBaseRef()</a></li>
         </ul>
 
         <p>The LinkTool is somewhat special in that many of its methods return
         a new instance of LinkTool. This facilitates greatly the repeated use
-        of the LinkTool in Velocity and leads to an elegant syntax.</p> 
+        of the LinkTool in Velocity and leads to an elegant syntax.</p>
 
         <p>I've been struggling a bit to find the right terminology for the things
-        that this tool works with. Based on document 
+        that this tool works with. Based on document
         <a href="http://www.w3.org/Architecture/Terms">http://www.w3.org/Architecture/Terms</a>,
         I have used:</p>
-        
+
         <dl>
             <dt>URI</dt>
             <dd>To refer to the full, absolute address of web resources, e.g. static documents
-            or abstract resources like dynamically generated content. 
+            or abstract resources like dynamically generated content.
             Example: <code>http://myserver.org/myapp/templates/index.html</code></dd>
 
             <dt>URI Reference</dt>
-            <dd>To refer to partial and relative URIs that reference a URI. Example: 
+            <dd>To refer to partial and relative URIs that reference a URI. Example:
             <code>templates/index.html</code>. </dd>
 
             <dt>URL</dt>
             <dd>Not used here.</dd>
 
         </dl>
-        
+
         <toolinfo>
             <version>@@@version@@@, @@@date@@@</version>
             <clazz>org.apache.velocity.tools.view.tools.LinkTool</clazz>
@@ -89,35 +92,35 @@
 
     <section name="setURI()">
         <method name="setURI()">
-    
+
             <abstract>
                 Returns a copy of this LinkTool instance with the given URI reference.
             </abstract>
-    
+
             <signature>
                 LinkTool setURI(String uri)
             </signature>
-            
+
             <parameters>
                 <parameter name="uri">
-                    URI reference to set. The URI reference can be absolute 
+                    URI reference to set. The URI reference can be absolute
                     (<code>http://www.mydomain.com/myapp/templates/index.html</code>),
-                    server-relative (<code>/myapp/templates/index.html</code>), 
-                    relative (<code>templates/index.html</code>) 
+                    server-relative (<code>/myapp/templates/index.html</code>),
+                    relative (<code>templates/index.html</code>)
                     and may contain query strings (<code>templates/index.html&#63;key1=value1&amp;key2=value2</code>).
                 </parameter>
             </parameters>
-    
+
             <returns>
-                A new instance of <code>LinkTool</code>.  
+                A new instance of <code>LinkTool</code>.
             </returns>
-    
+
             <description>
-                <p>No conversions are applied to the given URI reference. This method will 
-                overwrite any previously set URI reference but will copy query 
+                <p>No conversions are applied to the given URI reference. This method will
+                overwrite any previously set URI reference but will copy query
                 data set with method <code>setQueryData()</code>.</p>
              </description>
-           
+
 <sourcecode>## a relative reference
 $link.setURI("index.html").addQueryData("key1","val 1")
 
@@ -136,7 +139,7 @@ $link.setURI("/myapp/index.vm?key0=val0")
 <p>This produces:</p>
 
 <sourcecode>index.vm/key1=val+1
-    
+
 /myapp/index.vm/key1=val+1
 
 http://myserver.org/myapp/index.vm?key1=val+1
@@ -148,31 +151,31 @@ http://myserver.org/myapp/index.vm?key1=val+1
 
     <section name="setRelative()">
         <method name="setRelative()">
-    
+
             <abstract>
                 Returns a copy of this LinkTool instance with the specified context-relative
                 URI reference converted to a server-relative URI reference.
             </abstract>
-    
+
             <signature>
                 LinkTool setRelative(String uri)
             </signature>
-            
+
             <parameters>
                 <parameter name="uri">
                     A context-relative URI reference, i.e. a URI reference that is relative to the URI
                     used to address this web application.
                 </parameter>
             </parameters>
-    
+
             <returns>
-                A new instance of <code>LinkTool</code>.  
+                A new instance of <code>LinkTool</code>.
             </returns>
-    
+
             <description>
                 <p>The specified context-relative URI reference is converted to a server-relative URI reference.
                 This method will overwrite any previously set URI reference but will copy the query string.</p>
-                
+
 <sourcecode>
 ## a context-relative hyperlink
 &lt;a href="$link.setRelative("templates/index.vm").addQueryData("key1","val 1")"&gt;My Link&lt;/a&gt;
@@ -181,109 +184,109 @@ http://myserver.org/myapp/index.vm?key1=val+1
                 <p>Produces something like:</p>
 
 <sourcecode>&lt;a href="/myapp/templates/index.vm?key=val+1"&gt;My Link&lt;/a&gt;</sourcecode>
-                
+
             </description>
-    
+
         </method>
     </section>
 
 
     <section name="addQueryData()">
         <method name="addQueryData()">
-    
+
             <abstract>
                 Adds a key=value pair to the URI reference.
             </abstract>
-    
+
             <signature>
                 LinkTool addQueryData(String key, Object value)
             </signature>
-            
+
             <parameters>
                 <parameter name="key">
                     Key (name) of query parameter.
                 </parameter>
 
                 <parameter name="value">
-                    Value of the query parameter. The string representation of this object is 
+                    Value of the query parameter. The string representation of this object is
                     added to the query data.
                 </parameter>
             </parameters>
-    
+
             <returns>
-                A new instance of <code>LinkTool</code>.  
+                A new instance of <code>LinkTool</code>.
             </returns>
-    
+
             <description>
-                <p>Adds a key=value pair to the query data. This returns a new LinkTool 
+                <p>Adds a key=value pair to the query data. This returns a new LinkTool
                 containing both a copy of this LinkTool's query data and the new data.
                 This makes repeated use in Velocity templates easy. Query data is
                 URL-encoded before it is appended.</p>
-                
+
                 <p>See <a href="#setURI()">method setURI()</a> for examples.</p>
              </description>
-    
+
         </method>
     </section>
 
 
     <section name="setAnchor()">
         <method name="setAnchor()">
-    
+
             <abstract>
                 Sets an internal document reference to append to this link (e.g. #foo).
             </abstract>
-    
+
             <signature>
                 LinkTool setAnchor(String anchor)
             </signature>
-            
+
             <parameters>
                 <parameter name="anchor">
                     The internal document reference to append to this link
                 </parameter>
             </parameters>
-    
+
             <returns>
-                A new instance of <code>LinkTool</code>.  
+                A new instance of <code>LinkTool</code>.
             </returns>
-    
+
             <description>
-                <p>Returns a copy of the link with the specified anchor to be 
-                added to the end of the generated hyperlink.  This returns a new LinkTool 
+                <p>Returns a copy of the link with the specified anchor to be
+                added to the end of the generated hyperlink.  This returns a new LinkTool
                 containing both a copy of this LinkTool's data and the new anchor value.
                 This makes repeated use in Velocity templates easy. The anchor value
                 is url encoded before being rendered.</p>
              </description>
-    
+
         </method>
     </section>
 
 
     <section name="getURI()">
         <method name="getURI()">
-    
+
             <abstract>
                 Returns the current URI reference.
             </abstract>
-    
+
             <signature>
                 LinkTool getURI()
             </signature>
-            
+
             <returns>
-                Returns the current URI reference as set by one of the methods 
-                setURI() or setRelative(). Any conversions 
+                Returns the current URI reference as set by one of the methods
+                setURI() or setRelative(). Any conversions
                 have been applied. The returned URI reference does not included query data that was
                 added with method addQueryData().
             </returns>
-    
+
             <see>
                 Method <a href="#getQueryData()"><code>getQueryData()</code></a> to retrieve
-                query data only. Method <a href="#toString()"><code>toString()</code></a> to 
+                query data only. Method <a href="#toString()"><code>toString()</code></a> to
                 retrieve the URI reference including all query data.
             </see>
-            
+
             <description>
 <sourcecode>#set ($l = $link.setForward("start").addQueryData("key1","val 1"))
 &lt;a href="$l.getURI()"&gt;My Link&lt;/a&gt;</sourcecode>
@@ -299,17 +302,17 @@ http://myserver.org/myapp/index.vm?key1=val+1
 
     <section name="getQueryData()">
         <method name="getQueryData()">
-    
+
             <abstract>
                 Returns this instance's query data.
             </abstract>
-    
+
             <signature>
                 String getQueryData()
             </signature>
-                
+
             <returns>
-                This instance's query data as set by the method 
+                This instance's query data as set by the method
                 <a href="#setQueryData()"><code>setQueryData()</code></a>. The
                 returned String is URL-encoded, e.g. "key=value&amp;foo=this+is+encoded".
             </returns>
@@ -322,7 +325,7 @@ $l.getQueryData()</sourcecode>
 <sourcecode>key1=val+1</sourcecode>
 
             </description>
-                
+
         </method>
     </section>
 
@@ -330,22 +333,22 @@ $l.getQueryData()</sourcecode>
 
     <section name="getContextURL()">
         <method name="getContextURL()">
-    
+
             <abstract>
                 Returns the URI that addresses this web application.
             </abstract>
-    
+
             <signature>
                 String getContextURL()
             </signature>
-    
+
             <returns>
-                Returns the URI reference that addresses this web application, e.g. 
+                Returns the URI reference that addresses this web application, e.g.
                 "http://myserver.net/myapp". This string does not end with a "/".
             </returns>
-    
+
             <description>
-                <p>Note! This will not represent the URI reference or 
+                <p>Note! This will not represent the URI reference or
                 query data set for this LinkTool instance.</p>
 
 <sourcecode>$link.getContextURL()</sourcecode>
@@ -355,7 +358,7 @@ $l.getQueryData()</sourcecode>
 <sourcecode>http://myserver.net/myapp</sourcecode>
 
             </description>
-    
+
         </method>
     </section>
 
@@ -363,23 +366,23 @@ $l.getQueryData()</sourcecode>
 
     <section name="getContextPath()">
         <method name="getContextPath()">
-    
+
             <abstract>
                 Returns the context path that addresses this web application.
             </abstract>
-    
+
             <signature>
                 String getContextPath()
             </signature>
-                
+
             <returns>
-                The context path that addresses this web application, e.g. 
-                <code>"/myapp"</code>. This string starts with a "/" but does 
+                The context path that addresses this web application, e.g.
+                <code>"/myapp"</code>. This string starts with a "/" but does
                 not end with a "/".
             </returns>
-    
+
             <description>
-                <p> Note! This will not represent the URI reference or query 
+                <p> Note! This will not represent the URI reference or query
                 data set for this LinkTool instance.</p>
 
 <sourcecode>$link.getContextPath()</sourcecode>
@@ -389,7 +392,7 @@ $l.getQueryData()</sourcecode>
 <sourcecode>/myapp</sourcecode>
 
             </description>
-    
+
         </method>
     </section>
 
@@ -397,23 +400,23 @@ $l.getQueryData()</sourcecode>
 
     <section name="getBaseRef()">
         <method name="getBaseRef()">
-    
+
             <abstract>
                 Returns the full URI of this template.
             </abstract>
-    
+
             <signature>
                 String getBaseRef()
             </signature>
-                
+
             <returns>
                 The full URI of this template without any query data.
                 e.g. <code>http://myserver.net/myapp/templates/View.vm</code>.
             </returns>
-    
+
             <description>
-                <p>Note! The returned String will not represent the URI reference or query 
-                data set for this LinkTool instance. A typical application of this method 
+                <p>Note! The returned String will not represent the URI reference or query
+                data set for this LinkTool instance. A typical application of this method
                 is with the HTML base tag.</p>
 
 <sourcecode>## a base tag
@@ -424,7 +427,7 @@ $l.getQueryData()</sourcecode>
 <sourcecode>&lt;base href="http://myserver.net/myapp/templates/index.vm"&gt;</sourcecode>
 
             </description>
-    
+
         </method>
     </section>
 
@@ -433,24 +436,24 @@ $l.getQueryData()</sourcecode>
 
     <section name="toString()">
         <method name="toString()">
-    
+
             <abstract>
                 Returns the full URI that has been constructed. The session ID
                 is encoded into the URL if cookies are not supported by the web client.
             </abstract>
-    
+
             <signature>
                 String toString()
             </signature>
-            
+
             <returns>
                 The full URI that has been built with this tool
                 e.g. <code>/myapp/stuff/View.vm?id=42&amp;type=blue#foobar</code>.
             </returns>
-    
+
             <description>
                 <p>Typically it is not necessary to call this method explicitly.
-                Velocity will call the toString() method automatically to 
+                Velocity will call the toString() method automatically to
                 obtain a representable version of objects.</p>
 
 <sourcecode>&lt;a href="$link.setRelative("demo").addQueryString("key1", "val 1")"&gt;
@@ -460,8 +463,8 @@ My Link&lt;/a&gt;</sourcecode>
 
 <sourcecode>&lt;a href="/myapp/demo.do?key1=val+1"&gt;My Link&lt;/a&gt;</sourcecode>
 
-<p>If sessions are used and the web client does not support cookies, the 
-<code>toString()</code> method automatically encodes the session ID into the 
+<p>If sessions are used and the web client does not support cookies, the
+<code>toString()</code> method automatically encodes the session ID into the
 returned URI. The above example would then produce something like: </p>
 
 <sourcecode>&lt;a href="/myapp/demo.do;jsessionid=aaaaaaanisPWVYEY01?key1=val+1"&gt;
@@ -475,24 +478,24 @@ My Link&lt;/a&gt;</sourcecode>
 <p>URI encoding is about encoding the session ID into the URI string. This
 section briefly explains the reasoning behind it and how it works.</p>
 
-<p>Many web applications use sessions to associate an application state 
+<p>Many web applications use sessions to associate an application state
 with a particualar user. For example, a session might be used to maintain
 the state of a shopping cart while the user is browsing the online shop.</p>
 
-<p>The Servlet API has forseen two mechanisms to identify HTTP requests that 
+<p>The Servlet API has forseen two mechanisms to identify HTTP requests that
 belong to a particular session.</p>
 
 <ul>
   <li><strong>Cookies</strong>: A new cookie containing the session ID is sent
-    to the client at the beginning of a session. The client returns this cookie 
-    with every request.</li> 
+    to the client at the beginning of a session. The client returns this cookie
+    with every request.</li>
   <li><strong>URI Encoding</strong>: The session ID is encoded into the
     URI string. The server parses the URI of requests to detect the presence
     of an encoded session ID.</li>
 </ul>
 
-<p>Most developers prefer to use cookies to identify sessions. The cookie-based 
-mechanism is easier to work with because it does not require the 
+<p>Most developers prefer to use cookies to identify sessions. The cookie-based
+mechanism is easier to work with because it does not require the
 encoding of every URI. However,
 for reasons of security and privacy some users choose to disable cookie
 support in their browsers. If session management relies on cookies only,
@@ -514,7 +517,7 @@ are used <strong>and if</strong> the particular web client does not support cook
 Therefore, if all URIs within an application are produced with the LinkTool, the application
 is able to work properly with or without cookie support of the client.</p>
 
-<p>The following examples show the output of the <code>toString()</code> method if 
+<p>The following examples show the output of the <code>toString()</code> method if
 cookies are enabled and disabled.</p>
 
 <sourcecode>&lt;a href="$link.setURI("MyPage.vm").addQueryData("key1","val 1")"&gt;
@@ -535,11 +538,11 @@ My Link&lt;/a&gt;
 <sourcecode>&lt;a href="MyPage.vm;jsessionid=E9833012F7B2F8570963B137?key1=val+1"&gt;
 My Link&lt;/a&gt;
 
-&lt;form name="MyForm" method="post" 
+&lt;form name="MyForm" method="post"
 action="MyPage.vm;jsessionid=E9833012F7B20857096F37743B137"&gt;</sourcecode>
 
             </description>
-    
+
         </method>
     </section>
 
