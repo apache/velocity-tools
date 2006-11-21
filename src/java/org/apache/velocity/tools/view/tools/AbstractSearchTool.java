@@ -1,22 +1,23 @@
-/*
- * Copyright 2003-2004 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-
 package org.apache.velocity.tools.view.tools;
 
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +41,7 @@ import java.util.List;
  * list index, and optionally, the number of items to display
  * per page of results.  Upon extracting these parameters, they
  * should be set using the provided setCriteria(Object),
- * setIndex(int), and setItemsPerPage(int) methods. A simple 
+ * setIndex(int), and setItemsPerPage(int) methods. A simple
  * implementation would be:
  * <pre>
  * public void setup(HttpServletRequest req)
@@ -133,7 +134,7 @@ import java.util.List;
 public abstract class AbstractSearchTool extends AbstractPagerTool
 {
     /** the key under which StoredResults are kept in session */
-    protected static final String STORED_RESULTS_KEY = 
+    protected static final String STORED_RESULTS_KEY =
         StoredResults.class.getName();
 
     private Object criteria;
@@ -240,7 +241,7 @@ public abstract class AbstractSearchTool extends AbstractPagerTool
     {
         StoredResults sr = getStoredResults();
 
-        /* if the criteria equals that of the stored results, 
+        /* if the criteria equals that of the stored results,
          * then return the stored result list */
         if (sr != null && criteria.equals(sr.getCriteria()))
         {
@@ -258,7 +259,7 @@ public abstract class AbstractSearchTool extends AbstractPagerTool
 
     /**
      * Executes a query for the specified criteria.
-     * 
+     *
      * <p>This method must be implemented! A simple
      * implementation might be something like:
      * <pre>
@@ -267,7 +268,7 @@ public abstract class AbstractSearchTool extends AbstractPagerTool
      *     return MyDbUtils.getFooBarsMatching((String)crit);
      * }
      * </pre>
-     * 
+     *
      * @return a {@link List} of results for this query
      */
     protected abstract List executeQuery(Object criteria);

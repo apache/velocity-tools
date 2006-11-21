@@ -1,21 +1,24 @@
 <?xml version="1.0"?>
+
 <!--
-  Copyright 2003-2004 The Apache Software Foundation.
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+   http://www.apache.org/licenses/LICENSE-2.0
 
-     http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-
-  $Id: StrutsLinkTool.xml,v 1.2 2004/02/18 20:22:36 nbubna Exp $
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
 -->
+
 <document>
 
     <properties>
@@ -28,15 +31,15 @@
 
     <section name="StrutsLinkTool Reference Documentation">
 
-        <p>The StrutsLinkTool extends the standard 
-        <a href="../view/LinkTool.html">LinkTool</a> to add methods 
+        <p>The StrutsLinkTool extends the standard
+        <a href="../view/LinkTool.html">LinkTool</a> to add methods
         for working with Struts' Actions and Forwards:</p>
         <ul>
             <li>translate logical names (Struts forwards, actions ) to URI references, see
               methods <a href="#setAction()">setAction()</a> and <a href="#setForward()">
               setForward()</a></li>
         </ul>
-        
+
         <toolinfo>
             <version>@@@version@@@, @@@date@@@</version>
             <clazz>org.apache.velocity.tools.struts.StrutsLinkTool</clazz>
@@ -56,29 +59,29 @@
 
     <section name="setAction()">
         <method name="setAction()">
-    
+
             <abstract>
                 Returns a copy of this StrutsLinkTool instance with the given action path
                 converted into a server-relative URI reference.
             </abstract>
-    
+
             <signature>
                 StrutsLinkTool setAction(String action)
             </signature>
-            
+
             <parameters>
                 <parameter name="action">
                     An action path as defined in struts-config.xml, e.g. <code>/logon</code>.
                 </parameter>
             </parameters>
-    
+
             <returns>
-                A new instance of <code>StrutsLinkTool</code>.  
+                A new instance of <code>StrutsLinkTool</code>.
             </returns>
-    
+
             <description>
-                <p>The action name is translated into a server-relative URI reference. The method does 
-                not check if the specified action has been defined. It will overwrite any 
+                <p>The action name is translated into a server-relative URI reference. The method does
+                not check if the specified action has been defined. It will overwrite any
                 previously set URI reference but will copy the query string.</p>
             </description>
 
@@ -88,37 +91,37 @@
 <p>Produces something like:</p>
 
 <sourcecode>&lt;form name="form1" action="/myapp/demo.do"&gt;</sourcecode>
-    
+
         </method>
     </section>
 
 
     <section name="setForward()">
         <method name="setForward()">
-    
+
             <abstract>
-                Returns a copy of this StrutsLinkTool instance with the given global 
+                Returns a copy of this StrutsLinkTool instance with the given global
                 forward name converted into a server-relative URI reference.
             </abstract>
-    
+
             <signature>
                 StrutsLinkTool setForward(String forward)
             </signature>
-            
+
             <parameters>
                 <parameter name="forward">
                     The name of a global forward as defined in struts-config.xml.
                 </parameter>
             </parameters>
-    
+
             <returns>
-                A new instance of <code>StrutsLinkTool</code> or <code>null</code> if the 
+                A new instance of <code>StrutsLinkTool</code> or <code>null</code> if the
                 parameter does not map to a valid forward.
             </returns>
-    
+
             <description>
-                <p>The global forward name is translated into a server-relative 
-                URI reference. This method will overwrite any previously set URI 
+                <p>The global forward name is translated into a server-relative
+                URI reference. This method will overwrite any previously set URI
                 reference but will copy the query string.</p>
             </description>
 
@@ -130,7 +133,7 @@ My Link&lt;/a&gt;</sourcecode>
 
 <sourcecode>&lt;a href="/myapp/templates/index.vm?key=val+1"&gt;My Link&lt;/a&gt;</sourcecode>
 
-    
+
         </method>
     </section>
 

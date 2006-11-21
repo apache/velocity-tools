@@ -1,20 +1,23 @@
-/*
- * Copyright 2003-2004 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.apache.velocity.tools.generic;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -43,8 +46,8 @@ import java.util.Locale;
  *
  * <p>This tool is entirely threadsafe, and has no instance members.
  * It may be used in any scope (request, session, or application).
- * As such, the methods are highly interconnected, and overriding 
- * key methods provides an easy way to create subclasses that use 
+ * As such, the methods are highly interconnected, and overriding
+ * key methods provides an easy way to create subclasses that use
  * a non-default format or locale.</p>
  *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
@@ -55,15 +58,15 @@ import java.util.Locale;
 public class NumberTool
 {
 
-    /** 
-     * The default format to be used when none is specified. 
+    /**
+     * The default format to be used when none is specified.
      */
     public static final String DEFAULT_FORMAT = "default";
 
     private static final int STYLE_NUMBER       = 0;
     private static final int STYLE_CURRENCY     = 1;
     private static final int STYLE_PERCENT      = 2;
-    //NOTE: '3' belongs to a non-public "scientific" style     
+    //NOTE: '3' belongs to a non-public "scientific" style
     private static final int STYLE_INTEGER      = 4;
 
     /**
@@ -92,12 +95,12 @@ public class NumberTool
 
     /**
      * Return the pattern or style to be used for formatting numbers when none
-     * is specified. This implementation gives a 'default' number format. 
+     * is specified. This implementation gives a 'default' number format.
      * Subclasses may override this to provide a different default format.
      *
      * <p>NOTE: At some point in the future it may be feasible to configure
      * this value via the toolbox definition, but at present, it is not possible
-     * to specify custom tool configurations there.  For now you should just 
+     * to specify custom tool configurations there.  For now you should just
      * override this in a subclass to have a different default.</p>
      */
     public String getFormat()
@@ -111,7 +114,7 @@ public class NumberTool
     /**
      * Converts the specified object to a number and formats it according to
      * the pattern or style returned by {@link #getFormat()}.
-     * 
+     *
      * @param obj the number object to be formatted
      * @return the specified number formatted as a string
      * @see #format(String format, Object obj, Locale locale)
@@ -199,12 +202,12 @@ public class NumberTool
 
     /**
      * Returns a {@link NumberFormat} instance for the specified
-     * format and {@link Locale}.  If the format specified is a standard 
+     * format and {@link Locale}.  If the format specified is a standard
      * style pattern, then a number instance
-     * will be returned with the number style set to the 
+     * will be returned with the number style set to the
      * specified style.  If it is a custom format, then a customized
      * {@link NumberFormat} will be returned.
-     * 
+     *
      * @param format the custom or standard formatting pattern to be used
      * @param locale the {@link Locale} to be used
      * @return an instance of {@link NumberFormat}
@@ -235,7 +238,7 @@ public class NumberTool
     /**
      * Returns a {@link NumberFormat} instance for the specified
      * number style and {@link Locale}.
-     * 
+     *
      * @param numberStyle the number style (number will be ignored if this is
      *        less than zero or the number style is not recognized)
      * @param locale the {@link Locale} to be used
@@ -285,7 +288,7 @@ public class NumberTool
      */
     private NumberFormat getIntegerInstance(Locale locale)
     {
-        DecimalFormat format = 
+        DecimalFormat format =
             (DecimalFormat)NumberFormat.getNumberInstance(locale);
         format.setMaximumFractionDigits(0);
         format.setDecimalSeparatorAlwaysShown(false);
@@ -294,10 +297,10 @@ public class NumberTool
     }
 
     /**
-     * Checks a string to see if it matches one of the standard 
-     * NumberFormat style patterns: 
-     *      NUMBER, CURRENCY, PERCENT, INTEGER, or DEFAULT. 
-     * if it does it will return the integer constant for that pattern.  
+     * Checks a string to see if it matches one of the standard
+     * NumberFormat style patterns:
+     *      NUMBER, CURRENCY, PERCENT, INTEGER, or DEFAULT.
+     * if it does it will return the integer constant for that pattern.
      * if not, it will return -1.
      *
      * @see NumberFormat
@@ -341,8 +344,8 @@ public class NumberTool
 
     /**
      * Converts an object to an instance of {@link Number} using the
-     * format returned by {@link #getFormat()} and the {@link Locale} 
-     * returned by {@link #getLocale()} if the object is not already 
+     * format returned by {@link #getFormat()} and the {@link Locale}
+     * returned by {@link #getLocale()} if the object is not already
      * an instance of Number.
      *
      * @param obj the number to convert
@@ -356,7 +359,7 @@ public class NumberTool
 
     /**
      * Converts an object to an instance of {@link Number} using the
-     * specified format and the {@link Locale} returned by 
+     * specified format and the {@link Locale} returned by
      * {@link #getLocale()} if the object is not already an instance
      * of Number.
      *

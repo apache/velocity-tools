@@ -97,8 +97,8 @@
     <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
     <td>
       <p>
-        Tool for accessing, manipulating, and converting<code>java.util.Date</code> 
-        and <code>java.util.Calendar</code> objects in Velocity templates. It 
+        Tool for accessing, manipulating, and converting<code>java.util.Date</code>
+        and <code>java.util.Calendar</code> objects in Velocity templates. It
         supports locales to format dates language and country specific.
         </p>
 <table cellpadding="0" cellspacing="0">
@@ -128,7 +128,7 @@
             <a href="#getDate()">getDate()</a></td>
           <td bgcolor="EEEEEE">
             
-                Returns a Date object representing the time at which this 
+                Returns a Date object representing the time at which this
                 method was invoked.
             
           </td>
@@ -138,7 +138,7 @@
             <a href="#getCalendar()">getCalendar()</a></td>
           <td bgcolor="EEEEEE">
             
-                Returns a Calendar object representing the time at which this 
+                Returns a Calendar object representing the time at which this
                 method was invoked.
             
           </td>
@@ -191,7 +191,7 @@
       
         <p>
         <abstract>
-                Returns a Date object representing the time at which this 
+                Returns a Date object representing the time at which this
                 method was invoked.
             </abstract>
     </p>
@@ -233,7 +233,7 @@
     <dt><strong>Returns</strong></dt>
     <dd>
         <returns>
-                An object of class <code>java.util.Date</code> representing the time at which this 
+                An object of class <code>java.util.Date</code> representing the time at which this
                 method was invoked in the specified locale. If no locale is specified,
                 the system's default locale is used.
             </returns>
@@ -260,7 +260,7 @@
       
         <p>
         <abstract>
-                Returns a Calendar object representing the time at which this 
+                Returns a Calendar object representing the time at which this
                 method was invoked.
             </abstract>
     </p>
@@ -302,7 +302,7 @@
     <dt><strong>Returns</strong></dt>
     <dd>
         <returns>
-                An object of class <code>java.util.Calendar</code> representing the time at which this 
+                An object of class <code>java.util.Calendar</code> representing the time at which this
                 method was invoked in the specified locale. If no locale is specified,
                 the system's default locale is used.
             </returns>
@@ -387,14 +387,14 @@
     <dt><strong>Returns</strong></dt>
     <dd>
         <returns>
-                The formatted date string in the specified locale or <code>null</code> 
+                The formatted date string in the specified locale or <code>null</code>
                 if one or several input parameters are invalid. If no locale is specified,
                 the system's default locale is used instead.
             </returns>
     </dd>
     </dl>
 
-      <p>This methods use the same formatting instructions as class 
+      <p>This methods use the same formatting instructions as class
                 <code>java.text.SimpleDateFormat</code>.</p>
 <table width="100%" cellpadding="1" cellspacing="0" border="0"><tr><td bgcolor="#000000">
   <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr><td bgcolor="#FFFFFF">
@@ -420,7 +420,7 @@ k        hour in day (1~24)      (Number)            24
 K        hour in am/pm (0~11)    (Number)            0
 z        time zone               (Text)              Pacific Standard Time
 '        escape for text         (Delimiter)
-''       single quote            (Literal)           '     
+''       single quote            (Literal)           '
 
 Examples: "E, MMMM d" will result in "Tue, July 24"
           "EEE, M-d (H:m)" will result in "Tuesday, 7-24 (14:12)"
@@ -467,9 +467,9 @@ Examples: "E, MMMM d" will result in "Tue, July 24"
               <dt>obj</dt>
     <dd>
         <parameter name="obj">
-                    The date to convert. The parameter can be an object of class 
-                    <code>java.util.Date</code> or <code>java.util.Calendar</code>. It is also possible to 
-                    pass a string that represents a parsable date according to 
+                    The date to convert. The parameter can be an object of class
+                    <code>java.util.Date</code> or <code>java.util.Calendar</code>. It is also possible to
+                    pass a string that represents a parsable date according to
                     <code>java.text.DateFormat</code>.
                 </parameter>
     </dd>
@@ -482,7 +482,7 @@ Examples: "E, MMMM d" will result in "Tue, July 24"
     <dt><strong>Returns</strong></dt>
     <dd>
         <returns>
-                An object of class <code>java.util.Date</code> representing the converted date 
+                An object of class <code>java.util.Date</code> representing the converted date
                 or <null/> of the input parameter is invalid.
             </returns>
     </dd>
@@ -527,9 +527,9 @@ Examples: "E, MMMM d" will result in "Tue, July 24"
               <dt>obj</dt>
     <dd>
         <parameter name="obj">
-                    The date to convert. The parameter can be an object of class 
-                    <code>java.util.Date</code> or <code>java.util.Calendar</code>. It is also possible to 
-                    pass a string that represents a parsable date according to 
+                    The date to convert. The parameter can be an object of class
+                    <code>java.util.Date</code> or <code>java.util.Calendar</code>. It is also possible to
+                    pass a string that represents a parsable date according to
                     <code>java.text.DateFormat</code>.
                 </parameter>
     </dd>
@@ -542,7 +542,7 @@ Examples: "E, MMMM d" will result in "Tue, July 24"
     <dt><strong>Returns</strong></dt>
     <dd>
         <returns>
-                An object of class <code>java.util.Calendar</code> representing the converted date 
+                An object of class <code>java.util.Calendar</code> representing the converted date
                 or <null/> of the input parameter is invalid.
             </returns>
     </dd>

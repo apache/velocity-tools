@@ -1,20 +1,23 @@
-/*
- * Copyright 2003 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.apache.velocity.tools.generic;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import java.util.Collection;
 import java.util.Enumeration;
@@ -27,33 +30,33 @@ import org.apache.velocity.util.EnumerationIterator;
 /**
  * <p>
  * A convenience tool to use with #foreach loops. It wraps a list
- * to let the designer specify a condition to terminate the loop, 
+ * to let the designer specify a condition to terminate the loop,
  * and reuse the same list in different loops.
  * </p>
  * <p>
  * Example of use:
- * <pre>  
+ * <pre>
  *  Java
  *  ----
  *  context.put("mill", new IteratorTool());
- *   
- *  
+ *
+ *
  *  VTL
  *  ---
- *  
+ *
  *  #set ($list = [1, 2, 3, 5, 8, 13])
  *  #set ($numbers = $mill.wrap($list))
- *  
+ *
  *  #foreach ($item in $numbers)
  *  #if ($item < 8) $numbers.more()#end
  *  #end
- *  
+ *
  *  $numbers.more()
- *  
- *  
+ *
+ *
  *  Output
  *  ------
- *  
+ *
  *   1 2 3 5
  *  8
  *
@@ -99,7 +102,7 @@ public class IteratorTool implements Iterator {
     /**
      * Create a IteratorTool instance to use in #foreach.
      *
-     * @param wrapped The list to wrap. 
+     * @param wrapped The list to wrap.
      */
     public IteratorTool(Object wrapped)
     {
@@ -145,7 +148,7 @@ public class IteratorTool implements Iterator {
      * <br>- If the list is a Map, the tool iterates over the values.
      * <br>- If the list is an Iterator or an Enumeration, the tool
      * can be used only once.
-     * 
+     *
      * @param wrapped The list to wrap.
      */
     private void internalWrap(Object wrapped)
@@ -226,7 +229,7 @@ public class IteratorTool implements Iterator {
      * </p>
      *
      * @return The next item in the list.
-     * @throws NoSuchElementException if there are no more 
+     * @throws NoSuchElementException if there are no more
      *         elements in the list.
      */
     public Object next()
@@ -235,7 +238,7 @@ public class IteratorTool implements Iterator {
         {
             throw new IllegalStateException("Use wrap() before calling next()");
         }
-        
+
         if (!this.cachedNext)
         {
             this.cachedNext = true;
@@ -255,7 +258,7 @@ public class IteratorTool implements Iterator {
      * <pre>
      * tool.hasNext()? tool.hasNext(): false;
      * </pre>
-     * 
+     *
      * @return true if there are more elements, and either more()
      *         or hasNext() was called since last call.
      */
@@ -340,7 +343,7 @@ public class IteratorTool implements Iterator {
         return cachedNext || this.iterator.hasNext();
     }
 
-    
+
     /**
      * Puts a condition to break out of the loop.
      * The #foreach loop will terminate after this iteration, unless more()

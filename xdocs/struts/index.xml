@@ -1,110 +1,113 @@
 <?xml version= "1.0"?>
+
 <!--
-  Copyright 2003-2005 The Apache Software Foundation.
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+   http://www.apache.org/licenses/LICENSE-2.0
 
-     http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-
-  $Id$
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
 -->
+
 <document>
 
     <properties>
-        <title>Overview</title> 
+        <title>Overview</title>
         <author email="sidler@apache.org">Gabriel Sidler</author>
         <author email="tcolson@cisco.com">Tim Colson</author>
         <author email="nbubna@apache.org">Nathan Bubna</author>
         <projectfile>xdocs/struts/menu.xml</projectfile>
     </properties>
 
-    <body>  
+    <body>
 
-    <section name="Overview"> 
+    <section name="Overview">
 
-        <p>The VelocityStruts sub-project integrates Velocity with the 
-        <a href="http://struts.apache.org/">Apache Struts</a> 
-        web application framework and enables the use of Velocity templates 
+        <p>The VelocityStruts sub-project integrates Velocity with the
+        <a href="http://struts.apache.org/">Apache Struts</a>
+        web application framework and enables the use of Velocity templates
         interchangeably with JSP pages for the view layer.</p>
- 
-        <p>Various other 
-        <a href="http://wiki.apache.org/jakarta-velocity/PoweredByVelocity">web application frameworks</a> 
-        offer built-in support for Velocity templates. This project 
-        provides the minimal glue necessary to give Struts developers 
-        an alternative to JSP. </p>
-        
-        <p><img src="../images/velstruts_diag1.png" border="0"/></p>
-        <p><strong>Diagram 1.</strong> Comparison of JSP and Velocity for 
-        the view layer in a Struts application.</p> 
 
-        <p>As we follow the typical Struts process flow in Diagram 1, 
-        notice how there is relatively little change except for the addition 
-        of Velocity. The velocity-struts.jar leverages a standalone Velocity 
-        servlet to process template files (specifically, the jar file is 
-        velocity-tools-x.x.jar) and uses some drop-in tools to provide 
-        transparent access to Struts specific objects (ex. message resources, 
-        form beans, errors, links). The action mapping file will simply contain 
-        ActionForwards that send control to a Velocity-based View layer instead 
+        <p>Various other
+        <a href="http://wiki.apache.org/jakarta-velocity/PoweredByVelocity">web application frameworks</a>
+        offer built-in support for Velocity templates. This project
+        provides the minimal glue necessary to give Struts developers
+        an alternative to JSP. </p>
+
+        <p><img src="../images/velstruts_diag1.png" border="0"/></p>
+        <p><strong>Diagram 1.</strong> Comparison of JSP and Velocity for
+        the view layer in a Struts application.</p>
+
+        <p>As we follow the typical Struts process flow in Diagram 1,
+        notice how there is relatively little change except for the addition
+        of Velocity. The velocity-struts.jar leverages a standalone Velocity
+        servlet to process template files (specifically, the jar file is
+        velocity-tools-x.x.jar) and uses some drop-in tools to provide
+        transparent access to Struts specific objects (ex. message resources,
+        form beans, errors, links). The action mapping file will simply contain
+        ActionForwards that send control to a Velocity-based View layer instead
         of sending to a JSP. </p>
 
-        <p>Also notable is that Velocity and JSP are <strong>not</strong> 
-        mutually exclusive. Both technologies can be used in the same 
-        application without any problems. This allows developers the option 
+        <p>Also notable is that Velocity and JSP are <strong>not</strong>
+        mutually exclusive. Both technologies can be used in the same
+        application without any problems. This allows developers the option
         of trying Velocity without heavy modification to existing applications.</p>
 
         <p>We're convinced that once you give Velocity a try, you'll really like it.</p>
     </section>
-	
+
     <section name="Benefits">
-        <p>There are many different reasons why people are choosing Velocity 
+        <p>There are many different reasons why people are choosing Velocity
         technology for the view layer. Here are some:</p>
         <p>
         <ul>
-            <li>Velocity helps enforce a clean separation between the view 
-            layer and the model/control layers. This leads to clean application 
-            design and a clear separation of concerns between View Designers 
+            <li>Velocity helps enforce a clean separation between the view
+            layer and the model/control layers. This leads to clean application
+            design and a clear separation of concerns between View Designers
             and back-end Developers.</li>
 
             <li><a href="http://jakarta.apache.org/velocity/vtl-reference-guide.html">Velocity Template Language (VTL)</a>
-            has few directives and is simple and easy to learn. Most 
+            has few directives and is simple and easy to learn. Most
             people report being productive within a day.</li>
 
-            <li>Velocity is easy to extend with <i>Tools</i> which are simply 
+            <li>Velocity is easy to extend with <i>Tools</i> which are simply
             any class which has public methods. These are typically much cleaner
             and easier to develop than JSP custom tag libraries.</li>
-            
+
             <li>Using the new TilesTool it is now possible
             to mix Velocity and JSP tiles in the same page/layout. For those
             using Tiles, this makes gradual migration between or integration of
             the two view technologies trivially easy!</li>
 
-            <li>Velocity 'macros' are a powerful tool for the View Designer. 
-            They enable the creation of reusable snippets of markup, often 
-            eliminating what would have been a need to develop a custom tag 
+            <li>Velocity 'macros' are a powerful tool for the View Designer.
+            They enable the creation of reusable snippets of markup, often
+            eliminating what would have been a need to develop a custom tag
             library or other server-side tool.</li>
 
-            <li>Velocity templates are <strong>not</strong> limited to HTML 
-            and can be used to produce any type of text output including XML, 
+            <li>Velocity templates are <strong>not</strong> limited to HTML
+            and can be used to produce any type of text output including XML,
             SQL, ASCII, PostScript, etc.</li>
 
-            <li>Velocity enables easy access to dynamic data 
+            <li>Velocity enables easy access to dynamic data
             that Web Designers can understand.</li>
 
-            <li>Velocity being interpreted, enables a simple development cycle 
+            <li>Velocity being interpreted, enables a simple development cycle
             where template errors can quickly be localized and debugged.</li>
 
-            <li>Velocity, which caches templates for speed, has been reported 
+            <li>Velocity, which caches templates for speed, has been reported
             to have performance comparable or better than JSP.</li>
 
-            <li>Velocity is <strong>supported</strong> by an active and helpful 
+            <li>Velocity is <strong>supported</strong> by an active and helpful
             community of users and developers.</li>
         </ul>
         </p>
@@ -122,14 +125,14 @@
           <p>&quot;<i>One of the nicest things it enforces is the separation of presentation
           layer and business logic.  It removes the desire to 'fix' problems by
           just putting a small change into the JSP via scriptlets.  It also makes
-          the code a <strong>lot</strong> more readable which also reduces the 
+          the code a <strong>lot</strong> more readable which also reduces the
           development time.</i>&quot;</p>
-          <p>&quot;<i>Struts is a solid framework and Velocity makes it 
-          even better.</i>&quot;</p>    
-          <p>&quot;<i>I find that the Velocity Tools for Struts works as well, or better, with 
-          Struts than another other presentation technology, bar none. In fact, 
-          most of the tools work just as well with any other framework you might 
-          care to name.</i>&quot; 
+          <p>&quot;<i>Struts is a solid framework and Velocity makes it
+          even better.</i>&quot;</p>
+          <p>&quot;<i>I find that the Velocity Tools for Struts works as well, or better, with
+          Struts than another other presentation technology, bar none. In fact,
+          most of the tools work just as well with any other framework you might
+          care to name.</i>&quot;
           --<a href="http://marc.theaimsgroup.com/?l=velocity-user&amp;m=106520662105461&amp;w=25">Ted Husted</a>
           (author of <a href="http://husted.com/struts/book.html">Struts in Action</a>)</p>
         </blockquote>
@@ -137,7 +140,7 @@
     </section>
 
     <section name="License">
-        <p>This software is licensed under the 
+        <p>This software is licensed under the
         <a href="http://jakarta.apache.org/velocity/license.html">Apache Software License 2.0</a></p>
     </section>
  </body>

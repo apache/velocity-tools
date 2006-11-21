@@ -1,20 +1,23 @@
-/*
- * Copyright 2003-2006 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.apache.velocity.tools.view.tools;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,7 +29,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.velocity.tools.view.context.ViewContext;
 
 /**
- * <p>Abstract view tool for doing request-based pagination of 
+ * <p>Abstract view tool for doing request-based pagination of
  * items in an a list.
  * </p>
  * <p><b>Usage:</b><br>
@@ -116,15 +119,15 @@ public abstract class AbstractPagerTool
     public static final int DEFAULT_SLIP_SIZE = 20;
 
     /** the key under which items are stored in session */
-    protected static final String STORED_ITEMS_KEY = 
+    protected static final String STORED_ITEMS_KEY =
         AbstractPagerTool.class.getName();
-    
+
     private List items;
     private int index = 0;
     private int slipSize = DEFAULT_SLIP_SIZE;
-    private int itemsPerPage = DEFAULT_ITEMS_PER_PAGE;    
+    private int itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
     protected HttpSession session;
-    
+
     /**
      * Initializes this instance by grabbing the request
      * and session objects from the current ViewContext.
@@ -137,13 +140,13 @@ public abstract class AbstractPagerTool
         ViewContext context = (ViewContext)obj;
         HttpServletRequest request = context.getRequest();
         session = request.getSession(false);
-        setup(request);        
+        setup(request);
     }
-    
+
     /**
      * Abstract method to make it as obvious as possible just
      * where implementing classes should be retrieving and configuring
-     * display parameters. 
+     * display parameters.
      * <p>A simple implementation would be:
      * <pre>
      * public void setup(HttpServletRequest req)
@@ -157,7 +160,7 @@ public abstract class AbstractPagerTool
      * @param request the current HttpServletRequest
      */
     public abstract void setup(HttpServletRequest request);
-    
+
     /*  ---------------------- mutators ----------------------------- */
 
 
@@ -171,7 +174,7 @@ public abstract class AbstractPagerTool
         index = 0;
         itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
     }
-    
+
     /**
      * Sets the List to page through.
      *
@@ -181,8 +184,8 @@ public abstract class AbstractPagerTool
     {
         this.items = items;
         setStoredItems(items);
-    }    
-    
+    }
+
     /**
      * Sets the index of the first result in the current page
      *
@@ -196,8 +199,8 @@ public abstract class AbstractPagerTool
             index = 0;
         }
         this.index = index;
-    }    
-    
+    }
+
     /**
      * Sets the number of items returned in a page of items
      *
@@ -212,7 +215,7 @@ public abstract class AbstractPagerTool
         }
         this.itemsPerPage = itemsPerPage;
     }
-    
+
     /**
      * Sets the number of result page indices for {@link #getSlip} to list.
      * (for google-ish result page links).
@@ -229,7 +232,7 @@ public abstract class AbstractPagerTool
         }
         this.slipSize = slipSize;
     }
-    
+
     /*  ---------------------- accessors ----------------------------- */
 
     /**
@@ -243,10 +246,10 @@ public abstract class AbstractPagerTool
     }
 
     /**
-     * Returns the number of result page indices {@link #getSlip} 
+     * Returns the number of result page indices {@link #getSlip}
      * will return per request (if available).
      *
-     * @return the number of result page indices {@link #getSlip} 
+     * @return the number of result page indices {@link #getSlip}
      *         will try to return
      */
     public int getSlipSize()
@@ -288,13 +291,13 @@ public abstract class AbstractPagerTool
         {
             items = getStoredItems();
         }
-        
+
         return (items != null) ? items : Collections.EMPTY_LIST;
-    }    
-    
+    }
+
     /**
      * Returns the index of the last item on the current page of results
-     * (as determined by the current index, items per page, and 
+     * (as determined by the current index, items per page, and
      * the number of items).  If there is no current page, then null is
      * returned.
      *
@@ -313,7 +316,7 @@ public abstract class AbstractPagerTool
 
     /**
      * Returns the index for the next page of items
-     * (as determined by the current index, items per page, and 
+     * (as determined by the current index, items per page, and
      * the number of items).  If no "next page" exists, then null is
      * returned.
      *
@@ -331,7 +334,7 @@ public abstract class AbstractPagerTool
 
     /**
      * Returns the index of the first item on the current page of results
-     * (as determined by the current index, items per page, and 
+     * (as determined by the current index, items per page, and
      * the number of items).  If there is no current page, then null is
      * returned. This is different than {@link #getIndex()} in that it
      * is adjusted to fit the reality of the items available and is not a
@@ -352,7 +355,7 @@ public abstract class AbstractPagerTool
 
     /**
      * Return the index for the previous page of items
-     * (as determined by the current index, items per page, and 
+     * (as determined by the current index, items per page, and
      * the number of items).  If no "next page" exists, then null is
      * returned.
      *
@@ -367,7 +370,7 @@ public abstract class AbstractPagerTool
         }
         return null;
     }
-    
+
     /**
      * Returns the number of pages that can be made from this list
      * given the set number of items per page.
@@ -395,13 +398,13 @@ public abstract class AbstractPagerTool
         int end = getLastIndex().intValue() + 1;
         return getItems().subList(start, end);
     }
-    
+
     /**
      * Returns the "page number" for the specified index.  Because the page
      * number is used for the user interface, the page numbers are 1-based.
      *
      * @param i the index that you want the page number for
-     * @return the approximate "page number" for the specified index or 
+     * @return the approximate "page number" for the specified index or
      *         <code>null</code> if there are no items
      */
     public Integer getPageNumber(int i)
@@ -418,7 +421,7 @@ public abstract class AbstractPagerTool
      * Returns the "page number" for the current index.  Because the page
      * number is used for the user interface, the page numbers are 1-based.
      *
-     * @return the approximate "page number" for the current index or 
+     * @return the approximate "page number" for the current index or
      *         <code>null</code> if there are no items
      */
     public Integer getPageNumber()
@@ -441,11 +444,11 @@ public abstract class AbstractPagerTool
 
     /**
      * <p>Returns a description of the current page.  This implementation
-     * displays a 1-based range of result indices and the total number 
+     * displays a 1-based range of result indices and the total number
      * of items.  (e.g. "1 - 10 of 42" or "7 of 7")  If there are no items,
      * this will return "0 of 0".</p>
      *
-     * <p>Sub-classes may override this to provide a customized 
+     * <p>Sub-classes may override this to provide a customized
      * description (such as one in another language).</p>
      *
      * @return a description of the current page
@@ -477,21 +480,21 @@ public abstract class AbstractPagerTool
         }
         return out.toString();
     }
-    
+
     /**
      * Returns a <b>S</b>liding <b>L</b>ist of <b>I</b>ndices for <b>P</b>ages
      * of items.
      *
      * <p>Essentially, this returns a list of item indices that correspond
-     * to available pages of items (as based on the set items-per-page). 
-     * This makes it relativly easy to do a google-ish set of links to 
+     * to available pages of items (as based on the set items-per-page).
+     * This makes it relativly easy to do a google-ish set of links to
      * available pages.</p>
      *
      * <p>Note that this list of Integers is 0-based to correspond with the
      * underlying result indices and not the displayed page numbers (see
      * {@link #getPageNumber}).</p>
      *
-     * @return {@link List} of Integers representing the indices of result 
+     * @return {@link List} of Integers representing the indices of result
      *         pages or empty list if there's one or less pages available
      */
     public List getSlip()
@@ -506,7 +509,7 @@ public abstract class AbstractPagerTool
         /* page number is 1-based so decrement it */
         int curPg = getPageNumber().intValue() - 1;
 
-        /* start at zero or just under half of max slip size 
+        /* start at zero or just under half of max slip size
          * this keeps "forward" and "back" pages about even
          * but gives preference to "forward" pages */
         int slipStart = Math.max(0, (curPg - (slipSize / 2)));
@@ -514,7 +517,7 @@ public abstract class AbstractPagerTool
         /* push slip end as far as possible */
         int slipEnd = Math.min(totalPgs, (slipStart + slipSize));
 
-        /* if we're out of "forward" pages, then push the 
+        /* if we're out of "forward" pages, then push the
          * slip start toward zero to maintain slip size */
         if (slipEnd - slipStart < slipSize)
         {

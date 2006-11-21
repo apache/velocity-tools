@@ -1,20 +1,23 @@
-/*
- * Copyright 2003-2005 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.apache.velocity.tools.view.tools;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.generic.RenderTool;
@@ -37,7 +40,7 @@ import org.apache.velocity.tools.view.context.ViewContext;
  *      Output
  *      ------
  *      3
- * 
+ *
  * Example of recurse():
  *      Input
  *      -----
@@ -67,7 +70,7 @@ import org.apache.velocity.tools.view.context.ViewContext;
  *
  * <p>This tool is NOT meant to be used in either application or
  * session scopes of a servlet environment.</p>
- * 
+ *
  * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
  * @version $Revision$ $Date$
  */
@@ -80,8 +83,8 @@ public class ViewRenderTool extends RenderTool
      */
     public ViewRenderTool()
     {}
-    
-    
+
+
     /**
      * Initializes this instance.
      *
@@ -100,10 +103,10 @@ public class ViewRenderTool extends RenderTool
 
     /**
      * <p>Evaluates a String containing VTL using the current context,
-     * and returns the result as a String.  If this fails, then 
+     * and returns the result as a String.  If this fails, then
      * <code>null</code> will be returned.  This evaluation is not
      * recursive.</p>
-     * 
+     *
      * @param vtl the code to be evaluated
      * @return the evaluated code as a String
      */
@@ -119,7 +122,7 @@ public class ViewRenderTool extends RenderTool
      * will continue to re-evaluate the output of the last
      * evaluation until an evaluation returns the same code
      * that was fed into it.</p>
-     * 
+     *
      * @param vtl the code to be evaluated
      * @return the evaluated code as a String
      */

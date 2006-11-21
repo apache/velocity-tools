@@ -1,21 +1,23 @@
-/*
- * Copyright 2003 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.apache.velocity.tools.view.servlet;
 
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -73,7 +75,7 @@ import org.apache.velocity.util.SimplePool;
  *     relative to the web application root directory. If this parameter
  *     is not present, Velocity is initialized with default settings.</dd>
  * </dl>
- * 
+ *
  * <p>There are methods you may wish to override to access, alter or control
  * any part of the request processing chain.  Please see the javadocs for
  * more information on :
@@ -109,15 +111,15 @@ public class VelocityViewServlet extends HttpServlet
 
     /** The default content type for the response */
     public static final String DEFAULT_CONTENT_TYPE = "text/html";
-  
+
     /** Default encoding for the output stream */
     public static final String DEFAULT_OUTPUT_ENCODING = "ISO-8859-1";
 
     /**
-     * Key used to access the ServletContext in 
+     * Key used to access the ServletContext in
      * the Velocity application attributes.
      */
-    public static final String SERVLET_CONTEXT_KEY = 
+    public static final String SERVLET_CONTEXT_KEY =
         ServletContext.class.getName();
 
     /**
@@ -131,7 +133,7 @@ public class VelocityViewServlet extends HttpServlet
      * Key used to access the toolbox configuration file path from the
      * Servlet or webapp init parameters ("org.apache.velocity.toolbox").
      */
-    protected static final String TOOLBOX_KEY = 
+    protected static final String TOOLBOX_KEY =
         "org.apache.velocity.toolbox";
 
     /**
@@ -189,10 +191,10 @@ public class VelocityViewServlet extends HttpServlet
         initToolbox(config);
 
         // we can get these now that velocity is initialized
-        defaultContentType = 
+        defaultContentType =
             (String)getVelocityProperty(CONTENT_TYPE, DEFAULT_CONTENT_TYPE);
 
-        String encoding = 
+        String encoding =
             (String)getVelocityProperty(RuntimeConstants.OUTPUT_ENCODING,
                                         DEFAULT_OUTPUT_ENCODING);
 
@@ -216,7 +218,7 @@ public class VelocityViewServlet extends HttpServlet
             }
         }
 
-        velocity.info("VelocityViewServlet: Default content-type is: " + 
+        velocity.info("VelocityViewServlet: Default content-type is: " +
                       defaultContentType);
     }
 
@@ -230,7 +232,7 @@ public class VelocityViewServlet extends HttpServlet
         // check the servlet config
         String param = config.getInitParameter(key);
 
-        if (param == null || param.length() == 0) 
+        if (param == null || param.length() == 0)
         {
             // check the servlet context
             ServletContext servletContext = config.getServletContext();
@@ -292,7 +294,7 @@ public class VelocityViewServlet extends HttpServlet
         /* if we have a toolbox, get a manager for it */
         if (file != null)
         {
-            toolboxManager = 
+            toolboxManager =
                 ServletToolboxManager.getInstance(getServletContext(), file);
         }
         else
@@ -303,13 +305,13 @@ public class VelocityViewServlet extends HttpServlet
 
 
     /**
-     * Initializes the Velocity runtime, first calling 
-     * loadConfiguration(ServletConfig) to get a 
+     * Initializes the Velocity runtime, first calling
+     * loadConfiguration(ServletConfig) to get a
      * org.apache.commons.collections.ExtendedProperties
      * of configuration information
      * and then calling velocityEngine.init().  Override this
-     * to do anything to the environment before the 
-     * initialization of the singleton takes place, or to 
+     * to do anything to the environment before the
+     * initialization of the singleton takes place, or to
      * initialize the singleton in other ways.
      *
      * @param config servlet configuration parameters
@@ -337,8 +339,8 @@ public class VelocityViewServlet extends HttpServlet
 
             // This is a fatal error...
             throw new ServletException(e);
-        }   
- 
+        }
+
         // Try reading an overriding user Velocity configuration
         try
         {
@@ -349,7 +351,7 @@ public class VelocityViewServlet extends HttpServlet
         {
             log("VelocityViewServlet: Unable to read Velocity configuration file: ", e);
             log("VelocityViewServlet: Using default Velocity configuration.");
-        }   
+        }
 
         // now all is ready - init Velocity
         try
@@ -398,10 +400,10 @@ public class VelocityViewServlet extends HttpServlet
         return defaultProperties;
     }
 
-     
+
     /**
-     *  Loads the configuration information and returns that 
-     *  information as an ExtendedProperties, which will be used to 
+     *  Loads the configuration information and returns that
+     *  information as an ExtendedProperties, which will be used to
      *  initialize the Velocity runtime.
      *  <br><br>
      *  Currently, this method gets the initialization parameter
@@ -432,7 +434,7 @@ public class VelocityViewServlet extends HttpServlet
      *       &lt;description&gt; Path to Velocity configuration &lt;/description&gt;
      *    &lt;/context-param&gt;
      *   </pre>
-     * 
+     *
      *  Derived classes may do the same, or take advantage of this code to do the loading for them via :
      *   <pre>
      *      ExtendedProperties p = super.loadConfiguration(config);
@@ -451,7 +453,7 @@ public class VelocityViewServlet extends HttpServlet
     {
         // grab the path to the custom props file (if any)
         String propsFile = findInitParameter(config, INIT_PROPS_KEY);
-        
+
         ExtendedProperties p = new ExtendedProperties();
         if (propsFile != null)
         {
@@ -468,7 +470,7 @@ public class VelocityViewServlet extends HttpServlet
         return p;
     }
 
-          
+
     /**
      * Handles GET - calls doRequest()
      */
@@ -495,7 +497,7 @@ public class VelocityViewServlet extends HttpServlet
      *  @param request  HttpServletRequest object containing client request
      *  @param response HttpServletResponse object for the response
      */
-    protected void doRequest(HttpServletRequest request, 
+    protected void doRequest(HttpServletRequest request,
                              HttpServletResponse response)
          throws ServletException, IOException
     {
@@ -504,12 +506,12 @@ public class VelocityViewServlet extends HttpServlet
         {
             // first, get a context
             context = createContext(request, response);
-            
-            // set the content type 
+
+            // set the content type
             setContentType(request, response);
 
             // get the template
-            Template template = handleRequest(request, response, context);        
+            Template template = handleRequest(request, response, context);
 
             // bail if we can't find the template
             if (template == null)
@@ -540,22 +542,22 @@ public class VelocityViewServlet extends HttpServlet
 
     /**
      * Cleanup routine called at the end of the request processing sequence
-     * allows a derived class to do resource cleanup or other end of 
+     * allows a derived class to do resource cleanup or other end of
      * process cycle tasks.  This default implementation does nothing.
      *
-     * @param request servlet request from client 
-     * @param response servlet reponse 
+     * @param request servlet request from client
+     * @param response servlet reponse
      * @param context Context created by the {@link #createContext}
      */
-    protected void requestCleanup(HttpServletRequest request, 
-                                  HttpServletResponse response, 
+    protected void requestCleanup(HttpServletRequest request,
+                                  HttpServletResponse response,
                                   Context context)
     {
     }
 
 
     /**
-     * <p>Handle the template processing request.</p> 
+     * <p>Handle the template processing request.</p>
      *
      * @param request client request
      * @param response client response
@@ -563,8 +565,8 @@ public class VelocityViewServlet extends HttpServlet
      *
      * @return Velocity Template object or null
      */
-    protected Template handleRequest(HttpServletRequest request, 
-                                     HttpServletResponse response, 
+    protected Template handleRequest(HttpServletRequest request,
+                                     HttpServletResponse response,
                                      Context ctx)
         throws Exception
     {
@@ -581,7 +583,7 @@ public class VelocityViewServlet extends HttpServlet
      * <pre>
      *
      *    response.setContentType(defaultContentType);
-     * 
+     *
      * </pre>
      * where defaultContentType is set to the value of the default.contentType
      * property, or "text/html" if that is not set.</p>
@@ -589,7 +591,7 @@ public class VelocityViewServlet extends HttpServlet
      * @param request servlet request from client
      * @param response servlet reponse to client
      */
-    protected void setContentType(HttpServletRequest request, 
+    protected void setContentType(HttpServletRequest request,
                                   HttpServletResponse response)
     {
         response.setContentType(defaultContentType);
@@ -597,18 +599,18 @@ public class VelocityViewServlet extends HttpServlet
 
 
     /**
-     * <p>Creates and returns an initialized Velocity context.</p> 
-     * 
-     * A new context of class {@link ChainedContext} is created and 
+     * <p>Creates and returns an initialized Velocity context.</p>
+     *
+     * A new context of class {@link ChainedContext} is created and
      * initialized.
      *
      * @param request servlet request from client
      * @param response servlet reponse to client
      */
-    protected Context createContext(HttpServletRequest request, 
+    protected Context createContext(HttpServletRequest request,
                                     HttpServletResponse response)
     {
-        ChainedContext ctx = 
+        ChainedContext ctx =
             new ChainedContext(velocity, request, response, getServletContext());
 
         /* if we have a toolbox manager, get a toolbox from it */
@@ -623,7 +625,7 @@ public class VelocityViewServlet extends HttpServlet
     /**
      * Retrieves the requested template.
      *
-     * @param name The file name of the template to retrieve relative to the 
+     * @param name The file name of the template to retrieve relative to the
      *             template root.
      * @return The requested template.
      * @throws ResourceNotFoundException if template not found
@@ -638,11 +640,11 @@ public class VelocityViewServlet extends HttpServlet
         return velocity.getTemplate(name);
     }
 
-    
+
     /**
      * Retrieves the requested template with the specified character encoding.
      *
-     * @param name The file name of the template to retrieve relative to the 
+     * @param name The file name of the template to retrieve relative to the
      *             template root.
      * @param encoding the character encoding of the template
      * @return The requested template.
@@ -667,11 +669,11 @@ public class VelocityViewServlet extends HttpServlet
      * @param context Context created by the {@link #createContext}
      * @param response servlet reponse (used to get a Writer)
      */
-    protected void mergeTemplate(Template template, 
-                                 Context context, 
+    protected void mergeTemplate(Template template,
+                                 Context context,
                                  HttpServletResponse response)
-        throws ResourceNotFoundException, ParseErrorException, 
-               MethodInvocationException, IOException, 
+        throws ResourceNotFoundException, ParseErrorException,
+               MethodInvocationException, IOException,
                UnsupportedEncodingException, Exception
     {
         VelocityWriter vw = null;
@@ -699,7 +701,7 @@ public class VelocityViewServlet extends HttpServlet
                     // don't close to allow us to play
                     // nicely with others.
                     vw.flush();
-                    /* This hack sets the VelocityWriter's internal ref to the 
+                    /* This hack sets the VelocityWriter's internal ref to the
                      * PrintWriter to null to keep memory free while
                      * the writer is pooled. See bug report #18951 */
                     vw.recycle(null);
@@ -707,17 +709,17 @@ public class VelocityViewServlet extends HttpServlet
                 }
                 catch (Exception e)
                 {
-                    velocity.debug("VelocityViewServlet: " + 
+                    velocity.debug("VelocityViewServlet: " +
                                    "Trouble releasing VelocityWriter: " +
                                    e.getMessage());
-                }                
+                }
             }
         }
     }
 
 
     /**
-     * This is here so developers may override it and gain access to the 
+     * This is here so developers may override it and gain access to the
      * Writer which the template will be merged into.  See
      * <a href="http://issues.apache.org/jira/browse/VELTOOLS-7">VELTOOLS-7</a>
      * for discussion of this.
@@ -733,18 +735,18 @@ public class VelocityViewServlet extends HttpServlet
         template.merge(context, writer);
     }
 
- 
+
     /**
      * Invoked when there is an error thrown in any part of doRequest() processing.
      * <br><br>
      * Default will send a simple HTML response indicating there was a problem.
-     * 
+     *
      * @param request original HttpServletRequest from servlet container.
      * @param response HttpServletResponse object from servlet container.
      * @param e  Exception that was thrown by some other part of process.
      */
-    protected void error(HttpServletRequest request, 
-                         HttpServletResponse response, 
+    protected void error(HttpServletRequest request,
+                         HttpServletResponse response,
                          Exception e)
         throws ServletException
     {
@@ -766,7 +768,7 @@ public class VelocityViewServlet extends HttpServlet
             }
 
             // if it's an MIE, i want the real stack trace!
-            if (cause instanceof MethodInvocationException) 
+            if (cause instanceof MethodInvocationException)
             {
                 // get the real cause
                 cause = ((MethodInvocationException)cause).getWrappedThrowable();

@@ -1,20 +1,23 @@
-/*
- * Copyright 2004-2006 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.apache.velocity.tools.view;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -51,7 +54,7 @@ public class ViewToolInfo implements ToolInfo
     //TODO: if classloading becomes needed elsewhere, move this to a utils class
     /**
      * Return the <code>Class</code> object for the specified fully qualified
-     * class name, from this web application's class loader.  If no 
+     * class name, from this web application's class loader.  If no
      * class loader is set for the current thread, then the class loader
      * that loaded this class will be used.
      *
@@ -74,7 +77,7 @@ public class ViewToolInfo implements ToolInfo
     /***********************  Mutators *************************/
 
     public void setKey(String key)
-    { 
+    {
         this.key = key;
     }
 
@@ -184,9 +187,9 @@ public class ViewToolInfo implements ToolInfo
         {
             tool = clazz.newInstance();
         }
-        /* we shouldn't get exceptions here because we already 
+        /* we shouldn't get exceptions here because we already
          * got an instance of this class during setClassname().
-         * but to be safe, let's catch the declared ones and give 
+         * but to be safe, let's catch the declared ones and give
          * notice of them, and let other exceptions slip by. */
         catch (IllegalAccessException e)
         {

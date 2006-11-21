@@ -1,22 +1,23 @@
-/*
- * Copyright 2003-2004 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-
 package org.apache.velocity.tools.view.servlet;
 
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -41,25 +42,25 @@ import org.apache.velocity.tools.view.context.ViewContext;
  * <p>A toolbox manager for the servlet environment.</p>
  *
  * <p>A toolbox manager is responsible for automatically filling the Velocity
- * context with a set of view tools. This class provides the following 
+ * context with a set of view tools. This class provides the following
  * features:</p>
  * <ul>
- *   <li>configurable through an XML-based configuration file</li>   
+ *   <li>configurable through an XML-based configuration file</li>
  *   <li>assembles a set of view tools (the toolbox) on request</li>
  *   <li>handles different tool scopes (request, session, application)</li>
- *   <li>supports any class with a public constructor without parameters 
+ *   <li>supports any class with a public constructor without parameters
  *     to be used as a view tool</li>
  *   <li>supports adding primitive data values to the context(String,Number,Boolean)</li>
  * </ul>
- * 
+ *
  *
  * <p><strong>Configuration</strong></p>
  * <p>The toolbox manager is configured through an XML-based configuration
  * file. The configuration file is passed to the {@link #load(java.io.InputStream input)}
  * method. The format is shown in the following example:</p>
- * <pre> 
+ * <pre>
  * &lt;?xml version="1.0"?&gt;
- * 
+ *
  * &lt;toolbox&gt;
  *   &lt;tool&gt;
  *      &lt;key&gt;link&lt;/key&gt;
@@ -80,7 +81,7 @@ import org.apache.velocity.tools.view.context.ViewContext;
  *      &lt;value&gt;Hello World!&lt;/value&gt;
  *   &lt;/data&gt;
  *   &lt;xhtml&gt;true&lt;/xhtml&gt;
- * &lt;/toolbox&gt;    
+ * &lt;/toolbox&gt;
  * </pre>
  * <p>The recommended location for the configuration file is the WEB-INF directory of the
  * web application.</p>
@@ -96,7 +97,7 @@ public class ServletToolboxManager extends XMLToolboxManager
 
     // --------------------------------------------------- Properties ---------
 
-    public static final String SESSION_TOOLS_KEY = 
+    public static final String SESSION_TOOLS_KEY =
         ServletToolboxManager.class.getName() + ":session-tools";
 
     protected static final Log LOG = LogFactory.getLog(ServletToolboxManager.class);
@@ -148,7 +149,7 @@ public class ServletToolboxManager extends XMLToolboxManager
         String uniqueKey = servletContext.hashCode() + ':' + toolboxFile;
 
         // check if an instance already exists
-        ServletToolboxManager toolboxManager = 
+        ServletToolboxManager toolboxManager =
             (ServletToolboxManager)managersMap.get(uniqueKey);
 
         if (toolboxManager == null)
@@ -204,13 +205,13 @@ public class ServletToolboxManager extends XMLToolboxManager
      * current request and session-scoped tools have been defined for this
      * toolbox.</p>
      *
-     * <p>If true, then a call to {@link #getToolbox(Object)} will 
+     * <p>If true, then a call to {@link #getToolbox(Object)} will
      * create a new session if none currently exists for this request and
      * the toolbox has one or more session-scoped tools designed.</p>
      *
      * <p>If false, then a call to getToolbox(Object) will never
      * create a new session for the current request.
-     * This effectively means that no session-scoped tools will be added to 
+     * This effectively means that no session-scoped tools will be added to
      * the ToolboxContext for a request that does not have a session object.
      * </p>
      *
@@ -224,7 +225,7 @@ public class ServletToolboxManager extends XMLToolboxManager
 
 
     /**
-     * <p>Sets an application attribute to tell velocimacros and tools 
+     * <p>Sets an application attribute to tell velocimacros and tools
      * (especially the LinkTool) whether they should output XHTML or HTML.</p>
      *
      * @see ViewContext#XHTML
@@ -307,7 +308,7 @@ public class ServletToolboxManager extends XMLToolboxManager
             if (info instanceof ServletToolInfo)
             {
                 ServletToolInfo sti = (ServletToolInfo)info;
-                
+
                 if (ViewContext.REQUEST.equalsIgnoreCase(sti.getScope()))
                 {
                     requestToolInfo.add(sti);
@@ -327,7 +328,7 @@ public class ServletToolboxManager extends XMLToolboxManager
                 }
                 else
                 {
-                    LOG.warn("Unknown scope '" + sti.getScope() + "' - " + 
+                    LOG.warn("Unknown scope '" + sti.getScope() + "' - " +
                             sti.getKey() + " will be request scoped.");
 
                     //default is request scope
@@ -361,7 +362,7 @@ public class ServletToolboxManager extends XMLToolboxManager
      * Session scope tools are initialized once per session and stored in a
      * map in the session attributes.
      * Request scope tools are initialized on every request.
-     * 
+     *
      * @param initData the {@link ViewContext} for the current servlet request
      */
     public Map getToolbox(Object initData)
@@ -422,7 +423,7 @@ public class ServletToolboxManager extends XMLToolboxManager
 
 
     /**
-     * Returns a mutex (lock object) unique to the specified session 
+     * Returns a mutex (lock object) unique to the specified session
      * to allow for reliable synchronization on the session.
      */
     protected Object getMutex(HttpSession session)

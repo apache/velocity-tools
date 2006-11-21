@@ -1,21 +1,24 @@
 <?xml version="1.0"?>
+
 <!--
-  Copyright 2003-2005 The Apache Software Foundation.
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+   http://www.apache.org/licenses/LICENSE-2.0
 
-     http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-
-  $Id$
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
 -->
+
 <document>
   <properties>
     <title>Velocity Tools Changes</title>
@@ -40,7 +43,7 @@
       <li>Added VelocityStruts support for non-resource and session-scoped action messages (patch and help from Niall Pemberton. See Jira issues VELTOOLS-1 and VELTOOLS-51). (ndb)</li>
       <li>Factored generic parsing code out of ParameterParser into new ValueParser for parsing strings pulled from any Map. (ndb)</li>
       <li>Improved error handling/recovery in toolbox xml parsing by adding validation of tool info. (henning)</li>
-      <li>Added BrowserSnifferTool for identifying browsers and their features (contributed by Claude Brisson). This 
+      <li>Added BrowserSnifferTool for identifying browsers and their features (contributed by Claude Brisson). This
           depends on Java 1.4's regexp support for use. (ndb)</li>
       <li>Added EscapeTool for commons escaping needs (contributed by Shinobu Kawai). This requires commons-lang for use. (ndb)</li>
       <li>Added ListTool as utility for using arrays like Lists in templates (contributed by Shinobu Kawai). (ndb)</li>

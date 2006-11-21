@@ -1,20 +1,23 @@
-/*
- * Copyright 2003-2006 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.apache.velocity.tools.generic;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import java.lang.reflect.Array;
 import java.util.Collection;
@@ -135,7 +138,7 @@ public class ValueParser
     /**
      * @param key the desired parameter's key
      * @param alternate The alternate value
-     * @return parameter matching the specified key or the 
+     * @return parameter matching the specified key or the
      *         specified alternate String if there is no matching
      *         parameter
      */
@@ -147,7 +150,7 @@ public class ValueParser
 
     /**
      * @param key the desired parameter's key
-     * @return a {@link Boolean} object for the specified key or 
+     * @return a {@link Boolean} object for the specified key or
      *         <code>null</code> if no matching parameter is found
      */
     public Boolean getBoolean(String key)
@@ -159,7 +162,7 @@ public class ValueParser
     /**
      * @param key the desired parameter's key
      * @param alternate The alternate boolean value
-     * @return boolean value for the specified key or the 
+     * @return boolean value for the specified key or the
      *         alternate boolean is no value is found
      */
     public boolean getBoolean(String key, boolean alternate)
@@ -182,7 +185,7 @@ public class ValueParser
 
     /**
      * @param key the desired parameter's key
-     * @return a {@link Integer} for the specified key or 
+     * @return a {@link Integer} for the specified key or
      *         <code>null</code> if no matching parameter is found
      */
     public Integer getInteger(String key)
@@ -213,7 +216,7 @@ public class ValueParser
 
     /**
      * @param key the desired parameter's key
-     * @return a {@link Double} for the specified key or 
+     * @return a {@link Double} for the specified key or
      *         <code>null</code> if no matching parameter is found
      */
     public Double getDouble(String key)
@@ -244,7 +247,7 @@ public class ValueParser
 
     /**
      * @param key the desired parameter's key
-     * @return a {@link Number} for the specified key or 
+     * @return a {@link Number} for the specified key or
      *         <code>null</code> if no matching parameter is found
      */
     public Number getNumber(String key)
@@ -371,7 +374,7 @@ public class ValueParser
 
     /**
      * @param key the key for the desired parameter
-     * @return an array of Number objects associated with the given key, 
+     * @return an array of Number objects associated with the given key,
      *         or <code>null</code> if Numbers are not associated with it.
      */
     public Number[] getNumbers(String key)
@@ -381,7 +384,7 @@ public class ValueParser
         {
             return null;
         }
-        
+
         Number[] nums = new Number[strings.length];
         try
         {
@@ -412,7 +415,7 @@ public class ValueParser
         {
             return null;
         }
-        
+
         int[] ints = new int[strings.length];
         try
         {
@@ -433,7 +436,7 @@ public class ValueParser
 
     /**
      * @param key the key for the desired parameter
-     * @return an array of double values associated with the given key, 
+     * @return an array of double values associated with the given key,
      *         or <code>null</code> if numbers are not associated with it.
      */
     public double[] getDoubles(String key)
@@ -443,7 +446,7 @@ public class ValueParser
         {
             return null;
         }
-        
+
         double[] doubles = new double[strings.length];
         try
         {
@@ -464,7 +467,7 @@ public class ValueParser
 
 
     // --------------------------- protected methods ------------------
- 
+
     /**
      * Converts a parameter value into a {@link Number}
      * This is used as the base for all numeric parsing methods. So,

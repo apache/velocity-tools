@@ -1,21 +1,24 @@
 <?xml version="1.0"?>
+
 <!--
-  Copyright 2003-2004 The Apache Software Foundation.
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+   http://www.apache.org/licenses/LICENSE-2.0
 
-     http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-
-  $Id: MathTool.xml,v 1.3 2004/02/18 20:23:01 nbubna Exp $
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
 -->
+
 <document>
 
     <properties>
@@ -31,24 +34,24 @@
         <p>Tool for performing floating point math in Velocity.</p>
 
         <p>A few things to note:</p>
-        
+
         <ul>
             <li>Most methods return numbers wrapped as Double
                 which automatically render the decimal places even
-                for whole numbers (e.g. new Double(1).toString() -> '1.0'). 
-                This is intentional. This tool is for floating 
+                for whole numbers (e.g. new Double(1).toString() -> '1.0').
+                This is intentional. This tool is for floating
                 point arithmetic. Integer arithmetic is already supported
-                by the Velocity template language. If you really need '1' 
-                instead of '1.0', just call intValue() on the result.</li> 
+                by the Velocity template language. If you really need '1'
+                instead of '1.0', just call intValue() on the result.</li>
             <li>No null pointer, number format, or divide by zero
                 exceptions are thrown here. This is because such exceptions
-                halt template rendering. It should be sufficient debugging 
+                halt template rendering. It should be sufficient debugging
                 feedback that Velocity will render the reference
                 literally. (e.g. $math.div(1, 0) renders as '$math.div(1, 0)')</li>
             <li>Class <code>java.lang.Math</code> is used to perform the
                 mathematical operations.</li>
-        </ul>    
-        
+        </ul>
+
         <toolinfo>
             <version>@@@version@@@, @@@date@@@</version>
             <clazz>org.apache.velocity.tools.generic.MathTool</clazz>
@@ -67,11 +70,11 @@
 
     <section name="add()">
         <method name="add()">
-    
+
             <abstract>
                 Addition
             </abstract>
-                
+
             <signature>
                 Double add(Object num1, Object num2)
             </signature>
@@ -79,27 +82,27 @@
             <parameters>
                 <parameter name="num1, num2">
                     Operands of the addition. Valid input is any number (primitive
-                    types or objects, Velocity automatically converts primitives types 
+                    types or objects, Velocity automatically converts primitives types
                     to objects) or a string representation of a number.
                 </parameter>
             </parameters>
-    
+
             <returns>
                 A <code>java.lang.Double</code> representing the sum or <code>null</code> if the input
                 paramters are not valid.
             </returns>
-    
+
         </method>
     </section>
 
 
     <section name="sub()">
         <method name="sub()">
-    
+
             <abstract>
                 Subtraction
             </abstract>
-                
+
             <signature>
                 Double sub(Object num1, Object num2)
             </signature>
@@ -107,27 +110,27 @@
             <parameters>
                 <parameter name="num1, num2">
                     Operands of the subtraction. Valid input is any number (primitive
-                    types or objects, Velocity automatically converts primitives types 
+                    types or objects, Velocity automatically converts primitives types
                     to objects) or a string representation of a number.
                 </parameter>
             </parameters>
-    
+
             <returns>
                 A <code>java.lang.Double</code> representing the result of the subtraction
                 or <code>null</code> if the input paramters are not valid.
             </returns>
-    
+
         </method>
     </section>
 
 
     <section name="mul()">
         <method name="mul()">
-    
+
             <abstract>
                 Multiplication
             </abstract>
-                
+
             <signature>
                 Double mul(Object num1, Object num2)
             </signature>
@@ -135,27 +138,27 @@
             <parameters>
                 <parameter name="num1, num2">
                     Factors of the multiplication. Valid input is any number (primitive
-                    types or objects, Velocity automatically converts primitives types 
+                    types or objects, Velocity automatically converts primitives types
                     to objects) or a string representation of a number.
                 </parameter>
             </parameters>
-    
+
             <returns>
                 A <code>java.lang.Double</code> representing the result of the multiplication
                 or <code>null</code> if the input paramters are not valid.
             </returns>
-    
+
         </method>
     </section>
 
 
     <section name="div()">
         <method name="div()">
-    
+
             <abstract>
                 Division
             </abstract>
-                
+
             <signature>
                 Double div(Object num1, Object num2)
             </signature>
@@ -163,27 +166,27 @@
             <parameters>
                 <parameter name="num1, num2">
                     Input for the division. Valid input is any number (primitive
-                    types or objects, Velocity automatically converts primitives types 
+                    types or objects, Velocity automatically converts primitives types
                     to objects) or a string representation of a number.
                 </parameter>
             </parameters>
-    
+
             <returns>
                 A <code>java.lang.Double</code> representing the result of the division
                 or <code>null</code> if the input paramters are not valid.
             </returns>
-    
+
         </method>
     </section>
 
 
     <section name="pow()">
         <method name="pow()">
-    
+
             <abstract>
                 Power of
             </abstract>
-    
+
             <signature>
                 Double pow(Object num1, Object num2)
             </signature>
@@ -191,16 +194,16 @@
             <parameters>
                 <parameter name="num1, num2">
                     Operands. Valid input is any number (primitive
-                    types or objects, Velocity automatically converts primitives types 
+                    types or objects, Velocity automatically converts primitives types
                     to objects) or a string representation of a number.
                 </parameter>
             </parameters>
-    
+
             <returns>
-                A <code>java.lang.Double</code> representing the first number raised to 
+                A <code>java.lang.Double</code> representing the first number raised to
                 the power of the second or <code>null</code> if the input paramters are not valid.
             </returns>
-    
+
        </method>
     </section>
 
@@ -208,11 +211,11 @@
 
     <section name="max()">
         <method name="max()">
-    
+
             <abstract>
                 Maximum of two numbers
             </abstract>
-    
+
             <signature>
                 Double max(Object num1, Object num2)
             </signature>
@@ -220,16 +223,16 @@
             <parameters>
                 <parameter name="num1, num2">
                     Operands. Valid input is any number (primitive
-                    types or objects, Velocity automatically converts primitives types 
+                    types or objects, Velocity automatically converts primitives types
                     to objects) or a string representation of a number.
                 </parameter>
             </parameters>
-    
+
             <returns>
                 A <code>java.lang.Double</code> representing the maximum of the two
                 numbers or <code>null</code> if the input paramters are not valid.
             </returns>
-    
+
        </method>
     </section>
 
@@ -237,11 +240,11 @@
 
     <section name="min()">
         <method name="min()">
-    
+
             <abstract>
                 Minimum of two numbers
             </abstract>
-    
+
             <signature>
                 Double min(Object num1, Object num2)
             </signature>
@@ -249,16 +252,16 @@
             <parameters>
                 <parameter name="num1, num2">
                     Operands. Valid input is any number (primitive
-                    types or objects, Velocity automatically converts primitives types 
+                    types or objects, Velocity automatically converts primitives types
                     to objects) or a string representation of a number.
                 </parameter>
             </parameters>
-    
+
             <returns>
                 A <code>java.lang.Double</code> representing the minimum of the two
                 numbers or <code>null</code> if the input paramters are not valid.
             </returns>
-    
+
        </method>
     </section>
 
@@ -267,11 +270,11 @@
 
     <section name="abs()">
         <method name="abs()">
-    
+
             <abstract>
                 Absolute value of a number
             </abstract>
-    
+
             <signature>
                 Double abs(Object num)
             </signature>
@@ -279,16 +282,16 @@
             <parameters>
                 <parameter name="num">
                     Operand. Valid input is any number (primitive
-                    types or objects, Velocity automatically converts primitives types 
+                    types or objects, Velocity automatically converts primitives types
                     to objects) or a string representation of a number.
                 </parameter>
             </parameters>
-    
+
             <returns>
                 A <code>java.lang.Double</code> representing the absolute value of the
                 input or <code>null</code> if the input paramter is not valid.
             </returns>
-    
+
        </method>
     </section>
 
@@ -297,11 +300,11 @@
 
     <section name="toDouble()">
         <method name="toDouble()">
-    
+
             <abstract>
                 Converts a number into a double.
             </abstract>
-    
+
             <signature>
                 Double toDouble(Object num)
             </signature>
@@ -309,16 +312,16 @@
             <parameters>
                 <parameter name="num">
                     Operand. Valid input is any number (primitive
-                    types or objects, Velocity automatically converts primitives types 
+                    types or objects, Velocity automatically converts primitives types
                     to objects) or a string representation of a number.
                 </parameter>
             </parameters>
-    
+
             <returns>
-                A <code>java.lang.Double</code> representing the input number or 
+                A <code>java.lang.Double</code> representing the input number or
                 <code>null</code> if the input paramter is not valid.
             </returns>
-    
+
        </method>
     </section>
 
@@ -326,11 +329,11 @@
 
     <section name="toInteger()">
         <method name="toInteger()">
-    
+
             <abstract>
                 Converts a number into an integer
             </abstract>
-    
+
             <signature>
                 Integer toInteger(Object num)
             </signature>
@@ -338,16 +341,16 @@
             <parameters>
                 <parameter name="num">
                     Operand. Valid input is any number (primitive
-                    types or objects, Velocity automatically converts primitives types 
+                    types or objects, Velocity automatically converts primitives types
                     to objects) or a string representation of a number.
                 </parameter>
             </parameters>
-    
+
             <returns>
-                A <code>java.lang.Integer</code> representing the input number or 
+                A <code>java.lang.Integer</code> representing the input number or
                 <code>null</code> if the input paramter is not valid.
             </returns>
-    
+
        </method>
     </section>
 
@@ -355,11 +358,11 @@
 
     <section name="roundTo()">
         <method name="roundTo()">
-    
+
             <abstract>
                 Rounds a number to the specified number of decimal places
             </abstract>
-    
+
             <signature>
                 Double roundTo(Object decimals, Object num)
             </signature>
@@ -367,42 +370,42 @@
             <parameters>
                 <parameter name="decimals">
                     The number of decimal places. Valid input is any number (primitive
-                    types or objects, Velocity automatically converts primitives types 
+                    types or objects, Velocity automatically converts primitives types
                     to objects) or a string representation of a number.
                 </parameter>
-                
+
                 <parameter name="num">
                     The number to round. Valid input is any number (primitive
-                    types or objects, Velocity automatically converts primitives types 
+                    types or objects, Velocity automatically converts primitives types
                     to objects) or a string representation of a number.
                 </parameter>
             </parameters>
-    
+
             <returns>
-                A <code>java.lang.Double</code> representing the input number 
-                rounded to the specified number of decimal places or 
+                A <code>java.lang.Double</code> representing the input number
+                rounded to the specified number of decimal places or
                 <code>null</code> if the input paramter is not valid.
             </returns>
-               
+
             <description>
                 <p>This method is particulary useful for simple display formatting.
                 If you want to round an number to the nearest integer, it
-                is better to use method <code><a href="#roundToInt()">roundToInt()</a></code>, 
-                as that will return an <code>java.lang.Integer</code> rather than 
+                is better to use method <code><a href="#roundToInt()">roundToInt()</a></code>,
+                as that will return an <code>java.lang.Integer</code> rather than
                 a <code>java.lang.Double</code>.</p>
             </description>
-    
+
         </method>
     </section>
 
 
     <section name="roundToInt()">
         <method name="roundToInt()">
-    
+
             <abstract>
                 Rounds a number to the nearest whole Integer
             </abstract>
-    
+
             <signature>
                 Integer roundToInt(Object num)
             </signature>
@@ -410,16 +413,16 @@
             <parameters>
                 <parameter name="num">
                     The number to round. Valid input is any number (primitive
-                    types or objects, Velocity automatically converts primitives types 
+                    types or objects, Velocity automatically converts primitives types
                     to objects) or a string representation of a number.
                 </parameter>
             </parameters>
-    
+
             <returns>
-                A <code>java.lang.Integer</code> representing the input number 
+                A <code>java.lang.Integer</code> representing the input number
                 rounded to nearest whole Integer or <code>null</code> if the input paramter is not valid.
             </returns>
-               
+
         </method>
     </section>
 
@@ -427,20 +430,20 @@
 
     <section name="getRandom()">
         <method name="getRandom()">
-    
+
             <abstract>
                 Returns a pseudo-random number
             </abstract>
-    
+
             <signature>
                 Double getRandom()
             </signature>
-    
+
             <returns>
-                A <code>java.lang.Double</code> 
+                A <code>java.lang.Double</code>
                 greater than or equal to 0.0 and less than 1.0.
             </returns>
-    
+
        </method>
     </section>
 
@@ -448,11 +451,11 @@
 
     <section name="random()">
         <method name="random()">
-    
+
             <abstract>
                 Returns a pseudo-random number in a configurable range
             </abstract>
-    
+
             <signature>
                 Integer random(Object num1, Object num2)
             </signature>
@@ -460,17 +463,17 @@
             <parameters>
                 <parameter name="num1, num2">
                     First and last number of range. Valid input is any number (primitive
-                    types or objects, Velocity automatically converts primitives types 
+                    types or objects, Velocity automatically converts primitives types
                     to objects) or a string representation of a number.
                 </parameter>
             </parameters>
-    
+
             <returns>
                 A <code>java.lang.Integer</code> greater than or equal to the first
-                number and less than the second number or <code>null</code> if the input paramter 
+                number and less than the second number or <code>null</code> if the input paramter
                 is not valid.
             </returns>
-               
+
         </method>
     </section>
 
