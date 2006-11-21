@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.    
+-->
+
+<!--
+  This file contains all the jar download targets to build Velocity.
+  Its tasks are referenced from the build.xml file and should not be
+  called directly.
+
+  This is here so that the main build file is not cluttered any further.
+-->
+
+<project name="Velocity" basedir="..">
+  <target name="build-download" unless="velocity.skip.download"
+          description="Download all dependencies needed to build VelocityTools from the central repository">
+    <antcall target="commons-beanutils-download" />
+    <antcall target="commons-collections-download" />
+    <antcall target="commons-digester-download" />
+    <antcall target="commons-lang-download" />
+    <antcall target="commons-logging-download" />
+    <antcall target="commons-validator-download" />
+    <antcall target="oro-download" />
+    <antcall target="servletapi-download" />
+    <antcall target="sslext-download" />
+    <antcall target="struts-download" />
+    <antcall target="velocity-download" />
+  </target>
+
+  <target name="docs-download" unless="velocity.skip.download"
+          description="Download all dependencies needed to render VelocityTools documentation from the central repository">
+    <antcall target="dom4j-download" />
+    <antcall target="velocity-dvsl-download" />
+  </target>
+
+  <target name="http-download" unless="skip.jar.loading">
+    <setproxy proxyhost="${proxy.host}" proxyport="${proxy.port}"/>
+    <get src="${repo.url}/${download.jarname}/jars/${download.jarname}-${download.jarversion}.jar"
+         dest="${lib.dir}/${download.jarname}-${download.jarversion}.jar"
+         usetimestamp="true"
+         verbose="false"
+         ignoreerrors="false" />
+  </target>
+
+  <target name="http-test-download" unless="skip.jar.loading">
+    <setproxy proxyhost="${proxy.host}" proxyport="${proxy.port}"/>
+    <get src="${repo.url}/${download.jarname}/jars/${download.jarname}-${download.jarversion}.jar"
+         dest="${lib.test.dir}/${download.jarname}-${download.jarversion}.jar"
+         usetimestamp="true"
+         verbose="false"
+         ignoreerrors="false" />
+  </target>
+
+  <target name="commons-beanutils-download">
+    <property name="download.jarname" value="commons-beanutils" />
+    <property name="download.jarversion" value="${jar.commons-beanutils.version}" />
+    <antcall target="http-download"/>
+  </target>
+
+  <target name="commons-collections-download">
+    <property name="download.jarname" value="${jar.commons-collections.name}" />
+    <property name="download.jarversion" value="${jar.commons-collections.version}" />
+    <antcall target="http-download"/>
+  </target>
+
+  <target name="commons-digester-download">
+    <property name="download.jarname" value="commons-digester" />
+    <property name="download.jarversion" value="${jar.commons-digester.version}" />
+    <antcall target="http-download"/>
+  </target>
+
+  <target name="commons-lang-download">
+    <property name="download.jarname" value="${jar.commons-lang.name}" />
+    <property name="download.jarversion" value="${jar.commons-lang.version}" />
+    <antcall target="http-download"/>
+  </target>
+
+  <target name="commons-logging-download">
+    <property name="download.jarname" value="commons-logging" />
+    <property name="download.jarversion" value="${jar.commons-logging.version}" />
+    <antcall target="http-download"/>
+  </target>
+
+  <target name="commons-validator-download">
+    <property name="download.jarname" value="commons-validator" />
+    <property name="download.jarversion" value="${jar.commons-validator.version}" />
+    <antcall target="http-download"/>
+  </target>
+
+  <target name="dom4j-download">
+    <property name="download.jarname" value="dom4j" />
+    <property name="download.jarversion" value="${jar.dom4j.version}" />
+    <antcall target="http-download"/>
+  </target>
+
+  <target name="oro-download">
+    <property name="download.jarname" value="${jar.oro.name}" />
+    <property name="download.jarversion" value="${jar.oro.version}" />
+    <antcall target="http-download"/>
+  </target>
+
+  <target name="servletapi-download">
+    <property name="download.jarname" value="servletapi" />
+    <property name="download.jarversion" value="${jar.servletapi.version}" />
+    <antcall target="http-download"/>
+  </target>
+
+  <target name="sslext-download">
+    <property name="download.jarname" value="sslext" />
+    <property name="download.jarversion" value="${jar.sslext.version}" />
+    <antcall target="http-download"/>
+  </target>
+
+  <target name="struts-download">
+    <property name="download.jarname" value="struts" />
+    <property name="download.jarversion" value="${jar.struts.version}" />
+    <antcall target="http-download"/>
+  </target>
+
+  <target name="velocity-download">
+    <property name="download.jarname" value="velocity" />
+    <property name="download.jarversion" value="${jar.velocity.version}" />
+    <antcall target="http-download"/>
+  </target>
+
+  <target name="velocity-dvsl-download">
+    <property name="download.jarname" value="velocity-dvsl" />
+    <property name="download.jarversion" value="${jar.velocity-dvsl.version}" />
+    <antcall target="http-download"/>
+  </target>
+
+</project>
+
