@@ -20,7 +20,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -162,6 +164,37 @@ public class LinkTool implements Cloneable
         }
         //add new pair to this LinkTool's query data
         copy.queryData.add(pair);
+        return copy;
+    }
+
+
+    /**
+     * For internal use.
+     *
+     * Copies 'that' LinkTool into this one and adds the new query data.
+     *
+     * @param queryData the query parameters to add
+     * @since VelocityTools 1.3
+     */
+    protected LinkTool copyWith(Map queryData)
+    {
+        LinkTool copy = duplicate();
+        if (copy.queryData != null)
+        {
+            // set the copy's query data to a shallow clone of 
+            // the current query data array
+            copy.queryData = (ArrayList)this.queryData.clone();
+        }
+        else
+        {
+            copy.queryData = new ArrayList();
+        }
+        for (Iterator i = queryData.keySet().iterator(); i.hasNext(); )
+        {
+            Object key = i.next();
+            Object value = queryData.get(key);
+            copy.queryData.add(new QueryPair(String.valueOf(key), value));
+        }
         return copy;
     }
 
@@ -448,12 +481,37 @@ public class LinkTool implements Cloneable
     }
 
     /**
+     * <p>Adds multiple key=value pairs to the query data. 
+     * This returns a new LinkTool containing both a copy of
+     * this LinkTool's query data and the new data.
+     * Query data is URL encoded before it is appended.</p>
+     *
+     * @param parameters map of new query data keys to values
+     * @return a new instance of LinkTool
+     * @since VelocityTools 1.3
+     */
+    public LinkTool addQueryData(Map parameters)
+    {
+        return copyWith(parameters);
+    }
+
+    /**
      * Convenience method equivalent to {@link #addQueryData}.
      * @since VelocityTools 1.3
      */
     public LinkTool param(Object key, Object value)
     {
         return addQueryData(String.valueOf(key), value);
+    }
+
+    /**
+     * Convenience method equivalent to
+     * {@link #addQueryData(Map parameters)}.
+     * @since VelocityTools 1.3
+     */
+    public LinkTool params(Map parameters)
+    {
+        return copyWith(parameters);
     }
     
     /**
