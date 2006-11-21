@@ -1,5 +1,5 @@
 /*
- * Copyright 2003-2004 The Apache Software Foundation.
+ * Copyright 2003-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -293,6 +293,25 @@ public abstract class AbstractPagerTool
     }    
     
     /**
+     * Returns the index of the last item on the current page of results
+     * (as determined by the current index, items per page, and 
+     * the number of items).  If there is no current page, then null is
+     * returned.
+     *
+     * @return index for the last item on this page or <code>null</code>
+     *         if none exists
+     * @since VelocityTools 1.3
+     */
+    public Integer getLastIndex()
+    {
+        if (!hasItems())
+        {
+            return null;
+        }
+        return new Integer(Math.min(getTotal() - 1, index + itemsPerPage));
+    }
+
+    /**
      * Returns the index for the next page of items
      * (as determined by the current index, items per page, and 
      * the number of items).  If no "next page" exists, then null is
@@ -303,13 +322,33 @@ public abstract class AbstractPagerTool
     public Integer getNextIndex()
     {
         int next = index + itemsPerPage;
-        if (next < getItems().size())
+        if (next < getTotal())
         {
             return new Integer(next);
         }
         return null;
     }
-    
+
+    /**
+     * Returns the index of the first item on the current page of results
+     * (as determined by the current index, items per page, and 
+     * the number of items).  If there is no current page, then null is
+     * returned. This is different than {@link #getIndex()} in that it
+     * is adjusted to fit the reality of the items available and is not a
+     * mere accessor for the current, user-set index value.
+     *
+     * @return index for the first item on this page or <code>null</code>
+     *         if none exists
+     * @since VelocityTools 1.3
+     */
+    public Integer getFirstIndex()
+    {
+        if (!hasItems())
+        {
+            return null;
+        }
+        return new Integer(Math.min(getTotal() - 1, index));
+    }
 
     /**
      * Return the index for the previous page of items
@@ -321,7 +360,7 @@ public abstract class AbstractPagerTool
      */
     public Integer getPrevIndex()
     {
-        int prev = Math.min(index, getItems().size()) - itemsPerPage;
+        int prev = Math.min(index, getTotal()) - itemsPerPage;
         if (index > 0)
         {
             return new Integer(Math.max(0, prev));
@@ -335,7 +374,7 @@ public abstract class AbstractPagerTool
      */
     public int getPagesAvailable()
     {
-        return (int)Math.ceil(getItems().size() / (double)itemsPerPage);
+        return (int)Math.ceil(getTotal() / (double)itemsPerPage);
     }
 
 
@@ -352,8 +391,8 @@ public abstract class AbstractPagerTool
             return null;
         }
         /* quietly keep the page indices to legal values for robustness' sake */
-        int start = Math.min(getItems().size() - 1, index);
-        int end = Math.min(getItems().size(), index + itemsPerPage);
+        int start = getFirstIndex().intValue();
+        int end = getLastIndex().intValue() + 1;
         return getItems().subList(start, end);
     }
     
@@ -388,9 +427,23 @@ public abstract class AbstractPagerTool
     }
 
     /**
+     * Returns the total number of items available.
+     * @since VelocityTools 1.3
+     */
+    public int getTotal()
+    {
+        if (!hasItems())
+        {
+            return 0;
+        }
+        return getItems().size();
+    }
+
+    /**
      * <p>Returns a description of the current page.  This implementation
      * displays a 1-based range of result indices and the total number 
-     * of items.  (e.g. "1 - 10 of 42" or "7 of 7")</p>
+     * of items.  (e.g. "1 - 10 of 42" or "7 of 7")  If there are no items,
+     * this will return "0 of 0".</p>
      *
      * <p>Sub-classes may override this to provide a customized 
      * description (such as one in another language).</p>
@@ -399,9 +452,14 @@ public abstract class AbstractPagerTool
      */
     public String getPageDescription()
     {
+        if (!hasItems())
+        {
+            return "0 of 0";
+        }
+
         StringBuffer out = new StringBuffer();
-        int first = index + 1;
-        int total = getItems().size();
+        int first = getFirstIndex().intValue() + 1;
+        int total = getTotal();
         if (first >= total)
         {
             out.append(total);
@@ -410,7 +468,7 @@ public abstract class AbstractPagerTool
         }
         else
         {
-            int last = Math.min(index + itemsPerPage, total);
+            int last = getLastIndex().intValue() + 1;
             out.append(first);
             out.append(" - ");
             out.append(last);
