@@ -1,5 +1,5 @@
 /*
- * Copyright 2003-2004 The Apache Software Foundation.
+ * Copyright 2003-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@
 package org.apache.velocity.tools.view;
 
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -165,6 +167,31 @@ public class XMLToolboxManager implements ToolboxManager
 
 
     // ------------------------------- toolbox loading methods ------------
+
+    /**
+     * <p>Reads an XML document from the specified file path
+     * and sets up the toolbox from that. If the file does not
+     * exist, an {@link IllegalArgumentException} will be thrown.</p>
+     * 
+     * @param path the path to the file to be read from
+     * @since VelocityTools 1.3
+     */
+    public void load(String path) throws Exception
+    {
+        if (path == null)
+        {
+            throw new IllegalArgumentException("Path value cannot be null");
+        }
+
+        File file = new File(path);
+        if (!file.exists())
+        {
+            throw new IllegalArgumentException("Could not find toolbox config file at: "+path);
+        }
+
+        // ok, load the file
+        load(new FileInputStream(file));
+    }
 
     /**
      * <p>Reads an XML document from an {@link InputStream}
