@@ -21,66 +21,16 @@
 
 <project name="velocity-tools" default="all" basedir=".">
 
-
 <!-- ========== Properties ===================================== -->
 
+  <!-- Give user a chance to override without editing this file
+       (and without typing -D each time it compiles it -->
+  <property file="${user.home}/.ant.properties" />
+  <property file="${user.home}/build.properties" />
+  <property file=".ant.properties" />
+
+  <!-- This file contains all the defaults for building VelocityTools -->
   <property file="build.properties"/>                <!-- Component local   -->
-  <property file="${user.home}/build.properties"/>   <!-- User local        -->
-
-  <property name="project.name"     value="Velocity Tools" />
-  <property name="project.version"  value="1.3-dev"/>
-  <property name="project.id"       value="velocity-tools-${project.version}"/>
-
-  <property name="struts.name"      value="velocity-tools-${project.version}"/>
-  <property name="view.name"        value="velocity-tools-view-${project.version}"/>
-  <property name="generic.name"     value="velocity-tools-generic-${project.version}"/>
-
-  <property name="source.home"      value="${basedir}/src"/>
-  <property name="lib.home"         value="${basedir}/lib"/>
-  <property name="examples.home"    value="${basedir}/examples"/>
-  <property name="conf.home"        value="${source.home}/conf"/>
-
-  <property name="classes.src"      value="${source.home}/java"/>
-  <property name="macros.src"       value="${source.home}/velocity"/>
-  <property name="docs.src"         value="${basedir}/xdocs"/>
-
-  <property name="build.dir"        value="${basedir}/build"/>
-  <property name="classes.dir"      value="${build.dir}/classes"/>
-  <property name="dist.dir"         value="${basedir}/dist"/>
-  <property name="docs.dir"         value="${basedir}/docs"/>
-  <property name="release.dir"      value="${dist.dir}/release/${project.id}"/>
-
-  <property name="javadoc.dir"      value="${docs.dir}/javadoc"/>
-  <property name="javadoc.title"    value="${project.name} ${project.version} Documentation"/>
-
-
-
-<!-- ========== Paths ========================================= -->
-
-  <!-- Construct classpath of all jars in lib repository -->
-  <path id="lib.classpath">
-    <fileset dir="${lib.home}">
-      <include name="**/*.jar"/>
-    </fileset>
-  </path>
-
-  <!-- Construct explicit classpath of libs needed to compile this project -->
-  <path id="compile.classpath">
-    <pathelement location="${commons-beanutils.jar}"/>
-    <pathelement location="${commons-collections.jar}"/>
-    <pathelement location="${commons-digester.jar}"/>
-    <pathelement location="${commons-lang.jar}"/>
-    <pathelement location="${commons-logging.jar}"/>
-    <pathelement location="${commons-validator.jar}"/>
-    <pathelement location="${struts.jar}"/>
-    <pathelement location="${oro.jar}"/>
-    <pathelement location="${sslext.jar}"/>
-    <pathelement location="${servlet.jar}"/>
-    <pathelement location="${velocity.jar}"/>
-
-    <!-- for JDK 1.3 users -->
-    <pathelement location="${xerces.jar}"/>
-  </path>
 
 
 
@@ -88,9 +38,30 @@
 
 
   <!-- Main Target -->
-  <target name="all" depends="clean,jar.struts,examples,javadoc,docs"
+  <target name="all" depends="clean,jar.struts,examples,javadoc,docs,env"
           description="Clean and build velocity-tools library, examples, and documentation."/>
 
+
+  <!-- Environment Target -->
+  <target name="env" description="Prints build parameters">
+    <echo>
+  Global settings:
+    java.home =         ${java.home}
+    user.home =         ${user.home}
+    java.class.path =   ${java.class.path}
+
+  Project settings:
+    Version:            ${project.id}
+    Debug:              ${compile.debug}
+    Optimize:           ${compile.optimize}
+    Deprecation:        ${compile.deprecation}
+
+  Build settings:
+    Source Files:       ${source.home}
+    Build Files:        ${build.dir}
+    Distribution Files: ${dist.dir}
+    </echo>
+  </target>
 
 
   <!-- Clean Target -->
@@ -131,16 +102,71 @@
     <delete dir="${docs.dir}"/>
   </target>
 
-
-
-  <!-- Prepare directories -->
-  <target name="prepare">
-    <echo message="-------- ${project.name} ${project.version} --------"/>
-    <mkdir dir="${build.dir}"/>
-    <mkdir dir="${classes.dir}"/>
-    <mkdir dir="${dist.dir}"/>
+  <!-- To do a truly, completely clean build -->
+  <target name="clean.lib" description="Deletes the folder of downloaded dependencies">
+    <delete dir="${lib.dir}"/>
   </target>
 
+
+  <!-- Prepare Environment -->
+  <target name="prepare" depends="prepare.build,prepare.docs">
+    <!-- make necessary directories -->
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${lib.dir}" />
+    <mkdir dir="${classes.dir}"/>
+    <mkdir dir="${dist.dir}"/>
+
+    <!-- download dependency jars -->
+    <ant antfile="${velocity.build.dir}/download.xml" target="build-download" />
+
+    <!-- construct classpath of all jars in lib repository -->
+    <path id="build.classpath">
+    <fileset dir="${lib.dir}">
+        <include name="**/*.jar"/>
+    </fileset>
+    </path>
+  </target>
+
+  <!-- Prepare Build Environment -->
+  <target name="prepare.build">
+    <echo message="-------- ${project.name} ${project.version} --------"/>
+    
+    <!-- make necessary directories -->
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${lib.dir}" />
+    <mkdir dir="${classes.dir}"/>
+    <mkdir dir="${dist.dir}"/>
+
+    <!-- download dependency jars -->
+    <ant antfile="${basedir}/download.xml" target="build-download" />
+
+    <!-- construct classpath of all jars in lib repository -->
+    <path id="build.classpath">
+    <fileset dir="${lib.dir}">
+        <include name="**/*.jar"/>
+    </fileset>
+    </path>
+  </target>
+
+  <!-- Prepare Documentation Environment -->
+  <target name="prepare.docs">
+    <!-- make necessary directories -->
+    <mkdir dir="${lib.dir}" />
+
+    <!-- download dependency jars -->
+    <ant antfile="${basedir}/download.xml" target="docs-download" />
+
+    <!-- construct classpath of all jars needed to build docs -->
+    <path id="docs.classpath">
+    <fileset dir="${lib.dir}">
+        <include name="**/*.jar"/>
+        <!--include name="dom4j*.jar"/>
+        <include name="commons-collections*.jar"/>
+        <include name="oro*.jar"/>
+        <include name="velocity*.jar"/-->
+    </fileset>
+    </path>
+  </target>
 
 
   <!-- Compile VelocityTools (all of it) -->
@@ -148,14 +174,14 @@
           description="Compiles the Velocity-Tools project (struts, view and generic)"/>
 
   <!-- Compile VelocityStruts (struts, view, generic) -->
-  <target name="compile.struts" depends="prepare"
+  <target name="compile.struts" depends="prepare.build"
           description="Compiles the Velocity-Tools project (struts, view, and generic)">
     <javac srcdir="${classes.src}"
            debug="${compile.debug}"
            optimize="${compile.optimize}"
            deprecation="${compile.deprecation}"
            destdir="${classes.dir}">
-      <classpath refid="compile.classpath" />
+      <classpath refid="build.classpath" />
       <include name="org/**"/>
     </javac>
 
@@ -167,14 +193,14 @@
   </target>
 
   <!-- Compile Just VelocityView (view, generic) -->
-  <target name="compile.view" depends="prepare"
+  <target name="compile.view" depends="prepare.build"
           description="Compiles VelocityView and the generic tools">
     <javac srcdir="${classes.src}"
            debug="${compile.debug}"
            optimize="${compile.optimize}"
            deprecation="${compile.deprecation}"
            destdir="${classes.dir}">
-      <classpath refid="compile.classpath" />
+      <classpath refid="build.classpath" />
       <include name="org/**"/>
       <exclude name="**/struts/**"/>
     </javac>
@@ -187,14 +213,14 @@
   </target>
 
   <!-- Compile Just Generic Tools (generic) -->
-  <target name="compile.generic" depends="prepare"
+  <target name="compile.generic" depends="prepare.build"
           description="Compiles just the generic tools in this project">
     <javac srcdir="${classes.src}"
            debug="${compile.debug}"
            optimize="${compile.optimize}"
            deprecation="${compile.deprecation}"
            destdir="${classes.dir}">
-      <classpath refid="compile.classpath" />
+      <classpath refid="build.classpath" />
       <include name="org/**"/>
       <exclude name="**/struts/**"/>
       <exclude name="**/view/**"/>
@@ -210,27 +236,84 @@
   <!-- Jar VelocityStruts (struts, view, generic) -->
   <target name="jar.struts" depends="compile.struts"
           description="Creates a velocity-tools jar in the dist directory.">
-    <jar destfile="${dist.dir}/${struts.name}.jar"
-         basedir="${classes.dir}"/>
+    <jar jarfile="${dist.dir}/${struts.id}.jar">
+      <fileset dir="${classes.dir}"/>
+      <metainf dir="${basedir}">
+        <include name="LICENSE"/>
+        <include name="NOTICE"/>
+      </metainf>
+      <manifest>
+        <attribute name="Created-By" value="Apache Ant"/>
+        <attribute name="Package" value="org.apache.velocity.tools"/>
+        <attribute name="Build-Jdk" value="${java.version}"/>
+        <attribute name="Extension-Name" value="${struts.libname}"/>
+        <attribute name="Specification-Title" value="${struts.name} is ${struts.description}" />
+        <attribute name="Specification-Vendor" value="Apache Software Foundation"/>
+        <attribute name="Implementation-Title" value="org.apache.velocity"/>
+        <attribute name="Implementation-Vendor-Id" value="org.apache"/>
+        <attribute name="Implementation-Vendor" value="Apache Software Foundation"/>
+        <attribute name="Implementation-Version" value="${project.version}"/>
+      </manifest>
+    </jar>
+    <checksum file="${dist.dir}/${struts.id}.jar" algorithm="md5" fileext=".md5"/>
+    <checksum file="${dist.dir}/${struts.id}.jar" algorithm="sha1" fileext=".sha1"/>
   </target>
 
   <!-- Jar Just VelocityView (view, generic) -->
   <target name="jar.view" depends="compile.view"
           description="Creates a velocity-tools-view jar in the dist directory">
-    <jar destfile="${dist.dir}/${view.name}.jar"
-         basedir="${classes.dir}">
-      <exclude name="**/struts/**"/>
+    <jar jarfile="${dist.dir}/${view.id}.jar">
+      <fileset dir="${classes.dir}">
+          <exclude name="**/struts/**"/>
+      </fileset>
+      <metainf dir="${basedir}">
+        <include name="LICENSE"/>
+        <include name="NOTICE"/>
+      </metainf>
+      <manifest>
+        <attribute name="Created-By" value="Apache Ant"/>
+        <attribute name="Package" value="org.apache.velocity.tools"/>
+        <attribute name="Build-Jdk" value="${java.version}"/>
+        <attribute name="Extension-Name" value="${view.libname}"/>
+        <attribute name="Specification-Title" value="${view.name} is ${view.description}" />
+        <attribute name="Specification-Vendor" value="Apache Software Foundation"/>
+        <attribute name="Implementation-Title" value="org.apache.velocity"/>
+        <attribute name="Implementation-Vendor-Id" value="org.apache"/>
+        <attribute name="Implementation-Vendor" value="Apache Software Foundation"/>
+        <attribute name="Implementation-Version" value="${project.version}"/>
+      </manifest>
     </jar>
+    <checksum file="${dist.dir}/${view.id}.jar" algorithm="md5" fileext=".md5"/>
+    <checksum file="${dist.dir}/${view.id}.jar" algorithm="sha1" fileext=".sha1"/>
   </target>
 
   <!-- Jar Just Generic Tools (generic) -->
   <target name="jar.generic" depends="compile.generic"
           description="Creates a velocity-tools-generic jar in the dist directory">
-    <jar destfile="${dist.dir}/${generic.name}.jar"
-         basedir="${classes.dir}">
-      <exclude name="**/struts/**"/>
-      <exclude name="**/view/**"/>
+    <jar jarfile="${dist.dir}/${generic.id}.jar">
+      <fileset dir="${classes.dir}">
+          <exclude name="**/struts/**"/>
+          <exclude name="**/view/**"/>
+      </fileset>
+      <metainf dir="${basedir}">
+        <include name="LICENSE"/>
+        <include name="NOTICE"/>
+      </metainf>
+      <manifest>
+        <attribute name="Created-By" value="Apache Ant"/>
+        <attribute name="Package" value="org.apache.velocity.tools.generic"/>
+        <attribute name="Build-Jdk" value="${java.version}"/>
+        <attribute name="Extension-Name" value="${generic.libname}"/>
+        <attribute name="Specification-Title" value="${generic.name} is ${generic.description}" />
+        <attribute name="Specification-Vendor" value="Apache Software Foundation"/>
+        <attribute name="Implementation-Title" value="org.apache.velocity.tools"/>
+        <attribute name="Implementation-Vendor-Id" value="org.apache"/>
+        <attribute name="Implementation-Vendor" value="Apache Software Foundation"/>
+        <attribute name="Implementation-Version" value="${project.version}"/>
+      </manifest>
     </jar>
+    <checksum file="${dist.dir}/${generic.id}.jar" algorithm="md5" fileext=".md5"/>
+    <checksum file="${dist.dir}/${generic.id}.jar" algorithm="sha1" fileext=".sha1"/>
   </target>
 
 
@@ -245,9 +328,9 @@
              version="true"
              doctitle="&lt;h1&gt;${javadoc.title}&lt;/h1&gt;"
              windowtitle="${javadoc.title}"
-             bottom="Copyright (c) 2003-2006 Apache Software Foundation" >
+             bottom="Copyright (c) ${javadoc.year} Apache Software Foundation" >
 
-      <classpath refid="compile.classpath"/>
+      <classpath refid="build.classpath"/>
       <sourcepath>
         <pathelement path="${classes.src}" />
       </sourcepath>
@@ -257,15 +340,10 @@
 
 
   <!-- Build Velocity-Tools documentation -->
-  <target name="docs" description="Generate documentation into ${docs.dir}">
+  <target name="docs" depends="prepare.docs"
+          description="Generate documentation into ${docs.dir}">
     <taskdef name="dvsl" classname="org.apache.tools.dvsl.DVSLTask">
-      <classpath>
-        <pathelement location="${dom4j.jar}"/>
-        <pathelement location="${commons-collections.jar}"/>
-        <pathelement location="${oro.jar}"/>
-        <pathelement location="${velocity.jar}"/>
-        <pathelement location="${velocity-dvsl.jar}"/>
-      </classpath>
+      <classpath refid="docs.classpath"/>
     </taskdef>
 
     <dvsl basedir="${docs.src}"
@@ -317,7 +395,7 @@
     </delete>
 
     <!-- Assemble and build the simple example -->
-    <copy todir="${simple.lib}" file="${dist.dir}/${view.name}.jar"/>
+    <copy todir="${simple.lib}" file="${dist.dir}/${view.id}.jar"/>
     <copy todir="${simple.lib}" file="${commons-collections.jar}"/>
     <copy todir="${simple.lib}" file="${commons-digester.jar}"/>
     <copy todir="${simple.lib}" file="${commons-beanutils.jar}"/>
@@ -346,10 +424,11 @@
     <delete>
       <fileset dir="${velstruts.lib}" includes="velocity-tools*.jar"/>
     </delete>
-    <copy todir="${velstruts.lib}" file="${dist.dir}/${struts.name}.jar"/>
+    <copy todir="${velstruts.lib}" file="${dist.dir}/${struts.id}.jar"/>
     <copy todir="${velstruts.lib}" file="${commons-beanutils.jar}"/>
     <copy todir="${velstruts.lib}" file="${commons-collections.jar}"/>
     <copy todir="${velstruts.lib}" file="${commons-digester.jar}"/>
+    <copy todir="${velstruts.lib}" file="${commons-lang.jar}"/>
     <copy todir="${velstruts.lib}" file="${commons-logging.jar}"/>
     <copy todir="${velstruts.lib}" file="${commons-validator.jar}"/>
     <copy todir="${velstruts.lib}" file="${servlet.jar}"/>
@@ -357,7 +436,6 @@
     <copy todir="${velstruts.lib}" file="${struts.jar}"/>
     <copy todir="${velstruts.lib}" file="${oro.jar}"/>
     <copy todir="${velstruts.lib}" file="${velocity.jar}"/>
-    <copy todir="${velstruts.lib}" file="${commons-lang.jar}"/>
 
     <!-- Build VelocityStruts examples -->
     <ant dir="${examples.home}/struts" target="all" inheritAll="false"/>
@@ -378,13 +456,13 @@
     </delete>
 
     <!-- Assemble and build the layout example -->
-    <copy todir="${layout.lib}" file="${dist.dir}/${view.name}.jar"/>
+    <copy todir="${layout.lib}" file="${dist.dir}/${view.id}.jar"/>
     <copy todir="${layout.lib}" file="${commons-beanutils.jar}"/>
     <copy todir="${layout.lib}" file="${commons-collections.jar}"/>
     <copy todir="${layout.lib}" file="${commons-digester.jar}"/>
+    <copy todir="${layout.lib}" file="${commons-lang.jar}"/>
     <copy todir="${layout.lib}" file="${oro.jar}"/>
     <copy todir="${layout.lib}" file="${velocity.jar}"/>
-    <copy todir="${layout.lib}" file="${commons-lang.jar}"/>
 
     <ant dir="${examples.home}/layout" target="war" inheritAll="false"/>
   </target>
@@ -392,7 +470,7 @@
 
   <!-- Convenient target for rolling releases -->
   <target name="release"
-          depends="release.source,release.binaries"
+          depends="release.source,release.binaries,env"
           description="Creates binary and source distribution files"/>
 
   <!-- Create source distribution files -->
@@ -405,7 +483,6 @@
       <fileset dir="${basedir}">
         <include name="*"/>
         <include name="examples/**"/>
-        <include name="lib/**"/>
         <include name="src/**"/>
         <include name="xdocs/**"/>
       </fileset>
@@ -414,18 +491,23 @@
       <tarfileset dir="${basedir}">
         <include name="*"/>
         <include name="examples/**"/>
-        <include name="lib/**"/>
         <include name="src/**"/>
         <include name="xdocs/**"/>
       </tarfileset>
     </tar>
     <gzip zipfile="${dist.dir}/${project.id}-src.tar.gz"
           src="${dist.dir}/${project.id}-src.tar"/>
+
+    <!-- Create checksums for the binary distribution files -->
+    <checksum file="${dist.dir}/${project.id}-src.zip" algorithm="md5" fileext=".md5"/>
+    <checksum file="${dist.dir}/${project.id}-src.zip" algorithm="sha1" fileext=".sha1"/>
+    <checksum file="${dist.dir}/${project.id}-src.tar.gz" algorithm="md5" fileext=".md5"/>
+    <checksum file="${dist.dir}/${project.id}-src.tar.gz" algorithm="sha1" fileext=".sha1"/>
   </target>
 
   <!-- Create binary distribution files -->
   <target name="release.binaries"
-          depends="jar.struts,jar.view,jar.generic,examples,javadoc,docs"
+          depends="clean.lib,jar.struts,jar.view,jar.generic,examples,javadoc,docs"
           description="Builds everything and creates the binary distribution files">
 
     <!-- Gather misc docs/files -->
@@ -478,6 +560,12 @@
          basedir="${dist.dir}/release"/>
     <gzip zipfile="${dist.dir}/${project.id}.tar.gz"
           src="${dist.dir}/${project.id}.tar"/>
+
+    <!-- Create checksums for the binary distribution files -->
+    <checksum file="${dist.dir}/${project.id}.zip" algorithm="md5" fileext=".md5"/>
+    <checksum file="${dist.dir}/${project.id}.zip" algorithm="sha1" fileext=".sha1"/>
+    <checksum file="${dist.dir}/${project.id}.tar.gz" algorithm="md5" fileext=".md5"/>
+    <checksum file="${dist.dir}/${project.id}.tar.gz" algorithm="sha1" fileext=".sha1"/>
   </target>
 
 </project>
