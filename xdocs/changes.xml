@@ -30,7 +30,25 @@
     <p>This document tracks the changes in Velocity Tools between releases.</p>
 
     <subsection name="1.3-dev">
-        <p>None so far...</p>
+        <p>This section describes changes after the 1.2 release.</p>
+        <ul>
+        <li>VELTOOLS-71: Overhauled ant build process: dependencies are now automatically download, jars have manifests, checksums are auto-generated, and more. Also, building with JDK 1.3 is no longer supported. (ndb)</li>
+        <li>Updated license headers and notices to comply with new ASF policy. (henning)</li>
+        <li>Made auto-alternate default of AlternatorTool configurable via toolbox config. (ndb)</li>
+        <li>Add addQueryData(Map) and params(Map) method to LinkTool. Thanks to Mark Brunkhart for this. (ndb)</li>
+        <li>VELTOOLS-56: Fixed a number of problems with ImportSupport. Thanks to Christopher Schultz for this. (ndb)</li>
+        <li>VELTOOLS-67: Add ability to restrict availability of request-scoped tools according to a request path value set in the tool configuration. Thanks to Claude Brisson for this. (ndb)</li>
+        <li>VELTOOLS-68: Change VelocityViewServlet to read logger and resource loader config from velocity.properties file instead of hard-coding it. (henning)</li>
+        <li>Added setAbsolute() and absolute() methods to LinkTool. (ndb)</li>
+        <li>Made default format of DateTool configurable via toolbox definition. (ndb)</li>
+        <li>Deprecated ViewTool and Configurable interfaces. ViewToolInfo has been enhanced to automatically recognize such tools by checking for init(Object) and/or configure(Map) methods. (ndb)</li>
+        <li>Enhanced TextKey trick in MessageTool to make using args and bundles easier. (ndb)</li>
+        <li>Add getInteger() and getDouble() convenience methods to ValueParser. (ndb)</li>
+        <li>Added get() method to StrutsLinkTool to allow syntax like <code>$link.action.saveFoo</code>. (ndb)</li>
+        <li>Added param(), relative(), anchor(), and uri() convenience methods to LinkTool. (ndb)</li>
+        <li>Added currency(), number(), integer(), and percent() convenience methods to NumberTool. (ndb)</li>
+        <li>Changed auto-alternate default in AlternatorTool to match Alternator default.</li>
+        </ul>
     </subsection>
 
     <subsection name="1.2">
