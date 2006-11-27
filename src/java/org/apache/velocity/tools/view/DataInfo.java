@@ -44,7 +44,7 @@ package org.apache.velocity.tools.view;
  *  &lt;/data&gt;
  * </pre></p>
  *
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  *
  * @version $Id$
  */

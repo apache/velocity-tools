@@ -43,7 +43,7 @@ import org.apache.velocity.tools.view.context.ViewContext;
  * <p>This class is only designed for use as a request-scope tool.</p>
  *
  * @author <a href="mailto:dim@colebatch.com">Dmitri Colebatch</a>
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @since VelocityTools 1.1
  * @version $Id$
  */

@@ -50,7 +50,7 @@ import java.util.Locale;
  * key methods provides an easy way to create subclasses that use
  * a non-default format or locale.</p>
  *
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @author <a href="mailto:mkienenb@alaska.net">Mike Kienenberger</a>
  * @since VelocityTools 1.2
  * @version $Id$

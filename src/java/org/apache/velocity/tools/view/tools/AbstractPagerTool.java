@@ -105,7 +105,7 @@ import org.apache.velocity.tools.view.context.ViewContext;
  * </pre>
  * </p>
  *
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @since VelocityTools 1.2
  * @version $Revision$ $Date$
  */

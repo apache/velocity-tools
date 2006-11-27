@@ -47,7 +47,7 @@ import org.apache.velocity.tools.view.context.ViewContext;
  * This class is, however, quite useful in your application's controller, filter,
  * or action code as well as in templates.</p>
  *
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @version $Revision$ $Date$
  */
 public class ParameterParser extends ValueParser

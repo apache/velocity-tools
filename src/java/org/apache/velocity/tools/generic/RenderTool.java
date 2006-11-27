@@ -76,7 +76,7 @@ import org.apache.velocity.context.Context;
  * <p>This tool is safe (and optimized) for use in the application
  * scope of a servlet environment.</p>
  *
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @version $Revision$ $Date$
  */
 public class RenderTool

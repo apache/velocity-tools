@@ -44,7 +44,7 @@ import org.apache.velocity.exception.ResourceNotFoundException;
  * the VLS_README.txt file that hopefully made it into the docs
  * somewhere.
  *
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @version $Id$
  */
 

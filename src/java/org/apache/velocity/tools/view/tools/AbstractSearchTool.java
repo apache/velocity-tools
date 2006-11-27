@@ -127,7 +127,7 @@ import java.util.List;
  * </pre>
  * </p>
  *
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @since VelocityTools 1.0
  * @version $Revision$ $Date$
  */

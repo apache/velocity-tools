@@ -68,7 +68,7 @@ import org.apache.velocity.tools.view.context.ViewContext;
  * @author David Winterfeldt
  * @author David Graham
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @since VelocityTools 1.1
  * @version $Revision$ $Date$
  */

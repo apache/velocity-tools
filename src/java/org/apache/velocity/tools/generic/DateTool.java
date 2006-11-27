@@ -62,7 +62,7 @@ import java.util.TimeZone;
  * key methods provides an easy way to create subclasses that use
  * a non-default format, calendar, locale, or timezone.</p>
  *
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @since VelocityTools 1.0
  * @version $Revision$ $Date$
  */

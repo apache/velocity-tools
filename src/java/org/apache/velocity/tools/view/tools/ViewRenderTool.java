@@ -71,7 +71,7 @@ import org.apache.velocity.tools.view.context.ViewContext;
  * <p>This tool is NOT meant to be used in either application or
  * session scopes of a servlet environment.</p>
  *
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @version $Revision$ $Date$
  */
 public class ViewRenderTool extends RenderTool
