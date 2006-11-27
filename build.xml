@@ -70,17 +70,7 @@
     <delete dir="${dist.dir}"/>
 
     <!-- Clean example applications  -->
-    <ant dir="${examples.home}/simple" target="clean" inheritAll="false"/>
-    <ant dir="${examples.home}/struts" target="clean" inheritAll="false"/>
-    <ant dir="${examples.home}/layout" target="clean" inheritAll="false"/>
-    <delete>
-      <fileset dir="${examples.home}/simple/WEB-INF/lib" includes="*.jar"/>
-      <fileset dir="${examples.home}/struts/WEB-INF/lib" includes="*.jar"/>
-      <fileset dir="${examples.home}/layout/WEB-INF/lib" includes="*.jar"/>
-    </delete>
-    <delete>
-      <fileset dir="${examples.home}" includes="*.war"/>
-    </delete>
+    <ant antfile="${basedir}/examples.xml" target="clean-examples" />
   </target>
 
   <!-- To help rebuild the documentation -->
@@ -376,96 +366,32 @@
 
 
   <!-- Build all example applications -->
-  <target name="examples"
-          depends="example.simple,example.struts,example.layout"
-          description="Compiles and jars all example applications."/>
-
-
+  <target name="examples" depends="jar.view,jar.struts"
+          description="Compiles and jars all example applications.">
+    <ant antfile="${basedir}/examples.xml" target="build-examples" />
+  </target>
 
   <!-- Build VelocityView - Simple application -->
-  <target name="example.simple" depends="jar.view"
+  <target name="simple" depends="jar.view"
           description="Compiles and jars the VelocityView example application.">
-
-    <property name="simple.lib" value="${examples.home}/simple/WEB-INF/lib"/>
-
-    <!-- Clean up any past build -->
-    <delete file="${examples.home}/simple.war"/>
-    <delete>
-      <fileset dir="${simple.lib}" includes="velocity-tools*.jar"/>
-    </delete>
-
-    <!-- Assemble and build the simple example -->
-    <copy todir="${simple.lib}" file="${dist.dir}/${view.id}.jar"/>
-    <copy todir="${simple.lib}" file="${commons-collections.jar}"/>
-    <copy todir="${simple.lib}" file="${commons-digester.jar}"/>
-    <copy todir="${simple.lib}" file="${commons-beanutils.jar}"/>
-    <copy todir="${simple.lib}" file="${commons-logging.jar}"/>
-    <copy todir="${simple.lib}" file="${oro.jar}"/>
-    <copy todir="${simple.lib}" file="${velocity.jar}"/>
-    <copy todir="${simple.lib}" file="${commons-lang.jar}"/>
-
-    <ant dir="${examples.home}/simple" target="war" inheritAll="false"/>
+    <property name="target" value="war"/>
+    <ant antfile="${basedir}/examples.xml" target="simple-example" />
   </target>
-
-
-
-  <!-- Build VelocityStruts example application -->
-  <target name="example.struts" depends="jar.struts"
-          description="Compiles and jars the VelocityStruts example application.">
-
-    <property name="velstruts.lib" value="${examples.home}/struts/WEB-INF/lib"/>
-
-    <!-- Clean away old war -->
-    <delete>
-      <fileset dir="${examples.home}" includes="velstruts.war"/>
-    </delete>
-
-    <!-- Deploy jars -->
-    <delete>
-      <fileset dir="${velstruts.lib}" includes="velocity-tools*.jar"/>
-    </delete>
-    <copy todir="${velstruts.lib}" file="${dist.dir}/${struts.id}.jar"/>
-    <copy todir="${velstruts.lib}" file="${commons-beanutils.jar}"/>
-    <copy todir="${velstruts.lib}" file="${commons-collections.jar}"/>
-    <copy todir="${velstruts.lib}" file="${commons-digester.jar}"/>
-    <copy todir="${velstruts.lib}" file="${commons-lang.jar}"/>
-    <copy todir="${velstruts.lib}" file="${commons-logging.jar}"/>
-    <copy todir="${velstruts.lib}" file="${commons-validator.jar}"/>
-    <copy todir="${velstruts.lib}" file="${servlet.jar}"/>
-    <copy todir="${velstruts.lib}" file="${sslext.jar}"/>
-    <copy todir="${velstruts.lib}" file="${struts.jar}"/>
-    <copy todir="${velstruts.lib}" file="${oro.jar}"/>
-    <copy todir="${velstruts.lib}" file="${velocity.jar}"/>
-
-    <!-- Build VelocityStruts examples -->
-    <ant dir="${examples.home}/struts" target="all" inheritAll="false"/>
-  </target>
-
-
 
   <!-- Build VelocityView - Layout application -->
-  <target name="example.layout" depends="jar.view"
+  <target name="layout" depends="jar.view"
           description="Compiles and jars the VelocityView Layout example application.">
-
-    <property name="layout.lib" value="${examples.home}/layout/WEB-INF/lib"/>
-
-    <!-- Clean up any past build -->
-    <delete file="${examples.home}/layout.war"/>
-    <delete>
-      <fileset dir="${layout.lib}" includes="velocity-tools*.jar"/>
-    </delete>
-
-    <!-- Assemble and build the layout example -->
-    <copy todir="${layout.lib}" file="${dist.dir}/${view.id}.jar"/>
-    <copy todir="${layout.lib}" file="${commons-beanutils.jar}"/>
-    <copy todir="${layout.lib}" file="${commons-collections.jar}"/>
-    <copy todir="${layout.lib}" file="${commons-digester.jar}"/>
-    <copy todir="${layout.lib}" file="${commons-lang.jar}"/>
-    <copy todir="${layout.lib}" file="${oro.jar}"/>
-    <copy todir="${layout.lib}" file="${velocity.jar}"/>
-
-    <ant dir="${examples.home}/layout" target="war" inheritAll="false"/>
+    <property name="target" value="war"/>
+    <ant antfile="${basedir}/examples.xml" target="layout-example" />
   </target>
+
+  <!-- Build VelocityStruts example application -->
+  <target name="struts" depends="jar.struts"
+          description="Compiles and jars the VelocityStruts example application.">
+    <property name="target" value="war"/>
+    <ant antfile="${basedir}/examples.xml" target="struts-example" />
+  </target>
+
 
 
   <!-- Convenient target for rolling releases -->
