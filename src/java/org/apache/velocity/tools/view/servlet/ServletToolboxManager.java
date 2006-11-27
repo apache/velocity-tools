@@ -87,7 +87,7 @@ import org.apache.velocity.tools.view.context.ViewContext;
  * web application.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabriel Sidler</a>
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  * @author <a href="mailto:henning@schmiedehausen.org">Henning P. Schmiedehausen</a>
  * @version $Id$

@@ -49,7 +49,7 @@ import org.apache.velocity.runtime.resource.loader.ResourceLoader;
  * requires the webapp.resource.loader.cache property to be set to 'false'.
  *
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @author <a href="mailto:claude@savoirweb.com">Claude Brisson</a>
  * @version $Id$  */
 

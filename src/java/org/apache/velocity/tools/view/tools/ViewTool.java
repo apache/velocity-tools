@@ -26,7 +26,7 @@ package org.apache.velocity.tools.view.tools;
  * tools to initialize them.  See
  * {@link org.apache.velocity.tools.view.ViewToolInfo} for more on this.
  *
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @version $Id$
  * @deprecated Your tools now only need to have an init(Object) method.
  */

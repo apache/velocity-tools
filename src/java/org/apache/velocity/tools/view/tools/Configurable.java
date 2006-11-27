@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * Interface for tools that can be passed configuration parameters.
  *
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @version $Id$
  * @since VelocityTools 1.2
  * @deprecated Your tools now only need to have a configure(Map) method.

@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * Common interface for toolbox manager implementations.
  *
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:henning@schmiedehausen.org">Henning P. Schmiedehausen</a>

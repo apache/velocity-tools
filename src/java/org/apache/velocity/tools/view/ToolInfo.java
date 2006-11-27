@@ -26,7 +26,7 @@ package org.apache.velocity.tools.view;
  * key for the tool and sufficient information to return
  * an instance of the tool.
  *
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  *
  * @version $Id$
  */

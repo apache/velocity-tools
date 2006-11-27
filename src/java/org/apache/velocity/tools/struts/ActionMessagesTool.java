@@ -51,7 +51,7 @@ import org.apache.struts.util.MessageResources;
  * <p>This tool should only be used in the request scope.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @since VelocityTools 1.1
  * @version $Id$
  */

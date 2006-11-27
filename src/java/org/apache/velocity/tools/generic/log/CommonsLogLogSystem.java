@@ -42,7 +42,7 @@ import org.apache.velocity.runtime.log.LogSystem;
  * </code>
  * </p>
  *
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @since VelocityTools 1.1
  * @version $Id$
  */

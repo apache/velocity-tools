@@ -29,7 +29,7 @@ import org.xml.sax.Attributes;
  * configuration file (<code>toolbox.xml</code>) for the
  * XMLToolboxManager class.</p>
  *
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @author <a href="mailto:henning@schmiedehausen.org">Henning P. Schmiedehausen</a>
  * @since VelocityTools 1.1
  * @version $Id$

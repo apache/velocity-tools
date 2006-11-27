@@ -43,7 +43,7 @@ package org.apache.velocity.tools.struts;
  * <p>Since VelocityTools 1.1, ErrorsTool extends ActionMessagesTool.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @since VelocityTools 1.0
  * @version $Id$
  */

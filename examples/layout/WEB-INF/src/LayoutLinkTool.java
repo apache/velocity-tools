@@ -24,7 +24,7 @@ import org.apache.velocity.tools.view.servlet.VelocityLayoutServlet;
  * This is meant to demonstrate how to extend the LinkTool to
  * avoid the manual use of "magic" or common query parameters.
  *
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @version $Id$
  */
 public class LayoutLinkTool extends LinkTool

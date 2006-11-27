@@ -47,7 +47,7 @@ import org.apache.velocity.tools.view.ViewToolInfo;
  *  &lt;/tool&gt;
  *  </pre></p>
  *
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  *
  * @version $Id$
  */

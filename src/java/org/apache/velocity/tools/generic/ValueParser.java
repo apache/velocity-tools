@@ -42,7 +42,7 @@ import java.util.Map;
  *
  * <p>This comes in very handy when parsing parameters.</p>
  *
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @version $Revision$ $Date$
  * @since VelocityTools 1.2
  */

@@ -34,7 +34,7 @@ import org.apache.commons.logging.LogFactory;
  * configure(Map) method will be configured before being returned
  * if there are parameters specified for the tool.
  *
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @author <a href="mailto:henning@schmiedehausen.org">Henning P. Schmiedehausen</a>
  * @version $Id$
  */

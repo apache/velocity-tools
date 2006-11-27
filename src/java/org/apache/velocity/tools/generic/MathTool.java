@@ -48,7 +48,7 @@ import org.apache.commons.beanutils.PropertyUtils;
  * &lt;/tool&gt;
  * </pre></p>
  *
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  * @author Leon Messerschmidt
  * @version $Revision$ $Date$
  */

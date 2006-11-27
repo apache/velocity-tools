@@ -95,7 +95,7 @@ import org.apache.velocity.util.SimplePool;
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author <a href="mailto:kjohnson@transparent.com">Kent Johnson</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
- * @author <a href="mailto:nathan@esha.com">Nathan Bubna</a>
+ * @author Nathan Bubna
  *
  * @version $Id$
  */
