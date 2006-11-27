@@ -27,8 +27,8 @@
   This is here so that the main build file is not cluttered any further.
 -->
 
-<project name="Velocity" basedir="..">
-  <target name="build-download" unless="velocity.skip.download"
+<project name="VelocityTools" basedir=".">
+  <target name="build-download"
           description="Download all dependencies needed to build VelocityTools from the central repository">
     <antcall target="commons-beanutils-download" />
     <antcall target="commons-collections-download" />
@@ -43,7 +43,7 @@
     <antcall target="velocity-download" />
   </target>
 
-  <target name="docs-download" unless="velocity.skip.download"
+  <target name="docs-download"
           description="Download all dependencies needed to render VelocityTools documentation from the central repository">
     <antcall target="dom4j-download" />
     <antcall target="commons-collections-download" />
