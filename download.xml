@@ -46,6 +46,8 @@
   <target name="docs-download" unless="velocity.skip.download"
           description="Download all dependencies needed to render VelocityTools documentation from the central repository">
     <antcall target="dom4j-download" />
+    <antcall target="commons-collections-download" />
+    <antcall target="velocity-download" />
     <antcall target="velocity-dvsl-download" />
   </target>
 
