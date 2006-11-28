@@ -52,19 +52,39 @@
   </target>
 
   <target name="http-download" unless="skip.jar.loading">
+    <condition property="jar.present">
+      <and>
+        <isfalse value="${force.jar.loading}"/>
+        <available file="${lib.dir}/${download.jarname}-${download.jarversion}.jar"/>
+      </and>
+    </condition>
+    <antcall target="do-http-download"/>
+  </target>
+
+  <target name="do-http-download" unless="jar.present">
     <setproxy proxyhost="${proxy.host}" proxyport="${proxy.port}"/>
     <get src="${repo.url}/${download.jarname}/jars/${download.jarname}-${download.jarversion}.jar"
          dest="${lib.dir}/${download.jarname}-${download.jarversion}.jar"
-         usetimestamp="true"
+         usetimestamp="false"
          verbose="false"
          ignoreerrors="false" />
   </target>
 
   <target name="http-test-download" unless="skip.jar.loading">
+    <condition property="jar.present">
+      <and>
+        <isfalse value="${force.jar.loading}"/>
+        <available file="${lib.test.dir}/${download.jarname}-${download.jarversion}.jar"/>
+      </and>
+    </condition>
+    <antcall target="do-http-test-download"/>
+  </target>
+
+  <target name="do-http-test-download" unless="jar.present">
     <setproxy proxyhost="${proxy.host}" proxyport="${proxy.port}"/>
     <get src="${repo.url}/${download.jarname}/jars/${download.jarname}-${download.jarversion}.jar"
          dest="${lib.test.dir}/${download.jarname}-${download.jarversion}.jar"
-         usetimestamp="true"
+         usetimestamp="false"
          verbose="false"
          ignoreerrors="false" />
   </target>
