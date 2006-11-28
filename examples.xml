@@ -93,6 +93,7 @@
 
   <target name="example-compile">
     <!-- run the dependencies target -->
+    <mkdir dir="${lib}"/>
     <antcall target="${name}-dependencies"/>
 
     <!-- compile the classes -->
@@ -136,9 +137,7 @@
 
   <target name="example-clean">
     <delete file="${examples.home}/${name}.war"/>
-    <delete>
-      <fileset dir="${lib}" includes="*.jar"/>
-    </delete>
+    <delete dir="${lib}" />
     <delete dir="${base}/WEB-INF/classes"/>
   </target>
 
