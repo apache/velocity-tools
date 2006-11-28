@@ -438,6 +438,7 @@
 
     <!-- Gather misc docs/files -->
     <mkdir dir="${release.dir}"/>
+    <copy todir="${release.dir}" file="${basedir}/CONTRIBUTORS"/>
     <copy todir="${release.dir}" file="${basedir}/LICENSE"/>
     <copy todir="${release.dir}" file="${basedir}/NOTICE"/>
     <copy todir="${release.dir}" file="${basedir}/STATUS"/>
@@ -451,17 +452,9 @@
     </copy>
 
     <!-- Gather all project dependencies -->
-    <copy todir="${release.dir}/lib" file="${commons-beanutils.jar}"/>
-    <copy todir="${release.dir}/lib" file="${commons-collections.jar}"/>
-    <copy todir="${release.dir}/lib" file="${commons-digester.jar}"/>
-    <copy todir="${release.dir}/lib" file="${commons-logging.jar}"/>
-    <copy todir="${release.dir}/lib" file="${commons-validator.jar}"/>
-    <copy todir="${release.dir}/lib" file="${commons-validator.jar}"/>
-    <copy todir="${release.dir}/lib" file="${sslext.jar}"/>
-    <copy todir="${release.dir}/lib" file="${struts.jar}"/>
-    <copy todir="${release.dir}/lib" file="${oro.jar}"/>
-    <copy todir="${release.dir}/lib" file="${velocity.jar}"/>
-    <copy todir="${release.dir}/lib" file="${commons-lang.jar}"/>
+    <copy todir="${release.dir}/lib">
+      <fileset dir="${lib.dir}" includes="*.jar"/>
+    </copy>
 
     <!-- Gather example war files -->
     <mkdir dir="${release.dir}/examples"/>
@@ -486,6 +479,11 @@
          basedir="${dist.dir}/release"/>
     <gzip zipfile="${dist.dir}/${project.id}.tar.gz"
           src="${dist.dir}/${project.id}.tar"/>
+
+    <!-- Delete TAR files as they're no longer needed -->
+    <delete>
+      <fileset dir="${dist.dir}" includes="*.tar"/>
+    </delete>
 
     <!-- Create checksums for the binary distribution files -->
     <checksum file="${dist.dir}/${project.id}.zip" algorithm="md5" fileext=".md5"/>
