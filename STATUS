@@ -19,7 +19,6 @@ Documentation:
 Proposed Features/Upgrades:
     General:
         - convert project to use Maven
-        - stop keeping jars in CVS
         
     VelocityView:
         - add a library of velocimacros for use with these tools
