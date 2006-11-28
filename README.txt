@@ -18,7 +18,6 @@ VelocityView
     JspServlet. It includes toolbox support. (Also contains a
     VelocityLayoutServlet to support more advanced template rendering
     as an alternative to Tiles.)
-    
 
 Generic tools
 
@@ -58,17 +57,17 @@ To build only the generic tools jar, execute:
 
 > ant jar.generic
 
-To build the simple example for VelocityView, execute:
+To build only the simple example for VelocityView, execute:
 
-> ant example.simple
+> ant simple
 
-To build the VelocityStruts example, execute:
+To build only the VelocityStruts example, execute:
 
-> ant example.struts
+> ant struts
 
-To build the VelocityLayoutServlet example, execute:
+To build only the VelocityLayoutServlet example, execute:
 
-> ant example.layout
+> ant layout
 
 
 Please note:
