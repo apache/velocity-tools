@@ -35,7 +35,8 @@ import org.apache.velocity.tools.view.context.ChainedContext;
 import org.apache.velocity.tools.view.context.ViewContext;
 
 /**
- * <p>View tool for convenient access to context meta-data.</p>
+ * <p>View tool for convenient access to {@link ViewContext} data and
+ *  meta-data.</p>
  * <p><pre>
  * Template example(s):
  *  #foreach( $key in $context.keys )
@@ -123,9 +124,10 @@ public class ContextTool
         Set keys = new HashSet();
 
         // get the tool keys, if there is a toolbox
-        if (this.toolbox != null)
+        Map tools = getToolbox();
+        if (tools != null)
         {
-            keys.addAll(getToolbox().keySet());
+            keys.addAll(tools.keySet());
         }
 
         // recurse down the velocity context collecting keys
