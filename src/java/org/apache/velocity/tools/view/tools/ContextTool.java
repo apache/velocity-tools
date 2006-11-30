@@ -101,6 +101,14 @@ public class ContextTool
 
 
     /**
+     * Returns the context being analyzed by this tool.
+     */
+    public ViewContext getThis()
+    {
+        return this.context;
+    }
+
+    /**
      * <p>Returns a read-only view of the toolbox {@link Map}
      * for this context.</p>
      * @return an unmodifiable version of the toolbox for this request
