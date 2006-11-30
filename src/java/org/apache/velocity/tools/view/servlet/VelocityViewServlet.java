@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.ExtendedProperties;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
@@ -756,14 +757,16 @@ public class VelocityViewServlet extends HttpServlet
             html.append("<html>\n");
             html.append("<head><title>Error</title></head>\n");
             html.append("<body>\n");
-            html.append("<h2>VelocityViewServlet : Error processing the template</h2>\n");
+            html.append("<h2>VelocityViewServlet : Error processing a template for path '");
+            html.append(ServletUtils.getPath(request));
+            html.append("'</h2>\n");
 
             Throwable cause = e;
 
             String why = cause.getMessage();
             if (why != null && why.trim().length() > 0)
             {
-                html.append(why);
+                html.append(StringEscapeUtils.escapeHtml(why));
                 html.append("\n<br>\n");
             }
 
@@ -778,7 +781,7 @@ public class VelocityViewServlet extends HttpServlet
             cause.printStackTrace(new PrintWriter(sw));
 
             html.append("<pre>\n");
-            html.append(sw.toString());
+            html.append(StringEscapeUtils.escapeHtml(sw.toString()));
             html.append("</pre>\n");
             html.append("</body>\n");
             html.append("</html>");
