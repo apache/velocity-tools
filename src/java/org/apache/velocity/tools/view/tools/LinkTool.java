@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.view.context.ViewContext;
+import org.apache.velocity.tools.view.servlet.ServletUtils;
 
 /**
  * View tool to make building URIs pleasant and fun!
@@ -457,14 +458,24 @@ public class LinkTool implements Cloneable
     }
 
     /**
-     * <p>Returns the current URI of this link as set by the setURI(String)
-     * or setRelative(String) methods. Any conversions
+     * <p>Returns the current URI of this link as set by the setURI(String),
+     * setAbsolute(String) or setRelative(String) methods. Any conversions
      * have been applied. The returned URI reference does not include query
      * data that was added with method addQueryData().</p>
      */
     public String getURI()
     {
         return uri;
+    }
+
+    /**
+     * Convenience method equivalent to {@link #getURI} to enable
+     * all lowercase {@code $link.uri} syntax.
+     * @since VelocityTools 1.3
+     */
+    public String getUri()
+    {
+        return getURI();
     }
 
 
@@ -540,6 +551,16 @@ public class LinkTool implements Cloneable
         return null;
     }
 
+    /**
+     * Convenience method equivalent to
+     * {@link #getQueryData()}.
+     * @since VelocityTools 1.3
+     */
+    public String getParams()
+    {
+        return getQueryData();
+    }
+
 
     /**
      * <p>Returns the URI that addresses this web application. E.g.
@@ -592,7 +613,7 @@ public class LinkTool implements Cloneable
     {
         StringBuffer out = new StringBuffer();
         out.append(getContextURL());
-        out.append(request.getServletPath());
+        out.append(ServletUtils.getPath(request));
         return out.toString();
     }
 
