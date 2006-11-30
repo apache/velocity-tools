@@ -19,6 +19,7 @@ package org.apache.velocity.tools.view.context;
  * under the License.
  */
 
+import java.util.Collections;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -130,6 +131,22 @@ public class ChainedContext extends VelocityContext implements ViewContext
          * had to create a new session to hold session tools
          * let's make sure this context's session ref is current */
         this.session = request.getSession(false);
+    }
+
+    /**
+     * <p>Returns a read-only view of the toolbox {@link Map}
+     * for this context.</p>
+     * @since VelocityTools 1.3
+     * @return an unmodifiable version of the toolbox for this request
+     *         or {@code null} if there is none
+     */
+    public Map getToolbox()
+    {
+        if (this.toolbox != null)
+        {
+            return Collections.unmodifiableMap(this.toolbox);
+        }
+        return null;
     }
 
 
