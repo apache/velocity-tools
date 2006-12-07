@@ -212,7 +212,7 @@ public abstract class AbstractSearchTool extends AbstractPagerTool
             return Collections.EMPTY_LIST;
         }
 
-        /* get the current list */
+        /* get the current list (should never return null!) */
         List list = super.getItems();
 
         /* if empty, execute a query for the criteria */
