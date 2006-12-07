@@ -231,7 +231,7 @@ public class LinkTool implements Cloneable
      * @param queryData the query parameters to add
      * @since VelocityTools 1.3
      */
-    protected LinkTool copyWith(Map queryData)
+    protected LinkTool copyWith(Map newQueryData)
     {
         LinkTool copy = duplicate();
         if (copy.queryData != null)
@@ -244,10 +244,10 @@ public class LinkTool implements Cloneable
         {
             copy.queryData = new ArrayList();
         }
-        for (Iterator i = queryData.keySet().iterator(); i.hasNext(); )
+        for (Iterator i = newQueryData.keySet().iterator(); i.hasNext(); )
         {
             Object key = i.next();
-            Object value = queryData.get(key);
+            Object value = newQueryData.get(key);
             copy.queryData.add(new QueryPair(String.valueOf(key), value));
         }
         return copy;
@@ -582,6 +582,11 @@ public class LinkTool implements Cloneable
      */
     public LinkTool addQueryData(Map parameters)
     {
+        // don't waste time with null/empty data
+        if (parameters == null || parameters.isEmpty())
+        {
+            return this;
+        }
         return copyWith(parameters);
     }
 
@@ -601,7 +606,7 @@ public class LinkTool implements Cloneable
      */
     public LinkTool params(Map parameters)
     {
-        return copyWith(parameters);
+        return addQueryData(parameters);
     }
 
     /**
