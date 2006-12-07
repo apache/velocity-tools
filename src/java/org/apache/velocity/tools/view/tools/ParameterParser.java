@@ -19,8 +19,6 @@ package org.apache.velocity.tools.view.tools;
  * under the License.
  */
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Map;
 import javax.servlet.ServletRequest;
 import org.apache.velocity.tools.generic.ValueParser;
@@ -160,31 +158,11 @@ public class ParameterParser extends ValueParser
 
     /**
      * Overrides ValueParser.getSource() to return the result
-     * of getRequest().getParameterMap() if Servlet 2.3 or above
-     * is being used.  Otherwise, this throws an
-     * UnsupportedOperationException, because the class uses a
-     * servlet request as its source, not a Map.
+     * of getRequest().getParameterMap().
      */
     protected Map getSource()
     {
-        try
-        {
-            // use reflection so we can compile against Servlet 2.2
-            Method getmap = ServletRequest.class.getMethod("getParameterMap", null);
-            return (Map)getmap.invoke(getRequest(), null);
-        }
-        catch (NoSuchMethodException nsme)
-        {
-            throw new UnsupportedOperationException("This method is only supported with Servlet 2.3 and higher.");
-        }
-        catch (IllegalAccessException iae)
-        {
-            throw new UnsupportedOperationException("ServletRequest.getParameterMap() is restricted - " + iae);
-        }
-        catch (InvocationTargetException ite)
-        {
-            throw new UnsupportedOperationException("ServletRequest.getParameterMap() threw an exception - " + ite);
-        }
+        return getRequest().getParameterMap();
     }
 
 }
