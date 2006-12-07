@@ -117,7 +117,7 @@ public class CookieTool
      */
     public void add(String name, String value)
     {
-        response.addCookie(new Cookie(name, value));
+        response.addCookie(create(name, value));
     }
 
 
@@ -129,12 +129,67 @@ public class CookieTool
      * @param value the value to be set for this cookie
      * @param maxAge the expiry to be set for this cookie
      */
-    public void add(String name, String value, int maxAge)
+    public void add(String name, String value, Object maxAge)
     {
-        /* c is for cookie.  that's good enough for me. */
-        Cookie c = new Cookie(name, value);
-        c.setMaxAge(maxAge);
+        Cookie c = create(name, value, maxAge);
+        if (c == null)
+        {
+            /* TODO: something better? */
+            return;
+        }
         response.addCookie(c);
     }
 
+
+    /**
+     * Creates a new Cookie with the specified name and value.
+     * This does *not* add the Cookie to the response, so the
+     * created Cookie will not be set unless you do
+     * <code>$response.addCookie($myCookie)</code>.
+     *
+     * @param name the name to give this cookie
+     * @param value the value to be set for this cookie
+     * @returns the new Cookie object
+     * @since VelocityTools 1.3
+     */
+    public Cookie create(String name, String value)
+    {
+        return new Cookie(name, value);
+    }
+
+
+    /**
+     * Convenience method to create a new Cookie
+     * and set an expiry time for it.
+     *
+     * @param name the name to give this cookie
+     * @param value the value to be set for this cookie
+     * @param maxAge the expiry to be set for this cookie
+     * @returns the new Cookie object
+     * @since VelocityTools 1.3
+     */
+    public Cookie create(String name, String value, Object maxAge)
+    {
+        int expiry;
+        if (maxAge instanceof Number)
+        {
+            expiry = ((Number)maxAge).intValue();
+        }
+        else
+        {
+            try
+            {
+                expiry = Integer.parseInt(String.valueOf(maxAge));
+            }
+            catch (NumberFormatException nfe)
+            {
+                return null;
+            }
+        }
+        
+        /* c is for cookie.  that's good enough for me. */
+        Cookie c = new Cookie(name, value);
+        c.setMaxAge(expiry);
+        return c;
+    }
 }
