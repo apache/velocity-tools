@@ -165,4 +165,12 @@ public class ParameterParser extends ValueParser
         return getRequest().getParameterMap();
     }
 
+    /**
+     * Returns the map of all parameters available for the current request.
+     */
+    public Map getAll()
+    {
+        return getSource();
+    }
+
 }
