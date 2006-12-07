@@ -66,19 +66,19 @@ import org.apache.velocity.tools.view.context.ViewContext;
  *     #end
  *     &lt;br&gt;
  *     #if ( $pager.pagesAvailable &gt; 1 )
- *       #set( $pagelink = $link.setRelative('pager.vm').addQueryData("find",$!pager.criteria).addQueryData("show",$!pager.itemsPerPage) )
+ *       #set( $pagelink = $link.self.param("show",$!pager.itemsPerPage) )
  *       #if( $pager.prevIndex )
- *           &lt;a href="$pagelink.addQueryData('index',$!pager.prevIndex)"&gt;Prev&lt;/a&gt;
+ *           &lt;a href="$pagelink.param('index',$!pager.prevIndex)"&gt;Prev&lt;/a&gt;
  *       #end
  *       #foreach( $index in $pager.slip )
  *         #if( $index == $pager.index )
  *           &lt;b&gt;$pager.pageNumber&lt;/b&gt;
  *         #else
- *           &lt;a href="$pagelink.addQueryData('index',$!index)"&gt;$!pager.getPageNumber($index)&lt;/a&gt;
+ *           &lt;a href="$pagelink.param('index',$!index)"&gt;$!pager.getPageNumber($index)&lt;/a&gt;
  *         #end
  *       #end
  *       #if( $pager.nextIndex )
- *           &lt;a href="$pagelink.addQueryData('index',$!pager.nextIndex)"&gt;Next&lt;/a&gt;
+ *           &lt;a href="$pagelink.param('index',$!pager.nextIndex)"&gt;Next&lt;/a&gt;
  *       #end
  *     #end
  *   #else
@@ -311,7 +311,7 @@ public abstract class AbstractPagerTool
         {
             return null;
         }
-        return new Integer(Math.min(getTotal() - 1, index + itemsPerPage));
+        return new Integer(Math.min(getTotal() - 1, index + itemsPerPage - 1));
     }
 
     /**
