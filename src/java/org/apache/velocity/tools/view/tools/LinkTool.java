@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.velocity.tools.generic.ValueParser;
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.servlet.ServletUtils;
 
@@ -63,6 +64,18 @@ public class LinkTool implements Cloneable
 {
     protected static final Log LOG = LogFactory.getLog(LinkTool.class);
 
+    /**
+     * Parameter key for configuring {@link #setSelfAbsolute} state
+     * @since VelocityTools 1.3
+     */
+    public static final String SELF_ABSOLUTE_KEY = "self-absolute";
+
+    /**
+     * Parameter key for configuring {@link #setSelfIncludeParameters} state
+     * @since VelocityTools 1.3
+     */
+    public static final String SELF_INCLUDE_PARAMETERS_KEY = "self-include-parameters";
+
     /** Standard HTML delimiter for query data ('&') */
     public static final String HTML_QUERY_DELIMITER = "&";
 
@@ -91,6 +104,12 @@ public class LinkTool implements Cloneable
 
     /** The current delimiter for query data */
     private String queryDataDelim;
+
+    /** The self-absolute status */
+    private boolean selfAbsolute;
+
+    /** The self-include-parameters status */
+    private boolean selfParams;
 
 
     /** Java 1.4 encode method to use instead of deprecated 1.3 version. */
@@ -122,6 +141,8 @@ public class LinkTool implements Cloneable
         anchor = null;
         queryData = null;
         queryDataDelim = HTML_QUERY_DELIMITER;
+        selfAbsolute = false;
+        selfParams = false;
     }
 
 
@@ -143,6 +164,36 @@ public class LinkTool implements Cloneable
     {
         queryDataDelim =
             (useXhtml) ? XHTML_QUERY_DELIMITER : HTML_QUERY_DELIMITER;
+    }
+
+    /**
+     * <p>Controls whether or not the {@link #getSelf()} method will return
+     *    a duplicate with a URI in absolute or relative form.</p>
+     *
+     * @param selfAbsolute if true, the {@link #getSelf()} method will return
+     *        a duplicate of this tool with an absolute self-referencing URI;
+     *        if false, a duplicate with a relative self-referencing URI will
+     *        be returned
+     * @see #getSelf()
+     * @since VelocityTools 1.3
+     */
+    protected void setSelfAbsolute(boolean selfAbsolute)
+    {
+        this.selfAbsolute = selfAbsolute;
+    }
+
+    /**
+     * <p>Controls whether or not the {@link #getSelf()} method will return
+     *    a duplicate that includes current request parameters.</p>
+     *
+     * @param selfParams if true, the {@link #getSelf()} method will return
+     *        a duplicate of this tool that includes current request parameters
+     * @see #getSelf()
+     * @since VelocityTools 1.3
+     */
+    protected void setSelfIncludeParameters(boolean selfParams)
+    {
+        this.selfParams = selfParams;
     }
 
 
@@ -266,10 +317,35 @@ public class LinkTool implements Cloneable
             copy.anchor = this.anchor;
             copy.queryData = this.queryData;
             copy.queryDataDelim = this.queryDataDelim;
+            copy.selfAbsolute = this.selfAbsolute;
+            copy.selfParams = this.selfParams;
             return copy;
         }
     }
 
+
+    // --------------------------------------- Toolbox Methods -------------
+
+    /**
+     * Configures this tool
+     *
+     * @param params Map of configuration parameters
+     * @since VelocityTools 1.3
+     */
+    public void configure(Map params)
+    {
+        ValueParser parser = new ValueParser(params);
+        Boolean selfAbsolute = parser.getBoolean(SELF_ABSOLUTE_KEY);
+        if (selfAbsolute != null)
+        {
+            setSelfAbsolute(selfAbsolute.booleanValue());
+        }
+        Boolean selfParams = parser.getBoolean(SELF_INCLUDE_PARAMETERS_KEY);
+        if (selfParams != null)
+        {
+            setSelfIncludeParameters(selfParams.booleanValue());
+        }
+    }
 
     /**
      * Initializes this tool.
@@ -602,6 +678,21 @@ public class LinkTool implements Cloneable
 
 
     /**
+     * <p>Retrieves the path for the current request regardless of
+     * whether this is a direct request or an include by the
+     * RequestDispatcher. Note! This will not
+     * represent any URI reference or query data set for this
+     * LinkTool.</p>
+     *
+     * @since VelocityTools 1.3
+     */
+    public String getRequestPath()
+    {
+        return ServletUtils.getPath(request);
+    }
+
+
+    /**
      * Returns the full URI of this template without any query data.
      * e.g. <code>http://myserver.net/myapp/stuff/View.vm</code>
      * Note! The returned String will not represent any URI reference
@@ -613,8 +704,44 @@ public class LinkTool implements Cloneable
     {
         StringBuffer out = new StringBuffer();
         out.append(getContextURL());
-        out.append(ServletUtils.getPath(request));
+        out.append(getRequestPath());
         return out.toString();
+    }
+
+
+    /**
+     * This method returns a new "self-referencing" LinkTool for the current
+     * request. By default, this is merely a shortcut for calling
+     * {@link #relative(String uri)} using the result of
+     * {@link #getRequestPath()}.  However, this tool can be configured
+     * to return an absolute URI and/or to include the parameters of the
+     * current request (in addition to any others set so far).
+     *
+     * @see {@link #uri(String uri)}
+     * @see {@link #configure(Map params)}
+     * @see {@link #setSelfAbsolute(boolean selfAbsolute)}
+     * @see {@link #setSelfIncludeParameters(boolean selfParams)}
+     * @since VelocityTools 1.3
+     */
+    public LinkTool getSelf()
+    {
+        // first set the uri per configuration
+        LinkTool dupe;
+        if (this.selfAbsolute)
+        {
+            dupe = uri(getBaseRef());
+        }
+        else
+        {
+            dupe = relative(getRequestPath());
+        }
+
+        // then add the params (if so configured)
+        if (this.selfParams)
+        {
+            dupe.params(request.getParameterMap());
+        }
+        return dupe;
     }
 
 
@@ -658,9 +785,18 @@ public class LinkTool implements Cloneable
             out.append(encodeURL(anchor));
         }
 
-        // encode session ID into URL if sessions are used but cookies are
-        // not supported
-        return response.encodeURL(out.toString());
+        String str = out.toString();
+        if (str.length() == 0)
+        {
+            // avoid a potential NPE from Tomcat's response.encodeURL impl
+            return str;
+        }
+        else
+        {
+            // encode session ID into URL if sessions are used but cookies are
+            // not supported
+            return response.encodeURL(str);
+        }
     }
 
 
