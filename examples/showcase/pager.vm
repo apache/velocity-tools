@@ -1,0 +1,133 @@
+## Licensed to the Apache Software Foundation (ASF) under one
+## or more contributor license agreements.  See the NOTICE file
+## distributed with this work for additional information
+## regarding copyright ownership.  The ASF licenses this file
+## to you under the Apache License, Version 2.0 (the
+## "License"); you may not use this file except in compliance
+## with the License.  You may obtain a copy of the License at
+##
+##   http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing,
+## software distributed under the License is distributed on an
+## "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+## KIND, either express or implied.  See the License for the
+## specific language governing permissions and limitations
+## under the License.
+#title( 'AbstractPagerTool' )
+<p>
+This page demonstrates functions of the #doclink( 'AbstractPagerTool' false ).  In this
+case, we are working with a simple implementation called "MyPagerTool".
+</p>
+
+<p>
+If you set a list of items using the "Try it!" form at the top of the table below,
+then that will activate a full demonstration of this tool's abilities 
+<a href="#fullDemo">below the function list</a>.  An easy list to begin is a list
+of numbers by entering something like <code>[111..2222]</code> in the 
+"${esc.d}pager.setItems" field.
+</p>
+
+#demoTableStart()
+
+## set quote character to empty string so values are not treated as strings
+#set( $quote = '' )
+
+#set( $desc = 'Sets the List to page through.' )
+#demo1( 'pager' 'setItems' 10 $desc )
+
+#set( $desc = 'Sets the index of the first result in the current page' )
+#demo1( 'pager' 'setIndex' 4 $desc )
+
+#set( $desc = 'Sets the number of items returned in a page of items' )
+#demo1( 'pager' 'setItemsPerPage' 4 $desc )
+
+#set( $desc = 'Sets the number of result page indices for $pager.slip to list.' )
+#demo1( 'pager' 'setSlipSize' 4 $desc )
+
+#set( $desc = 'Checks whether or not the result list is empty.' )
+#demo( 'pager' 'hasItems()' $desc )
+
+#set( $desc = 'Returns the current search result index.' )
+#demo( 'pager' 'index' $desc )
+
+#set( $desc = 'Returns the index of the first item on the current page of results (as determined by the current index, items per page, and the number of items).' )
+#demo( 'pager' 'firstIndex' $desc )
+
+#set( $desc = 'Returns the index of the last item on the current page of results (as determined by the current index, items per page, and the number of items).' )
+#demo( 'pager' 'lastIndex' $desc )
+
+#set( $desc = 'Return the index for the previous page of items (as determined by the current index, items per page, and the number of items).' )
+#demo( 'pager' 'prevIndex' $desc )
+
+#set( $desc = 'Returns the index for the next page of items (as determined by the current index, items per page, and the number of items).' )
+#demo( 'pager' 'nextIndex' $desc )
+
+#set( $desc = 'Returns the item list.' )
+#demo( 'pager' 'items' $desc )
+
+#set( $desc = 'Returns the current "page" of search items.' )
+#demo( 'pager' 'page' $desc )
+
+#set( $desc = 'Returns a description of the current page.' )
+#demo( 'pager' 'pageDescription' $desc )
+
+#set( $desc = 'Returns the "page number" for the current index.' )
+#demo( 'pager' 'pageNumber' $desc )
+
+#set( $desc = 'Returns the "page number" for the specified index.' )
+#demo1( 'pager' 'getPageNumber' 4 $desc )
+
+#set( $desc = 'Returns the set number of items to be displayed per page of items' )
+#demo( 'pager' 'itemsPerPage' $desc )
+
+#set( $desc = 'Returns the number of pages that can be made from this list given the set number of items per page.' )
+#demo( 'pager' 'pagesAvailable' $desc )
+
+#set( $desc = 'Returns the total number of items available.' )
+#demo( 'pager' 'total' $desc )
+
+#set( $desc = 'Returns a Sliding List of Indices for Pages of items.' )
+#demo( 'pager' 'slip' $desc )
+
+#set( $desc = 'Returns the number of result page indices $pager.slip will return per request (if available).' )
+#demo( 'pager' 'slipSize' $desc )
+
+#demoCustom( 'pager' )
+</table>
+
+<div align="center">
+  <a name="fullDemo"><h3>Example Display</h3></a>
+  #if( $pager.hasItems() )
+    <div align="left">
+      Showing $!pager.pageDescription<br>
+      #set( $i = $pager.index + 1 )
+      #foreach( $item in $pager.page )
+        ${i}. $!item <br>
+        #set( $i = $i + 1 )
+      #end
+      <br>
+      #if ( $pager.pagesAvailable > 1 )
+        #set( $pagelink = $link.self.anchor('fullDemo').param("layout",$!params.layout).param("show",$!pager.itemsPerPage) )
+        #if( $pager.prevIndex )
+          <a href="$pagelink.param('index',$!pager.prevIndex)">Prev</a>
+        #end
+        #foreach( $index in $pager.slip )
+          #if( $index == $pager.index )
+            <b>$pager.pageNumber</b>
+          #else
+            <a href="$pagelink.param('index',$!index)">$!pager.getPageNumber($index)</a>
+          #end
+        #end
+        #if( $pager.nextIndex )
+          <a href="$pagelink.param('index',$!pager.nextIndex)">Next</a>
+        #end
+      #end
+    </div>
+  #else
+    <p>
+      There are no items to display.
+      To activate this example, follow the directions at the top of this page.
+    </p>
+  #end
+</div>

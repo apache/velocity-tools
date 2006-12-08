@@ -14,10 +14,5 @@
 ## KIND, either express or implied.  See the License for the
 ## specific language governing permissions and limitations
 ## under the License.
-
-#**
- * Sets the $page_title key, so if it ever changes,
- * it need only be changed here.
- *#
-#macro( title $string )
-#set( $page_title = $string )#end
+</body>
+</html>

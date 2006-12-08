@@ -15,17 +15,24 @@
 ## specific language governing permissions and limitations
 ## under the License.
 
-<html>
-<head>
-  <title>LAYOUT= $!page_title</title>
-</head>
-<body>
-<B>PRINTABLE LAYOUT - HEADER</B><BR>
+<p>
+This page demonstrates functions of the #doclink( 'FooTool' true ).
+</p>
 
-<P>
-$screen_content
-</P>
+<table border="1" cellspacing="0" cellpadding="3">
+<tr>
+  <th>Function</th>
+  <th>Demo Result</th>
+  <th>Description</th>
+</tr>
+#set( $desc = "" )
+#demo( 'foo' '' $desc )
 
-<B>PRINTABLE LAYOUT - FOOTER</B><BR>
-</body>
-</html>
+#set( $desc = '' )
+#demo1( 'foo' '' 3 $desc)
+
+#set( $desc = "" )
+#demo2( 'foo' '' 5 $desc )
+
+#demoCustom( 'foo' )
+</table>

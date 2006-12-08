@@ -1,0 +1,219 @@
+## Licensed to the Apache Software Foundation (ASF) under one
+## or more contributor license agreements.  See the NOTICE file
+## distributed with this work for additional information
+## regarding copyright ownership.  The ASF licenses this file
+## to you under the Apache License, Version 2.0 (the
+## "License"); you may not use this file except in compliance
+## with the License.  You may obtain a copy of the License at
+##
+##   http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing,
+## software distributed under the License is distributed on an
+## "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+## KIND, either express or implied.  See the License for the
+## specific language governing permissions and limitations
+## under the License.
+
+#**
+ * Sets the $page_title key, so if it ever changes,
+ * it need only be changed here.
+ *#
+#macro( title $string )
+#set( $page_title = $string )#end
+
+#**
+ * Creates a link to the javadoc for the specified tool.
+ *#
+#macro( doclink $toolname $generic )
+<a href="http://jakarta.apache.org/velocity/tools/javadoc/org/apache/velocity/tools/##
+#if( $generic )generic/#else#**#view/tools/#end##
+${toolname}.html">$toolname</a>#end
+
+#**
+ * Creates a list item for the toolmenu.
+ *#
+#macro( toolMenuItem $menulink $page $name )
+  <li><a href="$menulink.relative("${page}.vm")">$name</a></li>
+#end
+
+
+
+#**
+ * Creates the start tag and header row for a function demonstration table.
+ *#
+#macro( demoTableStart )
+<table border="1" cellspacing="0" cellpadding="3">
+<tr>
+  <th>Function</th>
+  <form method="get" action="$link.self">
+  <th nowrap="1">
+    Demo Result
+    <input style="font-size: 8pt" type="submit" value="Clear All">
+  </th>
+  #if( $params.layout )
+    <input type="hidden" name="layout" value="$params.layout">
+  #end
+  </form>
+  <th>Description</th>
+</tr>
+#end
+
+#**
+ * Creates a demonstration row of a tool method that takes no parameters.
+ *#
+#macro( demo $toolname $method $description )
+<tr>
+  <td valign="top">${esc.d}${toolname}.${method}</td>
+  <td valign="top">$render.eval("${esc.d}${toolname}.${method}")</td>
+  <td valign="top">$description</td>
+</tr>
+#end
+
+#**
+ * Creates a faux demonstration row of a tool method that takes no parameters.
+ *#
+#macro( demoAlt $toolname $method $result $description )
+<tr>
+  <td valign="top">${esc.d}${toolname}.${method}</td>
+  <td valign="top">$!result</td>
+  <td valign="top">$description</td>
+</tr>
+#end
+
+#**
+ * Creates an interactive demonstration row for a tool method that takes one parameter.
+ *#
+#macro( demo1 $toolname $method $size $description )
+#if( !$quote )
+  #set( $quote = $esc.q )
+#end
+<tr>
+  <form method="get" action="$link.anchor($method)">
+  <td valign="top">
+    <a name="$method"><nobr>
+      ${esc.d}${toolname}.$method(${quote}<input type="text" size="$size" name="$method" value="$!params.get($method)">${quote})
+    </nobr></a>
+  </td>
+  <td valign="top">
+    #if( $params.get($method) )
+      ${esc.d}${toolname}.${method}(${quote}$params.get($method)${quote})
+      =
+      $render.eval("${esc.d}${toolname}.${method}(${quote}$params.get($method)${quote})")
+      <input type="submit" value="Try it!">
+    #else
+      <input type="submit" value="Try it!">
+    #end
+    #foreach( $param in $request.parameterMap.keySet() )
+      #foreach( $value in $params.getStrings($param) )
+        <input type="hidden" name="$param" value="$value">
+      #end
+    #end
+  </td>
+  <td valign="top">$description</td>
+  </form>
+</tr>
+#end
+
+#**
+ * Creates an interactive demonstration row for a tool method that takes two parameters.
+ *#
+#macro( demo2 $toolname $method $size $description )
+#if( !$quote )
+  #set( $quote = $esc.q )
+#end
+#set( $method1 = "${method}1" )
+#set( $method2 = "${method}2" )
+<tr>
+  <form method="get" action="$link.anchor($method2)">
+  <td valign="top">
+    <a name="$method2"><nobr>${esc.d}${toolname}.$method(${quote}<input type="text" size="$size" name="${method1}" value="$!params.get("${method1}")">${quote},
+                                                        ${quote}<input type="text" size="$size" name="${method2}" value="$!params.get("${method2}")">${quote})</nobr></a>
+  </td>
+  <td valign="top">
+    #if( $params.get(${method1}) )
+      ${esc.d}${toolname}.${method}(${quote}$!params.get(${method1})${quote}, ${quote}$!params.get(${method2})${quote})
+      =
+      $render.eval("${esc.d}${toolname}.${method}(${quote}$!params.get(${method1})${quote}, ${quote}$!params.get(${method2})${quote})")
+      <input type="submit" value="Try again!">
+    #else
+      <input type="submit" value="Try it!">
+    #end
+    #foreach( $param in $request.parameterMap.keySet() )
+      #foreach( $value in $params.getStrings($param) )
+        <input type="hidden" name="$param" value="$value">
+      #end
+    #end
+  </td>
+  <td valign="top">$description</td>
+  </form>
+</tr>
+#end
+
+#**
+ * Creates an interactive demonstration row for a tool method that takes three parameters.
+ *#
+#macro( demo3 $toolname $method $size $description )
+#if( !$quote )
+  #set( $quote = $esc.q )
+#end
+#set( $method1 = "${method}A" )
+#set( $method2 = "${method}B" )
+#set( $method3 = "${method}C" )
+<tr>
+  <form method="get" action="$link.anchor($method3)">
+  <td valign="top">
+    <a name="$method3"><nobr>${esc.d}${toolname}.$method(${quote}<input type="text" size="$size" name="${method1}" value="$!params.get("${method1}")">${quote},
+                                                        ${quote}<input type="text" size="$size" name="${method2}" value="$!params.get("${method2}")">${quote},
+                                                        ${quote}<input type="text" size="$size" name="${method3}" value="$!params.get("${method3}")">${quote})</nobr></a>
+  </td>
+  <td valign="top">
+    #if( $params.get(${method1}) )
+      ${esc.d}${toolname}.${method}(${quote}$!params.get(${method1})${quote}, ${quote}$!params.get(${method2})${quote}, ${quote}$!params.get(${method3})${quote})
+      =
+      $render.eval("${esc.d}${toolname}.${method}(${quote}$!params.get(${method1})${quote}, ${quote}$!params.get(${method2})${quote}, ${quote}$!params.get(${method3})${quote})")
+      <input type="submit" value="Try again!">
+    #else
+      <input type="submit" value="Try it!">
+    #end
+    #foreach( $param in $request.parameterMap.keySet() )
+      #foreach( $value in $params.getStrings($param) )
+        <input type="hidden" name="$param" value="$value">
+      #end
+    #end
+  </td>
+  <td valign="top">$description</td>
+  </form>
+</tr>
+#end
+
+#**
+ * Creates a free-form interactive demonstration row.
+ *#
+#macro( demoCustom $toolname )
+<tr>
+  <form method="get" action="$link.anchor('custom')">
+  <td valign="top">
+    <a name="custom">
+      <input type="text" size="30" name="custom" value="#if( $params.custom )$params.custom#else$esc.d$toolname#end">
+    </a>
+  </td>
+  <td valign="top">
+    #if( $params.custom )
+      $params.custom
+      =
+      $render.eval($params.custom)
+      <input type="submit" value="Try again!">
+    #else
+      <input type="submit" value="Try it!">
+    #end
+    #foreach( $param in $request.parameterMap.keySet() )
+      #foreach( $value in $params.getStrings($param) )
+        <input type="hidden" name="$param" value="$value">
+      #end
+    #end
+  </td>
+  <td>Try any code out here.</td>
+  </form>
+</tr>
+#end

@@ -378,11 +378,11 @@
     <ant antfile="${basedir}/examples.xml" target="simple-example" />
   </target>
 
-  <!-- Build VelocityView - Layout application -->
-  <target name="layout" depends="jar.view"
-          description="Compiles and jars the VelocityView Layout example application.">
+  <!-- Build VelocityView - Showcase application -->
+  <target name="showcase" depends="jar.view"
+          description="Compiles and jars the VelocityView Showcase example application.">
     <property name="target" value="war"/>
-    <ant antfile="${basedir}/examples.xml" target="layout-example" />
+    <ant antfile="${basedir}/examples.xml" target="showcase-example" />
   </target>
 
   <!-- Build VelocityStruts example application -->

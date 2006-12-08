@@ -1,0 +1,69 @@
+## Licensed to the Apache Software Foundation (ASF) under one
+## or more contributor license agreements.  See the NOTICE file
+## distributed with this work for additional information
+## regarding copyright ownership.  The ASF licenses this file
+## to you under the Apache License, Version 2.0 (the
+## "License"); you may not use this file except in compliance
+## with the License.  You may obtain a copy of the License at
+##
+##   http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing,
+## software distributed under the License is distributed on an
+## "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+## KIND, either express or implied.  See the License for the
+## specific language governing permissions and limitations
+## under the License.
+#title( 'NumberTool' )
+<p>
+This page demonstrates functions of the #doclink( 'NumberTool' true ).
+</p>
+
+#demoTableStart()
+
+#set( $desc = 'Convenience method equivalent to $number.format("currency", $foo).' )
+#demo1( 'number' 'currency' 4 $desc )
+
+#set( $desc = 'Converts the specified object to a number and formats it according to the pattern or style returned by $number.format.' )
+#demo1( 'number' 'format' 4 $desc )
+
+#set( $desc = 'Converts the specified object to a number and returns a formatted string representing that number in the locale returned by $number.locale.' )
+#demo2( 'number' 'format' 4 $desc )
+
+#set( $quote = '' )
+#set( $desc = 'Converts the specified object to a number and returns a formatted string representing that number in the specified Locale.' )
+#demo3( 'number' 'format' 4 $desc )
+
+#set( $quote = '"' )
+#set( $desc = 'Return the pattern or style to be used for formatting numbers when none is specified.' )
+#demo( 'number' 'format' $desc )
+
+#set( $desc = 'This implementation returns the default locale.' )
+#demo( 'number' 'locale' $desc )
+
+#set( $quote = '' )
+#set( $desc = 'Returns a NumberFormat instance for the specified format and Locale.' )
+#demo2( 'number' 'getNumberFormat' 4 $desc )
+
+#set( $quote = '"' )
+#set( $desc = 'Convenience method equivalent to $number.format("integer", $foo).' )
+#demo1( 'number' 'integer' 4 $desc )
+
+#set( $desc = 'Convenience method equivalent to $number.format("number", $foo).' )
+#demo1( 'number' 'number' 4 $desc )
+
+#set( $desc = 'Convenience method equivalent to $number.format("percent", $foo).' )
+#demo1( 'number' 'percent' 4 $desc )
+
+#set( $desc = 'Converts an object to an instance of Number using the format returned by $number.format and the Locale returned by $number.locale if the object is not already an instance of Number.' )
+#demo1( 'number' 'toNumber' 4 $desc )
+
+#set( $desc = 'Converts an object to an instance of Number using the specified format and the Locale returned by $number.locale if the object is not already an instance of Number.' )
+#demo2( 'number' 'toNumber' 4 $desc )
+
+#set( $quote = '' )
+#set( $desc = 'Converts an object to an instance of Number using the specified format and Localeif the object is not already an instance of Number.' )
+#demo3( 'number' 'toNumber' 4 $desc )
+
+#demoCustom( 'number' )
+</table>

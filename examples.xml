@@ -33,7 +33,7 @@
           description="Build WAR files for all VelocityTools example applications">
     <property name="target" value="war"/>
     <antcall target="simple-example" />
-    <antcall target="layout-example" />
+    <antcall target="showcase-example" />
     <antcall target="struts-example" />
   </target>
 
@@ -41,7 +41,7 @@
           description="Build WAR files for all VelocityTools example applications">
     <property name="target" value="clean"/>
     <antcall target="simple-example" />
-    <antcall target="layout-example" />
+    <antcall target="showcase-example" />
     <antcall target="struts-example" />
   </target>
 
@@ -62,13 +62,15 @@
     <copy todir="${lib}" file="${velocity.jar}"/>
   </target>
 
-  <target name="layout-example">
-    <property name="name" value="layout" />
+  <target name="showcase-example">
+    <property name="name" value="showcase" />
     <property name="base" value="${examples.home}/${name}" />
     <property name="lib" value="${base}/WEB-INF/lib"/>
     <antcall target="example-${target}"/>
   </target>
-  <target name="layout-dependencies" depends="simple-dependencies"/>
+  <target name="showcase-dependencies" depends="simple-dependencies">
+    <copy todir="${lib}" file="${servlet.jar}"/>
+  </target>
 
   <target name="struts-example">
     <property name="name" value="struts" />

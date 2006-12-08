@@ -1,0 +1,151 @@
+## Licensed to the Apache Software Foundation (ASF) under one
+## or more contributor license agreements.  See the NOTICE file
+## distributed with this work for additional information
+## regarding copyright ownership.  The ASF licenses this file
+## to you under the Apache License, Version 2.0 (the
+## "License"); you may not use this file except in compliance
+## with the License.  You may obtain a copy of the License at
+##
+##   http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing,
+## software distributed under the License is distributed on an
+## "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+## KIND, either express or implied.  See the License for the
+## specific language governing permissions and limitations
+## under the License.
+#title( 'AbstractSearchTool' )
+<p>
+This page demonstrates functions of the #doclink( 'AbstractSearchTool' false ).
+In this case, we are working with a simplistic, demonstration implementation
+called "MySearchTool".
+</p>
+
+<p>
+If you submit a list of items using the <a href="#store">store() function</a> at the 
+bottom> of the table below, that will add those items to a static database of strings
+which we can use to search for the purposes of the function demonstrations and the
+<a href="#fullDemo">example</a> below the function list.
+Please note that, ${esc.d}search.store() is not a part of the AbstractSearchTool API
+and exists only for the implementation used in this demo.
+</p>
+
+#demoTableStart()
+
+#set( $quote = '"' )
+#set( $desc = 'Sets the criteria for finding results (i.e. the search terms).' )
+#demo1( 'search' 'setCriteria' 8 $desc )
+
+#set( $quote = '' )
+#set( $desc = 'Sets the index of the first result in the current page' )
+#demo1( 'search' 'setIndex' 4 $desc )
+
+#set( $desc = 'Sets the number of results returned in a page of results' )
+#demo1( 'search' 'setItemsPerPage' 4 $desc )
+
+#set( $desc = 'Sets the number of result page indices for $search.slip to list.' )
+#demo1( 'search' 'setSlipSize' 4 $desc )
+
+#set( $desc = 'Checks whether or not the result list is empty.' )
+#demo( 'search' 'hasItems()' $desc )
+
+#set( $desc = 'Returns the current search criteria.' )
+#demo( 'search' 'criteria' $desc )
+
+#set( $desc = 'Returns the current search result index.' )
+#demo( 'search' 'index' $desc )
+
+#set( $desc = 'Returns the index of the first result on the current page of results (as determined by the current index, results per page, and the number of results).' )
+#demo( 'search' 'firstIndex' $desc )
+
+#set( $desc = 'Returns the index of the last result on the current page of results (as determined by the current index, results per page, and the number of results).' )
+#demo( 'search' 'lastIndex' $desc )
+
+#set( $desc = 'Return the index for the previous page of results (as determined by the current index, results per page, and the number of results).' )
+#demo( 'search' 'prevIndex' $desc )
+
+#set( $desc = 'Returns the index for the next page of results (as determined by the current index, results per page, and the number of results).' )
+#demo( 'search' 'nextIndex' $desc )
+
+#set( $desc = 'Returns the search result list.' )
+#demo( 'search' 'items' $desc )
+
+#set( $desc = 'Returns the current "page" of search results.' )
+#demo( 'search' 'page' $desc )
+
+#set( $desc = 'Returns a description of the current page.' )
+#demo( 'search' 'pageDescription' $desc )
+
+#set( $desc = 'Returns the "page number" for the current index.' )
+#demo( 'search' 'pageNumber' $desc )
+
+#set( $desc = 'Returns the "page number" for the specified index.' )
+#demo1( 'search' 'getPageNumber' 4 $desc )
+
+#set( $desc = 'Returns the set number of results to be displayed per page of results' )
+#demo( 'search' 'itemsPerPage' $desc )
+
+#set( $desc = 'Returns the number of pages that can be made from this list given the set number of results per page.' )
+#demo( 'search' 'pagesAvailable' $desc )
+
+#set( $desc = 'Returns the total number of results available.' )
+#demo( 'search' 'total' $desc )
+
+#set( $desc = 'Returns a Sliding List of Indices for Pages of results.' )
+#demo( 'search' 'slip' $desc )
+
+#set( $desc = 'Returns the number of result page indices $search.slip will return per request (if available).' )
+#demo( 'search' 'slipSize' $desc )
+
+#demoCustom( 'search.store($context.toolbox)' )
+
+#set( $desc = 'Adds an item or list of items to the faux "database" that is being "searched" by this example. This method is not part of the AbstractSearchTool API.' )
+#demo1( 'search' 'store' 12 $desc )
+</table>
+
+<div align="center">
+  <a name="fullDemo"><h3>Example Display</h3></a>
+   <form name="search" method="get" action="$link.self.anchor('fullDemo')">
+     <input type="text"name="find" value="$!search.criteria">
+     <input type="submit" value="Find">
+     #foreach( $param in $request.parameterMap.keySet() )
+       #if( !$param.equals('setCriteria') )
+         #foreach( $value in $params.getStrings($param) )
+           <input type="hidden" name="$param" value="$value">
+         #end
+       #end
+     #end
+   </form>
+   #if( $search.hasItems() )
+    <div align="left">
+      Showing $!search.pageDescription<br>
+      #set( $i = $search.index + 1 )
+      #foreach( $item in $search.page )
+        ${i}. $!item <br>
+        #set( $i = $i + 1 )
+      #end
+      <br>
+      #if ( $search.pagesAvailable > 1 )
+        #set( $pagelink = $link.self.anchor('fullDemo').param('find',$search.criteria).param('layout',$!params.layout).param('show',$!search.itemsPerPage) )
+        #if( $search.prevIndex )
+          <a href="$pagelink.param('index',$!search.prevIndex)">Prev</a>
+        #end
+        #foreach( $index in $search.slip )
+          #if( $index == $search.index )
+            <b>$search.pageNumber</b>
+          #else
+            <a href="$pagelink.param('index',$!index)">$!search.getPageNumber($index)</a>
+          #end
+        #end
+        #if( $search.nextIndex )
+          <a href="$pagelink.param('index',$!search.nextIndex)">Next</a>
+        #end
+      #end
+    </div>
+  #else
+    <p>
+      There are no items to display.
+      To activate this example, follow the directions at the top of this page.
+    </p>
+  #end
+</div>

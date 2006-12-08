@@ -25,12 +25,18 @@ import org.apache.velocity.tools.view.servlet.VelocityLayoutServlet;
  * avoid the manual use of "magic" or common query parameters.
  *
  * @author Nathan Bubna
- * @version $Id$
+ * @version $Id: LayoutLinkTool.java 479724 2006-11-27 18:49:37Z nbubna $
  */
 public class LayoutLinkTool extends LinkTool
 {
-	public LayoutLinkTool setLayout(String layout)
+
+	public LayoutLinkTool layout(String layout)
 	{
-        return (LayoutLinkTool)addQueryData(VelocityLayoutServlet.KEY_LAYOUT, layout);
+        if (layout != null && !layout.endsWith(".vm"))
+        {
+            layout += ".vm";
+        }
+        return (LayoutLinkTool)param(VelocityLayoutServlet.KEY_LAYOUT, layout);
 	}
+
 }
