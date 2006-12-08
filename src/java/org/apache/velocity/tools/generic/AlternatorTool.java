@@ -37,19 +37,19 @@ import java.util.Map;
  * &lt;/tool&gt;
  *
  * template...
- * #set( $color = $alternator.make('red', 'blue') )
+ * #set( $color = $alternator.auto('red', 'blue') )
  * ## use manual alternation for this one
- * #set( $style = $alternator.make(false, ['hip','fly','groovy']) )
+ * #set( $style = $alternator.manual(['hip','fly','groovy']) )
  * #foreach( $i in [1..5] )
- *  $i is $color and $style.next
- * #end
+ *   Number $i is $color and $style. I dig $style.next numbers.
+ * #end *
  *
  * output...
- *  1 is red and hip
- *  2 is blue and fly
- *  3 is red and groovy
- *  4 is blue and hip
- *  5 is red and fly
+ *   Number 1 is red and hip. I dig hip numbers.
+ *   Number 2 is blue and fly. I dig fly numbers.
+ *   Number 3 is red and groovy. I dig groovy numbers.
+ *   Number 4 is blue and hip. I dig hip numbers.
+ *   Number 5 is red and fly. I dig fly numbers.
  * </pre></p>
  *
  * @since Velocity Tools 1.2
@@ -103,10 +103,8 @@ public class AlternatorTool
     }
 
     /**
-     * Make an {@link Alternator} from a List.
-     *
-     * @return The new Alternator, or <code>null</code> if arguments
-     * were illegal.
+     * @deprecated Use {@link #auto(List list)} or
+     *             {@link #manual(List list)} instead.
      */
     public Alternator make(boolean auto, List list)
     {
@@ -126,10 +124,8 @@ public class AlternatorTool
     }
 
     /**
-     * Make an {@link Alternator} from an object array.
-     *
-     * @return The new Alternator, or <code>null</code> if arguments
-     * were illegal.
+     * @deprecated Use {@link #auto(Object[] array)} or
+     *             {@link #manual(Object[] array)} instead.
      */
     public Alternator make(boolean auto, Object[] array)
     {
@@ -153,15 +149,8 @@ public class AlternatorTool
     }
 
     /**
-     * Make an {@link Alternator} from a list containing the two
-     * specified objects.
-     *
-     * @param o1 The first of two objects for alternation between.
-     * Must be non-<code>null</code>.
-     * @param o2 The second of two objects for alternation between.
-     * Must be non-<code>null</code>.
-     * @return The new Alternator, or <code>null</code> if arguments
-     * were illegal.
+     * @deprecated Use {@link #auto(Object o1, Object o2)} or
+     *             {@link #manual(Object o1, Object o2)} instead.
      */
     public Alternator make(boolean auto, Object o1, Object o2)
     {
@@ -170,6 +159,88 @@ public class AlternatorTool
             return null;
         }
         return new Alternator(auto, new Object[] { o1, o2 });
+    }
+
+    /**
+     * Make an automatic {@link Alternator} from values in the specified List.
+     *
+     * @return a new, automatic Alternator with the values in the List or 
+     *         <code>null</code> if the List is <code>null</code>.
+     * @since VelocityTools 1.3
+     */
+    public Alternator auto(List list)
+    {
+        return make(true, list);
+    }
+
+    /**
+     * Make an automatic {@link Alternator} from the specified object array.
+     *
+     * @return a new, automatic Alternator with the values in the array or 
+     *         <code>null</code> if the array is <code>null</code>.
+     * @since VelocityTools 1.3
+     */
+    public Alternator auto(Object[] array)
+    {
+        return make(true, array);
+    }
+
+    /**
+     * Make an automatic {@link Alternator} from a list containing the two
+     * specified objects.
+     *
+     * @param o1 The first of two objects for alternation between.
+     * Must be non-<code>null</code>.
+     * @param o2 The second of two objects for alternation between.
+     * Must be non-<code>null</code>.
+     * @return The new Alternator, or <code>null</code> if an argument
+     * was <code>null</code>.
+     * @since VelocityTools 1.3
+     */
+    public Alternator auto(Object o1, Object o2)
+    {
+        return make(true, o1, o2);
+    }
+
+    /**
+     * Make a manual {@link Alternator} from values in the specified List.
+     *
+     * @return a new, manual Alternator with the values in the List or 
+     *         <code>null</code> if the List is <code>null</code>.
+     * @since VelocityTools 1.3
+     */
+    public Alternator manual(List list)
+    {
+        return make(false, list);
+    }
+
+    /**
+     * Make a manual {@link Alternator} from the specified object array.
+     *
+     * @return a new, manual Alternator with the values in the array or 
+     *         <code>null</code> if the array is <code>null</code>.
+     * @since VelocityTools 1.3
+     */
+    public Alternator manual(Object[] array)
+    {
+        return make(false, array);
+    }
+
+    /**
+     * Make a manual {@link Alternator} from a list containing the two
+     * specified objects.
+     *
+     * @param o1 The first of two objects for alternation between.
+     * Must be non-<code>null</code>.
+     * @param o2 The second of two objects for alternation between.
+     * Must be non-<code>null</code>.
+     * @return The new Alternator, or <code>null</code> if an argument
+     * was <code>null</code>.
+     * @since VelocityTools 1.3
+     */
+    public Alternator manual(Object o1, Object o2)
+    {
+        return make(false, o1, o2);
     }
 
 }
