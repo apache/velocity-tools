@@ -87,17 +87,26 @@ public class RenderTool
      */
     public static final int DEFAULT_PARSE_DEPTH = 20;
     public static final String KEY_PARSE_DEPTH = "parse.depth";
+    public static final String KEY_CATCH_EXCEPTIONS = "catch.exceptions";
 
     private static final String LOG_TAG = "RenderTool.eval()";
 
     private VelocityEngine engine = null;
     private int parseDepth = DEFAULT_PARSE_DEPTH;
+    private boolean catchExceptions = true;
 
+    /**
+     * Looks for parse depth and catch.exceptions parameters.
+     * @since VelocityTools 1.3
+     */
     public void configure(Map params)
     {
         ValueParser parser = new ValueParser(params);
         int depth = parser.getInt(KEY_PARSE_DEPTH, DEFAULT_PARSE_DEPTH);
         setParseDepth(depth);
+
+        boolean catchEm = parser.getBoolean(KEY_CATCH_EXCEPTIONS, true);
+        setCatchExceptions(catchEm);
     }
 
     /**
@@ -130,16 +139,66 @@ public class RenderTool
     }
 
     /**
+     * Sets whether or not the render() and eval() methods should catch
+     * exceptions during their execution or not.
+     * @since VelocityTools 1.3
+     */
+    public void setCatchExceptions(boolean catchExceptions)
+    {
+        this.catchExceptions = catchExceptions;
+    }
+
+    /**
+     * Returns <code>true</code> if this render() and eval() methods will
+     * catch exceptions thrown during rendering.
+     * @since VelocityTools 1.3
+     */
+    public boolean getCatchExceptions()
+    {
+        return this.catchExceptions;
+    }
+
+    /**
      * <p>Evaluates a String containing VTL using the current context,
-     * and returns the result as a String.  If this fails, then
-     * <code>null</code> will be returned.  This evaluation is not
-     * recursive.</p>
+     * and returns the result as a String.  By default if this fails, then
+     * <code>null</code> will be returned, though this tool can be configured
+     * to let Exceptions pass through. This evaluation is not recursive.</p>
      *
      * @param ctx the current Context
      * @param vtl the code to be evaluated
      * @return the evaluated code as a String
      */
     public String eval(Context ctx, String vtl) throws Exception
+    {
+        if (this.catchExceptions)
+        {
+            try
+            {
+                return internalEval(ctx, vtl);
+            }
+            catch (Exception e)
+            {
+                String msg = LOG_TAG + " threw Exception: " + e;
+                if (engine == null)
+                {
+                    Velocity.debug(msg);
+                }
+                else
+                {
+                    engine.debug(msg);
+                }
+                return null;
+            }
+        }
+        else
+        {
+            return internalEval(ctx, vtl);
+        }
+    }
+
+
+    /* Internal implementation of the eval() method function. */
+    private String internalEval(Context ctx, String vtl) throws Exception
     {
         if (vtl == null)
         {
