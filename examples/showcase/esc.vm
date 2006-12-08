@@ -1,0 +1,76 @@
+## Licensed to the Apache Software Foundation (ASF) under one
+## or more contributor license agreements.  See the NOTICE file
+## distributed with this work for additional information
+## regarding copyright ownership.  The ASF licenses this file
+## to you under the Apache License, Version 2.0 (the
+## "License"); you may not use this file except in compliance
+## with the License.  You may obtain a copy of the License at
+##
+##   http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing,
+## software distributed under the License is distributed on an
+## "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+## KIND, either express or implied.  See the License for the
+## specific language governing permissions and limitations
+## under the License.
+#title( 'EscapeTool' )
+<p>
+This page demonstrates functions of the #doclink( 'EscapeTool' true ).
+</p>
+
+#demoTableStart()
+
+#set( $desc = 'Renders a backslash (\)' )
+#demo( 'esc' 'b' $desc )
+
+#set( $desc = 'Renders a backslash (\)' )
+#demo( 'esc' 'backslash' $desc )
+
+#set( $desc = 'Renders a dollar sign ($)' )
+#demo( 'esc' 'd' $desc )
+
+#set( $desc = 'Renders a dollar sign ($)' )
+#demo( 'esc' 'dollar' $desc )
+
+#set( $desc = 'Renders an exclamation mark (!)' )
+#demo( 'esc' 'e' $desc )
+
+#set( $desc = 'Renders an exclamation mark (!)' )
+#demo( 'esc' 'exclamation' $desc )
+
+#set( $desc = 'Renders a hash (#)' )
+#demo( 'esc' 'h' $desc )
+
+#set( $desc = 'Renders a hash (#)' )
+#demo( 'esc' 'hash' $desc )
+
+#set( $desc = 'Renders a double quotation mark (")' )
+#demo( 'esc' 'q' $desc )
+
+#set( $desc = 'Renders a double quotation mark (")' )
+#demo( 'esc' 'quote' $desc )
+
+#set( $desc = "Renders a single quotation mark (')" )
+#demo( 'esc' 's' $desc )
+
+#set( $desc = "Renders a single quotation mark (')" )
+#demo( 'esc' 'singleQuote' $desc )
+
+#set( $desc = 'Escapes the characters in a String using HTML entities.' )
+#demo1( 'esc' 'html' 8 $desc )
+
+#set( $desc = 'Escapes the characters in a String using Java String rules.' )
+#demo1( 'esc' 'java' 8 $desc )
+
+#set( $desc = 'Escapes the characters in a String using JavaScript String rules.' )
+#demo1( 'esc' 'javascript' 8 $desc )
+
+#set( $desc = 'Escapes the characters in a String to be suitable to pass to an SQL query.' )
+#demo1( 'esc' 'sql' 8 $desc )
+
+#set( $desc = 'Escapes the characters in a String using XML entities.' )
+#demo1( 'esc' 'xml' 8 $desc )
+
+#demoCustom( 'esc' )
+</table>

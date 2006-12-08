@@ -1,0 +1,88 @@
+## Licensed to the Apache Software Foundation (ASF) under one
+## or more contributor license agreements.  See the NOTICE file
+## distributed with this work for additional information
+## regarding copyright ownership.  The ASF licenses this file
+## to you under the Apache License, Version 2.0 (the
+## "License"); you may not use this file except in compliance
+## with the License.  You may obtain a copy of the License at
+##
+##   http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing,
+## software distributed under the License is distributed on an
+## "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+## KIND, either express or implied.  See the License for the
+## specific language governing permissions and limitations
+## under the License.
+#title( 'DateTool' )
+<p>
+This page demonstrates functions of the #doclink( 'DateTool' true ).  As the DateTool
+is quite full-featured and provides many similar functions with varying and
+strongly-typed options, not all functions are demonstrated below.  See the javadoc
+for a full listing of available functions.
+</p>
+
+#demoTableStart()
+
+#set( $desc = 'Converts the specified object to a date and formats it according to the pattern or style returned by $date.format.' )
+#demo1( 'date' 'format' 4 $desc)
+
+#set( $desc = 'Converts the specified object to a date and formats it according to the specified date format.' )
+#demo2( 'date' 'format' 4 $desc )
+
+#set( $desc = 'Returns the value of $date.date as a string formatted according to the specified date format.' )
+#demo1( 'date' 'get' 4 $desc )
+
+#set( $desc = 'Returns a formatted string representing the date and/or time given by $date.date in the specified date and time styles.' )
+#demo2( 'date' 'get' 4 $desc )
+
+#set( $desc = 'Returns the day (of the month) value of the date returned by $date.calendar' )
+#demo( 'date' 'day' $desc )
+
+#set( $desc = 'Returns the day (of the month) value for the specified date.' )
+#demo1( 'date' 'getDay' 4 $desc )
+
+#set( $desc = 'Returns the month value of the date returned by $date.calendar.' )
+#demo( 'date' 'month' $desc )
+
+#set( $desc = 'Returns the month value of the specified date.' )
+#demo1( 'date' 'getMonth' 4 $desc )
+
+#set( $desc = 'Returns the year value of the date returned by $date.calendar.' )
+#demo( 'date' 'year' $desc )
+
+#set( $desc = 'Returns the year value of the specified date.' )
+#demo1( 'date' 'getYear' 4 $desc )
+
+#set( $desc = 'Return the specified value of the date returned by $date.calendar or null if the field is invalid.' )
+#demo1( 'date' 'getValue' 4 $desc )
+
+#set( $desc = 'Returns the specified value of the specified date, or null if the field or date is invalid.' )
+#demo2( 'date' 'getValue' 4 $desc )
+
+#set( $desc = 'Returns a Date derived from the result of $date.calendar' )
+#demo( 'date' 'date' $desc )
+
+#set( $desc = 'Return the pattern or style to be used for formatting dates when none is specified.' )
+#demo( 'date' 'format' $desc )
+
+#set( $desc = 'This returns the default Locale configured for this instance.' )
+#demo( 'date' 'locale' $desc )
+
+#set( $desc = 'This returns the id of the default TimeZone configured for this instance.' )
+#demo( 'date' 'timeZone.ID' $desc )
+
+#set( $desc = 'Gets the Date at the time this page was rendered for the system running this application.' )
+#demo( 'date' 'systemDate' $desc )
+
+#set( $desc = 'Converts an object to an instance of Calendar using the locale returned by $date.locale if necessary.' )
+#demo1( 'date' 'toCalendar' 4 $desc )
+
+#set( $desc = 'Converts an object to an instance of Date using the format returned by $date.format,the Locale returned by $date.locale, and the TimeZone returned by $date.timeZone if the object is not already an instance of Date, Calendar, or Long.' )
+#demo1( 'date' 'toDate' 4 $desc )
+          
+#set( $desc = 'Converts an object to an instance of Date using the specified format,the Locale returned by $date.locale, and the TimeZone returned by $date.timeZone if the object is not already an instance of Date, Calendar, or Long.' )
+#demo2( 'date' 'toDate' 4 $desc )
+
+#demoCustom( 'date' )
+</table>

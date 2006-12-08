@@ -15,17 +15,8 @@
 ## specific language governing permissions and limitations
 ## under the License.
 
-<html>
-<head>
-  <title>LAYOUT= $!page_title</title>
-</head>
-<body>
-<B>DEFAULT LAYOUT - HEADER</B><BR>
-
-<P>
+#parse( 'header.vm' )
+<p>
 $screen_content
-</P>
-
-<B>DEFAULT LAYOUT - FOOTER</B><BR>
-</body>
-</html>
+</p>
+#parse( 'footer.vm' )

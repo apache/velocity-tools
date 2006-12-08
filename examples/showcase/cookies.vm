@@ -1,0 +1,46 @@
+## Licensed to the Apache Software Foundation (ASF) under one
+## or more contributor license agreements.  See the NOTICE file
+## distributed with this work for additional information
+## regarding copyright ownership.  The ASF licenses this file
+## to you under the Apache License, Version 2.0 (the
+## "License"); you may not use this file except in compliance
+## with the License.  You may obtain a copy of the License at
+##
+##   http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing,
+## software distributed under the License is distributed on an
+## "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+## KIND, either express or implied.  See the License for the
+## specific language governing permissions and limitations
+## under the License.
+#title( 'CookieTool' )
+<p>
+This page demonstrates functions of the #doclink( 'CookieTool' false ).  Remember,
+when adding a cookie, it is <b>not</b> added to the same request which does the
+adding.  This means to see a cookie you've added, you must add it, and then refresh
+the page again.
+</p>
+
+#demoTableStart()
+
+#set( $desc = 'Expose array of Cookies for this request to the template. This is equivalent to <code>$request.cookies</code>.' )
+#demo( 'cookies' 'all' $desc )
+
+#set( $desc = 'Returns the Cookie with the specified name, if it exists.' )
+#demo1( 'cookies' 'get' 5 $desc )
+
+#set( $desc = 'Adds a new Cookie with the specified name and value to the HttpServletResponse.  This does <b>not</b> add a Cookie to the current request.' )
+#demo2( 'cookies' 'add' 5 $desc )
+
+#set( $desc = 'Convenience method to add a new Cookie to the response and set an expiry time for it.' )
+#demo3( 'cookies' 'add' 5 $desc )
+
+#set( $desc = 'Creates a new Cookie with the specified name and value. This does <b>not</b> add the Cookie to the response, so the created Cookie will not be set unless you do <code>$response.addCookie($myCookie)</code>' )
+#demo2( 'cookies' 'create' 5 $desc )
+
+#set( $desc = 'Convenience method to create a new Cookie and set an expiry time for it. The created cookie must be manually added to the response.' )
+#demo3( 'cookies' 'create' 5 $desc )
+
+#demoCustom( 'cookies' )
+</table>

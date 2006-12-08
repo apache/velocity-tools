@@ -1,0 +1,72 @@
+## Licensed to the Apache Software Foundation (ASF) under one
+## or more contributor license agreements.  See the NOTICE file
+## distributed with this work for additional information
+## regarding copyright ownership.  The ASF licenses this file
+## to you under the Apache License, Version 2.0 (the
+## "License"); you may not use this file except in compliance
+## with the License.  You may obtain a copy of the License at
+##
+##   http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing,
+## software distributed under the License is distributed on an
+## "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+## KIND, either express or implied.  See the License for the
+## specific language governing permissions and limitations
+## under the License.
+#title( 'ParameterParser' )
+<p>
+This page demonstrates functions of the #doclink( 'ParameterParser' false ).
+</p>
+
+#demoTableStart()
+
+#set( $quote = '"' )
+#set( $desc = 'Convenience method for checking whether a certain parameter exists.' )
+#demo1( 'params' 'exists' 6 $desc )
+
+#set( $desc = 'Convenience method for use in Velocity templates. This is the same as $params.getString("foo"), but simplifies the syntax to $params.foo' )
+#demo1( 'params' 'get' 6 $desc )
+
+#set( $desc = 'Returns the parameter with the specified key, if it exists; otherwise, returns <code>null</code>.' )
+#demo1( 'params' 'getString' 6 $desc )
+#set( $desc = 'Returns the parameter with the specified key as a java.lang.Boolean, if it exists and can be converted to that type; otherwise, returns <code>null</code>.' )
+#demo1( 'params' 'getBoolean' 6 $desc )
+#set( $desc = 'Returns the parameter with the specified key as a java.lang.Number, if it exists and can be converted to that type; otherwise, returns <code>null</code>.' )
+#demo1( 'params' 'getNumber' 6 $desc )
+#set( $desc = 'Returns the parameter with the specified key as a java.lang.Double, if it exists and can be converted to that type; otherwise, returns <code>null</code>.' )
+#demo1( 'params' 'getDouble' 6 $desc )
+#set( $desc = 'Returns the parameter with the specified key as a java.lang.Integer, if it exists and can be converted to that type; otherwise, returns <code>null</code>.' )
+#demo1( 'params' 'getInteger' 6 $desc )
+           
+#set( $desc = 'Returns the parameter(s) with the specified key in an array of the type requested, if any exist; otherwise, returns <code>null</code>..' )
+#demo1( 'params' 'getStrings' 6 $desc )
+#set( $desc = 'Returns the parameter(s) with the specified key in an array of java.lang.Boolean objects, if any exist and can be converted to that type; otherwise, returns <code>null</code>..' )
+#demo1( 'params' 'getBooleans' 6 $desc )
+#set( $desc = 'Returns the parameter(s) with the specified key in an array of java.lang.Number objects, if any exist and can be converted to that type; otherwise, returns <code>null</code>..' )
+#demo1( 'params' 'getNumbers' 6 $desc )
+#set( $desc = 'Returns the parameter(s) with the specified key in an array of java.lang.Double objects, if any exist and can be converted to that type; otherwise, returns <code>null</code>..' )
+#demo1( 'params' 'getDoubles' 6 $desc )
+#set( $desc = 'Returns the parameter(s) with the specified key in an array of int primitives, if any exist and can be converted to that type; otherwise, returns <code>null</code>..' )
+#demo1( 'params' 'getInts' 6 $desc )
+           
+#set( $quote = '' )
+#set( $desc = 'Returns the parameter with the specified key, if it exists; otherwise, returns the specified alternate value.' )
+#demo2( 'params' 'getString' 6 $desc )
+#set( $desc = 'Returns the parameter with the specified key as a java.lang., if it exists; otherwise, returns the specified alternate Boolean.' )
+#demo2( 'params' 'getBoolean' 6 $desc )
+#set( $desc = 'Returns the parameter with the specified key as a java.lang.Number, if it exists; otherwise, returns the specified alternate Number.' )
+#demo2( 'params' 'getNumber' 6 $desc )
+#set( $desc = 'Returns the parameter with the specified key as a java.lang.Double, if it exists; otherwise, returns the specified alternate Double.' )
+#demo2( 'params' 'getDouble' 6 $desc )
+#set( $desc = 'Returns the parameter with the specified key as a java.lang.Integer, if it exists; otherwise, returns the specified alternate Integer.' )
+#demo2( 'params' 'getInteger' 6 $desc )
+#set( $desc = 'Returns the parameter with the specified key as an int, if it exists; otherwise, returns the specified alternate int.' )
+#demo2( 'params' 'getInt' 6 $desc )
+
+#set( $desc = 'Returns the map of all parameters available for the current request.' )
+#demo( 'params' 'all' $desc )
+           
+#set( $quote = '"' )
+#demoCustom( 'params.layout' )
+</table>

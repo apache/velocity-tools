@@ -1,0 +1,45 @@
+## regarding copyright ownership.  The ASF licenses this file
+## to you under the Apache License, Version 2.0 (the
+## "License"); you may not use this file except in compliance
+## with the License.  You may obtain a copy of the License at
+##
+##   http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing,
+## software distributed under the License is distributed on an
+## "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+## KIND, either express or implied.  See the License for the
+## specific language governing permissions and limitations
+## under the License.
+#title( 'ImportTool' )
+<p>
+This page demonstrates the function of the #doclink( 'ImportTool' false ).
+</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+<tr>
+  <th>Function</th>
+  <th>Demo Result</th>
+  <th>Description</th>
+</tr>
+<tr>
+  <form method="post" action="$link">
+  <td>
+    <nobr>${esc.d}import.read('<input type="text" width="8" name="read" value="$!params.read">')</nobr>
+  </td>
+  <td>
+    #if( $params.read )
+      $esc.html($import.read($params.read))
+    #else
+      <input type="submit" value="Try it!">
+      <br>
+      Please note that the results will be html-escaped by the 
+      <a href="$link.relative('esc.vm').params($params.all)">EscapeTool</a> for the purposes of this demo.
+    #end
+  </td>
+  <td>Returns the content read from the specified URL</td>
+  </form>
+</tr>
+
+#demoCustom( 'import' )
+</table>

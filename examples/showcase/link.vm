@@ -1,0 +1,91 @@
+## Licensed to the Apache Software Foundation (ASF) under one
+## or more contributor license agreements.  See the NOTICE file
+## distributed with this work for additional information
+## regarding copyright ownership.  The ASF licenses this file
+## to you under the Apache License, Version 2.0 (the
+## "License"); you may not use this file except in compliance
+## with the License.  You may obtain a copy of the License at
+##
+##   http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing,
+## software distributed under the License is distributed on an
+## "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+## KIND, either express or implied.  See the License for the
+## specific language governing permissions and limitations
+## under the License.
+#title( 'LinkTool' )
+<p>
+This page demonstrates functions of the #doclink( 'LinkTool' false ). This tool
+is somewhat unusual in that every method that takes parameters will return a new
+instance of the tool that is a copy of the one the method was called upon, with
+the additional change specified by the method call.
+</p>
+
+#demoTableStart()
+
+#set( $desc = "Returns a new ${esc.d}link with the addition of the specified anchor value." )
+#demo1( 'link' 'anchor' 6 $desc )
+
+#set( $desc = "Returns the anchor set for the ${esc.d}link" )
+#if( $params.anchor )
+  #set( $result = $link.anchor($params.anchor) )
+#else
+  #set( $result = $!link.anchor )
+#end
+#demoAlt( 'link' 'anchor' $result $desc )
+
+#set( $desc = "Returns a new ${esc.d}link with the addition of the specified URI value." )
+#demo1( 'link' 'uri' 6 $desc )
+
+#set( $desc = "Returns a new ${esc.d}link with the addition of the specified relative value." )
+#demo1( 'link' 'relative' 6 $desc )
+
+#set( $desc = "Returns a new ${esc.d}link with the addition of the specified absolute value." )
+#demo1( 'link' 'absolute' 6 $desc )
+
+#set( $desc = "Returns the URI set for this ${esc.d}link via one of the absolute(), relative(), or uri() methods." )
+#if( $params.uri )
+  #set( $result = $link.uri($params.uri).uri )
+#elseif( $params.relative )
+  #set( $result = $link.relative($params.relative).uri )
+#elseif( $params.absolute )
+  #set( $result = $link.absolute($params.absolute).uri )
+#else
+  #set( $result = $!link.uri )
+#end
+#demoAlt( 'link' 'uri' $result $desc )
+
+#set( $desc = "Returns a new ${esc.d}link with the addition of the specified parameter." )
+#demo1( 'link' 'param' 6 $desc )
+
+
+#set( $desc = "Returns the query data set for this ${esc.d}link" )
+#if( $params.param )
+  #set( $result = $link.param($params.param).params )
+#else
+  #set( $result = $link.params )
+#end
+#demoAlt( 'link' 'params' $desc )
+
+
+#set( $desc = "Returns the URI that addresses this web application. E.g. <code>http://myserver.net/myapp</code>. This string does not end with a "/"." )
+#demo( 'link' 'contextURL' $desc )
+
+#set( $desc = "Returns the context path that addresses this web application, e.g. <code>/myapp</code>. This string starts with a "/" but does not end with a "/"." )
+#demo( 'link' 'contextPath' $desc )
+
+#set( $desc = "Retrieves the path for the current request regardless of whether this is a direct request or an include by the RequestDispatcher." )
+#demo( 'link' 'requestPath' $desc )
+
+#set( $desc = "Returns the full URI of this template without any query data. e.g. <code>http://myserver.net/myapp/stuff/View.vm</code>" )
+#demo( 'link' 'baseRef' $desc )
+
+#set( $desc = "This method returns a new self-referencing ${esc.d}link for the current request (e.g. <code>/myapp/stuff/View.vm</code>).  However, the behavior can be changed via toolbox configuration to use absolute URIs and/or add the current request parameters." )
+#demo( 'link' 'self' $desc )
+
+#set( $desc = "Performs URL encoding on the specified text." )
+#demo1( 'link' 'encodeURL' 6 $desc )
+
+#demoCustom( 'link' )
+</table>
