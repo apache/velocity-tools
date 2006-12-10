@@ -722,10 +722,10 @@ public class LinkTool implements Cloneable
      * to return an absolute URI and/or to include the parameters of the
      * current request (in addition to any others set so far).
      *
-     * @see {@link #uri(String uri)}
-     * @see {@link #configure(Map params)}
-     * @see {@link #setSelfAbsolute(boolean selfAbsolute)}
-     * @see {@link #setSelfIncludeParameters(boolean selfParams)}
+     * @see #uri(String uri)
+     * @see #configure(Map params)
+     * @see #setSelfAbsolute(boolean selfAbsolute)
+     * @see #setSelfIncludeParameters(boolean selfParams)
      * @since VelocityTools 1.3
      */
     public LinkTool getSelf()
