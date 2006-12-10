@@ -149,7 +149,7 @@ public class CookieTool
      *
      * @param name the name to give this cookie
      * @param value the value to be set for this cookie
-     * @returns the new Cookie object
+     * @return The new Cookie object.
      * @since VelocityTools 1.3
      */
     public Cookie create(String name, String value)
@@ -165,7 +165,7 @@ public class CookieTool
      * @param name the name to give this cookie
      * @param value the value to be set for this cookie
      * @param maxAge the expiry to be set for this cookie
-     * @returns the new Cookie object
+     * @return The new Cookie object.
      * @since VelocityTools 1.3
      */
     public Cookie create(String name, String value, Object maxAge)
