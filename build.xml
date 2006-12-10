@@ -55,6 +55,7 @@
     Debug:              ${compile.debug}
     Optimize:           ${compile.optimize}
     Deprecation:        ${compile.deprecation}
+    Encoding:           ${compile.encoding}
 
   Build settings:
     Source Files:       ${source.home}
@@ -170,6 +171,7 @@
            debug="${compile.debug}"
            optimize="${compile.optimize}"
            deprecation="${compile.deprecation}"
+           encoding="${compile.encoding}"
            destdir="${classes.dir}">
       <classpath refid="build.classpath" />
       <include name="org/**"/>
@@ -189,6 +191,7 @@
            debug="${compile.debug}"
            optimize="${compile.optimize}"
            deprecation="${compile.deprecation}"
+           encoding="${compile.encoding}"
            destdir="${classes.dir}">
       <classpath refid="build.classpath" />
       <include name="org/**"/>
@@ -209,6 +212,7 @@
            debug="${compile.debug}"
            optimize="${compile.optimize}"
            deprecation="${compile.deprecation}"
+           encoding="${compile.encoding}"
            destdir="${classes.dir}">
       <classpath refid="build.classpath" />
       <include name="org/**"/>

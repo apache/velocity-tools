@@ -102,6 +102,10 @@
     <mkdir dir="${base}/WEB-INF/classes"/>
     <javac srcdir="${base}/WEB-INF/src"
            includes="*/**"
+           debug="${compile.debug}"
+           optimize="${compile.optimize}"
+           deprecation="${compile.deprecation}"
+           encoding="${compile.encoding}"
            destdir="${base}/WEB-INF/classes">
        <classpath>
         <fileset dir="${lib}">
