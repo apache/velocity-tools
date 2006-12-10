@@ -228,7 +228,7 @@ public class LinkTool implements Cloneable
      *
      * Copies 'that' LinkTool into this one and adds the new query data.
      *
-     * @param nweQueryData the query parameters to add
+     * @param newQueryData the query parameters to add
      * @since VelocityTools 1.3
      */
     protected LinkTool copyWith(Map newQueryData)
