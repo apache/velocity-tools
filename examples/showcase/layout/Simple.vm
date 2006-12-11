@@ -14,11 +14,16 @@
 ## KIND, either express or implied.  See the License for the
 ## specific language governing permissions and limitations
 ## under the License.
-#set( $slink = $link.self )
-<h3>Choose a layout:</h3>
-<ul>
-  <li><a href="$slink">CSS Layout</a></li>
-  <li><a href="$slink.layout('Simple')">Simple Layout</a></li>
-  <li><a href="$slink.layout('Table')">Table Layout</a></li>
-  <li><a href="$slink.layout('Print')">Print Layout</a></li>
-</ul>
+
+#parse( 'header.vm' )
+
+<div id="content">
+$screen_content
+</div>
+
+<div id="menu">
+#parse( 'toolmenu.vm' )
+#parse( 'layoutmenu.vm' )
+</div>
+
+#parse( 'footer.vm' )

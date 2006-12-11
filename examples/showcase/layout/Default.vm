@@ -15,15 +15,42 @@
 ## specific language governing permissions and limitations
 ## under the License.
 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+
+#set( $stylesheet = '/layout/layout.css' )
 #parse( 'header.vm' )
 
-<div id="content">
-$screen_content
+<div class="content">
+	<h1>CSS Layout</h1>
+	<p>$screen_content</p>
 </div>
 
-<div id="menu">
-#parse( 'toolmenu.vm' )
-#parse( 'layoutmenu.vm' )
+<div class="content">
+	<h2>Known Issues</h2>
+	<p>This layout fails in IE4.5/Mac. That browser has poor support for CSS absolute positioning, yet it recognizes and executes the CSS @import statement used to hide CSS from broken browsers. Currently, there is no known solution.</p>
 </div>
+
+
+<div id="navAlpha">
+  <p>
+    <div class="menu">
+      #parse( 'toolmenu.vm' )
+    </div>
+  </p>
+  <p>
+  </p>
+</div>
+
+<div id="navBeta">
+  <div class="menu">
+    #parse( 'layoutmenu.vm' )
+  </div>
+
+	<h2>Nifty Layout Techniques</h2>
+	<p>All sorts of nifty layout can be accomplished using cascading style sheets (CSS). Check out <a href="http://www.bluerobot.com" title="BlueRobot layout Resource">bluerobot.com</a> and the <a href="http://www.bluerobot.com/web/layouts/">Layout Reservoir</A> </p>
+</div>
+
+<!-- BlueRobot was here. -->
 
 #parse( 'footer.vm' )
