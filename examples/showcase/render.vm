@@ -30,3 +30,38 @@ This page demonstrates functions of the #doclink( 'ViewRenderTool' false ).
 
 #demoCustom( 'render' )
 </table>
+
+<div align="center">
+  <a name="fullDemo"><h3>Example Display</h3></a>
+<form method="post" action="$link.self.anchor('fullDemo')">
+<textarea name="demo" rows="7" cols="65">##
+#if( $params.demo )##
+$params.demo##
+#else##
+${esc.h}${esc.h}Example of eval():
+${esc.h}set( ${esc.d}list = [1,2,3] )
+${esc.h}set( ${esc.d}object = '${esc.d}list' )
+${esc.h}set( ${esc.d}method = 'size()' )
+${esc.d}render.eval("${esc.d}{object}.${esc.d}method")
+
+${esc.h}${esc.h}Example of recurse():
+${esc.h}macro( say_hi )hello world!${esc.h}end
+${esc.h}set( ${esc.d}foo = '${esc.h}say_hi()' )
+${esc.h}set( ${esc.d}bar = '${esc.d}foo' )
+${esc.d}render.recurse('${esc.d}bar')##
+#end##
+</textarea>
+  <br>
+  <input type="submit" value="Try it!">
+  #if( $params.layout )
+  <input type="hidden" name="layout" value="$params.layout">
+  #end
+</form>
+
+#if( $params.demo )
+Your code returned the following results:
+<pre>
+  $render.eval($params.demo)
+</pre>
+#end
+</div>

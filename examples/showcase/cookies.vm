@@ -44,3 +44,30 @@ the page again.
 
 #demoCustom( 'cookies' )
 </table>
+
+<div align="center">
+  <a name="fullDemo"><h3>Example Display</h3></a>
+<form method="post" action="$link.self.anchor('fullDemo')">
+<textarea name="demo" rows="3" cols="65">##
+#if( $params.demo )##
+$params.demo##
+#else##
+${esc.h}foreach( ${esc.d}cookie in ${esc.d}cookies.all )
+  ${esc.d}cookie.name = ${esc.d}cookie.value
+${esc.h}end##
+#end##
+</textarea>
+  <br>
+  <input type="submit" value="Try it!">
+  #if( $params.layout )
+  <input type="hidden" name="layout" value="$params.layout">
+  #end
+</form>
+
+#if( $params.demo )
+Your code returned the following results:
+<pre>
+  $render.eval($params.demo)
+</pre>
+#end
+</div>
