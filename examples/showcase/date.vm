@@ -24,6 +24,7 @@ for a full listing of available functions.
 
 #demoTableStart()
 
+#set( $quote = '' )
 #set( $desc = 'Converts the specified object to a date and formats it according to the pattern or style returned by $date.format.' )
 #demo1( 'date' 'format' 4 $desc)
 
