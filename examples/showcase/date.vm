@@ -87,3 +87,35 @@ for a full listing of available functions.
 
 #demoCustom( 'date' )
 </table>
+
+<div align="center">
+  <a name="fullDemo"><h3>Example Display</h3></a>
+<form method="post" action="$link.self.anchor('fullDemo')">
+<textarea name="demo" rows="8" cols="65">##
+#if( $params.demo )##
+$params.demo##
+#else##
+${esc.h}${esc.h} Examples of formatting the "current" date:
+ ${esc.d}date
+ ${esc.d}date.long
+ ${esc.d}date.medium_time
+ ${esc.d}date.full_date
+ ${esc.d}date.yyyy
+ ${esc.d}date.get('default','short')
+ ${esc.d}date.get('yyyy-M-d H:m:s')##
+#end##
+</textarea>
+  <br>
+  <input type="submit" value="Try it!">
+  #if( $params.layout )
+  <input type="hidden" name="layout" value="$params.layout">
+  #end
+</form>
+
+#if( $params.demo )
+Your code returned the following results:
+<pre>
+  $render.eval($params.demo)
+</pre>
+#end
+</div>

@@ -47,3 +47,35 @@ This page demonstrates functions of the #doclink( 'ListTool' true ).
 
 #demoCustom( 'lists' )
 </table>
+
+#set( $primes = [1, 2, 3, 5, 7, 11] )
+<div align="center">
+  <a name="fullDemo"><h3>Example Display</h3></a>
+<form method="post" action="$link.self.anchor('fullDemo')">
+<textarea name="demo" rows="7" cols="65">##
+#if( $params.demo )##
+$params.demo##
+#else##
+${esc.d}primes
+${esc.d}lists.size(${esc.d}primes)
+${esc.d}lists.get(${esc.d}primes, 2)
+${esc.d}lists.set(${esc.d}primes, 2, 1)
+${esc.d}lists.get(${esc.d}primes, 2)
+${esc.d}lists.isEmpty(${esc.d}primes)
+${esc.d}lists.contains(${esc.d}primes, 7)##
+#end##
+</textarea>
+  <br>
+  <input type="submit" value="Try it!">
+  #if( $params.layout )
+  <input type="hidden" name="layout" value="$params.layout">
+  #end
+</form>
+
+#if( $params.demo )
+Your code returned the following results:
+<pre>
+  $render.eval($params.demo)
+</pre>
+#end
+</div>

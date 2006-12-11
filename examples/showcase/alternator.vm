@@ -51,7 +51,7 @@ difference between an automatic #doclink( 'Alternator' true ) and a manual one.
 
 <div align="center">
   <a name="fullDemo"><h3>Example Display</h3></a>
-<form method="post" action="$link.self">
+<form method="post" action="$link.self.anchor('fullDemo')">
 <textarea name="demo" rows="6" cols="65">##
 #if( $params.demo )##
 $params.demo##

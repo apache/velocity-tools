@@ -74,3 +74,65 @@ This page demonstrates functions of the #doclink( 'EscapeTool' true ).
 
 #demoCustom( 'esc' )
 </table>
+
+#set( $java = "He didn't say, ${esc.q}Stop!${esc.q}" )
+#set( $javascript = $java )
+#set( $html = '<bread> & <butter>' )
+#set( $xml = $html )
+#set( $sql = "McHale's Navy" )
+
+<div align="center">
+  <a name="fullDemo"><h3>Example Display</h3></a>
+<form method="post" action="$link.self.anchor('fullDemo')">
+<textarea name="demo" rows="10" cols="65">##
+#if( $params.demo )##
+$params.demo##
+#else##
+${esc.d}java
+${esc.d}esc.java(${esc.d}java)
+
+${esc.d}javascript
+${esc.d}esc.javascript(${esc.d}javascript)
+
+${esc.d}html
+${esc.d}esc.html(${esc.d}html)
+
+${esc.d}xml
+${esc.d}esc.xml(${esc.d}xml)
+
+${esc.d}sql
+${esc.d}esc.sql(${esc.d}sql)
+
+${esc.d}esc.dollar
+${esc.d}esc.d
+
+${esc.d}esc.hash
+${esc.d}esc.h
+
+${esc.d}esc.backslash
+${esc.d}esc.b
+
+${esc.d}esc.quote
+${esc.d}esc.q
+
+${esc.d}esc.singleQuote
+${esc.d}esc.s
+
+${esc.d}esc.exclamation
+${esc.d}esc.e##
+#end##
+</textarea>
+  <br>
+  <input type="submit" value="Try it!">
+  #if( $params.layout )
+  <input type="hidden" name="layout" value="$params.layout">
+  #end
+</form>
+
+#if( $params.demo )
+Your code returned the following results:
+<pre>
+  $render.eval($params.demo)
+</pre>
+#end
+</div>

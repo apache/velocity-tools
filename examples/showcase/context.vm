@@ -41,3 +41,30 @@ This page demonstrates functions of the #doclink( 'ContextTool' false ).
 
 #demoCustom( 'context' )
 </table>
+
+<div align="center">
+  <a name="fullDemo"><h3>Example Display</h3></a>
+<form method="post" action="$link.self.anchor('fullDemo')">
+<textarea name="demo" rows="6" cols="65">##
+#if( $params.demo )##
+$params.demo##
+#else##
+${esc.h}foreach( ${esc.d}key in ${esc.d}context.keys )
+  ${esc.d}key = ${esc.d}context.get(${esc.d}key)
+${esc.h}end##
+#end##
+</textarea>
+  <br>
+  <input type="submit" value="Try it!">
+  #if( $params.layout )
+  <input type="hidden" name="layout" value="$params.layout">
+  #end
+</form>
+
+#if( $params.demo )
+Your code returned the following results:
+<pre>
+  $render.eval($params.demo)
+</pre>
+#end
+</div>
