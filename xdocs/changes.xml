@@ -22,7 +22,7 @@
 <document>
   <properties>
     <title>Velocity Tools Changes</title>
-    <author email="nathan@esha.com">Nathan Bubna</author>
+    <author email="nbubna@apache.org">Nathan Bubna</author>
     <projectfile>xdocs/menu.xml</projectfile>
   </properties>
 <body>
@@ -32,6 +32,7 @@
     <subsection name="1.3-dev">
         <p>This section describes changes after the 1.2 release.</p>
         <ul>
+        <li>Upgraded VelocityStruts dependencies to those for Struts 1.3.x series and updated "struts" example app according to <a href="http://wiki.apache.org/struts/StrutsUpgradeNotes12to13">provided directions</a>. (ndb)</li>
         <li>Replaced "layout" example with new "showcase" example to interactively demonstrate all tools and the VelocityLayoutServlet. (ndb)</li>
         <li>Added auto() and manual() methods to AlternatorTool and deprecated the make() methods that took a boolean parameter. (ndb)</li>
         <li>Added getAll() method to ParameterParser to retrieve map of all params via <code>$params.all</code>. (ndb)</li>
