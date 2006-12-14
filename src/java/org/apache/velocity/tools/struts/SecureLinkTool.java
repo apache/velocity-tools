@@ -32,7 +32,7 @@ import org.apache.velocity.tools.view.tools.LinkTool;
 /**
  * Tool to be able to use Struts SSL Extensions with Velocity.
  * <p>It has the same interface as StrutsLinkTool and can function as a
- * substitute if Struts 1.1 and SSL Ext are installed. </p>
+ * substitute if Struts 1.x and SSL Ext are installed. </p>
  * <p>Usage:
  * <pre>
  * Template example:
