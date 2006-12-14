@@ -17,7 +17,7 @@
 
 <HTML>
 <HEAD>
-  <TITLE>VelocityStruts</TITLE>
+  <TITLE>VelocityStruts $version</TITLE>
   <link rel="stylesheet" href="$link.setRelative('styles.css')" type="text/css">
 </HEAD>
 
@@ -27,7 +27,7 @@
     <td>
       <h2><font color="#FFFFFF"><br>
 				VelocityStruts</font></h2>
-      <font color="#FFFFFF">Version 1.2, february 22. 2005</font></td>
+      <font color="#FFFFFF">Version $version</font></td>
     <td align="right">&nbsp;</td>
   </tr>
 </table>
@@ -37,7 +37,7 @@ is a subproject of the <a href="http://jakarta.apache.org/velocity/">Apache Velo
 project.
 <br />
 This is an example web application demonstrating the integration of the
-<a href="http://jakarta.apache.org/struts/">Struts web application framework</a>
+<a href="http://struts.apache.org/">Struts 1.x web application framework</a>
 with the Velocity template engine.
 </p>
 
@@ -46,13 +46,13 @@ with the Velocity template engine.
 	<li>Velocity is now becoming an alternative view technology for Struts-based
 	    Web applications.</li>
 	<li>Velocity templates can be mixed with JSP templates in the same application.</li>
-	<li>No changes are required to Struts. This works with Struts 1.2.</li>
+	<li>No changes are required to Struts. This works with Struts 1.3.x.</li>
 </ul>
 
 <h5>Status</h5>
 <p>A great deal of progress has been made since our 1.0 release. These include
 support for Struts 1.1 features like modules, Tiles, and Validator.  These features have been enhanced further
-to support Struts 1.2.  For a more
+to support Struts 1.3.x.  For a more
 complete listing, see the project <a href="http://jakarta.apache.org/velocity/tools/changes.html">change log</a>.</p>
 
 <h5>Application Examples</h5>

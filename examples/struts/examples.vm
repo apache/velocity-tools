@@ -17,7 +17,7 @@
 
 <HTML>
 <HEAD>
-  <TITLE>VelocityStruts 1.2</TITLE>
+  <TITLE>VelocityStruts $version</TITLE>
   <link rel="stylesheet" href="$link.relative('styles.css')" type="text/css">
 </HEAD>
 
@@ -26,9 +26,8 @@
   <tr bgcolor="#000066">
     <td>
       <h2><font color="#FFFFFF"><br>
-				Velocity for Struts 1.2</font></h2>
-      <font color="#FFFFFF">February 22. 2004</font></td>
-    <td align="right">&nbsp;</td>
+				Velocity for Struts 1.3.x</font></h2>
+    </td>
   </tr>
 </table>
 
