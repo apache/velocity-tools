@@ -80,7 +80,9 @@
   </target>
   <target name="struts-dependencies">
     <copy todir="${lib}" file="${dist.dir}/${struts.id}.jar"/>
+    <copy todir="${lib}" file="${antlr.jar}"/>
     <copy todir="${lib}" file="${commons-beanutils.jar}"/>
+    <copy todir="${lib}" file="${commons-chain.jar}"/>
     <copy todir="${lib}" file="${commons-collections.jar}"/>
     <copy todir="${lib}" file="${commons-digester.jar}"/>
     <copy todir="${lib}" file="${commons-lang.jar}"/>
@@ -88,7 +90,9 @@
     <copy todir="${lib}" file="${commons-validator.jar}"/>
     <copy todir="${lib}" file="${servlet.jar}"/>
     <copy todir="${lib}" file="${sslext.jar}"/>
-    <copy todir="${lib}" file="${struts.jar}"/>
+    <copy todir="${lib}" file="${struts-core.jar}"/>
+    <copy todir="${lib}" file="${struts-taglib.jar}"/>
+    <copy todir="${lib}" file="${struts-tiles.jar}"/>
     <copy todir="${lib}" file="${oro.jar}"/>
     <copy todir="${lib}" file="${velocity.jar}"/>
   </target>
