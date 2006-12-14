@@ -24,6 +24,7 @@
   <tool>
      <key>toytool</key>
      <scope>request</scope>
+     <request-path>index.vm</request-path>
      <class>ToyTool</class>
   </tool>
   <data type="number">
