@@ -28,10 +28,23 @@
 -->
 
 <project name="VelocityTools" basedir=".">
-  <target name="build-download"
-          description="Download all dependencies needed to build VelocityTools from the central repository">
-    <antcall target="commons-beanutils-download" />
+
+  <!-- Download Control Tasks -->
+
+  <target name="full-download"
+          depends="base-download,compile-download,docs-download,examples-download"
+          description="Download all dependencies needed for a full VelocityTools build from the central repository"/>
+
+  <target name="base-download"
+          description="Download dependencies needed to do anything with VelocityTools from the central repository">
     <antcall target="commons-collections-download" />
+    <antcall target="velocity-download" />
+  </target>
+
+  <target name="compile-download"
+          depends="base-download"
+          description="Download dependencies needed to compile VelocityTools from the central repository">
+    <antcall target="commons-beanutils-download" />
     <antcall target="commons-digester-download" />
     <antcall target="commons-lang-download" />
     <antcall target="commons-logging-download" />
@@ -39,23 +52,32 @@
     <antcall target="oro-download" />
     <antcall target="servletapi-download" />
     <antcall target="sslext-download" />
-    <antcall target="struts-download" />
-    <antcall target="velocity-download" />
+    <antcall target="struts-core-download" />
+    <antcall target="struts-tiles-download" />
+    <antcall target="struts-taglib-download" />
   </target>
 
   <target name="docs-download"
-          description="Download all dependencies needed to render VelocityTools documentation from the central repository">
+          depends="base-download"
+          description="Download dependencies needed to render VelocityTools documentation from the central repository">
     <antcall target="dom4j-download" />
-    <antcall target="commons-collections-download" />
-    <antcall target="velocity-download" />
     <antcall target="velocity-dvsl-download" />
   </target>
+
+  <target name="examples-download"
+          description="Download dependencies needed to use the VelocityTools example applications from the central repository">
+    <antcall target="antlr-download" />
+    <antcall target="commons-chain-download" />
+  </target>
+
+
+  <!--  Basic Download Tasks -->
 
   <target name="http-download" unless="skip.jar.loading">
     <condition property="jar.present">
       <and>
         <isfalse value="${force.jar.loading}"/>
-        <available file="${lib.dir}/${download.jarname}-${download.jarversion}.jar"/>
+        <available file="${lib.dir}/${download.name}-${download.version}.jar"/>
       </and>
     </condition>
     <antcall target="do-http-download"/>
@@ -63,8 +85,8 @@
 
   <target name="do-http-download" unless="jar.present">
     <setproxy proxyhost="${proxy.host}" proxyport="${proxy.port}"/>
-    <get src="${repo.url}/${download.jarname}/jars/${download.jarname}-${download.jarversion}.jar"
-         dest="${lib.dir}/${download.jarname}-${download.jarversion}.jar"
+    <get src="${repo.url}/${download.path}/${download.name}-${download.version}.jar"
+         dest="${lib.dir}/${download.name}-${download.version}.jar"
          usetimestamp="false"
          verbose="false"
          ignoreerrors="false" />
@@ -74,7 +96,7 @@
     <condition property="jar.present">
       <and>
         <isfalse value="${force.jar.loading}"/>
-        <available file="${lib.test.dir}/${download.jarname}-${download.jarversion}.jar"/>
+        <available file="${lib.test.dir}/${download.name}-${download.version}.jar"/>
       </and>
     </condition>
     <antcall target="do-http-test-download"/>
@@ -82,88 +104,139 @@
 
   <target name="do-http-test-download" unless="jar.present">
     <setproxy proxyhost="${proxy.host}" proxyport="${proxy.port}"/>
-    <get src="${repo.url}/${download.jarname}/jars/${download.jarname}-${download.jarversion}.jar"
-         dest="${lib.test.dir}/${download.jarname}-${download.jarversion}.jar"
+    <get src="${repo.url}/${download.path}/${download.name}-${download.version}.jar"
+         dest="${lib.test.dir}/${download.name}-${download.version}.jar"
          usetimestamp="false"
          verbose="false"
          ignoreerrors="false" />
   </target>
 
+
+  <!--  Dependency Download Tasks -->
+
+  <target name="antlr-download">
+    <property name="download.name" value="antlr" />
+    <property name="download.version" value="${jar.antlr.version}" />
+    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
+    <antcall target="http-download"/>
+  </target>
+
   <target name="commons-beanutils-download">
-    <property name="download.jarname" value="commons-beanutils" />
-    <property name="download.jarversion" value="${jar.commons-beanutils.version}" />
+    <property name="download.name" value="commons-beanutils" />
+    <property name="download.version" value="${jar.commons-beanutils.version}" />
+    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
+    <antcall target="http-download"/>
+  </target>
+
+  <target name="commons-chain-download">
+    <property name="download.name" value="commons-chain" />
+    <property name="download.version" value="${jar.commons-chain.version}" />
+    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="commons-collections-download">
-    <property name="download.jarname" value="commons-collections" />
-    <property name="download.jarversion" value="${jar.commons-collections.version}" />
+    <property name="download.name" value="commons-collections" />
+    <property name="download.version" value="${jar.commons-collections.version}" />
+    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="commons-digester-download">
-    <property name="download.jarname" value="commons-digester" />
-    <property name="download.jarversion" value="${jar.commons-digester.version}" />
+    <property name="download.name" value="commons-digester" />
+    <property name="download.version" value="${jar.commons-digester.version}" />
+    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="commons-lang-download">
-    <property name="download.jarname" value="commons-lang" />
-    <property name="download.jarversion" value="${jar.commons-lang.version}" />
+    <property name="download.name" value="commons-lang" />
+    <property name="download.version" value="${jar.commons-lang.version}" />
+    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="commons-logging-download">
-    <property name="download.jarname" value="commons-logging" />
-    <property name="download.jarversion" value="${jar.commons-logging.version}" />
+    <property name="download.name" value="commons-logging" />
+    <property name="download.version" value="${jar.commons-logging.version}" />
+    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="commons-validator-download">
-    <property name="download.jarname" value="commons-validator" />
-    <property name="download.jarversion" value="${jar.commons-validator.version}" />
+    <property name="download.name" value="commons-validator" />
+    <property name="download.version" value="${jar.commons-validator.version}" />
+    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="dom4j-download">
-    <property name="download.jarname" value="dom4j" />
-    <property name="download.jarversion" value="${jar.dom4j.version}" />
+    <property name="download.name" value="dom4j" />
+    <property name="download.version" value="${jar.dom4j.version}" />
+    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="oro-download">
-    <property name="download.jarname" value="oro" />
-    <property name="download.jarversion" value="${jar.oro.version}" />
+    <property name="download.name" value="oro" />
+    <property name="download.version" value="${jar.oro.version}" />
+    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="servletapi-download">
-    <property name="download.jarname" value="servletapi" />
-    <property name="download.jarversion" value="${jar.servletapi.version}" />
+    <property name="download.name" value="servletapi" />
+    <property name="download.version" value="${jar.servletapi.version}" />
+    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="sslext-download">
-    <property name="download.jarname" value="sslext" />
-    <property name="download.jarversion" value="${jar.sslext.version}" />
+    <property name="download.name" value="sslext" />
+    <property name="download.version" value="${jar.sslext.version}" />
+    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="struts-download">
-    <property name="download.jarname" value="struts" />
-    <property name="download.jarversion" value="${jar.struts.version}" />
+    <property name="download.name" value="struts" />
+    <property name="download.version" value="${jar.struts.version}" />
+    <property name="download.path" value="org/apache/struts/struts-parent/${download.version}" />
+    <antcall target="http-download"/>
+  </target>
+
+  <target name="struts-core-download">
+    <property name="download.name" value="struts-core" />
+    <property name="download.version" value="${jar.struts-core.version}" />
+    <property name="download.path" value="org/apache/struts/${download.name}/${download.version}" />
+    <antcall target="http-download"/>
+  </target>
+
+  <target name="struts-taglib-download">
+    <property name="download.name" value="struts-taglib" />
+    <property name="download.version" value="${jar.struts-taglib.version}" />
+    <property name="download.path" value="org/apache/struts/${download.name}/${download.version}" />
+    <antcall target="http-download"/>
+  </target>
+
+  <target name="struts-tiles-download">
+    <property name="download.name" value="struts-tiles" />
+    <property name="download.version" value="${jar.struts-tiles.version}" />
+    <property name="download.path" value="org/apache/struts/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="velocity-download">
-    <property name="download.jarname" value="velocity" />
-    <property name="download.jarversion" value="${jar.velocity.version}" />
+    <property name="download.name" value="velocity" />
+    <property name="download.version" value="${jar.velocity.version}" />
+    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="velocity-dvsl-download">
-    <property name="download.jarname" value="velocity-dvsl" />
-    <property name="download.jarversion" value="${jar.velocity-dvsl.version}" />
+    <property name="download.name" value="velocity-dvsl" />
+    <property name="download.version" value="${jar.velocity-dvsl.version}" />
+    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 

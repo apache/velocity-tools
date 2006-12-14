@@ -93,35 +93,21 @@
     <delete dir="${docs.dir}"/>
   </target>
 
-  <!-- To do a truly, completely clean build -->
-  <target name="clean.lib" description="Deletes the folder of downloaded dependencies">
+  <!-- To do a truly, completely clean build, include this target -->
+  <target name="clean.lib"
+          unless="skip.jar.loading"
+          description="Deletes the folder of downloaded dependencies">
     <delete dir="${lib.dir}"/>
   </target>
 
 
   <!-- Prepare Environment -->
-  <target name="prepare" depends="prepare.build,prepare.docs">
-    <!-- make necessary directories -->
-    <mkdir dir="${build.dir}"/>
-    <mkdir dir="${lib.dir}" />
-    <mkdir dir="${classes.dir}"/>
-    <mkdir dir="${dist.dir}"/>
-
-    <!-- download dependency jars -->
-    <ant antfile="${velocity.build.dir}/download.xml" target="build-download" />
-
-    <!-- construct classpath of all jars in lib repository -->
-    <path id="build.classpath">
-    <fileset dir="${lib.dir}">
-        <include name="**/*.jar"/>
-    </fileset>
-    </path>
+  <target name="prepare" depends="prepare.compile,prepare.docs,prepare.examples">
+    <echo message="-------- ${project.name} ${project.version} --------"/>
   </target>
 
-  <!-- Prepare Build Environment -->
-  <target name="prepare.build">
-    <echo message="-------- ${project.name} ${project.version} --------"/>
-    
+  <!-- Prepare Compilation Environment -->
+  <target name="prepare.compile">
     <!-- make necessary directories -->
     <mkdir dir="${build.dir}"/>
     <mkdir dir="${lib.dir}" />
@@ -129,10 +115,10 @@
     <mkdir dir="${dist.dir}"/>
 
     <!-- download dependency jars -->
-    <ant antfile="${basedir}/download.xml" target="build-download" />
+    <ant antfile="${basedir}/download.xml" target="compile-download" />
 
     <!-- construct classpath of all jars in lib repository -->
-    <path id="build.classpath">
+    <path id="compile.classpath">
     <fileset dir="${lib.dir}">
         <include name="**/*.jar"/>
     </fileset>
@@ -151,12 +137,14 @@
     <path id="docs.classpath">
     <fileset dir="${lib.dir}">
         <include name="**/*.jar"/>
-        <!--include name="dom4j*.jar"/>
-        <include name="commons-collections*.jar"/>
-        <include name="oro*.jar"/>
-        <include name="velocity*.jar"/-->
     </fileset>
     </path>
+  </target>
+
+  <!-- Prepare Examples Environment -->
+  <target name="prepare.examples">
+    <!-- download dependency jars -->
+    <ant antfile="${basedir}/download.xml" target="examples-download" />
   </target>
 
 
@@ -165,7 +153,7 @@
           description="Compiles the Velocity-Tools project (struts, view and generic)"/>
 
   <!-- Compile VelocityStruts (struts, view, generic) -->
-  <target name="compile.struts" depends="prepare.build"
+  <target name="compile.struts" depends="prepare.compile"
           description="Compiles the Velocity-Tools project (struts, view, and generic)">
     <javac srcdir="${classes.src}"
            debug="${compile.debug}"
@@ -173,7 +161,7 @@
            deprecation="${compile.deprecation}"
            encoding="${compile.encoding}"
            destdir="${classes.dir}">
-      <classpath refid="build.classpath" />
+      <classpath refid="compile.classpath" />
       <include name="org/**"/>
     </javac>
 
@@ -185,7 +173,7 @@
   </target>
 
   <!-- Compile Just VelocityView (view, generic) -->
-  <target name="compile.view" depends="prepare.build"
+  <target name="compile.view" depends="prepare.compile"
           description="Compiles VelocityView and the generic tools">
     <javac srcdir="${classes.src}"
            debug="${compile.debug}"
@@ -193,7 +181,7 @@
            deprecation="${compile.deprecation}"
            encoding="${compile.encoding}"
            destdir="${classes.dir}">
-      <classpath refid="build.classpath" />
+      <classpath refid="compile.classpath" />
       <include name="org/**"/>
       <exclude name="**/struts/**"/>
     </javac>
@@ -206,7 +194,7 @@
   </target>
 
   <!-- Compile Just Generic Tools (generic) -->
-  <target name="compile.generic" depends="prepare.build"
+  <target name="compile.generic" depends="prepare.compile"
           description="Compiles just the generic tools in this project">
     <javac srcdir="${classes.src}"
            debug="${compile.debug}"
@@ -214,7 +202,7 @@
            deprecation="${compile.deprecation}"
            encoding="${compile.encoding}"
            destdir="${classes.dir}">
-      <classpath refid="build.classpath" />
+      <classpath refid="compile.classpath" />
       <include name="org/**"/>
       <exclude name="**/struts/**"/>
       <exclude name="**/view/**"/>
@@ -324,7 +312,7 @@
              windowtitle="${javadoc.title}"
              bottom="Copyright (c) ${javadoc.year} Apache Software Foundation" >
 
-      <classpath refid="build.classpath"/>
+      <classpath refid="compile.classpath"/>
       <sourcepath>
         <pathelement path="${classes.src}" />
       </sourcepath>
@@ -370,27 +358,27 @@
 
 
   <!-- Build all example applications -->
-  <target name="examples" depends="jar.view,jar.struts"
+  <target name="examples" depends="jar.view,jar.struts,prepare.examples"
           description="Compiles and jars all example applications.">
     <ant antfile="${basedir}/examples.xml" target="build-examples" />
   </target>
 
   <!-- Build VelocityView - Simple application -->
-  <target name="simple" depends="jar.view"
+  <target name="simple" depends="jar.view,prepare.examples"
           description="Compiles and jars the VelocityView example application.">
     <property name="target" value="war"/>
     <ant antfile="${basedir}/examples.xml" target="simple-example" />
   </target>
 
   <!-- Build VelocityView - Showcase application -->
-  <target name="showcase" depends="jar.view"
+  <target name="showcase" depends="jar.view,prepare.examples"
           description="Compiles and jars the VelocityView Showcase example application.">
     <property name="target" value="war"/>
     <ant antfile="${basedir}/examples.xml" target="showcase-example" />
   </target>
 
   <!-- Build VelocityStruts example application -->
-  <target name="struts" depends="jar.struts"
+  <target name="struts" depends="jar.struts,prepare.examples"
           description="Compiles and jars the VelocityStruts example application.">
     <property name="target" value="war"/>
     <ant antfile="${basedir}/examples.xml" target="struts-example" />
@@ -437,7 +425,7 @@
 
   <!-- Create binary distribution files -->
   <target name="release.binaries"
-          depends="clean.lib,jar.struts,jar.view,jar.generic,examples,javadoc,docs"
+          depends="clean,clean.lib,prepare,jar.struts,jar.view,jar.generic,examples,javadoc,docs"
           description="Builds everything and creates the binary distribution files">
 
     <!-- Gather misc docs/files -->
