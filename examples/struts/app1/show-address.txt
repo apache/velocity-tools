@@ -16,68 +16,68 @@
 ## under the License.
 
 <html>
-	<head>
-		<title>$text.get("title")</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-	</head>
+    <head>
+        <title>$text.title</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    </head>
 
-	<body>
-		<p><b>$text.get("title") (Velocity $text.get("version"))</b></p>
+    <body>
+        <p><b>$text.title (Velocity $text.version)</b></p>
 
-		<p>$text.get("intro")</p>
+        <p>$text.intro</p>
 
-		<form name="form1" method="GET" action="address2.do">
-		<p>$text.get("language")
-		<select name="locale" size="1" onchange="form1.submit(); return false;">
-			<option value="" SELECTED></option>
-			<option value="English">English</option>
-			<option value="Deutsch">Deutsch</option>
-		</select>
-		</p></form>
+        <form name="form1" method="GET" action="$link.action.address2">
+        <p>$text.language
+        <select name="locale" size="1" onchange="form1.submit(); return false;">
+            <option value="" SELECTED></option>
+            <option value="English">English</option>
+            <option value="Deutsch">Deutsch</option>
+        </select>
+        </p></form>
 
-		<p>$text.get("header")</p>
-		<table width="300" border="1" cellspacing="" cellpadding="5">
-			<tr>
-				<td>$text.get("firstname")</td>
-				<td>&nbsp; $!address.firstname </td>
-			</tr>
-			<tr>
-				<td>$text.get("lastname")</td>
-				<td>&nbsp; $!address.lastname </td>
-			</tr>
-			<tr>
-				<td>$text.get("street")</td>
-				<td>&nbsp; $!address.street </td>
-			</tr>
-			<tr>
-				<td>$text.get("zip")</td>
-				<td>&nbsp; $!address.zip </td>
-			</tr>
-			<tr>
-				<td>$text.get("city")</td>
-				<td>&nbsp; $!address.city </td>
-			</tr>
-			<tr>
-				<td>$text.get("country")</td>
-				<td>&nbsp; $!address.country </td>
-			</tr>
-			<tr>
-				<td>$text.get("languages")</td>
-				<td>
-					#foreach ($language in $!address.languages)
-						&nbsp; $text.get($language)<br>
-					#end
-					&nbsp;
-				</td>
-			</tr>
-		</table>
+        <p>$text.header</p>
+        <table width="300" border="1" cellspacing="" cellpadding="5">
+            <tr>
+                <td>$text.firstname</td>
+                <td>&nbsp; $!address.firstname </td>
+            </tr>
+            <tr>
+                <td>$text.lastname</td>
+                <td>&nbsp; $!address.lastname </td>
+            </tr>
+            <tr>
+                <td>$text.street</td>
+                <td>&nbsp; $!address.street </td>
+            </tr>
+            <tr>
+                <td>$text.zip</td>
+                <td>&nbsp; $!address.zip </td>
+            </tr>
+            <tr>
+                <td>$text.city</td>
+                <td>&nbsp; $!address.city </td>
+            </tr>
+            <tr>
+                <td>$text.country</td>
+                <td>&nbsp; $!address.country </td>
+            </tr>
+            <tr>
+                <td>$text.languages</td>
+                <td>
+                    #foreach ($language in $!address.languages)
+                        &nbsp; $text.get($language)<br>
+                    #end
+                    &nbsp;
+                </td>
+            </tr>
+        </table>
 
-		<br>
-		<a href="$link.setAction("address1").addQueryData("action","edit")">$text.get("edit")</a> (JSP)<br><br>
-		<a href="$link.setAction("address2").addQueryData("action","edit")">$text.get("edit")</a> (Velocity)
+        <br>
+        <a href="$link.action.address1.param('action','edit')">$text.edit</a> (JSP)<br><br>
+        <a href="$link.action.address2.param('action','edit')">$text.edit</a> (Velocity)
 
-		<br><br>
-		<a href="$link.setForward("showAddressSrc")">Template</a>
+        <br><br>
+        <a href="$link.forward.showAddressSrc">Template</a>
 
-	</body>
+    </body>
 </html>

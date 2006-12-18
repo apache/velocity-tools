@@ -41,7 +41,7 @@ are used in this example.
         #end
 
         #macro (errorMarkup)
-            #if ($errors.exist )
+            #if ($errors.exist() )
                 <ul>
                 #foreach ($e in $errors.all )
                     $e
@@ -52,23 +52,15 @@ are used in this example.
         #errorMarkup()
 
         <ul>
-            <li><a href="$link.setForward('logon_vm')">Sign in</a></li>
+            <li><a href="$link.forward.logon_vm">Sign in</a></li>
             #if( $user )
-            <li><a href="$link.setForward('logoff_vm')">Sign out</a></li>
+            <li><a href="$link.forward.logoff_vm">Sign out</a></li>
             #end
         </ul>
 
-        <a href="$link.setAction('/welcome_jsp')">Switch to JSP</a><br>
-        <a href="$link.setAction('index_vm_src')">View Template</a><br>
+        <a href="$link.action.welcome_jsp">Switch to JSP</a><br>
+        <a href="$link.forward.index_vm_src">View Template</a><br>
 
     </body>
 
 </html>
-
-
-
-
-
-
-
-
