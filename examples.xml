@@ -80,7 +80,6 @@
   </target>
   <target name="struts-dependencies">
     <copy todir="${lib}" file="${dist.dir}/${struts.id}.jar"/>
-    <copy todir="${lib}" file="${antlr.jar}"/>
     <copy todir="${lib}" file="${commons-beanutils.jar}"/>
     <copy todir="${lib}" file="${commons-chain.jar}"/>
     <copy todir="${lib}" file="${commons-collections.jar}"/>

@@ -66,7 +66,6 @@
 
   <target name="examples-download"
           description="Download dependencies needed to use the VelocityTools example applications from the central repository">
-    <antcall target="antlr-download" />
     <antcall target="commons-chain-download" />
   </target>
 
