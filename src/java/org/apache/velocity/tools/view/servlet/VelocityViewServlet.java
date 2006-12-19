@@ -144,6 +144,20 @@ public class VelocityViewServlet extends HttpServlet
     protected static final String INIT_PROPS_KEY =
         "org.apache.velocity.properties";
 
+    /**
+     * Default toolbox configuration file path. If no alternate value for
+     * this is specified, the servlet will look here.
+     */
+    protected static final String DEFAULT_TOOLBOX_PATH =
+        "/WEB-INF/toolbox.xml";
+
+    /**
+     * Default velocity properties file path. If no alternate value for
+     * this is specified, the servlet will look here.
+     */
+    protected static final String DEFAULT_PROPERTIES_PATH =
+        "/WEB-INF/velocity.properties";
+
     /** A reference to the toolbox manager. */
     protected ToolboxManager toolboxManager = null;
 
@@ -291,17 +305,17 @@ public class VelocityViewServlet extends HttpServlet
     {
         /* check the servlet config and context for a toolbox param */
         String file = findInitParameter(config, TOOLBOX_KEY);
+        if (file == null)
+        {
+            // ok, look in the default location
+            file = DEFAULT_TOOLBOX_PATH;
+            velocity.debug("VelocityViewServlet: No toolbox entry in configuration."
+                           + " Looking for '" + DEFAULT_TOOLBOX_PATH + "'");
+        }
 
-        /* if we have a toolbox, get a manager for it */
-        if (file != null)
-        {
-            toolboxManager =
-                ServletToolboxManager.getInstance(getServletContext(), file);
-        }
-        else
-        {
-            velocity.info("VelocityViewServlet: No toolbox entry in configuration.");
-        }
+        /* try to get a manager for this toolbox file */
+        toolboxManager =
+            ServletToolboxManager.getInstance(getServletContext(), file);
     }
 
 
@@ -454,20 +468,28 @@ public class VelocityViewServlet extends HttpServlet
     {
         // grab the path to the custom props file (if any)
         String propsFile = findInitParameter(config, INIT_PROPS_KEY);
+        if (propsFile == null)
+        {
+            // ok, look in the default location for custom props
+            propsFile = DEFAULT_PROPERTIES_PATH;
+            velocity.debug("VelocityViewServlet: Looking for custom properties at '"
+                           + DEFAULT_PROPERTIES_PATH + "'");
+        }
 
         ExtendedProperties p = new ExtendedProperties();
-        if (propsFile != null)
+        InputStream is = getServletContext().getResourceAsStream(propsFile);
+        if (is != null)
         {
-            p.load(getServletContext().getResourceAsStream(propsFile));
-
-            velocity.info("VelocityViewServlet: Custom Properties File: "+propsFile);
+            // load the properties from the input stream
+            p.load(is);
+            velocity.info("VelocityViewServlet: Using custom properties at '"
+                          + propsFile + "'");
         }
         else
         {
-            velocity.info("VelocityViewServlet: No custom properties found. " +
-                          "Using default Velocity configuration.");
+            velocity.debug("VelocityViewServlet: No custom properties found. " +
+                           "Using default Velocity configuration.");
         }
-
         return p;
     }
 
