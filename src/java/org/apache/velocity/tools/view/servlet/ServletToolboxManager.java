@@ -163,7 +163,7 @@ public class ServletToolboxManager extends XMLToolboxManager
 
                 if (is != null)
                 {
-                    LOG.info("Using config file '" + toolboxFile +"'");
+                    LOG.info("Using config file '" + toolboxFile + "'");
 
                     toolboxManager = new ServletToolboxManager(servletContext);
                     toolboxManager.load(is);
@@ -171,18 +171,16 @@ public class ServletToolboxManager extends XMLToolboxManager
                     // remember it
                     managersMap.put(uniqueKey, toolboxManager);
 
-                    LOG.info("Toolbox setup complete.");
+                    LOG.debug("Toolbox setup complete.");
+                }
+                else
+                {
+                    LOG.debug("No toolbox was found at '" + toolboxFile + "'");
                 }
             }
             catch(Exception e)
             {
-                LOG.error("Problem loading toolbox '" + toolboxFile +"' : " + e);
-
-                // if this happens, it probably deserves
-                // to have the stack trace logged
-                StringWriter sw = new StringWriter();
-                e.printStackTrace(new PrintWriter(sw));
-                LOG.error(sw.toString());
+                LOG.error("Problem loading toolbox '" + toolboxFile + "'", e);
             }
             finally
             {
