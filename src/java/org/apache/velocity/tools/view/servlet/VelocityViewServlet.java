@@ -70,11 +70,15 @@ import org.apache.velocity.util.SimplePool;
  *   <dt>org.apache.velocity.toolbox</dt>
  *   <dd>Path and name of the toolbox configuration file. The path must be
  *     relative to the web application root directory. If this parameter is
- *     not found, no toolbox is instantiated.</dd>
+ *     not found, the servlet will check for a toolbox file at
+ *     '/WEB-INF/toolbox.xml'.</dd>
  *   <dt>org.apache.velocity.properties</dt>
  *   <dd>Path and name of the Velocity configuration file. The path must be
  *     relative to the web application root directory. If this parameter
- *     is not present, Velocity is initialized with default settings.</dd>
+ *     is not present, Velocity will check for a properties file at
+ *     '/WEB-INF/velocity.properties'.  If no file is found there, then
+ *     Velocity is initialized with the settings in the classpath at
+ *     'org.apache.velocity.tools.view.servlet.velocity.properties'.</dd>
  * </dl>
  *
  * <p>There are methods you may wish to override to access, alter or control
