@@ -7,28 +7,30 @@ Known Issues/Bugs:
     - see http://issues.apache.org/jira/browse/VELTOOLS
 
 
-
-Documentation:
+Documentation Wishlist:
    - Complete user guide.
    - Improve documention of any or all of the view tools and the 
      commons-logging/LogSystem bridges (either xml/dvsl or javadoc)
    - Create a developer's guide (how to write tools, tips on extending VVS, etc.)
 
 
-
 Proposed Features/Upgrades:
     General:
-        - convert project to use Maven
+        - finish/fix/improve Maven2 build support
+        - add automated testing of tools
         
     VelocityView:
         - add a library of velocimacros for use with these tools
-        - Add a standalone toolbox manager
+        - Improve standalone toolbox management support
         - Pluggable toolbox manager in VelocityViewServlet
-        - Tool pooling support (use commons-pool probably)
-        - add chooseCharacterEncoding(req) to VVS to make dynamic encoding
-          selection easier
+        - Pluggable toolbox loading (i.e. from props or something instead of xml)
+        - Support for reading toolbox from properties files
+        - Tool pooling/cleanup support (use commons-pool probably)
         - look into supporting arbitrary layout depth (sort of a "tiles lite")
           for the VelocityLayoutServlet (cf. Niall's work with Simple)
+        - support for JSP tags
+        - adopt VelocityTag and add toolbox support
+        - develop Tiles2 compatible TilesTool
 
     Generic tools:
         - add a library of general-use velocimacros
@@ -41,20 +43,8 @@ Proposed Features/Upgrades:
           (this would probably work in concert with the velocimacro libraries)
 
 
-Ideas being considered for version 2.0:
-    - Toolbox support for non-servlet environments
-    - Pluggable toolbox readers
-    - Support for reading toolbox from properties files
-    - Drop ViewTool and Configurable interfaces in favor of finding required methods by reflection
-
-
 Example Ideas:
-   - a blank Velocity-Struts application as the starting point for development.
-   - an application to demonstrate use of more obscure features like the 
-     AbstractSearchTool, MultiViewsTool, IteratorTool, and the like.
    - Struts 1.3 example(s). Take the existing Struts 1.3 examples and replace 
      the view layer with Velocity. (show off Tiles, modules, Validator, etc.)
-   - example app(s) to demonstrate the velocimacro libraries
-   - self-documenting apps to explain and demonstrate key features
    - a FooShop-type demo app (i.e. something closer to real-world use)
 
