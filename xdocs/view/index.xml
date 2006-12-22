@@ -68,23 +68,23 @@
   <section name="Installation">
     <p>The VelocityViewServlet needs to be installed into your servlet container
     so it can handle all request for *.vm (velocity template) files. There are
-    only two additional configuration files necessary, and they are shown in
+    only two additional configuration files, and they are shown in
     detail below.</p>
 
     <br clear="all" />
 
     <subsection name="Servlet Setup">
       <p>The servlet configuration (<strong>web.xml</strong>) must be
-      modified to include a reference to the special Velocity-based
-      servlet which will perform the rendering. All *.vm files are
+      modified to include a reference to the VelocityViewServlet
+      (or subclass thereof) which will perform the rendering. All *.vm files are
       mapped to this servlet which will populate the 'context' with
-      Request, Session, and Application scopes plus additional tools
+      Request, Session, and Application scopes plus any additional tools
       specified in the <strong>toolbox.xml</strong> file. The servlet
       will use this contextual information and the Velocity Engine to
       render the template file. </p>
       <br clear="all" />
       <p><strong>Note:</strong> Additional functionality can be achieved
-      through subclassing this servlet, and will be discussed further in
+      through subclassing the VelocityViewServlet, and will be discussed further in
       the VelocityLayoutServlet below. </p>
 
       <p><b>web.xml</b></p>
@@ -95,17 +95,22 @@
     org.apache.velocity.tools.view.servlet.VelocityViewServlet
   &lt;/servlet-class&gt;
 
+  &lt;!-- 
+    Unless you plan to put your toolbox.xml and velocity.properties
+    under different folders or give them different names, then these
+    two init-params are unnecessary as of VelocityTools 1.3.  The
+    VelocityViewServlet will automatically look for these files in
+    the following locations.
+  --&gt;
   &lt;init-param&gt;
     &lt;param-name&gt;org.apache.velocity.toolbox&lt;/param-name&gt;
     &lt;param-value&gt;/WEB-INF/toolbox.xml&lt;/param-value&gt;
- &lt;/init-param&gt;
+  &lt;/init-param&gt;
 
   &lt;init-param&gt;
     &lt;param-name&gt;org.apache.velocity.properties&lt;/param-name&gt;
     &lt;param-value&gt;/WEB-INF/velocity.properties&lt;/param-value&gt;
- &lt;/init-param&gt;
-
- &lt;load-on-startup&gt;10&lt;/load-on-startup&gt;
+  &lt;/init-param&gt;
 &lt;/servlet&gt;
 
 &lt;!-- Map *.vm files to Velocity --&gt;
@@ -124,10 +129,10 @@
       Velocimacro template. This file can contain macros which will be
       made available to all templates.</p>
 
-      <p>The location of the configuration file is specified in web.xml,
-      and it is recommended the file be placed inside the hidden WEB-INF
-      directory of the web application. An example configuration
-      file is included with the distribution.</p>
+      <p>The location of the configuration file may be specified in web.xml,
+      but it is recommended the file be placed inside the hidden WEB-INF
+      directory of the web application and named 'velocity.properties'.
+      An example configuration file is included with the distribution.</p>
       <p>Please see the
       <a href="http://jakarta.apache.org/velocity/user-guide.html">Velocity User's Guide</a>
       for more information on Velocity configuration.</p>
@@ -142,8 +147,8 @@
     </subsection>
 
     <subsection name="Toolbox Configuration">
-      <p>The toolbox file, <strong>WEB-INF/toolbox.xml</strong> in our
-      example, maps names of our choosing to the classes that they will
+      <p>The toolbox file, <strong>WEB-INF/toolbox.xml</strong> by
+      default, maps names of our choosing to the classes that they will
       represent. It's easier than that sounds.</p>
       <p>Think about asking our friend Jon to grab us a 'wrench' from a
       real toolbox. Jon just needs to know which wrench we want (metric,
@@ -336,7 +341,33 @@
   </section>
 
   <section name="Known Issues">
-  	<p>None!</p>
+  	<p>
+      Since Tomcat 5.5 is using commons-logging as a complete
+      logging facility, we are no longer able to direct commons-logging
+      output to the servlet log by default.  The result of this is that
+      our example apps can no longer contain a commons-logging.properties
+      on the classpath if we want them to work with all servlet engines.  
+    </p>
+    <p>
+      When using Tomcat 5.5+, this means that log messages
+      from our tools and tool management code are by default sent to the Tomcat
+      console, rather than the servlet log.  Velocity Engine and VelocityViewServlet
+      messages will still be sent to the servlet log by default. 
+      When using other servlet engines or earlier Tomcat versions
+      (e.g. Jetty or Tomcat 4.x), you must now add a commons-logging.properties
+      file at the root of the classpath that contains:
+      <code>
+      org.apache.commons.logging.Log=org.apache.velocity.tools.log.LogSystemCommonsLog
+      </code>
+      if you wish to have tool and tool management log output sent to the
+      servlet log.  If you are using Tomcat 5.5+, do NOT do that, as it will
+      cause an infinite loop.
+    </p>
+    <p>
+      We plan to resolve this in future versions by removing commons-logging
+      from our code in favor of the much improved log wrappers in Velocity Engine 1.5.
+      In the meantime, commons-logging remains the most flexible solution.
+    </p>
     <br clear="all"/>
   </section>
 
