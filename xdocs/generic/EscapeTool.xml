@@ -24,6 +24,7 @@
     <properties>
         <title>EscapeTool</title>
         <author email="shinobu@ieee.org">Shinobu Kawai</author>
+        <author email="claude.brisson@gmail.com">Claude Brisson</author>
         <projectfile>xdocs/generic/menu.xml</projectfile>
     </properties>
 
@@ -166,6 +167,43 @@
 
 <p>produces this output:</p>
 <sourcecode>&amp;quot;bread&amp;quot; &amp;amp; &amp;quot;butter&amp;quot;</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section>
+        <method name="http()">
+            <abstract>
+                Escapes the characters in a <code>String</code> to be suitable to use as an HTTP parameter value.
+            </abstract>
+
+            <signature>
+                String http(Object string)
+            </signature>
+
+            <parameters>
+                <parameter name="string">
+                    the string to escape values, may be null.
+                </parameter>
+            </parameters>
+
+            <returns>
+                a new escaped <code>String</code>, <code>null</code> if null string input
+            </returns>
+
+            <description>
+                <p>Delegates the process to
+                <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/net/URLEncoder.html">java.net.URLEncoder#encodeURL(String,"UTF-8")</a>.
+                </p>
+                <p>If <code>$http</code> had the following value:</p>
+                <sourcecode>Hello here &amp; there</sourcecode>
+                <p>then the following Velocity script:</p>
+                <sourcecode>$esc.http($http)</sourcecode>
+
+                <p>produces this output:</p>
+                <sourcecode>hello+here+%26+there</sourcecode>
+
             </description>
 
         </method>
