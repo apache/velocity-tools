@@ -19,11 +19,14 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import java.net.URLEncoder;
+import java.io.UnsupportedEncodingException;
+
 import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  * Tool for working with escaping in Velocity templates.
- * It provides methods to escape outputs for Java, JavaScript, HTML, XML and SQL.
+ * It provides methods to escape outputs for Java, JavaScript, HTML, HTTP, XML and SQL.
  * Also provides methods to render VTL characters that otherwise needs escaping.
  *
  * <p><pre>
@@ -42,6 +45,9 @@ import org.apache.commons.lang.StringEscapeUtils;
  *
  *  $sql                         -> McHale's Navy
  *  $esc.sql($sql)               -> McHale''s Navy
+ *
+ *  $http                        -> hello here & there
+ *  $esc.http                    -> hello+here+%26+there
  *
  *  $esc.dollar                  -> $
  *  $esc.d                       -> $
@@ -143,6 +149,26 @@ public class EscapeTool
             return null;
         }
         return StringEscapeUtils.escapeHtml(String.valueOf(string));
+    }
+
+    /**
+     * Escape the characters in a <code>String</code> to be suitable to use as an HTTP parameter value.
+     * <br/>
+     * Uses UTF-8 as default character encoding.
+     * @param string the string to escape, may be null
+     * @return a new escaped <code>String</code>, <code>null</code> if null string input
+     *
+     * See java.net.URLEncoder#encode(String,String).
+     */
+    public String http(Object string) {
+        if (string == null) {
+            return null;
+        }
+        try {
+            return URLEncoder.encode(String.valueOf(string),"UTF-8");
+        } catch(UnsupportedEncodingException uee) {
+            return null;
+        }
     }
 
     /**
