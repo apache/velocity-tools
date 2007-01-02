@@ -72,17 +72,20 @@
 
   <!--  Basic Download Tasks -->
 
-  <target name="http-download" unless="skip.jar.loading">
-    <condition property="jar.present">
-      <and>
-        <isfalse value="${force.jar.loading}"/>
-        <available file="${lib.dir}/${download.name}-${download.version}.jar"/>
-      </and>
+  <target name="http-download">
+    <condition property="skip-download">
+      <or>
+        <istrue value="${skip.jar.loading}"/>
+        <and>
+          <isfalse value="${force.jar.loading}"/>
+          <available file="${lib.dir}/${download.name}-${download.version}.jar"/>
+        </and>
+      </or>
     </condition>
     <antcall target="do-http-download"/>
   </target>
 
-  <target name="do-http-download" unless="jar.present">
+  <target name="do-http-download" unless="skip-download">
     <setproxy proxyhost="${proxy.host}" proxyport="${proxy.port}"/>
     <get src="${repo.url}/${download.path}/${download.name}-${download.version}.jar"
          dest="${lib.dir}/${download.name}-${download.version}.jar"
