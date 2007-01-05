@@ -110,6 +110,15 @@ public class DateTool
     // ------------------------- system date access ------------------
 
     /**
+     * @return the system's current time as the number of milliseconds
+     * elapsed since January 1, 1970, 00:00:00 GMT.
+     */
+    public static final long getSystemTime()
+    {
+        return getSystemCalendar().getTime().getTime();
+    }
+
+    /**
      * @return the system's current time as a {@link Date}
      */
     public static final Date getSystemDate()
