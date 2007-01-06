@@ -32,7 +32,7 @@ import org.apache.velocity.runtime.log.LogSystem;
  *
  * <p>To use, specify this class in your commons-logging.properties:
  * <code>
- * org.apache.commons.logging.Log=org.apache.velocity.tools.log.LogSystemCommonsLog
+ * org.apache.commons.logging.Log=org.apache.velocity.tools.generic.log.LogSystemCommonsLog
  * </code>
  * </p>
  *
