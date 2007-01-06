@@ -357,7 +357,7 @@
       (e.g. Jetty or Tomcat 4.x), you must now add a commons-logging.properties
       file at the root of the classpath that contains:
       <code>
-      org.apache.commons.logging.Log=org.apache.velocity.tools.log.LogSystemCommonsLog
+      org.apache.commons.logging.Log=org.apache.velocity.tools.generic.log.LogSystemCommonsLog
       </code>
       if you wish to have tool and tool management log output sent to the
       servlet log.  If you are using Tomcat 5.5+, do NOT do that, as it will
