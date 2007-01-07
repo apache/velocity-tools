@@ -65,7 +65,7 @@ ${toolname}.html">$toolname</a>#end
 #macro( demo $toolname $method $description )
 <tr>
   <td valign="top">${esc.d}${toolname}.${method}</td>
-  <td valign="top">$render.eval("${esc.d}${toolname}.${method}")</td>
+  <td valign="top" id="${method}">$render.eval("${esc.d}${toolname}.${method}")</td>
   <td valign="top">$description</td>
 </tr>
 #end
@@ -76,7 +76,7 @@ ${toolname}.html">$toolname</a>#end
 #macro( demoAlt $toolname $method $result $description )
 <tr>
   <td valign="top">${esc.d}${toolname}.${method}</td>
-  <td valign="top">$!result</td>
+  <td valign="top" id="alt${method}">$!result</td>
   <td valign="top">$description</td>
 </tr>
 #end
@@ -89,7 +89,7 @@ ${toolname}.html">$toolname</a>#end
   #set( $quote = $esc.q )
 #end
 <tr>
-  <form method="get" action="$link.anchor($method)">
+  <form name="${method}" method="get" action="${link.self}$link.anchor($method)"> ## HttpUnit doesn't like anchor-only links
   <td valign="top">
     <a name="$method"><nobr>
       ${esc.d}${toolname}.$method(${quote}<input type="text" size="$size" name="$method" value="$!params.get($method)">${quote})
@@ -99,14 +99,16 @@ ${toolname}.html">$toolname</a>#end
     #if( $params.get($method) )
       ${esc.d}${toolname}.${method}(${quote}$params.get($method)${quote})
       =
-      $render.eval("${esc.d}${toolname}.${method}(${quote}$params.get($method)${quote})")
+      <div id="${method}">$render.eval("${esc.d}${toolname}.${method}(${quote}$params.get($method)${quote})")</div>
       <input type="submit" value="Try it!">
     #else
       <input type="submit" value="Try it!">
     #end
     #foreach( $param in $request.parameterMap.keySet() )
       #foreach( $value in $params.getStrings($param) )
-        <input type="hidden" name="$param" value="$value">
+        #if( $param != $method )
+          <input type="hidden" name="$param" value="$value">
+        #end
       #end
     #end
   </td>
@@ -125,7 +127,7 @@ ${toolname}.html">$toolname</a>#end
 #set( $method1 = "${method}1" )
 #set( $method2 = "${method}2" )
 <tr>
-  <form method="get" action="$link.anchor($method2)">
+  <form name="${method}2" method="get" action="${link.self}$link.anchor($method2)"> ## HttpUnit doesn't like anchor-only links
   <td valign="top">
     <a name="$method2"><nobr>${esc.d}${toolname}.$method(${quote}<input type="text" size="$size" name="${method1}" value="$!params.get("${method1}")">${quote},
                                                         ${quote}<input type="text" size="$size" name="${method2}" value="$!params.get("${method2}")">${quote})</nobr></a>
@@ -134,14 +136,16 @@ ${toolname}.html">$toolname</a>#end
     #if( $params.get(${method1}) )
       ${esc.d}${toolname}.${method}(${quote}$!params.get(${method1})${quote}, ${quote}$!params.get(${method2})${quote})
       =
-      $render.eval("${esc.d}${toolname}.${method}(${quote}$!params.get(${method1})${quote}, ${quote}$!params.get(${method2})${quote})")
+      <div id="${method}2">$render.eval("${esc.d}${toolname}.${method}(${quote}$!params.get(${method1})${quote}, ${quote}$!params.get(${method2})${quote})")</div>
       <input type="submit" value="Try again!">
     #else
       <input type="submit" value="Try it!">
     #end
     #foreach( $param in $request.parameterMap.keySet() )
       #foreach( $value in $params.getStrings($param) )
-        <input type="hidden" name="$param" value="$value">
+        #if( $param != $method1 && $param != $method2 )
+          <input type="hidden" name="$param" value="$value">
+        #end
       #end
     #end
   </td>
@@ -161,7 +165,7 @@ ${toolname}.html">$toolname</a>#end
 #set( $method2 = "${method}B" )
 #set( $method3 = "${method}C" )
 <tr>
-  <form method="get" action="$link.anchor($method3)">
+  <form name="${method}3" method="get" action="${link.self}$link.anchor($method3)"> ## HttpUnit doesn't like anchor-only links
   <td valign="top">
     <a name="$method3"><nobr>${esc.d}${toolname}.$method(${quote}<input type="text" size="$size" name="${method1}" value="$!params.get("${method1}")">${quote},
                                                         ${quote}<input type="text" size="$size" name="${method2}" value="$!params.get("${method2}")">${quote},
@@ -171,14 +175,16 @@ ${toolname}.html">$toolname</a>#end
     #if( $params.get(${method1}) )
       ${esc.d}${toolname}.${method}(${quote}$!params.get(${method1})${quote}, ${quote}$!params.get(${method2})${quote}, ${quote}$!params.get(${method3})${quote})
       =
-      $render.eval("${esc.d}${toolname}.${method}(${quote}$!params.get(${method1})${quote}, ${quote}$!params.get(${method2})${quote}, ${quote}$!params.get(${method3})${quote})")
+      <div id="${method}3">$render.eval("${esc.d}${toolname}.${method}(${quote}$!params.get(${method1})${quote}, ${quote}$!params.get(${method2})${quote}, ${quote}$!params.get(${method3})${quote})")</div>
       <input type="submit" value="Try again!">
     #else
       <input type="submit" value="Try it!">
     #end
     #foreach( $param in $request.parameterMap.keySet() )
       #foreach( $value in $params.getStrings($param) )
-        <input type="hidden" name="$param" value="$value">
+        #if( $param != $method1 && $param != $method2 && $param != $method3 )
+          <input type="hidden" name="$param" value="$value">
+        #end
       #end
     #end
   </td>
@@ -209,7 +215,9 @@ ${toolname}.html">$toolname</a>#end
     #end
     #foreach( $param in $request.parameterMap.keySet() )
       #foreach( $value in $params.getStrings($param) )
-        <input type="hidden" name="$param" value="$value">
+        #if( $param != 'custom' )
+          <input type="hidden" name="$param" value="$value">
+        #end
       #end
     #end
   </td>
