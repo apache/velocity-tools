@@ -72,6 +72,10 @@
 
     <!-- Clean example applications  -->
     <ant antfile="${basedir}/examples.xml" target="clean-examples" />
+
+    <!-- Clean tests -->
+    <ant antfile="${basedir}/test.xml" target="test.clean"/>
+
   </target>
 
   <!-- To help rebuild the documentation -->
@@ -95,9 +99,9 @@
 
   <!-- To do a truly, completely clean build, include this target -->
   <target name="clean.lib"
-          unless="skip.jar.loading"
           description="Deletes the folder of downloaded dependencies">
     <delete dir="${lib.dir}"/>
+    <ant antfile="${basedir}/test.xml" target="test.clean.lib"/>
   </target>
 
 
@@ -377,6 +381,16 @@
     <ant antfile="${basedir}/examples.xml" target="showcase-example" />
   </target>
 
+  <!-- Let the user start Jetty on his local box -->
+  <target name="start.showcase.webapp" description="Launches the Showcase example application using Jetty (uses http://localhost:8081 by default)">
+    <ant antfile="${basedir}/test.xml" target="start-showcase-webapp"/>
+  </target>
+
+  <!-- Let the user stop Jetty -->
+  <target name="stop.showcase.webapp" description="">
+    <ant antfile="${basedir}/test.xml" target="stop-showcase-webapp"/>
+  </target>
+
   <!-- Build VelocityStruts example application -->
   <target name="struts" depends="jar.struts,prepare.examples"
           description="Compiles and jars the VelocityStruts example application.">
@@ -482,6 +496,22 @@
     <checksum file="${dist.dir}/${project.id}.zip" algorithm="sha1" fileext=".sha1"/>
     <checksum file="${dist.dir}/${project.id}.tar.gz" algorithm="md5" fileext=".md5"/>
     <checksum file="${dist.dir}/${project.id}.tar.gz" algorithm="sha1" fileext=".sha1"/>
+  </target>
+
+<!-- ========== Test Targets ======================================== -->
+
+  <!-- Main test target -->
+  <target name="test" description="Test VelocityTools" depends="test.generic,test.view">
+  </target>
+
+  <!-- Generic tests -->
+  <target name="test.generic" description="Test VelocityTools generic tools" depends="jar.view">
+    <ant antfile="${basedir}/test.xml" target="test.generic" />
+  </target>
+
+  <!-- View tests -->
+  <target name="test.view" description="Test VelocityTools view tools" depends="jar.view">
+    <ant antfile="${basedir}/test.xml" target="test.view" />
   </target>
 
 </project>
