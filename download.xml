@@ -113,17 +113,19 @@
          ignoreerrors="false" />
   </target>
 
-  <target name="http-test-download" unless="skip.jar.loading">
-    <condition property="jar.present">
-      <and>
-        <isfalse value="${force.jar.loading}"/>
-        <available file="${test.lib.dir}/${download.name}-${download.version}.jar"/>
+  <target name="http-test-download">
+    <condition property="skip-download">
+      <or>
+        <istrue value="${skip.jar.loading}"/>
+        <and>
+          <isfalse value="${force.jar.loading}"/>
+          <available file="${test.lib.dir}/${download.name}-${download.version}.jar"/>
       </and>
     </condition>
     <antcall target="do-http-test-download"/>
   </target>
 
-  <target name="do-http-test-download" unless="jar.present">
+  <target name="do-http-test-download" unless="skip-download">
     <!-- set download.path if not set previously -->
     <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <setproxy proxyhost="${proxy.host}" proxyport="${proxy.port}"/>
