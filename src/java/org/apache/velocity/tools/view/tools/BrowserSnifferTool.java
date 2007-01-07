@@ -424,7 +424,7 @@ public class BrowserSnifferTool
 
     public boolean getJava()
     {
-        return test("java") || test("jdk");
+        return test("java") || test("jdk") || test("httpunit");
     }
 
     public boolean getAltavista()
