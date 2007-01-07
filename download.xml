@@ -120,7 +120,8 @@
         <and>
           <isfalse value="${force.jar.loading}"/>
           <available file="${test.lib.dir}/${download.name}-${download.version}.jar"/>
-      </and>
+        </and>
+      </or>
     </condition>
     <antcall target="do-http-test-download"/>
   </target>
