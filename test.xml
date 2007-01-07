@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<!--
+  This file contains all the jar download targets to build Velocity.
+  Its tasks are referenced from the build.xml file and should not be
+  called directly.
+
+  This is here so that the main build file is not cluttered any further.
+-->
+
+<project name="VelocityTools" basedir=".">
+
+  <!-- test classpath -->
+  <path id="test.classpath">
+    <fileset dir="${lib.dir}">
+      <include name="**/*.jar"/>
+    </fileset>
+    <pathelement location="${dist.dir}/${view.id}.jar"/>
+    <fileset dir="${test.lib.dir}">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+
+  <!-- prepare tests -->
+  <target name="prepare.test">
+    <!-- <property name="cp" refid="test.classpath"/>
+         <echo message="using classpath=${cp}"/>
+    -->
+    <condition property="java.version.ok">
+      <not>
+        <or>
+          <equals arg1="${ant.java.version}" arg2="1.1"/>
+          <equals arg1="${ant.java.version}" arg2="1.2"/>
+          <equals arg1="${ant.java.version}" arg2="1.3"/>
+          <equals arg1="${ant.java.version}" arg2="1.4"/>
+        </or>
+      </not>
+    </condition>
+    <fail message="VelocityTools tests require at least Java 1.5" unless="java.version.ok"/>
+    <mkdir dir="${test.lib.dir}"/>
+    <mkdir dir="${test.rst.dir}"/>
+    <mkdir dir="${test.classes.dir}"/>
+    <mkdir dir="${test.log.dir}"/>
+    <filter token="test.conf.dir" value="${test.conf.dir}"/>
+    <filter token="test.log.dir" value="${test.log.dir}"/>
+    <filter token="test.webcontainer.port" value="${test.webcontainer.port}"/>
+    <copy todir="${test.build.src.dir}" filtering="yes">
+      <fileset dir="${test.src.dir}">
+        <include name="**/*.java"/>
+      </fileset>
+    </copy>
+    <copy tofile="${test.dir}/etc/jetty.xml" file="${test.dir}/etc/jetty.xml.tmpl" filtering="yes"/>
+  </target>
+
+  <!-- clean tests -->
+  <target name="test.clean">
+    <delete file="${test.dir}/etc/jetty.xml"/>
+  </target>
+
+  <!-- clean test libraries -->
+  <target name="test.clean.lib">
+    <delete dir="${test.lib.dir}"/>
+  </target>
+
+  <!-- whitebox tests downloads -->
+  <target name="whitebox.test.download" depends="prepare.test">
+    <!-- download dependency jars if needed -->
+    <ant antfile="${basedir}/download.xml" target="whitebox-test-download"/>
+  </target>
+
+  <!-- blackbox tests downloads -->
+  <target name="blackbox.test.download" depends="prepare.test">
+    <!-- download dependency jars if needed -->
+    <ant antfile="${basedir}/download.xml" target="blackbox-test-download"/>
+  </target>
+
+  <!-- compile whitebox tests -->
+  <target name="compile.whitebox.test" depends="whitebox.test.download">
+    <javac srcdir="${test.build.src.dir}"
+      destdir="${test.classes.dir}"
+      encoding="${compile.encoding}"
+      debug="${compile.debug}"
+      deprecation="${compile.deprecation}"
+      optimize="${compile.optimize}"
+      includes="**/whitebox/*.java" 
+      classpathref="test.classpath"/>
+  </target>
+
+  <!-- compile blackbox tests -->
+  <target name="compile.blackbox.test" depends="blackbox.test.download">
+    <property name="name" value="showcase" />
+    <property name="base" value="${examples.home}/${name}" />
+    <property name="lib" value="${base}/WEB-INF/lib"/>
+    <ant antfile="${basedir}/examples.xml" target="example-compile"/>
+    <javac srcdir="${test.build.src.dir}"
+      destdir="${test.classes.dir}"
+      encoding="${compile.encoding}"
+      debug="${compile.debug}"
+      deprecation="${compile.deprecation}"
+      optimize="${compile.optimize}"
+      includes="**/blackbox/*.java,org/apache/velocity/tools/test/JettyLogger.java"
+      classpathref="test.classpath"/>
+    <jar jarfile="${test.lib.dir}/jettylogger.jar" basedir="${test.classes.dir}" includes="org/apache/velocity/tools/test/JettyLogger.class"/>
+    <copy todir="${lib}" file="${lib.dir}/commons-logging-${jar.commons-logging.version}.jar"/>
+    <copy todir="${base}/WEB-INF/classes" file="${test.dir}/conf/commons-logging.properties"/>
+    <javac srcdir="${test.build.src.dir}"
+      destdir="${base}/WEB-INF/classes"
+      encoding="${compile.encoding}"
+      debug="${compile.debug}"
+      deprecation="${compile.deprecation}"
+      optimize="${compile.optimize}"
+      includes="org/apache/velocity/tools/test/FilteredLogSystemCommonsLog.java"
+      classpathref="test.classpath"/>
+  </target>
+
+  <!-- generic (whitebox) tests -->
+  <target name="test.generic" depends="compile.whitebox.test">
+    <junit fork="false"
+           printSummary="yes"
+           haltonerror="${test.haltonerror}"
+           haltonfailure="${test.haltonfailure}">
+      <classpath>
+        <path refid="test.classpath"/>
+        <pathelement location="${test.classes.dir}"/>
+      </classpath>
+      <batchtest todir="${test.rst.dir}">
+        <fileset dir="${test.classes.dir}" includes="org/apache/velocity/tools/test/whitebox/**/*"/>
+      </batchtest>
+      <formatter type="plain"/>
+    </junit>
+  </target>
+
+  <!-- vew tools (blackbox) tests -->
+  <target name="test.view">
+    <antcall target="start-showcase-webapp"/>
+    <junit fork="false"
+           printSummary="withOutAndErr"
+           haltonerror="${test.haltonerror}"
+           haltonfailure="${test.haltonfailure}">
+      <classpath>
+        <path refid="test.classpath"/>
+        <pathelement location="${test.classes.dir}"/>
+      </classpath>
+      <batchtest todir="${test.rst.dir}">
+        <fileset dir="${test.classes.dir}" includes="org/apache/velocity/tools/test/blackbox/**/*"/>
+      </batchtest>
+      <formatter type="plain"/>
+    </junit>
+    <antcall target="stop-showcase-webapp"/>
+  </target>
+
+  <!-- start showcases webapp -->
+  <target name="start-showcase-webapp" depends="compile.blackbox.test">
+    <fail message="Localhost port ${test.webcontainer.control.port} is busy. Is the showcase webapp already running?">
+      <condition>
+        <socket server="127.0.0.1" port="${test.webcontainer.port}"/>
+      </condition>
+    </fail>
+    <java fork="true" spawn="true" jar="${test.lib.dir}/start-6.0.1.jar" dir="${test.dir}">
+      <arg value="etc/jetty.xml"/>
+      <sysproperty key="jetty.home" value="${test.dir}"/>
+      <sysproperty key="jetty.port" value="${test.webcontainer.port}"/>
+      <sysproperty key="STOP.PORT" value="${test.webcontainer.control.port}"/>
+      <sysproperty key="STOP.KEY" value="verysecret"/>
+      <sysproperty key="org.mortbay.log.class" value="org.apache.velocity.tools.test.JettyLogger"/>
+      <sysproperty key="jetty.log.file" value="${test.log.dir}/showcase.log"/>
+    </java>
+    <waitfor maxwait="2" maxwaitunit="minute" checkevery="500">
+      <http url="http://localhost:${test.webcontainer.port}/"/>
+    </waitfor>
+    <echo message="web server launched successfully."/>
+  </target>
+
+  <!-- stop showcase webapp -->
+  <target name="stop-showcase-webapp">
+    <java fork="true" jar="${test.lib.dir}/start-6.0.1.jar" dir="${test.dir}">
+      <arg value="--stop"/>
+      <sysproperty key="STOP.PORT" value="${test.webcontainer.control.port}"/>
+      <sysproperty key="STOP.KEY" value="verysecret"/>
+    </java>
+  </target>
+
+</project>
