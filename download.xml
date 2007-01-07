@@ -32,7 +32,7 @@
   <!-- Download Control Tasks -->
 
   <target name="full-download"
-          depends="base-download,compile-download,docs-download,examples-download"
+          depends="base-download,compile-download,docs-download,examples-download,whitebox-test-download,blackbox-test-download"
           description="Download all dependencies needed for a full VelocityTools build from the central repository"/>
 
   <target name="base-download"
@@ -69,6 +69,23 @@
     <antcall target="commons-chain-download" />
   </target>
 
+  <!-- whitebox tests downloads -->
+  <target name="whitebox-test-download" depends="base-download">
+    <antcall target="junit-download"/>
+  </target>
+
+  <!-- blackbox tests downloads -->
+  <target name="blackbox-test-download" depends="whitebox-test-download">
+    <antcall target="httpunit-download"/>
+    <antcall target="jetty-download"/>
+    <antcall target="jetty-start-download"/>
+    <antcall target="jetty-util-download"/>
+    <antcall target="js-download"/>
+    <antcall target="nekohtml-download"/>
+    <antcall target="servlet-api-download"/>
+    <antcall target="xerces-download"/>
+    <antcall target="xmlparserapis-download"/>
+  </target>
 
   <!--  Basic Download Tasks -->
 
@@ -86,6 +103,8 @@
   </target>
 
   <target name="do-http-download" unless="skip-download">
+    <!-- set download.path if not set previously -->
+    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <setproxy proxyhost="${proxy.host}" proxyport="${proxy.port}"/>
     <get src="${repo.url}/${download.path}/${download.name}-${download.version}.jar"
          dest="${lib.dir}/${download.name}-${download.version}.jar"
@@ -98,16 +117,18 @@
     <condition property="jar.present">
       <and>
         <isfalse value="${force.jar.loading}"/>
-        <available file="${lib.test.dir}/${download.name}-${download.version}.jar"/>
+        <available file="${test.lib.dir}/${download.name}-${download.version}.jar"/>
       </and>
     </condition>
     <antcall target="do-http-test-download"/>
   </target>
 
   <target name="do-http-test-download" unless="jar.present">
+    <!-- set download.path if not set previously -->
+    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <setproxy proxyhost="${proxy.host}" proxyport="${proxy.port}"/>
     <get src="${repo.url}/${download.path}/${download.name}-${download.version}.jar"
-         dest="${lib.test.dir}/${download.name}-${download.version}.jar"
+         dest="${test.lib.dir}/${download.name}-${download.version}.jar"
          usetimestamp="false"
          verbose="false"
          ignoreerrors="false" />
@@ -119,84 +140,72 @@
   <target name="antlr-download">
     <property name="download.name" value="antlr" />
     <property name="download.version" value="${jar.antlr.version}" />
-    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="commons-beanutils-download">
     <property name="download.name" value="commons-beanutils" />
     <property name="download.version" value="${jar.commons-beanutils.version}" />
-    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="commons-chain-download">
     <property name="download.name" value="commons-chain" />
     <property name="download.version" value="${jar.commons-chain.version}" />
-    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="commons-collections-download">
     <property name="download.name" value="commons-collections" />
     <property name="download.version" value="${jar.commons-collections.version}" />
-    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="commons-digester-download">
     <property name="download.name" value="commons-digester" />
     <property name="download.version" value="${jar.commons-digester.version}" />
-    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="commons-lang-download">
     <property name="download.name" value="commons-lang" />
     <property name="download.version" value="${jar.commons-lang.version}" />
-    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="commons-logging-download">
     <property name="download.name" value="commons-logging" />
     <property name="download.version" value="${jar.commons-logging.version}" />
-    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="commons-validator-download">
     <property name="download.name" value="commons-validator" />
     <property name="download.version" value="${jar.commons-validator.version}" />
-    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="dom4j-download">
     <property name="download.name" value="dom4j" />
     <property name="download.version" value="${jar.dom4j.version}" />
-    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="oro-download">
     <property name="download.name" value="oro" />
     <property name="download.version" value="${jar.oro.version}" />
-    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="servletapi-download">
     <property name="download.name" value="servletapi" />
     <property name="download.version" value="${jar.servletapi.version}" />
-    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="sslext-download">
     <property name="download.name" value="sslext" />
     <property name="download.version" value="${jar.sslext.version}" />
-    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
@@ -231,15 +240,83 @@
   <target name="velocity-download">
     <property name="download.name" value="velocity" />
     <property name="download.version" value="${jar.velocity.version}" />
-    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
   <target name="velocity-dvsl-download">
     <property name="download.name" value="velocity-dvsl" />
     <property name="download.version" value="${jar.velocity-dvsl.version}" />
-    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
     <antcall target="http-download"/>
+  </target>
+
+  <!-- Test Dependency Download Tasks -->
+
+  <target name="httpunit-download">
+    <property name="download.name" value="httpunit" />
+    <property name="download.version" value="${jar.httpunit.version}" />
+    <antcall target="http-test-download"/>
+  </target>
+
+  <target name="jetty-download">
+    <property name="download.name" value="jetty" />
+    <property name="download.version" value="${jar.jetty.version}" />
+    <antcall target="http-test-download"/>
+  </target>
+
+  <target name="jetty-start-download">
+    <property name="download.name" value="start" />
+    <property name="download.version" value="${jar.jetty.version}" />
+    <property name="download.path" value="jetty/${download.name}/${download.version}"/>
+    <antcall target="http-test-download"/>
+  </target>
+
+  <target name="jetty-util-download">
+    <property name="download.name" value="jetty-util" />
+    <property name="download.version" value="${jar.jetty.version}" />
+    <property name="download.path" value="jetty/${download.name}/${download.version}" />
+    <antcall target="http-test-download"/>
+  </target>
+
+  <target name="js-download">
+    <property name="download.name" value="js" />
+    <property name="download.version" value="${jar.js.version}" />
+    <property name="download.path" value="rhino/${download.name}/${download.version}" />
+    <antcall target="http-test-download"/>
+    <!-- httpunit wants a file named 'js.jar' -->
+    <copy file="${test.lib.dir}/${download.name}-${download.version}.jar" tofile="${test.lib.dir}/js.jar"/>
+  </target>
+
+  <target name="junit-download">
+    <property name="download.name" value="junit" />
+    <property name="download.version" value="${jar.junit.version}" />
+    <antcall target="http-test-download"/>
+  </target>
+
+  <target name="nekohtml-download">
+    <property name="download.name" value="nekohtml" />
+    <property name="download.version" value="${jar.nekohtml.version}" />
+    <antcall target="http-test-download"/>
+  </target>
+
+  <target name="servlet-api-download">
+    <property name="download.name" value="servlet-api" />
+    <property name="download.version" value="2.5-${jar.jetty.version}" />
+    <property name="download.path" value="jetty/${download.name}/${download.version}" />
+    <antcall target="http-test-download"/>
+  </target>
+
+  <target name="xerces-download">
+    <property name="download.name" value="xercesImpl" />
+    <property name="download.version" value="${jar.xercesimpl.version}" />
+    <property name="download.path" value="xerces/${download.name}/${download.version}" />
+    <antcall target="http-test-download"/>
+  </target>
+
+  <target name="xmlparserapis-download">
+    <property name="download.name" value="xmlParserAPIs" />
+    <property name="download.version" value="${jar.xmlparserapis.version}" />
+    <property name="download.path" value="xerces/${download.name}/${download.version}" />
+    <antcall target="http-test-download"/>
   </target>
 
 </project>
