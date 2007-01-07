@@ -32,6 +32,8 @@
     <subsection name="1.3-dev">
         <p>This section describes changes after the 1.2 release.</p>
         <ul>
+        <li>Added start.showcase.webapp and stop.showcase.webapp ant targets to manually launch the showcase webapp using the embedded Jetty servlet container. (cb)</li>
+        <li>Added a testcases framework for generic and view tools. (cb)</li>
         <li>Changed VelocityViewServlet to look for toolbox config at "/WEB-INF/toolbox.xml" and velocity init properties at "/WEB-INF/velocity.properties" when no other locations are specified (i.e. change the standard location into a convention to reduce configuration needs). (ndb)</li>
         <li>Upgraded VelocityStruts dependencies to those for Struts 1.3.x series and updated "struts" example app according to <a href="http://wiki.apache.org/struts/StrutsUpgradeNotes12to13">provided directions</a>. (ndb)</li>
         <li>Replaced "layout" example with new "showcase" example to interactively demonstrate all tools and the VelocityLayoutServlet. (ndb)</li>
