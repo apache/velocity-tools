@@ -38,7 +38,7 @@ import com.meterware.httpunit.HttpUnitOptions;
 
 
 /**
- * <p>Generic tools whitebox tests.</p>
+ * <p>View tools blackbox tests.</p>
  *
  * @author <a href="mailto:cbrisson@apache.org">Claude Brisson</a>
  * @since Velocity Tools 1.3
