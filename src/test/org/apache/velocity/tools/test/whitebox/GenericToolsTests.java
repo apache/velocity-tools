@@ -20,8 +20,6 @@ package org.apache.velocity.tools.test.whitebox;
  */
 
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.Map;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -36,7 +34,6 @@ import org.apache.velocity.tools.generic.EscapeTool;
 import org.apache.velocity.tools.generic.MathTool;
 import org.apache.velocity.tools.generic.NumberTool;
 import org.apache.velocity.tools.view.XMLToolboxManager;
-
 
 
 /**
@@ -55,7 +52,7 @@ public class GenericToolsTests {
 
     public static @BeforeClass void initGenericToolsTests() throws Exception {
         XMLToolboxManager manager = new XMLToolboxManager();
-        manager.load(new FileInputStream(new File(TOOLBOX_PATH)));
+        manager.load(TOOLBOX_PATH);
         toolbox = manager.getToolbox(null);
     }
 
