@@ -60,7 +60,10 @@
     <mkdir dir="${test.rst.dir}"/>
     <mkdir dir="${test.classes.dir}"/>
     <mkdir dir="${test.log.dir}"/>
-    <filter token="test.conf.dir" value="${test.conf.dir}"/>
+    <pathconvert property="test.conf.dir.java" targetos="unix">
+        <path location="${test.conf.dir}"/>
+    </pathconvert>
+    <filter token="test.conf.dir" value="${test.conf.dir.java}"/>
     <filter token="test.log.dir" value="${test.log.dir}"/>
     <filter token="test.webcontainer.port" value="${test.webcontainer.port}"/>
     <copy todir="${test.build.src.dir}" filtering="yes">
