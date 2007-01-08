@@ -486,9 +486,10 @@
     <gzip zipfile="${dist.dir}/${project.id}.tar.gz"
           src="${dist.dir}/${project.id}.tar"/>
 
-    <!-- Delete TAR files as they're no longer needed -->
+    <!-- Delete TAR files and staging dir as they're no longer needed -->
     <delete>
       <fileset dir="${dist.dir}" includes="*.tar"/>
+      <fileset dir="${dist.dir}/release"/>
     </delete>
 
     <!-- Create checksums for the binary distribution files -->
@@ -496,6 +497,42 @@
     <checksum file="${dist.dir}/${project.id}.zip" algorithm="sha1" fileext=".sha1"/>
     <checksum file="${dist.dir}/${project.id}.tar.gz" algorithm="md5" fileext=".md5"/>
     <checksum file="${dist.dir}/${project.id}.tar.gz" algorithm="sha1" fileext=".sha1"/>
+  </target>
+
+  <!-- Uploads distribution files to people.apache.org -->
+  <target name="prepare.publish"
+          description="Uploads distribution files to the distribution server">
+      <echo>
+       #######################################################
+       #
+       #  Before publishing, you must sign the distribution
+       #  files with your pgp key (creating the needed '.asc'
+       #  signature files) and added the Jsch jar to Ant's
+       #  classpath to enable the optional 'scp' task.
+       #  Also, for this target to successfully execute,
+       #  you will need to specify your username and password
+       #  as such:
+       #
+       #     ant -Dusername=me -Dpassword=mypassword publish
+       #
+       #######################################################
+      </echo>
+      <condition property="release.signed">
+        <and>
+            <available file="${dist.dir}/${project.id}.tar.gz.asc"/>
+            <available file="${dist.dir}/${project.id}.zip.asc"/>
+            <available file="${dist.dir}/${project.id}-src.tar.gz.asc"/>
+            <available file="${dist.dir}/${project.id}-src.zip.asc"/>
+            <available file="${dist.dir}/${project.id}.jar.asc"/>
+            <available file="${dist.dir}/${view.id}.jar.asc"/>
+            <available file="${dist.dir}/${generic.id}.jar.asc"/>
+        </and>
+      </condition>
+  </target>
+  <target name="publish" depends="prepare.publish" if="release.signed">
+    <scp todir="${username}:${password}@${publish.server}:${publish.dir}">
+        <fileset dir="${dist.dir}"/>
+    </scp>
   </target>
 
 <!-- ========== Test Targets ======================================== -->
