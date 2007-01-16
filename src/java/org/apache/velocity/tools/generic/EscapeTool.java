@@ -160,7 +160,7 @@ public class EscapeTool
      *
      * See java.net.URLEncoder#encode(String,String).
      */
-    public String http(Object string) {
+    public String url(Object string) {
         if (string == null) {
             return null;
         }
