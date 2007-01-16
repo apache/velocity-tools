@@ -159,6 +159,7 @@ public class EscapeTool
      * @return a new escaped <code>String</code>, <code>null</code> if null string input
      *
      * See java.net.URLEncoder#encode(String,String).
+     * @since VelocityTools 1.3
      */
     public String url(Object string) {
         if (string == null) {
