@@ -502,8 +502,8 @@ public class ValidatorTool
                     continue;
                 }
 
-                String message =
-                    Resources.getMessage(messages, locale, va, field);
+                String message = Resources.getMessage(app, request, messages,
+                                                      locale, va, field);
 
                 message = (message != null) ? message : "";
 
@@ -525,7 +525,8 @@ public class ValidatorTool
                 {
                     String varName = (String)varsIterator.next(); // TODO: escape?
                     Var var = (Var)vars.get(varName);
-                    String varValue = var.getValue();
+                    String varValue =
+                        Resources.getVarValue(var, app, request, false);
                     String jsType = var.getJsType();
 
                     // skip requiredif variables field, fieldIndexed, fieldTest, fieldValue
