@@ -60,6 +60,9 @@ This page demonstrates functions of the #doclink( 'EscapeTool' true ).
 #set( $desc = 'Escapes the characters in a String using HTML entities.' )
 #demo1( 'esc' 'html' 8 $desc )
 
+#set( $desc = 'Escapes the characters in a String using UTF-8 URL character encoding.' )
+#demo1( 'esc' 'url' 8 $desc )
+
 #set( $desc = 'Escapes the characters in a String using Java String rules.' )
 #demo1( 'esc' 'java' 8 $desc )
 
@@ -78,6 +81,7 @@ This page demonstrates functions of the #doclink( 'EscapeTool' true ).
 #set( $java = "He didn't say, ${esc.q}Stop!${esc.q}" )
 #set( $javascript = $java )
 #set( $html = '<bread> & <butter>' )
+#set( $url = 'food/dinner?appetizer=bread & butter' )
 #set( $xml = $html )
 #set( $sql = "McHale's Navy" )
 
@@ -96,6 +100,9 @@ ${esc.d}esc.javascript(${esc.d}javascript)
 
 ${esc.d}html
 ${esc.d}esc.html(${esc.d}html)
+
+${esc.d}url
+${esc.d}esc.url(${esc.d}url)
 
 ${esc.d}xml
 ${esc.d}esc.xml(${esc.d}xml)
