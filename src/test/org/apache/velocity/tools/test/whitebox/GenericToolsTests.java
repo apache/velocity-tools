@@ -103,8 +103,8 @@ public class GenericToolsTests {
         assertEquals("\\uFFFF\\b\\n\\t\\f\\r\\\"\\'\\\\",escapeTool.javascript("\uFFFF\b\n\t\f\r\"'\\"));
         /* html */
         assertEquals("&quot;&amp;&lt;&gt;&nbsp;",escapeTool.html("\"&<>"+(char)160));
-        /* http */
-        assertEquals("+%40",escapeTool.http(" @"));
+        /* url */
+        assertEquals("%40%2F%3F%3D+%26",escapeTool.url("@/?= &"));
         /* sql */
         assertEquals("''",escapeTool.sql("'"));
         /* xml */
