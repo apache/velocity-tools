@@ -73,6 +73,12 @@
     <class>org.apache.velocity.tools.view.tools.ViewRenderTool</class>
     <parameter name="catch.exceptions" value="true"/>
   </tool>
+  <tool>
+    <key>text</key>
+    <scope>request</scope>
+    <class>org.apache.velocity.tools.view.tools.ViewResourceTool</class>
+    <parameter name="bundles" value="resources,otherStuff"/>
+  </tool>
 
   <tool>
     <key>alternator</key>

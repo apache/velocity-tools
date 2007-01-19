@@ -36,6 +36,7 @@
 #toolMenuItem( $llink 'pager'      'PagerTool' )
 #toolMenuItem( $llink 'params'     'ParameterParser' )
 #toolMenuItem( $llink 'render'     'RenderTool' )
+#toolMenuItem( $llink 'text'       'ResourceTool' )
 #toolMenuItem( $llink 'search'     'SearchTool' )
 #toolMenuItem( $llink 'sorter'     'SortTool' )
 </ul>
