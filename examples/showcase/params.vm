@@ -38,6 +38,8 @@ This page demonstrates functions of the #doclink( 'ParameterParser' false ).
 #demo1( 'params' 'getDouble' 6 $desc )
 #set( $desc = 'Returns the parameter with the specified key as a java.lang.Integer, if it exists and can be converted to that type; otherwise, returns <code>null</code>.' )
 #demo1( 'params' 'getInteger' 6 $desc )
+#set( $desc = 'Returns the parameter with the specified key as a java.util.Locale, if it exists and can be converted to that type; otherwise, returns <code>null</code>.' )
+#demo1( 'params' 'getLocale' 6 $desc )
            
 #set( $desc = 'Returns the parameter(s) with the specified key in an array of the type requested, if any exist; otherwise, returns <code>null</code>..' )
 #demo1( 'params' 'getStrings' 6 $desc )
@@ -49,6 +51,8 @@ This page demonstrates functions of the #doclink( 'ParameterParser' false ).
 #demo1( 'params' 'getDoubles' 6 $desc )
 #set( $desc = 'Returns the parameter(s) with the specified key in an array of int primitives, if any exist and can be converted to that type; otherwise, returns <code>null</code>..' )
 #demo1( 'params' 'getInts' 6 $desc )
+#set( $desc = 'Returns the parameter(s) with the specified key in an array of java.util.Locale, if any exists and can be converted to that type; otherwise, returns <code>null</code>.' )
+#demo1( 'params' 'getLocales' 6 $desc )
            
 #set( $quote = '' )
 #set( $desc = 'Returns the parameter with the specified key, if it exists; otherwise, returns the specified alternate value.' )
@@ -63,6 +67,8 @@ This page demonstrates functions of the #doclink( 'ParameterParser' false ).
 #demo2( 'params' 'getInteger' 6 $desc )
 #set( $desc = 'Returns the parameter with the specified key as an int, if it exists; otherwise, returns the specified alternate int.' )
 #demo2( 'params' 'getInt' 6 $desc )
+#set( $desc = 'Returns the parameter with the specified key as a java.util.Locale, if it exists; otherwise, returns the specified alternate Locale.' )
+#demo2( 'params' 'getLocale' 6 $desc )
 
 #set( $desc = 'Returns the map of all parameters available for the current request.' )
 #demo( 'params' 'all' $desc )
