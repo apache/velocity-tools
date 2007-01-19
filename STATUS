@@ -19,6 +19,11 @@ Proposed Features/Upgrades:
         - finish/fix/improve Maven2 build support
         - add automated testing of tools
         
+    Generic tools:
+        - add a library of general-use velocimacros
+        - Template debugging tool(s)/support
+        - Add support for ValueParser to use a properties file as a source
+
     VelocityView:
         - add a library of velocimacros for use with these tools
         - Improve standalone toolbox management support
@@ -31,10 +36,6 @@ Proposed Features/Upgrades:
         - support for JSP tags
         - adopt VelocityTag and add toolbox support
         - develop Tiles2 compatible TilesTool
-
-    Generic tools:
-        - add a library of general-use velocimacros
-        - Template debugging tool(s)/support
 
     VelocityStruts:
         - add a library of velocimacros for use with struts tools
