@@ -26,7 +26,7 @@
  * Creates a link to the javadoc for the specified tool.
  *#
 #macro( doclink $toolname $generic )
-<a href="http://jakarta.apache.org/velocity/tools/javadoc/org/apache/velocity/tools/##
+<a href="http://velocity.apache.org/tools/devel/javadoc/org/apache/velocity/tools/##
 #if( $generic )generic/#else#**#view/tools/#end##
 ${toolname}.html">$toolname</a>#end
 
