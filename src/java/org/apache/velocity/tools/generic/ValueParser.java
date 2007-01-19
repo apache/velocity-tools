@@ -20,9 +20,12 @@ package org.apache.velocity.tools.generic;
  */
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Locale;
 
 /**
  * <p>Utility class for easy parsing of String values held in a Map.</p>
@@ -49,6 +52,7 @@ import java.util.Map;
 public class ValueParser
 {
     private Map source = null;
+    private String delimiter = ",";
 
     public ValueParser() {}
 
@@ -69,6 +73,30 @@ public class ValueParser
             throw new NullPointerException("You must set a Map source for values to be parsed.");
         }
         return this.source;
+    }
+
+    /**
+     * Sets the delimiter used for separating values in a single String value.
+     * The default delimiter is a comma.
+     *
+     * @since VelocityTools 1.3
+     * @see #parseStringList
+     */
+    protected final void setStringsDelimiter(String delimiter)
+    {
+        this.delimiter = delimiter;
+    }
+
+    /**
+     * Returns the delimiter used for separating values in a single String value.
+     * The default delimiter is a comma.
+     *
+     * @since VelocityTools 1.3
+     * @see #parseStringList
+     */
+    protected final String getStringsDelimiter()
+    {
+        return this.delimiter;
     }
 
     // ----------------- public parsing methods --------------------------
@@ -270,6 +298,21 @@ public class ValueParser
 
     /**
      * @param key the desired parameter's key
+     * @return a {@link Locale} for the specified key or
+     *         <code>null</code> if no matching parameter is found
+     */
+    public Locale getLocale(String key)
+    {
+        String s = getString(key);
+        if (s == null || s.length() == 0)
+        {
+            return null;
+        }
+        return parseLocale(s);
+    }
+
+    /**
+     * @param key the desired parameter's key
      * @param alternate The alternate Number
      * @return a Number for the specified key or the specified
      *         alternate if no matching parameter is found
@@ -302,6 +345,18 @@ public class ValueParser
     {
         Number n = getNumber(key);
         return (n != null) ? n.doubleValue() : alternate;
+    }
+
+    /**
+     * @param key the desired parameter's key
+     * @param alternate The alternate Locale
+     * @return a Locale for the specified key or the specified
+     *         alternate if no matching parameter is found
+     */
+    public Locale getLocale(String key, Locale alternate)
+    {
+        Locale l = getLocale(key);
+        return (l != null) ? l : alternate;
     }
 
 
@@ -343,7 +398,7 @@ public class ValueParser
         }
         else
         {
-            strings = new String[] { String.valueOf(value) };
+            strings = parseStringList(String.valueOf(value));
         }
         return strings;
     }
@@ -465,6 +520,30 @@ public class ValueParser
         return doubles;
     }
 
+    /**
+     * @param key the key for the desired parameter
+     * @return an array of Locale objects associated with the given key,
+     *         or <code>null</code> if Locales are not associated with it.
+     */
+    public Locale[] getLocales(String key)
+    {
+        String[] strings = getStrings(key);
+        if (strings == null)
+        {
+            return null;
+        }
+
+        Locale[] locs = new Locale[strings.length];
+        for (int i=0; i<locs.length; i++)
+        {
+            if (strings[i] != null && strings[i].length() > 0)
+            {
+                locs[i] = parseLocale(strings[i]);
+            }
+        }
+        return locs;
+    }
+
 
     // --------------------------- protected methods ------------------
 
@@ -497,6 +576,49 @@ public class ValueParser
     protected Boolean parseBoolean(String value)
     {
         return Boolean.valueOf(value);
+    }
+
+    /**
+     * Converts a single String value into an array of Strings by splitting
+     * it on the tool's set delimiter.  The default delimiter is a comma.
+     *
+     * @since VelocityTools 1.3
+     */
+    protected String[] parseStringList(String value)
+    {
+        if (value.indexOf(this.delimiter) < 0)
+        {
+            return new String[] { value };
+        }
+        return value.split(this.delimiter);
+    }
+
+    /**
+     * Converts a String value into a Locale.
+     *
+     * @since VelocityTools 1.3
+     */
+    protected Locale parseLocale(String value)
+    {
+        if (value.indexOf("_") < 0)
+        {
+            return new Locale(value);
+        }
+
+        String[] params = value.split("_");
+        if (params.length == 2)
+        {
+            return new Locale(params[0], params[1]);
+        }
+        else if (params.length == 3)
+        {
+            return new Locale(params[0], params[1], params[2]);
+        }
+        else
+        {
+            // there's only 3 possible params, so this must be invalid
+            return null;
+        }
     }
 
 }
