@@ -38,7 +38,7 @@
             <clazz>org.apache.velocity.tools.view.tools.CookieTool</clazz>
             <name>$cookie</name>
             <author email="mailto:dim@colebatch.com">Dmitri Colebatch</author>
-            <author email="nathan@esha.com">Nathan Bubna</author>
+            <author>Nathan Bubna</author>
             <config-example>&lt;tool&gt;
   &lt;key&gt;cookie&lt;/key&gt;
   &lt;scope&gt;request&lt;/scope&gt;

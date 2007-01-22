@@ -45,7 +45,7 @@
             <clazz>org.apache.velocity.tools.struts.StrutsLinkTool</clazz>
             <name>$link</name>
             <author email="sidler@teamup.com">Gabriel Sidler</author>
-            <author email="nathan@esha.com">Nathan Bubna</author>
+            <author>Nathan Bubna</author>
             <config-example>&lt;tool&gt;
   &lt;key&gt;link&lt;/key&gt;
   &lt;scope&gt;request&lt;/scope&gt;

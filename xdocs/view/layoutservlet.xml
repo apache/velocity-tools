@@ -23,7 +23,7 @@
 
     <properties>
         <title>Velocity Tools - Layout Servlet</title>
-        <author email="nathan@esha.com">Nathan Bubna</author>
+        <author>Nathan Bubna</author>
         <projectfile>xdocs/view/menu.xml</projectfile>
     </properties>
 

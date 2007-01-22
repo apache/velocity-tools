@@ -40,7 +40,7 @@
 
             <name>$params</name>
 
-            <author email="nathan@esha.com">Nathan Bubna</author>
+            <author>Nathan Bubna</author>
 
             <config-example>&lt;tool&gt;
   &lt;key&gt;params&lt;/key&gt;

@@ -56,7 +56,7 @@
             <version>@@@version@@@, @@@date@@@</version>
             <clazz>org.apache.velocity.tools.generic.MathTool</clazz>
             <name>$math</name>
-            <author email="nathan@esha.com">Nathan Bubna</author>
+            <author>Nathan Bubna</author>
             <config-example>&lt;tool&gt;
   &lt;key&gt;math&lt;/key&gt;
   &lt;scope&gt;application&lt;/scope&gt;
