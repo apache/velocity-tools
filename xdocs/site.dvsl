@@ -80,7 +80,9 @@
 
        #foreach( $n in $node.properties.selectNodes("author") )
         <meta name="author" value="$n"/>
-        <meta name="email" value="$n.attribute("email")" />
+        #if( $n.attribute('email') )
+            <meta name="email" value="$n.attribute('email')" />
+        #end
        #end
         
     
@@ -377,7 +379,10 @@
   <tr><td>&nbsp;</td><td><pre>$node.copy($node.config-example.children())</pre></td></tr>
 
   <tr><td colspan="2"><strong>Author(s)</strong></td></tr>
-  <tr><td>&nbsp;</td><td>#foreach($n in $node.selectNodes("author"))<a href="mailto:$n.attribute("email")">$n</a><br>#end</td></tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>#foreach($n in $node.selectNodes("author"))#if( $n.attribute('email') )<a href="mailto:$n.attribute('email')">$n</a>#else$n#end<br>#end</td>
+  </tr>
 </table>
 #end
 
