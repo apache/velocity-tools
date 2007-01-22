@@ -56,6 +56,9 @@
             <dt><a href="EscapeTool.html"><strong>EscapeTool</strong></a></dt>
             <dd>A tool to help with common escaping needs in Velocity templates.</dd>
 
+            <dt><a href="../javadoc/org/apache/velocity/tools/generic/ResourceTool.html"><strong>EscapeTool</strong></a></dt>
+            <dd>A tool to simplify access to ResourceBundles for internationalization or other dynamic content needs.</dd>
+
             <dt><a href="../javadoc/org/apache/velocity/tools/generic/Alternator.html"><strong>Alternator</strong></a>
             and <a href="../javadoc/org/apache/velocity/tools/generic/AlternatorTool.html"><strong>AlternatorTool</strong></a></dt>
             <dd>Utility class for easily alternating over values in a list and tool for easy creation of Alternators in templates.</dd>

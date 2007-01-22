@@ -46,6 +46,7 @@
       <item name="LinkTool"              href="../javadoc/org/apache/velocity/tools/view/tools/LinkTool.html"/>
       <item name="ParameterParser"       href="../javadoc/org/apache/velocity/tools/view/tools/ParameterParser.html"/>
       <item name="ViewRenderTool"        href="ViewRenderTool.html"/>
+      <item name="ViewResourceTool"      href="../javadoc/org/apache/velocity/tools/view/tools/ViewResourceTool.html"/>
     </menu>
 
     <menu name="Other Subprojects">
