@@ -48,4 +48,9 @@
     <class>org.apache.velocity.tools.generic.NumberTool</class>
   </tool>
 
+  <tool>
+    <key>text</key>
+    <class>org.apache.velocity.tools.generic.ResourceTool</class>
+  </tool>
+
 </toolbox>
