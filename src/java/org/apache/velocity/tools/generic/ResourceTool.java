@@ -40,7 +40,7 @@ import java.util.ResourceBundle;
  * Toolbox configuration example:
  * &lt;tool&gt;
  *   &lt;key&gt;text&lt;/key&gt;
- *   &lt;class&gt;org.apache.velocity.generic.ResourceTool&lt;/class&gt;
+ *   &lt;class&gt;org.apache.velocity.tools.generic.ResourceTool&lt;/class&gt;
  *   &lt;parameter name="bundles" value="resources,com.foo.moreResources"/&gt;
  *   &lt;parameter name="locale" value="en_US"/&gt;
  * &lt;/tool&gt;
