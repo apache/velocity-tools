@@ -66,9 +66,10 @@
 
 
   <!-- Clean Target -->
-  <target name="clean" description="Deletes the build and dist directories">
+  <target name="clean" description="Deletes the build, dist and docs directories">
     <delete dir="${build.dir}"/>
     <delete dir="${dist.dir}"/>
+    <delete dir="${docs.dir}"/>
 
     <!-- Clean example applications  -->
     <ant antfile="${basedir}/examples.xml" target="clean-examples" />
@@ -76,25 +77,6 @@
     <!-- Clean tests -->
     <ant antfile="${basedir}/test.xml" target="test.clean"/>
 
-  </target>
-
-  <!-- To help rebuild the documentation -->
-  <target name="clean.docs" description="Deletes the docs directory">
-      <echo>
-       #######################################################
-       #
-       #  This will delete the existing documentation
-       #  directory.  To restore the documentation you
-       #  should re-checkout the directory from CVS
-       #  (especially before rebuilding the documentation
-       #  with the "docs" or "javadoc" targets).  If you
-       #  attempt to rebuild the documentation while the
-       #  folder remains deleted, it will cause file
-       #  conflicts.
-       #
-       #######################################################
-      </echo>
-    <delete dir="${docs.dir}"/>
   </target>
 
   <!-- To do a truly, completely clean build, include this target -->
