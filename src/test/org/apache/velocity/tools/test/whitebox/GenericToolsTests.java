@@ -19,7 +19,7 @@ package org.apache.velocity.tools.test.whitebox;
  * under the License.
  */
 
-
+import java.util.Locale;
 import java.util.Map;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -33,6 +33,7 @@ import org.apache.velocity.tools.generic.DateTool;
 import org.apache.velocity.tools.generic.EscapeTool;
 import org.apache.velocity.tools.generic.MathTool;
 import org.apache.velocity.tools.generic.NumberTool;
+import org.apache.velocity.tools.generic.ResourceTool;
 import org.apache.velocity.tools.view.XMLToolboxManager;
 
 
@@ -40,6 +41,7 @@ import org.apache.velocity.tools.view.XMLToolboxManager;
  * <p>Generic tools whitebox tests.</p>
  *
  * @author <a href="mailto:cbrisson@apache.org">Claude Brisson</a>
+ * @author Nathan Bubna
  * @since Velocity Tools 1.3
  * @version $Id$
  */
@@ -139,5 +141,33 @@ public class GenericToolsTests {
         NumberTool numberTool = (NumberTool)toolbox.get("number");
         assertNotNull(numberTool);
 //        assertEquals()
+    }
+
+    public @Test void testResourceTool() {
+        ResourceTool textTool = (ResourceTool)toolbox.get("text");
+        assertNotNull(textTool);
+
+        ResourceTool.Key foo = textTool.get("foo");
+        assertEquals("bar", foo.toString());
+
+        ResourceTool.Key frenchFoo = foo.locale(Locale.FRENCH);
+        assertEquals("barre", frenchFoo.toString());
+
+        ResourceTool.Key otherFoo = foo.bundle("resources2");
+        assertEquals("woogie", otherFoo.toString());
+
+        ResourceTool.Key helloWhoever = textTool.get("hello").get("whoever");
+        assertEquals("Hello {0}!", helloWhoever.toString());
+
+        ResourceTool.Key helloWorld = helloWhoever.insert(textTool.get("world"));
+        assertEquals("Hello World!", helloWorld.toString());
+
+        ResourceTool.Key halfFrenchHelloWorld = helloWorld.locale(Locale.FRENCH);
+        assertEquals("Bonjour World!", halfFrenchHelloWorld.toString());
+
+        ResourceTool.Key frenchTool = textTool.locale(Locale.FRENCH);
+        ResourceTool.Key frenchHelloWorld =
+            frenchTool.get("hello.whoever").insert(frenchTool.get("world"));
+        assertEquals("Bonjour Monde!", frenchHelloWorld.toString());
     }
 }
