@@ -38,7 +38,7 @@
             <version>@@@version@@@, @@@date@@@</version>
             <clazz>org.apache.velocity.tools.generic.RenderTool</clazz>
             <name>$render</name>
-            <author email="nathan@esha.com">Nathan Bubna</author>
+            <author>Nathan Bubna</author>
             <config-example>&lt;tool&gt;
   &lt;key&gt;render&lt;/key&gt;
   &lt;scope&gt;application&lt;/scope&gt;

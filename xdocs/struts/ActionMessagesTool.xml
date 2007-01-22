@@ -54,7 +54,7 @@
             <clazz>org.apache.velocity.tools.struts.ActionMessagesTool</clazz>
             <name>$messages</name>
             <author email="sidler@teamup.com">Gabriel Sidler</author>
-            <author email="nathan@esha.com">Nathan Bubna</author>
+            <author>Nathan Bubna</author>
             <config-example>&lt;tool&gt;
   &lt;key&gt;messages&lt;/key&gt;
   &lt;scope&gt;request&lt;/scope&gt;
