@@ -468,38 +468,24 @@
     <gzip zipfile="${dist.dir}/${project.id}.tar.gz"
           src="${dist.dir}/${project.id}.tar"/>
 
-    <!-- Delete TAR files and staging dir as they're no longer needed -->
-    <delete>
-      <fileset dir="${dist.dir}" includes="*.tar"/>
-      <fileset dir="${dist.dir}/release"/>
-    </delete>
-
     <!-- Create checksums for the binary distribution files -->
     <checksum file="${dist.dir}/${project.id}.zip" algorithm="md5" fileext=".md5"/>
     <checksum file="${dist.dir}/${project.id}.zip" algorithm="sha1" fileext=".sha1"/>
     <checksum file="${dist.dir}/${project.id}.tar.gz" algorithm="md5" fileext=".md5"/>
     <checksum file="${dist.dir}/${project.id}.tar.gz" algorithm="sha1" fileext=".sha1"/>
+
+    <!-- Delete TAR files and staging dir as they're no longer needed -->
+    <delete>
+      <fileset dir="${dist.dir}" includes="*.tar"/>
+      <fileset dir="${dist.dir}/release"/>
+    </delete>
   </target>
 
-  <!-- Uploads distribution files to people.apache.org -->
-  <target name="prepare.publish"
-          description="Uploads distribution files to the distribution server">
-      <echo>
-       #######################################################
-       #
-       #  Before publishing, you must sign the distribution
-       #  files with your pgp key (creating the needed '.asc'
-       #  signature files) and added the Jsch jar to Ant's
-       #  classpath to enable the optional 'scp' task.
-       #  Also, for this target to successfully execute,
-       #  you will need to specify your username and password
-       #  as such:
-       #
-       #     ant -Dusername=me -Dpassword=mypassword publish
-       #
-       #######################################################
-      </echo>
-      <condition property="release.signed">
+
+<!-- ========== Publish Targets ======================================== -->
+
+  <target name="publish.check">
+    <condition property="release.signed">
         <and>
             <available file="${dist.dir}/${project.id}.tar.gz.asc"/>
             <available file="${dist.dir}/${project.id}.zip.asc"/>
@@ -509,13 +495,61 @@
             <available file="${dist.dir}/${view.id}.jar.asc"/>
             <available file="${dist.dir}/${generic.id}.jar.asc"/>
         </and>
-      </condition>
+    </condition>
   </target>
-  <target name="publish" depends="prepare.publish" if="release.signed">
-    <scp todir="${username}:${password}@${publish.server}:${publish.dir}">
+
+  <target name="publish.sigs" unless="release.signed"
+          depends="publish.check">
+    <echo>
+    You must first execute "release" target, then sign the distribution
+    files with your pgp key (creating the needed '.asc'signature files).
+    You may also need to add the Jsch jar to Ant's classpath to enable the
+    optional 'scp' task.
+    </echo>
+  </target>
+
+  <target name="publish.user" unless="username">
+    <input message="Type your username and hit enter:" addproperty="username"/>
+  </target>
+
+  <target name="publish.pass" unless="password">
+    <input message="Type your password and hit enter:" addproperty="password"/>
+  </target>
+
+  <target name="publish.auth"
+          depends="publish.user,publish.pass">
+    <condition property="have.auth">
+        <and>
+            <isset property="username"/>
+            <isset property="password"/>
+        </and>
+    </condition>
+  </target>
+
+  <target name="prepare.publish" 
+          depends="publish.sigs,publish.auth">
+    <condition property="ready">
+        <and>
+            <isset property="release.signed"/>
+            <isset property="have.auth"/>
+        </and>
+    </condition>
+  </target>
+
+  <target name="publish" depends="prepare.publish" if="ready"
+          description="Uploads distribution files to the distribution server">
+    <echo>
+    Uploading distribution files from
+        ${dist.dir}
+    to
+        ${username}:${password}@${publish.server}:${publish.dir}
+    </echo>
+    <scp todir="${username}:${password}@${publish.server}:${publish.dir}"
+        verbose="true" failonerror="true" trust="yes">
         <fileset dir="${dist.dir}"/>
     </scp>
   </target>
+
 
 <!-- ========== Test Targets ======================================== -->
 
@@ -524,12 +558,12 @@
   </target>
 
   <!-- Generic tests -->
-  <target name="test.generic" description="Test VelocityTools generic tools" depends="jar.view">
+  <target name="test.generic" description="Test GenericTools" depends="jar.view">
     <ant antfile="${basedir}/test.xml" target="test.generic" />
   </target>
 
   <!-- View tests -->
-  <target name="test.view" description="Test VelocityTools view tools" depends="jar.view">
+  <target name="test.view" description="Test VelocityView" depends="jar.view">
     <ant antfile="${basedir}/test.xml" target="test.view" />
   </target>
 
