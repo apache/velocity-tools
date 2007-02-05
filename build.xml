@@ -144,6 +144,8 @@
     <javac srcdir="${classes.src}"
            debug="${compile.debug}"
            optimize="${compile.optimize}"
+           source="${compile.source}"
+           target="${compile.target}"
            deprecation="${compile.deprecation}"
            encoding="${compile.encoding}"
            destdir="${classes.dir}">
@@ -164,6 +166,8 @@
     <javac srcdir="${classes.src}"
            debug="${compile.debug}"
            optimize="${compile.optimize}"
+           source="${compile.source}"
+           target="${compile.target}"
            deprecation="${compile.deprecation}"
            encoding="${compile.encoding}"
            destdir="${classes.dir}">
@@ -185,6 +189,8 @@
     <javac srcdir="${classes.src}"
            debug="${compile.debug}"
            optimize="${compile.optimize}"
+           source="${compile.source}"
+           target="${compile.target}"
            deprecation="${compile.deprecation}"
            encoding="${compile.encoding}"
            destdir="${classes.dir}">

@@ -105,7 +105,9 @@
       debug="${compile.debug}"
       deprecation="${compile.deprecation}"
       optimize="${compile.optimize}"
-      includes="**/whitebox/*.java" 
+      includes="**/whitebox/*.java"
+      source="${test.compile.source}"
+      target="${test.compile.target}"
       classpathref="test.classpath"/>
     <!-- copy non-java resources -->
     <copy todir="${test.classes.dir}">

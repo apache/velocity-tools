@@ -107,6 +107,8 @@
            includes="*/**"
            debug="${compile.debug}"
            optimize="${compile.optimize}"
+           source="${compile.source}"
+           target="${compile.target}"
            deprecation="${compile.deprecation}"
            encoding="${compile.encoding}"
            destdir="${base}/WEB-INF/classes">
@@ -136,7 +138,7 @@
     <echo>  to the webapps directory in the Tomcat tree     </echo>
     <echo>  (assuming a standard Tomcat installation)  and  </echo>
     <echo>  then restart Tomcat.  To access the page        </echo>
-    <echo>  point your browser to                            </echo>
+    <echo>  point your browser to                           </echo>
     <echo>                                                  </echo>
     <echo>     http://localhost:8080/${name}/index.vm       </echo>
     <echo>                                                  </echo>
