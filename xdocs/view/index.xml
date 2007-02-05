@@ -131,7 +131,9 @@
 
       <p>The location of the configuration file may be specified in web.xml,
       but it is recommended the file be placed inside the hidden WEB-INF
-      directory of the web application and named 'velocity.properties'.
+      directory of the web application and named 'velocity.properties' which
+      is where the VelocityViewServlet will look for it in the absence of
+      any location specified in the web.xml.
       An example configuration file is included with the distribution.</p>
       <p>Please see the
       <a href="http://jakarta.apache.org/velocity/user-guide.html">Velocity User's Guide</a>
@@ -186,10 +188,8 @@
       servlet environment.  Tools may be placed within the <i>request</i>,
       <i>session</i>, or <i>application</i> scopes of your web app.</p>
       <p>The scope that you set for your tool will determine both its
-      lifecycle and, if it implements the
-      <a href="../javadoc/org/apache/velocity/tools/view/tools/ViewTool.html">ViewTool</a>
-      interface, then the scope will also determine what data is passed to the
-      <code>init(Object)</code> method:</p>
+      lifecycle and, if the tool has a <code>public init(Object)</code> method,
+      then the scope will also determine what data is passed to that method:</p>
       <ul>
         <li><i>application</i> scoped tools will be instantiated only once and then
         reused for each request.  Due to this, it is <em>strongly</em> encouraged
@@ -249,11 +249,9 @@
       <p><b>Tool Parameters</b></p>
 
       <p>The toolbox support built into the VelocityViewServlet also provides
-      support for passing configuration parameters to tools that implement
-      the <a href="../javadoc/org/apache/velocity/tools/view/tools/Configurable.html">Configurable</a>
-      interface. This interface consists of only a
-      <code>void configure(java.util.Map params)</code> method which will only be called
-      if parameters have been specified for the tool.</p>
+      support for passing configuration parameters to tools that have a
+      <code>public void configure(java.util.Map params)</code> method.
+      This method will only be called if parameters have been specified for the tool.</p>
 
       <p>You can specify parameters for your tools by adding a &lt;parameter&gt;
       element to your toolbox.xml entries like this:</p>
