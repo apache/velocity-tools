@@ -269,12 +269,12 @@
         <repository>
             <id>default</id>
             <name>Default Repository</name>
-            <url>file:///www/velocity.apache.org/builds/tools/</url>
+            <url>scp://people.apache.org//www/www.apache.org/dist/velocity/tools/</url>
         </repository>
         <site>
             <id>default</id>
             <name>Default Site</name>
-            <url>scp://jakarta.apache.org//www/velocity.apache.org/tools/</url>
+            <url>scp://people.apache.org//www/velocity.apache.org/tools/</url>
         </site>
     </distributionManagement>
 </project>
