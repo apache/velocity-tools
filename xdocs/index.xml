@@ -112,8 +112,8 @@
     <section name="Download">
         <p><strong>Releases</strong></p>
         <p>
-          VelocityTools 1.2 is now available for
-          <a href="http://jakarta.apache.org/site/downloads/downloads_velocity.cgi">download</a>
+          The latest versions are available for
+          <a href="http://velocity.apache.org/download.cgi">download</a>
           in source or binary form.
         </p>
 
@@ -140,14 +140,14 @@
         especially welcome to jump in and help out.  Patches can be sent to the
         mailing list or attached to a
         <a href="http://issues.apache.org/jira/browse/VELTOOLS">JIRA</a>
-        issue.  The <a href="http://wiki.apache.org/jakarta-velocity/VelocityTools">Wiki</a>
+        issue.  The <a href="http://wiki.apache.org/velocity/VelocityTools">Wiki</a>
         can also be a good place to discuss and develop ideas.</p>
 
         <p>A few good places to get started include:
           <ul>
             <li>Documentation (patches for the site or additions to the Wiki)</li>
             <li>Improving the example apps</li>
-            <li>Contributing to the <a href="http://wiki.apache.org/jakarta-velocity/VelocimacroLibrary">VelocimacroLibrary</a></li>
+            <li>Contributing to the <a href="http://wiki.apache.org/elocity/VelocimacroLibrary">VelocimacroLibrary</a></li>
           </ul>
         Other project goals and proposals can be found in the project
         <a href="http://svn.apache.org/viewcvs.cgi/velocity/tools/trunk/STATUS?view=markup">STATUS</a>

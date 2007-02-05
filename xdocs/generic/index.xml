@@ -100,12 +100,12 @@
         <p>We welcome your contributions to this library.  Patches can be sent to the
         mailing list or attached to a
         <a href="http://issues.apache.org/jira/browse/VELTOOLS">JIRA</a>
-        issue.  The <a href="http://wiki.apache.org/jakarta-velocity/VelocityTools">Wiki</a>
+        issue.  The <a href="http://wiki.apache.org/velocity/VelocityTools">Wiki</a>
         can also be a good place to discuss and develop ideas.</p>
 
         <p><strong>Checklist for Contributions</strong></p>
         <ul>
-            <li><a href="http://wiki.apache.org/jakarta-velocity/CodeStandards">Velocity coding conventions</a></li>
+            <li><a href="http://wiki.apache.org/velocity/CodeStandards">Velocity coding conventions</a></li>
             <li>JavaDoc included (the more detailed the better)</li>
             <li>Examples included (in JavaDoc or as stand-alone template example)</li>
         </ul>
