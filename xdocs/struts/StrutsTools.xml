@@ -32,7 +32,7 @@
     <section name="VelocityStruts - Reference Documentation">
 
         <p>
-        VelocityStruts includes four view tools that provide access
+        VelocityStruts includes eight view tools that provide access
         to Struts resources from within Velocity templates. This page is the
         starting point to the reference documentation for the view tools.
         Primary audience are the template designers.</p>
