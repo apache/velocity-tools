@@ -39,7 +39,7 @@
         interchangeably with JSP pages for the view layer.</p>
 
         <p>Various other
-        <a href="http://wiki.apache.org/jakarta-velocity/PoweredByVelocity">web application frameworks</a>
+        <a href="http://wiki.apache.org/velocity/PoweredByVelocity">web application frameworks</a>
         offer built-in support for Velocity templates. This project
         provides the minimal glue necessary to give Struts developers
         an alternative to JSP. </p>
@@ -76,7 +76,7 @@
             design and a clear separation of concerns between View Designers
             and back-end Developers.</li>
 
-            <li><a href="http://jakarta.apache.org/velocity/vtl-reference-guide.html">Velocity Template Language (VTL)</a>
+            <li><a href="http://velocity.apache.org/engine/devel/vtl-reference-guide.html">Velocity Template Language (VTL)</a>
             has few directives and is simple and easy to learn. Most
             people report being productive within a day.</li>
 
@@ -141,7 +141,7 @@
 
     <section name="License">
         <p>This software is licensed under the
-        <a href="http://jakarta.apache.org/velocity/license.html">Apache Software License 2.0</a></p>
+        <a href="http://velocity.apache.org/engine/devel/license.html">Apache Software License 2.0</a></p>
     </section>
  </body>
 

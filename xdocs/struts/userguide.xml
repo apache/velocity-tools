@@ -47,7 +47,7 @@
         <p>
         This document is <strong>not</strong> a general introduction to the Velocity
         template language and its syntax. If you are new to Velocity, please consult
-        <a href="http://jakarta.apache.org/velocity/getting-started.html">Getting
+        <a href="http://velocity.apache.org/engine/devel/getting-started.html">Getting
         Started with Velocity</a>.
         </p>
 
@@ -71,8 +71,8 @@
 
     <section name="Background">
         <p>The documentation will explain the steps necessary to
-        integrate <a href="http://jakarta.apache.org/velocity/">Velocity</a>
-        with <a href="http://jakarta.apache.org/struts/">Struts</a> applications.
+        integrate <a href="http://velocity.apache.org/">Velocity</a>
+        with <a href="http://struts.apache.org/1.x/index.html">Struts 1.x</a> applications.
         It is expected that the reader already has a basic understanding of those
         projects.</p>
 
@@ -83,7 +83,7 @@
 
         <p>If this documentation does not answer all your questions, please post
         questions to the
-        <a href="http://jakarta.apache.org/site/mail.html">Velocity-User mailing list</a>
+        <a href="http://velocity.apache.org/contact.html">Velocity-User mailing list</a>
         and we'll be happy to help! (And we'll update this doc!)</p>
 
         <br clear="all"/>
@@ -281,8 +281,8 @@
             of VTL:</p>
 
             <ul>
-              <li><a href="http://jakarta.apache.org/velocity/user-guide.html">Velocity User's Guide</a></li>
-              <li><a href="http://jakarta.apache.org/velocity/vtl-reference-guide.html">VTL Reference Guide</a></li>
+              <li><a href="http://velocity.apache.org/engine/devel/user-guide.html">Velocity User's Guide</a></li>
+              <li><a href="http://velocity.apache.org/engine/devel/vtl-reference-guide.html">VTL Reference Guide</a></li>
             </ul>
 
             <br clear="all"/>
