@@ -136,7 +136,7 @@
       any location specified in the web.xml.
       An example configuration file is included with the distribution.</p>
       <p>Please see the
-      <a href="http://jakarta.apache.org/velocity/user-guide.html">Velocity User's Guide</a>
+      <a href="http://velocity.apache.org/engine/devel/user-guide.html">Velocity User's Guide</a>
       for more information on Velocity configuration.</p>
 
       <sourcecode>  velocimacro.library = /WEB-INF/VM_global_library.vm

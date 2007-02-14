@@ -196,7 +196,7 @@ value="Cancel"&gt;</sourcecode>
             </returns>
 
             <see>
-                <a href="http://jakarta.apache.org/struts/api/org/apache/struts/action/Action.html">
+                <a href="http://struts.apache.org/1.x/struts-core/apidocs/org/apache/struts/action/Action.html">
                 JavaDoc of class <code>org.apache.struts.action.Action</code></a> for more information on the
                 transaction token mechanism (I don't know of any better documentation of this Struts
                 feature).

@@ -76,7 +76,7 @@
                 This tool can also be used to import local .vm resources without sharing
                 the current velocity-context (as opposed to the #parse directive).</p>
 
-<sourcecode>$import.read("http://jakarta.apache.org/velocity/tools")
+<sourcecode>$import.read("http://velocity.apache.org/tools/devel/")
 $import.read("/wookie.jsp")</sourcecode>
 		</description>
             </method>
