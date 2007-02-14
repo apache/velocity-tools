@@ -96,10 +96,10 @@
       ## PAGE HEADER
       <tr><td colspan="2">
 
-        ## JAKARTA LOGO
-        <a href="http://jakarta.apache.org/">
-          <img src="http://jakarta.apache.org/images/jakarta-logo.gif"
-             align="left" alt="The Jakarta Project" border="0"/>
+        ## VELOCITY LOGO
+        <a href="http://velocity.apache.org/">
+          <img src="http://velocity.apache.org/images/velocity_project_wide.png"
+             align="left" alt="The Velocity Project" border="0"/>
         </a>
 
         #if( $project.logo )

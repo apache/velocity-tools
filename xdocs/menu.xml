@@ -24,7 +24,7 @@
     <logo href="images/velocitytools.png">&lt; Velocity Tools &gt;</logo>
 
     <body>
-      <uplink name="Velocity"        href="http://jakarta.apache.org/velocity" alt="top"/>
+      <uplink name="Velocity"        href="http://velocity.apache.org/" alt="top"/>
 
       <menu name="Velocity Tools">
           <item name="Overview"               href="index.html"/>
@@ -32,8 +32,8 @@
           <item name="ChangeLog"              href="changes.html"/>
           <item name="Subversion Repository"  href="index.html#Subversion Repository"/>
           <item name="Javadoc"                href="javadoc/index.html"/>
-          <item name="Wiki"                   href="http://wiki.apache.org/jakarta-velocity/VelocityTools"/>
-          <item name="FAQ"                    href="http://wiki.apache.org/jakarta-velocity/VelocityFAQ"/>
+          <item name="Wiki"                   href="http://wiki.apache.org/velocity/VelocityTools"/>
+          <item name="FAQ"                    href="http://wiki.apache.org/velocity/VelocityFAQ"/>
           <item name="Report Issues"          href="http://issues.apache.org/jira/browse/VELTOOLS"/>
       </menu>
 
