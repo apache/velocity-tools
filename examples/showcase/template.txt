@@ -16,7 +16,8 @@
 ## under the License.
 
 <p>
-This page demonstrates functions of the #doclink( 'FooTool' true ).
+#set( $demos = $text.demos )
+$demos.thisPage.insert("#doclink( 'FooTool' true )").
 </p>
 
 <table border="1" cellspacing="0" cellpadding="3">

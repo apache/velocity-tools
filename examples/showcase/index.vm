@@ -14,13 +14,9 @@
 ## KIND, either express or implied.  See the License for the
 ## specific language governing permissions and limitations
 ## under the License.
-<p>Hi!</p>
+#set( $index = $text.index )
+<p>$index.greeting!</p>
 
-<p>
-This is a demo application meant to showcase the abilities of
-the various tools provided by the VelocityTools library, as well
-as some best practices for using them with the VelocityView
-servlets.
-</p>
+<p>$index.explanation</p>
 
-<p>To begin, choose a tool from the menu.</p>
+<p>$index.start</p>

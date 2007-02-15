@@ -15,10 +15,11 @@
 ## specific language governing permissions and limitations
 ## under the License.
 #set( $slink = $link.self )
-<h3>Choose a layout:</h3>
+#set( $layouts = $text.layouts )
+<h3>$layouts.header:</h3>
 <ul>
-  <li><a href="$slink">CSS Layout</a></li>
-  <li><a href="$slink.layout('Simple')">Simple Layout</a></li>
-  <li><a href="$slink.layout('Table')">Table Layout</a></li>
-  <li><a href="$slink.layout('Print')">Print Layout</a></li>
+  <li><a href="$slink">$layouts.css</a></li>
+  <li><a href="$slink.layout('Simple')">$layouts.simple</a></li>
+  <li><a href="$slink.layout('Table')">$layouts.table</a></li>
+  <li><a href="$slink.layout('Print')">$layouts.print</a></li>
 </ul>

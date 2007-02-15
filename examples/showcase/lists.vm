@@ -16,7 +16,8 @@
 ## under the License.
 #title( 'ListTool' )
 <p>
-This page demonstrates functions of the #doclink( 'ListTool' true ).
+#set( $demos = $text.demos )
+$demos.thisPage.insert("#doclink( 'ListTool' true )").
 </p>
 
 #demoTableStart()
@@ -50,7 +51,7 @@ This page demonstrates functions of the #doclink( 'ListTool' true ).
 
 #set( $primes = [1, 2, 3, 5, 7, 11] )
 <div align="center">
-  <a name="fullDemo"><h3>Example Display</h3></a>
+  <a name="fullDemo"><h3>$demos.mainExampleHeader</h3></a>
 <form method="post" action="$link.self.anchor('fullDemo')">
 <textarea name="demo" rows="7" cols="65">##
 #if( $params.demo )##
@@ -73,7 +74,7 @@ ${esc.d}lists.contains(${esc.d}primes, 7)##
 </form>
 
 #if( $params.demo )
-Your code returned the following results:
+$demos.mainResultsIntro:
 <pre>
   $render.eval($params.demo)
 </pre>

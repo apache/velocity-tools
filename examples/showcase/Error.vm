@@ -20,7 +20,7 @@
 #title( "Error - $!cause.class.name" )
 
 <div align="center">
-<h1>There has been an error!</h1>
+<h1>$text.error.header</h1>
 <br>
 <b style="color: #FF0000;">
 #if( $invocation_exception )
@@ -44,5 +44,5 @@ Alright, here's the stack.  Good luck.
 $stack_trace
 </pre>
 </div>
-<h3>Sorry about that!</h3>
+<h3>$text.error.sorry</h3>
 </div>

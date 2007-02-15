@@ -16,7 +16,8 @@
 ## under the License.
 #title( 'ContextTool' )
 <p>
-This page demonstrates functions of the #doclink( 'ContextTool' false ).
+#set( $demos = $text.demos )
+$demos.thisPage.insert("#doclink( 'ContextTool' false )").
 </p>
 
 #demoTableStart()
@@ -43,7 +44,7 @@ This page demonstrates functions of the #doclink( 'ContextTool' false ).
 </table>
 
 <div align="center">
-  <a name="fullDemo"><h3>Example Display</h3></a>
+  <a name="fullDemo"><h3>$demos.mainExampleHeader</h3></a>
 <form method="post" action="$link.self.anchor('fullDemo')">
 <textarea name="demo" rows="6" cols="65">##
 #if( $params.demo )##
@@ -62,7 +63,7 @@ ${esc.h}end##
 </form>
 
 #if( $params.demo )
-Your code returned the following results:
+$demos.mainResultsIntro:
 <pre>
   $render.eval($params.demo)
 </pre>

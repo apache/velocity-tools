@@ -16,7 +16,8 @@
 ## under the License.
 #title( 'NumberTool' )
 <p>
-This page demonstrates functions of the #doclink( 'NumberTool' true ).
+#set( $demos = $text.demos )
+$demos.thisPage.insert("#doclink( 'NumberTool' true )").
 </p>
 
 #demoTableStart()

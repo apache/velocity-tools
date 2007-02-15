@@ -33,8 +33,8 @@ ${toolname}.html">$toolname</a>#end
 #**
  * Creates a list item for the toolmenu.
  *#
-#macro( toolMenuItem $menulink $page $name )
-  <li><a href="$menulink.relative("${page}.vm")">$name</a></li>
+#macro( toolMenuItem $menulink $tool )
+  <li><a href="$menulink.relative("${tool}.vm")">$text.tools.get($tool)</a></li>
 #end
 
 
@@ -43,19 +43,20 @@ ${toolname}.html">$toolname</a>#end
  * Creates the start tag and header row for a function demonstration table.
  *#
 #macro( demoTableStart )
+#set( $demo = $text.demo )
 <table border="1" cellspacing="0" cellpadding="3">
 <tr>
-  <th>Function</th>
+  <th>$demo.function</th>
   <form method="get" action="$link.self">
   <th nowrap="1">
-    Demo Result
-    <input style="font-size: 8pt" type="submit" value="Clear All">
+    $demo.result
+    <input style="font-size: 8pt" type="submit" value="$demo.clear">
   </th>
   #if( $params.layout )
     <input type="hidden" name="layout" value="$params.layout">
   #end
   </form>
-  <th>Description</th>
+  <th>$demo.description</th>
 </tr>
 #end
 
@@ -100,9 +101,9 @@ ${toolname}.html">$toolname</a>#end
       ${esc.d}${toolname}.${method}(${quote}$params.get($method)${quote})
       =
       <div id="${method}">$render.eval("${esc.d}${toolname}.${method}(${quote}$params.get($method)${quote})")</div>
-      <input type="submit" value="Try it!">
+      <input type="submit" value="$text.demo.try">
     #else
-      <input type="submit" value="Try it!">
+      <input type="submit" value="$text.demo.try">
     #end
     #foreach( $param in $request.parameterMap.keySet() )
       #foreach( $value in $params.getStrings($param) )
@@ -137,9 +138,9 @@ ${toolname}.html">$toolname</a>#end
       ${esc.d}${toolname}.${method}(${quote}$!params.get(${method1})${quote}, ${quote}$!params.get(${method2})${quote})
       =
       <div id="$method2">$render.eval("${esc.d}${toolname}.${method}(${quote}$!params.get(${method1})${quote}, ${quote}$!params.get(${method2})${quote})")</div>
-      <input type="submit" value="Try again!">
+      <input type="submit" value="$text.demo.tryAgain">
     #else
-      <input type="submit" value="Try it!">
+      <input type="submit" value="$text.demo.try">
     #end
     #foreach( $param in $request.parameterMap.keySet() )
       #foreach( $value in $params.getStrings($param) )
@@ -176,9 +177,9 @@ ${toolname}.html">$toolname</a>#end
       ${esc.d}${toolname}.${method}(${quote}$!params.get(${method1})${quote}, ${quote}$!params.get(${method2})${quote}, ${quote}$!params.get(${method3})${quote})
       =
       <div id="$method3">$render.eval("${esc.d}${toolname}.${method}(${quote}$!params.get(${method1})${quote}, ${quote}$!params.get(${method2})${quote}, ${quote}$!params.get(${method3})${quote})")</div>
-      <input type="submit" value="Try again!">
+      <input type="submit" value="$text.demo.tryAgain">
     #else
-      <input type="submit" value="Try it!">
+      <input type="submit" value="$text.demo.try">
     #end
     #foreach( $param in $request.parameterMap.keySet() )
       #foreach( $value in $params.getStrings($param) )
@@ -209,9 +210,9 @@ ${toolname}.html">$toolname</a>#end
       $params.custom
       =
       $render.eval($params.custom)
-      <input type="submit" value="Try again!">
+      <input type="submit" value="$text.demo.tryAgain">
     #else
-      <input type="submit" value="Try it!">
+      <input type="submit" value="$text.demo.try">
     #end
     #foreach( $param in $request.parameterMap.keySet() )
       #foreach( $value in $params.getStrings($param) )
@@ -221,7 +222,7 @@ ${toolname}.html">$toolname</a>#end
       #end
     #end
   </td>
-  <td>Try any code out here.</td>
+  <td>$text.demo.tryAnything</td>
   </form>
 </tr>
 #end

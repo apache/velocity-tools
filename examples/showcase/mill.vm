@@ -16,7 +16,8 @@
 ## under the License.
 #title( 'IteratorTool' )
 <p>
-This page demonstrates functions of the #doclink( 'IteratorTool' true ).
+#set( $demos = $text.demos )
+$demos.thisPage.insert("#doclink( 'IteratorTool' true )").
 This tool is a convenience tool to use with ${esc.h}foreach loops. It wraps a
 list to let the designer specify a condition to terminate the loop,
 and reuse the same list in different loops.
@@ -44,7 +45,7 @@ ${esc.d}numbers.more()
 </form>
 
 #if( $params.demo )
-Your code returned the following results:
+$demos.mainResultsIntro:
 <pre>
   $render.eval($params.demo)
 </pre>

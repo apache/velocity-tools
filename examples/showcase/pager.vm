@@ -16,7 +16,8 @@
 ## under the License.
 #title( 'AbstractPagerTool' )
 <p>
-This page demonstrates functions of the #doclink( 'AbstractPagerTool' false ).  In this
+#set( $demos = $text.demos )
+$demos.thisPage.insert("#doclink( 'AbstractPagerTool' false )").  In this
 case, we are working with a simple implementation called "MyPagerTool".
 </p>
 
@@ -97,7 +98,7 @@ of numbers by entering something like <code>[111..2222]</code> in the
 </table>
 
 <div align="center">
-  <a name="fullDemo"><h3>Example Display</h3></a>
+  <a name="fullDemo"><h3>$demos.mainExampleHeader</h3></a>
   #if( $pager.hasItems() )
     <div align="left">
       Showing $!pager.pageDescription<br>
