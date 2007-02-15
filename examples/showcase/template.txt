@@ -16,16 +16,13 @@
 ## under the License.
 
 <p>
-#set( $demos = $text.demos )
-$demos.thisPage.insert("#doclink( 'FooTool' true )").
+#set( $demo = $text.demo )
+$demo.thisPage.insert("#doclink( 'FooTool' true )").
 </p>
 
-<table border="1" cellspacing="0" cellpadding="3">
-<tr>
-  <th>Function</th>
-  <th>Demo Result</th>
-  <th>Description</th>
-</tr>
+#demoTableStart()
+
+#set( $quote = '' )
 #set( $desc = "" )
 #demo( 'foo' '' $desc )
 
@@ -37,3 +34,31 @@ $demos.thisPage.insert("#doclink( 'FooTool' true )").
 
 #demoCustom( 'foo' )
 </table>
+
+<div align="center">
+  <a name="fullDemo"><h3>$demo.mainExampleHeader</h3></a>
+<form method="post" action="$link.self.anchor('fullDemo')">
+<textarea name="demo" rows="8" cols="65">##
+#if( $params.demo )##
+$params.demo##
+#else##
+${esc.h}${esc.h} Examples of using this tool:
+ ${esc.d}foo
+ ${esc.d}foo.whatever##
+#end##
+</textarea>
+  <br>
+  <input type="submit" value="$demo.try">
+  #if( $params.layout )
+  <input type="hidden" name="layout" value="$params.layout">
+  #end
+</form>
+
+#if( $params.demo )
+$demo.mainResultsIntro:
+<pre>
+  $render.eval($params.demo)
+</pre>
+#end
+</div>
+
