@@ -16,7 +16,8 @@
 ## under the License.
 #title( 'ParameterParser' )
 <p>
-This page demonstrates functions of the #doclink( 'ParameterParser' false ).
+#set( $demos = $text.demos )
+$demos.thisPage.insert("#doclink( 'ParameterParser' false )").
 </p>
 
 #demoTableStart()

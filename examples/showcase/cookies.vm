@@ -16,7 +16,8 @@
 ## under the License.
 #title( 'CookieTool' )
 <p>
-This page demonstrates functions of the #doclink( 'CookieTool' false ).  Remember,
+#set( $demos = $text.demos )
+$demos.thisPage.insert("#doclink( 'CookieTool' false )").  Remember,
 when adding a cookie, it is <b>not</b> added to the same request which does the
 adding.  This means to see a cookie you've added, you must add it, and then refresh
 the page again.
@@ -46,7 +47,7 @@ the page again.
 </table>
 
 <div align="center">
-  <a name="fullDemo"><h3>Example Display</h3></a>
+  <a name="fullDemo"><h3>$demos.mainExampleHeader</h3></a>
 <form method="post" action="$link.self.anchor('fullDemo')">
 <textarea name="demo" rows="3" cols="65">##
 #if( $params.demo )##
@@ -65,7 +66,7 @@ ${esc.h}end##
 </form>
 
 #if( $params.demo )
-Your code returned the following results:
+$demos.mainResultsIntro:
 <pre>
   $render.eval($params.demo)
 </pre>

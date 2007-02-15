@@ -16,7 +16,8 @@
 ## under the License.
 #title( 'LinkTool' )
 <p>
-This page demonstrates functions of the #doclink( 'LinkTool' false ). This tool
+#set( $demos = $text.demos )
+$demos.thisPage.insert("#doclink( 'LinkTool' false )"). This tool
 is somewhat unusual in that every method that takes parameters will return a new
 instance of the tool that is a copy of the one the method was called upon, with
 the additional change specified by the method call.
@@ -93,7 +94,7 @@ the additional change specified by the method call.
 #set( $base = $link.self.anchor('fullDemo') )
 
 <div align="center">
-  <a name="fullDemo"><h3>Example Display</h3></a>
+  <a name="fullDemo"><h3>$demos.mainExampleHeader</h3></a>
 <form method="post" action="$link.self.anchor('fullDemo')">
 <textarea name="demo" rows="5" cols="65">##
 #if( $params.demo )##
@@ -114,7 +115,7 @@ ${esc.h}set( ${esc.d}base = ${esc.d}link.self.anchor('fullDemo') )
 </form>
 
 #if( $params.demo )
-Your code returned the following results:
+$demos.mainResultsIntro:
 <pre>
   $render.eval($params.demo)
 </pre>

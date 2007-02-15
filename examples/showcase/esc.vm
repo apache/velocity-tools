@@ -16,7 +16,8 @@
 ## under the License.
 #title( 'EscapeTool' )
 <p>
-This page demonstrates functions of the #doclink( 'EscapeTool' true ).
+#set( $demos = $text.demos )
+$demos.thisPage.insert("#doclink( 'EscapeTool' true )").
 </p>
 
 #demoTableStart()
@@ -86,7 +87,7 @@ This page demonstrates functions of the #doclink( 'EscapeTool' true ).
 #set( $sql = "McHale's Navy" )
 
 <div align="center">
-  <a name="fullDemo"><h3>Example Display</h3></a>
+  <a name="fullDemo"><h3>$demos.mainExampleHeader</h3></a>
 <form method="post" action="$link.self.anchor('fullDemo')">
 <textarea name="demo" rows="10" cols="65">##
 #if( $params.demo )##
@@ -137,7 +138,7 @@ ${esc.d}esc.e##
 </form>
 
 #if( $params.demo )
-Your code returned the following results:
+$demos.mainResultsIntro:
 <pre>
   $render.eval($params.demo)
 </pre>
