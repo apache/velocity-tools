@@ -16,8 +16,8 @@
 ## under the License.
 #title( 'AbstractSearchTool' )
 <p>
-#set( $demos = $text.demos )
-$demos.thisPage.insert("#doclink( 'AbstractSearchTool' false )").
+#set( $demo = $text.demo )
+$demo.thisPage.insert("#doclink( 'AbstractSearchTool' false )").
 In this case, we are working with a simplistic, demonstration implementation
 called "MySearchTool".
 </p>
@@ -105,7 +105,7 @@ and exists only for the implementation used in this demo.
 </table>
 
 <div align="center">
-  <a name="fullDemo"><h3>$demos.mainExampleHeader</h3></a>
+  <a name="fullDemo"><h3>$demo.mainExampleHeader</h3></a>
    <form name="search" method="get" action="$link.self.anchor('fullDemo')">
      <input type="text"name="find" value="$!search.criteria">
      <input type="submit" value="Find">

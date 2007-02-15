@@ -16,8 +16,8 @@
 ## under the License.
 #title( 'DateTool' )
 <p>
-#set( $demos = $text.demos )
-$demos.thisPage.insert("#doclink( 'DateTool' true )").  As the DateTool
+#set( $demo = $text.demo )
+$demo.thisPage.insert("#doclink( 'DateTool' true )").  As the DateTool
 is quite full-featured and provides many similar functions with varying and
 strongly-typed options, not all functions are demonstrated below.  See the javadoc
 for a full listing of available functions.
@@ -90,9 +90,9 @@ for a full listing of available functions.
 </table>
 
 <div align="center">
-  <a name="fullDemo"><h3>$demos.mainExampleHeader</h3></a>
+  <a name="fullDemo"><h3>$demo.mainExampleHeader</h3></a>
 <form method="post" action="$link.self.anchor('fullDemo')">
-<textarea name="demo" rows="8" cols="65">##
+<textarea name="demo" rows="12" cols="65">##
 #if( $params.demo )##
 $params.demo##
 #else##
@@ -107,14 +107,14 @@ ${esc.h}${esc.h} Examples of formatting the "current" date:
 #end##
 </textarea>
   <br>
-  <input type="submit" value="Try it!">
+  <input type="submit" value="$demo.try">
   #if( $params.layout )
   <input type="hidden" name="layout" value="$params.layout">
   #end
 </form>
 
 #if( $params.demo )
-$demos.mainResultsIntro:
+$demo.mainResultsIntro:
 <pre>
   $render.eval($params.demo)
 </pre>

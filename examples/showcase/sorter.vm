@@ -16,8 +16,8 @@
 ## under the License.
 #title( 'SortTool' )
 <p>
-#set( $demos = $text.demos )
-$demos.thisPage.insert("#doclink( 'SortTool' true )").
+#set( $demo = $text.demo )
+$demo.thisPage.insert("#doclink( 'SortTool' true )").
 </p>
 
 #demoTableStart()
