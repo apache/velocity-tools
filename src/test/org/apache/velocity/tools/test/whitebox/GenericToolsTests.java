@@ -63,20 +63,24 @@ public class GenericToolsTests {
         assertNotNull(alternatorTool);
         /* test automatic alternator */
         Alternator auto = alternatorTool.auto(new String[] {"red","blue","yellow"});
-        assertEquals("red",auto.getCurrent());
-        assertEquals("red",auto.getNext());
-        assertEquals("blue",auto.toString());
-        assertEquals("yellow",auto.toString());
-        assertEquals("red",auto.toString());
+        assertStringEquals("red", auto.getCurrent());
+        assertStringEquals("red", auto.getNext());
+        assertStringEquals("blue", auto);
+        assertStringEquals("yellow", auto);
+        assertStringEquals("red", auto);
         /* test manual alternator (use 'make()' and not 'manual()' since we define the default to be manual in toolbox.xml*/
          Alternator manual = alternatorTool.make(new String[] {"red","blue","yellow"});
-        assertEquals("red",manual.toString());
-        assertEquals("red",manual.toString());
+        assertStringEquals("red", manual);
+        assertStringEquals("red", manual);
         manual.shift();
-        assertEquals("blue",manual.toString());
+        assertStringEquals("blue", manual);
         manual.shift();
         manual.shift();
-        assertEquals("red",manual.toString());
+        assertStringEquals("red", manual);
+    }
+
+    protected void assertStringEquals(String expected, Object testThis) {
+        assertEquals(expected, String.valueOf(testThis));
     }
 
     public @Test void testDateTool() { /* TODO still incomplete */
@@ -148,26 +152,26 @@ public class GenericToolsTests {
         assertNotNull(textTool);
 
         ResourceTool.Key foo = textTool.get("foo");
-        assertEquals("bar", foo.toString());
+        assertStringEquals("bar", foo);
 
         ResourceTool.Key frenchFoo = foo.locale(Locale.FRENCH);
-        assertEquals("barre", frenchFoo.toString());
+        assertStringEquals("barre", frenchFoo);
 
         ResourceTool.Key otherFoo = foo.bundle("resources2");
-        assertEquals("woogie", otherFoo.toString());
+        assertStringEquals("woogie", otherFoo);
 
         ResourceTool.Key helloWhoever = textTool.get("hello").get("whoever");
-        assertEquals("Hello {0}!", helloWhoever.toString());
+        assertStringEquals("Hello {0}!", helloWhoever);
 
         ResourceTool.Key helloWorld = helloWhoever.insert(textTool.get("world"));
-        assertEquals("Hello World!", helloWorld.toString());
+        assertStringEquals("Hello World!", helloWorld);
 
         ResourceTool.Key halfFrenchHelloWorld = helloWorld.locale(Locale.FRENCH);
-        assertEquals("Bonjour World!", halfFrenchHelloWorld.toString());
+        assertStringEquals("Bonjour World!", halfFrenchHelloWorld);
 
         ResourceTool.Key frenchTool = textTool.locale(Locale.FRENCH);
         ResourceTool.Key frenchHelloWorld =
             frenchTool.get("hello.whoever").insert(frenchTool.get("world"));
-        assertEquals("Bonjour Monde!", frenchHelloWorld.toString());
+        assertStringEquals("Bonjour Monde!", frenchHelloWorld);
     }
 }
