@@ -16,8 +16,8 @@
 ## under the License.
 #title( 'BrowserSniffer' )
 <p>
-#set( $demos = $text.demos )
-$demos.thisPage.insert("#doclink( 'BrowserSnifferTool' false )").
+#set( $demo = $text.demo )
+$demo.thisPage.insert("#doclink( 'BrowserSnifferTool' false )").
 </p>
 
 #demoTableStart()

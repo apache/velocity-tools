@@ -16,8 +16,8 @@
 ## under the License.
 #title( 'ResourceTool' )
 <p>
-#set( $demos = $text.demos )
-$demos.thisPage.insert("#doclink( 'ViewResourceTool' false )").  This tool
+#set( $demo = $text.demo )
+$demo.thisPage.insert("#doclink( 'ViewResourceTool' false )").  This tool
 is similar to the <a href="$link.relative('link.vm')">LinkTool</a> in that most methods
 return a new object that has mostly the same methods as the original, allowing you
 to build up parameters elegantly and simply, rather than try to remember how to use
@@ -57,7 +57,7 @@ While the former is somewhat longer, it is much more understandable and flexible
 </table>
 
 <div align="center">
-  <a name="fullDemo"><h3>$demos.mainExampleHeader</h3></a>
+  <a name="fullDemo"><h3>$demo.mainExampleHeader</h3></a>
 <form method="post" action="$link.self.anchor('fullDemo')">
 <textarea name="demo" rows="6" cols="65">##
 #if( $params.demo )##
@@ -70,14 +70,14 @@ ${esc.d}text.bundle('otherStuff').foo##
 #end##
 </textarea>
   <br>
-  <input type="submit" value="Try it!">
+  <input type="submit" value="$demo.try">
   #if( $params.layout )
   <input type="hidden" name="layout" value="$params.layout">
   #end
 </form>
 
 #if( $params.demo )
-$demos.mainResultsIntro:
+$demo.mainResultsIntro:
 <pre>
   $render.eval($params.demo)
 </pre>

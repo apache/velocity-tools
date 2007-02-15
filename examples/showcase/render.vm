@@ -16,8 +16,8 @@
 ## under the License.
 #title( 'ViewRenderTool' )
 <p>
-#set( $demos = $text.demos )
-$demos.thisPage.insert("#doclink( 'ViewRenderTool' false )").
+#set( $demo = $text.demo )
+$demo.thisPage.insert("#doclink( 'ViewRenderTool' false )").
 </p>
 
 #demoTableStart()
@@ -33,7 +33,7 @@ $demos.thisPage.insert("#doclink( 'ViewRenderTool' false )").
 </table>
 
 <div align="center">
-  <a name="fullDemo"><h3>$demos.mainExampleHeader</h3></a>
+  <a name="fullDemo"><h3>$demo.mainExampleHeader</h3></a>
 <form method="post" action="$link.self.anchor('fullDemo')">
 <textarea name="demo" rows="7" cols="65">##
 #if( $params.demo )##
@@ -53,14 +53,14 @@ ${esc.d}render.recurse('${esc.d}bar')##
 #end##
 </textarea>
   <br>
-  <input type="submit" value="Try it!">
+  <input type="submit" value="$demo.try">
   #if( $params.layout )
   <input type="hidden" name="layout" value="$params.layout">
   #end
 </form>
 
 #if( $params.demo )
-$demos.mainResultsIntro:
+$demo.mainResultsIntro:
 <pre>
   $render.eval($params.demo)
 </pre>

@@ -13,14 +13,15 @@
 ## under the License.
 #title( 'ImportTool' )
 <p>
-This page demonstrates the function of the #doclink( 'ImportTool' false ).
+#set( $demo = $text.demo )
+$demo.thisPage.insert("#doclink( 'ImportTool' false )").
 </p>
 
 <table border="1" cellspacing="0" cellpadding="3">
 <tr>
-  <th>Function</th>
-  <th>Demo Result</th>
-  <th>Description</th>
+  <th>$demo.function</th>
+  <th>$demo.result</th>
+  <th>$demo.description</th>
 </tr>
 <tr>
   <form method="post" action="$link">
@@ -31,7 +32,7 @@ This page demonstrates the function of the #doclink( 'ImportTool' false ).
     #if( $params.read )
       $esc.html($import.read($params.read))
     #else
-      <input type="submit" value="Try it!">
+      <input type="submit" value="$demo.try">
       <br>
       Please note that the results will be html-escaped by the 
       <a href="$link.relative('esc.vm').params($params.all)">EscapeTool</a> for the purposes of this demo.

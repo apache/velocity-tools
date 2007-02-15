@@ -16,8 +16,8 @@
 ## under the License.
 #title( 'MathTool' )
 <p>
-#set( $demos = $text.demos )
-$demos.thisPage.insert("#doclink( 'MathTool' true )").
+#set( $demo = $text.demo )
+$demo.thisPage.insert("#doclink( 'MathTool' true )").
 </p>
 
 #demoTableStart()

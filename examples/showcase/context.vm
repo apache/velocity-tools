@@ -16,8 +16,8 @@
 ## under the License.
 #title( 'ContextTool' )
 <p>
-#set( $demos = $text.demos )
-$demos.thisPage.insert("#doclink( 'ContextTool' false )").
+#set( $demo = $text.demo )
+$demo.thisPage.insert("#doclink( 'ContextTool' false )").
 </p>
 
 #demoTableStart()
@@ -44,7 +44,7 @@ $demos.thisPage.insert("#doclink( 'ContextTool' false )").
 </table>
 
 <div align="center">
-  <a name="fullDemo"><h3>$demos.mainExampleHeader</h3></a>
+  <a name="fullDemo"><h3>$demo.mainExampleHeader</h3></a>
 <form method="post" action="$link.self.anchor('fullDemo')">
 <textarea name="demo" rows="6" cols="65">##
 #if( $params.demo )##
@@ -56,14 +56,14 @@ ${esc.h}end##
 #end##
 </textarea>
   <br>
-  <input type="submit" value="Try it!">
+  <input type="submit" value="$demo.try">
   #if( $params.layout )
   <input type="hidden" name="layout" value="$params.layout">
   #end
 </form>
 
 #if( $params.demo )
-$demos.mainResultsIntro:
+$demo.mainResultsIntro:
 <pre>
   $render.eval($params.demo)
 </pre>
