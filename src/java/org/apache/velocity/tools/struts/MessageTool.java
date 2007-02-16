@@ -20,7 +20,7 @@ package org.apache.velocity.tools.struts;
  */
 
 import java.util.List;
-
+import java.util.Locale;
 import org.apache.struts.util.MessageResources;
 
 /**
@@ -67,7 +67,7 @@ public class MessageTool extends MessageResourcesTool
      */
     public TextKey get(String key)
     {
-        return new TextKey(this, key);
+        return new TextKey(key, null, null, this.locale);
     }
 
 
@@ -121,6 +121,25 @@ public class MessageTool extends MessageResourcesTool
      */
     public String get(String key, String bundle, Object args[])
     {
+	return this.get(key, bundle, args, this.locale);
+    }
+
+    /**
+     * Looks up and returns the localized message for the specified key.
+     * Replacement parameters passed with <code>args</code> are
+     * inserted into the message.
+     *
+     * @param key message key
+     * @param bundle The bundle name to look for.
+     * @param args replacement parameters for this message
+     * @param locale The locale to use for this message.
+     *
+     * @return the localized message for the specified key or
+     * <code>null</code> if no such message exists
+     * @since VelocityTools 1.4
+     */
+    public String get(String key, String bundle, Object[] args, Locale locale)
+    {
         MessageResources res = getResources(bundle);
         if (res == null)
         {
@@ -130,11 +149,11 @@ public class MessageTool extends MessageResourcesTool
         // return the requested message
         if (args == null)
         {
-            return res.getMessage(this.locale, key);
+            return res.getMessage(locale, key);
         }
         else
         {
-            return res.getMessage(this.locale, key, args);
+            return res.getMessage(locale, key, args);
         }
     }
 
@@ -230,28 +249,29 @@ public class MessageTool extends MessageResourcesTool
      */
     public class TextKey
     {
-        private MessageTool tool;
         private String key;
         private String bundle;
         private Object[] args;
+        private Locale locale;
 
         /**
-         * @deprecated This will be removed after VelocityTools 1.3
-         */
-        public TextKey(MessageTool tool, String key)
-        {
-            this(tool, key, null, null);
-        }
-
-        /**
-         * @since VelocityTools 1.3
+         * @deprecated This will be removed after VelocityTools 1.4
          */
         public TextKey(MessageTool tool, String key, String bundle, Object[] args)
         {
-            this.tool = tool;
+            this(key, bundle, args, MessageTool.this.locale);
+        }
+
+        /**
+         * @since VelocityTools 1.4
+         */
+        public TextKey(String key, String bundle,
+                       Object[] args, Locale locale)
+        {
             this.key = key;
             this.bundle = bundle;
             this.args = args;
+            this.locale = locale;
         }
 
         /**
@@ -264,7 +284,7 @@ public class MessageTool extends MessageResourcesTool
             StringBuffer sb = new StringBuffer(this.key);
             sb.append('.');
             sb.append(appendme);
-            return new TextKey(this.tool, sb.toString(), this.bundle, this.args);
+            return new TextKey(sb.toString(), this.bundle, this.args, this.locale);
         }
 
         /**
@@ -273,7 +293,16 @@ public class MessageTool extends MessageResourcesTool
          */
         public TextKey bundle(String setme)
         {
-            return new TextKey(this.tool, this.key, setme, this.args);
+            return new TextKey(this.key, setme, this.args, this.locale);
+        }
+
+        /**
+         * Returns a new TextKey with the specified resource bundle set.
+         * @since VelocityTools 1.4
+         */
+        public TextKey locale(Locale setme)
+        {
+            return new TextKey(this.key, this.bundle, this.args, setme);
         }
 
         /**
@@ -356,7 +385,7 @@ public class MessageTool extends MessageResourcesTool
                 System.arraycopy(addme, 0, newargs, this.args.length, addme.length);
             }
             // return an new TextKey
-            return new TextKey(this.tool, this.key, this.bundle, newargs);
+            return new TextKey(this.key, this.bundle, newargs, this.locale);
         }
 
         /**
@@ -367,7 +396,7 @@ public class MessageTool extends MessageResourcesTool
          */
         public TextKey clearArgs()
         {
-            return new TextKey(this.tool, this.key, this.bundle, null);
+            return new TextKey(this.key, this.bundle, null, this.locale);
         }
 
         /**
@@ -385,7 +414,7 @@ public class MessageTool extends MessageResourcesTool
          */
         public boolean exists()
         {
-            return tool.exists(key, bundle);
+            return MessageTool.this.exists(key, bundle);
         }
 
         /**
@@ -394,7 +423,7 @@ public class MessageTool extends MessageResourcesTool
          */
         public String toString()
         {
-            return tool.get(key, bundle, args);
+            return MessageTool.this.get(key, bundle, args, locale);
         }
     }
 
