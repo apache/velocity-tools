@@ -29,8 +29,9 @@
 
   <tool>
     <key>date</key>
-    <class>org.apache.velocity.tools.generic.DateTool</class>
+    <class>org.apache.velocity.tools.generic.ComparisonDateTool</class>
     <parameter name="format" value="yyyy-MM-dd"/>
+    <parameter name="skip" value="month"/>
   </tool>
 
   <tool>
