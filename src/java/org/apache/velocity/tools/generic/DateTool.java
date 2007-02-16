@@ -81,30 +81,60 @@ public class DateTool
      */
     public static final String DEFAULT_FORMAT_KEY = "format";
 
-    private String format = DEFAULT_FORMAT;
-
     /**
-     * Default constructor.
+     * The key used for specifying a default locale via toolbox params.
+     * @since VelocityTools 1.4
      */
-    public DateTool()
-    {
-        // do nothing
-    }
+    public static final String DEFAULT_LOCALE_KEY = "locale";
 
     /**
-     * Looks for a default format value in the given params.
+     * The key used for specifying whether or not to prevent templates
+     * from reconfiguring this tool.  The default is true.
+     * @since VelocityTools 1.4
+     */
+    public static final String LOCK_CONFIG_KEY = "lock-config";
+
+    private String format = DEFAULT_FORMAT;
+    private Locale locale = Locale.getDefault();
+    private boolean configLocked = false;
+
+    /**
+     * Looks for configuration values in the given params.
      * @since VelocityTools 1.3
      */
     public void configure(Map params)
     {
-        ValueParser parser = new ValueParser(params);
-        String format = parser.getString(DEFAULT_FORMAT_KEY);
+        if (!configLocked)
+        {
+            ValueParser values = new ValueParser(params);
+            configure(values);
+
+            // by default, lock down this method after use
+            // to prevent templates from re-configuring this instance
+            configLocked = values.getBoolean(LOCK_CONFIG_KEY, true);
+        }
+    }
+
+    /**
+     * Does the actual configuration. This is protected, so
+     * subclasses may share the same ValueParser and call configure
+     * at any time, while preventing templates from doing so when 
+     * configure(Map) is locked.
+     * @since VelocityTools 1.4
+     */
+    protected void configure(ValueParser values)
+    {
+        String format = values.getString(DEFAULT_FORMAT_KEY);
         if (format != null)
         {
             setFormat(format);
         }
+        Locale locale = values.getLocale(DEFAULT_LOCALE_KEY);
+        if (locale != null)
+        {
+            setLocale(locale);
+        }
     }
-
 
 
     // ------------------------- system date access ------------------
@@ -148,7 +178,19 @@ public class DateTool
      */
     public Locale getLocale()
     {
-        return Locale.getDefault();
+        return this.locale;
+    }
+
+    /**
+     * Sets the default locale for this instance. This is protected,
+     * because templates ought not to be using it; that would not
+     * be threadsafe so far as templates are concerned.
+     *
+     * @since VelocityTools 1.4
+     */
+    protected void setLocale(Locale locale)
+    {
+        this.locale = locale;
     }
 
     /**
@@ -213,7 +255,7 @@ public class DateTool
 
     /**
      * Sets the default format for this instance. This is protected,
-     * because templates ought not to be using it; hat would not
+     * because templates ought not to be using it; that would not
      * be threadsafe so far as templates are concerned.
      *
      * @since VelocityTools 1.3
