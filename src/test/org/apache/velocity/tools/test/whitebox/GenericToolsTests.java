@@ -21,6 +21,7 @@ package org.apache.velocity.tools.test.whitebox;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -29,6 +30,7 @@ import static org.junit.Assert.*;
 
 import org.apache.velocity.tools.generic.Alternator;
 import org.apache.velocity.tools.generic.AlternatorTool;
+import org.apache.velocity.tools.generic.ComparisonDateTool;
 import org.apache.velocity.tools.generic.DateTool;
 import org.apache.velocity.tools.generic.EscapeTool;
 import org.apache.velocity.tools.generic.MathTool;
@@ -173,5 +175,19 @@ public class GenericToolsTests {
         ResourceTool.Key frenchHelloWorld =
             frenchTool.get("hello.whoever").insert(frenchTool.get("world"));
         assertStringEquals("Bonjour Monde!", frenchHelloWorld);
+    }
+
+    public @Test void testComparisonDateTool() { /* TODO still incomplete */
+        ComparisonDateTool dateTool = (ComparisonDateTool)toolbox.get("date");
+        assertNotNull(dateTool);
+        Calendar date1 = new GregorianCalendar(2007,0,2);
+        Calendar date2 = new GregorianCalendar(2007,1,15);
+        /* test comparing */
+        ComparisonDateTool.Comparison whenIs = dateTool.whenIs(date1, date2);
+        assertEquals(0l, whenIs.getYears());
+        assertEquals(1l, whenIs.getMonths());
+        assertEquals(44l, whenIs.getDays());
+        // the toolbox config says to skip months, so this should be in weeks
+        assertStringEquals("6 weeks later", whenIs);
     }
 }
