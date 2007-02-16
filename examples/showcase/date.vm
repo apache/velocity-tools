@@ -17,7 +17,8 @@
 #title( 'DateTool' )
 <p>
 #set( $demo = $text.demo )
-$demo.thisPage.insert("#doclink( 'DateTool' true )").  As the DateTool
+$demo.thisPage.insert("#doclink( 'DateTool' true )") and its subclass, the 
+#doclink( 'ComparisonDateTool' true ).  As the DateTool
 is quite full-featured and provides many similar functions with varying and
 strongly-typed options, not all functions are demonstrated below.  See the javadoc
 for a full listing of available functions.
@@ -88,11 +89,31 @@ for a full listing of available functions.
 
 #demoCustom( 'date' )
 </table>
+<br>
+<p>
+Here are a few demos of the functions provided by the
+#doclink( 'ComparisonDateTool' true ) class that are not in the standard
+DateTool.
+</p>
+
+#demoTableStart()
+
+#set( $desc = "This returns a #doclink( 'ComparisonDateTool.Comparison' true ) between the result of ${esc.d}date.calendar and the specified date.  The default rendering of that Comparison will be the largest unit difference between the dates followed by a description of their relative position." )
+#demo1( 'date' 'whenIs' 6 $desc )
+
+#set( $desc = "This returns a #doclink( 'ComparisonDateTool.Comparison' true ) between the second specified date and the first specified date.  The default rendering of that Comparison will be the largest unit difference between the dates followed by a description of their relative position." )
+#demo2( 'date' 'whenIs' 6 $desc )
+
+#set( $desc = "This returns a #doclink( 'ComparisonDateTool.Comparison' true ) between the second specified date and the first specified date.  The default rendering of that Comparison will be the largest unit difference between the dates." )
+#demo2( 'date' 'difference' 6 $desc )
+
+#demoCustom( "date.whenIs('2005-07-04').depth(3)" )
+</table>
 
 <div align="center">
   <a name="fullDemo"><h3>$demo.mainExampleHeader</h3></a>
 <form method="post" action="$link.self.anchor('fullDemo')">
-<textarea name="demo" rows="12" cols="65">##
+<textarea name="demo" rows="16" cols="65">##
 #if( $params.demo )##
 $params.demo##
 #else##
@@ -103,7 +124,16 @@ ${esc.h}${esc.h} Examples of formatting the "current" date:
  ${esc.d}date.full_date
  ${esc.d}date.yyyy
  ${esc.d}date.get('default','short')
- ${esc.d}date.get('yyyy-M-d H:m:s')##
+ ${esc.d}date.get('yyyy-M-d H:m:s')
+
+${esc.h}${esc.h} Examples of comparing dates:
+ ${esc.d}date.whenIs('2005-07-04')
+ ${esc.d}date.whenIs('2005-07-04').full
+ ${esc.d}date.whenIs('2005-02-15').days
+ ${esc.d}date.whenIs(${esc.d}date)
+ ${esc.d}date.whenIs('2005-07-04', '2005-07-04')
+ ${esc.d}date.difference('2005-07-04', '2005-07-04')
+ ${esc.d}date.difference('2005-07-04', '2007-02-15').abbr##
 #end##
 </textarea>
   <br>
