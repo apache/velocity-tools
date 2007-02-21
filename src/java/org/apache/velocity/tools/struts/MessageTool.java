@@ -121,7 +121,7 @@ public class MessageTool extends MessageResourcesTool
      */
     public String get(String key, String bundle, Object args[])
     {
-	return this.get(key, bundle, args, this.locale);
+        return this.get(key, bundle, args, this.locale);
     }
 
     /**
@@ -190,6 +190,24 @@ public class MessageTool extends MessageResourcesTool
         return get(key, bundle, args.toArray());
     }
 
+    /**
+     * Looks up and returns the localized message for the specified key.
+     * Replacement parameters passed with <code>args</code> are
+     * inserted into the message.
+     *
+     * @param key message key
+     * @param bundle The bundle name to look for.
+     * @param args replacement parameters for this message
+     * @param locale The locale to use for this message.
+     *
+     * @since VelocityTools 1.4
+     * @return the localized message for the specified key or
+     * <code>null</code> if no such message exists
+     */
+    public String get(String key, String bundle, List args, Locale locale)
+    {
+        return get(key, bundle, args.toArray(), locale);
+    }
 
     /**
      * Checks if a message string for a specified message key exists
