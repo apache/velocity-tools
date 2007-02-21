@@ -117,6 +117,7 @@
     <key>number</key>
     <scope>application</scope>
     <class>org.apache.velocity.tools.generic.NumberTool</class>
+    <parameter name="format" value="#0.0"/>
   </tool>
   <tool>
     <key>sorter</key>
