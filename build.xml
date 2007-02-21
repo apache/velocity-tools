@@ -556,6 +556,24 @@
     </scp>
   </target>
 
+  <target name="publish.docs" depends="docs,publish.auth" if="have.auth"
+          description="Updates development documentation on the website">
+    <zip zipfile="${dist.dir}/docs.zip"
+         basedir="${docs.dir}"/>
+    <echo>
+    Zips documentation files from
+        ${docs.dir}
+    and uploads them to
+        ${username}:${password}@${publish.server}:${publish.docs.dir}
+    </echo>
+    <scp todir="${username}:${password}@${publish.server}:${publish.docs.dir}"
+        verbose="true" failonerror="true" trust="yes">
+        <fileset dir="${dist.dir}">
+            <include name="docs.zip"/>
+        </fileset>
+    </scp>
+  </target>
+
 
 <!-- ========== Test Targets ======================================== -->
 
