@@ -23,6 +23,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Tool for working with {@link Number} in Velocity templates.
@@ -33,14 +34,16 @@ import java.util.Locale;
  * <p><pre>
  * Example uses:
  *  $myNumber                            -> 13.55
- *  $number.format('currency',$myNumber) -> $13.55
- *  $number.format('integer',$myNumber)  -> 13
+ *  $number.format($myNumber)   -> 13.6
+ *  $number.currency($myNumber) -> $13.55
+ *  $number.integer($myNumber)  -> 13
  *
  * Example toolbox.xml config (if you want to use this with VelocityView):
  * &lt;tool&gt;
  *   &lt;key&gt;number&lt;/key&gt;
  *   &lt;scope&gt;application&lt;/scope&gt;
  *   &lt;class&gt;org.apache.velocity.tools.generic.NumberTool&lt;/class&gt;
+ *   &lt;parameter name="format" value="#0.0"/&gt;
  * &lt;/tool&gt;
  * </pre></p>
  *
@@ -57,11 +60,29 @@ import java.util.Locale;
  */
 public class NumberTool
 {
-
     /**
      * The default format to be used when none is specified.
      */
     public static final String DEFAULT_FORMAT = "default";
+
+    /**
+     * The key used for specifying a default format via toolbox params.
+     * @since VelocityTools 1.4
+     */
+    public static final String DEFAULT_FORMAT_KEY = "format";
+
+    /**
+     * The key used for specifying a default locale via toolbox params.
+     * @since VelocityTools 1.4
+     */
+    public static final String DEFAULT_LOCALE_KEY = "locale";
+
+    /**
+     * The key used for specifying whether or not to prevent templates
+     * from reconfiguring this tool.  The default is true.
+     * @since VelocityTools 1.4
+     */
+    public static final String LOCK_CONFIG_KEY = "lock-config";
 
     private static final int STYLE_NUMBER       = 0;
     private static final int STYLE_CURRENCY     = 1;
@@ -69,19 +90,52 @@ public class NumberTool
     //NOTE: '3' belongs to a non-public "scientific" style
     private static final int STYLE_INTEGER      = 4;
 
+    private String format = DEFAULT_FORMAT;
+    private Locale locale = Locale.getDefault();
+    private boolean configLocked = false;
+
     /**
-     * Default constructor.
+     * Looks for configuration values in the given params.
+     * @since VelocityTools 1.4
      */
-    public NumberTool()
+    public void configure(Map params)
     {
-        // do nothing
+        if (!configLocked)
+        {
+            ValueParser values = new ValueParser(params);
+            configure(values);
+
+            // by default, lock down this method after use
+            // to prevent templates from re-configuring this instance
+            configLocked = values.getBoolean(LOCK_CONFIG_KEY, true);
+        }
     }
 
+    /**
+     * Does the actual configuration. This is protected, so
+     * subclasses may share the same ValueParser and call configure
+     * at any time, while preventing templates from doing so when 
+     * configure(Map) is locked.
+     * @since VelocityTools 1.4
+     */
+    protected void configure(ValueParser values)
+    {
+        String format = values.getString(DEFAULT_FORMAT_KEY);
+        if (format != null)
+        {
+            setFormat(format);
+        }
+        Locale locale = values.getLocale(DEFAULT_LOCALE_KEY);
+        if (locale != null)
+        {
+            setLocale(locale);
+        }
+    }
 
     // ------------------------- default parameter access ----------------
 
     /**
-     * This implementation returns the default locale. Subclasses
+     * This implementation returns the configured default locale. Subclasses
      * may override this to return alternate locales. Please note that
      * doing so will affect all formatting methods where no locale is
      * specified in the parameters.
@@ -90,22 +144,41 @@ public class NumberTool
      */
     public Locale getLocale()
     {
-        return Locale.getDefault();
+        return this.locale;
+    }
+
+    /**
+     * Sets the default locale for this instance. This is protected,
+     * because templates ought not to be using it; that would not
+     * be threadsafe so far as templates are concerned.
+     *
+     * @since VelocityTools 1.4
+     */
+    protected void setLocale(Locale locale)
+    {
+        this.locale = locale;
     }
 
     /**
      * Return the pattern or style to be used for formatting numbers when none
      * is specified. This implementation gives a 'default' number format.
      * Subclasses may override this to provide a different default format.
-     *
-     * <p>NOTE: At some point in the future it may be feasible to configure
-     * this value via the toolbox definition, but at present, it is not possible
-     * to specify custom tool configurations there.  For now you should just
-     * override this in a subclass to have a different default.</p>
      */
     public String getFormat()
     {
-        return DEFAULT_FORMAT;
+        return this.format;
+    }
+
+    /**
+     * Sets the default format for this instance. This is protected,
+     * because templates ought not to be using it; that would not
+     * be threadsafe so far as templates are concerned.
+     *
+     * @since VelocityTools 1.4
+     */
+    protected void setFormat(String format)
+    {
+        this.format = format;
     }
 
 
