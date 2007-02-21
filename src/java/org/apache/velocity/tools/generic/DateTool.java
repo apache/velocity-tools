@@ -169,7 +169,7 @@ public class DateTool
     // ------------------------- default parameter access ----------------
 
     /**
-     * This implementation returns the default locale. Subclasses
+     * This implementation returns the configured default locale. Subclasses
      * may override this to return alternate locales. Please note that
      * doing so will affect all formatting methods where no locale is
      * specified in the parameters.
