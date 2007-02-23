@@ -336,18 +336,11 @@ public class MathTool
         //ok, go ahead and do the rounding
         int places = i.intValue();
         double value = d.doubleValue();
-        if (places == 0)
-        {
-            value = (int)(value + .5);
+        int delta = 10;
+        for(int j=1;j<places;j++) {
+            delta *= 10;
         }
-        else
-        {
-            double shift = Math.pow(10, places);
-            value = value * shift;
-            value = (int)(value + .5);
-            value = value / shift;
-        }
-        return new Double(value);
+        return new Double((double)Math.round(value*delta)/delta);
     }
 
 

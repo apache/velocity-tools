@@ -137,6 +137,7 @@ public class GenericToolsTests {
         assertEquals(12,mathTool.mul(3,4));
         assertEquals(13,mathTool.round(12.8));
         assertEquals(14.2,mathTool.roundTo(1,14.18));
+        assertEquals(-5.0,mathTool.roundTo(2,-4.999));
         assertEquals(15,mathTool.sub(30,15));
         assertEquals(16,mathTool.pow(4,2));
         assertEquals(17,mathTool.toInteger("17"));
