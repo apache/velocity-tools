@@ -52,6 +52,7 @@
   <tool>
     <key>text</key>
     <class>org.apache.velocity.tools.generic.ResourceTool</class>
+    <parameter name="locale" value="en_US"/>
   </tool>
 
 </toolbox>
