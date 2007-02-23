@@ -50,7 +50,10 @@ import org.apache.velocity.tools.view.context.ViewContext;
  * </ul>
  *
  * Thanks to Lee Semel (lee@semel.net), the author of the HTTP::BrowserDetect Perl module.
- * See also http://www.zytrax.com/tech/web/browser_ids.htm and http://www.mozilla.org/docs/web-developer/sniffer/browser_type.html
+ * See also:
+ * * http://www.zytrax.com/tech/web/browser_ids.htm
+ * * http://www.mozilla.org/docs/web-developer/sniffer/browser_type.html
+ * * http://en.wikipedia.org/wiki/User_agent
  *
  * @author <a href="mailto:claude@renegat.net">Claude Brisson</a>
  * @since VelocityTools 1.2
@@ -143,7 +146,17 @@ public class BrowserSnifferTool
 
     public boolean getFirefox()
     {
-        return test("firefox") || test("firebird") || test("phoenix");
+        return test("firefox") || test("firebird") || test("phoenix") || test("iceweasel");
+    }
+
+    public boolean getIceweasel()
+    {
+        return test("iceweasel");
+    }
+
+    public boolean getEpiphany()
+    {
+        return test("epiphany");
     }
 
     public boolean getSafari()
@@ -262,6 +275,16 @@ public class BrowserSnifferTool
         return getIe() && getMajorVersion() >= 6;
     }
 
+    public boolean getIe7()
+    {
+        return getIe() && getMajorVersion() == 7;
+    }
+
+    public boolean getIe7up()
+    {
+        return getIe() && getMajorVersion() >= 6;
+    }
+
     public boolean getNeoplanet()
     {
         return test("neoplanet");
@@ -330,6 +353,16 @@ public class BrowserSnifferTool
     public boolean getOpera7()
     {
         return test("opera 7") || test("opera/7");
+    }
+
+    public boolean getOpera8()
+    {
+        return test("opera 8") || test("opera/8");
+    }
+
+    public boolean getOpera9()
+    {
+        return test("opera/9");
     }
 
     public boolean getHotjava()
@@ -552,6 +585,11 @@ public class BrowserSnifferTool
     public boolean getWinxp()
     {
         return test("nt 5.1");
+    }
+
+    public boolean getVista()
+    {
+        return test("nt 6.0");
     }
 
     public boolean getDotnet()
