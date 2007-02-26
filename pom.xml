@@ -24,17 +24,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.apache.velocity</groupId>
+    <groupId>org.apache.velocity.tools</groupId>
     <artifactId>velocity-tools</artifactId>
     <name>VelocityTools</name>
-    <version>1.3-dev</version>
+    <version>1.4-dev</version>
     <packaging>jar</packaging>
 
     <organization>
         <name>Apache Software Foundation</name>
         <url>http://velocity.apache.org/</url>
     </organization>
-    <url>http://jakarta.apache.org/velocity/tools/</url>
+    <url>http://velocity.apache.org/tools/devel/</url>
     <description>
         VelocityTools is an integrated collection of Velocity subprojects
         with the common goal of creating tools and infrastructure to speed and ease
