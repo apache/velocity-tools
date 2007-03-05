@@ -83,18 +83,6 @@ public class ChainedContext extends VelocityContext implements ViewContext
     private VelocityEngine velocity;
 
 
-    /**
-     * @deprecated This will be removed after VelocityTools 1.3
-     */
-    public ChainedContext(Context ctx,
-                          HttpServletRequest request,
-                          HttpServletResponse response,
-                          ServletContext application)
-    {
-        this(ctx, null, request, response, application);
-    }
-
-
     public ChainedContext(VelocityEngine velocity,
                           HttpServletRequest request,
                           HttpServletResponse response,
