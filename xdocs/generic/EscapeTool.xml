@@ -173,13 +173,13 @@
     </section>
 
     <section>
-        <method name="http()">
+        <method name="url()">
             <abstract>
                 Escapes the characters in a <code>String</code> to be suitable to use as an HTTP parameter value.
             </abstract>
 
             <signature>
-                String http(Object string)
+                String url(Object string)
             </signature>
 
             <parameters>
@@ -196,10 +196,10 @@
                 <p>Delegates the process to
                 <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/net/URLEncoder.html">java.net.URLEncoder#encodeURL(String,"UTF-8")</a>.
                 </p>
-                <p>If <code>$http</code> had the following value:</p>
+                <p>If <code>$url</code> had the following value:</p>
                 <sourcecode>Hello here &amp; there</sourcecode>
                 <p>then the following Velocity script:</p>
-                <sourcecode>$esc.http($http)</sourcecode>
+                <sourcecode>$esc.url($url)</sourcecode>
 
                 <p>produces this output:</p>
                 <sourcecode>hello+here+%26+there</sourcecode>
