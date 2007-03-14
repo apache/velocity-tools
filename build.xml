@@ -400,15 +400,15 @@
 
     <mkdir dir="${dist.dir}"/>
     <zip zipfile="${dist.dir}/${project.id}-src.zip">
-      <fileset dir="${basedir}">
+      <zipfileset dir="${basedir}" prefix="${project.id}-src">
         <include name="*"/>
         <include name="examples/**"/>
         <include name="src/**"/>
         <include name="xdocs/**"/>
-      </fileset>
+      </zipfileset>
     </zip>
     <tar tarfile="${dist.dir}/${project.id}-src.tar" longfile="gnu">
-      <tarfileset dir="${basedir}">
+      <tarfileset dir="${basedir}" prefix="${project.id}-src">
         <include name="*"/>
         <include name="examples/**"/>
         <include name="src/**"/>
