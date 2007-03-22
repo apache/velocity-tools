@@ -19,6 +19,8 @@ package org.apache.velocity.tools.generic.log;
  * under the License.
  */
 
+import org.apache.velocity.app.VelocityEngine;
+
 /**
  * Redirects commons-logging messages to Velocity's LogSystem.
  *
@@ -31,4 +33,13 @@ package org.apache.velocity.tools.generic.log;
  * @deprecated Use LogChuteCommonsLog instead
  * @version $Id$
  */
-public class LogSystemCommonsLog extends LogChuteCommonsLog {}
+public class LogSystemCommonsLog extends LogChuteCommonsLog
+{
+    /**
+     * @deprecated Use LogChuteCommonsLog.setVelocityLog(Log target) instead
+     */
+    public static void setVelocityEngine(VelocityEngine target)
+    {
+        setVelocityLog(target.getLog());
+    }
+}
