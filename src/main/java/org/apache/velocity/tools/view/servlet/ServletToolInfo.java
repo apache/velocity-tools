@@ -92,7 +92,7 @@ public class ServletToolInfo extends ViewToolInfo
         {
             // match some paths
             exactPath = false;
-            this.path = path.substring(0, scope.length() - 1);
+            this.path = path.substring(0, path.length() - 1);
         }
         else
         {

@@ -1,4 +1,4 @@
-package org.apache.velocity.tools.view.context;
+package org.apache.velocity.tools.view;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,13 +19,12 @@ package org.apache.velocity.tools.view.context;
  * under the License.
  */
 
-import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.context.Context;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletContext;
-
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.context.Context;
+import org.apache.velocity.tools.Toolbox;
 
 /**
  * <p>Objects implementing this interface are passed to view tools
@@ -38,6 +37,7 @@ import javax.servlet.ServletContext;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
+ * @author Nathan Bubna
  *
  * @version $Id$
  */
@@ -55,8 +55,8 @@ public interface ViewContext
     /** Key used for the servlet context object. */
     public static final String APPLICATION = "application";
 
-    /** Key used for XHTML setting (tells tools and macros to output XHTML). */
-    public static final String XHTML = "XHTML";
+    /** Key used to store a toolbox in request/session/application attributes. */
+    public static final String TOOLBOX_KEY = Toolbox.class.getName();
 
 
     /**
