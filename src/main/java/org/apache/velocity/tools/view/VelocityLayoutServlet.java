@@ -1,4 +1,4 @@
-package org.apache.velocity.tools.view.servlet;
+package org.apache.velocity.tools.view;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -21,20 +21,14 @@ package org.apache.velocity.tools.view.servlet;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.velocity.Template;
-import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
-import org.apache.velocity.exception.ResourceNotFoundException;
-
 
 /**
  * Extension of the VelocityViewServlet to perform "two-pass"
@@ -47,7 +41,6 @@ import org.apache.velocity.exception.ResourceNotFoundException;
  * @author Nathan Bubna
  * @version $Id$
  */
-
 public class VelocityLayoutServlet extends VelocityViewServlet
 {
 
@@ -138,9 +131,6 @@ public class VelocityLayoutServlet extends VelocityViewServlet
     protected String layoutDir;
     protected String defaultLayout;
 
-    // keep a local reference for convenience
-    private VelocityEngine velocity;
-
     /**
      * Initializes Velocity, the view servlet and checks for changes to
      * the initial layout configuration.
@@ -151,9 +141,6 @@ public class VelocityLayoutServlet extends VelocityViewServlet
     {
         // first do VVS' init()
         super.init(config);
-
-        // grab the initialized engine
-        velocity = super.getVelocityEngine();
 
         // check for default template path overrides
         errorTemplate =
@@ -170,9 +157,9 @@ public class VelocityLayoutServlet extends VelocityViewServlet
         }
 
         // log the current settings
-        velocity.info("VelocityLayoutServlet: Error screen is '"+errorTemplate+"'");
-        velocity.info("VelocityLayoutServlet: Layout directory is '"+layoutDir+"'");
-        velocity.info("VelocityLayoutServlet: Default layout template is '"+defaultLayout+"'");
+        getLog().info("VelocityLayoutServlet: Error screen is '"+errorTemplate+"'");
+        getLog().info("VelocityLayoutServlet: Layout directory is '"+layoutDir+"'");
+        getLog().info("VelocityLayoutServlet: Default layout template is '"+defaultLayout+"'");
 
         // for efficiency's sake, make defaultLayout a full path now
         defaultLayout = layoutDir + defaultLayout;
@@ -187,12 +174,8 @@ public class VelocityLayoutServlet extends VelocityViewServlet
      * @param response client response
      * @return the Context to fill
      */
-    protected Context createContext(HttpServletRequest request,
-                                    HttpServletResponse response)
+    protected void fillContext(Context ctx, HttpServletRequest request)
     {
-
-        Context ctx = super.createContext(request, response);
-
         // check if an alternate layout has been specified
         // by way of the request parameters
         String layout = request.getParameter(KEY_LAYOUT);
@@ -201,7 +184,6 @@ public class VelocityLayoutServlet extends VelocityViewServlet
             // let the template know what its new layout is
             ctx.put(KEY_LAYOUT, layout);
         }
-        return ctx;
     }
 
 
@@ -209,12 +191,9 @@ public class VelocityLayoutServlet extends VelocityViewServlet
      * Overrides VelocityViewServlet.mergeTemplate to do a two-pass
      * render for handling layouts
      */
-    protected void mergeTemplate(Template template,
-                                 Context context,
+    protected void mergeTemplate(Template template, Context context,
                                  HttpServletResponse response)
-        throws ResourceNotFoundException, ParseErrorException,
-               MethodInvocationException, IOException,
-               UnsupportedEncodingException, Exception
+        throws IOException
     {
         //
         // this section is based on Tim Colson's "two pass render"
@@ -250,8 +229,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
         }
         catch (Exception e)
         {
-            velocity.error("VelocityLayoutServlet: Can't load layout \"" +
-                           layout + "\": " + e);
+            getLog().error("Can't load layout \"" + layout + "\"", e);
 
             // if it was an alternate layout we couldn't get...
             if (!layout.equals(defaultLayout))
@@ -272,8 +250,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
      */
     protected void error(HttpServletRequest request,
                          HttpServletResponse response,
-                         Exception e)
-        throws ServletException
+                         Throwable e)
     {
         try
         {
@@ -307,8 +284,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
         catch (Exception e2)
         {
             // d'oh! log this
-            velocity.error("VelocityLayoutServlet: " +
-                           " Error during error template rendering - " + e2);
+            getLog().error("Error during error template rendering", e2);
             // then punt the original to a higher authority
             super.error(request, response, e);
         }

@@ -1,4 +1,4 @@
-package org.apache.velocity.tools.view.servlet;
+package org.apache.velocity.tools.view;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -22,9 +22,7 @@ package org.apache.velocity.tools.view.servlet;
 import java.io.File;
 import java.io.InputStream;
 import java.util.HashMap;
-
 import javax.servlet.ServletContext;
-
 import org.apache.commons.collections.ExtendedProperties;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.Resource;
@@ -53,13 +51,11 @@ import org.apache.velocity.runtime.resource.loader.ResourceLoader;
  * @author <a href="mailto:claude@savoirweb.com">Claude Brisson</a>
  * @version $Id$  */
 
-public class WebappLoader extends ResourceLoader
+public class WebappResourceLoader extends ResourceLoader
 {
-
     /** The root paths for templates (relative to webapp's root). */
     protected String[] paths = null;
     protected HashMap templatePaths = null;
-
     protected ServletContext servletContext = null;
 
     /**
@@ -74,7 +70,7 @@ public class WebappLoader extends ResourceLoader
      */
     public void init(ExtendedProperties configuration)
     {
-        rsvc.debug("WebappLoader : initialization starting.");
+        log.trace("WebappResourceLoader: initialization starting.");
 
         /* get configured paths */
         paths = configuration.getStringArray("path");
@@ -92,7 +88,7 @@ public class WebappLoader extends ResourceLoader
                 {
                     paths[i] += '/';
                 }
-                rsvc.info("WebappLoader : added template path - '" + paths[i] + "'");
+                log.info("WebappResourceLoader: added template path - '" + paths[i] + "'");
             }
         }
 
@@ -104,13 +100,13 @@ public class WebappLoader extends ResourceLoader
         }
         else
         {
-            rsvc.error("WebappLoader : unable to retrieve ServletContext");
+            log.error("WebappResourceLoader: unable to retrieve ServletContext");
         }
 
         /* init the template paths map */
         templatePaths = new HashMap();
 
-        rsvc.debug("WebappLoader : initialization complete.");
+        log.trace("WebappResourceLoader: initialization complete.");
     }
 
     /**
@@ -122,14 +118,14 @@ public class WebappLoader extends ResourceLoader
      * @throws ResourceNotFoundException if template not found
      *         in  classpath.
      */
-    public synchronized InputStream getResourceStream( String name )
+    public synchronized InputStream getResourceStream(String name)
         throws ResourceNotFoundException
     {
         InputStream result = null;
 
         if (name == null || name.length() == 0)
         {
-            throw new ResourceNotFoundException ("WebappLoader : No template name provided");
+            throw new ResourceNotFoundException("WebappResourceLoader: No template name provided");
         }
 
         /* since the paths always ends in '/',
@@ -169,7 +165,7 @@ public class WebappLoader extends ResourceLoader
             String msg;
             if (exception == null)
             {
-                msg = "WebappLoader : Resource '" + name + "' not found.";
+                msg = "WebappResourceLoader: Resource '" + name + "' not found.";
             }
             else
             {
