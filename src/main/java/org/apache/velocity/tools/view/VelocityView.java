@@ -115,6 +115,11 @@ public class VelocityView
     public static final String SERVLET_CONTEXT_KEY =
         ServletContext.class.getName();
 
+    public static final String DEFAULT_TOOLBOX_KEY =
+        Toolbox.class.getName();
+
+    public static final String CREATE_SESSION_PROPERTY = "createSession";
+
     /** The default content type for the response */
     public static final String DEFAULT_CONTENT_TYPE = "text/html";
 
@@ -161,15 +166,31 @@ public class VelocityView
     private VelocityEngine velocity = null;
     private ServletContext servletContext;
     private String defaultContentType = DEFAULT_CONTENT_TYPE;
+    private String toolboxKey = DEFAULT_TOOLBOX_KEY;
+    private boolean createSession = false;
 
     public VelocityView(ServletConfig config)
     {
+        this(config, DEFAULT_TOOLBOX_KEY);
+    }
+
+    public VelocityView(ServletConfig config, String toolboxKey)
+    {
+        setToolboxKey(toolboxKey);
+
         this.servletContext = config.getServletContext();
         init(config);
     }
 
     public VelocityView(ServletContext context)
     {
+        this(context, DEFAULT_TOOLBOX_KEY);
+    }
+
+    public VelocityView(ServletContext context, String toolboxKey)
+    {
+        setToolboxKey(toolboxKey);
+
         if (context == null)
         {
             throw new NullPointerException("ServletContext cannot be null");
@@ -177,6 +198,20 @@ public class VelocityView
         this.servletContext = context;
     }
 
+    /**
+     * This method should be private until someone thinks of a good
+     * reason to change toolbox keys arbitrarily.  If it is opened up,
+     * then we need to be sure any "application" toolbox
+     * is copied or moved to be under the new key.
+     */
+    private final void setToolboxKey(String toolboxKey)
+    {
+        if (toolboxKey == null)
+        {
+            throw new NullPointerException("toolboxKey cannot be null");
+        }
+        this.toolboxKey = toolboxKey;
+    }
 
     /**
      * Returns the underlying VelocityEngine being used.
@@ -298,12 +333,17 @@ public class VelocityView
 
         configure(config, toolboxFactory);
 
+        // check for a createSession setting
+        this.createSession =
+            (Boolean)toolboxFactory.getGlobalProperty(CREATE_SESSION_PROPERTY);
+
         // add any application toolbox to the application attributes
         Toolbox appTools =
             toolboxFactory.getToolbox(ToolboxFactory.APPLICATION_SCOPE);
-        if (appTools != null)
+        if (appTools != null &&
+            this.servletContext.getAttribute(this.toolboxKey) == null)
         {
-            this.servletContext.setAttribute(Toolbox.class.getName(), appTools);
+            this.servletContext.setAttribute(this.toolboxKey, appTools);
         }
     }
 
@@ -640,32 +680,34 @@ public class VelocityView
 
     protected void prepareToolboxes(HttpServletRequest request)
     {
-        // add request toolbox, if any
-        Toolbox reqTools = toolboxFactory.getToolbox(ToolboxFactory.DEFAULT_SCOPE);
-        if (reqTools != null)
+        // only set a new toolbox if we need one
+        if (toolboxFactory.hasToolbox(ToolboxFactory.DEFAULT_SCOPE)
+            && request.getAttribute(this.toolboxKey) == null)
         {
-            request.setAttribute(Toolbox.class.getName(), reqTools);
+            // add request toolbox, if any
+            Toolbox reqTools = toolboxFactory.getToolbox(ToolboxFactory.DEFAULT_SCOPE);
+            if (reqTools != null)
+            {
+                request.setAttribute(this.toolboxKey, reqTools);
+            }
         }
 
         //TODO: move this string constant somewhere static
         if (toolboxFactory.hasToolbox("session"))
         {
-             //TODO: move this string constant somewhere static too
-             Boolean createSession =
-                (Boolean)toolboxFactory.getGlobalProperty("createSession");
-             HttpSession session = request.getSession(createSession);
-             if (session != null)
-             {
+            HttpSession session = request.getSession(this.createSession);
+            if (session != null)
+            {
                 // allow only one thread per session at a time
-                 synchronized(getMutex(session))
-                 {
-                     if (session.getAttribute(Toolbox.class.getName()) == null)
-                     {
-                        Toolbox sessTools = toolboxFactory.getToolbox("session");
-                        session.setAttribute(Toolbox.class.getName(), sessTools);
-                     }
-                 }
-             }
+                synchronized(getMutex(session))
+                {
+                    if (session.getAttribute(this.toolboxKey) == null)
+                    {
+                       Toolbox sessTools = toolboxFactory.getToolbox("session");
+                       session.setAttribute(this.toolboxKey, sessTools);
+                    }
+                }
+            }
         }
     }
 
