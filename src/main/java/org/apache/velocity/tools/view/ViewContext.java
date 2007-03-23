@@ -55,8 +55,9 @@ public interface ViewContext
     /** Key used for the servlet context object. */
     public static final String APPLICATION = "application";
 
-    /** Key used to store a toolbox in request/session/application attributes. */
-    public static final String TOOLBOX_KEY = Toolbox.class.getName();
+    /** Default key used to store toolboxes in request/session/application attributes. */
+    public static final String DEFAULT_TOOLBOX_KEY =
+        VelocityView.DEFAULT_TOOLBOX_KEY;
 
 
     /**

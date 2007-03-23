@@ -111,30 +111,36 @@ public class ViewToolContext extends ToolContext implements ViewContext
         // the request/session/application attributes
         // later will not work.  once one is in, any
         // later additions must be direct via addToolbox()
+        // or addToolboxes(String toolboxKey)
         if (super.getToolboxes().isEmpty())
         {
-            Toolbox reqTools = (Toolbox)getRequest().getAttribute(TOOLBOX_KEY);
-            if (reqTools != null)
-            {
-                addToolbox(reqTools);
-            }
-
-            if (getSession() != null)
-            {
-                Toolbox sessTools = (Toolbox)getSession().getAttribute(TOOLBOX_KEY);
-                if (sessTools != null)
-                {
-                    addToolbox(sessTools);
-                }
-            }
-
-            Toolbox appTools = (Toolbox)getServletContext().getAttribute(TOOLBOX_KEY);
-            if (appTools != null)
-            {
-                addToolbox(appTools);
-            }
+            addToolboxesUnderKey(DEFAULT_TOOLBOX_KEY);
         }
         return super.getToolboxes();
+    }
+
+    public void addToolboxesUnderKey(String toolboxKey)
+    {
+        Toolbox reqTools = (Toolbox)getRequest().getAttribute(toolboxKey);
+        if (reqTools != null)
+        {
+            addToolbox(reqTools);
+        }
+
+        if (getSession() != null)
+        {
+            Toolbox sessTools = (Toolbox)getSession().getAttribute(toolboxKey);
+            if (sessTools != null)
+            {
+                addToolbox(sessTools);
+            }
+        }
+
+        Toolbox appTools = (Toolbox)getServletContext().getAttribute(toolboxKey);
+        if (appTools != null)
+        {
+            addToolbox(appTools);
+        }
     }
 
     /**
