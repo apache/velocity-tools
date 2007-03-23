@@ -23,6 +23,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.IOException;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -73,6 +74,10 @@ public class VelocityViewServlet extends HttpServlet
     private static final long serialVersionUID = -3329444102562079189L;
     private VelocityView view;
 
+    public static final String SHARED_CONFIG_PARAM =
+        "org.apache.velocity.tools.shared.config";
+    public static final String VELOCITY_VIEW_KEY =
+        VelocityView.class.getName();
 
     /**
      * <p>Initializes servlet and VelocityView used to process requests.
@@ -84,7 +89,51 @@ public class VelocityViewServlet extends HttpServlet
     {
         super.init(config);
 
-        setVelocityView(new VelocityView(config));
+        // check for an init-param telling this servlet NOT
+        // to share its VelocityView with others.  by default, we
+        // play nice and share the VelocityView with the other kids.
+        String shared = findInitParameter(config, SHARED_CONFIG_PARAM);
+        if (shared == null || shared.equals("false"))
+        {
+            ServletContext application = config.getServletContext();
+
+            // check for an already initialized VelocityView to use
+            VelocityView view =
+                (VelocityView)application.getAttribute(VELOCITY_VIEW_KEY);
+            if (view == null)
+            {
+                // only create a new one if we don't already have one
+                view = new VelocityView(config);
+
+                // and store it in the application attributes, so other
+                // servlets, filters, or tags can use it
+                application.setAttribute(VELOCITY_VIEW_KEY, view);
+            }
+        }
+        else
+        {
+            // just create our own non-shared VelocityView
+            setVelocityView(new VelocityView(config));
+        }
+    }
+
+
+    /**
+     * Looks up an init parameter with the specified key in either the
+     * ServletConfig or, failing that, in the ServletContext.
+     */
+    protected String findInitParameter(ServletConfig config, String key)
+    {
+        // check the servlet config
+        String param = config.getInitParameter(key);
+
+        if (param == null || param.length() == 0)
+        {
+            // check the servlet context
+            ServletContext servletContext = config.getServletContext();
+            param = servletContext.getInitParameter(key);
+        }
+        return param;
     }
 
     protected void setVelocityView(VelocityView view)
