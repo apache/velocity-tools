@@ -213,6 +213,11 @@ public class VelocityView
         this.toolboxKey = toolboxKey;
     }
 
+    protected final String getToolboxKey()
+    {
+        return this.toolboxKey;
+    }
+
     /**
      * Returns the underlying VelocityEngine being used.
      */
@@ -752,8 +757,16 @@ public class VelocityView
     protected Context createContext(HttpServletRequest request,
                                     HttpServletResponse response)
     {
-        return new ViewToolContext(velocity, request,
-                                   response, this.servletContext);
+        ViewToolContext ctx =
+            new ViewToolContext(velocity, request, response, servletContext);
+        // if this view is storing toolboxes under a non-standard key,
+        // then retrieve it's toolboxes here, since ViewToolContext won't
+        // know where to find them
+        if (!this.toolboxKey.equals(DEFAULT_TOOLBOX_KEY))
+        {
+            ctx.addToolboxesUnderKey(this.toolboxKey);
+        }
+        return ctx;
     }
 
 
