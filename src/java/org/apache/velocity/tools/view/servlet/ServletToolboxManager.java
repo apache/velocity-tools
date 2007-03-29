@@ -119,7 +119,7 @@ public class ServletToolboxManager extends XMLToolboxManager
      * to ensure there is exactly one ServletToolboxManager
      * per xml toolbox configuration file.
      */
-    private ServletToolboxManager(ServletContext servletContext)
+    protected ServletToolboxManager(ServletContext servletContext)
     {
         this.servletContext = servletContext;
         appTools = new HashMap();
