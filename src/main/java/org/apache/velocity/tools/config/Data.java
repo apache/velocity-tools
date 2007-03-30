@@ -161,6 +161,32 @@ public class Data
         }
     }
 
+    public void validate()
+    {
+        // make sure the key is not null
+        if (getKey() == null)
+        {
+            throw new NullKeyException(this);
+        }
+
+        // make sure we have value and that it can be converted
+        if (getValue() == null)
+        {
+            throw new ConfigurationException(this, "No value has been set for '"+getKey()+'\'');
+        }
+        else if (this.converter != null)
+        {
+            try
+            {
+                getConvertedValue();
+            }
+            catch (Throwable t)
+            {
+                throw new ConfigurationException(this, t);
+            }
+        }
+    }
+
 
     protected DataConverter getDataConverter(String type)
     {

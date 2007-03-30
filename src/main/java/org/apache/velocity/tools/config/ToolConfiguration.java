@@ -20,6 +20,7 @@ package org.apache.velocity.tools.config;
  */
 
 import org.apache.velocity.tools.ToolInfo;
+import org.apache.velocity.tools.Utils;
 
 /**
  * 
@@ -67,6 +68,46 @@ public class ToolConfiguration extends Configuration
         return this.classname;
     }
 
+    public Class getToolClass()
+    {
+        try
+        {
+            return Utils.getClass(getClassname());
+        }
+        catch (ClassNotFoundException cnfe)
+        {
+            throw new ConfigurationException(this, cnfe);
+        }
+    }
+
+    public String[] getInvalidScopes()
+    {
+        InvalidScope invalid =
+            (InvalidScope)getToolClass().getAnnotation(InvalidScope.class);
+        if (invalid != null)
+        {
+            return invalid.value();
+        }
+        else
+        {
+            return new String[] {};
+        }
+    }
+
+    public String[] getValidScopes()
+    {
+        ValidScope valid =
+            (ValidScope)getToolClass().getAnnotation(ValidScope.class);
+        if (valid != null)
+        {
+            return valid.value();
+        }
+        else
+        {
+            return new String[] {};
+        }
+    }
+
     public String getRestrictTo()
     {
         return this.restrictTo;
@@ -74,11 +115,34 @@ public class ToolConfiguration extends Configuration
 
     public ToolInfo createInfo()
     {
-        ToolInfo info = new ToolInfo(getKey(), getClassname());
+        ToolInfo info = new ToolInfo(getKey(), getToolClass());
         info.restrictTo(getRestrictTo());
         // it's ok to use this here, because we know it's the
         // first time properties have been added to this ToolInfo
         info.addProperties(getProperties());
         return info;
     }
+
+    @Override
+    public void validate()
+    {
+        super.validate();
+        
+        // make sure the key is not null
+        if (getKey() == null)
+        {
+            throw new NullKeyException(this);
+        }
+
+        // make sure that we can have an accessible tool class
+        if (getClassname() == null)
+        {
+            throw new ConfigurationException(this, "No tool classname has been set for '"+getKey()+'\'');
+        }
+        else
+        {
+            getToolClass();
+        }
+    }
+
 }

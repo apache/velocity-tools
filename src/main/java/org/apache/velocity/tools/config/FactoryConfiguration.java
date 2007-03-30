@@ -36,6 +36,7 @@ public class FactoryConfiguration
     private List<Data> data = new ArrayList<Data>();
 
 
+    @Override
     protected ToolboxConfiguration findMatchingChild(ToolboxConfiguration newToolbox)
     {
         for (ToolboxConfiguration toolbox : getToolboxes())
@@ -83,12 +84,15 @@ public class FactoryConfiguration
         }
     }
 
-    public boolean isValid()
+    @Override
+    public void validate()
     {
-        //TODO: we need to check ValidScopes annotations,
-        //      make sure that ToolConfigurations convert to ToolInfo
-        //      and anything else we can think of
-        return true;
+        super.validate();
+
+        for (Data data : getData())
+        {
+            data.validate();
+        }
     }
 
     public ToolboxFactory createFactory()
