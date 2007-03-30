@@ -76,8 +76,6 @@ public class VelocityViewServlet extends HttpServlet
 
     public static final String SHARED_CONFIG_PARAM =
         "org.apache.velocity.tools.shared.config";
-    public static final String VELOCITY_VIEW_KEY =
-        VelocityView.class.getName();
 
     /**
      * <p>Initializes servlet and VelocityView used to process requests.
@@ -95,20 +93,7 @@ public class VelocityViewServlet extends HttpServlet
         String shared = findInitParameter(config, SHARED_CONFIG_PARAM);
         if (shared == null || shared.equals("false"))
         {
-            ServletContext application = config.getServletContext();
-
-            // check for an already initialized VelocityView to use
-            VelocityView view =
-                (VelocityView)application.getAttribute(VELOCITY_VIEW_KEY);
-            if (view == null)
-            {
-                // only create a new one if we don't already have one
-                view = new VelocityView(config);
-
-                // and store it in the application attributes, so other
-                // servlets, filters, or tags can use it
-                application.setAttribute(VELOCITY_VIEW_KEY, view);
-            }
+            setVelocityView(ServletUtils.getVelocityView(config));
         }
         else
         {

@@ -19,6 +19,8 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -28,6 +30,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class ServletUtils
 {
+    public static final String VELOCITY_VIEW_KEY =
+        VelocityView.class.getName();
 
     /**
      * Retrieves the path for the specified request regardless of
@@ -53,6 +57,30 @@ public class ServletUtils
             path += info;
         }
         return path;
+    }
+
+    /**
+     * Returns the shared {@link VelocityView} for the specified
+     * {@link ServletConfig}.  If one has not yet been created, it
+     * will create, store it for future access, and then return it.
+     */
+    public static VelocityView getVelocityView(ServletConfig config)
+    {
+        ServletContext application = config.getServletContext();
+
+        // check for an already initialized VelocityView to use
+        VelocityView view =
+            (VelocityView)application.getAttribute(VELOCITY_VIEW_KEY);
+        if (view == null)
+        {
+            // only create a new one if we don't already have one
+            view = new VelocityView(config);
+
+            // and store it in the application attributes, so other
+            // servlets, filters, or tags can use it
+            application.setAttribute(VELOCITY_VIEW_KEY, view);
+        }
+        return view;
     }
 
 }
