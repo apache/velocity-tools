@@ -34,10 +34,17 @@ import org.apache.commons.digester.RuleSet;
 public class XmlFactoryConfiguration extends FileFactoryConfiguration
 {
     private RuleSet ruleSet;
+    private boolean supportOldXml;
 
     public XmlFactoryConfiguration()
     {
+        this(false);
+    }
+
+    public XmlFactoryConfiguration(boolean supportOldConfig)
+    {
         setRuleSet(new XmlFactoryConfigurationRuleSet());
+        this.supportOldXml = supportOldConfig;
     }
 
     /**
@@ -72,6 +79,10 @@ public class XmlFactoryConfiguration extends FileFactoryConfiguration
         digester.setUseContextClassLoader(true);
         digester.push(this);
         digester.addRuleSet(getRuleSet());
+        if (supportOldXml)
+        {
+            digester.addRuleSet(new OldXmlFactoryConfigurationRuleSet());
+        }
         try
         {
             digester.parse(input);
