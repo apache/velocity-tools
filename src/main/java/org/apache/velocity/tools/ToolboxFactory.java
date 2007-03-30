@@ -53,10 +53,8 @@ public class ToolboxFactory
 
     public synchronized void configure(FactoryConfiguration config)
     {
-        if (!config.isValid())
-        {
-            throw new IllegalArgumentException("FactoryConfiguration is not valid");
-        }
+        // this will throw a ConfigurationException if there is a problem
+        config.validate();
 
         // first do the easy part and add any data
         for (Data datum : config.getData())
