@@ -47,16 +47,6 @@ public class ToolInfo
      * Creates a new instance using the minimum required info
      * necessary for a tool.
      */
-    public ToolInfo(String key, String classname)
-    {
-        setKey(key);
-        setType(classname);
-    }
-
-    /**
-     * Creates a new instance using the minimum required info
-     * necessary for a tool.
-     */
     public ToolInfo(String key, Class clazz)
     {
         setKey(key);
@@ -72,25 +62,6 @@ public class ToolInfo
         if (this.key == null)
         {
             throw new NullPointerException("Key cannot be null");
-        }
-    }
-
-    /**
-     * If an instance of the tool cannot be created from
-     * the classname passed to this method, it will throw an exception.
-     *
-     * @param classname the fully qualified java.lang.Class name of the tool
-     */
-    public void setType(String classname)
-    {
-        try
-        {
-            // first, make sure we can get the Class
-            setClass(Utils.getClass(classname));
-        }
-        catch (ClassNotFoundException cnfe)
-        {
-            throw new IllegalArgumentException("Could not load Class: "+classname, cnfe);
         }
     }
 
