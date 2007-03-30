@@ -67,4 +67,48 @@ public class ToolboxConfiguration
         return getChildren();
     }
 
+    @Override
+    public void validate()
+    {
+        super.validate();
+
+        if (getScope() == null)
+        {
+            throw new ConfigurationException(this, "Toolbox scope cannot be null");
+        }
+
+        // validate that all tools are allowed in this scope
+        for (ToolConfiguration tool : getTools())
+        {
+            // check if this toolbox's scope has been declared invalid
+            for (String invalidScope : tool.getInvalidScopes())
+            {
+                if (getScope().equals(invalidScope))
+                {
+                    throw new InvalidScopeException(this, tool);
+                }
+            }
+ 
+            // if the set of valid scopes has been limited, check to be
+            // sure that this toolbox's scope is in the set
+            String[] validScopes = tool.getValidScopes();
+            if (validScopes != null && validScopes.length > 0)
+            {
+                boolean found = false;
+                for (String validScope : validScopes)
+                {
+                    if (getScope().equals(validScope))
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                {
+                    throw new InvalidScopeException(this, tool);
+                }
+            }
+        }
+    }
+
 }

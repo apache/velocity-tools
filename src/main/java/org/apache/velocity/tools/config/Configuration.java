@@ -82,4 +82,13 @@ public class Configuration<T>
             setProperty(name, simples.get(name));
         }
     }
+
+    public void validate()
+    {
+        for (Property property : getConvertableProperties())
+        {
+            property.validate();
+        }
+    }
+
 }

@@ -69,4 +69,16 @@ public class CompoundConfiguration<C extends Configuration>
             }
         }
     }
+
+    @Override
+    public void validate()
+    {
+        super.validate();
+
+        for (C child : getChildren())
+        {
+            child.validate();
+        }
+    }
+
 }
