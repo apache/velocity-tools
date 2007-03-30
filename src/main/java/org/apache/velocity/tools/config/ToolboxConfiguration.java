@@ -20,6 +20,7 @@ package org.apache.velocity.tools.config;
  */
 
 import java.util.List;
+import org.apache.velocity.tools.ToolboxFactory;
 
 /**
  * 
@@ -30,7 +31,7 @@ import java.util.List;
 public class ToolboxConfiguration
     extends CompoundConfiguration<ToolConfiguration>
 {
-    private String scope;
+    private String scope = ToolboxFactory.DEFAULT_SCOPE;
 
 
     protected ToolConfiguration findMatchingChild(ToolConfiguration newTool)
