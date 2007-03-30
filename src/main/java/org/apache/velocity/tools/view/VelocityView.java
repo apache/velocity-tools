@@ -754,19 +754,24 @@ public class VelocityView
      * @param request servlet request from client
      * @param response servlet reponse to client
      */
-    protected Context createContext(HttpServletRequest request,
-                                    HttpServletResponse response)
+    protected ViewToolContext createContext(HttpServletRequest request,
+                                            HttpServletResponse response)
     {
         ViewToolContext ctx =
             new ViewToolContext(velocity, request, response, servletContext);
+        prepareContext(ctx);
+        return ctx;
+    }
+
+    protected void prepareContext(ViewToolContext context)
+    {
         // if this view is storing toolboxes under a non-standard key,
         // then retrieve it's toolboxes here, since ViewToolContext won't
         // know where to find them
         if (!this.toolboxKey.equals(DEFAULT_TOOLBOX_KEY))
         {
-            ctx.addToolboxesUnderKey(this.toolboxKey);
+            context.addToolboxesUnderKey(this.toolboxKey);
         }
-        return ctx;
     }
 
 
@@ -795,7 +800,7 @@ public class VelocityView
      */
     protected Template getTemplate(HttpServletRequest request)
     {
-        return getTemplate(ServletUtils.getPath(request));
+        return getTemplate(request, null);
     }
 
     protected Template getTemplate(HttpServletRequest request,
