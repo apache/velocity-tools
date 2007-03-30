@@ -196,7 +196,7 @@ public class VelocityViewServlet extends HttpServlet
         }
         finally
         {
-            cleanup(request, response, context);
+            requestCleanup(request, response, context);
         }
     }
 
@@ -324,9 +324,9 @@ public class VelocityViewServlet extends HttpServlet
      * @param response servlet response
      * @param context Context that was merged with the requested template
      */
-    protected void cleanup(HttpServletRequest request,
-                           HttpServletResponse response,
-                           Context context)
+    protected void requestCleanup(HttpServletRequest request,
+                                  HttpServletResponse response,
+                                  Context context)
     {
     }
 
