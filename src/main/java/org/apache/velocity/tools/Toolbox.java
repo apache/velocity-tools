@@ -35,7 +35,7 @@ import java.util.Set;
 public class Toolbox
 {
     private Map<String,ToolInfo> infoMap;
-    private Map properties;
+    private Map<String,Object> properties;
     private Map<String,Object> cache;
 
     public Toolbox(Map<String,ToolInfo> toolInfo)
@@ -148,6 +148,22 @@ public class Toolbox
         }
         // then return a copy of the cache
         return new HashMap<String,Object>(this.cache);
+    }
+
+    /**
+     * Returns a new {@link Toolbox} that is a combination of this
+     * toolbox with one or more specified {@link Toolbox}es.
+     */
+    public Toolbox combine(Toolbox... toolboxes)
+    {
+        Map<String,ToolInfo> info = new HashMap<String,ToolInfo>(this.infoMap);
+        Map<String,Object> props = new HashMap<String,Object>(properties);
+        for (Toolbox toolbox : toolboxes)
+        {
+            info.putAll(toolbox.infoMap);
+            props.putAll(toolbox.properties);
+        }
+        return new Toolbox(info, props);
     }
 
 }
