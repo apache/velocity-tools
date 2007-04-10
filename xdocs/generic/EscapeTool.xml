@@ -54,7 +54,6 @@
         <methods/>
 
     </section>
-
     <section name="java()">
         <method name="java()">
 
@@ -282,6 +281,81 @@
 
 <p>produces this output:</p>
 <sourcecode>McHale''s Navy</sourcecode>
+            </description>
+
+        </method>
+    </section>
+
+    <section name="propertyKey()">
+        <method name="propertyKey()">
+
+            <abstract>
+                Escapes the characters in a <code>String</code> using the rules for writing Java properties into a properties file.
+            </abstract>
+
+            <signature>
+                String propertyKey(Object string)
+            </signature>
+
+            <parameters>
+                <parameter name="string">
+                    the string to escape values, may be null.
+                </parameter>
+            </parameters>
+
+            <returns>
+                String with escaped values, <code>null</code> if null string input.
+            </returns>
+
+            <description>
+                <p>Taken directly from the private method dumpString of java.util.Properties from Apache Harmony. The only difference between this method and the propertyValue method below is; leading spaces will be escaped. If templating a substring of the key then use propertyValue below.
+                </p>
+
+<p>If <code>$propertyKey</code> had the following value:</p>
+<sourcecode> He didn't say, "Stop!":</sourcecode>
+
+<p>then the following Velocity script:</p>
+<sourcecode>$esc.propertyKey($propertyKey)</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode>\ He didn't say, \"Stop!\"\:</sourcecode>
+            </description>
+
+        </method>
+    </section>
+    <section name="propertyValue()">
+        <method name="propertyValue()">
+
+            <abstract>
+                Escapes the characters in a <code>String</code> using the rules for Java properties.
+            </abstract>
+
+            <signature>
+                String propertyValue(Object string)
+            </signature>
+
+            <parameters>
+                <parameter name="string">
+                    the string to escape values, may be null.
+                </parameter>
+            </parameters>
+
+            <returns>
+                String with escaped values, <code>null</code> if null string input.
+            </returns>
+
+            <description>
+                <p>Taken directly from the private method dumpString of java.util.Properties from Apache Harmony. 
+                </p>
+
+<p>If <code>$propertyValue</code> had the following value:</p>
+<sourcecode> He didn't say, "Stop!":</sourcecode>
+
+<p>then the following Velocity script:</p>
+<sourcecode>$esc.propertyValue($propertyValue)</sourcecode>
+
+<p>produces this output:</p>
+<sourcecode> He didn't say, \"Stop!\"\:</sourcecode>
             </description>
 
         </method>
