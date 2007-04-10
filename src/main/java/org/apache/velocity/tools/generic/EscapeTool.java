@@ -112,7 +112,84 @@ public class EscapeTool
         }
         return StringEscapeUtils.escapeJava(String.valueOf(string));
     }
+    
+    /**
+     * Escapes the characters in a <code>String</code> using java.util.Properties rules for escaping property keys.
+     *
+     * @param string the string to escape values, may be null
+     * @return String with escaped values, <code>null</code> if null string input
+     * @see #dumpString(String, boolean)
+     */
+    public String propertyKey(Object string)
+    {
+        if (string == null)
+        {
+            return null;
+        }
+        return dumpString(String.valueOf(string), true);
+    }
+    
+    /**
+     * Escapes the characters in a <code>String</code> using java.util.Properties rules for escaping property values.
+     *
+     * @param string the string to escape values, may be null
+     * @return String with escaped values, <code>null</code> if null string input
+     * @see #dumpString(String, boolean)
+     */
+    public String propertyValue(Object string)
+    {
+        if (string == null)
+        {
+            return null;
+        }
+        return dumpString(String.valueOf(string), false);
+    }
+    
+    /**
+     * This code was pulled from the Apache Harmony project.  See
+     * https://svn.apache.org/repos/asf/harmony/enhanced/classlib/trunk/modules/luni/src/main/java/java/util/Properties.java
+     */
+    protected String dumpString(String string, boolean key) {
+        StringBuffer buffer = new StringBuffer();
+        int i = 0;
+        if (!key && i < string.length() && string.charAt(i) == ' ') {
+            buffer.append("\\ "); //$NON-NLS-1$
+            i++;
+        }
 
+        for (; i < string.length(); i++) {
+            char ch = string.charAt(i);
+            switch (ch) {
+                case '\t':
+                    buffer.append("\\t"); //$NON-NLS-1$
+                    break;
+                case '\n':
+                    buffer.append("\\n"); //$NON-NLS-1$
+                    break;
+                case '\f':
+                    buffer.append("\\f"); //$NON-NLS-1$
+                    break;
+                case '\r':
+                    buffer.append("\\r"); //$NON-NLS-1$
+                    break;
+                default:
+                    if ("\\#!=:".indexOf(ch) >= 0 || (key && ch == ' ')) {
+                        buffer.append('\\');
+                    }
+                    if (ch >= ' ' && ch <= '~') {
+                        buffer.append(ch);
+                    } else {
+                        String hex = Integer.toHexString(ch);
+                        buffer.append("\\u"); //$NON-NLS-1$
+                        for (int j = 0; j < 4 - hex.length(); j++) {
+                            buffer.append("0"); //$NON-NLS-1$
+                        }
+                        buffer.append(hex);
+                }
+            }
+        }
+        return buffer.toString();
+    } 
     /**
      * Escapes the characters in a <code>String</code> using JavaScript String rules.
      * <br />
