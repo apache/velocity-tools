@@ -300,7 +300,7 @@ public class ComparisonDateTool extends DateTool
      * rendering of that Comparison will be the largest unit difference
      * between the dates followed by a description of their relative position.
      * 
-     * @param date The date in question
+     * @param then The date in question
      */
     public Comparison whenIs(Object then)
     {
