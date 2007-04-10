@@ -534,6 +534,8 @@ public class VelocityViewServlet extends HttpServlet
             // first, get a context
             context = createContext(request, response);
 
+            fillContext(context, request);
+
             // set the content type
             setContentType(request, response);
 
@@ -568,28 +570,16 @@ public class VelocityViewServlet extends HttpServlet
 
 
     /**
-     * Cleanup routine called at the end of the request processing sequence
-     * allows a derived class to do resource cleanup or other end of
-     * process cycle tasks.  This default implementation does nothing.
-     *
-     * @param request servlet request from client
-     * @param response servlet reponse
-     * @param context Context created by the {@link #createContext}
-     */
-    protected void requestCleanup(HttpServletRequest request,
-                                  HttpServletResponse response,
-                                  Context context)
-    {
-    }
-
-
-    /**
-     * <p>Handle the template processing request.</p>
+     * <p>This was a common extension point, but has been deprecated.
+     * It has no single replacement.  Instead, you should override 
+     * {@link #fillContext} to add custom things to the {@link Context}
+     * or override a {@link #getTemplate} method to change how
+     * {@link Template}s are retrieved</p>
      *
      * @param request client request
      * @param response client response
      * @param ctx  VelocityContext to fill
-     *
+     * @deprecated This will be removed in VelocityTools 2.0.
      * @return Velocity Template object or null
      */
     protected Template handleRequest(HttpServletRequest request,
@@ -597,31 +587,7 @@ public class VelocityViewServlet extends HttpServlet
                                      Context ctx)
         throws Exception
     {
-        String path = ServletUtils.getPath(request);
-        return getTemplate(path);
-    }
-
-
-    /**
-     * Sets the content type of the response.  This is available to be overriden
-     * by a derived class.
-     *
-     * <p>The default implementation is :
-     * <pre>
-     *
-     *    response.setContentType(defaultContentType);
-     *
-     * </pre>
-     * where defaultContentType is set to the value of the default.contentType
-     * property, or "text/html" if that is not set.</p>
-     *
-     * @param request servlet request from client
-     * @param response servlet reponse to client
-     */
-    protected void setContentType(HttpServletRequest request,
-                                  HttpServletResponse response)
-    {
-        response.setContentType(defaultContentType);
+        return getTemplate(request, response);
     }
 
 
@@ -650,6 +616,74 @@ public class VelocityViewServlet extends HttpServlet
 
 
     /**
+     * This is an extension hook for users who subclass this servlet to
+     * make their own modifications to the {@link Context}. It is a partial
+     * replacement of the deprecated {@link #handleRequest} method. This
+     * implementation does nothing.
+     */
+    protected void fillContext(Context context, HttpServletRequest request)
+    {
+        // this implementation does nothing
+    }
+        
+
+    /**
+     * Sets the content type of the response.  This is available to be overriden
+     * by a derived class.
+     *
+     * <p>The default implementation is :
+     * <pre>
+     *    response.setContentType(defaultContentType);
+     * </pre>
+     * where defaultContentType is set to the value of the default.contentType
+     * property, or "text/html" if that is not set.</p>
+     *
+     * @param request servlet request from client
+     * @param response servlet reponse to client
+     */
+    protected void setContentType(HttpServletRequest request,
+                                  HttpServletResponse response)
+    {
+        response.setContentType(defaultContentType);
+    }
+
+
+    /**
+     * <p>Gets the requested template.</p>
+     *
+     * @param request client request
+     * @return Velocity Template object or null
+     */
+    protected Template getTemplate(HttpServletRequest request)
+        throws ResourceNotFoundException, ParseErrorException, Exception
+    {
+        return getTemplate(request, null);
+    }
+
+    /**
+     * <p>Gets the requested template.</p>
+     *
+     * @param request client request
+     * @param response client response (whose character encoding we'll use)
+     * @return Velocity Template object or null
+     */
+    protected Template getTemplate(HttpServletRequest request,
+                                   HttpServletResponse response)
+        throws ResourceNotFoundException, ParseErrorException, Exception
+    {
+        String path = ServletUtils.getPath(request);
+        if (response == null)
+        {
+            return getTemplate(path);
+        }
+        else
+        {
+            return getTemplate(path, response.getCharacterEncoding());
+        }
+    }
+
+
+    /**
      * Retrieves the requested template.
      *
      * @param name The file name of the template to retrieve relative to the
@@ -664,7 +698,7 @@ public class VelocityViewServlet extends HttpServlet
     public Template getTemplate(String name)
         throws ResourceNotFoundException, ParseErrorException, Exception
     {
-        return velocity.getTemplate(name);
+        return getTemplate(name, null);
     }
 
 
@@ -684,7 +718,14 @@ public class VelocityViewServlet extends HttpServlet
     public Template getTemplate(String name, String encoding)
         throws ResourceNotFoundException, ParseErrorException, Exception
     {
-        return velocity.getTemplate(name, encoding);
+        if (encoding == null)
+        {
+            return getVelocityEngine().getTemplate(name);
+        }
+        else
+        {
+            return getVelocityEngine().getTemplate(name, encoding);
+        }
     }
 
 
@@ -868,6 +909,22 @@ public class VelocityViewServlet extends HttpServlet
                                             encoding);
         }
         return writer;
+    }
+
+
+    /**
+     * Cleanup routine called at the end of the request processing sequence
+     * allows a derived class to do resource cleanup or other end of
+     * process cycle tasks.  This default implementation does nothing.
+     *
+     * @param request servlet request from client
+     * @param response servlet reponse
+     * @param context Context created by the {@link #createContext}
+     */
+    protected void requestCleanup(HttpServletRequest request,
+                                  HttpServletResponse response,
+                                  Context context)
+    {
     }
 
 }
