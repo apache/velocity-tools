@@ -105,6 +105,10 @@ public class GenericToolsTests {
     public @Test void testEscapeTool() {
         EscapeTool escapeTool = (EscapeTool)toolbox.get("esc");
         assertNotNull(escapeTool);
+        /* propertyKey */
+        assertEquals("\\ C\\:\\Program\\ Files",escapeTool.propertyKey(" C:\\Program Files"));
+        /* propertyValue */
+        assertEquals(" C\\:\\Program\\ Files",escapeTool.propertyValue(" C:\\Program Files"));
         /* java */
         assertEquals("\\uFFFF\\b\\n\\t\\f\\r\\\"\\\\",escapeTool.java("\uFFFF\b\n\t\f\r\"\\"));
         /* javascript */
