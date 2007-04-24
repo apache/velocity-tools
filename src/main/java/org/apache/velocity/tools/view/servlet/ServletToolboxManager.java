@@ -36,6 +36,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.view.ToolInfo;
 import org.apache.velocity.tools.view.XMLToolboxManager;
 import org.apache.velocity.tools.view.context.ViewContext;
+import org.apache.velocity.tools.view.ServletUtils;
 
 
 /**

@@ -30,6 +30,7 @@ import javax.servlet.ServletContext;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
+import org.apache.velocity.tools.view.context.ViewContext;
 
 /**
  * <p>Velocity context implementation specific to the Servlet environment.</p>

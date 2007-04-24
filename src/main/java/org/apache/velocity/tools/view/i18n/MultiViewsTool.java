@@ -23,7 +23,7 @@ import java.util.Locale;
 import javax.servlet.ServletContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
-import org.apache.velocity.tools.view.context.ViewContext;
+import org.apache.velocity.tools.view.ViewContext;
 
 /**
  * Allows for transparent content negotiation in a manner mimicking
@@ -146,7 +146,7 @@ public class MultiViewsTool
     {
         String localizedName = name + '.' + language;
         // templateExists() checks for static content as well
-        if (!engine.templateExists(localizedName))
+        if (!engine.resourceExists(localizedName))
         {
             // Fall back to the default lanaguage.
             String defaultLangSuffix = '.' + defaultLanguage;
@@ -158,7 +158,7 @@ public class MultiViewsTool
             else
             {
                 localizedName = name + defaultLangSuffix;
-                if (!engine.templateExists(localizedName))
+                if (!engine.resourceExists(localizedName))
                 {
                     localizedName = name;
                 }

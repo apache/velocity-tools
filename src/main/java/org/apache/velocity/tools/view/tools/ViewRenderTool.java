@@ -21,7 +21,7 @@ package org.apache.velocity.tools.view.tools;
 
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.generic.RenderTool;
-import org.apache.velocity.tools.view.context.ViewContext;
+import org.apache.velocity.tools.view.ViewContext;
 
 /**
  * This tool expose methods to evaluate the given

@@ -34,8 +34,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.generic.ValueParser;
-import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.servlet.ServletUtils;
+import org.apache.velocity.tools.view.ViewContext;
+import org.apache.velocity.tools.view.ServletUtils;
 
 /**
  * View tool to make building URIs pleasant and fun!
@@ -364,7 +364,8 @@ public class LinkTool implements Cloneable
         this.request = context.getRequest();
         this.response = context.getResponse();
         this.application = context.getServletContext();
-        Boolean b = (Boolean)context.getAttribute(ViewContext.XHTML);
+        // for backwards compatibility, honor the old key...
+        Boolean b = (Boolean)context.getAttribute("XHTML");
         if (b != null)
         {
             setXhtml(b.booleanValue());
