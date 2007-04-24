@@ -20,6 +20,7 @@ package org.apache.velocity.tools.struts;
  */
 
 import org.apache.velocity.tools.config.DefaultKey;
+import org.apache.velocity.tools.config.ValidScope;
 
 /**
  * <p>View tool to work with the Struts error messages.</p>
@@ -50,6 +51,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Id$
  */
 @DefaultKey("errors")
+@ValidScope("request")
 public class ErrorsTool extends ActionMessagesTool
 {
 

@@ -25,6 +25,7 @@ import java.util.regex.PatternSyntaxException;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.view.ViewContext;
+import org.apache.velocity.tools.config.InvalidScope;
 
 /**
  *  <p>browser-sniffing tool (session or request scope requested, session scope advised).</p>
@@ -59,6 +60,7 @@ import org.apache.velocity.tools.view.ViewContext;
  * @version $Revision$ $Date$
  */
 @DefaultKey("browser")
+@InvalidScope("application")
 public class BrowserSnifferTool
 {
     private String userAgent = null;

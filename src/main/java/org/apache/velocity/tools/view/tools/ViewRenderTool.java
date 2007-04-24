@@ -22,6 +22,7 @@ package org.apache.velocity.tools.view.tools;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.generic.RenderTool;
 import org.apache.velocity.tools.view.ViewContext;
+import org.apache.velocity.tools.config.InvalidScope;
 
 /**
  * This tool expose methods to evaluate the given
@@ -74,6 +75,7 @@ import org.apache.velocity.tools.view.ViewContext;
  * @author Nathan Bubna
  * @version $Revision$ $Date$
  */
+@InvalidScope({"application","session"})
 public class ViewRenderTool extends RenderTool
 {
     private Context context;
