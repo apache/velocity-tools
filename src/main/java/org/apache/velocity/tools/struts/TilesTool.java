@@ -38,7 +38,7 @@ import org.apache.struts.tiles.DirectStringAttribute;
 import org.apache.struts.tiles.TilesUtil;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.view.ImportSupport;
-import org.apache.velocity.tools.view.context.ViewContext;
+import org.apache.velocity.tools.view.ViewContext;
 
 /**
  * View tool to use struts-tiles with Velocity.

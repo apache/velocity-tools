@@ -43,7 +43,7 @@ import org.apache.struts.util.MessageResources;
 import org.apache.struts.util.ModuleUtils;
 import org.apache.struts.validator.Resources;
 import org.apache.struts.validator.ValidatorPlugIn;
-import org.apache.velocity.tools.view.context.ViewContext;
+import org.apache.velocity.tools.view.ViewContext;
 
 /**
  * <p>View tool that works with Struts Validator to
@@ -169,7 +169,7 @@ public class ValidatorTool
         this.session = request.getSession(false);
         this.app = context.getServletContext();
 
-        Boolean b = (Boolean)context.getAttribute(ViewContext.XHTML);
+        Boolean b = (Boolean)context.getAttribute("XHTML");
         if (b != null)
         {
             this.xhtml = b.booleanValue();

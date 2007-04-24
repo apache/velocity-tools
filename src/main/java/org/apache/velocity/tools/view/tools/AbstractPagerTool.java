@@ -26,7 +26,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.velocity.tools.view.context.ViewContext;
+import org.apache.velocity.tools.view.ViewContext;
 
 /**
  * <p>Abstract view tool for doing request-based pagination of

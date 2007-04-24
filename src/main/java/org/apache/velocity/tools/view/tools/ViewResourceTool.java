@@ -21,7 +21,7 @@ package org.apache.velocity.tools.view.tools;
 
 import javax.servlet.http.HttpServletRequest;
 import org.apache.velocity.tools.generic.ResourceTool;
-import org.apache.velocity.tools.view.context.ViewContext;
+import org.apache.velocity.tools.view.ViewContext;
 
 /**
  * <p>Tool for accessing ResourceBundles and formatting messages therein.</p>

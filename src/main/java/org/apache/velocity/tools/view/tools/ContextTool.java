@@ -32,7 +32,7 @@ import org.apache.velocity.context.AbstractContext;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.generic.ValueParser;
 import org.apache.velocity.tools.view.context.ChainedContext;
-import org.apache.velocity.tools.view.context.ViewContext;
+import org.apache.velocity.tools.view.ViewContext;
 
 /**
  * <p>View tool for convenient access to {@link ViewContext} data and

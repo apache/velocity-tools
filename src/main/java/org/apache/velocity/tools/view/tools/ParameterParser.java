@@ -22,7 +22,7 @@ package org.apache.velocity.tools.view.tools;
 import java.util.Map;
 import javax.servlet.ServletRequest;
 import org.apache.velocity.tools.generic.ValueParser;
-import org.apache.velocity.tools.view.context.ViewContext;
+import org.apache.velocity.tools.view.ViewContext;
 
 /**
  * <p>Utility class for easy parsing of {@link ServletRequest} parameters.</p>

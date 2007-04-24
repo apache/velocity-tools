@@ -25,7 +25,7 @@ import java.util.regex.PatternSyntaxException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.velocity.tools.view.context.ViewContext;
+import org.apache.velocity.tools.view.ViewContext;
 
 /**
  *  <p>browser-sniffing tool (session or request scope requested, session scope advised).</p>
