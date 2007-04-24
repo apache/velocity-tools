@@ -156,6 +156,7 @@
     <copy todir="${classes.dir}" filtering="yes">
       <fileset dir="${classes.src}">
         <include name="**/*.properties"/>
+        <include name="**/*.xml"/>
       </fileset>
     </copy>
   </target>
@@ -178,7 +179,10 @@
 
     <copy todir="${classes.dir}" filtering="yes">
       <fileset dir="${classes.src}">
-        <include name="**/*.properties"/>
+        <include name="**/generic/*.properties"/>
+        <include name="**/generic/*.xml"/>
+        <include name="**/view/*.properties"/>
+        <include name="**/view/*.xml"/>
       </fileset>
     </copy>
   </target>
@@ -199,6 +203,13 @@
       <exclude name="**/struts/**"/>
       <exclude name="**/view/**"/>
     </javac>
+
+    <copy todir="${classes.dir}" filtering="yes">
+      <fileset dir="${classes.src}">
+        <include name="**/generic/*.properties"/>
+        <include name="**/generic/*.xml"/>
+      </fileset>
+    </copy>
   </target>
 
 
