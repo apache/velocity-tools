@@ -20,7 +20,7 @@
 -->
 
 <tools> 
-    <data type="boolean" key="VIEW_TOOLS_AVAILABLE" value="true"/>
+    <data type="boolean" key="STRUTS_TOOLS_AVAILABLE" value="true"/>
     <toolbox scope="request">
         <tool class="org.apache.velocity.tools.struts.ActionMessagesTool"/>
         <tool class="org.apache.velocity.tools.struts.ErrorsTool"/>
