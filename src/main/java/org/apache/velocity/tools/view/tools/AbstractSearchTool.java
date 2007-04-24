@@ -22,6 +22,7 @@ package org.apache.velocity.tools.view.tools;
 import java.util.Collections;
 import java.util.List;
 import org.apache.velocity.tools.config.DefaultKey;
+import org.apache.velocity.tools.config.InvalidScope;
 
 /**
  * <p>Abstract view tool for doing "searching" and robust
@@ -132,6 +133,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Revision$ $Date$
  */
 @DefaultKey("search")
+@InvalidScope({"application","session"})
 public abstract class AbstractSearchTool extends AbstractPagerTool
 {
     /** the key under which StoredResults are kept in session */

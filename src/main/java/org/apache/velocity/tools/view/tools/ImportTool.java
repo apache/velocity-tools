@@ -22,6 +22,7 @@ package org.apache.velocity.tools.view.tools;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.config.DefaultKey;
+import org.apache.velocity.tools.config.ValidScope;
 import org.apache.velocity.tools.view.ImportSupport;
 import org.apache.velocity.tools.view.ViewContext;
 
@@ -45,6 +46,7 @@ import org.apache.velocity.tools.view.ViewContext;
  * @version $Revision$ $Date$
  */
 @DefaultKey("import")
+@ValidScope("request")
 public class ImportTool extends ImportSupport
 {
 

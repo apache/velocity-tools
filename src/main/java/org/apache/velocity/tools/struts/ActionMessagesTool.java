@@ -28,6 +28,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.util.MessageResources;
 import org.apache.velocity.tools.config.DefaultKey;
+import org.apache.velocity.tools.config.ValidScope;
 
 /**
  * <p>View tool to work with the Struts action messages.</p>
@@ -56,6 +57,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Id$
  */
 @DefaultKey("messages")
+@ValidScope("request")
 public class ActionMessagesTool extends MessageResourcesTool
 {
 

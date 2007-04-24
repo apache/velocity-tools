@@ -36,6 +36,7 @@ import org.apache.struts.tiles.DirectStringAttribute;
 import org.apache.struts.tiles.TilesUtil;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.config.DefaultKey;
+import org.apache.velocity.tools.config.ValidScope;
 import org.apache.velocity.tools.view.ImportSupport;
 import org.apache.velocity.tools.view.ViewContext;
 
@@ -67,6 +68,7 @@ import org.apache.velocity.tools.view.ViewContext;
  * @version $Revision$ $Date$
  */
 @DefaultKey("tiles")
+@ValidScope("request")
 public class TilesTool extends ImportSupport
 {
     protected static final Log LOG = LogFactory.getLog(TilesTool.class);

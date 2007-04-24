@@ -25,6 +25,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.velocity.tools.config.DefaultKey;
+import org.apache.velocity.tools.config.InvalidScope;
 import org.apache.velocity.tools.view.ViewContext;
 
 /**
@@ -109,6 +110,7 @@ import org.apache.velocity.tools.view.ViewContext;
  * @version $Revision$ $Date$
  */
 @DefaultKey("pager")
+@InvalidScope({"application","session"})
 public abstract class AbstractPagerTool
 {
 

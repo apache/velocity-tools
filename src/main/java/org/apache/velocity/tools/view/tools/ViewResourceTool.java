@@ -20,6 +20,7 @@ package org.apache.velocity.tools.view.tools;
  */
 
 import javax.servlet.http.HttpServletRequest;
+import org.apache.velocity.tools.config.InvalidScope;
 import org.apache.velocity.tools.generic.ResourceTool;
 import org.apache.velocity.tools.view.ViewContext;
 
@@ -61,6 +62,7 @@ import org.apache.velocity.tools.view.ViewContext;
  * @version $Revision$ $Date: 2006-11-27 10:49:37 -0800 (Mon, 27 Nov 2006) $
  * @since VelocityTools 1.3
  */
+@InvalidScope({"application","session"})
 public class ViewResourceTool extends ResourceTool
 {
 

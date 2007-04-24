@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.config.DefaultKey;
+import org.apache.velocity.tools.config.ValidScope;
 import org.apache.velocity.tools.generic.ValueParser;
 import org.apache.velocity.tools.view.ViewContext;
 import org.apache.velocity.tools.view.ServletUtils;
@@ -60,6 +61,7 @@ import org.apache.velocity.tools.view.ServletUtils;
  * @version $Id$
  */
 @DefaultKey("link")
+@ValidScope("request")
 public class LinkTool implements Cloneable
 {
     protected static final Log LOG = LogFactory.getLog(LinkTool.class);
