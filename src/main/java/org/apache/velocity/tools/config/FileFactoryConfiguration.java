@@ -46,7 +46,7 @@ public abstract class FileFactoryConfiguration extends FactoryConfiguration
     /**
      * <p>Reads a configuration file from the specified file path
      * and sets up the configuration from that. If the file does not
-     * exist, an {@link IllegalArgumentException} will be thrown.</p>
+     * exist, a {@link ResourceNotFoundException} will be thrown.</p>
      *
      * @param path the path to the file to be read from
      */
