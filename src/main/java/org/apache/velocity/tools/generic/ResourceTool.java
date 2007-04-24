@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import org.apache.velocity.tools.config.DefaultKey;
 
 /**
  * <p>Tool for accessing ResourceBundles and formatting messages therein.</p>
@@ -61,6 +62,7 @@ import java.util.ResourceBundle;
  * @version $Revision$ $Date: 2006-11-27 10:49:37 -0800 (Mon, 27 Nov 2006) $
  * @since VelocityTools 1.3
  */
+@DefaultKey("text")
 public class ResourceTool
 {
     public static final String BUNDLES_KEY = "bundles";
