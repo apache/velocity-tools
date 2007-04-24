@@ -23,9 +23,9 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
-
 import org.apache.velocity.util.ArrayIterator;
 import org.apache.velocity.util.EnumerationIterator;
+import org.apache.velocity.tools.config.DefaultKey;
 
 /**
  * <p>
@@ -76,7 +76,7 @@ import org.apache.velocity.util.EnumerationIterator;
  * @author <a href="mailto:jido@respublica.fr">Denis Bredelet</a>
  * @version $Id$
  */
-
+@DefaultKey("mill")
 public class IteratorTool implements Iterator {
 
 
