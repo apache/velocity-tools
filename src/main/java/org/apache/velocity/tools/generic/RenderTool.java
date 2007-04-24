@@ -181,11 +181,11 @@ public class RenderTool
                 String msg = LOG_TAG + " threw Exception: " + e;
                 if (engine == null)
                 {
-                    Velocity.debug(msg);
+                    Velocity.getLog().debug(msg);
                 }
                 else
                 {
-                    engine.debug(msg);
+                    engine.getLog().debug(msg);
                 }
                 return null;
             }
