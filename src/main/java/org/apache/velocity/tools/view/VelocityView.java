@@ -231,6 +231,11 @@ public class VelocityView
         return getVelocityEngine().getLog();
     }
 
+    protected ToolboxFactory getToolboxFactory()
+    {
+        return this.toolboxFactory;
+    }
+
     public String getDefaultContentType()
     {
         return this.defaultContentType;
