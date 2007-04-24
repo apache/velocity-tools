@@ -140,7 +140,7 @@ public class LinkTool implements Cloneable
         uri = null;
         anchor = null;
         queryData = null;
-        queryDataDelim = HTML_QUERY_DELIMITER;
+        queryDataDelim = XHTML_QUERY_DELIMITER;
         selfAbsolute = false;
         selfParams = false;
     }
