@@ -21,8 +21,8 @@ package org.apache.velocity.tools.generic;
 
 import java.net.URLEncoder;
 import java.io.UnsupportedEncodingException;
-
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.velocity.tools.config.DefaultKey;
 
 /**
  * Tool for working with escaping in Velocity templates.
@@ -84,6 +84,7 @@ import org.apache.commons.lang.StringEscapeUtils;
  * @since VelocityTools 1.2
  * @see StringEscapeUtils
  */
+@DefaultKey("esc")
 public class EscapeTool
 {
 
