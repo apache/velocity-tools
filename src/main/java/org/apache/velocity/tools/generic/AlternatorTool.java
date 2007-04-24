@@ -21,6 +21,7 @@ package org.apache.velocity.tools.generic;
 
 import java.util.List;
 import java.util.Map;
+import org.apache.velocity.tools.config.DefaultKey;
 
 /**
  * Simple tool to provide easy in-template instantiation of
@@ -55,6 +56,7 @@ import java.util.Map;
  * @since Velocity Tools 1.2
  * @version $Revision$ $Date$
  */
+@DefaultKey("alternator")
 public class AlternatorTool
 {
     /** @since VelocityTools 1.3 */
