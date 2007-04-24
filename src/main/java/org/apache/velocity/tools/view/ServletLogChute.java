@@ -35,6 +35,8 @@ import org.apache.velocity.runtime.RuntimeServices;
  *
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  * @author Nathan Bubna
+ * @deprecated This class has been moved to Velocity Engine 1.6+ and only remains
+ *             here temporarily for users of previous Velocity Engine versions.
  * @version $Revision$ $Date$
  */
 public class ServletLogChute implements LogChute
