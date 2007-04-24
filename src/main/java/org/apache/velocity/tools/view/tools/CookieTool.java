@@ -22,7 +22,7 @@ package org.apache.velocity.tools.view.tools;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.view.ViewContext;
 
 /**
@@ -47,6 +47,7 @@ import org.apache.velocity.tools.view.ViewContext;
  * @since VelocityTools 1.1
  * @version $Id$
  */
+@DefaultKey("cookie")
 public class CookieTool
 {
 

@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.velocity.tools.config.DefaultKey;
 
 /**
  * <p>Tool for performing math in Velocity.</p>
@@ -52,6 +53,7 @@ import org.apache.commons.beanutils.PropertyUtils;
  * @author Leon Messerschmidt
  * @version $Revision$ $Date$
  */
+@DefaultKey("math")
 public class MathTool
 {
     /**

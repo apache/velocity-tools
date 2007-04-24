@@ -19,6 +19,8 @@ package org.apache.velocity.tools.struts;
  * under the License.
  */
 
+import org.apache.velocity.tools.config.DefaultKey;
+
 /**
  * <p>View tool to work with the Struts error messages.</p>
  * <p><pre>
@@ -47,6 +49,7 @@ package org.apache.velocity.tools.struts;
  * @since VelocityTools 1.0
  * @version $Id$
  */
+@DefaultKey("errors")
 public class ErrorsTool extends ActionMessagesTool
 {
 

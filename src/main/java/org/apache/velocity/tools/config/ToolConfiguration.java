@@ -60,7 +60,18 @@ public class ToolConfiguration extends Configuration
 
     public String getKey()
     {
-        return this.key;
+        if (this.key != null)
+        {
+            return this.key;
+        }
+
+        DefaultKey defaultKey = 
+            (DefaultKey)getToolClass().getAnnotation(DefaultKey.class);
+        if (defaultKey != null)
+        {
+            return defaultKey.value();
+        }
+        return null;
     }
 
     public String getClassname()

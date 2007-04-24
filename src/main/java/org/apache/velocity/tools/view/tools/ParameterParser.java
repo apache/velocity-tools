@@ -21,6 +21,7 @@ package org.apache.velocity.tools.view.tools;
 
 import java.util.Map;
 import javax.servlet.ServletRequest;
+import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.generic.ValueParser;
 import org.apache.velocity.tools.view.ViewContext;
 
@@ -48,6 +49,7 @@ import org.apache.velocity.tools.view.ViewContext;
  * @author Nathan Bubna
  * @version $Revision$ $Date$
  */
+@DefaultKey("params")
 public class ParameterParser extends ValueParser
 {
     private ServletRequest request;

@@ -24,6 +24,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Map;
+import org.apache.velocity.tools.config.DefaultKey;
 
 /**
  * Tool for working with {@link Number} in Velocity templates.
@@ -58,6 +59,7 @@ import java.util.Map;
  * @since VelocityTools 1.2
  * @version $Id$
  */
+@DefaultKey("number")
 public class NumberTool
 {
     /**

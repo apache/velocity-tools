@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.velocity.tools.config.DefaultKey;
 
 /**
  * SortTool allows a user to sort a collection (or array, iterator, etc)
@@ -102,6 +103,7 @@ import org.apache.commons.beanutils.PropertyUtils;
  * @since VelocityTools 1.2
  * @version $Id$
  */
+@DefaultKey("sorter")
 public class SortTool
 {
 

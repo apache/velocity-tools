@@ -22,9 +22,8 @@ package org.apache.velocity.tools.view.tools;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-
 import javax.servlet.http.HttpServletRequest;
-
+import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.view.ViewContext;
 
 /**
@@ -59,6 +58,7 @@ import org.apache.velocity.tools.view.ViewContext;
  * @since VelocityTools 1.2
  * @version $Revision$ $Date$
  */
+@DefaultKey("browser")
 public class BrowserSnifferTool
 {
     private String userAgent = null;

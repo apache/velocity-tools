@@ -27,10 +27,10 @@ package org.apache.velocity.tools.config;
  * <code>
  * EasyFactoryConfiguration config = new EasyFactoryConfiguration();
  * config.toolbox("request").property("locale", Locale.US)
- *  .tool("date", DateTool.class)
- *  .tool("render", ViewRenderTool.class);
+ *  .tool(DateTool.class)
+ *  .tool("myTool", MyTool.class);
  * config.toolbox("application")
- *  .tool("number", NumberTool.class).property("locale", Locale.FR);
+ *  .tool(NumberTool.class).property("locale", Locale.FR);
  * ToolboxFactory factory = config.createFactory();
  * </code></p>
  *
@@ -43,16 +43,14 @@ package org.apache.velocity.tools.config;
  * toolbox.setScope("request");
  * toolbox.setProperty("locale", Locale.US);
  * ToolConfiguration tool = new ToolConfiguration();
- * tool.setKey("date");
  * tool.setClassname(DateTool.class.getName());
  * tool = new ToolConfiguration();
- * tool.setKey("render");
- * tool.setClassname(ViewRenderTool.class.getName());
+ * tool.setKey("myTool");
+ * tool.setClassname(MyTool.class.getName());
  * toolbox.addTool(tool);
  * toolbox = new ToolboxConfiguration();
  * toolbox.setScope("application");
  * tool = new ToolConfiguration();
- * tool.setKey("number");
  * tool.setClassname(NumberTool.class.getName());
  * tool.setProperty("locale", Locale.FR);
  * toolbox.addTool(tool);
@@ -94,6 +92,16 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
         this.toolbox =
             new EasyWrap<ToolboxConfiguration>(toolbox, this);
         return this.toolbox;
+    }
+
+    public EasyWrap<ToolConfiguration> tool(String classname)
+    {
+        return tool(null, classname);
+    }
+
+    public EasyWrap<ToolConfiguration> tool(Class clazz)
+    {
+        return tool(null, clazz);
     }
 
     public EasyWrap<ToolConfiguration> tool(String key, String classname)
@@ -160,7 +168,17 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
                     tool.setRestrictTo(path);
                 }
             }
-            throw new IllegalStateException("Wrapping unknown "+Configuration.class+": "+getConfiguration());
+            throw new IllegalStateException("Wrapping unknown "+Configuration.class.getName()+": "+getConfiguration());
+        }
+
+        public EasyWrap tool(Class clazz)
+        {
+            return tool(null, clazz);
+        }
+
+        public EasyWrap tool(String classname)
+        {
+            return tool(null, classname);
         }
 
         public EasyWrap tool(String key, Class clazz)
@@ -171,7 +189,10 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
         public EasyWrap tool(String key, String classname)
         {
             ToolConfiguration tool = new ToolConfiguration();
-            tool.setKey(key);
+            if (key != null)
+            {
+                tool.setKey(key);
+            }
             tool.setClassname(classname);
             if (this.config instanceof ToolConfiguration)
             {
@@ -185,7 +206,7 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
                 toolbox.addTool(tool);
                 return new EasyWrap(tool, toolbox);
             }
-            throw new IllegalStateException("Wrapping unknown "+Configuration.class+": "+getConfiguration());
+            throw new IllegalStateException("Wrapping unknown "+Configuration.class.getName()+": "+getConfiguration());
         }
     }
 

@@ -22,10 +22,9 @@ package org.apache.velocity.tools.view.tools;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
+import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.view.ViewContext;
 
 /**
@@ -109,6 +108,7 @@ import org.apache.velocity.tools.view.ViewContext;
  * @since VelocityTools 1.2
  * @version $Revision$ $Date$
  */
+@DefaultKey("pager")
 public abstract class AbstractPagerTool
 {
 
