@@ -22,6 +22,7 @@ package org.apache.velocity.tools.struts;
 import java.util.List;
 import java.util.Locale;
 import org.apache.struts.util.MessageResources;
+import org.apache.velocity.tools.config.DefaultKey;
 
 /**
  * <p>View tool that provides methods to render Struts
@@ -47,6 +48,7 @@ import org.apache.struts.util.MessageResources;
  * @since VelocityTools 1.0
  * @version $Id$
  */
+@DefaultKey("text")
 public class MessageTool extends MessageResourcesTool
 {
 

@@ -22,12 +22,12 @@ package org.apache.velocity.tools.struts;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.util.MessageResources;
+import org.apache.velocity.tools.config.DefaultKey;
 
 /**
  * <p>View tool to work with the Struts action messages.</p>
@@ -55,6 +55,7 @@ import org.apache.struts.util.MessageResources;
  * @since VelocityTools 1.1
  * @version $Id$
  */
+@DefaultKey("messages")
 public class ActionMessagesTool extends MessageResourcesTool
 {
 

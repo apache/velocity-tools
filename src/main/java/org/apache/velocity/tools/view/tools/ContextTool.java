@@ -30,6 +30,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
 import org.apache.velocity.context.AbstractContext;
 import org.apache.velocity.context.Context;
+import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.generic.ValueParser;
 import org.apache.velocity.tools.view.context.ChainedContext;
 import org.apache.velocity.tools.view.ViewContext;
@@ -57,6 +58,7 @@ import org.apache.velocity.tools.view.ViewContext;
  * @since VelocityTools 1.3
  * @version $Id: ContextTool.java 385122 2006-03-11 18:37:42Z nbubna $
  */
+@DefaultKey("context")
 public class ContextTool
 {
     /**

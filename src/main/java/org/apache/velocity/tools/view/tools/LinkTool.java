@@ -26,13 +26,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.generic.ValueParser;
 import org.apache.velocity.tools.view.ViewContext;
 import org.apache.velocity.tools.view.ServletUtils;
@@ -60,6 +59,7 @@ import org.apache.velocity.tools.view.ServletUtils;
  * @since VelocityTools 1.0
  * @version $Id$
  */
+@DefaultKey("link")
 public class LinkTool implements Cloneable
 {
     protected static final Log LOG = LogFactory.getLog(LinkTool.class);

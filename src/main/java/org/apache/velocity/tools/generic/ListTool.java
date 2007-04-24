@@ -21,6 +21,7 @@ package org.apache.velocity.tools.generic;
 
 import java.lang.reflect.Array;
 import java.util.List;
+import org.apache.velocity.tools.config.DefaultKey;
 
 /**
  * Tool for working with Lists and arrays in Velocity templates.
@@ -57,6 +58,7 @@ import java.util.List;
  * @version $Id: $
  * @since VelocityTools 1.2
  */
+@DefaultKey("list")
 public class ListTool
 {
 

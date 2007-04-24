@@ -27,7 +27,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
-
+import org.apache.velocity.tools.config.DefaultKey;
 
 /**
  * Tool for working with {@link Date} and {@link Calendar}
@@ -66,6 +66,7 @@ import java.util.TimeZone;
  * @since VelocityTools 1.0
  * @version $Revision$ $Date$
  */
+@DefaultKey("date")
 public class DateTool
 {
 

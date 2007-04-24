@@ -22,9 +22,7 @@ package org.apache.velocity.tools.struts;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Stack;
-
 import javax.servlet.http.HttpSession;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts.tiles.AttributeDefinition;
@@ -37,6 +35,7 @@ import org.apache.struts.tiles.DefinitionsFactoryException;
 import org.apache.struts.tiles.DirectStringAttribute;
 import org.apache.struts.tiles.TilesUtil;
 import org.apache.velocity.context.Context;
+import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.view.ImportSupport;
 import org.apache.velocity.tools.view.ViewContext;
 
@@ -67,6 +66,7 @@ import org.apache.velocity.tools.view.ViewContext;
  * @since VelocityTools 1.1
  * @version $Revision$ $Date$
  */
+@DefaultKey("tiles")
 public class TilesTool extends ImportSupport
 {
     protected static final Log LOG = LogFactory.getLog(TilesTool.class);

@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Locale;
+import org.apache.velocity.tools.config.DefaultKey;
 
 /**
  * <p>Utility class for easy parsing of String values held in a Map.</p>
@@ -49,6 +50,7 @@ import java.util.Locale;
  * @version $Revision$ $Date$
  * @since VelocityTools 1.2
  */
+@DefaultKey("parser")
 public class ValueParser
 {
     private Map source = null;

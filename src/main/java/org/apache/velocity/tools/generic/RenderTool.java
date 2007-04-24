@@ -24,6 +24,7 @@ import java.util.Map;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
+import org.apache.velocity.tools.config.DefaultKey;
 
 /**
  * This tool exposes methods to evaluate the given
@@ -79,6 +80,7 @@ import org.apache.velocity.context.Context;
  * @author Nathan Bubna
  * @version $Revision$ $Date$
  */
+@DefaultKey("render")
 public class RenderTool
 {
     /**

@@ -23,6 +23,7 @@ import java.util.Locale;
 import javax.servlet.ServletContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
+import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.view.ViewContext;
 
 /**
@@ -38,6 +39,7 @@ import org.apache.velocity.tools.view.ViewContext;
  * @version $Id$
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  */
+@DefaultKey("i18n")
 public class MultiViewsTool
 {
     /**
