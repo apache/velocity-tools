@@ -78,6 +78,12 @@ public class VelocityViewServlet extends HttpServlet
         "org.apache.velocity.tools.shared.config";
 
     /**
+     * @deprecated Default path is now managed by {@link VelocityView}
+     */
+    protected static final String DEFAULT_TOOLBOX_PATH =
+        VelocityView.DEPRECATED_USER_TOOLS_PATH;
+
+    /**
      * <p>Initializes servlet and VelocityView used to process requests.
      * Called by the servlet container on loading.</p>
      *
