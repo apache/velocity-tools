@@ -139,6 +139,8 @@ public class VelocityView
      */
     public static final String USER_TOOLS_PATH =
         "/WEB-INF/tools.xml";
+    public static final String DEPRECATED_USER_TOOLS_PATH =
+        "/WEB-INF/toolbox.xml";
 
     /**
      * Default Runtime properties.
@@ -160,6 +162,9 @@ public class VelocityView
     public  static final String USER_PROPERTIES_PATH =
         "/WEB-INF/velocity.properties";
 
+    public static final String SUPPRESS_DEFAULTS_KEY =
+        "org.apache.velocity.tools.suppressDefaults";
+
 
     private static SimplePool writerPool = new SimplePool(40);
     private ToolboxFactory toolboxFactory = null;
@@ -168,6 +173,7 @@ public class VelocityView
     private String defaultContentType = DEFAULT_CONTENT_TYPE;
     private String toolboxKey = DEFAULT_TOOLBOX_KEY;
     private boolean createSession = false;
+    private boolean supportDeprecatedConfig = true;
 
     public VelocityView(ServletConfig config)
     {
@@ -216,6 +222,11 @@ public class VelocityView
     protected final String getToolboxKey()
     {
         return this.toolboxKey;
+    }
+
+    protected final void setSupportDeprecatedConfig(boolean support)
+    {
+        this.supportDeprecatedConfig = support;
     }
 
     /**
@@ -404,7 +415,27 @@ public class VelocityView
 
     protected void configure(ServletConfig config, ToolboxFactory factory)
     {
-        FactoryConfiguration factoryConfig = new FactoryConfiguration();
+        // determine whether or not to include default tools
+        String suppressDefaults = config.getInitParameter(SUPPRESS_DEFAULTS_KEY);
+        if (suppressDefaults == null)
+        {
+            suppressDefaults =
+                servletContext.getInitParameter(SUPPRESS_DEFAULTS_KEY);
+        }
+
+        FactoryConfiguration factoryConfig;
+        if ("true".equalsIgnoreCase(suppressDefaults))
+        {
+            // start out blank
+            factoryConfig = new FactoryConfiguration();
+            getLog().debug("Default tool configurations have been suppressed.");
+        }
+        else
+        {
+            getLog().trace("Loading default tool configurations...");
+            // start out with all available default tools
+            factoryConfig = FactoryConfiguration.getDefault();
+        }
 
         String configMessage = "Configuring ToolboxFactory with configuration at: ";
 
@@ -419,8 +450,25 @@ public class VelocityView
             factoryConfig.addConfiguration(appConfig);
         }
 
-        // check for servlet-wide user props in the config init params at the
-        // conventional location, and be silent if they're missing
+        if (this.supportDeprecatedConfig)
+        {
+            // check for deprecated user configuration at the old conventional
+            // location.  be silent if missing, log deprecation warning otherwise
+            FactoryConfiguration deprecatedConfig =
+                getConfiguration(DEPRECATED_USER_TOOLS_PATH);
+            if (deprecatedConfig != null)
+            {
+                getLog().warn("Please upgrade to new \"/WEB-INF/tools.xml\" format and conventional location."+
+                              " Support for \"/WEB-INF/toolbox.xml\" format and conventional file name will "+
+                              "be removed in a future version.");
+                getLog().debug(configMessage + DEPRECATED_USER_TOOLS_PATH);
+
+                factoryConfig.addConfiguration(deprecatedConfig);
+            }
+        }
+
+        // check for user configuration at the conventional location,
+        // and be silent if they're missing
         FactoryConfiguration servletConfig = getConfiguration(USER_TOOLS_PATH);
         if (servletConfig != null)
         {
@@ -562,7 +610,7 @@ public class VelocityView
         FileFactoryConfiguration config = null;
         if (path.endsWith(".xml"))
         {
-            config = new XmlFactoryConfiguration();
+            config = new XmlFactoryConfiguration(this.supportDeprecatedConfig);
         }
         else if (path.endsWith(".properties"))
         {
