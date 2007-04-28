@@ -45,12 +45,28 @@ public class Configuration<T>
         return convertableProperties;
     }
 
-    public void setProperty(String name, Object value)
+    public void setProperty(String name, String value)
     {
         //TODO: it could be very convenient to support some very simple
         //      auto-conversion here, where we'd test if a string value
         //      is "true" or "false" or "123" and convert those to boolean
         //      or number values without it being necessary to specify type
+        if ("true".equals(value))
+        {
+            setProperty(name, Boolean.TRUE);
+        }
+        else if ("false".equals(value))
+        {
+            setProperty(name, Boolean.FALSE);
+        }
+        else
+        {
+            simpleProperties.put(name, value);
+        }
+    }
+
+    public void setProperty(String name, Object value)
+    {
         simpleProperties.put(name, value);
     }
 
