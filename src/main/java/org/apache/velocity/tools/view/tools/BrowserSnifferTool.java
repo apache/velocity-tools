@@ -71,27 +71,18 @@ public class BrowserSnifferTool
     private int geckoMajorVersion = -1;
     private int geckoMinorVersion = -1;
 
-    public BrowserSnifferTool()
+    /**
+     * Initializes this tool by setting the current {@link HttpServletRequest}.
+     * This is required for this tool to operate and will throw a
+     * NullPointerException if this is not set or is set to {@code null}.
+     */
+    public void setRequest(HttpServletRequest request)
     {
-    }
-
-    public void init(Object initData)
-    {
-        HttpServletRequest req;
-        if(initData instanceof ViewContext)
+        if (request == null)
         {
-            req = ((ViewContext)initData).getRequest();
+            throw new NullPointerException("request should not be null");
         }
-        else if(initData instanceof HttpServletRequest)
-        {
-            req = (HttpServletRequest)initData;
-        }
-        else
-        {
-            throw new IllegalArgumentException("Was expecting " + ViewContext.class +
-                                               " or " + HttpServletRequest.class);
-        }
-        userAgent = req.getHeader("User-Agent").toLowerCase();
+        userAgent = request.getHeader("User-Agent").toLowerCase();
     }
 
     /* Generic getter for unknown tests

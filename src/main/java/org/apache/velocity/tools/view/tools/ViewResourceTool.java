@@ -67,14 +67,16 @@ public class ViewResourceTool extends ResourceTool
 {
 
     /**
-     * Initializes this instance.
+     * Sets the current {@link ServletRequest}
      *
-     * @param obj the current ViewContext
+     * @param request the {@link ServletRequest} to retrieve the default Locale from
      */
-    public void init(Object obj)
+    public void setRequest(HttpServletRequest request)
     {
-        HttpServletRequest request = ((ViewContext)obj).getRequest();
-        setDefaultLocale(request.getLocale());
+        if (request != null)
+        {
+            setDefaultLocale(request.getLocale());
+        }
     }
 
 }

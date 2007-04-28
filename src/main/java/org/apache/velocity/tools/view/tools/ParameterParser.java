@@ -73,35 +73,11 @@ public class ParameterParser extends ValueParser
     }
 
     /**
-     * Initializes this instance.
-     *
-     * @param obj the current ViewContext or ServletRequest
-     * @throws IllegalArgumentException if the param is not a
-     *         ViewContext or ServletRequest
-     */
-    public void init(Object obj)
-    {
-        if (obj instanceof ViewContext)
-        {
-            setRequest(((ViewContext)obj).getRequest());
-        }
-        else if (obj instanceof ServletRequest)
-        {
-            setRequest((ServletRequest)obj);
-        }
-        else
-        {
-            throw new IllegalArgumentException("Was expecting " + ViewContext.class +
-                                               " or " + ServletRequest.class);
-        }
-    }
-
-    /**
      * Sets the current {@link ServletRequest}
      *
      * @param request the {@link ServletRequest} to be parsed
      */
-    protected void setRequest(ServletRequest request)
+    public void setRequest(ServletRequest request)
     {
         this.request = request;
     }

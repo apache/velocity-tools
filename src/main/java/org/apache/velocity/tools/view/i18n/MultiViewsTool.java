@@ -20,12 +20,13 @@ package org.apache.velocity.tools.view.i18n;
  */
 
 import java.util.Locale;
+import java.util.Map;
 import javax.servlet.ServletContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
-import org.apache.velocity.tools.view.ViewContext;
+import org.apache.velocity.tools.view.ViewToolContext;
 
 /**
  * Allows for transparent content negotiation in a manner mimicking
@@ -78,21 +79,15 @@ public class MultiViewsTool
      * @param obj the current ViewContext
      * @throws IllegalArgumentException if the param is not a ViewContext
      */
-    public void init(Object obj)
+    public void setup(Map params)
     {
-        if (!(obj instanceof ViewContext))
-        {
-            throw new IllegalArgumentException("Tool can only be initialized with a ViewContext");
-        }
-
-        ViewContext context = (ViewContext)obj;
-        Context vc = context.getVelocityContext();
-        this.engine = context.getVelocityEngine();
+        Context vc = (Context)params.get(ViewToolContext.CONTEXT_KEY);
+        this.engine = (VelocityEngine)params.get(ViewToolContext.ENGINE_KEY);
 
         defaultLanguage = (String) vc.get(DEFAULT_LANGUAGE_KEY);
         if (defaultLanguage == null || defaultLanguage.trim().equals(""))
         {
-            ServletContext sc = context.getServletContext();
+            ServletContext sc = (ServletContext)params.get(ViewToolContext.SERVLET_CONTEXT_KEY);
             defaultLanguage = (String) sc.getAttribute(DEFAULT_LANGUAGE_KEY);
             if (defaultLanguage == null || defaultLanguage.trim().equals(""))
             {

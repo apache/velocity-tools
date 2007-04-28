@@ -131,17 +131,17 @@ public abstract class AbstractPagerTool
     protected HttpSession session;
 
     /**
-     * Initializes this instance by grabbing the request
-     * and session objects from the current ViewContext.
-     *
-     * @param obj the current ViewContext
-     * @throws ClassCastException if the param is not a ViewContext
+     * Initializes this tool with the specified {@link HttpServletRequest}.
+     * This is required for this tool to operate and will throw a
+     * NullPointerException if this is not set or is set to {@code null}.
      */
-    public void init(Object obj)
+    public void setRequest(HttpServletRequest request)
     {
-        ViewContext context = (ViewContext)obj;
-        HttpServletRequest request = context.getRequest();
-        session = request.getSession(false);
+        if (request == null)
+        {
+            throw new NullPointerException("request should not be null");
+        }
+        this.session = request.getSession(false);
         setup(request);
     }
 
