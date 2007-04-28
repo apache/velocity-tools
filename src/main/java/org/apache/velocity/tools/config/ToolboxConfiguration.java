@@ -36,10 +36,17 @@ public class ToolboxConfiguration
 
     protected ToolConfiguration findMatchingChild(ToolConfiguration newTool)
     {
+        String newKey = newTool.getKey();
+        if (newKey == null)
+        {
+            // we consider it impossible to equal null here
+            return null;
+        }
+
         for (ToolConfiguration tool : getTools())
         {
             // matching key means matching tool
-            if (newTool.getKey().equals(tool.getKey()))
+            if (newKey.equals(tool.getKey()))
             {
                 return tool;
             }
@@ -47,6 +54,31 @@ public class ToolboxConfiguration
         return null;
     }
 
+    public void addConfiguration(ToolboxConfiguration config)
+    {
+        // add config's properties to ours
+        super.addConfiguration(config);
+
+        // add config's children to ours
+        for (ToolConfiguration newTool : config.getTools())
+        {
+            ToolConfiguration child = findMatchingChild(newTool);
+            if (child == null)
+            {
+                addTool(newTool);
+            }
+            else
+            {
+                child.addConfiguration(newTool);
+                // also, override the classname for tools
+                String newClass = newTool.getClassname();
+                if (newClass != null)
+                {
+                    child.setClassname(newClass);
+                }
+            }
+        }
+    }
 
     public void setScope(String scope)
     {
