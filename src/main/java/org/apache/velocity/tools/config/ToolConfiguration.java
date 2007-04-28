@@ -43,14 +43,14 @@ public class ToolConfiguration extends Configuration
      * This doesn't take a {@link Class} parameter because
      * this class was not created for all-java configuration.
      */
-    public void setClass(String classname)
+    public void setClass(Class clazz)
     {
-        this.classname = classname;
+        this.classname = clazz.getName();
     }
 
     public void setClassname(String classname)
     {
-        setClass(classname);
+        this.classname = classname;
     }
 
     public void setRestrictTo(String path)
@@ -65,11 +65,14 @@ public class ToolConfiguration extends Configuration
             return this.key;
         }
 
-        DefaultKey defaultKey = 
-            (DefaultKey)getToolClass().getAnnotation(DefaultKey.class);
-        if (defaultKey != null)
+        if (getClassname() != null)
         {
-            return defaultKey.value();
+            DefaultKey defaultKey = 
+                (DefaultKey)getToolClass().getAnnotation(DefaultKey.class);
+            if (defaultKey != null)
+            {
+                return defaultKey.value();
+            }
         }
         return null;
     }
