@@ -180,7 +180,7 @@ public class IteratorTool implements Iterator {
             {
                 /* Don't know what is the object.
                  * Should we put it in a one-item array? */
-                throw new IllegalArgumentException("Don't know how to wrap this list");
+                throw new IllegalArgumentException("Don't know how to wrap: "+wrapped);
             }
 
             this.wrapped = wrapped;
