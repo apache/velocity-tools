@@ -70,10 +70,10 @@ the additional change specified by the method call.
 #demoAlt( 'link' 'params' $desc )
 
 
-#set( $desc = "Returns the URI that addresses this web application. E.g. <code>http://myserver.net/myapp</code>. This string does not end with a "/"." )
+#set( $desc = "Returns the URI that addresses this web application. E.g. <code>http://myserver.net/myapp</code>. This string does not end with a ${esc.q}/${esc.q}." )
 #demo( 'link' 'contextURL' $desc )
 
-#set( $desc = "Returns the context path that addresses this web application, e.g. <code>/myapp</code>. This string starts with a "/" but does not end with a "/"." )
+#set( $desc = "Returns the context path that addresses this web application, e.g. <code>/myapp</code>. This string starts with a ${esc.q}/${esc.q} but does not end with a ${esc.q}/${esc.q}." )
 #demo( 'link' 'contextPath' $desc )
 
 #set( $desc = "Retrieves the path for the current request regardless of whether this is a direct request or an include by the RequestDispatcher." )
@@ -96,12 +96,12 @@ the additional change specified by the method call.
 <div align="center">
   <a name="fullDemo"><h3>$demo.mainExampleHeader</h3></a>
 <form method="post" action="$link.self.anchor('fullDemo')">
-<textarea name="demo" rows="5" cols="65">##
-#if( $params.demo )##
-$params.demo##
+<textarea name="fullDemo" rows="5" cols="65">##
+#if( $params.fullDemo )##
+$params.fullDemo##
 #else##
-## NOTE: this first line is done in the actual page,
-##       because #set() doesn't work in these demos
+${esc.h}${esc.h} NOTE: this first line is done in the actual page,
+${esc.h}${esc.h}       because ${esc.h}set() doesn't work in these demos
 ${esc.h}set( ${esc.d}base = ${esc.d}link.self.anchor('fullDemo') )
 <a href="${esc.d}base.param('select','this')">this</a>
 <a href="${esc.d}base.param('select','that')">that</a>##
@@ -114,10 +114,10 @@ ${esc.h}set( ${esc.d}base = ${esc.d}link.self.anchor('fullDemo') )
   #end
 </form>
 
-#if( $params.demo )
+#if( $params.fullDemo )
 $demo.mainResultsIntro:
 <pre>
-  $render.eval($params.demo)
+  $render.eval($params.fullDemo)
 </pre>
 #end
 </div>
