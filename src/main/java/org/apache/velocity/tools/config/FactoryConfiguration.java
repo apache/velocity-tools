@@ -48,7 +48,7 @@ public class FactoryConfiguration
     {
         for (ToolboxConfiguration toolbox : getToolboxes())
         {
-            // matching key means matching tool
+            // matching scope means matching toolbox
             if (newToolbox.getScope().equals(toolbox.getScope()))
             {
                 return toolbox;
@@ -80,8 +80,22 @@ public class FactoryConfiguration
 
     public void addConfiguration(FactoryConfiguration config)
     {
-        // add config's properties and children to ours
+        // add config's properties to ours
         super.addConfiguration(config);
+
+        // add config's children to ours
+        for (ToolboxConfiguration newToolbox : config.getToolboxes())
+        {
+            ToolboxConfiguration child = findMatchingChild(newToolbox);
+            if (child == null)
+            {
+                addToolbox(newToolbox);
+            }
+            else
+            {
+                child.addConfiguration(newToolbox);
+            }
+        }
 
         // add config's Data to the bottom of our Data list
         // don't worry about duplicate data names, last one will win
