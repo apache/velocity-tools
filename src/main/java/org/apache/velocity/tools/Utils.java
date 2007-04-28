@@ -19,6 +19,7 @@ package org.apache.velocity.tools;
  * under the License.
  */
 
+import java.lang.reflect.Method;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -60,6 +61,51 @@ public class Utils
                 InstantiationException
     {
         return getClass(classname).newInstance();
+    }
+
+    public static Method findMethod(Class clazz, String name, Class[] params)
+        throws SecurityException
+    {
+        try
+        {
+            // check for a public setup(Map) method first
+            return clazz.getMethod(name, params);
+        }
+        catch (NoSuchMethodException nsme)
+        {
+            // ignore this
+        }
+        return findDeclaredMethod(clazz, name, params);
+    }
+
+    public static Method findDeclaredMethod(Class clazz, String name, Class[] params)
+        throws SecurityException
+    {
+        try
+        {
+            // check for a protected one
+            Method method = clazz.getDeclaredMethod(name, params);
+            if (method != null)
+            {
+                // and give this class access to it
+                method.setAccessible(true);
+                return method;
+            }
+        }
+        catch (NoSuchMethodException nsme)
+        {
+            // ignore this
+        }
+
+        // ok, didn't find it declared in this class, try the superclass
+        Class supclazz = clazz.getSuperclass();
+        if (supclazz != null)
+        {
+            // recurse upward
+            return findDeclaredMethod(supclazz, name, params);
+        }
+        // otherwise, return null
+        return null;
     }
 
 }
