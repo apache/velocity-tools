@@ -32,7 +32,7 @@ import org.xml.sax.Attributes;
  * @deprecated This is provided merely for 1.x compatibility.
  * @version $Id: OldXmlFactoryConfigurationRuleSet.java 511959 2007-02-26 19:24:39Z nbubna $
  */
-class OldXmlFactoryConfigurationRuleSet extends RuleSetBase
+public class OldXmlFactoryConfigurationRuleSet extends RuleSetBase
 {
     public void addRuleInstances(Digester digester)
     {
@@ -40,6 +40,7 @@ class OldXmlFactoryConfigurationRuleSet extends RuleSetBase
         digester.addRule("toolbox/xhtml", new XhtmlRule());
 
         digester.addObjectCreate("toolbox", ToolboxConfiguration.class);
+        digester.addRule("toolbox", new DeprecationRule());
         digester.addSetNext("toolbox", "addToolbox");
 
         digester.addObjectCreate("toolbox/tool", ToolConfiguration.class);
@@ -55,6 +56,19 @@ class OldXmlFactoryConfigurationRuleSet extends RuleSetBase
         digester.addBeanPropertySetter("toolbox/data/key", "key");
         digester.addBeanPropertySetter("toolbox/data/value", "value");
         digester.addRule("toolbox/data", new SetNextDataRule());
+    }
+
+    protected class DeprecationRule extends Rule
+    {
+        public void begin(String ns, String ln, Attributes attributes)
+            throws Exception
+        {
+            // add a property to the FactoryConfiguration that
+            // will trigger a deprecation warning in the logs
+            FactoryConfiguration factory =
+                (FactoryConfiguration)digester.getRoot();
+            factory.setProperty("oldXmlWarning", true);
+        }
     }
 
 
@@ -140,10 +154,10 @@ class OldXmlFactoryConfigurationRuleSet extends RuleSetBase
     {
         public void setBoolean(FactoryConfiguration factory, Boolean b)
         {
-            // for templates
-            factory.setProperty("XHTML", b);
             // for tools
             factory.setProperty("Xhtml", b);
+            // for templates
+            factory.setProperty("XHTML", b);
         }
     }
 
