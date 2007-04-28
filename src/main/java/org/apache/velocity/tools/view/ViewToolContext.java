@@ -80,7 +80,7 @@ public class ViewToolContext extends ToolContext implements ViewContext
                            HttpServletResponse response,
                            ServletContext application)
     {
-        super(null, null);
+        super(velocity);
 
         this.velocity = velocity;
         this.request = request;
@@ -94,14 +94,28 @@ public class ViewToolContext extends ToolContext implements ViewContext
     protected void putToolProperties()
     {
         //TODO!! put these strings as constants somewhere!!
-        putToolProperty("servletRequest", getRequest());
-        putToolProperty("servletResponse", getResponse());
-        putToolProperty("httpSession", getSession());
-        putToolProperty("servletContext", getServletContext());
+        putToolProperty(REQUEST, getRequest());
+        putToolProperty(RESPONSE, getResponse());
+        putToolProperty(SESSION, getSession());
+        putToolProperty(SERVLET_CONTEXT_KEY, getServletContext());
         putToolProperty(PATH_KEY, ServletUtils.getPath(getRequest()));
         putToolProperty("velocityContext", getVelocityContext());
-        putToolProperty("velocityEngine", getVelocityEngine());
-        putToolProperty("log", getVelocityEngine().getLog());
+    }
+
+    /**
+     * Returns a {@link Map} of all tools available to this
+     * context. NOTE: this is not a cheap operation as it will
+     * request and initialize and instance of every available tool.
+     */
+    public Map<String,Object> getToolbox()
+    {
+        Map<String,Object> aggregate = new HashMap<String,Object>();
+        Map<String,Object> toolProps = getToolProperties();
+        for (Toolbox toolbox : getToolboxes())
+        {
+            aggregate.putAll(toolbox.getAll(toolProps));
+        }
+        return aggregate;
     }
 
     protected List<Toolbox> getToolboxes()

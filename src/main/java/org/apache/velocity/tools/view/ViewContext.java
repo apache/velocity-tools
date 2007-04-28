@@ -52,8 +52,11 @@ public interface ViewContext
     /** Key used for the HTTP session object. */
     public static final String SESSION = "session";
 
-    /** Key used for the servlet context object. */
+    /** Key used for the servlet context object in templates. */
     public static final String APPLICATION = "application";
+
+    /** Key used for the servlet context object in tool properties. */
+    public static final String SERVLET_CONTEXT_KEY = "servletContext";
 
     /** Default key used to store toolboxes in request/session/application attributes. */
     public static final String DEFAULT_TOOLBOX_KEY =
