@@ -172,7 +172,7 @@ public class VelocityView
     private ServletContext servletContext;
     private String defaultContentType = DEFAULT_CONTENT_TYPE;
     private String toolboxKey = DEFAULT_TOOLBOX_KEY;
-    private boolean createSession = false;
+    private boolean createSession = true;
     private boolean supportDeprecatedConfig = true;
 
     public VelocityView(ServletConfig config)
@@ -344,7 +344,7 @@ public class VelocityView
      * @param config servlet configuation
      * @param factory the ToolboxFactory to be initialized for this VelocityView
      */
-    protected void init(ServletConfig config, final ToolboxFactory factory)
+    protected void init(final ServletConfig config, final ToolboxFactory factory)
     {
         if (factory == null)
         {
@@ -355,8 +355,12 @@ public class VelocityView
         configure(config, toolboxFactory);
 
         // check for a createSession setting
-        this.createSession =
+        Boolean bool = 
             (Boolean)toolboxFactory.getGlobalProperty(CREATE_SESSION_PROPERTY);
+        if (bool != null)
+        {
+            this.createSession = bool;
+        }
 
         // add any application toolbox to the application attributes
         Toolbox appTools =
@@ -369,7 +373,7 @@ public class VelocityView
     }
 
 
-    protected void configure(ServletConfig config, VelocityEngine velocity)
+    protected void configure(final ServletConfig config, final VelocityEngine velocity)
     {
         // first get the default properties, and bail if we don't find them
         velocity.setExtendedProperties(getProperties(DEFAULT_PROPERTIES_PATH, true));
@@ -413,7 +417,7 @@ public class VelocityView
     }
 
 
-    protected void configure(ServletConfig config, ToolboxFactory factory)
+    protected void configure(final ServletConfig config, final ToolboxFactory factory)
     {
         // determine whether or not to include default tools
         String suppressDefaults = config.getInitParameter(SUPPRESS_DEFAULTS_KEY);
@@ -753,6 +757,7 @@ public class VelocityView
         //TODO: move this string constant somewhere static
         if (toolboxFactory.hasToolbox("session"))
         {
+            //FIXME? does this honor createSession props set on the session Toolbox?
             HttpSession session = request.getSession(this.createSession);
             if (session != null)
             {
