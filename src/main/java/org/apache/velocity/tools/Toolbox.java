@@ -50,6 +50,7 @@ public class Toolbox
             throw new IllegalArgumentException("Toolbox must have one or more tools");
         }
 
+        this.infoMap = toolInfo;
         this.properties = properties;
     }
 
@@ -97,7 +98,11 @@ public class Toolbox
         else
         {
             Object tool = cache.get(key);
-            if (tool == null || path == null)
+            if (tool == null)
+            {
+                return null;
+            }
+            else if (path == null)
             {
                 return tool;
             }
@@ -131,6 +136,10 @@ public class Toolbox
 
     protected boolean hasPermission(ToolInfo info, String path)
     {
+        if (info == null || path == null)
+        {
+            return true;
+        }
         return info.hasPermission(path);
     }
 
