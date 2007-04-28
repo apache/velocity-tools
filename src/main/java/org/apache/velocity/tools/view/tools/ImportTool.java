@@ -58,23 +58,6 @@ public class ImportTool extends ImportSupport
     public ImportTool() {}
 
     /**
-     * Initializes this tool.
-     *
-     * @param obj the current ViewContext
-     * @throws IllegalArgumentException if the param is not a ViewContext
-     */
-    public void init(Object obj) {
-        if (! (obj instanceof ViewContext)) {
-            throw new IllegalArgumentException("Tool can only be initialized with a ViewContext");
-        }
-
-        ViewContext context = (ViewContext) obj;
-        this.request = context.getRequest();
-        this.response = context.getResponse();
-        this.application = context.getServletContext();
-    }
-
-    /**
      * Returns the supplied URL rendered as a String.
      *
      * @param url the URL to import

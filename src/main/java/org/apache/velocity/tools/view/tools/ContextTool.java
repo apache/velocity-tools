@@ -33,8 +33,8 @@ import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
 import org.apache.velocity.tools.generic.ValueParser;
-import org.apache.velocity.tools.view.context.ChainedContext;
 import org.apache.velocity.tools.view.ViewContext;
+import org.apache.velocity.tools.view.ViewToolContext;
 
 /**
  * <p>View tool for convenient access to {@link ViewContext} data and
@@ -78,29 +78,22 @@ public class ContextTool
 
 
     /**
-     * Looks for a safe-mode configuration setting. By default,
+     * Initializes this instance for the current request.
+     * Also looks for a safe-mode configuration setting. By default,
      * safe-mode is true and thus keys with '.' in them are hidden.
      */
-    public void configure(Map params)
+    public void setup(Map params)
     {
         if (params != null)
         {
             ValueParser parser = new ValueParser(params);
             safeMode = parser.getBoolean(SAFE_MODE_KEY, true);
         }
-    }
 
-    /**
-     * Initializes this instance for the current request.
-     *
-     * @param obj the ViewContext of the current request
-     */
-    public void init(Object obj)
-    {
-        this.context = (ViewContext)obj;
-        this.request = context.getRequest();
+        this.context = (ViewContext)params.get(ViewToolContext.CONTEXT_KEY);
+        this.request = (HttpServletRequest)params.get(ViewContext.REQUEST);
         this.session = request.getSession(false);
-        this.application = context.getServletContext();
+        this.application = (ServletContext)params.get(ViewContext.SERVLET_CONTEXT_KEY);
     }
 
 
@@ -115,14 +108,14 @@ public class ContextTool
     /**
      * <p>Returns a read-only view of the toolbox {@link Map}
      * for this context.</p>
-     * @return an unmodifiable version of the toolbox for this request
-     *         or {@code null} if there is none
+     * @return a map of all available tools for this request
+     *         or {@code null} if such a map is not available
      */
     public Map getToolbox()
     {
-        if (this.toolbox == null && this.context instanceof ChainedContext)
+        if (this.toolbox == null && this.context instanceof ViewToolContext)
         {
-            this.toolbox = ((ChainedContext)context).getToolbox();
+            this.toolbox = ((ViewToolContext)context).getToolbox();
         }
         return this.toolbox;
     }

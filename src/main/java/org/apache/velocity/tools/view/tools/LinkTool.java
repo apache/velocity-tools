@@ -148,7 +148,44 @@ public class LinkTool implements Cloneable
     }
 
 
-    // --------------------------------------- Protected Methods -------------
+    // --------------------------------------- Setup Methods -------------
+
+    /**
+     * Sets the current {@link HttpServletRequest}. This is required
+     * for this tool to operate and will throw a NullPointerException
+     * if this is not set or is set to {@code null}.
+     */
+    public void setServletRequest(HttpServletRequest request)
+    {
+        if (request == null)
+        {
+            throw new NullPointerException("request should not be null");
+        }
+        this.request = request;
+    }
+
+    /**
+     * Sets the current {@link HttpServletResponse}. This is required
+     * for this tool to operate and will throw a NullPointerException
+     * if this is not set or is set to {@code null}.
+     */
+    public void setServletResponse(HttpServletResponse response)
+    {
+        if (response == null)
+        {
+            throw new NullPointerException("response should not be null");
+        }
+        this.response = response;
+    }
+
+    public void setServletContext(ServletContext application)
+    {
+        if (application == null)
+        {
+            throw new NullPointerException("servletContext should not be null");
+        }
+        this.application = application;
+    }
 
     /**
      * <p>Controls the delimiter used for separating query data pairs.
@@ -162,12 +199,19 @@ public class LinkTool implements Cloneable
      *        will be used.  if false, then '&' will be used.
      * @see <a href="http://www.w3.org/TR/xhtml1/#C_12">Using Ampersands in Attribute Values (and Elsewhere)</a>
      */
-    protected void setXhtml(boolean useXhtml)
+    public void setXhtml(boolean useXhtml)
     {
+System.out.println("fired setXhtml: "+useXhtml);
         queryDataDelim =
             (useXhtml) ? XHTML_QUERY_DELIMITER : HTML_QUERY_DELIMITER;
     }
 
+    public void setXHTML(boolean useXhtml)
+    {
+System.out.println("fired primitive setXHTML");
+        setXhtml(useXhtml);
+    }
+    
     /**
      * <p>Controls whether or not the {@link #getSelf()} method will return
      *    a duplicate with a URI in absolute or relative form.</p>
@@ -179,8 +223,9 @@ public class LinkTool implements Cloneable
      * @see #getSelf()
      * @since VelocityTools 1.3
      */
-    protected void setSelfAbsolute(boolean selfAbsolute)
+    public void setSelfAbsolute(boolean selfAbsolute)
     {
+System.out.println("fired setSelfAbsolute: "+selfAbsolute);
         this.selfAbsolute = selfAbsolute;
     }
 
@@ -193,7 +238,7 @@ public class LinkTool implements Cloneable
      * @see #getSelf()
      * @since VelocityTools 1.3
      */
-    protected void setSelfIncludeParameters(boolean selfParams)
+    public void setSelfIncludeParameters(boolean selfParams)
     {
         this.selfParams = selfParams;
     }
@@ -324,56 +369,6 @@ public class LinkTool implements Cloneable
             return copy;
         }
     }
-
-
-    // --------------------------------------- Toolbox Methods -------------
-
-    /**
-     * Configures this tool
-     *
-     * @param params Map of configuration parameters
-     * @since VelocityTools 1.3
-     */
-    public void configure(Map params)
-    {
-        ValueParser parser = new ValueParser(params);
-        Boolean selfAbsolute = parser.getBoolean(SELF_ABSOLUTE_KEY);
-        if (selfAbsolute != null)
-        {
-            setSelfAbsolute(selfAbsolute.booleanValue());
-        }
-        Boolean selfParams = parser.getBoolean(SELF_INCLUDE_PARAMETERS_KEY);
-        if (selfParams != null)
-        {
-            setSelfIncludeParameters(selfParams.booleanValue());
-        }
-    }
-
-    /**
-     * Initializes this tool.
-     *
-     * @param obj the current ViewContext
-     * @throws IllegalArgumentException if the param is not a ViewContext
-     */
-    public void init(Object obj)
-    {
-        if (!(obj instanceof ViewContext))
-        {
-            throw new IllegalArgumentException("Tool can only be initialized with a ViewContext");
-        }
-
-        ViewContext context = (ViewContext)obj;
-        this.request = context.getRequest();
-        this.response = context.getResponse();
-        this.application = context.getServletContext();
-        // for backwards compatibility, honor the old key...
-        Boolean b = (Boolean)context.getAttribute("XHTML");
-        if (b != null)
-        {
-            setXhtml(b.booleanValue());
-        }
-    }
-
 
     // --------------------------------------------- Template Methods -----------
 

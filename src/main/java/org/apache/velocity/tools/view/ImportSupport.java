@@ -56,15 +56,60 @@ public abstract class ImportSupport {
 
     protected static final Log LOG = LogFactory.getLog(ImportSupport.class);
 
-    protected ServletContext application;
-    protected HttpServletRequest request;
-    protected HttpServletResponse response;
-
     protected static final String VALID_SCHEME_CHARS =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+.-";
 
     /** Default character encoding for response. */
     protected static final String DEFAULT_ENCODING = "ISO-8859-1";
+
+    protected ServletContext application;
+    protected HttpServletRequest request;
+    protected HttpServletResponse response;
+
+
+    // --------------------------------------- Setup Methods -------------
+
+    /**
+     * Sets the current {@link HttpServletRequest}. This is required
+     * for this tool to operate and will throw a NullPointerException
+     * if this is not set or is set to {@code null}.
+     */
+    public void setRequest(HttpServletRequest request)
+    {
+        if (request == null)
+        {
+            throw new NullPointerException("request should not be null");
+        }
+        this.request = request;
+    }
+
+    /**
+     * Sets the current {@link HttpServletResponse}. This is required
+     * for this tool to operate and will throw a NullPointerException
+     * if this is not set or is set to {@code null}.
+     */
+    public void setResponse(HttpServletResponse response)
+    {
+        if (response == null)
+        {
+            throw new NullPointerException("response should not be null");
+        }
+        this.response = response;
+    }
+
+    /**
+     * Sets the {@link ServletContext}. This is required
+     * for this tool to operate and will throw a NullPointerException
+     * if this is not set or is set to {@code null}.
+     */
+    public void setServletContext(ServletContext application)
+    {
+        if (application == null)
+        {
+            throw new NullPointerException("servlet context should not be null");
+        }
+        this.application = application;
+    }
 
     //*********************************************************************
     // URL importation logic

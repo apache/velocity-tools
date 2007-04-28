@@ -48,7 +48,7 @@ import org.apache.velocity.tools.view.ViewContext;
  * @since VelocityTools 1.1
  * @version $Id$
  */
-@DefaultKey("cookie")
+@DefaultKey("cookies")
 @ValidScope("request")
 public class CookieTool
 {
@@ -56,17 +56,34 @@ public class CookieTool
     protected HttpServletRequest request;
     protected HttpServletResponse response;
 
+    // --------------------------------------- Setup Methods -------------
 
     /**
-     * Initializes this instance for the current request.
-     *
-     * @param obj the ViewContext of the current request
+     * Sets the current {@link HttpServletRequest}. This is required
+     * for this tool to operate and will throw a NullPointerException
+     * if this is not set or is set to {@code null}.
      */
-    public void init(Object obj)
+    public void setRequest(HttpServletRequest request)
     {
-        ViewContext context = (ViewContext)obj;
-        this.request = context.getRequest();
-        this.response = context.getResponse();
+        if (request == null)
+        {
+            throw new NullPointerException("request should not be null");
+        }
+        this.request = request;
+    }
+
+    /**
+     * Sets the current {@link HttpServletResponse}. This is required
+     * for this tool to operate and will throw a NullPointerException
+     * if this is not set or is set to {@code null}.
+     */
+    public void setResponse(HttpServletResponse response)
+    {
+        if (response == null)
+        {
+            throw new NullPointerException("response should not be null");
+        }
+        this.response = response;
     }
 
 

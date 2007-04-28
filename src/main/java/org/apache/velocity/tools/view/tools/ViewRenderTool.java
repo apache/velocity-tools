@@ -86,21 +86,18 @@ public class ViewRenderTool extends RenderTool
     public ViewRenderTool()
     {}
 
-
     /**
-     * Initializes this instance.
-     *
-     * @param obj the current Context
+     * Sets the current {@link Context}. This is required
+     * for this tool to operate and will throw a NullPointerException
+     * if this is not set or is set to {@code null}.
      */
-    public void init(Object obj)
+    public void setVelocityContext(Context context)
     {
-        context = (Context)obj;
-
-        // if ViewContext, try to retrieve a VelocityEngine for use
-        if (obj instanceof ViewContext)
+        if (context == null)
         {
-            setVelocityEngine(((ViewContext)obj).getVelocityEngine());
+            throw new NullPointerException("context must not be null");
         }
+        this.context = context;
     }
 
     /**
