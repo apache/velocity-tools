@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 
 /**
@@ -39,6 +40,9 @@ import org.apache.velocity.context.Context;
 public class ToolContext implements Context
 {
     public static final String PATH_KEY = "requestPath";
+    public static final String CONTEXT_KEY = "velocityContext";
+    public static final String ENGINE_KEY = "velocityEngine";
+    public static final String LOG_KEY = "log";
 
     private List<Toolbox> toolboxes;
     // this is meant solely for tool setup,
@@ -46,6 +50,15 @@ public class ToolContext implements Context
     private Map<String,Object> toolProps;
     // this is only for values added during use of this context
     private Map<String,Object> localContext;
+
+    public ToolContext(VelocityEngine engine)
+    {
+        this(null, null);
+
+        // add the engine and log as common tool properties
+        putToolProperty(ENGINE_KEY, engine);
+        putToolProperty(LOG_KEY, engine.getLog());
+    }
 
     public ToolContext(Map<String,Object> toolProps)
     {
@@ -67,6 +80,8 @@ public class ToolContext implements Context
         {
             this.toolProps = new HashMap<String,Object>(8);
         }
+        // add this as a common tool property
+        putToolProperty(CONTEXT_KEY, this);
 
         toolboxes = new ArrayList<Toolbox>();
         if (toolbox != null)
@@ -85,6 +100,11 @@ public class ToolContext implements Context
     protected List<Toolbox> getToolboxes()
     {
         return this.toolboxes;
+    }
+
+    protected Map<String,Object> getToolProperties()
+    {
+        return this.toolProps;
     }
 
     public Object putToolProperty(String key, Object value)
