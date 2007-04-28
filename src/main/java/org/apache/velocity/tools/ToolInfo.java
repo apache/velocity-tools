@@ -24,6 +24,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.velocity.tools.Utils;
 
 /**
  * Manages data needed to create instances of a tool. New instances
@@ -36,6 +37,8 @@ import org.apache.commons.beanutils.PropertyUtils;
 //TODO: make this class serializable
 public class ToolInfo
 {
+    public static final String SETUP_METHOD_NAME = "setup";
+
     private String key;
     private Class clazz;
     private boolean restrictToIsExact;
@@ -80,35 +83,41 @@ public class ToolInfo
             clazz.newInstance();
 
             // ok, we'll accept this one
-            setClass(clazz);
+            this.clazz = clazz;
         }
         catch (Exception e)
         {
             throw new IllegalArgumentException("Could not create an instance of "+clazz, e);
         }
 
+        // search for a setup(Map params) method in the class
         try
         {
-            // check for a setup(Map) method
-            this.setup =
-                clazz.getMethod("setup", new Class[]{ Map.class });
-            /* TODO? if we have performance issues with copyProperties,
-                     look at possibly checking for and caching these common setters
-                        setContext(VelocityContext)
-                        setVelocityEngine(VelocityEngine)
-                        setLog(Log)
-                        setLocale(Locale)
-                     these four are tricky since we may not want servlet deps here
-                        setServletRequest(ServletRequest)
-                        setSession(HttpSession)
-                        setServletResponse(ServletResponse)
-                        setServletContext(ServletContext)
-            */
+            this.setup = Utils.findMethod(clazz, SETUP_METHOD_NAME,
+                                          new Class[]{ Map.class });
         }
-        catch (NoSuchMethodException nsme)
+        catch (SecurityException se)
         {
-            // ignore this one
+            // fail early, rather than wait until
+            String msg = "Unable to gain access to '" +
+                         SETUP_METHOD_NAME + "(Map)'" +
+                         " method for '" + clazz.getName() +
+                         "' under the current security manager."+
+                         "  This tool cannot be properly setup for use.";
+            throw new IllegalStateException(msg, se);
         }
+
+        /* TODO? if we have performance issues with copyProperties,
+                 look at possibly finding and caching these common setters
+                    setContext(VelocityContext)
+                    setVelocityEngine(VelocityEngine)
+                    setLog(Log)
+                    setLocale(Locale)
+                 these four are tricky since we may not want servlet deps here
+                    setRequest(ServletRequest)
+                    setSession(HttpSession)
+                    setResponse(ServletResponse)
+                    setServletContext(ServletContext)    */
     }
 
     /**
@@ -116,9 +125,15 @@ public class ToolInfo
      */
     public void restrictTo(String path)
     {
-        if (path.equals("*"))
+        if (path != null && !path.startsWith("/"))
+        {
+            path = "/" + path;
+        }
+
+        if (path == null || path.equals("*"))
         {
             // match all paths
+            restrictToIsExact = false;
             this.restrictTo = null;
         }
         else if(path.endsWith("*"))
@@ -223,7 +238,7 @@ public class ToolInfo
 
     /**
      * Returns a new instance of the tool. If the tool
-     * has an setup(Object) method, the new instance
+     * has an setup(Map) method, the new instance
      * will be initialized using the given properties combined with
      * whatever "constant" properties have been put into this
      * ToolInfo.
@@ -288,13 +303,15 @@ public class ToolInfo
         }
         catch (IllegalAccessException iae)
         {
-            String msg = "Unable to invoke setup(Map<String,Object>) on "+tool;
+            String msg = "Unable to invoke " +
+                         SETUP_METHOD_NAME + "(Map>) on "+tool;
             // restricting access to this method by this class ist verboten
             throw new IllegalStateException(msg, iae);
         }
         catch (InvocationTargetException ite)
         {
-            String msg = "Exception when invoking setup(Map<String,Object>) on "+tool;
+            String msg = "Exception when invoking " +
+                         SETUP_METHOD_NAME + "(Map) on "+tool;
             // convert to a runtime exception, and re-throw
             throw new RuntimeException(msg, ite.getCause());
         }
