@@ -155,7 +155,7 @@ public class LinkTool implements Cloneable
      * for this tool to operate and will throw a NullPointerException
      * if this is not set or is set to {@code null}.
      */
-    public void setServletRequest(HttpServletRequest request)
+    public void setRequest(HttpServletRequest request)
     {
         if (request == null)
         {
@@ -169,7 +169,7 @@ public class LinkTool implements Cloneable
      * for this tool to operate and will throw a NullPointerException
      * if this is not set or is set to {@code null}.
      */
-    public void setServletResponse(HttpServletResponse response)
+    public void setResponse(HttpServletResponse response)
     {
         if (response == null)
         {
@@ -187,6 +187,13 @@ public class LinkTool implements Cloneable
         this.application = application;
     }
 
+    @Deprecated
+    public void setXhtml(boolean useXhtml)
+    {
+        queryDataDelim =
+            (useXhtml) ? XHTML_QUERY_DELIMITER : HTML_QUERY_DELIMITER;
+    }
+
     /**
      * <p>Controls the delimiter used for separating query data pairs.
      *    By default, the standard '&' character is used.</p>
@@ -199,16 +206,8 @@ public class LinkTool implements Cloneable
      *        will be used.  if false, then '&' will be used.
      * @see <a href="http://www.w3.org/TR/xhtml1/#C_12">Using Ampersands in Attribute Values (and Elsewhere)</a>
      */
-    public void setXhtml(boolean useXhtml)
-    {
-System.out.println("fired setXhtml: "+useXhtml);
-        queryDataDelim =
-            (useXhtml) ? XHTML_QUERY_DELIMITER : HTML_QUERY_DELIMITER;
-    }
-
     public void setXHTML(boolean useXhtml)
     {
-System.out.println("fired primitive setXHTML");
         setXhtml(useXhtml);
     }
     
@@ -225,7 +224,6 @@ System.out.println("fired primitive setXHTML");
      */
     public void setSelfAbsolute(boolean selfAbsolute)
     {
-System.out.println("fired setSelfAbsolute: "+selfAbsolute);
         this.selfAbsolute = selfAbsolute;
     }
 
