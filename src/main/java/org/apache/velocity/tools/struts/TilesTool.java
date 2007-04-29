@@ -99,18 +99,13 @@ public class TilesTool extends ImportSupport
      * @param obj the current ViewContext
      * @throws IllegalArgumentException if the param is not a ViewContext
      */
-    public void init(Object obj)
+    public void setVelocityContext(Context context)
     {
-        if (!(obj instanceof ViewContext))
+        if (context == null)
         {
-            throw new IllegalArgumentException("Tool can only be initialized with a ViewContext");
+            throw new NullPointerException("velocity context should not be null");
         }
-
-        ViewContext viewContext = (ViewContext)obj;
-        this.velocityContext = viewContext.getVelocityContext();
-        this.request = viewContext.getRequest();
-        this.response = viewContext.getResponse();
-        this.application = viewContext.getServletContext();
+        this.velocityContext = context;
     }
 
     /***************************** View Helpers ******************************/

@@ -19,12 +19,13 @@ package org.apache.velocity.tools.struts;
  * under the License.
  */
 
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import org.apache.struts.action.ActionForm;
 import org.apache.velocity.tools.view.ViewContext;
-
+import org.apache.velocity.tools.config.DefaultKey;
+import org.apache.velocity.tools.config.ValidScope;
 
 /**
  * <p>View tool to work with HTML forms in Struts.</p>
@@ -48,6 +49,8 @@ import org.apache.velocity.tools.view.ViewContext;
  * @since VelocityTools 1.0
  * @version $Id$
  */
+@DefaultKey("form")
+@ValidScope("request")
 public class FormTool
 {
 
@@ -83,15 +86,9 @@ public class FormTool
      * @param obj the current ViewContext
      * @throws IllegalArgumentException if the param is not a ViewContext
      */
-    public void init(Object obj)
+    public void setup(Map params)
     {
-        if (!(obj instanceof ViewContext))
-        {
-            throw new IllegalArgumentException("Tool can only be initialized with a ViewContext");
-        }
-
-        ViewContext context = (ViewContext)obj;
-        this.request = context.getRequest();
+        this.request = (HttpServletRequest)params.get(ViewContext.REQUEST);
         this.session = request.getSession(false);
     }
 

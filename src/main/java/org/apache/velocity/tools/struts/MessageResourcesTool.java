@@ -20,6 +20,7 @@ package org.apache.velocity.tools.struts;
  */
 
 import java.util.Locale;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletContext;
 import org.apache.commons.logging.Log;
@@ -51,16 +52,11 @@ public abstract class MessageResourcesTool
      * @param obj the current ViewContext
      * @throws IllegalArgumentException if the param is not a ViewContext
      */
-    public void init(Object obj)
+    public void setup(Map params)
     {
-        if (!(obj instanceof ViewContext))
-        {
-            throw new IllegalArgumentException("Tool can only be initialized with a ViewContext");
-        }
+        this.request = (HttpServletRequest)params.get(ViewContext.REQUEST);
+        this.application = (ServletContext)params.get(ViewContext.SERVLET_CONTEXT_KEY);
 
-        ViewContext context = (ViewContext)obj;
-        this.request = context.getRequest();
-        this.application = context.getServletContext();
         this.resources =
             StrutsUtils.getMessageResources(request, application);
         this.locale =
