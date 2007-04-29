@@ -26,11 +26,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import org.apache.commons.validator.Field;
 import org.apache.commons.validator.Form;
 import org.apache.commons.validator.ValidatorAction;
@@ -46,6 +44,7 @@ import org.apache.struts.validator.ValidatorPlugIn;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
 import org.apache.velocity.tools.view.ViewContext;
+import org.apache.velocity.tools.view.ViewToolContext;
 
 /**
  * <p>View tool that works with Struts Validator to
@@ -160,20 +159,14 @@ public class ValidatorTool
      * @param obj the current ViewContext
      * @throws IllegalArgumentException if the param is not a ViewContext
      */
-    public void init(Object obj)
+    public void setup(Map params)
     {
-        if (!(obj instanceof ViewContext))
-        {
-            throw new IllegalArgumentException(
-                    "Tool can only be initialized with a ViewContext");
-        }
-
-        this.context = (ViewContext)obj;
-        this.request = context.getRequest();
+        this.context = (ViewContext)params.get(ViewToolContext.CONTEXT_KEY);
+        this.request = (HttpServletRequest)params.get(ViewContext.REQUEST);
         this.session = request.getSession(false);
-        this.app = context.getServletContext();
+        this.app = (ServletContext)params.get(ViewContext.SERVLET_CONTEXT_KEY);
 
-        Boolean b = (Boolean)context.getAttribute("XHTML");
+        Boolean b = (Boolean)params.get("XHTML");
         if (b != null)
         {
             this.xhtml = b.booleanValue();
