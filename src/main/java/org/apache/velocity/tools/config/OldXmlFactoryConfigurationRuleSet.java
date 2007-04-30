@@ -154,9 +154,6 @@ public class OldXmlFactoryConfigurationRuleSet extends RuleSetBase
     {
         public void setBoolean(FactoryConfiguration factory, Boolean b)
         {
-            // for tools
-            factory.setProperty("Xhtml", b);
-            // for templates
             factory.setProperty("XHTML", b);
         }
     }
