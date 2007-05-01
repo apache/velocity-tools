@@ -145,7 +145,7 @@ ${toolname}.html">$toolname</a>#end
     #foreach( $param in $request.parameterMap.keySet() )
       #foreach( $value in $params.getStrings($param) )
         #if( $param != $method1 && $param != $method2 )
-          <input type="hidden" name="$param" value="$esc.html($value}">
+          <input type="hidden" name="$param" value="$esc.html($value)">
         #end
       #end
     #end
@@ -184,7 +184,7 @@ ${toolname}.html">$toolname</a>#end
     #foreach( $param in $request.parameterMap.keySet() )
       #foreach( $value in $params.getStrings($param) )
         #if( $param != $method1 && $param != $method2 && $param != $method3 )
-          <input type="hidden" name="$param" value="$esc.html($value}">
+          <input type="hidden" name="$param" value="$esc.html($value)">
         #end
       #end
     #end
@@ -217,7 +217,7 @@ ${toolname}.html">$toolname</a>#end
     #foreach( $param in $request.parameterMap.keySet() )
       #foreach( $value in $params.getStrings($param) )
         #if( $param != 'custom' )
-          <input type="hidden" name="$param" value="$esc.html($value}">
+          <input type="hidden" name="$param" value="$esc.html($value)">
         #end
       #end
     #end
