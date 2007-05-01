@@ -144,14 +144,20 @@ public class XmlFactoryConfigurationRuleSet extends RuleSetBase
         {
             Configuration config = (Configuration)digester.peek();
 
-            for (int i=0; i < attributes.getLength(); i++) {
+            for (int i=0; i < attributes.getLength(); i++)
+            {
                 String name = attributes.getLocalName(i);
-                if ("".equals(name)) {
+                if ("".equals(name))
+                {
                     name = attributes.getQName(i);
                 }
 
-                String value = attributes.getValue(i);
-                config.setProperty(name, value);
+                // don't treat "class" as a property
+                if (!"class".equals(name))
+                {
+                    String value = attributes.getValue(i);
+                    config.setProperty(name, value);
+                }
             }
         }
     }
