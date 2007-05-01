@@ -159,4 +159,30 @@ public class ToolConfiguration extends Configuration
         }
     }
 
+    public String toString()
+    {
+        StringBuilder out = new StringBuilder();
+        out.append("Tool '");
+        if (getClassname() == null)
+        {
+            out.append(this.key);
+        }
+        else
+        {
+            out.append(getKey());
+        }
+        out.append("' ");
+        out.append("=> ");
+        out.append(getClassname());
+        if (getRestrictTo() != null)
+        {
+            out.append(" only for '");
+            out.append(getRestrictTo());
+            out.append('\'');
+        }
+        out.append(" ");
+        appendProperties(out);
+        return out.toString();
+    }
+
 }

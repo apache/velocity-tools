@@ -116,6 +116,30 @@ public class FactoryConfiguration
         }
     }
 
+    public String toString()
+    {
+        StringBuilder out = new StringBuilder();
+        out.append("\nFactoryConfiguration ");
+        appendProperties(out);
+        if (!getData().isEmpty())
+        {
+            out.append(" including ");
+            out.append(getData().size());
+            out.append(" data");
+        }
+        appendChildren(out, "toolboxes: \n ", "\n ");
+        if (!getData().isEmpty())
+        {
+            for (Data datum : getData())
+            {
+                out.append(datum);
+                out.append("\n ");
+            }
+        }
+        return out.toString();
+    }
+
+
     public ToolboxFactory createFactory()
     {
         ToolboxFactory factory = new ToolboxFactory();
@@ -131,7 +155,7 @@ public class FactoryConfiguration
      * the velocity-tools-struts-2.x.jar is being used, then all VelocityTools
      * will be available.  This also means that subclasses in the larger jars
      * will override their superclasses.  So, if you are using the VelocityStruts
-     * jar, then you $link reference will be a StrutsLinkTool.  If you are using
+     * jar, then your $link reference will be a StrutsLinkTool.  If you are using
      * the VelocityView jar, it will be a standard LinkTool.
      */
     public static FactoryConfiguration getDefault()

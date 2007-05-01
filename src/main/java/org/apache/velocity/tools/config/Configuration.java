@@ -70,6 +70,11 @@ public class Configuration<T>
         simpleProperties.put(name, value);
     }
 
+    public boolean hasProperties()
+    {
+        return !simpleProperties.isEmpty() || !convertableProperties.isEmpty();
+    }
+
     public Map<String,Object> getSimpleProperties()
     {
         return simpleProperties;
@@ -104,6 +109,25 @@ public class Configuration<T>
         for (Property property : getConvertableProperties())
         {
             property.validate();
+        }
+    }
+
+    protected void appendProperties(StringBuilder out)
+    {
+        if (hasProperties())
+        {
+            Map<String,Object> props = getProperties();
+            out.append("with ");
+            out.append(props.size());
+            out.append(" properties [");
+            for (String name : props.keySet())
+            {
+                out.append(name);
+                out.append(" => ");
+                out.append(props.get(name));
+                out.append("; ");
+            }
+            out.append("]");
         }
     }
 
