@@ -93,13 +93,11 @@ public class ViewToolContext extends ToolContext implements ViewContext
 
     protected void putToolProperties()
     {
-        //TODO!! put these strings as constants somewhere!!
         putToolProperty(REQUEST, getRequest());
         putToolProperty(RESPONSE, getResponse());
         putToolProperty(SESSION, getSession());
         putToolProperty(SERVLET_CONTEXT_KEY, getServletContext());
         putToolProperty(PATH_KEY, ServletUtils.getPath(getRequest()));
-        putToolProperty("velocityContext", getVelocityContext());
     }
 
     /**
