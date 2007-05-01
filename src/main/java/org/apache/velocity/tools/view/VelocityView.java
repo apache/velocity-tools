@@ -441,7 +441,7 @@ public class VelocityView
             factoryConfig = FactoryConfiguration.getDefault();
         }
 
-        String configMessage = "Configuring ToolboxFactory with configuration at: ";
+        String configMessage = "Loading configuration from: ";
 
         // check for application-wide user config in the context init params
         String appToolsPath = servletContext.getInitParameter(TOOLS_KEY);
@@ -491,6 +491,8 @@ public class VelocityView
 
             factoryConfig.addConfiguration(servletConfig);
         }
+
+        getLog().debug("Configuring toolboxFactory with: "+factoryConfig);
 
         // apply this configuration to the specified factory
         factory.configure(factoryConfig);
@@ -600,7 +602,7 @@ public class VelocityView
     {
         if (getLog().isTraceEnabled())
         {
-            getLog().trace("Searching for properties at: "+path);
+            getLog().trace("Searching for configuration at: "+path);
         }
 
         // first make sure we can even get such a file
