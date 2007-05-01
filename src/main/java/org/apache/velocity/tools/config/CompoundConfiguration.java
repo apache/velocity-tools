@@ -38,6 +38,11 @@ public class CompoundConfiguration<C extends Configuration>
         children.add(config);
     }
 
+    protected boolean hasChildren()
+    {
+        return !children.isEmpty();
+    }
+
     protected List<C> getChildren()
     {
         return children;
@@ -78,6 +83,29 @@ public class CompoundConfiguration<C extends Configuration>
         for (C child : getChildren())
         {
             child.validate();
+        }
+    }
+
+    protected void appendChildren(StringBuilder out, String childrenName, String childDelim)
+    {
+        if (hasChildren())
+        {
+            if (hasProperties())
+            {
+                out.append(" and ");
+            }
+            else
+            {
+                out.append("with ");
+            }
+            out.append(getChildren().size());
+            out.append(' ');
+            out.append(childrenName);
+            for (C child : getChildren())
+            {
+                out.append(child);
+                out.append(childDelim);
+            }
         }
     }
 

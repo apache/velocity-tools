@@ -238,6 +238,17 @@ public class Data
         return dc;
     }
 
+    public String toString()
+    {
+        StringBuilder out = new StringBuilder();
+        out.append("Data '");
+        out.append(key);
+        out.append('\'');
+        out.append(" -> ");
+        out.append(value);
+        return out.toString();
+    }
+
 
 
     protected static class DataConverter

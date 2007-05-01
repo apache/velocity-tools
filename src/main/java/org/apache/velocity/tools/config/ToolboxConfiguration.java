@@ -144,4 +144,19 @@ public class ToolboxConfiguration
         }
     }
 
+    public String toString()
+    {
+        StringBuilder out = new StringBuilder();
+        out.append("Toolbox '");
+        out.append(this.scope);
+        out.append("' ");
+        appendProperties(out);
+        appendChildren(out, "tools: \n  ", "\n  ");
+        if (hasChildren())
+        {
+            out.append(")");
+        }
+        return out.toString();
+    }
+
 }
