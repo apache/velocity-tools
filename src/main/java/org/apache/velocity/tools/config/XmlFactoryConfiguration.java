@@ -89,7 +89,7 @@ public class XmlFactoryConfiguration extends FileFactoryConfiguration
         }
         catch (SAXException saxe)
         {
-            throw new RuntimeException("InputStream could not be parsed", saxe);
+            throw new RuntimeException("There was an error while parsing the InputStream", saxe);
         }
     }
 
