@@ -35,16 +35,16 @@ import org.apache.velocity.tools.config.DefaultKey;
  * <p><pre>
  * Example uses:
  *  $primes                    -> new int[] {2, 3, 5, 7}
- *  $list.size($primes)        -> 4
- *  $list.get($primes, 2)      -> 5
- *  $list.set($primes, 2, 1)   -> (primes[2] becomes 1)
- *  $list.get($primes, 2)      -> 1
- *  $list.isEmpty($primes)     -> false
- *  $list.contains($primes, 7) -> true
+ *  $lists.size($primes)        -> 4
+ *  $lists.get($primes, 2)      -> 5
+ *  $lists.set($primes, 2, 1)   -> (primes[2] becomes 1)
+ *  $lists.get($primes, 2)      -> 1
+ *  $lists.isEmpty($primes)     -> false
+ *  $lists.contains($primes, 7) -> true
  *
  * Example toolbox.xml config (if you want to use this with VelocityView):
  * &lt;tool&gt;
- *   &lt;key&gt;list&lt;/key&gt;
+ *   &lt;key&gt;lists&lt;/key&gt;
  *   &lt;scope&gt;application&lt;/scope&gt;
  *   &lt;class&gt;org.apache.velocity.tools.generic.ListTool&lt;/class&gt;
  * &lt;/tool&gt;
@@ -58,7 +58,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Id: $
  * @since VelocityTools 1.2
  */
-@DefaultKey("list")
+@DefaultKey("lists")
 public class ListTool
 {
 
