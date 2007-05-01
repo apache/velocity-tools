@@ -22,11 +22,12 @@ package org.apache.velocity.tools.view.tools;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
-import org.apache.velocity.tools.view.ViewContext;
+import org.apache.velocity.tools.ToolContext;
 
 /**
  * <p>Abstract view tool for doing request-based pagination of
@@ -143,6 +144,17 @@ public abstract class AbstractPagerTool
         }
         this.session = request.getSession(false);
         setup(request);
+    }
+
+    public void setup(Map params)
+    {
+        init(params.get(ToolContext.CONTEXT_KEY));
+    }
+
+    @Deprecated
+    public void init(Object obj)
+    {
+        //Does nothing
     }
 
     /**
