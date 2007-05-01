@@ -92,6 +92,7 @@ import org.apache.velocity.tools.view.ServletUtils;
  * @author <a href="mailto:geirm@apache.org">Geir Magnusson Jr.</a>
  * @author <a href="mailto:henning@schmiedehausen.org">Henning P. Schmiedehausen</a>
  * @version $Id$
+ * @deprecated Use {@link org.apache.velocity.tools.config.XmlFactoryConfiguration}
  */
 public class ServletToolboxManager extends XMLToolboxManager
 {
