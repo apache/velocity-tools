@@ -54,8 +54,6 @@ import org.apache.commons.collections.ExtendedProperties;
  */
 public class PropertiesFactoryConfiguration extends FileFactoryConfiguration
 {
-/*
- */ 
     /**
      * <p>Reads an properties file from an {@link InputStream}
      * and uses it to configure this {@link FactoryConfiguration}.</p>
