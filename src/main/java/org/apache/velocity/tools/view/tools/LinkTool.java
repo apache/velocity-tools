@@ -29,8 +29,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
 import org.apache.velocity.tools.generic.ValueParser;
@@ -64,8 +63,6 @@ import org.apache.velocity.tools.view.ServletUtils;
 @ValidScope("request")
 public class LinkTool implements Cloneable
 {
-    protected static final Log LOG = LogFactory.getLog(LinkTool.class);
-
     /**
      * Parameter key for configuring {@link #setSelfAbsolute} state
      * @since VelocityTools 1.3
@@ -93,6 +90,9 @@ public class LinkTool implements Cloneable
 
     /** A reference to the HttpServletResponse. */
     protected HttpServletResponse response;
+
+    /** A reference to the Velocity runtime's {@link Log}. */
+    protected Log LOG;
 
 
     /** The URI reference set for this link. */
@@ -129,7 +129,8 @@ public class LinkTool implements Cloneable
         }
         catch (NoSuchMethodException e)
         {
-            LOG.debug("Can't find JDK 1.4 encode method. Using JDK 1.3 version.");
+            //TODO: drop JDK 1.3 support in separate commit
+            //LOG.debug("LinkTool : Can't find JDK 1.4 encode method. Using JDK 1.3 version.");
         }
     }
 
@@ -185,6 +186,15 @@ public class LinkTool implements Cloneable
             throw new NullPointerException("servletContext should not be null");
         }
         this.application = application;
+    }
+
+    public void setLog(Log log)
+    {
+        if (log == null)
+        {
+            throw new NullPointerException("log should not be null");
+        }
+        this.LOG = log;
     }
 
     @Deprecated
@@ -341,7 +351,7 @@ public class LinkTool implements Cloneable
         }
         catch (CloneNotSupportedException e)
         {
-            LOG.warn("Could not properly clone " + getClass() + " - " + e);
+            LOG.warn("LinkTool : Could not properly clone " + getClass(), e);
 
             // "clone" manually
             LinkTool copy;
@@ -825,13 +835,13 @@ public class LinkTool implements Cloneable
                 // don't keep trying if we get one of these
                 encode = null;
 
-                LOG.debug("Can't access JDK 1.4 encode method ("
-                          + e + "). Using deprecated version from now on.");
+                LOG.debug("LinkTool : Can't access JDK 1.4 encode method."
+                          + " Using deprecated version from now on.", e);
             }
             catch (InvocationTargetException e)
             {
-                LOG.debug("Error using JDK 1.4 encode method ("
-                          + e + "). Using deprecated version.");
+                LOG.debug("LinkTool : Error using JDK 1.4 encode method."
+                          + " Using deprecated version.", e);
             }
         }
         return URLEncoder.encode(url);

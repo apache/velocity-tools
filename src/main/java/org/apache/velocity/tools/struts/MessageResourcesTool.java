@@ -23,9 +23,8 @@ import java.util.Locale;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletContext;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.struts.util.MessageResources;
+import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.tools.view.ViewContext;
 
 /**
@@ -37,9 +36,7 @@ import org.apache.velocity.tools.view.ViewContext;
  */
 public abstract class MessageResourcesTool
 {
-
-    protected static final Log LOG = LogFactory.getLog(MessageResourcesTool.class);
-
+    protected Log LOG;
     protected ServletContext application;
     protected HttpServletRequest request;
     protected Locale locale;
@@ -56,6 +53,7 @@ public abstract class MessageResourcesTool
     {
         this.request = (HttpServletRequest)params.get(ViewContext.REQUEST);
         this.application = (ServletContext)params.get(ViewContext.SERVLET_CONTEXT_KEY);
+        this.LOG = (Log)params.get("log");
 
         this.resources =
             StrutsUtils.getMessageResources(request, application);
@@ -75,7 +73,7 @@ public abstract class MessageResourcesTool
         {
             if (resources == null)
             {
-                LOG.error("Message resources are not available.");
+                LOG.error("MessageResourcesTool : Message resources are not available.");
             }
             return resources;
         }
@@ -84,7 +82,7 @@ public abstract class MessageResourcesTool
             StrutsUtils.getMessageResources(request, application, bundle);
         if (res == null)
         {
-            LOG.error("MessageResources bundle '" + bundle + "' is not available.");
+            LOG.error("MessageResourcesTool : MessageResources bundle '" + bundle + "' is not available.");
         }
         return res;
     }

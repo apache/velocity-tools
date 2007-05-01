@@ -19,8 +19,6 @@ package org.apache.velocity.tools.view.tools;
  * under the License.
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
 import org.apache.velocity.tools.view.ImportSupport;
@@ -49,9 +47,6 @@ import org.apache.velocity.tools.view.ViewContext;
 @ValidScope("request")
 public class ImportTool extends ImportSupport
 {
-
-    protected static final Log LOG = LogFactory.getLog(ImportTool.class);
-
     /**
      * Default constructor. Tool must be initialized before use.
      */
@@ -67,14 +62,14 @@ public class ImportTool extends ImportSupport
         try {
             // check the URL
             if (url == null || url.equals("")) {
-                LOG.warn("Import URL is null or empty");
+                LOG.warn("ImportTool : Import URL is null or empty");
                 return null;
             }
 
             return acquireString(url);
         }
         catch (Exception ex) {
-            LOG.error("Exception while importing URL: " + ex.getMessage());
+            LOG.error("ImportTool : Exception while importing URL", ex);
             return null;
         }
     }

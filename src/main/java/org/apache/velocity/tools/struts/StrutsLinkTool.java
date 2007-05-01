@@ -19,9 +19,8 @@ package org.apache.velocity.tools.struts;
  * under the License.
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.view.tools.LinkTool;
+import org.apache.velocity.runtime.log.Log;
 
 /**
  * <p>View tool to work with URI links in Struts.</p>
@@ -49,8 +48,6 @@ import org.apache.velocity.tools.view.tools.LinkTool;
  */
 public class StrutsLinkTool extends LinkTool
 {
-    protected static final Log LOG = LogFactory.getLog(StrutsLinkTool.class);
-
     private String get;
 
     /**
@@ -102,7 +99,7 @@ public class StrutsLinkTool extends LinkTool
             StrutsUtils.getActionMappingURL(application, request, action);
         if (url == null)
         {
-            LOG.warn("In method setAction("+action+
+            LOG.warn("StrutsLinkTool : In method setAction("+action+
                      "): Parameter does not map to a valid action.");
             return null;
         }
@@ -126,7 +123,7 @@ public class StrutsLinkTool extends LinkTool
         String url = StrutsUtils.getForwardURL(request, application, forward);
         if (url == null)
         {
-            LOG.warn("In method setForward(" + forward +
+            LOG.warn("StrutsLinkTool : In method setForward(" + forward +
                      "): Parameter does not map to a valid forward.");
             return null;
         }
