@@ -23,13 +23,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.util.MessageResources;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
+import org.apache.velocity.runtime.log.Log;
 
 /**
  * <p>View tool to work with the Struts action messages.</p>
@@ -61,8 +60,7 @@ import org.apache.velocity.tools.config.ValidScope;
 @ValidScope("request")
 public class ActionMessagesTool extends MessageResourcesTool
 {
-
-    protected static final Log LOG = LogFactory.getLog(ActionMessagesTool.class);
+    protected Log LOG;
 
     /** A reference to the queued action messages. */
     protected ActionMessages actionMsgs;
@@ -86,6 +84,7 @@ public class ActionMessagesTool extends MessageResourcesTool
         //setup superclass instance members
         super.setup(params);
 
+        this.LOG = (Log)params.get("log");
         this.actionMsgs = StrutsUtils.getMessages(this.request);
     }
 
@@ -262,7 +261,7 @@ public class ActionMessagesTool extends MessageResourcesTool
 
                 if (message == null)
                 {
-                    LOG.warn("Message for key " + msg.getKey() +
+                    LOG.warn("ActionMessagesTool : Message for key " + msg.getKey() +
                              " could not be found in message resources.");
                 }
             }

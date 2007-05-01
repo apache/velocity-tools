@@ -33,16 +33,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Locale;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.velocity.runtime.log.Log;
 
 /**
  * <p>Provides methods to import arbitrary local or remote resources as strings.</p>
@@ -52,22 +49,30 @@ import org.apache.commons.logging.LogFactory;
  * @since VelocityTools 1.1
  * @version $Revision$ $Date$
  */
-public abstract class ImportSupport {
-
-    protected static final Log LOG = LogFactory.getLog(ImportSupport.class);
-
+public abstract class ImportSupport
+{
     protected static final String VALID_SCHEME_CHARS =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+.-";
 
     /** Default character encoding for response. */
     protected static final String DEFAULT_ENCODING = "ISO-8859-1";
 
+    protected Log LOG;
     protected ServletContext application;
     protected HttpServletRequest request;
     protected HttpServletResponse response;
 
 
     // --------------------------------------- Setup Methods -------------
+
+    public void setLog(Log log)
+    {
+        if (log == null)
+        {
+            throw new NullPointerException("log should not be set to null");
+        }
+        this.LOG = log;
+    }
 
     /**
      * Sets the current {@link HttpServletRequest}. This is required
@@ -166,7 +171,7 @@ public abstract class ImportSupport {
                     }
                     catch (IOException ioe)
                     {
-                        LOG.error("Could not close reader.", ioe);
+                        LOG.error("ImportSupport : Could not close reader.", ioe);
                     }
                 }
 	        }
@@ -317,7 +322,7 @@ public abstract class ImportSupport {
                     }
                     catch (IOException ioe)
                     {
-                        LOG.error("Could not close InputStream", ioe);
+                        LOG.error("ImportSupport : Could not close InputStream", ioe);
                     }
                 }
 
@@ -338,7 +343,7 @@ public abstract class ImportSupport {
                     }
                     catch (IOException ioe)
                     {
-                        LOG.error("Could not close InputStream", ioe);
+                        LOG.error("ImportSupport : Could not close InputStream", ioe);
                     }
                 }
 

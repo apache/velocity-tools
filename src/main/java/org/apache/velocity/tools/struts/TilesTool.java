@@ -23,8 +23,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Stack;
 import javax.servlet.http.HttpSession;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.struts.tiles.AttributeDefinition;
 import org.apache.struts.tiles.ComponentContext;
 import org.apache.struts.tiles.ComponentDefinition;
@@ -71,8 +69,6 @@ import org.apache.velocity.tools.view.ViewContext;
 @ValidScope("request")
 public class TilesTool extends ImportSupport
 {
-    protected static final Log LOG = LogFactory.getLog(TilesTool.class);
-
     static final String PAGE_SCOPE = "page";
     static final String REQUEST_SCOPE = "request";
     static final String SESSION_SCOPE = "session";
@@ -138,7 +134,7 @@ public class TilesTool extends ImportSupport
         }
         catch (Exception e)
         {
-            LOG.error("Exeption while rendering Tile " + obj + ": ", e);
+            LOG.error("TilesTool : Exeption while rendering Tile " + obj, e);
             return null;
         }
     }
@@ -157,7 +153,7 @@ public class TilesTool extends ImportSupport
         Object value = getCurrentContext().getAttribute(name);
         if (value == null)
         {
-            LOG.warn("Tile attribute '" + name + "' wasn't found in context.");
+            LOG.warn("TilesTool : Tile attribute '" + name + "' wasn't found in context.");
         }
         return value;
     }
@@ -191,7 +187,7 @@ public class TilesTool extends ImportSupport
         Object value = getCurrentContext().getAttribute(name);
         if (value == null)
         {
-            LOG.warn("Tile attribute '" + name + "' wasn't found in context.");
+            LOG.warn("TilesTool : Tile attribute '" + name + "' wasn't found in context.");
         }
 
         if (scope.equals(PAGE_SCOPE))
