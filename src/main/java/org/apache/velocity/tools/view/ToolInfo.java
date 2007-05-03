@@ -27,9 +27,10 @@ package org.apache.velocity.tools.view;
  * an instance of the tool.
  *
  * @author Nathan Bubna
- *
+ * @deprecated Use {@link org.apache.velocity.tools.ToolInfo}
  * @version $Id$
  */
+@Deprecated
 public interface ToolInfo
 {
 

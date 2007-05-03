@@ -48,9 +48,10 @@ import org.apache.velocity.tools.view.ViewToolInfo;
  *  </pre></p>
  *
  * @author Nathan Bubna
- *
+ * @deprecated Use {@link org.apache.velocity.tools.ToolInfo}
  * @version $Id$
  */
+@Deprecated
 public class ServletToolInfo extends ViewToolInfo
 {
 

@@ -37,7 +37,9 @@ import org.apache.commons.logging.LogFactory;
  * @author Nathan Bubna
  * @author <a href="mailto:henning@schmiedehausen.org">Henning P. Schmiedehausen</a>
  * @version $Id$
+ * @deprecated Use {@link org.apache.velocity.tools.ToolInfo}
  */
+@Deprecated
 public class ViewToolInfo implements ToolInfo
 {
     protected static final Log LOG = LogFactory.getLog(ViewToolInfo.class);

@@ -45,9 +45,10 @@ package org.apache.velocity.tools.view;
  * </pre></p>
  *
  * @author Nathan Bubna
- *
+ * @deprecated Use {@link org.apache.velocity.tools.ToolInfo}
  * @version $Id$
  */
+@Deprecated
 public class DataInfo implements ToolInfo
 {
 
