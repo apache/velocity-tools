@@ -20,16 +20,15 @@ package org.apache.velocity.tools.view.context;
  */
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
-
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
+import org.apache.velocity.tools.view.ViewToolContext;
 import org.apache.velocity.tools.view.context.ViewContext;
 
 /**
@@ -65,31 +64,19 @@ import org.apache.velocity.tools.view.context.ViewContext;
  *
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
- *
+ * @deprecated Use {@link ViewToolContext} instead
  * @version $Id$
  */
-public class ChainedContext extends VelocityContext implements ViewContext
+public class ChainedContext extends ViewToolContext implements ViewContext
 {
-
-    /* the current toolbox, request, response, and session */
-    private Map toolbox;
-    private HttpServletRequest request;
-    private HttpServletResponse response;
-    private HttpSession session;
-
-    /* the servlet context */
-    private ServletContext application;
-
-    /* the velocity engine being used */
-    private VelocityEngine velocity;
-
+    private Map<String,Object> oldToolbox;
 
     public ChainedContext(VelocityEngine velocity,
                           HttpServletRequest request,
                           HttpServletResponse response,
                           ServletContext application)
     {
-        this(null, velocity, request, response, application);
+        super(velocity, request, response, application);
     }
 
     public ChainedContext(Context ctx,
@@ -98,170 +85,62 @@ public class ChainedContext extends VelocityContext implements ViewContext
                           HttpServletResponse response,
                           ServletContext application)
     {
-        super(null, ctx);
+        this(velocity, request, response, application);
 
-        this.velocity = velocity;
-        this.request = request;
-        this.response = response;
-        this.session = request.getSession(false);
-        this.application = application;
-    }
-
-
-    /**
-     * <p>Sets the toolbox of view tools.</p>
-     *
-     * @param box toolbox of view tools
-     */
-    public void setToolbox(Map box)
-    {
-        this.toolbox = box;
-        /* just in case the servlet toolbox manager
-         * had to create a new session to hold session tools
-         * let's make sure this context's session ref is current */
-        this.session = request.getSession(false);
-    }
-
-    /**
-     * <p>Returns a read-only view of the toolbox {@link Map}
-     * for this context.</p>
-     * @since VelocityTools 1.3
-     * @return an unmodifiable version of the toolbox for this request
-     *         or {@code null} if there is none
-     */
-    public Map getToolbox()
-    {
-        if (this.toolbox != null)
+        if (ctx != null)
         {
-            return Collections.unmodifiableMap(this.toolbox);
+            // copy all values from the context into this
+            for (Object key : ctx.getKeys())
+            {
+                String skey = String.valueOf(key);
+                put(skey, ctx.get(skey));
+            }
         }
-        return null;
     }
 
 
     /**
-     * <p>Looks up and returns the object with the specified key.</p>
-     * <p>See the class documentation for more details.</p>
-     *
-     * @param key the key of the object requested
-     * @return the requested object or null if not found
+     * Sets a "toolbox" in the style of VelocityTools 1.x.
+     * @deprecated
      */
-    public Object internalGet( String key )
+    public void setToolbox(Map<String,Object> box)
+    {
+        this.oldToolbox = box;
+    }
+
+    /**
+     * <p>Returns the tools for this context</p>
+     * @since VelocityTools 1.3
+     * @return any tools passed in via setToolbox() plus the results
+     *         of {@link ViewToolContext#getToolbox()}.
+     */
+    public Map<String,Object> getToolbox()
+    {
+        if (this.oldToolbox != null)
+        {
+            Map<String,Object> box = new HashMap<String,Object>(this.oldToolbox);
+            box.putAll(super.getToolbox());
+            return box;
+        }
+        return super.getToolbox();
+    }
+
+    protected Object internalGet( String key )
     {
         Object o = null;
 
         /* search the toolbox */
-        if (toolbox != null)
+        if (oldToolbox != null)
         {
-            o = toolbox.get(key);
+            o = oldToolbox.get(key);
             if (o != null)
             {
                 return o;
             }
         }
 
-        /* make the four scopes of the Apocalypse Read only */
-        if (key.equals(REQUEST))
-        {
-            return request;
-        }
-        else if(key.equals(RESPONSE))
-        {
-            return response;
-        }
-        else if (key.equals(SESSION))
-        {
-            return session;
-        }
-        else if (key.equals(APPLICATION))
-        {
-            return application;
-        }
-
         /* try the local hashtable */
-        o = super.internalGet(key);
-        if (o != null)
-        {
-            return o;
-        }
-
-        /* if not found, wander down the scopes... */
-        return getAttribute(key);
-    }
-
-
-    /**
-     * <p>Searches for the named attribute in request, session (if valid),
-     * and application scope(s) in order and returns the value associated
-     * or null.</p>
-     *
-     * @since VelocityTools 1.1
-     */
-    public Object getAttribute(String key)
-    {
-        Object o = request.getAttribute(key);
-        if (o == null)
-        {
-            if (session != null)
-            {
-                try
-                {
-                    o = session.getAttribute(key);
-                }
-                catch (IllegalStateException ise)
-                {
-                    // Handle invalidated session state
-                    o = null;
-                }
-            }
-
-            if (o == null)
-            {
-                o = application.getAttribute(key);
-            }
-        }
-        return o;
-    }
-
-
-    /**
-     * <p>Returns the current servlet request.</p>
-     */
-    public HttpServletRequest getRequest()
-    {
-        return request;
-    }
-
-    /**
-     * <p>Returns the current servlet response.</p>
-     */
-    public HttpServletResponse getResponse()
-    {
-        return response;
-    }
-
-    /**
-     * <p>Returns the servlet context.</p>
-     */
-    public ServletContext getServletContext()
-    {
-        return application;
-    }
-
-    /**
-     * <p>Returns a reference to the Velocity context (this object).</p>
-     */
-    public Context getVelocityContext()
-    {
-        return this;
-    }
-
-    /**
-     * <p>Returns a reference to the VelocityEngine.</p>
-     */
-    public VelocityEngine getVelocityEngine()
-    {
-        return velocity;
+        return super.internalGet(key);
     }
 
 }
