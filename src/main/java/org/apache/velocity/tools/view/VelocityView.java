@@ -48,6 +48,7 @@ import org.apache.velocity.tools.config.FileFactoryConfiguration;
 import org.apache.velocity.tools.config.PropertiesFactoryConfiguration;
 import org.apache.velocity.tools.config.XmlFactoryConfiguration;
 import org.apache.velocity.tools.view.ViewToolContext;
+import org.apache.velocity.tools.view.context.ChainedContext;
 import org.apache.velocity.util.SimplePool;
 
 /**
@@ -173,7 +174,7 @@ public class VelocityView
     private String defaultContentType = DEFAULT_CONTENT_TYPE;
     private String toolboxKey = DEFAULT_TOOLBOX_KEY;
     private boolean createSession = true;
-    private boolean supportDeprecatedConfig = true;
+    private boolean deprecationSupportMode = true;
 
     public VelocityView(ServletConfig config)
     {
@@ -224,9 +225,9 @@ public class VelocityView
         return this.toolboxKey;
     }
 
-    protected final void setSupportDeprecatedConfig(boolean support)
+    protected final void setDeprecationSupportMode(boolean support)
     {
-        this.supportDeprecatedConfig = support;
+        this.deprecationSupportMode = support;
     }
 
     /**
@@ -454,7 +455,7 @@ public class VelocityView
             factoryConfig.addConfiguration(appConfig);
         }
 
-        if (this.supportDeprecatedConfig)
+        if (this.deprecationSupportMode)
         {
             // check for deprecated user configuration at the old conventional
             // location.  be silent if missing, log deprecation warning otherwise
@@ -616,7 +617,7 @@ public class VelocityView
         FileFactoryConfiguration config = null;
         if (path.endsWith(".xml"))
         {
-            config = new XmlFactoryConfiguration(this.supportDeprecatedConfig);
+            config = new XmlFactoryConfiguration(this.deprecationSupportMode);
         }
         else if (path.endsWith(".properties"))
         {
@@ -817,8 +818,15 @@ public class VelocityView
     protected ViewToolContext createContext(HttpServletRequest request,
                                             HttpServletResponse response)
     {
-        ViewToolContext ctx =
-            new ViewToolContext(velocity, request, response, servletContext);
+        ViewToolContext ctx;
+        if (this.deprecationSupportMode)
+        {
+            ctx = new ChainedContext(velocity, request, response, servletContext);
+        }
+        else
+        {
+            ctx = new ViewToolContext(velocity, request, response, servletContext);
+        }
         prepareContext(ctx);
         return ctx;
     }
