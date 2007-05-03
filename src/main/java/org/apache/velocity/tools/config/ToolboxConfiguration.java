@@ -152,10 +152,6 @@ public class ToolboxConfiguration
         out.append("' ");
         appendProperties(out);
         appendChildren(out, "tools: \n  ", "\n  ");
-        if (hasChildren())
-        {
-            out.append(")");
-        }
         return out.toString();
     }
 
