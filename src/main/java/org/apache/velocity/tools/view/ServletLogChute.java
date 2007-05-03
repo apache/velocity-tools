@@ -39,6 +39,7 @@ import org.apache.velocity.runtime.RuntimeServices;
  *             here temporarily for users of previous Velocity Engine versions.
  * @version $Revision$ $Date$
  */
+@Deprecated
 public class ServletLogChute implements LogChute
 {
     public static final String RUNTIME_LOG_LEVEL_KEY = 

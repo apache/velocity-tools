@@ -30,6 +30,7 @@ import org.apache.velocity.tools.view.WebappResourceLoader;
  * @deprecated Use {@link WebappResourceLoader} instead.
  * @version $Id: WebappLoader.java 511959 2007-02-26 19:24:39Z nbubna $  
  */
+@Deprecated
 public class WebappLoader extends WebappResourceLoader
 {
 }

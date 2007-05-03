@@ -33,6 +33,7 @@ import org.apache.velocity.tools.view.ServletLogChute;
  * @deprecated Use {@link ServletLogChute} instead
  * @version $Revision$ $Date: 2007-02-26 11:24:39 -0800 (Mon, 26 Feb 2007) $
  */
+@Deprecated
 public class ServletLogger extends ServletLogChute implements LogSystem
 {
     /**

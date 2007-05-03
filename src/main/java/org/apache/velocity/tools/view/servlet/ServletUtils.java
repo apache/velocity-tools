@@ -23,5 +23,6 @@ package org.apache.velocity.tools.view.servlet;
  * @deprecated Use {@link org.apache.velocity.tools.view.ServletUtils}
  * @version $Id: ServletUtils.java 471244 2006-11-04 18:34:38Z henning $
  */
+@Deprecated
 public class ServletUtils extends
     org.apache.velocity.tools.view.ServletUtils {}

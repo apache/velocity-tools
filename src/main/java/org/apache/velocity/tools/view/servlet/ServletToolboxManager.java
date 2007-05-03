@@ -94,6 +94,7 @@ import org.apache.velocity.tools.view.ServletUtils;
  * @version $Id$
  * @deprecated Use {@link org.apache.velocity.tools.config.XmlFactoryConfiguration}
  */
+@Deprecated
 public class ServletToolboxManager extends XMLToolboxManager
 {
 

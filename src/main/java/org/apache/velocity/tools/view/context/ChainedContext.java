@@ -67,6 +67,7 @@ import org.apache.velocity.tools.view.context.ViewContext;
  * @deprecated Use {@link ViewToolContext} instead
  * @version $Id$
  */
+@Deprecated
 public class ChainedContext extends ViewToolContext implements ViewContext
 {
     private Map<String,Object> oldToolbox;

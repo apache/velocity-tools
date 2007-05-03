@@ -23,6 +23,7 @@ package org.apache.velocity.tools.view.context;
  * @deprecated Use {@link org.apache.velocity.tools.view.ViewContext}
  * @version $Id: ViewContext.java 511959 2007-02-26 19:24:39Z nbubna $
  */
+@Deprecated
 public interface ViewContext extends
     org.apache.velocity.tools.view.ViewContext
 {
