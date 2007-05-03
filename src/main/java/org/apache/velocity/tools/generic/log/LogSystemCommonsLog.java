@@ -33,6 +33,7 @@ import org.apache.velocity.app.VelocityEngine;
  * @deprecated Use LogChuteCommonsLog instead
  * @version $Id$
  */
+@Deprecated
 public class LogSystemCommonsLog extends LogChuteCommonsLog
 {
     /**

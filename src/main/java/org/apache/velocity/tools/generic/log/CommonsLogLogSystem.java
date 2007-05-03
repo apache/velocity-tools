@@ -35,6 +35,7 @@ import org.apache.velocity.runtime.log.LogSystem;
  * @deprecated Use CommonsLogLogChute instead
  * @version $Id$
  */
+@Deprecated
 public class CommonsLogLogSystem
     extends CommonsLogLogChute implements LogSystem
 {

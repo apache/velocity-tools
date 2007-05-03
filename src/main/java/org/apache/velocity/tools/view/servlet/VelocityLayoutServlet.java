@@ -24,6 +24,7 @@ package org.apache.velocity.tools.view.servlet;
  * @deprecated This has moved to {@link org.apache.velocity.tools.view.VelocityLayoutServlet}
  * @version $Id: VelocityLayoutServlet.java 511959 2007-02-26 19:24:39Z nbubna $
  */
+@Deprecated
 public class VelocityLayoutServlet
     extends org.apache.velocity.tools.view.VelocityLayoutServlet
 {

@@ -33,6 +33,7 @@ import org.apache.velocity.tools.view.ToolboxRuleSet;
  * @version $Id$
  * @deprecated Use {@link org.apache.velocity.tools.config.XmlFactoryConfigurationRuleSet}.
  */
+@Deprecated
 public class ServletToolboxRuleSet extends ToolboxRuleSet
 {
 

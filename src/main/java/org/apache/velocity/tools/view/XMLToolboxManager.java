@@ -78,6 +78,7 @@ import org.apache.commons.logging.LogFactory;
  * @version $Id$
  * @deprecated Use {@link org.apache.velocity.tools.config.XmlFactoryConfiguration}
  */
+@Deprecated
 public class XMLToolboxManager implements ToolboxManager
 {
     protected static final Log LOG = LogFactory.getLog(XMLToolboxManager.class);

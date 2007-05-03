@@ -35,6 +35,7 @@ import org.xml.sax.Attributes;
  * @version $Id$
  * @deprecated Use {@link org.apache.velocity.tools.config.XmlFactoryConfigurationRuleSet
  */
+@Deprecated
 public class ToolboxRuleSet extends RuleSetBase
 {
 

@@ -32,6 +32,7 @@ import org.xml.sax.Attributes;
  * @deprecated This is provided merely for 1.x compatibility.
  * @version $Id: OldXmlFactoryConfigurationRuleSet.java 511959 2007-02-26 19:24:39Z nbubna $
  */
+@Deprecated
 public class OldXmlFactoryConfigurationRuleSet extends RuleSetBase
 {
     public void addRuleInstances(Digester digester)
