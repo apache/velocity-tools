@@ -67,7 +67,7 @@ public class OldXmlFactoryConfigurationRuleSet extends RuleSetBase
             // will trigger a deprecation warning in the logs
             FactoryConfiguration factory =
                 (FactoryConfiguration)digester.getRoot();
-            factory.setProperty("deprecatedMode", true);
+            factory.setProperty("deprecationSupportMode", true);
         }
     }
 
