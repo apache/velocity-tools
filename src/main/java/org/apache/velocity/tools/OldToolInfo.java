@@ -1,0 +1,131 @@
+package org.apache.velocity.tools;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Map;
+import org.apache.velocity.tools.ToolContext;
+
+/**
+ * Manages old tools which still use deprecated init() and configure()
+ * methods.
+ *
+ * @author Nathan Bubna
+ * @version $Id: OldToolInfo.java 511959 2007-02-26 19:24:39Z nbubna $
+ */
+//TODO: make this class serializable
+public class OldToolInfo extends ToolInfo
+{
+    public static final String INIT_METHOD_NAME = "init";
+    public static final String CONFIGURE_METHOD_NAME = "configure";
+
+    private Method init = null;
+    private Method configure = null;
+
+    /**
+     * Creates a new instance using the minimum required info
+     * necessary for a tool.
+     */
+    public OldToolInfo(String key, Class clazz)
+    {
+        super(key, clazz);
+    }
+
+    /**
+     * 
+     *
+     * @param clazz the java.lang.Class of the tool
+     */
+    public void setClass(Class clazz)
+    {
+        super.setClass(clazz);
+
+        try
+        {
+            // try to get an init(Object) method
+            this.init = clazz.getMethod("init",
+                                        new Class[]{ Object.class });
+        }
+        catch (NoSuchMethodException nsme)
+        {
+            // ignore
+        }
+        try
+        {
+            // check for a configure(Map) method
+            this.configure = clazz.getMethod("configure",
+                                             new Class[]{ Map.class });
+        }
+        catch (NoSuchMethodException nsme)
+        {
+            // ignore
+        }
+    }
+
+
+    public Object create(Map<String,Object> dynamicProperties)
+    {
+        Object tool = super.create(dynamicProperties);
+
+        if (this.configure != null && getProperties() != null)
+        {
+            invoke(this.configure, tool, getProperties());
+        }
+
+        if (this.init != null)
+        {
+            // ctx should, in all cases where a tool has such a method,
+            // actually be a View(Tool)Context, but we don't want to link
+            // to that class here, so as not to pollute the generic jar
+            Object ctx =
+                dynamicProperties.get(ToolContext.CONTEXT_KEY);
+            if (ctx != null)
+            {
+                invoke(this.init, tool, ctx);
+            }
+        }
+        return tool;
+    }
+
+    protected void invoke(Method method, Object tool, Object param)
+    {
+        try
+        {
+            // call the setup method on the instance
+            method.invoke(tool, new Object[]{ param });
+        }
+        catch (IllegalAccessException iae)
+        {
+            String msg = "Unable to invoke " +
+                         method.getName()+" on "+tool;
+            // restricting access to this method by this class ist verboten
+            throw new IllegalStateException(msg, iae);
+        }
+        catch (InvocationTargetException ite)
+        {
+            String msg = "Exception when invoking " +
+                         method.getName()+" on "+tool;
+            // convert to a runtime exception, and re-throw
+            throw new RuntimeException(msg, ite.getCause());
+        }
+    }
+
+}
