@@ -19,6 +19,8 @@ package org.apache.velocity.tools.config;
  * under the License.
  */
 
+import java.util.Map;
+import org.apache.velocity.tools.OldToolInfo;
 import org.apache.velocity.tools.ToolInfo;
 import org.apache.velocity.tools.Utils;
 
@@ -122,6 +124,32 @@ public class ToolConfiguration extends Configuration
         }
     }
 
+    private final boolean isOldTool()
+    {
+        // check for mere presence of init() or configure()
+        Class clazz = getToolClass();
+        try
+        {
+            clazz.getMethod("init", new Class[]{ Object.class });
+            // if we get here, then we found it
+            return true;
+        }
+        catch (NoSuchMethodException nsme)
+        {
+            // ignore
+        }
+        try
+        {
+            clazz.getMethod("configure", new Class[]{ Map.class });
+            return true;
+        }
+        catch (NoSuchMethodException nsme)
+        {
+            // ignore
+        }
+        return false;
+    }
+
     public String getRestrictTo()
     {
         return this.restrictTo;
@@ -129,7 +157,15 @@ public class ToolConfiguration extends Configuration
 
     public ToolInfo createInfo()
     {
-        ToolInfo info = new ToolInfo(getKey(), getToolClass());
+        ToolInfo info;
+        if (isOldTool())
+        {
+            info = new OldToolInfo(getKey(), getToolClass());
+        }
+        else
+        {
+            info = new ToolInfo(getKey(), getToolClass());
+        }
         info.restrictTo(getRestrictTo());
         // it's ok to use this here, because we know it's the
         // first time properties have been added to this ToolInfo
@@ -162,13 +198,18 @@ public class ToolConfiguration extends Configuration
     public String toString()
     {
         StringBuilder out = new StringBuilder();
-        out.append("Tool '");
         if (getClassname() == null)
         {
+            out.append("Tool '");
             out.append(this.key);
         }
         else
         {
+            if (isOldTool())
+            {
+                out.append("Old ");
+            }
+            out.append("Tool '");
             out.append(getKey());
         }
         out.append("' ");
