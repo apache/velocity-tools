@@ -36,8 +36,8 @@ import org.apache.velocity.tools.generic.EscapeTool;
 import org.apache.velocity.tools.generic.MathTool;
 import org.apache.velocity.tools.generic.NumberTool;
 import org.apache.velocity.tools.generic.ResourceTool;
-import org.apache.velocity.tools.view.XMLToolboxManager;
-
+import org.apache.velocity.tools.ToolManager;
+import org.apache.velocity.tools.ToolContext;
 
 /**
  * <p>Generic tools whitebox tests.</p>
@@ -52,12 +52,12 @@ public class GenericToolsTests {
 
     private static final String TOOLBOX_PATH = "@test.conf.dir@/whiteboxtest-toolbox.xml";
 
-    private static Map toolbox = null;
+    private static ToolContext toolbox = null;
 
     public static @BeforeClass void initGenericToolsTests() throws Exception {
-        XMLToolboxManager manager = new XMLToolboxManager();
-        manager.load(TOOLBOX_PATH);
-        toolbox = manager.getToolbox(null);
+        ToolManager manager = new ToolManager(false);
+        manager.configure(TOOLBOX_PATH);
+        toolbox = manager.createContext();
     }
 
     public @Test void testAlternatorTool() {
