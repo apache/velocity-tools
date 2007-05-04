@@ -82,7 +82,39 @@ package org.apache.velocity.tools.config;
  */
 public class EasyFactoryConfiguration extends FactoryConfiguration
 {
+    private boolean addedDefault = false;
     private EasyWrap<ToolboxConfiguration> toolbox;
+
+    public EasyFactoryConfiguration()
+    {
+        this(false);
+    }
+
+    /**
+     * @param startWithDefault Sets whether this instance should start with the
+     *        {@link FactoryConfiguration#getDefault()} configuration or not.
+     */
+    public EasyFactoryConfiguration(boolean startWithDefault)
+    {
+        if (startWithDefault)
+        {
+            addDefault();
+        }
+    }
+
+    /**
+     * Adds the {@link FactoryConfiguration#getDefault()} configuration to this
+     * the current configuration.
+     */
+    public EasyFactoryConfiguration addDefault()
+    {
+        if (!addedDefault)
+        {
+            addConfiguration(getDefault());
+            addedDefault = true;
+        }
+        return this;
+    }
 
     public EasyWrap<ToolboxConfiguration> toolbox(String scope)
     {
@@ -169,6 +201,12 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
                 }
             }
             throw new IllegalStateException("Wrapping unknown "+Configuration.class.getName()+": "+getConfiguration());
+        }
+
+        public EasyWrap addDefault()
+        {
+            EasyFactoryConfiguration.this.addDefault();
+            return this;
         }
 
         public EasyWrap tool(Class clazz)
