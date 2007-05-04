@@ -19,6 +19,8 @@ package org.apache.velocity.tools.config;
  * under the License.
  */
 
+import org.apache.velocity.tools.ToolboxFactory;
+
 /**
  * <p>{@link FactoryConfiguration} subclass that simplifies the process of
  * configuration a {@link ToolboxFactory} in Java without the use of an
@@ -140,7 +142,7 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
     {
         if (toolbox == null)
         {
-            toolbox("request");
+            toolbox(ToolboxFactory.DEFAULT_SCOPE);
         }
         return toolbox.tool(key, classname);
     }
