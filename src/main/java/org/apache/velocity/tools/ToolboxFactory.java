@@ -195,19 +195,17 @@ public class ToolboxFactory
     public Toolbox getToolbox(String scope)
     {
         Map<String,ToolInfo> tools = scopedToolInfo.get(scope);
-        if (tools == null)
-        {
-            return null;
-        }
+        Map properties = scopedProperties.get(scope);
 
         Toolbox toolbox;
-        Map properties = scopedProperties.get(scope);
         if (properties == null && globalProperties == null)
         {
             toolbox = new Toolbox(tools);
         }
         else
         {
+            //TODO: this will waste cycles on subsequent retrievals
+            //      of the same toolbox. consider improving...
             if (globalProperties != null)
             {
                 properties.putAll(globalProperties);
