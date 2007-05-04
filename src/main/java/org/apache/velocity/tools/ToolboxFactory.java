@@ -186,13 +186,21 @@ public class ToolboxFactory
         return data;
     }
 
-    public boolean hasToolbox(String scope)
+    public boolean hasTools(String scope)
     {
         Map<String,ToolInfo> tools = scopedToolInfo.get(scope);
-        return (tools != null && !tools.isEmpty());
+        if (tools != null && !tools.isEmpty())
+        {
+            return true;
+        }
+        else if (data != null && APPLICATION_SCOPE.equals(scope))
+        {
+            return true;
+        }
+        return false;
     }
 
-    public Toolbox getToolbox(String scope)
+    public Toolbox createToolbox(String scope)
     {
         Map<String,ToolInfo> tools = scopedToolInfo.get(scope);
         Map properties = scopedProperties.get(scope);
