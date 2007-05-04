@@ -124,7 +124,7 @@ public class ToolContext implements Context
         {
             return internalGet(key);
         }
-        return null;
+        return value;
     }
 
     protected Object internalGet(String key)
