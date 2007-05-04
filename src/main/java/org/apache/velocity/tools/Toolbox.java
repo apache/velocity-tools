@@ -45,15 +45,16 @@ public class Toolbox
 
     public Toolbox(Map<String,ToolInfo> toolInfo, Map<String,Object> properties)
     {
-        if (toolInfo == null || toolInfo.isEmpty())
+        if (toolInfo == null)
         {
-            throw new IllegalArgumentException("Toolbox must have one or more tools");
+            this.infoMap = Collections.emptyMap();
         }
-
-        this.infoMap = toolInfo;
+        else
+        {
+            this.infoMap = toolInfo;
+        }
         this.properties = properties;
     }
-
 
     protected void cacheData(Map<String,Object> data)
     {
