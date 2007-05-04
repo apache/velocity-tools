@@ -18,7 +18,18 @@
  specific language governing permissions and limitations
  under the License.
 -->
-
+<tools>
+    <toolbox scope="application">
+        <tool class="org.apache.velocity.tools.generic.AlternatorTool" auto-alternate="false"/>
+        <tool class="org.apache.velocity.tools.generic.ComparisonDateTool"
+            format="yyyy-MM-dd" skip="month"/>
+        <tool class="org.apache.velocity.tools.generic.EscapeTool"/>
+        <tool class="org.apache.velocity.tools.generic.MathTool"/>
+        <tool class="org.apache.velocity.tools.generic.NumberTool"/>
+        <tool class="org.apache.velocity.tools.generic.ResourceTool" locale="en_US"/>
+    </toolbox>
+</tools>
+<!--
 <toolbox>
 
   <tool>
@@ -56,3 +67,4 @@
   </tool>
 
 </toolbox>
+-->
