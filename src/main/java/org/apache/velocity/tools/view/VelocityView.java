@@ -365,7 +365,7 @@ public class VelocityView
 
         // add any application toolbox to the application attributes
         Toolbox appTools =
-            toolboxFactory.getToolbox(ToolboxFactory.APPLICATION_SCOPE);
+            toolboxFactory.createToolbox(ToolboxFactory.APPLICATION_SCOPE);
         if (appTools != null &&
             this.servletContext.getAttribute(this.toolboxKey) == null)
         {
@@ -746,11 +746,12 @@ public class VelocityView
     protected void prepareToolboxes(HttpServletRequest request)
     {
         // only set a new toolbox if we need one
-        if (toolboxFactory.hasToolbox(ToolboxFactory.DEFAULT_SCOPE)
+        if (toolboxFactory.hasTools(ToolboxFactory.DEFAULT_SCOPE)
             && request.getAttribute(this.toolboxKey) == null)
         {
             // add request toolbox, if any
-            Toolbox reqTools = toolboxFactory.getToolbox(ToolboxFactory.DEFAULT_SCOPE);
+            Toolbox reqTools =
+                toolboxFactory.createToolbox(ToolboxFactory.DEFAULT_SCOPE);
             if (reqTools != null)
             {
                 request.setAttribute(this.toolboxKey, reqTools);
@@ -758,7 +759,7 @@ public class VelocityView
         }
 
         //TODO: move this string constant somewhere static
-        if (toolboxFactory.hasToolbox("session"))
+        if (toolboxFactory.hasTools("session"))
         {
             //FIXME? does this honor createSession props set on the session Toolbox?
             HttpSession session = request.getSession(this.createSession);
@@ -769,8 +770,9 @@ public class VelocityView
                 {
                     if (session.getAttribute(this.toolboxKey) == null)
                     {
-                       Toolbox sessTools = toolboxFactory.getToolbox("session");
-                       session.setAttribute(this.toolboxKey, sessTools);
+                        Toolbox sessTools =
+                            toolboxFactory.createToolbox("session");
+                        session.setAttribute(this.toolboxKey, sessTools);
                     }
                 }
             }
