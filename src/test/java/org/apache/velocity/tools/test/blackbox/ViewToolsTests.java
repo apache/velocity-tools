@@ -168,10 +168,10 @@ public class ViewToolsTests {
         checkTextStart(resp,"get","org.apache.velocity.tools.view.tools.ContextTool");
 
         /* check keys (the only expected uppercase is in 'velocityCount') */
-        checkTextRegex(resp,"keys","^\\[[a-z_C]+(?:,\\s*[a-z_C]+)*\\]$");
+        checkTextRegex(resp,"keys","^\\[[a-z_A-Z]+(?:,\\s*[a-z_A-Z]+)*\\]$");
 
         /* check toolbox */
-        checkTextRegex(resp,"toolbox","^\\{[a-z_C]+=.*(?:,\\s*[a-z_C]+=.*)*\\}$");
+        checkTextRegex(resp,"toolbox","^\\{[a-z_A-Z]+=.*(?:,\\s*[a-z_A-Z]+=.*)*\\}$");
 
         /* check values */
         checkTextRegex(resp,"values","^\\[.*\\]$");

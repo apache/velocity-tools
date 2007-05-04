@@ -19,7 +19,7 @@ package org.apache.velocity.tools.test;
  * under the License.
  */
 
-import org.apache.velocity.tools.generic.log.LogSystemCommonsLog;
+import org.apache.velocity.tools.generic.log.LogChuteCommonsLog;
 
 /**
  * This logging adapter filters out trace and debug messages that don't come from the velocity package
@@ -29,20 +29,13 @@ import org.apache.velocity.tools.generic.log.LogSystemCommonsLog;
  * @version $Id:$
  */
 
-public class FilteredLogSystemCommonsLog  extends LogSystemCommonsLog {
+public class FilteredLogChuteCommonsLog  extends LogChuteCommonsLog {
 
     private boolean filter = false;
 
-    public FilteredLogSystemCommonsLog(String name)
+    public FilteredLogChuteCommonsLog(String name)
     {
         super(name);
-        filter = !name.startsWith("org.apache.velocity");
-    }
-
-
-    public FilteredLogSystemCommonsLog(boolean pst, String name)
-    {
-        super(pst,name);
         filter = !name.startsWith("org.apache.velocity");
     }
 
