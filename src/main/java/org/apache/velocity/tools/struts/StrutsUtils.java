@@ -404,10 +404,28 @@ public class StrutsUtils
     {
         ModuleConfig moduleConfig = ModuleUtils.getInstance().getModuleConfig(request, app);
         //TODO? beware of null module config if ActionServlet isn't init'ed?
-        ForwardConfig fc = moduleConfig.findForwardConfig(forward);
-        if (fc == null)
+
+        ActionConfig actionConfig =
+            (ActionConfig)request.getAttribute(Globals.MAPPING_KEY);
+
+        // NOTE: ActionConfig.findForwardConfig only searches local forwards
+        ForwardConfig fc = null;
+        if(actionConfig != null)
         {
-            return null;
+            fc = actionConfig.findForwardConfig(forward);
+
+            // No ActionConfig forward?
+            // Find the ForwardConfig in the global-forwards.
+            if(fc == null)
+            {
+                fc = moduleConfig.findForwardConfig(forward);
+
+                // ok, give up
+                if (fc == null)
+                {
+                    return null;
+                }
+            }
         }
 
         StringBuffer url = new StringBuffer();
