@@ -100,7 +100,8 @@
         <method name="setForward()">
 
             <abstract>
-                Returns a copy of this StrutsLinkTool instance with the given global
+                Returns a copy of this StrutsLinkTool instance with the given
+                global or local
                 forward name converted into a server-relative URI reference.
             </abstract>
 
@@ -110,7 +111,9 @@
 
             <parameters>
                 <parameter name="forward">
-                    The name of a global forward as defined in struts-config.xml.
+                    The name of a global or local forward as defined in
+                    struts-config.xml. (global-forward section for global
+                    or within an action mapping for local forwards).
                 </parameter>
             </parameters>
 
@@ -120,7 +123,7 @@
             </returns>
 
             <description>
-                <p>The global forward name is translated into a server-relative
+                <p>The forward URL is translated into a server-relative
                 URI reference. This method will overwrite any previously set URI
                 reference but will copy the query string.</p>
             </description>

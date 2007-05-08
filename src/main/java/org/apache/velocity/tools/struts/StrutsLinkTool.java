@@ -108,13 +108,15 @@ public class StrutsLinkTool extends LinkTool
 
 
     /**
-     * <p>Returns a copy of the link with the given global forward name
-     * converted into a server-relative URI reference. If the parameter
+     * <p>Returns a copy of the link with the given global or local forward
+     * name converted into a server-relative URI reference. If the parameter
      * does not map to an existing global forward name, <code>null</code>
      * is returned. This method will overwrite any previous URI reference
      * settings but will copy the query string.</p>
      *
-     * @param forward a global forward name as defined in struts-config.xml
+     * @param forward a forward name as defined in struts-config.xml
+     *                in either global-forwards or in the currently executing
+     *                action mapping.
      *
      * @return a new instance of StrutsLinkTool
      */
