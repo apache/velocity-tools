@@ -138,7 +138,7 @@
       debug="${compile.debug}"
       deprecation="${compile.deprecation}"
       optimize="${compile.optimize}"
-      includes="org/apache/velocity/tools/test/FilteredLogSystemCommonsLog.java"
+      includes="org/apache/velocity/tools/test/FilteredLogChuteCommonsLog.java"
       classpathref="test.classpath"/>
   </target>
 
