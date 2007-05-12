@@ -146,7 +146,7 @@ public abstract class AbstractPagerTool
         setup(request);
     }
 
-    public void setup(Map params)
+    public void configure(Map params)
     {
         init(params.get(ToolContext.CONTEXT_KEY));
     }

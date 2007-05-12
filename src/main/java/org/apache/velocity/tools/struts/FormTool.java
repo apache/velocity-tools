@@ -86,7 +86,7 @@ public class FormTool
      * @param obj the current ViewContext
      * @throws IllegalArgumentException if the param is not a ViewContext
      */
-    public void setup(Map params)
+    public void configure(Map params)
     {
         this.request = (HttpServletRequest)params.get(ViewContext.REQUEST);
         this.session = request.getSession(false);

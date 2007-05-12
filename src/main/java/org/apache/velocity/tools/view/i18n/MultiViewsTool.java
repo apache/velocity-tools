@@ -79,7 +79,7 @@ public class MultiViewsTool
      * @param obj the current ViewContext
      * @throws IllegalArgumentException if the param is not a ViewContext
      */
-    public void setup(Map params)
+    public void configure(Map params)
     {
         Context vc = (Context)params.get(ViewToolContext.CONTEXT_KEY);
         this.engine = (VelocityEngine)params.get(ViewToolContext.ENGINE_KEY);

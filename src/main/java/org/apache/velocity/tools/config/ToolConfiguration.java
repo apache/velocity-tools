@@ -131,23 +131,22 @@ public class ToolConfiguration extends Configuration
         try
         {
             clazz.getMethod("init", new Class[]{ Object.class });
-            // if we get here, then we found it
-            return true;
+            // ok, if they have init, but not configure
+            // then we consider them "old"
+            try
+            {
+                clazz.getMethod("configure", new Class[]{ Map.class });
+                return false;
+            }
+            catch (NoSuchMethodException nsme)
+            {
+                return true;
+            }
         }
         catch (NoSuchMethodException nsme)
         {
-            // ignore
+            return false;
         }
-        try
-        {
-            clazz.getMethod("configure", new Class[]{ Map.class });
-            return true;
-        }
-        catch (NoSuchMethodException nsme)
-        {
-            // ignore
-        }
-        return false;
     }
 
     public String getRestrictTo()

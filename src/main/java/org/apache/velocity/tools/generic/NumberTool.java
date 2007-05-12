@@ -100,7 +100,7 @@ public class NumberTool
      * Looks for configuration values in the given params.
      * @since VelocityTools 1.4
      */
-    public void setup(Map params)
+    public void configure(Map params)
     {
         if (!configLocked)
         {
