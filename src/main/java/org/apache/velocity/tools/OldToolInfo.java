@@ -35,10 +35,8 @@ import org.apache.velocity.tools.ToolContext;
 public class OldToolInfo extends ToolInfo
 {
     public static final String INIT_METHOD_NAME = "init";
-    public static final String CONFIGURE_METHOD_NAME = "configure";
 
     private Method init = null;
-    private Method configure = null;
 
     /**
      * Creates a new instance using the minimum required info
@@ -68,27 +66,12 @@ public class OldToolInfo extends ToolInfo
         {
             // ignore
         }
-        try
-        {
-            // check for a configure(Map) method
-            this.configure = clazz.getMethod("configure",
-                                             new Class[]{ Map.class });
-        }
-        catch (NoSuchMethodException nsme)
-        {
-            // ignore
-        }
     }
 
 
     public Object create(Map<String,Object> dynamicProperties)
     {
         Object tool = super.create(dynamicProperties);
-
-        if (this.configure != null && getProperties() != null)
-        {
-            invoke(this.configure, tool, getProperties());
-        }
 
         if (this.init != null)
         {
