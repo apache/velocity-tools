@@ -146,11 +146,6 @@ public abstract class AbstractPagerTool
         setup(request);
     }
 
-    public void configure(Map params)
-    {
-        init(params.get(ToolContext.CONTEXT_KEY));
-    }
-
     @Deprecated
     public void init(Object obj)
     {
