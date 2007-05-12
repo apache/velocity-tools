@@ -58,6 +58,12 @@ public class CookieTool
 
     // --------------------------------------- Setup Methods -------------
 
+    @Deprecated
+    public void init(Object obj)
+    {
+        //Does nothing
+    }
+
     /**
      * Sets the current {@link HttpServletRequest}. This is required
      * for this tool to operate and will throw a NullPointerException

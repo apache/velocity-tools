@@ -56,6 +56,12 @@ import org.apache.velocity.tools.config.ValidScope;
 public class ErrorsTool extends ActionMessagesTool
 {
 
+    @Deprecated
+    public void init(Object obj)
+    {
+        //Does nothing
+    }
+
     /**
      * Initializes this tool.
      *

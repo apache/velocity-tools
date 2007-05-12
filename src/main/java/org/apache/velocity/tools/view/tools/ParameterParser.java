@@ -72,6 +72,12 @@ public class ParameterParser extends ValueParser
         setRequest(request);
     }
 
+    @Deprecated
+    public void init(Object obj)
+    {
+        //Does nothing
+    }
+
     /**
      * Sets the current {@link ServletRequest}
      *

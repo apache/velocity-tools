@@ -52,6 +52,12 @@ public class ImportTool extends ImportSupport
      */
     public ImportTool() {}
 
+    @Deprecated
+    public void init(Object obj)
+    {
+        //Does nothing
+    }
+
     /**
      * Returns the supplied URL rendered as a String.
      *

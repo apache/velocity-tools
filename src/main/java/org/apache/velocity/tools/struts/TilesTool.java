@@ -89,6 +89,12 @@ public class TilesTool extends ImportSupport
      */
     public TilesTool() {}
 
+    @Deprecated
+    public void init(Object obj)
+    {
+        //Does nothing
+    }
+
     /**
      * Initializes this tool.
      *

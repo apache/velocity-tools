@@ -73,6 +73,12 @@ public class ActionMessagesTool extends MessageResourcesTool
     {}
 
 
+    @Deprecated
+    public void init(Object obj)
+    {
+        //Does nothing
+    }
+
     /**
      * Initializes this tool.
      *

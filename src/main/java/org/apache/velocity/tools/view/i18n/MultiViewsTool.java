@@ -97,6 +97,12 @@ public class MultiViewsTool
         }
     }
 
+    @Deprecated
+    public void init(Object obj)
+    {
+        //Does nothing
+    }
+
     /**
      * Calls {@link #findLocalizedResource(String, String)} using the
      * language extracted from <code>locale</code>.
