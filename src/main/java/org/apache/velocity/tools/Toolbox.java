@@ -170,6 +170,7 @@ public class Toolbox
         Map<String,Object> props = new HashMap<String,Object>(properties);
         for (Toolbox toolbox : toolboxes)
         {
+            cache.putAll(toolbox.cache);
             info.putAll(toolbox.infoMap);
             props.putAll(toolbox.properties);
         }
