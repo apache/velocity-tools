@@ -153,6 +153,12 @@ public class ValidatorTool
     public ValidatorTool() {}
 
 
+    @Deprecated
+    public void init(Object obj)
+    {
+        //Does nothing
+    }
+
     /**
      * Initializes this tool.
      *

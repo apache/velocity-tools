@@ -96,6 +96,12 @@ public class ContextTool
         this.application = (ServletContext)params.get(ViewContext.SERVLET_CONTEXT_KEY);
     }
 
+    @Deprecated
+    public void init(Object obj)
+    {
+        //Does nothing
+    }
+
 
     /**
      * Returns the context being analyzed by this tool.

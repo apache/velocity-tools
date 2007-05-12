@@ -80,6 +80,12 @@ public class FormTool
     }
 
 
+    @Deprecated
+    public void init(Object obj)
+    {
+        //Does nothing
+    }
+
     /**
      * Initializes this tool.
      *

@@ -66,6 +66,12 @@ import org.apache.velocity.tools.view.ViewContext;
 public class ViewResourceTool extends ResourceTool
 {
 
+    @Deprecated
+    public void init(Object obj)
+    {
+        //Does nothing
+    }
+
     /**
      * Sets the current {@link ServletRequest}
      *

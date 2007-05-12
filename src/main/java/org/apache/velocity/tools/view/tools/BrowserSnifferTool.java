@@ -85,6 +85,12 @@ public class BrowserSnifferTool
         userAgent = request.getHeader("User-Agent").toLowerCase();
     }
 
+    @Deprecated
+    public void init(Object obj)
+    {
+        //Does nothing
+    }
+
     /* Generic getter for unknown tests
      */
     public boolean get(String key)

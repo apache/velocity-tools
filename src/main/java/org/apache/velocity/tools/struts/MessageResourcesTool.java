@@ -43,6 +43,12 @@ public abstract class MessageResourcesTool
     protected MessageResources resources;
 
 
+    @Deprecated
+    public void init(Object obj)
+    {
+        //Does nothing
+    }
+
     /**
      * Initializes this tool.
      *
