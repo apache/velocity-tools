@@ -101,7 +101,7 @@ public class ResourceTool
     }
 
 
-    public void setup(Map params)
+    public void configure(Map params)
     {
         ValueParser parser = new ValueParser(params);
         String[] bundles = parser.getStrings(BUNDLES_KEY);

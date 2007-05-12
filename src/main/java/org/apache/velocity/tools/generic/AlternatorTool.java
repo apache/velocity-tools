@@ -70,7 +70,7 @@ public class AlternatorTool
      * if not, set the default to true.
      * @since VelocityTools 1.3
      */
-    public void setup(Map params)
+    public void configure(Map params)
     {
         ValueParser parser = new ValueParser(params);
         // it's true by default in Alternator

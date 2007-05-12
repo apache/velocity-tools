@@ -82,7 +82,7 @@ public class ContextTool
      * Also looks for a safe-mode configuration setting. By default,
      * safe-mode is true and thus keys with '.' in them are hidden.
      */
-    public void setup(Map params)
+    public void configure(Map params)
     {
         if (params != null)
         {

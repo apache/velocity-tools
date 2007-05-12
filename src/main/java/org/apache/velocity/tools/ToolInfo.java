@@ -37,14 +37,14 @@ import org.apache.velocity.tools.Utils;
 //TODO: make this class serializable
 public class ToolInfo
 {
-    public static final String SETUP_METHOD_NAME = "setup";
+    public static final String CONFIGURE_METHOD_NAME = "configure";
 
     private String key;
     private Class clazz;
     private boolean restrictToIsExact;
     private String restrictTo;
     private Map<String,Object> properties;
-    private Method setup = null;
+    private Method configure = null;
 
     /**
      * Creates a new instance using the minimum required info
@@ -70,7 +70,7 @@ public class ToolInfo
 
     /**
      * Tries to create an instance of the specified Class, then looks for a
-     * setup(Map<String,Object>) method.
+     * configure(Map<String,Object>) method.
      *
      * @param clazz the java.lang.Class of the tool
      */
@@ -90,20 +90,20 @@ public class ToolInfo
             throw new IllegalArgumentException("Could not create an instance of "+clazz, e);
         }
 
-        // search for a setup(Map params) method in the class
+        // search for a configure(Map params) method in the class
         try
         {
-            this.setup = Utils.findMethod(clazz, SETUP_METHOD_NAME,
+            this.configure = Utils.findMethod(clazz, CONFIGURE_METHOD_NAME,
                                           new Class[]{ Map.class });
         }
         catch (SecurityException se)
         {
             // fail early, rather than wait until
             String msg = "Unable to gain access to '" +
-                         SETUP_METHOD_NAME + "(Map)'" +
+                         CONFIGURE_METHOD_NAME + "(Map)'" +
                          " method for '" + clazz.getName() +
                          "' under the current security manager."+
-                         "  This tool cannot be properly setup for use.";
+                         "  This tool cannot be properly configured for use.";
             throw new IllegalStateException(msg, se);
         }
 
@@ -204,9 +204,9 @@ public class ToolInfo
         return properties;
     }
 
-    public boolean hasSetup()
+    public boolean hasConfigure()
     {
-        return (this.setup != null);
+        return (this.configure != null);
     }
 
     /**
@@ -238,7 +238,7 @@ public class ToolInfo
 
     /**
      * Returns a new instance of the tool. If the tool
-     * has an setup(Map) method, the new instance
+     * has an configure(Map) method, the new instance
      * will be initialized using the given properties combined with
      * whatever "constant" properties have been put into this
      * ToolInfo.
@@ -250,11 +250,11 @@ public class ToolInfo
 
         /* if the tool is configurable and we have properties... */
         Map<String,Object> combinedProps = combine(this.properties, dynamicProperties);
-        if (hasSetup())
+        if (hasConfigure())
         {
             if (combinedProps != null)
             {
-                setup(tool, combinedProps);
+                configure(tool, combinedProps);
             }
         }
 
@@ -294,24 +294,24 @@ public class ToolInfo
     }
 
 
-    protected void setup(Object tool, Map<String,Object> properties)
+    protected void configure(Object tool, Map<String,Object> properties)
     {
         try
         {
-            // call the setup method on the instance
-            setup.invoke(tool, new Object[]{ properties });
+            // call the configure method on the instance
+            configure.invoke(tool, new Object[]{ properties });
         }
         catch (IllegalAccessException iae)
         {
             String msg = "Unable to invoke " +
-                         SETUP_METHOD_NAME + "(Map>) on "+tool;
+                         CONFIGURE_METHOD_NAME + "(Map) on "+tool;
             // restricting access to this method by this class ist verboten
             throw new IllegalStateException(msg, iae);
         }
         catch (InvocationTargetException ite)
         {
             String msg = "Exception when invoking " +
-                         SETUP_METHOD_NAME + "(Map) on "+tool;
+                         CONFIGURE_METHOD_NAME + "(Map) on "+tool;
             // convert to a runtime exception, and re-throw
             throw new RuntimeException(msg, ite.getCause());
         }

@@ -62,10 +62,10 @@ public class ErrorsTool extends ActionMessagesTool
      * @param obj the current ViewContext
      * @throws IllegalArgumentException if the param is not a ViewContext
      */
-    public void setup(Map params)
+    public void configure(Map params)
     {
-        //setup superclass instance members
-        super.setup(params);
+        //configure superclass instance members
+        super.configure(params);
 
         this.actionMsgs = StrutsUtils.getErrors(this.request);
     }

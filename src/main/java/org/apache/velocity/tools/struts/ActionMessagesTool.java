@@ -79,10 +79,10 @@ public class ActionMessagesTool extends MessageResourcesTool
      * @param obj the current ViewContext
      * @throws IllegalArgumentException if the param is not a ViewContext
      */
-    public void setup(Map params)
+    public void configure(Map params)
     {
-        //setup superclass instance members
-        super.setup(params);
+        //configure superclass instance members
+        super.configure(params);
 
         this.LOG = (Log)params.get("log");
         this.actionMsgs = StrutsUtils.getMessages(this.request);

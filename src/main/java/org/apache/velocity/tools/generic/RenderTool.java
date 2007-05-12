@@ -101,7 +101,7 @@ public class RenderTool
      * Looks for parse depth and catch.exceptions parameters.
      * @since VelocityTools 1.3
      */
-    public void setup(Map params)
+    public void configure(Map params)
     {
         ValueParser parser = new ValueParser(params);
         int depth = parser.getInt(KEY_PARSE_DEPTH, DEFAULT_PARSE_DEPTH);
