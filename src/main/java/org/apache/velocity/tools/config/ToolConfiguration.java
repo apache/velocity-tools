@@ -19,6 +19,7 @@ package org.apache.velocity.tools.config;
  * under the License.
  */
 
+import java.lang.reflect.Method;
 import java.util.Map;
 import org.apache.velocity.tools.OldToolInfo;
 import org.apache.velocity.tools.ToolInfo;
@@ -130,23 +131,20 @@ public class ToolConfiguration extends Configuration
         Class clazz = getToolClass();
         try
         {
-            clazz.getMethod("init", new Class[]{ Object.class });
-            // ok, if they have init, but not configure
-            // then we consider them "old"
-            try
-            {
-                clazz.getMethod("configure", new Class[]{ Map.class });
-                return false;
-            }
-            catch (NoSuchMethodException nsme)
+            Method init = clazz.getMethod("init", new Class[]{ Object.class });
+            // if init is deprecated, then we'll consider it a
+            // new tool with BC support, not an old tool
+            Deprecated bc = init.getAnnotation(Deprecated.class);
+            if (bc == null)
             {
                 return true;
             }
         }
         catch (NoSuchMethodException nsme)
         {
-            return false;
+            // ignore this
         }
+        return false;
     }
 
     public String getRestrictTo()
