@@ -99,7 +99,13 @@ public class ContextTool
     @Deprecated
     public void init(Object obj)
     {
-        //Does nothing
+        if (obj instanceof ViewContext)
+        {
+            this.context = (ViewContext)obj;
+            this.request = context.getRequest();
+            this.session = request.getSession(false);
+            this.application = context.getServletContext();
+        }
     }
 
 

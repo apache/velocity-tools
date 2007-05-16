@@ -55,7 +55,14 @@ public class ImportTool extends ImportSupport
     @Deprecated
     public void init(Object obj)
     {
-        //Does nothing
+        if (obj instanceof ViewContext)
+        {
+            ViewContext ctx = (ViewContext)obj;
+            setRequest(ctx.getRequest());
+            setResponse(ctx.getResponse());
+            setServletContext(ctx.getServletContext());
+            setLog(ctx.getVelocityEngine().getLog());
+        }
     }
 
     /**

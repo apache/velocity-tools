@@ -81,13 +81,15 @@ public class MultiViewsTool
      */
     public void configure(Map params)
     {
-        Context vc = (Context)params.get(ViewToolContext.CONTEXT_KEY);
-        this.engine = (VelocityEngine)params.get(ViewToolContext.ENGINE_KEY);
+        configure((ViewToolContext)params.get(ViewToolContext.CONTEXT_KEY));
+    }
 
-        defaultLanguage = (String) vc.get(DEFAULT_LANGUAGE_KEY);
+    protected void configure(ViewToolContext ctx)
+    {
+        defaultLanguage = (String) ctx.get(DEFAULT_LANGUAGE_KEY);
         if (defaultLanguage == null || defaultLanguage.trim().equals(""))
         {
-            ServletContext sc = (ServletContext)params.get(ViewToolContext.SERVLET_CONTEXT_KEY);
+            ServletContext sc = ctx.getServletContext();
             defaultLanguage = (String) sc.getAttribute(DEFAULT_LANGUAGE_KEY);
             if (defaultLanguage == null || defaultLanguage.trim().equals(""))
             {
@@ -95,12 +97,17 @@ public class MultiViewsTool
                 defaultLanguage = Locale.getDefault().getLanguage();
             }
         }
+
+        this.engine = ctx.getVelocityEngine();
     }
 
     @Deprecated
     public void init(Object obj)
     {
-        //Does nothing
+        if (obj instanceof ViewToolContext)
+        {
+            configure((ViewToolContext)obj);
+        }
     }
 
     /**

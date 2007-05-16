@@ -89,7 +89,10 @@ public class ViewRenderTool extends RenderTool
     @Deprecated
     public void init(Object obj)
     {
-        //Does nothing
+        if (obj instanceof Context)
+        {
+            setVelocityContext((Context)obj);
+        }
     }
 
     /**

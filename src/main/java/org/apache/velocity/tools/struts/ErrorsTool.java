@@ -20,6 +20,7 @@ package org.apache.velocity.tools.struts;
  */
 
 import java.util.Map;
+import org.apache.struts.action.ActionMessages;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
 
@@ -56,24 +57,13 @@ import org.apache.velocity.tools.config.ValidScope;
 public class ErrorsTool extends ActionMessagesTool
 {
 
-    @Deprecated
-    public void init(Object obj)
+    protected ActionMessages getActionMessages()
     {
-        //Does nothing
-    }
-
-    /**
-     * Initializes this tool.
-     *
-     * @param obj the current ViewContext
-     * @throws IllegalArgumentException if the param is not a ViewContext
-     */
-    public void configure(Map params)
-    {
-        //configure superclass instance members
-        super.configure(params);
-
-        this.actionMsgs = StrutsUtils.getErrors(this.request);
+        if (this.actionMsgs == null)
+        {
+            this.actionMsgs = StrutsUtils.getErrors(this.request);
+        }
+        return this.actionMsgs;
     }
 
 

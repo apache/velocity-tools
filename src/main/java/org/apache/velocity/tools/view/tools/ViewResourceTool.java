@@ -69,7 +69,10 @@ public class ViewResourceTool extends ResourceTool
     @Deprecated
     public void init(Object obj)
     {
-        //Does nothing
+        if (obj instanceof ViewContext)
+        {
+            setRequest(((ViewContext)obj).getRequest());
+        }
     }
 
     /**

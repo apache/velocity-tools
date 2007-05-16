@@ -88,7 +88,10 @@ public class BrowserSnifferTool
     @Deprecated
     public void init(Object obj)
     {
-        //Does nothing
+        if (obj instanceof ViewContext)
+        {
+            setRequest(((ViewContext)obj).getRequest());
+        }
     }
 
     /* Generic getter for unknown tests

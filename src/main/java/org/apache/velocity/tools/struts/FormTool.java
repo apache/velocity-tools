@@ -83,7 +83,10 @@ public class FormTool
     @Deprecated
     public void init(Object obj)
     {
-        //Does nothing
+        if (obj instanceof ViewContext)
+        {
+            setRequest(((ViewContext)obj).getRequest());
+        }
     }
 
     /**
@@ -92,9 +95,13 @@ public class FormTool
      * @param obj the current ViewContext
      * @throws IllegalArgumentException if the param is not a ViewContext
      */
-    public void configure(Map params)
+    public void setRequest(HttpServletRequest request)
     {
-        this.request = (HttpServletRequest)params.get(ViewContext.REQUEST);
+        if (request == null)
+        {
+            throw new NullPointerException("request should not be null");
+        }
+        this.request = request;
         this.session = request.getSession(false);
     }
 
