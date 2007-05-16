@@ -39,14 +39,19 @@ public abstract class MessageResourcesTool
     protected Log LOG;
     protected ServletContext application;
     protected HttpServletRequest request;
-    protected Locale locale;
-    protected MessageResources resources;
-
+    private Locale locale;
+    private MessageResources resources;
 
     @Deprecated
     public void init(Object obj)
     {
-        //Does nothing
+        if (obj instanceof ViewContext)
+        {
+            ViewContext ctx = (ViewContext)obj;
+            this.request = ctx.getRequest();
+            this.application = ctx.getServletContext();
+            this.LOG = ctx.getVelocityEngine().getLog();
+        }
     }
 
     /**
@@ -60,11 +65,21 @@ public abstract class MessageResourcesTool
         this.request = (HttpServletRequest)params.get(ViewContext.REQUEST);
         this.application = (ServletContext)params.get(ViewContext.SERVLET_CONTEXT_KEY);
         this.LOG = (Log)params.get("log");
+    }
 
-        this.resources =
-            StrutsUtils.getMessageResources(request, application);
-        this.locale =
-            StrutsUtils.getLocale(request, request.getSession(false));
+
+    /**
+     * Retrieves the {@link Locale} for this request.
+     * @since VelocityTools 2.0
+     */
+    protected Locale getLocale()
+    {
+        if (this.locale == null)
+        {
+            this.locale =
+                StrutsUtils.getLocale(request, request.getSession(false));
+        }
+        return this.locale;
     }
 
 
@@ -77,9 +92,14 @@ public abstract class MessageResourcesTool
     {
         if (bundle == null)
         {
-            if (resources == null)
+            if (this.resources == null)
             {
-                LOG.error("MessageResourcesTool : Message resources are not available.");
+                this.resources =
+                    StrutsUtils.getMessageResources(request, application);
+                if (this.resources == null)
+                {
+                    LOG.error("MessageResourcesTool : Message resources are not available.");
+                }
             }
             return resources;
         }

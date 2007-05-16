@@ -71,7 +71,7 @@ public class MessageTool extends MessageResourcesTool
      */
     public TextKey get(String key)
     {
-        return new TextKey(key, null, null, this.locale);
+        return new TextKey(key, null, null, getLocale());
     }
 
 
@@ -125,7 +125,7 @@ public class MessageTool extends MessageResourcesTool
      */
     public String get(String key, String bundle, Object args[])
     {
-        return this.get(key, bundle, args, this.locale);
+        return this.get(key, bundle, args, getLocale());
     }
 
     /**
@@ -246,7 +246,7 @@ public class MessageTool extends MessageResourcesTool
         }
 
         // Return the requested message presence indicator
-        return res.isPresent(this.locale, key);
+        return res.isPresent(getLocale(), key);
     }
 
 
@@ -281,7 +281,7 @@ public class MessageTool extends MessageResourcesTool
          */
         public TextKey(MessageTool tool, String key, String bundle, Object[] args)
         {
-            this(key, bundle, args, MessageTool.this.locale);
+            this(key, bundle, args, MessageTool.this.getLocale());
         }
 
         /**

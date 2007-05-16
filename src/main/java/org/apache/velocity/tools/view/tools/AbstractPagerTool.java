@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
-import org.apache.velocity.tools.ToolContext;
+import org.apache.velocity.tools.view.ViewContext;
 
 /**
  * <p>Abstract view tool for doing request-based pagination of
@@ -149,7 +149,10 @@ public abstract class AbstractPagerTool
     @Deprecated
     public void init(Object obj)
     {
-        //Does nothing
+        if (obj instanceof ViewContext)
+        {
+            setRequest(((ViewContext)obj).getRequest());
+        }
     }
 
     /**

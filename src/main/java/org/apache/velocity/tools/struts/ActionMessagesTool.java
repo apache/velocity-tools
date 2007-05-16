@@ -22,13 +22,11 @@ package org.apache.velocity.tools.struts;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.util.MessageResources;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
-import org.apache.velocity.runtime.log.Log;
 
 /**
  * <p>View tool to work with the Struts action messages.</p>
@@ -60,38 +58,17 @@ import org.apache.velocity.runtime.log.Log;
 @ValidScope("request")
 public class ActionMessagesTool extends MessageResourcesTool
 {
-    protected Log LOG;
-
     /** A reference to the queued action messages. */
     protected ActionMessages actionMsgs;
 
 
-    /**
-     * Default constructor. Tool must be initialized before use.
-     */
-    public ActionMessagesTool()
-    {}
-
-
-    @Deprecated
-    public void init(Object obj)
+    protected ActionMessages getActionMessages()
     {
-        //Does nothing
-    }
-
-    /**
-     * Initializes this tool.
-     *
-     * @param obj the current ViewContext
-     * @throws IllegalArgumentException if the param is not a ViewContext
-     */
-    public void configure(Map params)
-    {
-        //configure superclass instance members
-        super.configure(params);
-
-        this.LOG = (Log)params.get("log");
-        this.actionMsgs = StrutsUtils.getMessages(this.request);
+        if (this.actionMsgs == null)
+        {
+            this.actionMsgs = StrutsUtils.getMessages(this.request);
+        }
+        return this.actionMsgs;
     }
 
 
@@ -103,7 +80,7 @@ public class ActionMessagesTool extends MessageResourcesTool
      */
     public boolean exist()
     {
-        if (actionMsgs == null)
+        if (getActionMessages() == null)
         {
             return false;
         }
@@ -119,7 +96,7 @@ public class ActionMessagesTool extends MessageResourcesTool
      */
     public boolean exist(String property)
     {
-        if (actionMsgs == null)
+        if (getActionMessages() == null)
         {
             return false;
         }
@@ -132,7 +109,7 @@ public class ActionMessagesTool extends MessageResourcesTool
      */
     public int getSize()
     {
-        if (actionMsgs == null)
+        if (getActionMessages() == null)
         {
             return 0;
         }
@@ -147,7 +124,7 @@ public class ActionMessagesTool extends MessageResourcesTool
      */
     public int getSize(String property)
     {
-        if (actionMsgs == null)
+        if (getActionMessages() == null)
         {
             return 0;
         }
@@ -232,6 +209,7 @@ public class ActionMessagesTool extends MessageResourcesTool
      */
     public List get(String property, String bundle)
     {
+        ActionMessages actionMsgs = getActionMessages();
         if (actionMsgs == null || actionMsgs.isEmpty())
         {
             return null;
@@ -263,7 +241,7 @@ public class ActionMessagesTool extends MessageResourcesTool
             if (res != null && msg.isResource())
             {
                 message =
-                    res.getMessage(this.locale, msg.getKey(), msg.getValues());
+                    res.getMessage(getLocale(), msg.getKey(), msg.getValues());
 
                 if (message == null)
                 {

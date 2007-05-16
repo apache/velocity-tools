@@ -92,7 +92,15 @@ public class TilesTool extends ImportSupport
     @Deprecated
     public void init(Object obj)
     {
-        //Does nothing
+        if (obj instanceof ViewContext)
+        {
+            ViewContext ctx = (ViewContext)obj;
+            setVelocityContext(ctx.getVelocityContext());
+            setRequest(ctx.getRequest());
+            setResponse(ctx.getResponse());
+            setServletContext(ctx.getServletContext());
+            setLog(ctx.getVelocityEngine().getLog());
+        }
     }
 
     /**
