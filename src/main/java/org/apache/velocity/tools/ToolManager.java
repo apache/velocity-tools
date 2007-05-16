@@ -200,7 +200,7 @@ public class ToolManager
             }
             catch (IOException ioe)
             {
-                throw new RuntimeException("Failed to close input stream for "+path, ioe);
+                throw new RuntimeException("Failed to close input stream for: "+path, ioe);
             }
         }
         return config;
