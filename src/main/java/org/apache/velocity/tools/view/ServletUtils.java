@@ -22,6 +22,8 @@ package org.apache.velocity.tools.view;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.apache.velocity.tools.Toolbox;
 
 /**
  * <p>A set of utility methods for the servlet environment.</p>
@@ -59,6 +61,7 @@ public class ServletUtils
         return path;
     }
 
+
     /**
      * Returns the shared {@link VelocityView} for the specified
      * {@link ServletConfig}.  If one has not yet been created, it
@@ -81,6 +84,88 @@ public class ServletUtils
             application.setAttribute(VELOCITY_VIEW_KEY, view);
         }
         return view;
+    }
+
+
+    public static Object findTool(String key, ServletContext application)
+    {
+        return findTool(key, VelocityView.DEFAULT_TOOLBOX_KEY, application);
+    }
+
+    public static Object findTool(String key, String toolboxKey,
+                                  ServletContext application)
+    {
+        Toolbox toolbox = (Toolbox)application.getAttribute(toolboxKey);
+        if (toolbox != null)
+        {
+            return toolbox.get(key);
+        }
+        return null;
+    }
+
+    public static Object findTool(String key, HttpServletRequest request)
+    {
+        return findTool(key, request, null);
+    }
+
+    public static Object findTool(String key, String toolboxKey,
+                                  HttpServletRequest request)
+    {
+        return findTool(key, toolboxKey, request, null);
+    }
+
+    public static Object findTool(String key, HttpServletRequest request,
+                                  ServletContext application)
+    {
+        return findTool(key, VelocityView.DEFAULT_TOOLBOX_KEY,
+                        request, application);
+    }
+
+    public static Object findTool(String key, String toolboxKey,
+                                  HttpServletRequest request,
+                                  ServletContext application)
+    {
+        String path = getPath(request);
+
+        Toolbox toolbox = (Toolbox)request.getAttribute(toolboxKey);
+        if (toolbox != null)
+        {
+            Object tool = toolbox.get(key, path);
+            if (tool != null)
+            {
+                return tool;
+            }
+        }
+
+        HttpSession session = request.getSession(false);
+        if (session != null)
+        {
+            toolbox = (Toolbox)session.getAttribute(toolboxKey);
+            if (toolbox != null)
+            {
+                Object tool = toolbox.get(key, path);
+                if (tool != null)
+                {
+                    return tool;
+                }
+            }
+
+            if (application == null)
+            {
+                application = session.getServletContext();
+            }
+        }
+
+        if (application != null)
+        {
+            toolbox = (Toolbox)application.getAttribute(toolboxKey);
+            if (toolbox != null)
+            {
+                return toolbox.get(key, path);
+            }
+        }
+
+        return null;
     }
 
 }
