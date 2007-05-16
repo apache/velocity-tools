@@ -70,6 +70,16 @@ public class Toolbox
         return properties;
     }
 
+    public Object get(String key)
+    {
+        return get(key, null, null);
+    }
+
+    public Object get(String key, String path)
+    {
+        return get(key, path, null);
+    }
+
     public Object get(String key, Map<String,Object> context)
     {
         return get(key, null, context);
