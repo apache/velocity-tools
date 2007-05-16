@@ -103,7 +103,7 @@ public class ViewToolContext extends ToolContext implements ViewContext
     /**
      * Returns a {@link Map} of all tools available to this
      * context. NOTE: this is not a cheap operation as it will
-     * request and initialize and instance of every available tool.
+     * request and initialize an instance of every available tool.
      */
     public Map<String,Object> getToolbox()
     {
