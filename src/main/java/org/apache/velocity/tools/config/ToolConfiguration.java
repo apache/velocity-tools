@@ -199,11 +199,11 @@ public class ToolConfiguration extends Configuration
         switch (status)
         {
             case NONE:
-                return "No classname set for tool: "+this;
+                return "No classname set for: "+this;
             case MISSING:
-                return "Couldn't find class '"+getClassname()+"' in the classpath for tool: "+this;
+                return "Couldn't find tool class in the classpath for: "+this;
             case UNSUPPORTED:
-                return "Couldn't find necessary supporting classes for tool: "+this;
+                return "Couldn't find necessary supporting classes for: "+this;
             default:
                 return "";
         }
