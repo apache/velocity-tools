@@ -206,9 +206,16 @@ public class ToolboxFactory
         Map properties = scopedProperties.get(scope);
 
         Toolbox toolbox;
-        if (properties == null && globalProperties == null)
+        if (properties == null)
         {
-            toolbox = new Toolbox(tools);
+            if (globalProperties == null)
+            {
+                toolbox = new Toolbox(tools);
+            }
+            else
+            {
+                toolbox = new Toolbox(tools, globalProperties);
+            }
         }
         else
         {
