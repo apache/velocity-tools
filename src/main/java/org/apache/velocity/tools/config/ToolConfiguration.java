@@ -125,26 +125,45 @@ public class ToolConfiguration extends Configuration
         }
     }
 
-    private final boolean isOldTool()
+    private enum Status {
+        VALID, OLD, NONE, MISSING, UNSUPPORTED;
+    }
+
+    private final Status getStatus()
     {
+        if (getClassname() == null)
+        {
+            return Status.NONE;
+        }
+
         // check for mere presence of init() or configure()
-        Class clazz = getToolClass();
         try
         {
+            Class clazz = Utils.getClass(getClassname());
+
             Method init = clazz.getMethod("init", new Class[]{ Object.class });
+
             // if init is deprecated, then we'll consider it a
             // new tool with BC support, not an old tool
             Deprecated bc = init.getAnnotation(Deprecated.class);
             if (bc == null)
             {
-                return true;
+                return Status.OLD;
             }
         }
         catch (NoSuchMethodException nsme)
         {
             // ignore this
         }
-        return false;
+        catch (ClassNotFoundException cnfe)
+        {
+            return Status.MISSING;
+        }
+        catch (NoClassDefFoundError ncdfe)
+        {
+            return Status.UNSUPPORTED;
+        }
+        return Status.VALID;
     }
 
     public String getRestrictTo()
@@ -154,20 +173,40 @@ public class ToolConfiguration extends Configuration
 
     public ToolInfo createInfo()
     {
-        ToolInfo info;
-        if (isOldTool())
+        ToolInfo info = null;
+        Status status = getStatus();
+        switch (status)
         {
-            info = new OldToolInfo(getKey(), getToolClass());
+            case VALID:
+                info = new ToolInfo(getKey(), getToolClass());
+                break;
+            case OLD:
+                info = new OldToolInfo(getKey(), getToolClass());
+                break;
+            default:
+                throw new ConfigurationException(this, getError(status));
         }
-        else
-        {
-            info = new ToolInfo(getKey(), getToolClass());
-        }
+
         info.restrictTo(getRestrictTo());
         // it's ok to use this here, because we know it's the
         // first time properties have been added to this ToolInfo
         info.addProperties(getProperties());
         return info;
+    }
+
+    private final String getError(Status status)
+    {
+        switch (status)
+        {
+            case NONE:
+                return "No classname set for tool: "+this;
+            case MISSING:
+                return "Couldn't find class '"+getClassname()+"' in the classpath for tool: "+this;
+            case UNSUPPORTED:
+                return "Couldn't find necessary supporting classes for tool: "+this;
+            default:
+                return "";
+        }
     }
 
     @Override
@@ -181,14 +220,14 @@ public class ToolConfiguration extends Configuration
             throw new NullKeyException(this);
         }
 
-        // make sure that we can have an accessible tool class
-        if (getClassname() == null)
+        Status status = getStatus();
+        switch (status)
         {
-            throw new ConfigurationException(this, "No tool classname has been set for '"+getKey()+'\'');
-        }
-        else
-        {
-            getToolClass();
+            case VALID:
+            case OLD:
+                break;
+            default:
+                throw new ConfigurationException(this, getError(status));
         }
     }
 
@@ -202,9 +241,19 @@ public class ToolConfiguration extends Configuration
         }
         else
         {
-            if (isOldTool())
+            switch (getStatus())
             {
-                out.append("Old ");
+                case VALID:
+                    break;
+                case OLD:
+                    out.append("Old ");
+                    break;
+                case NONE:
+                case MISSING:
+                    out.append("Invalid ");
+                    break;
+                case UNSUPPORTED:
+                    out.append("Unsupported ");
             }
             out.append("Tool '");
             out.append(getKey());
