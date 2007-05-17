@@ -254,7 +254,7 @@ public class ToolInfo
         {
             if (combinedProps != null)
             {
-                configure(tool, combinedProps);
+                invoke(this.configure, tool, combinedProps);
             }
         }
 
@@ -294,28 +294,29 @@ public class ToolInfo
     }
 
 
-    protected void configure(Object tool, Map<String,Object> properties)
+    protected void invoke(Method method, Object tool, Object param)
     {
         try
         {
-            // call the configure method on the instance
-            configure.invoke(tool, new Object[]{ properties });
+            // call the setup method on the instance
+            method.invoke(tool, new Object[]{ param });
         }
         catch (IllegalAccessException iae)
         {
             String msg = "Unable to invoke " +
-                         CONFIGURE_METHOD_NAME + "(Map) on "+tool;
+                         method + " on " + tool;
             // restricting access to this method by this class ist verboten
             throw new IllegalStateException(msg, iae);
         }
         catch (InvocationTargetException ite)
         {
             String msg = "Exception when invoking " +
-                         CONFIGURE_METHOD_NAME + "(Map) on "+tool;
+                         method + " on " + tool;
             // convert to a runtime exception, and re-throw
             throw new RuntimeException(msg, ite.getCause());
         }
     }
+
 
     protected void setProperty(Object tool, String name, Object value)
     {

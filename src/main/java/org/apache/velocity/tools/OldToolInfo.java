@@ -90,27 +90,4 @@ public class OldToolInfo extends ToolInfo
         return tool;
     }
 
-    protected void invoke(Method method, Object tool, Object param)
-    {
-        try
-        {
-            // call the setup method on the instance
-            method.invoke(tool, new Object[]{ param });
-        }
-        catch (IllegalAccessException iae)
-        {
-            String msg = "Unable to invoke " +
-                         method.getName()+" on "+tool;
-            // restricting access to this method by this class ist verboten
-            throw new IllegalStateException(msg, iae);
-        }
-        catch (InvocationTargetException ite)
-        {
-            String msg = "Exception when invoking " +
-                         method.getName()+" on "+tool;
-            // convert to a runtime exception, and re-throw
-            throw new RuntimeException(msg, ite.getCause());
-        }
-    }
-
 }
