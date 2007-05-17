@@ -85,9 +85,9 @@ public class ToolInfo
             // ok, we'll accept this one
             this.clazz = clazz;
         }
-        catch (Exception e)
+        catch (Throwable t)
         {
-            throw new IllegalArgumentException("Could not create an instance of "+clazz, e);
+            throw new IllegalArgumentException("Could not create an instance of "+clazz, t);
         }
 
         // search for a configure(Map params) method in the class
