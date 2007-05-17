@@ -249,20 +249,21 @@ public class ToolInfo
         Object tool = newInstance();
 
         /* if the tool is configurable and we have properties... */
-        Map<String,Object> combinedProps = combine(this.properties, dynamicProperties);
-        if (hasConfigure())
+        Map<String,Object> combinedProps =
+            combine(this.properties, dynamicProperties);
+        if (combinedProps != null)
         {
-            if (combinedProps != null)
+            if (hasConfigure())
             {
                 invoke(this.configure, tool, combinedProps);
             }
-        }
 
-        //TODO: make this step optional?
-        // look for specific setters
-        for (String name : combinedProps.keySet())
-        {
-            setProperty(tool, name, combinedProps.get(name));
+            //TODO: make this step optional?
+            // look for specific setters
+            for (String name : combinedProps.keySet())
+            {
+                setProperty(tool, name, combinedProps.get(name));
+            }
         }
         return tool;
     }
@@ -277,7 +278,7 @@ public class ToolInfo
             return clazz.newInstance();
         }
         /* we shouldn't get either of these exceptions here because
-         * we already got an instance of this class during setType().
+         * we already got an instance of this class during setClass().
          * but to be safe, let's catch them and re-throw as RuntimeExceptions */
         catch (IllegalAccessException iae)
         {
@@ -340,12 +341,18 @@ public class ToolInfo
     protected Map<String,Object> combine(Map<String,Object>... maps)
     {
         Map<String,Object> combined = new HashMap<String,Object>();
+        boolean none = true;
         for (Map<String,Object> map : maps)
         {
             if (map != null)
             {
+                none = false;
                 combined.putAll(map);
             }
+        }
+        if (none)
+        {
+            return null;
         }
         return combined;
     }
