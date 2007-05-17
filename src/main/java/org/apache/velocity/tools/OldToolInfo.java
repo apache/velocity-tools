@@ -36,7 +36,7 @@ public class OldToolInfo extends ToolInfo
 {
     public static final String INIT_METHOD_NAME = "init";
 
-    private Method init = null;
+    private Method init;
 
     /**
      * Creates a new instance using the minimum required info
@@ -52,6 +52,7 @@ public class OldToolInfo extends ToolInfo
      *
      * @param clazz the java.lang.Class of the tool
      */
+    @Override
     public void setClass(Class clazz)
     {
         super.setClass(clazz);
@@ -69,6 +70,7 @@ public class OldToolInfo extends ToolInfo
     }
 
 
+    @Override
     public Object create(Map<String,Object> dynamicProperties)
     {
         Object tool = super.create(dynamicProperties);
