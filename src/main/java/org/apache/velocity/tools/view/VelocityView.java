@@ -163,8 +163,8 @@ public class VelocityView
     public  static final String USER_PROPERTIES_PATH =
         "/WEB-INF/velocity.properties";
 
-    public static final String SUPPRESS_DEFAULTS_KEY =
-        "org.apache.velocity.tools.suppressDefaults";
+    public static final String LOAD_DEFAULTS_KEY =
+        "org.apache.velocity.tools.loadDefaults";
 
 
     private static SimplePool writerPool = new SimplePool(40);
@@ -420,29 +420,50 @@ public class VelocityView
 
     protected void configure(final ServletConfig config, final ToolboxFactory factory)
     {
-        // determine whether or not to include default tools
-        String suppressDefaults = config.getInitParameter(SUPPRESS_DEFAULTS_KEY);
-        if (suppressDefaults == null)
+        FactoryConfiguration factoryConfig = new FactoryConfiguration();
+        String configMessage = "Loading configuration from: ";
+        boolean hasOldToolbox = false;
+
+        if (this.deprecationSupportMode)
         {
-            suppressDefaults =
-                servletContext.getInitParameter(SUPPRESS_DEFAULTS_KEY);
+            // check for deprecated user configuration at the old conventional
+            // location.  be silent if missing, log deprecation warning otherwise
+            FactoryConfiguration deprecatedConfig =
+                getConfiguration(DEPRECATED_USER_TOOLS_PATH);
+            if (deprecatedConfig != null)
+            {
+                hasOldToolbox = true;
+                getLog().warn("Please upgrade to new \"/WEB-INF/tools.xml\" format and conventional location."+
+                              " Support for \"/WEB-INF/toolbox.xml\" format and conventional file name will "+
+                              "be removed in a future version.");
+                getLog().debug(configMessage + DEPRECATED_USER_TOOLS_PATH);
+
+                factoryConfig.addConfiguration(deprecatedConfig);
+            }
         }
 
-        FactoryConfiguration factoryConfig;
-        if ("true".equalsIgnoreCase(suppressDefaults))
+        // determine whether or not to include default tools
+        String loadDefaults = config.getInitParameter(LOAD_DEFAULTS_KEY);
+        if (loadDefaults == null)
         {
-            // start out blank
-            factoryConfig = new FactoryConfiguration();
-            getLog().debug("Default tool configurations have been suppressed.");
+            loadDefaults =
+                servletContext.getInitParameter(LOAD_DEFAULTS_KEY);
         }
-        else
+
+        // only load the default tools if they have explicitly said to
+        // or if they are not using an old toolbox and have said nothing
+        if ("true".equalsIgnoreCase(loadDefaults) ||
+            (!hasOldToolbox && loadDefaults == null))
         {
             getLog().trace("Loading default tool configurations...");
-            // start out with all available default tools
-            factoryConfig = FactoryConfiguration.getDefault();
+            // add all available default tools
+            factoryConfig.addConfiguration(FactoryConfiguration.getDefault());
         }
-
-        String configMessage = "Loading configuration from: ";
+        else if (hasOldToolbox)
+        {
+            // let the user know that the defaults were suppressed
+            getLog().debug("Default tool configurations have been suppressed to avoid conflicts with older application's context or toolbox definition.");
+        }
 
         // check for application-wide user config in the context init params
         String appToolsPath = servletContext.getInitParameter(TOOLS_KEY);
@@ -453,23 +474,6 @@ public class VelocityView
             getLog().debug(configMessage + appToolsPath);
 
             factoryConfig.addConfiguration(appConfig);
-        }
-
-        if (this.deprecationSupportMode)
-        {
-            // check for deprecated user configuration at the old conventional
-            // location.  be silent if missing, log deprecation warning otherwise
-            FactoryConfiguration deprecatedConfig =
-                getConfiguration(DEPRECATED_USER_TOOLS_PATH);
-            if (deprecatedConfig != null)
-            {
-                getLog().warn("Please upgrade to new \"/WEB-INF/tools.xml\" format and conventional location."+
-                              " Support for \"/WEB-INF/toolbox.xml\" format and conventional file name will "+
-                              "be removed in a future version.");
-                getLog().debug(configMessage + DEPRECATED_USER_TOOLS_PATH);
-
-                factoryConfig.addConfiguration(deprecatedConfig);
-            }
         }
 
         // check for user configuration at the conventional location,
