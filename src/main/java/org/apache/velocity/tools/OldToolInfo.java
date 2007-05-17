@@ -19,7 +19,6 @@ package org.apache.velocity.tools;
  * under the License.
  */
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import org.apache.velocity.tools.ToolContext;
@@ -79,8 +78,7 @@ public class OldToolInfo extends ToolInfo
             // ctx should, in all cases where a tool has such a method,
             // actually be a View(Tool)Context, but we don't want to link
             // to that class here, so as not to pollute the generic jar
-            Object ctx =
-                dynamicProperties.get(ToolContext.CONTEXT_KEY);
+            Object ctx = dynamicProperties.get(ToolContext.CONTEXT_KEY);
             if (ctx != null)
             {
                 invoke(this.init, tool, ctx);
