@@ -58,9 +58,14 @@ public class FactoryConfiguration
     }
 
 
-    public void addData(Data config)
+    public void addData(Data datum)
     {
-        data.add(config);
+        data.add(datum);
+    }
+
+    public boolean removeData(Data datum)
+    {
+        return data.remove(datum);
     }
 
     public List<Data> getData()
@@ -71,6 +76,11 @@ public class FactoryConfiguration
     public void addToolbox(ToolboxConfiguration toolbox)
     {
         addChild(toolbox);
+    }
+
+    public void removeToolbox(ToolboxConfiguration toolbox)
+    {
+        removeChild(toolbox);
     }
 
     public List<ToolboxConfiguration> getToolboxes()

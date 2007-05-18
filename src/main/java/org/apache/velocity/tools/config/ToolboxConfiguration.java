@@ -95,6 +95,11 @@ public class ToolboxConfiguration
         addChild(tool);
     }
 
+    public void removeTool(ToolConfiguration tool)
+    {
+        removeChild(tool);
+    }
+
     public List<ToolConfiguration> getTools()
     {
         return getChildren();
