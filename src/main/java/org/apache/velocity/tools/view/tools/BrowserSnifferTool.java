@@ -61,8 +61,10 @@ import org.apache.velocity.tools.config.InvalidScope;
  */
 @DefaultKey("browser")
 @InvalidScope("application")
-public class BrowserSnifferTool
+public class BrowserSnifferTool implements java.io.Serializable
 {
+    private static final long serialVersionUID = 1734529350532353339L;
+
     private String userAgent = null;
     private String version = null;
     private int majorVersion = -1;

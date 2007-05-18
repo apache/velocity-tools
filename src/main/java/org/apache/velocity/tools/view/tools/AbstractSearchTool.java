@@ -324,13 +324,12 @@ public abstract class AbstractSearchTool extends AbstractPagerTool
      * the session is serialized.
      * </p>
      */
-    public class StoredResults implements java.io.Serializable
+    public static class StoredResults implements java.io.Serializable
     {
-
         /** serial version id */
-	private static final long serialVersionUID = 4503130168585978169L;
+        private static final long serialVersionUID = 4503130168585978169L;
 
-	private transient Object crit;
+        private transient Object crit;
         private transient List list;
 
         /**
