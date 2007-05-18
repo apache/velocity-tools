@@ -33,9 +33,15 @@ import org.apache.velocity.tools.Utils;
  */
 public class ToolConfiguration extends Configuration
 {
+    private enum Status {
+        VALID, OLD, NONE, MISSING, UNSUPPORTED, UNINSTANTIABLE;
+    }
+
     private String key;
     private String classname;
     private String restrictTo;
+    private Status status;
+    private Throwable problem;
 
     public void setKey(String key)
     {
@@ -48,12 +54,13 @@ public class ToolConfiguration extends Configuration
      */
     public void setClass(Class clazz)
     {
-        this.classname = clazz.getName();
+        setClassname(clazz.getName());
     }
 
     public void setClassname(String classname)
     {
         this.classname = classname;
+        this.status = null;
     }
 
     public void setRestrictTo(String path)
@@ -125,45 +132,81 @@ public class ToolConfiguration extends Configuration
         }
     }
 
-    private enum Status {
-        VALID, OLD, NONE, MISSING, UNSUPPORTED;
-    }
-
     private final Status getStatus()
     {
-        if (getClassname() == null)
+        if (this.status == null)
         {
-            return Status.NONE;
-        }
-
-        // check for mere presence of init() or configure()
-        try
-        {
-            Class clazz = Utils.getClass(getClassname());
-
-            Method init = clazz.getMethod("init", new Class[]{ Object.class });
-
-            // if init is deprecated, then we'll consider it a
-            // new tool with BC support, not an old tool
-            Deprecated bc = init.getAnnotation(Deprecated.class);
-            if (bc == null)
+            if (getClassname() == null)
             {
-                return Status.OLD;
+                this.status = Status.NONE;
+            }
+
+            // check for mere presence of init() or configure()
+            try
+            {
+                // make sure the classname resolves to a class we have
+                Class clazz = Utils.getClass(getClassname());
+
+                // try hard to ensure we have all necessary supporting classes
+                digForDependencies(clazz);
+
+                // create an instance to make sure we can do that
+                clazz.newInstance();
+
+                // check for an init method
+                Method init =
+                    clazz.getMethod("init", new Class[]{ Object.class });
+
+                // if init is deprecated, then we'll consider it a
+                // new tool with BC support, not an old tool
+                Deprecated bc = init.getAnnotation(Deprecated.class);
+                if (bc == null)
+                {
+                    this.status = Status.OLD;
+                    this.problem = null;
+                }
+                else
+                {
+                    this.status = Status.VALID;
+                    this.problem = null;
+                }
+            }
+            catch (NoSuchMethodException nsme)
+            {
+                // ignore this
+                this.status = Status.VALID;
+                this.problem = null;
+            }
+            catch (ClassNotFoundException cnfe)
+            {
+                this.status = Status.MISSING;
+                this.problem = cnfe;
+            }
+            catch (NoClassDefFoundError ncdfe)
+            {
+                this.status = Status.UNSUPPORTED;
+                this.problem = ncdfe;
+            }
+            catch (Throwable t)
+            {
+                // for all other problems...
+                this.status = Status.UNINSTANTIABLE;
+                this.problem = t;
             }
         }
-        catch (NoSuchMethodException nsme)
+        return this.status;
+    }
+
+    private void digForDependencies(Class clazz)
+    {
+        clazz.getDeclaredMethods();
+        clazz.getDeclaredFields();
+
+        Class superClass = clazz.getSuperclass();
+        if (superClass != null)
         {
-            // ignore this
+            digForDependencies(superClass);
         }
-        catch (ClassNotFoundException cnfe)
-        {
-            return Status.MISSING;
-        }
-        catch (NoClassDefFoundError ncdfe)
-        {
-            return Status.UNSUPPORTED;
-        }
-        return Status.VALID;
     }
 
     public String getRestrictTo()
@@ -201,9 +244,14 @@ public class ToolConfiguration extends Configuration
             case NONE:
                 return "No classname set for: "+this;
             case MISSING:
-                return "Couldn't find tool class in the classpath for: "+this;
+                return "Couldn't find tool class in the classpath for: "+this+
+                       "("+this.problem+")";
             case UNSUPPORTED:
-                return "Couldn't find necessary supporting classes for: "+this;
+                return "Couldn't find necessary supporting classes for: "+this+
+                       "("+this.problem+")";
+            case UNINSTANTIABLE:
+                return "Couldn't instantiate instance of tool for: "+this+
+                       "("+this.problem+")";
             default:
                 return "";
         }
@@ -254,6 +302,10 @@ public class ToolConfiguration extends Configuration
                     break;
                 case UNSUPPORTED:
                     out.append("Unsupported ");
+                    break;
+                case UNINSTANTIABLE:
+                    out.append("Unusable ");
+                    break;
             }
             out.append("Tool '");
             out.append(getKey());

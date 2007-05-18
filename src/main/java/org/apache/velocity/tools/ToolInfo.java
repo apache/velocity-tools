@@ -76,19 +76,17 @@ public class ToolInfo
      */
     public void setClass(Class clazz)
     {
-        try
+        if (clazz == null)
         {
-            // make sure we can get an instance
-            // make sure we can get an instance
-            clazz.newInstance();
+            throw new NullPointerException("Tool class must not be null");
+        }
+        this.clazz = clazz;
 
-            // ok, we'll accept this one
-            this.clazz = clazz;
-        }
-        catch (Throwable t)
-        {
-            throw new IllegalArgumentException("Could not create an instance of "+clazz, t);
-        }
+        //NOTE: we used to check here that we could get an instance of
+        //      the tool class, but that's been moved to ToolConfiguration
+        //      in order to fail as earlier as possible.  most people won't
+        //      manually create ToolInfo.  if they do and we can't get an
+        //      instance, they should be capable of figuring out what happened
 
         // search for a configure(Map params) method in the class
         try
@@ -304,15 +302,13 @@ public class ToolInfo
         }
         catch (IllegalAccessException iae)
         {
-            String msg = "Unable to invoke " +
-                         method + " on " + tool;
+            String msg = "Unable to invoke " + method + " on " + tool;
             // restricting access to this method by this class ist verboten
             throw new IllegalStateException(msg, iae);
         }
         catch (InvocationTargetException ite)
         {
-            String msg = "Exception when invoking " +
-                         method + " on " + tool;
+            String msg = "Exception when invoking " + method + " on " + tool;
             // convert to a runtime exception, and re-throw
             throw new RuntimeException(msg, ite.getCause());
         }
