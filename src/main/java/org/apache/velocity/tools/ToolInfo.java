@@ -34,9 +34,9 @@ import org.apache.velocity.tools.Utils;
  * @author <a href="mailto:henning@schmiedehausen.org">Henning P. Schmiedehausen</a>
  * @version $Id: ToolInfo.java 511959 2007-02-26 19:24:39Z nbubna $
  */
-//TODO: make this class serializable
-public class ToolInfo
+public class ToolInfo implements java.io.Serializable
 {
+    private static final long serialVersionUID = -8145087882015742757L;
     public static final String CONFIGURE_METHOD_NAME = "configure";
 
     private String key;
@@ -44,7 +44,7 @@ public class ToolInfo
     private boolean restrictToIsExact;
     private String restrictTo;
     private Map<String,Object> properties;
-    private Method configure = null;
+    private transient Method configure = null;
 
     /**
      * Creates a new instance using the minimum required info
@@ -87,35 +87,6 @@ public class ToolInfo
         //      in order to fail as earlier as possible.  most people won't
         //      manually create ToolInfo.  if they do and we can't get an
         //      instance, they should be capable of figuring out what happened
-
-        // search for a configure(Map params) method in the class
-        try
-        {
-            this.configure = Utils.findMethod(clazz, CONFIGURE_METHOD_NAME,
-                                          new Class[]{ Map.class });
-        }
-        catch (SecurityException se)
-        {
-            // fail early, rather than wait until
-            String msg = "Unable to gain access to '" +
-                         CONFIGURE_METHOD_NAME + "(Map)'" +
-                         " method for '" + clazz.getName() +
-                         "' under the current security manager."+
-                         "  This tool cannot be properly configured for use.";
-            throw new IllegalStateException(msg, se);
-        }
-
-        /* TODO? if we have performance issues with copyProperties,
-                 look at possibly finding and caching these common setters
-                    setContext(VelocityContext)
-                    setVelocityEngine(VelocityEngine)
-                    setLog(Log)
-                    setLocale(Locale)
-                 these four are tricky since we may not want servlet deps here
-                    setRequest(ServletRequest)
-                    setSession(HttpSession)
-                    setResponse(ServletResponse)
-                    setServletContext(ServletContext)    */
     }
 
     /**
@@ -204,7 +175,7 @@ public class ToolInfo
 
     public boolean hasConfigure()
     {
-        return (this.configure != null);
+        return (getConfigure() != null);
     }
 
     /**
@@ -253,7 +224,7 @@ public class ToolInfo
         {
             if (hasConfigure())
             {
-                invoke(this.configure, tool, combinedProps);
+                invoke(getConfigure(), tool, combinedProps);
             }
 
             //TODO: make this step optional?
@@ -268,6 +239,42 @@ public class ToolInfo
 
 
     /***********************  protected methods *************************/
+
+    protected Method getConfigure()
+    {
+        if (this.configure == null)
+        {
+            // search for a configure(Map params) method in the class
+            try
+            {
+                this.configure = Utils.findMethod(clazz, CONFIGURE_METHOD_NAME,
+                                              new Class[]{ Map.class });
+            }
+            catch (SecurityException se)
+            {
+                // fail early, rather than wait until
+                String msg = "Unable to gain access to '" +
+                             CONFIGURE_METHOD_NAME + "(Map)'" +
+                             " method for '" + clazz.getName() +
+                             "' under the current security manager."+
+                             "  This tool cannot be properly configured for use.";
+                throw new IllegalStateException(msg, se);
+            }
+        }
+        return this.configure;
+    }
+
+    /* TODO? if we have performance issues with copyProperties,
+             look at possibly finding and caching these common setters
+                setContext(VelocityContext)
+                setVelocityEngine(VelocityEngine)
+                setLog(Log)
+                setLocale(Locale)
+             these four are tricky since we may not want servlet deps here
+                setRequest(ServletRequest)
+                setSession(HttpSession)
+                setResponse(ServletResponse)
+                setServletContext(ServletContext)    */
 
     protected Object newInstance()
     {

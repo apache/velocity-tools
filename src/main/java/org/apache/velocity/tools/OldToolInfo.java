@@ -30,9 +30,9 @@ import org.apache.velocity.tools.ToolContext;
  * @author Nathan Bubna
  * @version $Id: OldToolInfo.java 511959 2007-02-26 19:24:39Z nbubna $
  */
-//TODO: make this class serializable
 public class OldToolInfo extends ToolInfo
 {
+    private static final long serialVersionUID = -4062162635847288761L;
     public static final String INIT_METHOD_NAME = "init";
 
     private Method init;

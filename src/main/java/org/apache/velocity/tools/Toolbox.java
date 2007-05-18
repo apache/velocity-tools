@@ -31,9 +31,10 @@ import java.util.Set;
  * @author Nathan Bubna
  * @version $Id: Toolbox.java 511959 2007-02-26 19:24:39Z nbubna $
  */
-//TODO: make this class serializable
-public class Toolbox
+public class Toolbox implements java.io.Serializable
 {
+    private static final long serialVersionUID = 888081253188664649L;
+
     private Map<String,ToolInfo> infoMap;
     private Map<String,Object> properties;
     private Map<String,Object> cache;
