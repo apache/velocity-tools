@@ -40,6 +40,11 @@ public class Configuration<T>
         convertableProperties.add(property);
     }
 
+    public boolean removeProperty(Property property)
+    {
+        return convertableProperties.remove(property);
+    }
+
     public List<Property> getConvertableProperties()
     {
         return convertableProperties;
@@ -68,6 +73,11 @@ public class Configuration<T>
     public void setProperty(String name, Object value)
     {
         simpleProperties.put(name, value);
+    }
+
+    public Object removeProperty(String name)
+    {
+        return simpleProperties.remove(name);
     }
 
     public boolean hasProperties()

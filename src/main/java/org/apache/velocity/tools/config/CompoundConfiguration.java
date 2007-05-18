@@ -38,6 +38,11 @@ public class CompoundConfiguration<C extends Configuration>
         children.add(config);
     }
 
+    protected boolean removeChild(C config)
+    {
+        return children.remove(config);
+    }
+
     protected boolean hasChildren()
     {
         return !children.isEmpty();
