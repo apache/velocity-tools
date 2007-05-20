@@ -316,7 +316,7 @@
   <!-- Build Velocity-Tools documentation -->
   <target name="docs" depends="prepare.docs"
           description="Generate documentation into ${docs.dir}">
-    <taskdef name="dvsl" classname="org.apache.tools.dvsl.DVSLTask">
+    <taskdef name="dvsl" classname="org.apache.dvsl.DVSLTask">
       <classpath refid="docs.classpath"/>
     </taskdef>
 
