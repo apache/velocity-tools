@@ -872,12 +872,12 @@ public class VelocityView
      * @param request client request
      * @return Velocity Template object or null
      */
-    protected Template getTemplate(HttpServletRequest request)
+    public Template getTemplate(HttpServletRequest request)
     {
         return getTemplate(request, null);
     }
 
-    protected Template getTemplate(HttpServletRequest request,
+    public Template getTemplate(HttpServletRequest request,
                                    HttpServletResponse response)
     {
         String path = ServletUtils.getPath(request);
@@ -949,7 +949,7 @@ public class VelocityView
      * @param context Context created by the {@link #createContext}
      * @param writer into which the content is rendered
      */
-    protected void merge(Template template, Context context, Writer writer)
+    public void merge(Template template, Context context, Writer writer)
         throws IOException
     {
         VelocityWriter vw = null;
