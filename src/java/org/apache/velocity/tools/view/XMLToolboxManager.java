@@ -102,7 +102,6 @@ public class XMLToolboxManager implements ToolboxManager
 
     public void addTool(ToolInfo info)
     {
-        System.out.println("addTool("+info);
         if (validateToolInfo(info))
         {
             toolinfo.add(info);
