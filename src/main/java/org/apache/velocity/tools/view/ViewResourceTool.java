@@ -36,11 +36,12 @@ import org.apache.velocity.tools.generic.ResourceTool;
  *   $otherText.bar.insert(4,true)  ->  The args are 4 and true.
  *
  * Toolbox configuration example:
- * &lt;tool&gt;
- *   &lt;key&gt;text&lt;/key&gt;
- *   &lt;class&gt;org.apache.velocity.tools.view.ViewResourceTool&lt;/class&gt;
- *   &lt;parameter name="bundles" value="resources,com.foo.moreResources"/&gt;
- * &lt;/tool&gt;
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="request"&gt;
+ *     &lt;tool class="org.apache.velocity.tools.view.ViewResourceTool"
+ *              bundles="resources,com.foo.moreResources"/&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
  * </pre></p>
  *
  * <p>This comes in very handy when internationalizing templates.

@@ -52,14 +52,14 @@ import org.apache.velocity.tools.view.ViewContext;
  *  $tiles.importAttributes()
  *
  * Toolbox configuration:
- * &lt;tool&gt;
- *   &lt;key&gt;tiles&lt;/key&gt;
- *   &lt;scope&gt;request&lt;/scope&gt;
- *   &lt;class&gt;org.apache.velocity.tools.struts.TilesTool&lt;/class&gt;
- * &lt;/tool&gt;
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="request"&gt;
+ *     &lt;tool class="org.apache.velocity.tools.struts.TilesTool"/&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
  * </pre></p>
  *
- * <p>This tool should only be used in the request scope.</p>
+ * <p>This tool may only be used in the request scope.</p>
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 1.1

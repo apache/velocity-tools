@@ -46,11 +46,11 @@ import org.apache.velocity.tools.view.ViewToolContext;
  *  #end
  *
  * Toolbox configuration:
- * &lt;tool&gt;
- *   &lt;key&gt;context&lt;/key&gt;
- *   &lt;scope&gt;request&lt;/scope&gt;
- *   &lt;class&gt;org.apache.velocity.tools.view.ContextTool&lt;/class&gt;
- * &lt;/tool&gt;
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="request"&gt;
+ *     &lt;tool class="org.apache.velocity.tools.view.ContextTool"/&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
  * </pre></p>
  *
  * <p>This class is only designed for use as a request-scope VelocityView tool.</p>

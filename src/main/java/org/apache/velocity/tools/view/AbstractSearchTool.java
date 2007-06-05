@@ -120,11 +120,12 @@ import org.apache.velocity.tools.config.InvalidScope;
  * </p>
  * <p>
  * <b>Example toolbox.xml configuration:</b>
- * <pre>&lt;tool&gt;
- *   &lt;key&gt;search&lt;/key&gt;
- *   &lt;scope&gt;request&lt;/scope&gt;
- *   &lt;class&gt;com.foo.tools.MySearchTool&lt;/class&gt;
- * &lt;/tool&gt;
+ * <pre>
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="request"&gt;
+ *     &lt;tool class="com.foo.tools.MySearchTool"/&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
  * </pre>
  * </p>
  *

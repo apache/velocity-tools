@@ -32,14 +32,14 @@ import org.apache.velocity.runtime.log.Log;
  *   &lt;a href="$base.param('select','that')"&gt;view that&lt;/a&gt;
  *
  * Toolbox configuration:
- * &lt;tool&gt;
- *   &lt;key&gt;link&lt;/key&gt;
- *   &lt;scope&gt;request&lt;/scope&gt;
- *   &lt;class&gt;org.apache.velocity.tools.struts.StrutsLinkTool&lt;/class&gt;
- * &lt;/tool&gt;
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="request"&gt;
+ *     &lt;tool class="org.apache.velocity.tools.struts.StrutsLinkTool"/&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
  * </pre></p>
  *
- * <p>This tool should only be used in the request scope.</p>
+ * <p>This tool may only be used in the request scope.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author Nathan Bubna

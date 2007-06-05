@@ -51,16 +51,14 @@ import java.util.ResourceBundle;
  *  $date.difference('2005-07-04','2005-07-04')      -> 0 milliseconds
  *  $date.difference('2005-07-04','2007-02-15').abbr -> 1 yr
  *
- * Example toolbox.xml config (if you want to use this with VelocityView):
- * &lt;tool&gt;
- *   &lt;key&gt;date&lt;/key&gt;
- *   &lt;scope&gt;application&lt;/scope&gt;
- *   &lt;class&gt;org.apache.velocity.tools.generic.ComparisonDateTool&lt;/class&gt;
- *   &lt;parameter name="format" value="yyyy-MM-dd"/&gt;
- *   &lt;parameter name="bundle" value="org.apache.velocity.tools.generic.times"/&gt;
- *   &lt;parameter name="depth" value="1"/&gt;
- *   &lt;parameter name="skip" value="month,week,millisecond"/&gt;
- * &lt;/tool&gt;
+ * Example tools.xml config (if you want to use this with VelocityView):
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="application"&gt;
+ *     &lt;tool class="org.apache.velocity.tools.generic.ComparisonDateTool"
+ *              format="yyyy-MM-dd" depth="1" skip="month,week,millisecond"
+ *              bundle="org.apache.velocity.tools.generic.times"/&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
  * </pre></p>
  *
  * @author Nathan Bubna

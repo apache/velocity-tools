@@ -97,12 +97,13 @@ import org.apache.velocity.tools.view.ViewContext;
  *   <b>1</b> <a href="">2</a> <a href="">Next</a>
  * </p>
  * <p>
- * <b>Example toolbox.xml configuration:</b>
- * <pre>&lt;tool&gt;
- *   &lt;key&gt;pager&lt;/key&gt;
- *   &lt;scope&gt;request&lt;/scope&gt;
- *   &lt;class&gt;com.foo.tools.MyPagerTool&lt;/class&gt;
- * &lt;/tool&gt;
+ * <b>Example tools.xml configuration:</b>
+ * <pre>
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="request"&gt;
+ *     &lt;tool class="com.foo.tools.MyPagerTool"/&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
  * </pre>
  * </p>
  *

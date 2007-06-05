@@ -63,10 +63,11 @@ import org.apache.velocity.tools.config.DefaultKey;
  *
  *
  * Toolbox configuration:
- * &lt;tool&gt;
- *   &lt;key&gt;render&lt;/key&gt;
- *   &lt;class&gt;org.apache.velocity.tools.generic.RenderTool&lt;/class&gt;
- * &lt;/tool&gt;
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="application"&gt;
+ *     &lt;tool class="org.apache.velocity.tools.generic.RenderTool"/&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
  * </pre>
  *
  * <p>Ok, so these examples are really lame.  But, it seems like

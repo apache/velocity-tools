@@ -67,12 +67,12 @@ import org.apache.velocity.tools.config.DefaultKey;
  *  $esc.exclamation             -> !
  *  $esc.e                       -> !
  *
- * Example toolbox.xml config (if you want to use this with VelocityView):
- * &lt;tool&gt;
- *   &lt;key&gt;esc&lt;/key&gt;
- *   &lt;scope&gt;application&lt;/scope&gt;
- *   &lt;class&gt;org.apache.velocity.tools.generic.EscapeTool&lt;/class&gt;
- * &lt;/tool&gt;
+ * Example tools.xml config (if you want to use this with VelocityView):
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="application"&gt;
+ *     &lt;tool class="org.apache.velocity.tools.generic.EscapeTool"/&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
  * </pre></p>
  *
  * <p>This tool is entirely threadsafe, and has no instance members.
