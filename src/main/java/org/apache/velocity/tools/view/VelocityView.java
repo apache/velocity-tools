@@ -43,7 +43,6 @@ import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.tools.generic.log.LogChuteCommonsLog;
 import org.apache.velocity.tools.Toolbox;
 import org.apache.velocity.tools.ToolboxFactory;
-import org.apache.velocity.tools.config.ConfigurationCleaner;
 import org.apache.velocity.tools.config.FactoryConfiguration;
 import org.apache.velocity.tools.config.FileFactoryConfiguration;
 import org.apache.velocity.tools.config.PropertiesFactoryConfiguration;
@@ -497,11 +496,6 @@ public class VelocityView
 
             factoryConfig.addConfiguration(servletConfig);
         }
-
-        // remove invalid tools, data, and properties from the configuration
-        ConfigurationCleaner cleaner = new ConfigurationCleaner();
-        cleaner.setLog(getLog());
-        cleaner.clean(factoryConfig);
 
         getLog().debug("Configuring toolboxFactory with: "+factoryConfig);
 
