@@ -43,11 +43,11 @@ import org.apache.velocity.tools.view.LinkTool;
  * with https or http accordingly.
  *
  * Toolbox configuration:
- * &lt;tool&gt;
- *   &lt;key&gt;link&lt;/key&gt;
- *   &lt;scope&gt;request&lt;/scope&gt;
- *   &lt;class&gt;org.apache.velocity.tools.struts.SecureLinkTool&lt;/class&gt;
- * &lt;/tool&gt;
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="request"&gt;
+ *     &lt;tool class="org.apache.velocity.tools.struts.SecureLinkTool"/&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
  * </pre>
  * </p>
  * @since VelocityTools 1.1

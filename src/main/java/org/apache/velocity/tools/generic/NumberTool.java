@@ -39,13 +39,12 @@ import org.apache.velocity.tools.config.DefaultKey;
  *  $number.currency($myNumber) -> $13.55
  *  $number.integer($myNumber)  -> 13
  *
- * Example toolbox.xml config (if you want to use this with VelocityView):
- * &lt;tool&gt;
- *   &lt;key&gt;number&lt;/key&gt;
- *   &lt;scope&gt;application&lt;/scope&gt;
- *   &lt;class&gt;org.apache.velocity.tools.generic.NumberTool&lt;/class&gt;
- *   &lt;parameter name="format" value="#0.0"/&gt;
- * &lt;/tool&gt;
+ * Example tools.xml config (if you want to use this with VelocityView):
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="application"&gt;
+ *     &lt;tool class="org.apache.velocity.tools.generic.MathTool"/&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
  * </pre></p>
  *
  * <p>This tool is entirely threadsafe, and has no instance members.

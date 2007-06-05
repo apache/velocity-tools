@@ -29,13 +29,12 @@ import org.apache.velocity.tools.config.DefaultKey;
  *
  * <p><b>Example Use:</b>
  * <pre>
- * toolbox.xml...
- * &lt;tool&gt;
- *   &lt;key&gt;alternator&lt;/key&gt;
- *   &lt;scope&gt;application&lt;/scope&gt;
- *   &lt;class&gt;org.apache.velocity.tools.generic.AlternatorTool&lt;/class&gt;
- *   &lt;parameter name="auto-alternate" value="true"/&gt;
- * &lt;/tool&gt;
+ * tools.xml...
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="application"&gt;
+ *     &lt;tool class="org.apache.velocity.tools.generic.AlternatorTool"/&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
  *
  * template...
  * #set( $color = $alternator.auto('red', 'blue') )

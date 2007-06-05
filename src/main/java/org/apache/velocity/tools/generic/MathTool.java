@@ -41,12 +41,12 @@ import org.apache.velocity.tools.config.DefaultKey;
  * literally. (e.g. $math.div(1, 0) renders as '$math.div(1, 0)')</li>
  * </ul>
  * <p><pre>
- * Example toolbox.xml config (if you want to use this with VelocityView):
- * &lt;tool&gt;
- *   &lt;key&gt;math&lt;/key&gt;
- *   &lt;scope&gt;application&lt;/scope&gt;
- *   &lt;class&gt;org.apache.velocity.tools.generic.MathTool&lt;/class&gt;
- * &lt;/tool&gt;
+ * Example tools.xml config (if you want to use this with VelocityView):
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="application"&gt;
+ *     &lt;tool class="org.apache.velocity.tools.generic.MathTool"/&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
  * </pre></p>
  *
  * @author Nathan Bubna

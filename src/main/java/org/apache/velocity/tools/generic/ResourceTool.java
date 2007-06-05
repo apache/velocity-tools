@@ -39,12 +39,13 @@ import org.apache.velocity.tools.config.DefaultKey;
  *   $otherText.bar.insert(4,true)  ->  The args are 4 and true.
  *
  * Toolbox configuration example:
- * &lt;tool&gt;
- *   &lt;key&gt;text&lt;/key&gt;
- *   &lt;class&gt;org.apache.velocity.tools.generic.ResourceTool&lt;/class&gt;
- *   &lt;parameter name="bundles" value="resources,com.foo.moreResources"/&gt;
- *   &lt;parameter name="locale" value="en_US"/&gt;
- * &lt;/tool&gt;
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="application"&gt;
+ *     &lt;tool class="org.apache.velocity.tools.generic.ResourceTool"
+ *              bundles="resources,com.foo.moreResources"
+ *              locale="en_US"/&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
  * </pre></p>
  *
  * <p>This comes in very handy when internationalizing templates.

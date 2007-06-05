@@ -36,11 +36,11 @@ import org.apache.velocity.tools.config.ValidScope;
  *   #end
  *
  * Toolbox configuration:
- * &lt;tool&gt;
- *   &lt;key&gt;text&lt;/key&gt;
- *   &lt;scope&gt;request&lt;/scope&gt;
- *   &lt;class&gt;org.apache.velocity.tools.struts.MessageTool&lt;/class&gt;
- * &lt;/tool&gt;
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="request"&gt;
+ *     &lt;tool class="org.apache.velocity.tools.struts.MessageTool"/&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
  * </pre></p>
  *
  * <p>This tool should only be used in the request scope.</p>

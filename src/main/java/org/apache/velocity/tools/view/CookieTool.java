@@ -32,12 +32,12 @@ import org.apache.velocity.tools.config.ValidScope;
  *  $cookie.foo.value
  *  $cookie.add("bar",'woogie')
  *
- * Toolbox configuration:
- * &lt;tool&gt;
- *   &lt;key&gt;cookie&lt;/key&gt;
- *   &lt;scope&gt;request&lt;/scope&gt;
- *   &lt;class&gt;org.apache.velocity.tools.view.CookieTool&lt;/class&gt;
- * &lt;/tool&gt;
+ * tools.xml configuration:
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="request"&gt;
+ *     &lt;tool class="org.apache.velocity.tools.view.CookieTool"/&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
  * </pre></p>
  *
  * <p>This class is only designed for use as a request-scope tool.</p>

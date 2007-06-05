@@ -49,13 +49,13 @@ import org.apache.velocity.tools.config.DefaultKey;
  *  $myDate                        -> Tue Oct 07 03:14:50 PDT 2003
  *  $date.format('medium',$myDate) -> Oct 7, 2003 3:14:50 AM
  *
- * Example toolbox.xml config (if you want to use this with VelocityView):
- * &lt;tool&gt;
- *   &lt;key&gt;date&lt;/key&gt;
- *   &lt;scope&gt;application&lt;/scope&gt;
- *   &lt;class&gt;org.apache.velocity.tools.generic.DateTool&lt;/class&gt;
- *   &lt;parameter name="format" value="yyyy-M-d"/&gt;
- * &lt;/tool&gt;
+ * Example tools.xml config (if you want to use this with VelocityView):
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="application"&gt;
+ *     &lt;tool class="org.apache.velocity.tools.generic.DateTool"
+ *              format="yyyy-MM-dd"/&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
  * </pre></p>
  *
  * <p>The methods of this tool are highly interconnected, and overriding

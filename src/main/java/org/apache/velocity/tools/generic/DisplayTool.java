@@ -37,9 +37,9 @@ import org.apache.velocity.tools.config.DefaultKey;
  * tools.xml...
  * &lt;tools&gt;
  *   &lt;toolbox scope="application"&gt;
- *     &lt;tool class="org.apache.velocity.tools.generic.DisplayTool&lt;/tool&gt;
+ *     &lt;tool class="org.apache.velocity.tools.generic.DisplayTool"/&gt;
  *   &lt;/toolbox&gt;
- * &lt;/tool&gt;
+ * &lt;/tools&gt;
  *
  * template...
  *   #set( $list = [1..5] )

@@ -31,11 +31,11 @@ import org.apache.velocity.tools.view.ImportSupport;
  * </p>
  * <p><pre>
  * Toolbox configuration:
- * &lt;tool&gt;
- *   &lt;key&gt;import&lt;/key&gt;
- *   &lt;scope&gt;request&lt;/scope&gt;
- *   &lt;class&gt;org.apache.velocity.tools.view.ImportTool&lt;/class&gt;
- * &lt;/tool&gt;
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="request"&gt;
+ *     &lt;tool class="org.apache.velocity.tools.view.ImportTool"/&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
  * </pre></p>
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>

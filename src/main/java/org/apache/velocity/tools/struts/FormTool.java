@@ -35,15 +35,14 @@ import org.apache.velocity.tools.config.ValidScope;
  *  &lt;input type="submit" name="$form.cancelName" value="Cancel"&gt;
  *
  * Toolbox configuration:
- *
- * &lt;tool&gt;
- *   &lt;key&gt;form&lt;/key&gt;
- *   &lt;scope&gt;request&lt;/scope&gt;
- *   &lt;class&gt;org.apache.velocity.tools.struts.FormTool&lt;/class&gt;
- * &lt;/tool&gt;
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="request"&gt;
+ *     &lt;tool class="org.apache.velocity.tools.struts.FormTool"/&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
  * </pre></p>
  *
- * <p>This tool should only be used in the request scope.</p>
+ * <p>This tool may only be used in the request scope.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @since VelocityTools 1.0

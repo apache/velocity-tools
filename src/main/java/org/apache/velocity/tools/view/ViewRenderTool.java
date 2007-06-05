@@ -55,12 +55,13 @@ import org.apache.velocity.tools.config.InvalidScope;
  *
  *
  * Toolbox configuration:
- * &lt;tool&gt;
- *   &lt;key&gt;render&lt;/key&gt;
- *   &lt;scope&gt;request&lt;/scope&gt;
- *   &lt;class&gt;org.apache.velocity.tools.view.ViewRenderTool&lt;/class&gt;
- *   &lt;parameter name="parse.depth" value="10"/&gt;
- * &lt;/tool&gt;
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="request"&gt;
+ *     &lt;tool class="org.apache.velocity.tools.view.ViewRenderTool"&gt;
+ *       &lt;property name="parse.depth" type="number" value="10"/&gt;
+ *     &lt;/tool&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
  * </pre>
  *
  * <p>Ok, so these examples are really lame.  But, it seems like

@@ -30,19 +30,6 @@ import org.apache.velocity.tools.config.DefaultKey;
 
 /**
  * <p>Utility class for easy parsing of String values held in a Map.</p>
- * <p><pre>
- * Template example(s):
- *   $parser.foo                ->  bar
- *   $parser.getNumber('baz')   ->  12.6
- *   $parser.getInt('baz')      ->  12
- *   $parser.getNumbers('baz')  ->  [12.6]
- *
- * Toolbox configuration:
- * &lt;tool&gt;
- *   &lt;key&gt;parser&lt;/key&gt;
- *   &lt;class&gt;org.apache.velocity.generic.ValueParser&lt;/class&gt;
- * &lt;/tool&gt;
- * </pre></p>
  *
  * <p>This comes in very handy when parsing parameters.</p>
  *

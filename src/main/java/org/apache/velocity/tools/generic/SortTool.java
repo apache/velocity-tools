@@ -98,6 +98,15 @@ import org.apache.velocity.tools.config.DefaultKey;
  * in descending order, of course you could have left the :asc off of the
  * 'Name' property as ascending is always the default.</p>
  *
+ * <p><pre>
+ * Example tools.xml config (if you want to use this with VelocityView):
+ * &lt;tools&gt;
+ *   &lt;toolbox scope="application"&gt;
+ *     &lt;tool class="org.apache.velocity.tools.generic.SortTool"/&gt;
+ *   &lt;/toolbox&gt;
+ * &lt;/tools&gt;
+ * </pre></p>
+ *
  * @author S. Brett Sutton
  * @author Nathan Bubna
  * @since VelocityTools 1.2
