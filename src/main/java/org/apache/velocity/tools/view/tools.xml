@@ -22,20 +22,20 @@
 <tools> 
     <data type="boolean" key="VIEW_TOOLS_AVAILABLE" value="true"/>
     <toolbox scope="request">
-        <tool class="org.apache.velocity.tools.view.tools.ContextTool"/>
-        <tool class="org.apache.velocity.tools.view.tools.CookieTool"/>
-        <tool class="org.apache.velocity.tools.view.tools.ImportTool"/>
-        <tool class="org.apache.velocity.tools.view.tools.LinkTool"/>
-        <tool class="org.apache.velocity.tools.view.tools.ParameterParser"/>
-        <tool class="org.apache.velocity.tools.view.tools.ViewRenderTool"/>
-        <tool class="org.apache.velocity.tools.view.tools.ViewResourceTool"/>
+        <tool class="org.apache.velocity.tools.view.ContextTool"/>
+        <tool class="org.apache.velocity.tools.view.CookieTool"/>
+        <tool class="org.apache.velocity.tools.view.ImportTool"/>
+        <tool class="org.apache.velocity.tools.view.LinkTool"/>
+        <tool class="org.apache.velocity.tools.view.ParameterTool"/>
+        <tool class="org.apache.velocity.tools.view.ViewRenderTool"/>
+        <tool class="org.apache.velocity.tools.view.ViewResourceTool"/>
         <!-- 
         These are not directly useable.
-        <tool class="org.apache.velocity.tools.view.tools.AbstractPagerTool"/>
-        <tool class="org.apache.velocity.tools.view.tools.AbstractSearchTool"/>
+        <tool class="org.apache.velocity.tools.view.AbstractPagerTool"/>
+        <tool class="org.apache.velocity.tools.view.AbstractSearchTool"/>
         -->
     </toolbox>
     <toolbox scope="session" createSession="false">
-        <tool class="org.apache.velocity.tools.view.tools.BrowserSnifferTool"/>
+        <tool class="org.apache.velocity.tools.view.BrowserTool"/>
     </toolbox>
 </tools>

@@ -19,7 +19,7 @@ package org.apache.velocity.tools.struts;
  * under the License.
  */
 
-import org.apache.velocity.tools.view.tools.LinkTool;
+import org.apache.velocity.tools.view.LinkTool;
 import org.apache.velocity.runtime.log.Log;
 
 /**
