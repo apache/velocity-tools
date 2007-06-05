@@ -52,7 +52,7 @@
     <antcall target="example-${target}"/>
   </target>
   <target name="simple-dependencies">
-    <copy todir="${lib}" file="${dist.dir}/${view.id}.jar"/>
+    <copy todir="${lib}" file="${dist.dir}/${struts.id}.jar"/>
     <copy todir="${lib}" file="${commons-beanutils.jar}"/>
     <copy todir="${lib}" file="${commons-collections.jar}"/>
     <copy todir="${lib}" file="${commons-digester.jar}"/>
