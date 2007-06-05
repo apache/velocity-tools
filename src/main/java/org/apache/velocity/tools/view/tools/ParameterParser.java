@@ -19,6 +19,7 @@ package org.apache.velocity.tools.view.tools;
  * under the License.
  */
 
+import javax.servlet.ServletRequest;
 import org.apache.velocity.tools.view.ViewContext;
 
 /**
@@ -27,6 +28,23 @@ import org.apache.velocity.tools.view.ViewContext;
 @Deprecated
 public class ParameterParser extends org.apache.velocity.tools.view.ParameterTool
 {
+
+    /**
+     * Constructs a new instance
+     */
+    public ParameterParser()
+    {}
+
+    /**
+     * Constructs a new instance using the specified request.
+     *
+     * @param request the {@link ServletRequest} to be parsed
+     */
+    public ParameterParser(ServletRequest request)
+    {
+        setRequest(request);
+    }
+
     @Deprecated
     public void init(Object obj)
     {
