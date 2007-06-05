@@ -25,6 +25,7 @@
     <toolbox scope="application">
         <tool class="org.apache.velocity.tools.generic.AlternatorTool"/>
         <tool class="org.apache.velocity.tools.generic.ComparisonDateTool"/>
+        <tool class="org.apache.velocity.tools.generic.DisplayTool"/>
         <tool class="org.apache.velocity.tools.generic.EscapeTool"/>
         <tool class="org.apache.velocity.tools.generic.IteratorTool"/>
         <tool class="org.apache.velocity.tools.generic.ListTool"/>
