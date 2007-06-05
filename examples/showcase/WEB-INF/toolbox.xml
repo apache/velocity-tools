@@ -94,6 +94,16 @@
     <parameter name="skip" value="month"/>
   </tool>
   <tool>
+    <key>display</key>
+    <scope>application</scope>
+    <class>org.apache.velocity.tools.generic.DisplayTool</class>
+    <parameter name="listDelim" value=", "/>
+    <parameter name="listFinalDelim" value=" and "/>
+    <parameter name="truncateMaxLength" value="30"/>
+    <parameter name="truncateSuffix" value="..."/>
+    <parameter name="defaultAlternate" value="null"/>
+  </tool>
+  <tool>
     <key>esc</key>
     <scope>application</scope>
     <class>org.apache.velocity.tools.generic.EscapeTool</class>

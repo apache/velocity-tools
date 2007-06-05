@@ -27,6 +27,7 @@
 #toolMenuItem( $llink 'context' )
 #toolMenuItem( $llink 'cookies' )
 #toolMenuItem( $llink 'date' )
+#toolMenuItem( $llink 'display' )
 #toolMenuItem( $llink 'esc' )
 #toolMenuItem( $llink 'import' )
 #toolMenuItem( $llink 'link' )
