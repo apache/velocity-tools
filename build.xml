@@ -374,7 +374,7 @@
   </target>
 
   <!-- Build VelocityView - Showcase application -->
-  <target name="showcase" depends="jar.view,prepare.examples"
+  <target name="showcase" depends="jar,prepare.examples"
           description="Compiles and jars the VelocityView Showcase example application.">
     <property name="target" value="war"/>
     <ant antfile="${basedir}/examples.xml" target="showcase-example" />
