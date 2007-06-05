@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.SecurePlugInInterface;
 import org.apache.struts.config.ModuleConfig;
 import org.apache.struts.config.SecureActionConfig;
-import org.apache.velocity.tools.view.tools.LinkTool;
+import org.apache.velocity.tools.view.LinkTool;
 
 /**
  * Tool to be able to use Struts SSL Extensions with Velocity.
