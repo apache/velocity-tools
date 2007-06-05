@@ -20,6 +20,7 @@ package org.apache.velocity.tools.view.tools;
  */
 
 import java.util.List;
+import org.apache.velocity.tools.view.ViewContext;
 
 /**
  * Use {@link org.apache.velocity.tools.view.tools.AbstractSearchTool}
@@ -28,6 +29,15 @@ import java.util.List;
 public abstract class AbstractSearchTool extends
     org.apache.velocity.tools.view.AbstractSearchTool
 {
+    @Deprecated
+    public void init(Object obj)
+    {
+        if (obj instanceof ViewContext)
+        {
+            setRequest(((ViewContext)obj).getRequest());
+        }
+    }
+
     /**
      * @deprecated Use {@link AbstractPagerTool#hasItems()}
      */
