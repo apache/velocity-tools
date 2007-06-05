@@ -24,6 +24,7 @@ body {
     padding:0px;
     font:11px verdana, arial, helvetica, sans-serif;
     }
+
 h1 {
     margin:0px 0px 15px 0px;
     padding:0px;
@@ -67,6 +68,13 @@ a:hover {background-color:#eee;}
     padding:5px;
     z-index:3; /* This allows the content to overlap the right menu in narrow windows in good browsers. */
     }
+
+    .content #footnote {
+        margin: 40px 0px 0px 0px;
+        padding: 5px;
+        border:1px dotted gray;
+        font: 9px verdana, arial, helvetica, sans-serif;
+        }
 
 #navAlpha {
     position:absolute;

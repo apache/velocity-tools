@@ -17,6 +17,10 @@
 #set( $index = $text.index )
 <p>$index.greeting!</p>
 
-<p>$index.explanation</p>
+<p>$index.explanation<sup>*</sup></p>
 
 <p>$index.start</p>
+
+<div class="content" id="footnote">
+<sup>*</sup>$index.asterisk
+</div>

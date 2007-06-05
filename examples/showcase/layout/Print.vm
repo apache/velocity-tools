@@ -17,6 +17,9 @@
 
 #parse( 'header.vm' )
 <p>
+$text.appname: $text.print.name
+</p>
+<p>
 $screen_content
 </p>
 #parse( 'footer.vm' )
