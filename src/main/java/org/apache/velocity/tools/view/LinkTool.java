@@ -19,8 +19,7 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -111,27 +110,6 @@ public class LinkTool implements Cloneable
 
     /** The self-include-parameters status */
     private boolean selfParams;
-
-
-    /** Java 1.4 encode method to use instead of deprecated 1.3 version. */
-    private static Method encode = null;
-
-    /* Initialize the encode variable with the 1.4 method if available.
-     * this code was adapted from org.apache.struts.utils.RequestUtils */
-    static
-    {
-        try
-        {
-            /* get version of encode method with two String args  */
-            Class[] args = new Class[] { String.class, String.class };
-            encode = URLEncoder.class.getMethod("encode", args);
-        }
-        catch (NoSuchMethodException e)
-        {
-            //TODO: drop JDK 1.3 support in separate commit
-            //LOG.debug("LinkTool : Can't find JDK 1.4 encode method. Using JDK 1.3 version.");
-        }
-    }
 
 
     /**
@@ -805,39 +783,24 @@ public class LinkTool implements Cloneable
 
 
     /**
-     * Use the new URLEncoder.encode() method from java 1.4 if available, else
-     * use the old deprecated version.  This method uses reflection to find the appropriate
-     * method; if the reflection operations throw exceptions, this will return the url
-     * encoded with the old URLEncoder.encode() method.
+     * Delegates encoding of the specified url to
+     * {@link URLEncoder#encode} using the character encoding for the current
+     * {@link HttpServletResponse}.
      *
      * @return String - the encoded url.
      */
     public String encodeURL(String url)
     {
-        /* first try encoding with new 1.4 method */
-        if (encode != null)
+        try
         {
-            try
-            {
-                Object[] args =
-                    new Object[] { url, this.response.getCharacterEncoding() };
-                return (String)encode.invoke(null, args);
-            }
-            catch (IllegalAccessException e)
-            {
-                // don't keep trying if we get one of these
-                encode = null;
-
-                LOG.debug("LinkTool : Can't access JDK 1.4 encode method."
-                          + " Using deprecated version from now on.", e);
-            }
-            catch (InvocationTargetException e)
-            {
-                LOG.debug("LinkTool : Error using JDK 1.4 encode method."
-                          + " Using deprecated version.", e);
-            }
+            return URLEncoder.encode(url, this.response.getCharacterEncoding());
         }
-        return URLEncoder.encode(url);
+        catch(UnsupportedEncodingException uee)
+        {
+            LOG.error("LinkTool : Response character encoding '" + 
+                      response.getCharacterEncoding() + "' is unsupported", uee);
+            return null;
+        }
     }
 
 
