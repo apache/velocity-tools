@@ -43,6 +43,7 @@ import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.tools.generic.log.LogChuteCommonsLog;
 import org.apache.velocity.tools.Toolbox;
 import org.apache.velocity.tools.ToolboxFactory;
+import org.apache.velocity.tools.config.ConfigurationCleaner;
 import org.apache.velocity.tools.config.FactoryConfiguration;
 import org.apache.velocity.tools.config.FileFactoryConfiguration;
 import org.apache.velocity.tools.config.PropertiesFactoryConfiguration;
@@ -165,6 +166,8 @@ public class VelocityView
 
     public static final String LOAD_DEFAULTS_KEY =
         "org.apache.velocity.tools.loadDefaults";
+    public static final String CLEAN_CONFIGURATION_KEY =
+        "org.apache.velocity.tools.cleanConfiguration";
 
 
     private static SimplePool writerPool = new SimplePool(40);
@@ -495,6 +498,21 @@ public class VelocityView
             getLog().debug(configMessage + servletToolsPath);
 
             factoryConfig.addConfiguration(servletConfig);
+        }
+
+        // see if we should only keep valid tools, data, and properties
+        String cleanConfig = config.getInitParameter(CLEAN_CONFIGURATION_KEY);
+        if (cleanConfig == null)
+        {
+            cleanConfig =
+                servletContext.getInitParameter(CLEAN_CONFIGURATION_KEY);
+        }
+        if ("true".equals(cleanConfig))
+        {
+            // remove invalid tools, data, and properties from the configuration
+            ConfigurationCleaner cleaner = new ConfigurationCleaner();
+            cleaner.setLog(getLog());
+            cleaner.clean(factoryConfig);
         }
 
         getLog().debug("Configuring toolboxFactory with: "+factoryConfig);
