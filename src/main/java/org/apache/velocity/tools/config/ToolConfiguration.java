@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import org.apache.velocity.tools.OldToolInfo;
 import org.apache.velocity.tools.ToolInfo;
-import org.apache.velocity.tools.Utils;
+import org.apache.velocity.tools.ClassUtils;
 
 /**
  * 
@@ -96,7 +96,7 @@ public class ToolConfiguration extends Configuration
     {
         try
         {
-            return Utils.getClass(getClassname());
+            return ClassUtils.getClass(getClassname());
         }
         catch (ClassNotFoundException cnfe)
         {
@@ -145,7 +145,7 @@ public class ToolConfiguration extends Configuration
             try
             {
                 // make sure the classname resolves to a class we have
-                Class clazz = Utils.getClass(getClassname());
+                Class clazz = ClassUtils.getClass(getClassname());
 
                 // try hard to ensure we have all necessary supporting classes
                 digForDependencies(clazz);

@@ -24,7 +24,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.velocity.tools.Utils;
+import org.apache.velocity.tools.ClassUtils;
 
 /**
  * Manages data needed to create instances of a tool. New instances
@@ -247,7 +247,7 @@ public class ToolInfo implements java.io.Serializable
             // search for a configure(Map params) method in the class
             try
             {
-                this.configure = Utils.findMethod(clazz, CONFIGURE_METHOD_NAME,
+                this.configure = ClassUtils.findMethod(clazz, CONFIGURE_METHOD_NAME,
                                               new Class[]{ Map.class });
             }
             catch (SecurityException se)

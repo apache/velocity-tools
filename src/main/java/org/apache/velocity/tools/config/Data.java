@@ -28,7 +28,7 @@ import org.apache.commons.beanutils.converters.DoubleConverter;
 import org.apache.commons.beanutils.converters.IntegerConverter;
 import org.apache.commons.beanutils.converters.StringConverter;
 import org.apache.velocity.tools.ToolInfo;
-import org.apache.velocity.tools.Utils;
+import org.apache.velocity.tools.ClassUtils;
 
 /**
  * 
@@ -56,7 +56,7 @@ public class Data
     {
         try
         {
-            setTargetClass(Utils.getClass(classname));
+            setTargetClass(ClassUtils.getClass(classname));
         }
         catch (ClassNotFoundException cnfe)
         {
@@ -100,7 +100,7 @@ public class Data
     {
         try
         {
-            convertWith((Converter)Utils.getInstance(classname));
+            convertWith((Converter)ClassUtils.getInstance(classname));
         }
         catch (Exception e)
         {
