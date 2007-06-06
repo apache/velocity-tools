@@ -27,14 +27,12 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * TODO? rename to ClassUtils if nothing else goes in here?
- *       if more does go in here, split into different classes
- *       for different concerns?  not sure i care either way...
+ * Repository for common class and reflection methods.
  *
  * @author Nathan Bubna
- * @version $Id: Utils.java 511959 2007-02-26 19:24:39Z nbubna $
+ * @version $Id: ClassUtils.java 511959 2007-02-26 19:24:39Z nbubna $
  */
-public class Utils
+public class ClassUtils
 {
     /**
      * Return the <code>Class</code> object for the specified fully qualified
@@ -51,7 +49,7 @@ public class Utils
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         if (loader == null)
         {
-            loader = Utils.class.getClassLoader();
+            loader = ClassUtils.class.getClassLoader();
         }
         return loader.loadClass(name);
     }
