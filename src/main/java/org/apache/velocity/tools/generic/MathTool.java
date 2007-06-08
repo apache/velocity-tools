@@ -22,7 +22,10 @@ package org.apache.velocity.tools.generic;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.velocity.tools.ConversionUtils;
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
@@ -41,7 +44,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * literally. (e.g. $math.div(1, 0) renders as '$math.div(1, 0)')</li>
  * </ul>
  * <p><pre>
- * Example tools.xml config (if you want to use this with VelocityView):
+ * Example tools.xml config:
  * &lt;tools&gt;
  *   &lt;toolbox scope="application"&gt;
  *     &lt;tool class="org.apache.velocity.tools.generic.MathTool"/&gt;
@@ -54,7 +57,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Revision$ $Date$
  */
 @DefaultKey("math")
-public class MathTool
+public class MathTool extends FormatConfig
 {
     /**
      * @param num1 the first number
@@ -456,22 +459,7 @@ public class MathTool
      */
     public Number toNumber(Object num)
     {
-        if (num == null)
-        {
-            return null;
-        }
-        if (num instanceof Number)
-        {
-            return (Number)num;
-        }
-        try
-        {
-            return parseNumber(String.valueOf(num));
-        }
-        catch (NumberFormatException nfe)
-        {
-            return null;
-        }
+        return ConversionUtils.toNumber(num, getFormat(), getLocale());
     }
 
 
@@ -534,17 +522,8 @@ public class MathTool
         }
     }
 
-
-    /**
-     * Converts an object into a {@link Number} (if it can)
-     * This is used as the base for all numeric parsing methods. So,
-     * sub-classes can override to allow for customized number parsing.
-     * (e.g. for i18n, fractions, compound numbers, bigger numbers, etc.)
-     *
-     * @param value the string to be parsed
-     * @return the value as a {@link Number}
-     */
-    protected Number parseNumber(String value) throws NumberFormatException
+    @Deprecated
+    protected Number parseNumber(String value)
     {
         // check for the floating point
         if (value.indexOf('.') < 0)

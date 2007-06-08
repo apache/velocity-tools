@@ -33,15 +33,17 @@ import org.apache.velocity.tools.config.DefaultKey;
  *
  * <p>This comes in very handy when parsing parameters.</p>
  *
+ * TODO: someone doing java configuration ought to be able to put a source Map
+ *       in the tool properties, allowing this to be used like other tools
+ *
  * @author Nathan Bubna
  * @version $Revision$ $Date$
  * @since VelocityTools 1.2
  */
 @DefaultKey("parser")
-public class ValueParser
+public class ValueParser extends ConversionTool
 {
     private Map source = null;
-    private String delimiter = ",";
 
     public ValueParser() {}
 
@@ -64,30 +66,6 @@ public class ValueParser
         return this.source;
     }
 
-    /**
-     * Sets the delimiter used for separating values in a single String value.
-     * The default delimiter is a comma.
-     *
-     * @since VelocityTools 1.3
-     * @see #parseStringList
-     */
-    protected final void setStringsDelimiter(String delimiter)
-    {
-        this.delimiter = delimiter;
-    }
-
-    /**
-     * Returns the delimiter used for separating values in a single String value.
-     * The default delimiter is a comma.
-     *
-     * @since VelocityTools 1.3
-     * @see #parseStringList
-     */
-    protected final String getStringsDelimiter()
-    {
-        return this.delimiter;
-    }
-
     // ----------------- public parsing methods --------------------------
 
     /**
@@ -99,7 +77,7 @@ public class ValueParser
      */
     public boolean exists(String key)
     {
-        return (getString(key) != null);
+        return (getValue(key) != null);
     }
 
     /**
@@ -115,7 +93,30 @@ public class ValueParser
      */
     public Object get(String key)
     {
-        return getString(key);
+        return getValue(key);
+    }
+
+    public Object getValue(String key)
+    {
+        return getSource().get(key);
+    }
+
+    public Object[] getValues(String key)
+    {
+        Object value = getValue(key);
+        if (value == null)
+        {
+            return null;
+        }
+        if (value instanceof String)
+        {
+            return parseStringList((String)value);
+        }
+        if (value instanceof Object[])
+        {
+            return (Object[])value;
+        }
+        return new Object[] { value };
     }
 
     /**
@@ -126,30 +127,7 @@ public class ValueParser
      */
     public String getString(String key)
     {
-        Object value = getSource().get(key);
-        if (value == null)
-        {
-            return null;
-        }
-
-        if (value instanceof Collection)
-        {
-            Collection values = (Collection)value;
-            if (!values.isEmpty())
-            {
-                // take the next available value
-                value = values.iterator().next();
-            }
-        }
-        else if (value.getClass().isArray())
-        {
-            if (Array.getLength(value) > 0)
-            {
-                // take the first value
-                value = Array.get(value, 0);
-            }
-        }
-        return String.valueOf(value);
+        return toString(getValue(key));
     }
 
     /**
@@ -172,8 +150,7 @@ public class ValueParser
      */
     public Boolean getBoolean(String key)
     {
-        String s = getString(key);
-        return (s != null) ? parseBoolean(s) : null;
+        return toBoolean(getValue(key));
     }
 
     /**
@@ -207,12 +184,7 @@ public class ValueParser
      */
     public Integer getInteger(String key)
     {
-        Number num = getNumber(key);
-        if (num == null || num instanceof Integer)
-        {
-            return (Integer)num;
-        }
-        return new Integer(num.intValue());
+        return toInteger(getValue(key));
     }
 
     /**
@@ -238,12 +210,7 @@ public class ValueParser
      */
     public Double getDouble(String key)
     {
-        Number num = getNumber(key);
-        if (num == null || num instanceof Double)
-        {
-            return (Double)num;
-        }
-        return new Double(num.intValue());
+        return toDouble(getValue(key));
     }
 
     /**
@@ -269,20 +236,7 @@ public class ValueParser
      */
     public Number getNumber(String key)
     {
-        String s = getString(key);
-        if (s == null || s.length() == 0)
-        {
-            return null;
-        }
-        try
-        {
-            return parseNumber(s);
-        }
-        catch (Exception e)
-        {
-            //there is no Number with that key
-            return null;
-        }
+        return toNumber(getValue(key));
     }
 
     /**
@@ -292,12 +246,7 @@ public class ValueParser
      */
     public Locale getLocale(String key)
     {
-        String s = getString(key);
-        if (s == null || s.length() == 0)
-        {
-            return null;
-        }
-        return parseLocale(s);
+        return toLocale(getValue(key));
     }
 
     /**
@@ -357,39 +306,7 @@ public class ValueParser
      */
     public String[] getStrings(String key)
     {
-        Object value = getSource().get(key);
-        if (value == null)
-        {
-            return null;
-        }
-
-        String[] strings = null;
-        if (value instanceof Collection)
-        {
-            Collection values = (Collection)value;
-            if (!values.isEmpty())
-            {
-                strings = new String[values.size()];
-                int index = 0;
-                for (Iterator i = values.iterator(); i.hasNext(); )
-                {
-                    strings[index++] = String.valueOf(i.next());
-                }
-            }
-        }
-        else if (value.getClass().isArray())
-        {
-            strings = new String[Array.getLength(value)];
-            for (int i=0; i < strings.length; i++)
-            {
-                strings[i] = String.valueOf(Array.get(value, i));
-            }
-        }
-        else
-        {
-            strings = parseStringList(String.valueOf(value));
-        }
-        return strings;
+        return toStrings(getValues(key));
     }
 
 
@@ -399,21 +316,7 @@ public class ValueParser
      */
     public Boolean[] getBooleans(String key)
     {
-        String[] strings = getStrings(key);
-        if (strings == null)
-        {
-            return null;
-        }
-
-        Boolean[] bools = new Boolean[strings.length];
-        for (int i=0; i<strings.length; i++)
-        {
-            if (strings[i] != null && strings[i].length() > 0)
-            {
-                bools[i] = parseBoolean(strings[i]);
-            }
-        }
-        return bools;
+        return toBooleans(getValues(key));
     }
 
     /**
@@ -423,28 +326,7 @@ public class ValueParser
      */
     public Number[] getNumbers(String key)
     {
-        String[] strings = getStrings(key);
-        if (strings == null)
-        {
-            return null;
-        }
-
-        Number[] nums = new Number[strings.length];
-        try
-        {
-            for (int i=0; i<nums.length; i++)
-            {
-                if (strings[i] != null && strings[i].length() > 0)
-                {
-                    nums[i] = parseNumber(strings[i]);
-                }
-            }
-        }
-        catch (NumberFormatException nfe)
-        {
-            return null;
-        }
-        return nums;
+        return toNumbers(getValues(key));
     }
 
     /**
@@ -454,28 +336,7 @@ public class ValueParser
      */
     public int[] getInts(String key)
     {
-        String[] strings = getStrings(key);
-        if (strings == null)
-        {
-            return null;
-        }
-
-        int[] ints = new int[strings.length];
-        try
-        {
-            for (int i=0; i<ints.length; i++)
-            {
-                if (strings[i] != null && strings[i].length() > 0)
-                {
-                    ints[i] = parseNumber(strings[i]).intValue();
-                }
-            }
-        }
-        catch (NumberFormatException nfe)
-        {
-            return null;
-        }
-        return ints;
+        return toInts(getValues(key));
     }
 
     /**
@@ -485,28 +346,7 @@ public class ValueParser
      */
     public double[] getDoubles(String key)
     {
-        String[] strings = getStrings(key);
-        if (strings == null)
-        {
-            return null;
-        }
-
-        double[] doubles = new double[strings.length];
-        try
-        {
-            for (int i=0; i<doubles.length; i++)
-            {
-                if (strings[i] != null && strings[i].length() > 0)
-                {
-                    doubles[i] = parseNumber(strings[i]).doubleValue();
-                }
-            }
-        }
-        catch (NumberFormatException nfe)
-        {
-            return null;
-        }
-        return doubles;
+        return toDoubles(getValues(key));
     }
 
     /**
@@ -516,98 +356,7 @@ public class ValueParser
      */
     public Locale[] getLocales(String key)
     {
-        String[] strings = getStrings(key);
-        if (strings == null)
-        {
-            return null;
-        }
-
-        Locale[] locs = new Locale[strings.length];
-        for (int i=0; i<locs.length; i++)
-        {
-            if (strings[i] != null && strings[i].length() > 0)
-            {
-                locs[i] = parseLocale(strings[i]);
-            }
-        }
-        return locs;
-    }
-
-
-    // --------------------------- protected methods ------------------
-
-    /**
-     * Converts a parameter value into a {@link Number}
-     * This is used as the base for all numeric parsing methods. So,
-     * sub-classes can override to allow for customized number parsing.
-     * (e.g. to handle fractions, compound numbers, etc.)
-     *
-     * @param value the string to be parsed
-     * @return the value as a {@link Number}
-     */
-    protected Number parseNumber(String value) throws NumberFormatException
-    {
-        if (value.indexOf('.') >= 0)
-        {
-            return new Double(value);
-        }
-        return new Long(value);
-    }
-
-    /**
-     * Converts a parameter value into a {@link Boolean}
-     * Sub-classes can override to allow for customized boolean parsing.
-     * (e.g. to handle "Yes/No" or "T/F")
-     *
-     * @param value the string to be parsed
-     * @return the value as a {@link Boolean}
-     */
-    protected Boolean parseBoolean(String value)
-    {
-        return Boolean.valueOf(value);
-    }
-
-    /**
-     * Converts a single String value into an array of Strings by splitting
-     * it on the tool's set delimiter.  The default delimiter is a comma.
-     *
-     * @since VelocityTools 1.3
-     */
-    protected String[] parseStringList(String value)
-    {
-        if (value.indexOf(this.delimiter) < 0)
-        {
-            return new String[] { value };
-        }
-        return value.split(this.delimiter);
-    }
-
-    /**
-     * Converts a String value into a Locale.
-     *
-     * @since VelocityTools 1.3
-     */
-    protected Locale parseLocale(String value)
-    {
-        if (value.indexOf("_") < 0)
-        {
-            return new Locale(value);
-        }
-
-        String[] params = value.split("_");
-        if (params.length == 2)
-        {
-            return new Locale(params[0], params[1]);
-        }
-        else if (params.length == 3)
-        {
-            return new Locale(params[0], params[1], params[2]);
-        }
-        else
-        {
-            // there's only 3 possible params, so this must be invalid
-            return null;
-        }
+        return toLocales(getValues(key));
     }
 
 }
