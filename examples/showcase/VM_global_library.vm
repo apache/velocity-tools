@@ -49,7 +49,7 @@ ${toolname}.html">$toolname</a>#end
   <th>$demo.function</th>
   <form method="get" action="$link.self">
   <th nowrap="1">
-    $demo.result
+    $demo.result<br>
     <input style="font-size: 8pt" type="submit" value="$demo.clear">
   </th>
   #if( $params.layout )
