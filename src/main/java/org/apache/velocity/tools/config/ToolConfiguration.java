@@ -68,6 +68,13 @@ public class ToolConfiguration extends Configuration
         this.restrictTo = path;
     }
 
+    /**
+     * Returns the key set for this tool, if not {@link null}.  Otherwise,
+     * looks for a {@link DefaultKey} annotation on the tool class.  Finally,
+     * if there is no default key, the {@link Class#getSimpleName()} is used
+     * as the key.  This should only return {@link null} if there is no key
+     * and no classname set for this tool.
+     */
     public String getKey()
     {
         if (this.key != null)
@@ -77,11 +84,16 @@ public class ToolConfiguration extends Configuration
 
         if (getClassname() != null)
         {
-            DefaultKey defaultKey = 
-                (DefaultKey)getToolClass().getAnnotation(DefaultKey.class);
+            Class clazz = getToolClass();
+            DefaultKey defaultKey =
+                (DefaultKey)clazz.getAnnotation(DefaultKey.class);
             if (defaultKey != null)
             {
                 return defaultKey.value();
+            }
+            else
+            {
+                return clazz.getSimpleName();
             }
         }
         return null;
