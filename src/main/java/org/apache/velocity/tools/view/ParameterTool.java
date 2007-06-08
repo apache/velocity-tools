@@ -97,22 +97,22 @@ public class ParameterTool extends ValueParser
     }
 
     /**
-     * Overrides ValueParser.getString(String key) to retrieve the
-     * String from the ServletRequest instead of an arbitrary Map.
+     * Overrides ValueParser.getValue(String key) to retrieve the
+     * value from the ServletRequest instead of an arbitrary Map.
      *
      * @param key the parameter's key
      * @return parameter matching the specified key or
      *         <code>null</code> if there is no matching
      *         parameter
      */
-    public String getString(String key)
+    public Object getValue(String key)
     {
         return getRequest().getParameter(key);
     }
 
 
     /**
-     * Overrides ValueParser.getString(String key) to retrieve
+     * Overrides ValueParser.getValues(String key) to retrieve
      * Strings from the ServletRequest instead of an arbitrary Map.
      *
      * @param key the key for the desired parameter
@@ -120,9 +120,18 @@ public class ParameterTool extends ValueParser
      *         the given request parameter has, or <code>null</code>
      *         if the parameter does not exist
      */
-    public String[] getStrings(String key)
+    public Object[] getValues(String key)
     {
-        return getRequest().getParameterValues(key);
+        String[] strings = getRequest().getParameterValues(key);
+        if (strings == null || strings.length == 0)
+        {
+            return null;
+        }
+        else if (strings.length == 1)
+        {
+            return parseStringList(strings[0]);
+        }
+        return strings;
     }
 
     /**

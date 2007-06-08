@@ -24,6 +24,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Map;
+import org.apache.velocity.tools.ConversionUtils;
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
@@ -59,128 +60,13 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Id$
  */
 @DefaultKey("number")
-public class NumberTool
+public class NumberTool extends FormatConfig
 {
-    /**
-     * The default format to be used when none is specified.
-     */
-    public static final String DEFAULT_FORMAT = "default";
+    @Deprecated
+    public static final String DEFAULT_FORMAT_KEY = FORMAT_KEY;
 
-    /**
-     * The key used for specifying a default format via toolbox params.
-     * @since VelocityTools 1.4
-     */
-    public static final String DEFAULT_FORMAT_KEY = "format";
-
-    /**
-     * The key used for specifying a default locale via toolbox params.
-     * @since VelocityTools 1.4
-     */
-    public static final String DEFAULT_LOCALE_KEY = "locale";
-
-    /**
-     * The key used for specifying whether or not to prevent templates
-     * from reconfiguring this tool.  The default is true.
-     * @since VelocityTools 1.4
-     */
-    public static final String LOCK_CONFIG_KEY = "lock-config";
-
-    private static final int STYLE_NUMBER       = 0;
-    private static final int STYLE_CURRENCY     = 1;
-    private static final int STYLE_PERCENT      = 2;
-    //NOTE: '3' belongs to a non-public "scientific" style
-    private static final int STYLE_INTEGER      = 4;
-
-    private String format = DEFAULT_FORMAT;
-    private Locale locale = Locale.getDefault();
-    private boolean configLocked = false;
-
-    /**
-     * Looks for configuration values in the given params.
-     * @since VelocityTools 1.4
-     */
-    public void configure(Map params)
-    {
-        if (!configLocked)
-        {
-            ValueParser values = new ValueParser(params);
-            configure(values);
-
-            // by default, lock down this method after use
-            // to prevent templates from re-configuring this instance
-            configLocked = values.getBoolean(LOCK_CONFIG_KEY, true);
-        }
-    }
-
-    /**
-     * Does the actual configuration. This is protected, so
-     * subclasses may share the same ValueParser and call configure
-     * at any time, while preventing templates from doing so when 
-     * configure(Map) is locked.
-     * @since VelocityTools 1.4
-     */
-    protected void configure(ValueParser values)
-    {
-        String format = values.getString(DEFAULT_FORMAT_KEY);
-        if (format != null)
-        {
-            setFormat(format);
-        }
-        Locale locale = values.getLocale(DEFAULT_LOCALE_KEY);
-        if (locale != null)
-        {
-            setLocale(locale);
-        }
-    }
-
-    // ------------------------- default parameter access ----------------
-
-    /**
-     * This implementation returns the configured default locale. Subclasses
-     * may override this to return alternate locales. Please note that
-     * doing so will affect all formatting methods where no locale is
-     * specified in the parameters.
-     *
-     * @return the default {@link Locale}
-     */
-    public Locale getLocale()
-    {
-        return this.locale;
-    }
-
-    /**
-     * Sets the default locale for this instance. This is protected,
-     * because templates ought not to be using it; that would not
-     * be threadsafe so far as templates are concerned.
-     *
-     * @since VelocityTools 1.4
-     */
-    protected void setLocale(Locale locale)
-    {
-        this.locale = locale;
-    }
-
-    /**
-     * Return the pattern or style to be used for formatting numbers when none
-     * is specified. This implementation gives a 'default' number format.
-     * Subclasses may override this to provide a different default format.
-     */
-    public String getFormat()
-    {
-        return this.format;
-    }
-
-    /**
-     * Sets the default format for this instance. This is protected,
-     * because templates ought not to be using it; that would not
-     * be threadsafe so far as templates are concerned.
-     *
-     * @since VelocityTools 1.4
-     */
-    protected void setFormat(String format)
-    {
-        this.format = format;
-    }
+    @Deprecated
+    public static final String DEFAULT_LOCALE_KEY = LOCALE_KEY;
 
 
     // ------------------------- formatting methods ---------------------------
@@ -289,24 +175,7 @@ public class NumberTool
      */
     public NumberFormat getNumberFormat(String format, Locale locale)
     {
-        if (format == null)
-        {
-            return null;
-        }
-
-        NumberFormat nf = null;
-        int style = getStyleAsInt(format);
-        if (style < 0)
-        {
-            // we have a custom format
-            nf = new DecimalFormat(format, new DecimalFormatSymbols(locale));
-        }
-        else
-        {
-            // we have a standard format
-            nf = getNumberFormat(style, locale);
-        }
-        return nf;
+        return ConversionUtils.getNumberFormat(format, locale);
     }
 
     /**
@@ -320,54 +189,10 @@ public class NumberTool
      *         if an instance cannot be constructed with the given
      *         parameters
      */
+    @Deprecated
     protected NumberFormat getNumberFormat(int numberStyle, Locale locale)
     {
-        try
-        {
-            NumberFormat nf;
-            switch (numberStyle)
-            {
-                case STYLE_NUMBER:
-                    nf = NumberFormat.getNumberInstance(locale);
-                    break;
-                case STYLE_CURRENCY:
-                    nf = NumberFormat.getCurrencyInstance(locale);
-                    break;
-                case STYLE_PERCENT:
-                    nf = NumberFormat.getPercentInstance(locale);
-                    break;
-                case STYLE_INTEGER:
-                    nf = getIntegerInstance(locale);
-                    break;
-                default:
-                    // invalid style was specified, return null
-                    nf = null;
-            }
-            return nf;
-        }
-        catch (Exception suppressed)
-        {
-            // let it go...
-            return null;
-        }
-    }
-
-    /**
-     * Since we wish to continue supporting Java 1.3,
-     * for the present we cannot use Java 1.4's
-     * NumberFormat.getIntegerInstance(Locale) method.
-     * This method mimics that method (at least as of JDK1.4.2_01).
-     * It is private so that it can be removed later
-     * without a deprecation period.
-     */
-    private NumberFormat getIntegerInstance(Locale locale)
-    {
-        DecimalFormat format =
-            (DecimalFormat)NumberFormat.getNumberInstance(locale);
-        format.setMaximumFractionDigits(0);
-        format.setDecimalSeparatorAlwaysShown(false);
-        format.setParseIntegerOnly(true);
-        return format;
+        return ConversionUtils.getNumberFormat(numberStyle, locale);
     }
 
     /**
@@ -381,36 +206,10 @@ public class NumberTool
      * @param style the string to be checked
      * @return the int identifying the style pattern
      */
+    @Deprecated
     protected int getStyleAsInt(String style)
     {
-        // avoid needlessly running through all the string comparisons
-        if (style == null || style.length() < 6 || style.length() > 8) {
-            return -1;
-        }
-        if (style.equalsIgnoreCase("default"))
-        {
-            //NOTE: java.text.NumberFormat returns "number" instances
-            //      as the default (at least in Java 1.3 and 1.4).
-            return STYLE_NUMBER;
-        }
-        if (style.equalsIgnoreCase("number"))
-        {
-            return STYLE_NUMBER;
-        }
-        if (style.equalsIgnoreCase("currency"))
-        {
-            return STYLE_CURRENCY;
-        }
-        if (style.equalsIgnoreCase("percent"))
-        {
-            return STYLE_PERCENT;
-        }
-        if (style.equalsIgnoreCase("integer"))
-        {
-            return STYLE_INTEGER;
-        }
-        // ok, it's not any of the standard patterns
-        return -1;
+        return ConversionUtils.getNumberStyleAsInt(style);
     }
 
 
@@ -462,23 +261,7 @@ public class NumberTool
      */
     public Number toNumber(String format, Object obj, Locale locale)
     {
-        if (obj == null)
-        {
-            return null;
-        }
-        if (obj instanceof Number)
-        {
-            return (Number)obj;
-        }
-        try
-        {
-            NumberFormat parser = getNumberFormat(format, locale);
-            return parser.parse(String.valueOf(obj));
-        }
-        catch (Exception e)
-        {
-            return null;
-        }
+        return ConversionUtils.toNumber(obj, format, locale);
     }
 
 }

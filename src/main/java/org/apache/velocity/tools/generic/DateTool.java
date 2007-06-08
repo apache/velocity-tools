@@ -27,6 +27,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+import org.apache.velocity.tools.ConversionUtils;
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
@@ -67,75 +68,13 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Revision$ $Date$
  */
 @DefaultKey("date")
-public class DateTool
+public class DateTool extends FormatConfig
 {
+    @Deprecated
+    public static final String DEFAULT_FORMAT_KEY = FORMAT_KEY;
 
-    /**
-     * The default format to be used when none is specified.
-     * @since VelocityTools 1.1
-     */
-    public static final String DEFAULT_FORMAT = "default";
-
-    /**
-     * The key used for specifying a default format via toolbox params.
-     * @since VelocityTools 1.3
-     */
-    public static final String DEFAULT_FORMAT_KEY = "format";
-
-    /**
-     * The key used for specifying a default locale via toolbox params.
-     * @since VelocityTools 1.4
-     */
-    public static final String DEFAULT_LOCALE_KEY = "locale";
-
-    /**
-     * The key used for specifying whether or not to prevent templates
-     * from reconfiguring this tool.  The default is true.
-     * @since VelocityTools 1.4
-     */
-    public static final String LOCK_CONFIG_KEY = "lock-config";
-
-    private String format = DEFAULT_FORMAT;
-    private Locale locale = Locale.getDefault();
-    private boolean configLocked = false;
-
-    /**
-     * Looks for configuration values in the given params.
-     * @since VelocityTools 1.3
-     */
-    public void configure(Map params)
-    {
-        if (!configLocked)
-        {
-            ValueParser values = new ValueParser(params);
-            configure(values);
-
-            // by default, lock down this method after use
-            // to prevent templates from re-configuring this instance
-            configLocked = values.getBoolean(LOCK_CONFIG_KEY, true);
-        }
-    }
-
-    /**
-     * Does the actual configuration. This is protected, so
-     * subclasses may share the same ValueParser and call configure
-     * at any time, while preventing templates from doing so when 
-     * configure(Map) is locked.
-     * @since VelocityTools 1.4
-     */
-    protected void configure(ValueParser values)
-    {
-        String format = values.getString(DEFAULT_FORMAT_KEY);
-        if (format != null)
-        {
-            setFormat(format);
-        }
-        Locale locale = values.getLocale(DEFAULT_LOCALE_KEY);
-        if (locale != null)
-        {
-            setLocale(locale);
-        }
-    }
+    @Deprecated
+    public static final String DEFAULT_LOCALE_KEY = LOCALE_KEY;
 
 
     // ------------------------- system date access ------------------
@@ -168,31 +107,6 @@ public class DateTool
 
 
     // ------------------------- default parameter access ----------------
-
-    /**
-     * This implementation returns the configured default locale. Subclasses
-     * may override this to return alternate locales. Please note that
-     * doing so will affect all formatting methods where no locale is
-     * specified in the parameters.
-     *
-     * @return the default {@link Locale}
-     */
-    public Locale getLocale()
-    {
-        return this.locale;
-    }
-
-    /**
-     * Sets the default locale for this instance. This is protected,
-     * because templates ought not to be using it; that would not
-     * be threadsafe so far as templates are concerned.
-     *
-     * @since VelocityTools 1.4
-     */
-    protected void setLocale(Locale locale)
-    {
-        this.locale = locale;
-    }
 
     /**
      * This implementation returns the default TimeZone. Subclasses
@@ -236,34 +150,6 @@ public class DateTool
     public Calendar getCalendar()
     {
         return Calendar.getInstance(getTimeZone(), getLocale());
-    }
-
-    /**
-     * Return the pattern or style to be used for formatting dates when none
-     * is specified. This implementation gives a 'default' date-time format.
-     * Subclasses may override this to provide a different default format.
-     *
-     * <p>This can now be configured via the toolbox definition.
-     * Add a <code>&lt;parameter name="format" value="short"/&gt;<code>
-     * to your date tool configuration.</p>
-     *
-     * @since VelocityTools 1.1
-     */
-    public String getFormat()
-    {
-        return format;
-    }
-
-    /**
-     * Sets the default format for this instance. This is protected,
-     * because templates ought not to be using it; that would not
-     * be threadsafe so far as templates are concerned.
-     *
-     * @since VelocityTools 1.3
-     */
-    protected void setFormat(String format)
-    {
-        this.format = format;
     }
 
     // ------------------------- date value access ---------------------------
@@ -643,43 +529,7 @@ public class DateTool
     public DateFormat getDateFormat(String format, Locale locale,
                                     TimeZone timezone)
     {
-        if (format == null)
-        {
-            return null;
-        }
-
-        DateFormat df = null;
-        // do they want a date instance
-        if (format.endsWith("_date"))
-        {
-            String fmt = format.substring(0, format.length() - 5);
-            int style = getStyleAsInt(fmt);
-            df = getDateFormat(style, -1, locale, timezone);
-        }
-        // do they want a time instance?
-        else if (format.endsWith("_time"))
-        {
-            String fmt = format.substring(0, format.length() - 5);
-            int style = getStyleAsInt(fmt);
-            df = getDateFormat(-1, style, locale, timezone);
-        }
-        // ok, they either want a custom or date-time instance
-        else
-        {
-            int style = getStyleAsInt(format);
-            if (style < 0)
-            {
-                // we have a custom format
-                df = new SimpleDateFormat(format, locale);
-                df.setTimeZone(timezone);
-            }
-            else
-            {
-                // they want a date-time instance
-                df = getDateFormat(style, style, locale, timezone);
-            }
-        }
-        return df;
+        return ConversionUtils.getDateFormat(format, locale, timezone);
     }
 
     /**
@@ -697,9 +547,7 @@ public class DateTool
     public DateFormat getDateFormat(String dateStyle, String timeStyle,
                                     Locale locale, TimeZone timezone)
     {
-        int ds = getStyleAsInt(dateStyle);
-        int ts = getStyleAsInt(timeStyle);
-        return getDateFormat(ds, ts, locale, timezone);
+        return ConversionUtils.getDateFormat(dateStyle, timeStyle, locale, timezone);
     }
 
     /**
@@ -717,40 +565,11 @@ public class DateTool
      *         parameters
      * @since VelocityTools 1.1
      */
+    @Deprecated
     protected DateFormat getDateFormat(int dateStyle, int timeStyle,
                                        Locale locale, TimeZone timezone)
     {
-        try
-        {
-            DateFormat df;
-            if (dateStyle < 0 && timeStyle < 0)
-            {
-                // no style was specified, use default instance
-                df = DateFormat.getInstance();
-            }
-            else if (timeStyle < 0)
-            {
-                // only a date style was specified
-                df = DateFormat.getDateInstance(dateStyle, locale);
-            }
-            else if (dateStyle < 0)
-            {
-                // only a time style was specified
-                df = DateFormat.getTimeInstance(timeStyle, locale);
-            }
-            else
-            {
-                df = DateFormat.getDateTimeInstance(dateStyle, timeStyle,
-                                                    locale);
-            }
-            df.setTimeZone(timezone);
-            return df;
-        }
-        catch (Exception suppressed)
-        {
-            // let it go...
-            return null;
-        }
+        return ConversionUtils.getDateFormat(dateStyle, timeStyle, locale, timezone);
     }
 
     /**
@@ -764,34 +583,10 @@ public class DateTool
      * @return the int identifying the style pattern
      * @since VelocityTools 1.1
      */
+    @Deprecated
     protected int getStyleAsInt(String style)
     {
-        // avoid needlessly running through all the string comparisons
-        if (style == null || style.length() < 4 || style.length() > 7) {
-            return -1;
-        }
-        if (style.equalsIgnoreCase("full"))
-        {
-            return DateFormat.FULL;
-        }
-        if (style.equalsIgnoreCase("long"))
-        {
-            return DateFormat.LONG;
-        }
-        if (style.equalsIgnoreCase("medium"))
-        {
-            return DateFormat.MEDIUM;
-        }
-        if (style.equalsIgnoreCase("short"))
-        {
-            return DateFormat.SHORT;
-        }
-        if (style.equalsIgnoreCase("default"))
-        {
-            return DateFormat.DEFAULT;
-        }
-        // ok, it's not any of the standard patterns
-        return -1;
+        return ConversionUtils.getStyleAsInt(style);
     }
 
 
@@ -865,34 +660,7 @@ public class DateTool
     public Date toDate(String format, Object obj,
                        Locale locale, TimeZone timezone)
     {
-        if (obj == null)
-        {
-            return null;
-        }
-        if (obj instanceof Date)
-        {
-            return (Date)obj;
-        }
-        if (obj instanceof Calendar)
-        {
-            return ((Calendar)obj).getTime();
-        }
-        if (obj instanceof Number)
-        {
-            Date d = new Date();
-            d.setTime(((Number)obj).longValue());
-            return d;
-        }
-        try
-        {
-            //try parsing w/a customized SimpleDateFormat
-            DateFormat parser = getDateFormat(format, locale, timezone);
-            return parser.parse(String.valueOf(obj));
-        }
-        catch (Exception e)
-        {
-            return null;
-        }
+        return ConversionUtils.toDate(obj, format, locale, timezone);
     }
 
     /**
@@ -935,13 +703,14 @@ public class DateTool
             return null;
         }
 
+        // if the locale is null, do as the javadoc claims
+        if (locale == null)
+        {
+            locale = getLocale();
+        }
+
         //convert the date to a calendar
-        Calendar cal = Calendar.getInstance(locale);
-        cal.setTime(date);
-        // HACK: Force all fields to update. see link for explanation of this.
-        //http://java.sun.com/j2se/1.4/docs/api/java/util/Calendar.html
-        cal.getTime();
-        return cal;
+        return ConversionUtils.toCalendar(date, locale);
     }
 
 
