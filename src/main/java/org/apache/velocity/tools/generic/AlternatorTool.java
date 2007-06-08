@@ -56,7 +56,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Revision$ $Date$
  */
 @DefaultKey("alternator")
-public class AlternatorTool
+public class AlternatorTool extends AbstractLockConfig
 {
     /** @since VelocityTools 1.3 */
     public static final String AUTO_ALTERNATE_DEFAULT_KEY = "auto-alternate";
@@ -67,11 +67,9 @@ public class AlternatorTool
     /**
      * Looks for a default auto-alternate value in the given params,
      * if not, set the default to true.
-     * @since VelocityTools 1.3
      */
-    public void configure(Map params)
+    protected void configure(ValueParser parser)
     {
-        ValueParser parser = new ValueParser(params);
         // it's true by default in Alternator
         autoAlternateDefault =
             parser.getBoolean(AUTO_ALTERNATE_DEFAULT_KEY, true);

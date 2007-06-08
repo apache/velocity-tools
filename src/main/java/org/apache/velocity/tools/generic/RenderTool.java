@@ -82,7 +82,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Revision$ $Date$
  */
 @DefaultKey("render")
-public class RenderTool
+public class RenderTool extends AbstractLockConfig
 {
     /**
      * The maximum number of loops allowed when recursing.
@@ -100,11 +100,9 @@ public class RenderTool
 
     /**
      * Looks for parse depth and catch.exceptions parameters.
-     * @since VelocityTools 1.3
      */
-    public void configure(Map params)
+    protected void configure(ValueParser parser)
     {
-        ValueParser parser = new ValueParser(params);
         int depth = parser.getInt(KEY_PARSE_DEPTH, DEFAULT_PARSE_DEPTH);
         setParseDepth(depth);
 

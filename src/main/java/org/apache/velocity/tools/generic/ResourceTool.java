@@ -22,7 +22,6 @@ package org.apache.velocity.tools.generic;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.ResourceBundle;
 import org.apache.velocity.tools.config.DefaultKey;
 
@@ -64,13 +63,11 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @since VelocityTools 1.3
  */
 @DefaultKey("text")
-public class ResourceTool
+public class ResourceTool extends LocaleConfig
 {
     public static final String BUNDLES_KEY = "bundles";
-    public static final String LOCALE_KEY = "locale";
 
     private String[] bundles = new String[] { "resources" };
-    private Locale locale = Locale.getDefault();
 
 
     protected final void setDefaultBundle(String bundle)
@@ -87,46 +84,43 @@ public class ResourceTool
         return this.bundles[0];
     }
 
+    @Deprecated
     protected final void setDefaultLocale(Locale locale)
     {
         if (locale == null)
         {
             throw new NullPointerException("Default locale cannot be null");
         }
-        this.locale = locale;
+        super.setLocale(locale);
     }
 
+    @Deprecated
     protected final Locale getDefaultLocale()
     {
-        return this.locale;
+        return super.getLocale();
     }
 
 
-    public void configure(Map params)
+    protected void configure(ValueParser parser)
     {
-        ValueParser parser = new ValueParser(params);
         String[] bundles = parser.getStrings(BUNDLES_KEY);
         if (bundles != null)
         {
             this.bundles = bundles;
         }
 
-        Locale locale = parser.getLocale(LOCALE_KEY);
-        if (locale != null)
-        {
-            this.locale = locale;
-        }
+        super.configure(parser);
     }
 
 
     public Key get(String key)
     {
-        return new Key(key, this.bundles, this.locale, null);
+        return new Key(key, this.bundles, getLocale(), null);
     }
 
     public Key bundle(String bundle)
     {
-        return new Key(null, new String[] { bundle }, this.locale, null);
+        return new Key(null, new String[] { bundle }, getLocale(), null);
     }
 
     public Key locale(Locale locale)
@@ -136,7 +130,7 @@ public class ResourceTool
 
     public Key insert(Object[] args)
     {
-        return new Key(null, this.bundles, this.locale, args);
+        return new Key(null, this.bundles, getLocale(), args);
     }
 
     public Key insert(List args)
@@ -168,7 +162,7 @@ public class ResourceTool
         }
         if (locale == null)
         {
-            locale = this.locale;
+            locale = getLocale();
         }
 
         ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale);

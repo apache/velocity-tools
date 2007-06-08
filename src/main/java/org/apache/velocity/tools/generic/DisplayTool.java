@@ -19,10 +19,12 @@ package org.apache.velocity.tools.generic;
  * under the License.    
  */
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
-import java.util.Map;
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
@@ -63,9 +65,8 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Id: DisplayTool.java 463298 2006-10-12 16:10:32Z henning $
  */
 @DefaultKey("display")
-public class DisplayTool
+public class DisplayTool extends AbstractLockConfig
 {
-    public static final String LOCK_CONFIG_KEY = "lock-config";
     public static final String LIST_DELIM_KEY = "listDelim";
     public static final String LIST_FINAL_DELIM_KEY = "listFinalDelim";
     public static final String TRUNCATE_MAX_LENGTH_KEY = "truncateMaxLength";
@@ -77,23 +78,6 @@ public class DisplayTool
     private int defaultMaxLength = 30;
     private String defaultSuffix = "...";
     private String defaultAlternate = "null";
-    private boolean configLocked = false;
-
-    /**
-     * Looks for configuration values in the given params.
-     */
-    public void configure(Map params)
-    {
-        if (!configLocked)
-        {
-            ValueParser values = new ValueParser(params);
-            configure(values);
-
-            // by default, lock down this method after use
-            // to prevent templates from re-configuring this instance
-            configLocked = values.getBoolean(LOCK_CONFIG_KEY, true);
-        }
-    }
 
     /**
      * Does the actual configuration. This is protected, so
@@ -195,14 +179,29 @@ public class DisplayTool
      */
     public String list(Object list, String delim, String finaldelim)
     {
+        if (list == null)
+        {
+            return null;
+        }
         if (list instanceof Collection)
         {
             return format((Collection)list, delim, finaldelim);
         }
+        Collection items;
+        if (list.getClass().isArray())
+        {
+            int size = Array.getLength(list);
+            items = new ArrayList(size);
+            for (int i=0; i < size; i++)
+            {
+                items.add(Array.get(list, i));
+            }
+        }
         else
         {
-            return format(Arrays.asList(list), delim, finaldelim);
+            items = Collections.singletonList(list);
         }
+        return format(items, delim, finaldelim);
     }
 
     /**
@@ -212,6 +211,7 @@ public class DisplayTool
     {
         StringBuilder sb = new StringBuilder();
         int size = list.size();
+System.out.println("formatting "+size+" items");
         Iterator iterator = list.iterator();
         for (int i = 0; i < size; i++)
         {
