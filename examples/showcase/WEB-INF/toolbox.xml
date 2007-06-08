@@ -94,6 +94,12 @@
     <parameter name="skip" value="month"/>
   </tool>
   <tool>
+    <key>convert</key>
+    <scope>application</scope>
+    <class>org.apache.velocity.tools.generic.ConversionTool</class>
+    <parameter name="dateFormat" value="yyyy-MM-dd"/>
+  </tool>
+  <tool>
     <key>display</key>
     <scope>application</scope>
     <class>org.apache.velocity.tools.generic.DisplayTool</class>
