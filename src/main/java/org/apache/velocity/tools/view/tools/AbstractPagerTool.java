@@ -22,11 +22,11 @@ package org.apache.velocity.tools.view.tools;
 import org.apache.velocity.tools.view.ViewContext;
 
 /**
- * Use {@link org.apache.velocity.tools.view.AbstractPagerTool}
+ * Use {@link org.apache.velocity.tools.view.PagerTool}
  */
 @Deprecated
 public abstract class AbstractPagerTool extends
-    org.apache.velocity.tools.view.AbstractPagerTool
+    org.apache.velocity.tools.view.PagerTool
 {
     @Deprecated
     public void init(Object obj)

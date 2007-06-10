@@ -21,6 +21,7 @@ package org.apache.velocity.tools.view;
 
 import java.util.Collections;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
 
@@ -135,16 +136,44 @@ import org.apache.velocity.tools.config.InvalidScope;
  */
 @DefaultKey("search")
 @InvalidScope({"application","session"})
-public abstract class AbstractSearchTool extends AbstractPagerTool
+public abstract class AbstractSearchTool extends PagerTool
 {
+    public static final String DEFAULT_CRITERIA_KEY = "find";
+
     /** the key under which StoredResults are kept in session */
     protected static final String STORED_RESULTS_KEY =
         StoredResults.class.getName();
 
+    private String criteriaKey = DEFAULT_CRITERIA_KEY;
     private Object criteria;
 
+    /**
+     * Sets the criteria *if* it is set in the request parameters.
+     */
+    public void setup(HttpServletRequest request)
+    {
+        super.setup(request);
+
+        // only change these settings if they're present in the params
+        String criteria = request.getParameter(getCriteriaKey());
+        if (criteria != null)
+        {
+            setCriteria(criteria);
+        }
+    }
 
     /*  ---------------------- mutators -----------------------------  */
+
+    public void setCriteriaKey(String key)
+    {
+        this.criteriaKey = key;
+    }
+
+    public String getCriteriaKey()
+    {
+        return this.criteriaKey;
+    }
+
 
     /**
      * Sets the criteria and results to null, page index to zero, and
@@ -184,24 +213,6 @@ public abstract class AbstractSearchTool extends AbstractPagerTool
 
 
     /**
-     * @deprecated Use {@link AbstractPagerTool#hasItems()}
-     */
-    public boolean hasResults()
-    {
-        return hasItems();
-    }
-
-
-    /**
-     * @deprecated Use {@link AbstractPagerTool#getItems()}.
-     */
-    public List getResults()
-    {
-        return getItems();
-    }
-
-
-    /**
      * Gets the results for the given criteria either in memory
      * or by performing a new query for them.  If the criteria
      * is null, an empty list will be returned.
@@ -218,12 +229,20 @@ public abstract class AbstractSearchTool extends AbstractPagerTool
 
         /* get the current list (should never return null!) */
         List list = super.getItems();
+        assert (list != null);
 
         /* if empty, execute a query for the criteria */
         if (list.isEmpty())
         {
-            /* perform a new query */
-            list = executeQuery(criteria);
+            /* safely perform a new query */
+            try
+            {
+                list = executeQuery(criteria);
+            }
+            catch (Throwable t)
+            {
+                //TODO: get a log for this tool, so we can log the problem
+            }
 
             /* because we can't trust executeQuery() not to return null
                and getItems() must _never_ return null... */

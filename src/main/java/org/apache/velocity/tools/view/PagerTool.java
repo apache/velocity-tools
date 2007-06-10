@@ -30,30 +30,18 @@ import org.apache.velocity.tools.config.InvalidScope;
 import org.apache.velocity.tools.view.ViewContext;
 
 /**
- * <p>Abstract view tool for doing request-based pagination of
+ * <p>View tool for doing request-based pagination of
  * items in an a list.
  * </p>
  * <p><b>Usage:</b><br>
- * To use this class, you must extend it and implement
- * the setup(HttpServletRequest) method.
- * <p>
- * The setup(HttpServletRequest) method ought to extract
- * from the current request the current list index and,
- * optionally, the number of items to display per page.
- * Upon extracting these parameters, they should be set using
- * the provided setIndex(int) and setItemsPerPage(int) methods.
- * A simple implementation would be:
- * <pre>
- * public void setup(HttpServletRequest req)
- * {
- *     ParameterParser pp = new ParameterParser(req);
- *     setIndex(pp.getInt("index", 0));
- *     setItemsPerPage(pp.getInt("show", DEFAULT_ITEMS_PER_PAGE));
- * }
- * </pre>
- * You can also set the list of items to be paged at this point
+ * To use this class, you typically push a List of items to it
+ * by putting it in the request attributes under the value returned by
+ * {@link #getNewItemsKey()} (default is "new.items").
+ * You can also set the list of items to be paged in a subclass
  * using the setItems(List) method, or you can always set the
- * item list at another point (even from within the template).
+ * item list at another point (even from within the template). This
+ * need only happen once per session if a session is available, but the
+ * item list can be (re)set as often as you like.
  * </p>
  * <p>
  * Here's an example of how your subclass would be used in a template:
@@ -101,20 +89,23 @@ import org.apache.velocity.tools.view.ViewContext;
  * <pre>
  * &lt;tools&gt;
  *   &lt;toolbox scope="request"&gt;
- *     &lt;tool class="com.foo.tools.MyPagerTool"/&gt;
+ *     &lt;tool class="org.apache.velocity.tools.view.PagerTool"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
  * </pre>
  * </p>
  *
  * @author Nathan Bubna
- * @since VelocityTools 1.2
  * @version $Revision$ $Date$
  */
 @DefaultKey("pager")
 @InvalidScope({"application","session"})
-public abstract class AbstractPagerTool
+public class PagerTool
 {
+    public static final String DEFAULT_NEW_ITEMS_KEY = "new.items";
+    public static final String DEFAULT_INDEX_KEY = "index";
+    public static final String DEFAULT_ITEMS_PER_PAGE_KEY = "show";
+    public static final String DEFAULT_SLIP_SIZE_KEY = "slipSize";
 
     /** the default number of items shown per page */
     public static final int DEFAULT_ITEMS_PER_PAGE = 10;
@@ -123,9 +114,12 @@ public abstract class AbstractPagerTool
     public static final int DEFAULT_SLIP_SIZE = 20;
 
     /** the key under which items are stored in session */
-    protected static final String STORED_ITEMS_KEY =
-        AbstractPagerTool.class.getName();
+    protected static final String STORED_ITEMS_KEY = PagerTool.class.getName();
 
+    private String newItemsKey = DEFAULT_NEW_ITEMS_KEY;
+    private String indexKey = DEFAULT_INDEX_KEY;
+    private String itemsPerPageKey = DEFAULT_ITEMS_PER_PAGE_KEY;
+    private String slipSizeKey = DEFAULT_SLIP_SIZE_KEY;
     private List items;
     private int index = 0;
     private int slipSize = DEFAULT_SLIP_SIZE;
@@ -148,25 +142,83 @@ public abstract class AbstractPagerTool
     }
 
     /**
-     * Abstract method to make it as obvious as possible just
-     * where implementing classes should be retrieving and configuring
-     * display parameters.
-     * <p>A simple implementation would be:
-     * <pre>
-     * public void setup(HttpServletRequest req)
-     * {
-     *     ParameterParser pp = new ParameterParser(req);
-     *     setIndex(pp.getInt("index", 0));
-     *     setItemsPerPage(pp.getInt("show", DEFAULT_ITEMS_PER_PAGE));
-     * }
-     * </pre>
+     * Sets the index, itemsPerPage, and/or slipSize *if* they are set
+     * in the request parameters.  Likewise, this will set the item list
+     * to be paged *if* there is a list pushed into the request attributes
+     * under the {@link #getItemsKey()}.
      *
      * @param request the current HttpServletRequest
      */
-    public abstract void setup(HttpServletRequest request);
+    public void setup(HttpServletRequest request)
+    {
+        ParameterTool params = new ParameterTool(request);
 
-    /*  ---------------------- mutators ----------------------------- */
+        // only change these settings if they're present in the params
+        int index = params.getInt(getIndexKey(), -1);
+        if (index >= 0)
+        {
+            setIndex(index);
+        }
+        int show = params.getInt(getItemsPerPageKey(), 0);
+        if (show > 0)
+        {
+            setItemsPerPage(show);
+        }
+        int slipSize = params.getInt(getSlipSizeKey(), 0);
+        if (slipSize > 0)
+        {
+            setSlipSize(slipSize);
+        }
 
+        // look for items in the request attributes
+        List newItems = (List)request.getAttribute(getNewItemsKey());
+        if (newItems != null)
+        {
+            // only set the items if a list was pushed into the request
+            setItems(newItems);
+        }
+    }
+
+
+    public void setNewItemsKey(String key)
+    {
+        this.newItemsKey = key;
+    }
+
+    public String getNewItemsKey()
+    {
+        return this.newItemsKey;
+    }
+
+    public void setIndexKey(String key)
+    {
+        this.indexKey = key;
+    }
+
+    public String getIndexKey()
+    {
+        return this.indexKey;
+    }
+
+    public void setItemsPerPageKey(String key)
+    {
+        this.itemsPerPageKey = key;
+    }
+
+    public String getItemsPerPageKey()
+    {
+        return this.itemsPerPageKey;
+    }
+
+    public void setSlipSizeKey(String key)
+    {
+        this.slipSizeKey = key;
+    }
+
+    public String getSlipSizeKey()
+    {
+        return this.slipSizeKey;
+    }
 
     /**
      * Sets the item list to null, page index to zero, and
