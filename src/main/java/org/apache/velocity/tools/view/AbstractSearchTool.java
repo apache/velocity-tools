@@ -22,6 +22,7 @@ package org.apache.velocity.tools.view;
 import java.util.Collections;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
 
@@ -35,25 +36,8 @@ import org.apache.velocity.tools.config.InvalidScope;
  * </p>
  * <p><b>Usage:</b><br>
  * To use this class, you must extend it and implement
- * the setup(HttpServletRequest) and executeQuery(Object)
- * methods.
- * <p>
- * The setup(HttpServletRequest) method ought to extract
- * from the current request the search criteria, the current
- * list index, and optionally, the number of items to display
- * per page of results.  Upon extracting these parameters, they
- * should be set using the provided setCriteria(Object),
- * setIndex(int), and setItemsPerPage(int) methods. A simple
- * implementation would be:
- * <pre>
- * public void setup(HttpServletRequest req)
- * {
- *     ParameterParser pp = new ParameterParser(req);
- *     setCriteria(pp.getString("find"));
- *     setIndex(pp.getInt("index", 0));
- *     setItemsPerPage(pp.getInt("show", DEFAULT_ITEMS_PER_PAGE));
- * }
- * </pre>
+ * the executeQuery(Object) method.
+ * </p>
  * <p>
  * The setCriteria(Object) method takes an Object in order to
  * allow the search criteria to meet your needs.  Your criteria
@@ -144,8 +128,18 @@ public abstract class AbstractSearchTool extends PagerTool
     protected static final String STORED_RESULTS_KEY =
         StoredResults.class.getName();
 
+    protected Log LOG;
     private String criteriaKey = DEFAULT_CRITERIA_KEY;
     private Object criteria;
+
+    public void setLog(Log log)
+    {
+        if (log == null)
+        {
+            throw new NullPointerException("log should not be set to null");
+        }
+        this.LOG = log;
+    }
 
     /**
      * Sets the criteria *if* it is set in the request parameters.
@@ -241,7 +235,7 @@ public abstract class AbstractSearchTool extends PagerTool
             }
             catch (Throwable t)
             {
-                //TODO: get a log for this tool, so we can log the problem
+                LOG.error("AbstractSearchTool : failed to execute query", t);
             }
 
             /* because we can't trust executeQuery() not to return null
