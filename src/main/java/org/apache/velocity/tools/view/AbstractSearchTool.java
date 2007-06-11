@@ -149,10 +149,10 @@ public abstract class AbstractSearchTool extends PagerTool
         super.setup(request);
 
         // only change these settings if they're present in the params
-        String criteria = request.getParameter(getCriteriaKey());
-        if (criteria != null)
+        String findMe = request.getParameter(getCriteriaKey());
+        if (findMe != null)
         {
-            setCriteria(criteria);
+            setCriteria(findMe);
         }
     }
 
@@ -176,7 +176,7 @@ public abstract class AbstractSearchTool extends PagerTool
     public void reset()
     {
         super.reset();
-        criteria = null;
+        setCriteria(null);
     }
 
 
@@ -215,8 +215,9 @@ public abstract class AbstractSearchTool extends PagerTool
      */
     public List getItems()
     {
+        Object findMe = getCriteria();
         /* return empty list if we have no criteria */
-        if (criteria == null)
+        if (findMe == null)
         {
             return Collections.EMPTY_LIST;
         }
@@ -231,11 +232,15 @@ public abstract class AbstractSearchTool extends PagerTool
             /* safely perform a new query */
             try
             {
-                list = executeQuery(criteria);
+                list = executeQuery(findMe);
             }
             catch (Throwable t)
             {
-                LOG.error("AbstractSearchTool : failed to execute query", t);
+                if (LOG != null)
+                {
+                    LOG.error("AbstractSearchTool: executeQuery(" + findMe +
+                              ") failed", t);
+                }
             }
 
             /* because we can't trust executeQuery() not to return null
@@ -260,7 +265,7 @@ public abstract class AbstractSearchTool extends PagerTool
 
         /* if the criteria equals that of the stored results,
          * then return the stored result list */
-        if (sr != null && criteria.equals(sr.getCriteria()))
+        if (sr != null && getCriteria().equals(sr.getCriteria()))
         {
             return sr.getList();
         }
@@ -270,7 +275,7 @@ public abstract class AbstractSearchTool extends PagerTool
 
     protected void setStoredItems(List items)
     {
-        setStoredResults(new StoredResults(criteria, items));
+        setStoredResults(new StoredResults(getCriteria(), items));
     }
 
 
