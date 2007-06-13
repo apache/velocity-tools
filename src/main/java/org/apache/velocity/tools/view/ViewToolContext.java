@@ -164,14 +164,38 @@ public class ViewToolContext extends ToolContext implements ViewContext
      */
     public Object get(String key)
     {
-        /* search for a tool first */
+        /* search for a tool first, keeping them read-only */
         Object o = findTool(key);
         if (o != null)
         {
             return o;
         }
 
-        /* make the four scopes of the Apocalypse Read only */
+        /* put servlet API access here to keep it read-only */
+        o = getServletApi(key);
+        if (o != null)
+        {
+            return o;
+        }
+
+        /* try the local context */
+        o = internalGet(key);
+        if (o != null)
+        {
+            return o;
+        }
+
+        /* if not found, wander down the scopes... */
+        return getAttribute(key);
+    }
+
+    /**
+     * Returns the current matching servlet request, response, session, 
+     * or servlet context instance, or null if the key matches none of those
+     * keys.
+     */
+    protected Object getServletApi(String key)
+    {
         if (key.equals(REQUEST))
         {
             return request;
@@ -188,16 +212,7 @@ public class ViewToolContext extends ToolContext implements ViewContext
         {
             return application;
         }
-
-        /* try the local context */
-        o = internalGet(key);
-        if (o != null)
-        {
-            return o;
-        }
-
-        /* if not found, wander down the scopes... */
-        return getAttribute(key);
+        return null;
     }
 
 
