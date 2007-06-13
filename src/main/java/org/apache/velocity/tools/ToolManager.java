@@ -213,20 +213,7 @@ public class ToolManager
         if (inputStream == null)
         {
             // then, try the file system directly
-            File file = new File(path);
-            if (file.exists())
-            {
-                try
-                {
-                    inputStream = new FileInputStream(file);
-                }
-                catch (FileNotFoundException fnfe)
-                {
-                    // we should not be able to get here
-                    // since we already checked whether the file exists
-                    throw new IllegalStateException(fnfe);
-                }
-            }
+            inputStream = getFileInputStream(path);
         }
 
         // if we still haven't found one
@@ -236,5 +223,23 @@ public class ToolManager
         }
         return inputStream;
     }
-    
+
+    protected InputStream getFileInputStream(String path)
+    {
+        File file = new File(path);
+        if (file.exists())
+        {
+            try
+            {
+                return new FileInputStream(file);
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                // we should not be able to get here
+                // since we already checked whether the file exists
+                throw new IllegalStateException(fnfe);
+            }
+        }
+        return null;
+    }
 }
