@@ -236,7 +236,7 @@ public class VelocityView
     /**
      * Returns the underlying VelocityEngine being used.
      */
-    protected VelocityEngine getVelocityEngine()
+    public VelocityEngine getVelocityEngine()
     {
         return velocity;
     }
@@ -855,7 +855,7 @@ public class VelocityView
         return ctx;
     }
 
-    protected void prepareContext(ViewToolContext context)
+    public void prepareContext(ViewToolContext context)
     {
         // if this view is storing toolboxes under a non-standard key,
         // then retrieve it's toolboxes here, since ViewToolContext won't
