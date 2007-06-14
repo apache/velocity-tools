@@ -51,11 +51,11 @@ import org.apache.velocity.runtime.log.Log;
  * <p>VelocityViewServlet supports the following configuration parameters
  * in web.xml:</p>
  * <dl>
- *   <dt>org.apache.velocity.toolbox</dt>
+ *   <dt>org.apache.velocity.tools</dt>
  *   <dd>Path and name of the toolbox configuration file. The path must be
  *     relative to the web application root directory. If this parameter is
  *     not found, the servlet will check for a toolbox file at
- *     '/WEB-INF/toolbox.xml'.</dd>
+ *     '/WEB-INF/tools.xml'.</dd>
  *   <dt>org.apache.velocity.properties</dt>
  *   <dd>Path and name of the Velocity configuration file. The path must be
  *     relative to the web application root directory. If this parameter
