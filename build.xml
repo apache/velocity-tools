@@ -157,6 +157,7 @@
       <fileset dir="${classes.src}">
         <include name="**/*.properties"/>
         <include name="**/*.xml"/>
+        <include name="**/*.tld"/>
       </fileset>
     </copy>
   </target>
@@ -183,6 +184,7 @@
         <include name="**/generic/*.xml"/>
         <include name="**/view/*.properties"/>
         <include name="**/view/*.xml"/>
+        <include name="**/*.tld"/>
       </fileset>
     </copy>
   </target>
