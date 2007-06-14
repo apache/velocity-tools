@@ -24,12 +24,12 @@
   <tool>
      <key>toytool</key>
      <scope>request</scope>
-     <request-path>index.vm</request-path>
+     <request-path>index*</request-path>
      <class>ToyTool</class>
   </tool>
   <data type="number">
     <key>version</key>
-    <value>1.1</value>
+    <value>1.2</value>
   </data>
   <data type="boolean">
     <key>isSimple</key>
