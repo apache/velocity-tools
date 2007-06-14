@@ -21,6 +21,7 @@ package org.apache.velocity.tools.view.jsp;
 
 import java.io.StringWriter;
 import java.io.Writer;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
@@ -184,6 +185,7 @@ public class VelocityViewTag extends BodyTagSupport
         ViewToolContext context =
             new JspToolContext(view.getVelocityEngine(), this.pageContext);
 
+        view.prepareToolboxes((HttpServletRequest)this.pageContext.getRequest());
         view.prepareContext(context);
 
         setVelocityView(view);
