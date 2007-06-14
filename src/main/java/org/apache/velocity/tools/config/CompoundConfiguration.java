@@ -101,7 +101,7 @@ public class CompoundConfiguration<C extends Configuration>
             }
             else
             {
-                out.append("with ");
+                out.append(" with ");
             }
             out.append(getChildren().size());
             out.append(' ');
