@@ -765,7 +765,7 @@ public class VelocityView
     }
 
 
-    protected void prepareToolboxes(HttpServletRequest request)
+    public void prepareToolboxes(HttpServletRequest request)
     {
         // only set a new toolbox if we need one
         if (toolboxFactory.hasTools(ToolboxFactory.DEFAULT_SCOPE)
