@@ -108,8 +108,9 @@ public class XmlFactoryConfigurationRuleSet extends RuleSetBase
         digester.addRule("tools/toolbox", new PropertyAttributeRule());
         digester.addRule("tools/toolbox/tool", new PropertyAttributeRule());
 
-        // for config properties whose values are in the body of the tag
-        digester.addRule("tools/*/property", new PropertyValueInBodyRule());
+        // for config data & properties whose values are in the body of the tag
+        digester.addRule("tools/data", new DataValueInBodyRule());
+        digester.addRule("tools/*/property", new DataValueInBodyRule());
 
         // to finish a config and move on to the next
         digester.addSetNext("tools/*/property", "addProperty");
@@ -124,15 +125,15 @@ public class XmlFactoryConfigurationRuleSet extends RuleSetBase
     /**
      * Rule for adding configuration properties
      */
-    public class PropertyValueInBodyRule extends Rule
+    public class DataValueInBodyRule extends Rule
     {
         public void body(String namespace, String element, String value)
             throws Exception
         {
-            Property prop = (Property)digester.peek();
-            if (prop.getValue() == null)
+            Data data = (Data)digester.peek();
+            if (data.getValue() == null)
             {
-                prop.setValue(value);
+                data.setValue(value);
             }
         }
     }
