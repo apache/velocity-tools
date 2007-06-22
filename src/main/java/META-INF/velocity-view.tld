@@ -23,13 +23,13 @@
   <jspversion>1.2</jspversion>
   <shortname>velocity</shortname>
   <uri>http://velocity.apache.org/velocity-view</uri>
-  <display-name>"VelocityView Tag"</display-name>
-  <description><![CDATA["Support for using Velocity and VelocityTools within JSP files and tags.
+  <display-name>VelocityView Tag</display-name>
+  <description><![CDATA[Support for using Velocity and VelocityTools within JSP files and tags.
                         This makes it trivial to render VTL (Velocity Template Language)
                         or process a Velocity template from within JSP using the current
                         context.  This also provides the typical VelocityView support
                         for accessing and configuring both custom and provided
-                        VelocityTools."]]></description>
+                        VelocityTools.]]></description>
   <tag>
     <name>view</name>
     <tagclass>org.apache.velocity.tools.view.jsp.VelocityViewTag</tagclass>
