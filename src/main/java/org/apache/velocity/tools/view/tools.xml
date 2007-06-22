@@ -26,12 +26,12 @@
         <tool class="org.apache.velocity.tools.view.CookieTool"/>
         <tool class="org.apache.velocity.tools.view.ImportTool"/>
         <tool class="org.apache.velocity.tools.view.LinkTool"/>
+        <tool class="org.apache.velocity.tools.view.PagerTool"/>
         <tool class="org.apache.velocity.tools.view.ParameterTool"/>
         <tool class="org.apache.velocity.tools.view.ViewRenderTool"/>
         <tool class="org.apache.velocity.tools.view.ViewResourceTool"/>
         <!-- 
-        These are not directly useable.
-        <tool class="org.apache.velocity.tools.view.AbstractPagerTool"/>
+        This is not directly useable.
         <tool class="org.apache.velocity.tools.view.AbstractSearchTool"/>
         -->
     </toolbox>
