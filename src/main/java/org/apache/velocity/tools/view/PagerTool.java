@@ -120,6 +120,8 @@ public class PagerTool
     private String indexKey = DEFAULT_INDEX_KEY;
     private String itemsPerPageKey = DEFAULT_ITEMS_PER_PAGE_KEY;
     private String slipSizeKey = DEFAULT_SLIP_SIZE_KEY;
+    private boolean createSession = false;
+
     private List items;
     private int index = 0;
     private int slipSize = DEFAULT_SLIP_SIZE;
@@ -137,7 +139,7 @@ public class PagerTool
         {
             throw new NullPointerException("request should not be null");
         }
-        this.session = request.getSession(false);
+        this.session = request.getSession(getCreateSession());
         setup(request);
     }
 
@@ -218,6 +220,16 @@ public class PagerTool
     public String getSlipSizeKey()
     {
         return this.slipSizeKey;
+    }
+
+    public void setCreateSession(boolean createSession)
+    {
+        this.createSession = createSession;
+    }
+
+    public boolean getCreateSession()
+    {
+        return this.createSession;
     }
 
     /**
