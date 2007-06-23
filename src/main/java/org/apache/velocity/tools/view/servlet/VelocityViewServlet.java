@@ -19,6 +19,7 @@ package org.apache.velocity.tools.view.servlet;
  * under the License.
  */
 
+import org.apache.velocity.tools.view.VelocityView;
 
 /**
  * @deprecated This class has moved to {@link org.apache.velocity.tools.view.VelocityViewServlet}
@@ -28,4 +29,15 @@ package org.apache.velocity.tools.view.servlet;
 public class VelocityViewServlet
     extends org.apache.velocity.tools.view.VelocityViewServlet
 {
+    /**
+     * @deprecated toolbox key is now managed by {@link VelocityView}
+     */
+    protected static final String TOOLBOX_KEY =
+        VelocityView.DEPRECATED_TOOLS_KEY;
+
+    /**
+     * @deprecated Default path is now managed by {@link VelocityView}
+     */
+    protected static final String DEFAULT_TOOLBOX_PATH =
+        VelocityView.DEPRECATED_USER_TOOLS_PATH;
 }
