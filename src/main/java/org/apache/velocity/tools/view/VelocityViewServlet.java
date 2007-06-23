@@ -63,6 +63,24 @@ import org.apache.velocity.runtime.log.Log;
  *     '/WEB-INF/velocity.properties'.  If no file is found there, then
  *     Velocity is initialized with the settings in the classpath at
  *     'org.apache.velocity.tools.view.servlet.velocity.properties'.</dd>
+ *   <dt>org.apache.velocity.tools.shared.config</dt>
+ *   <dd>By default, this is {@code true}. If set to {@code false}, then
+ *     the {@link VelocityView} used by this servlet will not be shared
+ *     with other VelocityViewServlets or {@link VelocityViewTag}s in the
+ *     application.</dd>
+ *   <dt>org.apache.velocity.tools.loadDefaults</dt>
+ *   <dd>By default, this is {@code true}. If set to {@code false}, then
+ *     the default toolbox configuration will not be added to your (if any)
+ *     custom configuration.  NOTE: The default configuration will also be
+ *     suppressed if you are using a deprecated toolbox.xml format and do not
+ *     explicitly set this to {@code true}.</dd>
+ *   <dt>org.apache.velocity.tools.cleanConfiguration</dt>
+ *   <dd>By default, this is {@code false}. If set to {@code true}, then
+ *     then the final toolbox configuration (the combination of any custom
+ *     one(s) provided by yourself and/or the default configuration(s))
+ *     will have all invalid tools, properties, and/or data removed prior to
+ *     configuring the ToolboxFactory for this servlet by a
+ *     {@link ConfigurationCleaner}</dd>
  * </dl>
  *
  * @version $Id$
