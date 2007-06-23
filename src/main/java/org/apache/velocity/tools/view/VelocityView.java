@@ -104,9 +104,6 @@ import org.apache.velocity.util.SimplePool;
 
 public class VelocityView
 {
-    /** serial version id */
-    private static final long serialVersionUID = -3329444102562079189L;
-
     /** The HTTP content type context key. */
     public static final String CONTENT_TYPE_KEY = "default.contentType";
 
@@ -134,6 +131,9 @@ public class VelocityView
      */
     public static final String TOOLS_KEY =
         "org.apache.velocity.tools";
+    @Deprecated
+    public static final String DEPRECATED_TOOLS_KEY =
+        "org.apache.velocity.toolbox";
 
     /**
      * Default toolbox configuration file path. If no alternate value for
@@ -141,6 +141,7 @@ public class VelocityView
      */
     public static final String USER_TOOLS_PATH =
         "/WEB-INF/tools.xml";
+    @Deprecated
     public static final String DEPRECATED_USER_TOOLS_PATH =
         "/WEB-INF/toolbox.xml";
 
@@ -376,137 +377,110 @@ public class VelocityView
         }
     }
 
+    protected String findInitParameter(String key, ServletConfig config)
+    {
+        String param = config.getInitParameter(key);
+        if (param == null)
+        {
+            param = config.getServletContext().getInitParameter(key);
+        }
+        return param;
+    }
+
 
     protected void configure(final ServletConfig config, final VelocityEngine velocity)
     {
         // first get the default properties, and bail if we don't find them
         velocity.setExtendedProperties(getProperties(DEFAULT_PROPERTIES_PATH, true));
 
-        String configMessage = "Configuring Velocity with properties at: ";
-
         // check for application-wide user props in the context init params
         String appPropsPath = servletContext.getInitParameter(PROPERTIES_KEY);
-        if (appPropsPath != null)
-        {
-            // since the user said props are there, complain if they aren't!
-            ExtendedProperties appProps = getProperties(appPropsPath, true);
-            getLog().debug(configMessage + appPropsPath);
-
-            // set the props, letting them override framework defaults
-            velocity.setExtendedProperties(appProps);
-        }
+        setProps(velocity, appPropsPath, true);
 
         // check for servlet-wide user props in the config init params at the
         // conventional location, and be silent if they're missing
-        ExtendedProperties servletProps = getProperties(USER_PROPERTIES_PATH);
-        if (servletProps != null)
-        {
-            getLog().debug(configMessage + USER_PROPERTIES_PATH);
-
-            // set them, letting servlet props override app props and defaults
-            velocity.setExtendedProperties(servletProps);
-        }
+        setProps(velocity, USER_PROPERTIES_PATH, false);
 
         // check for a custom location for servlet-wide user props
         String servletPropsPath = config.getInitParameter(PROPERTIES_KEY);
-        if (servletPropsPath != null)
-        {
-            // since the user said props are there, complain if they aren't!
-            servletProps = getProperties(servletPropsPath, true);
-            getLog().debug(configMessage + servletPropsPath);
+        setProps(velocity, servletPropsPath, true);
+    }
 
-            // set them, again, let these specified with most effort override all
-            velocity.setExtendedProperties(servletProps);
+    private boolean setProps(VelocityEngine velocity, String path, boolean require)
+    {
+        if (path == null)
+        {
+            // only bother with this if a path was given
+            return false;
         }
+
+        // this will throw an exception if require is true and there
+        // are no properties at the path.  if require is false, this
+        // will return null when there's no properties at the path
+        ExtendedProperties props = getProperties(path, require);
+        if (props == null)
+        {
+            return false;
+        }
+
+        getLog().debug("Configuring Velocity with properties at: "
+                       + path);
+
+        // these props will override those already set
+        velocity.setExtendedProperties(props);
+        // notify that new props were set
+        return true;
     }
 
 
     protected void configure(final ServletConfig config, final ToolboxFactory factory)
     {
         FactoryConfiguration factoryConfig = new FactoryConfiguration();
-        String configMessage = "Loading configuration from: ";
-        boolean hasOldToolbox = false;
 
+        boolean hasOldToolbox = false;
         if (this.deprecationSupportMode)
         {
-            // check for deprecated user configuration at the old conventional
-            // location.  be silent if missing, log deprecation warning otherwise
-            FactoryConfiguration deprecatedConfig =
-                getConfiguration(DEPRECATED_USER_TOOLS_PATH);
-            if (deprecatedConfig != null)
+            FactoryConfiguration oldToolbox = getDeprecatedConfig(config);
+            if (oldToolbox != null)
             {
                 hasOldToolbox = true;
-                getLog().warn("Please upgrade to new \"/WEB-INF/tools.xml\" format and conventional location."+
-                              " Support for \"/WEB-INF/toolbox.xml\" format and conventional file name will "+
-                              "be removed in a future version.");
-                getLog().debug(configMessage + DEPRECATED_USER_TOOLS_PATH);
-
-                factoryConfig.addConfiguration(deprecatedConfig);
+                factoryConfig.addConfiguration(oldToolbox);
             }
-        }
-
-        // determine whether or not to include default tools
-        String loadDefaults = config.getInitParameter(LOAD_DEFAULTS_KEY);
-        if (loadDefaults == null)
-        {
-            loadDefaults =
-                servletContext.getInitParameter(LOAD_DEFAULTS_KEY);
         }
 
         // only load the default tools if they have explicitly said to
         // or if they are not using an old toolbox and have said nothing
-        if ("true".equalsIgnoreCase(loadDefaults) ||
-            (!hasOldToolbox && loadDefaults == null))
+        String loadDefaults = findInitParameter(LOAD_DEFAULTS_KEY, config);
+        if ((!hasOldToolbox && loadDefaults == null) ||
+            "true".equalsIgnoreCase(loadDefaults))
         {
-            getLog().trace("Loading default tool configurations...");
             // add all available default tools
+            getLog().trace("Loading default tool configurations...");
             factoryConfig.addConfiguration(FactoryConfiguration.getDefault());
         }
-        else if (hasOldToolbox)
+        else
         {
             // let the user know that the defaults were suppressed
-            getLog().debug("Default tool configurations have been suppressed to avoid conflicts with older application's context or toolbox definition.");
+            getLog().debug("Default tool configuration has been suppressed"
+                           + (hasOldToolbox ?
+                              " to avoid conflicts with older application's context and toolbox definition."
+                              : "."));
         }
 
         // check for application-wide user config in the context init params
         String appToolsPath = servletContext.getInitParameter(TOOLS_KEY);
-        if (appToolsPath != null)
-        {
-            // since the user said a config is there, complain if it isn't!
-            FactoryConfiguration appConfig = getConfiguration(appToolsPath, true);
-            getLog().debug(configMessage + appToolsPath);
-
-            factoryConfig.addConfiguration(appConfig);
-        }
+        setConfig(factoryConfig, appToolsPath, true);
 
         // check for user configuration at the conventional location,
         // and be silent if they're missing
-        FactoryConfiguration servletConfig = getConfiguration(USER_TOOLS_PATH);
-        if (servletConfig != null)
-        {
-            getLog().debug(configMessage + USER_TOOLS_PATH);
-
-            factoryConfig.addConfiguration(servletConfig);
-        }
+        setConfig(factoryConfig, USER_TOOLS_PATH, false);
 
         // check for a custom location for servlet-wide user props
         String servletToolsPath = config.getInitParameter(TOOLS_KEY);
-        if (servletToolsPath != null)
-        {
-            // since the user said props are there, complain if they aren't!
-            servletConfig = getConfiguration(servletToolsPath, true);
-            getLog().debug(configMessage + servletToolsPath);
-
-            factoryConfig.addConfiguration(servletConfig);
-        }
+        setConfig(factoryConfig, servletToolsPath, true);
 
         // see if we should only keep valid tools, data, and properties
-        String cleanConfig = config.getInitParameter(CLEAN_CONFIGURATION_KEY);
-        if (cleanConfig == null)
-        {
-            cleanConfig =
-                servletContext.getInitParameter(CLEAN_CONFIGURATION_KEY);
-        }
+        String cleanConfig = findInitParameter(CLEAN_CONFIGURATION_KEY, config);
         if ("true".equals(cleanConfig))
         {
             // remove invalid tools, data, and properties from the configuration
@@ -515,10 +489,62 @@ public class VelocityView
             cleaner.clean(factoryConfig);
         }
 
-        getLog().debug("Configuring toolboxFactory with: "+factoryConfig);
-
         // apply this configuration to the specified factory
+        getLog().debug("Configuring toolboxFactory with: "+factoryConfig);
         factory.configure(factoryConfig);
+    }
+
+    @Deprecated
+    protected FactoryConfiguration getDeprecatedConfig(ServletConfig config)
+    {
+        // check for deprecated user configuration at the old conventional
+        // location.  be silent if missing, log deprecation warning otherwise
+        String oldPath = DEPRECATED_USER_TOOLS_PATH;
+        FactoryConfiguration toolbox = getConfiguration(oldPath);
+        if (toolbox == null)
+        {
+            // look for an alternate path under the deprecated toolbox key
+            oldPath = findInitParameter(DEPRECATED_TOOLS_KEY, config);
+            if (oldPath != null)
+            {
+                // ok, this time they said the toolbox.xml should be there
+                // so this should blow up if it is not
+                toolbox = getConfiguration(oldPath, true);
+            }
+        }
+
+        if (toolbox != null)
+        {
+            getLog().debug("Loaded deprecated configuration from: " + oldPath);
+            getLog().warn("Please upgrade to new \"/WEB-INF/tools.xml\" format and conventional location."+
+                          " Support for \"/WEB-INF/toolbox.xml\" format and conventional file name will "+
+                          "be removed in a future version.");
+        }
+        return toolbox;
+    }
+
+    private boolean setConfig(FactoryConfiguration factory, String path, boolean require)
+    {
+        if (path == null)
+        {
+            // only bother with this if a path was given
+            return false;
+        }
+
+        // this will throw an exception if require is true and there
+        // is no tool config at the path.  if require is false, this
+        // will return null when there's no tool config at the path
+        FactoryConfiguration config = getConfiguration(path, require);
+        if (config == null)
+        {
+            return false;
+        }
+
+        getLog().debug("Loaded configuration from: " + path);
+        factory.addConfiguration(config);
+
+        // notify that new config was added
+        return true;
     }
 
 
