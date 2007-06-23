@@ -70,18 +70,11 @@ import org.apache.velocity.runtime.log.Log;
 
 public class VelocityViewServlet extends HttpServlet
 {
-    /** serial version id */
-    private static final long serialVersionUID = -3329444102562079189L;
-    private VelocityView view;
-
     public static final String SHARED_CONFIG_PARAM =
         "org.apache.velocity.tools.shared.config";
+    private static final long serialVersionUID = -3329444102562079189L;
 
-    /**
-     * @deprecated Default path is now managed by {@link VelocityView}
-     */
-    protected static final String DEFAULT_TOOLBOX_PATH =
-        VelocityView.DEPRECATED_USER_TOOLS_PATH;
+    private VelocityView view;
 
     /**
      * <p>Initializes servlet and VelocityView used to process requests.
