@@ -17,12 +17,14 @@
  * under the License.
  */
 
-import org.apache.velocity.tools.view.tools.LinkTool;
-import org.apache.velocity.tools.view.servlet.VelocityLayoutServlet;
+import org.apache.velocity.tools.view.LinkTool;
+import org.apache.velocity.tools.view.VelocityLayoutServlet;
 
 /**
  * This is meant to demonstrate how to extend the LinkTool to
  * avoid the manual use of "magic" or common query parameters.
+ * So instead of doing $link.param('layout', 'Table.vm') in your
+ * template, you would just do $link.layout('Table').
  *
  * @author Nathan Bubna
  * @version $Id: LayoutLinkTool.java 479724 2006-11-27 18:49:37Z nbubna $

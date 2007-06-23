@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN" "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
+<?xml version="1.0"?>
 
 <!--
  Licensed to the Apache Software Foundation (ASF) under one
@@ -20,16 +19,21 @@
  under the License.
 -->
 
-<web-app>
-  <servlet>
-    <servlet-name>velocity</servlet-name>
-    <servlet-class>org.apache.velocity.tools.view.VelocityLayoutServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>velocity</servlet-name>
-    <url-pattern>*.vm</url-pattern>
-  </servlet-mapping>
-  <welcome-file-list>
-    <welcome-file>index.vm</welcome-file>
-  </welcome-file-list>
-</web-app>
+<tools>
+  <data key="author">Nathan Bubna</data>
+  <toolbox scope="request">
+    <tool class="LayoutLinkTool"/>
+    <tool class="org.apache.velocity.tools.view.PagerTool"
+          createSession="true"/>
+    <tool class="MySearchTool"/>
+    <tool class="org.apache.velocity.tools.view.ViewResourceTool"
+          bundles="resources,otherStuff"/>
+  </toolbox>
+  <toolbox scope="application">
+    <tool class="org.apache.velocity.tools.generic.ComparisonDateTool"
+          format="yyyy-MM-dd" depth="2" skip="month"/>
+    <tool class="org.apache.velocity.tools.generic.ConversionTool"
+          dateFormat="yyyy-MM-dd"/>
+    <tool class="org.apache.velocity.tools.generic.NumberTool" format="#0.0"/>
+  </toolbox>
+</tools>
