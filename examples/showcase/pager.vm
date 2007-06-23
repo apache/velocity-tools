@@ -14,11 +14,13 @@
 ## KIND, either express or implied.  See the License for the
 ## specific language governing permissions and limitations
 ## under the License.
-#title( 'AbstractPagerTool' )
+#title( 'PagerTool' )
 <p>
 #set( $demo = $text.demo )
-$demo.thisPage.insert("#doclink( 'AbstractPagerTool' false )").  In this
-case, we are working with a simple implementation called "MyPagerTool".
+$demo.thisPage.insert("#doclink( 'PagerTool' false )").  In this
+case, we provide a control to set the item list from a template. Typically,
+your "action" class would place the list in the request attributes under the
+"new.items" key.
 </p>
 
 <p>

@@ -27,7 +27,7 @@
  *#
 #macro( doclink $toolname $generic )
 <a href="http://velocity.apache.org/tools/devel/javadoc/org/apache/velocity/tools/##
-#if( $generic )generic/#else#**#view/tools/#end##
+#if( $generic )generic/#else#**#view/#end##
 ${toolname}.html">$toolname</a>#end
 
 #**

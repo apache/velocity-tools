@@ -14,10 +14,10 @@
 ## KIND, either express or implied.  See the License for the
 ## specific language governing permissions and limitations
 ## under the License.
-#title( 'BrowserSniffer' )
+#title( 'BrowserTool' )
 <p>
 #set( $demo = $text.demo )
-$demo.thisPage.insert("#doclink( 'BrowserSnifferTool' false )").
+$demo.thisPage.insert("#doclink( 'BrowserTool' false )").
 </p>
 
 #demoTableStart()
