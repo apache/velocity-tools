@@ -165,7 +165,7 @@ public class ViewToolsTests {
 
         /* check get('context') */
         resp = submitWithParam(resp,"get","get","context");
-        checkTextStart(resp,"get","org.apache.velocity.tools.view.tools.ContextTool");
+        checkTextStart(resp,"get","org.apache.velocity.tools.view.ContextTool");
 
         /* check keys (the only expected uppercase is in 'velocityCount') */
         checkTextRegex(resp,"keys","^\\[[a-z_A-Z]+(?:,\\s*[a-z_A-Z]+)*\\]$");
