@@ -96,18 +96,6 @@ public class ContextTool
         this.application = (ServletContext)params.get(ViewContext.SERVLET_CONTEXT_KEY);
     }
 
-    @Deprecated
-    public void init(Object obj)
-    {
-        if (obj instanceof ViewContext)
-        {
-            this.context = (ViewContext)obj;
-            this.request = context.getRequest();
-            this.session = request.getSession(false);
-            this.application = context.getServletContext();
-        }
-    }
-
 
     /**
      * Returns the context being analyzed by this tool.
