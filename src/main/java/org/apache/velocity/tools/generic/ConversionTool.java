@@ -224,7 +224,7 @@ public class ConversionTool extends LocaleConfig
             return (Double)value;
         }
         Number num = toNumber(value);
-        return new Double(num.intValue());
+        return new Double(num.doubleValue());
     }
 
     /**
