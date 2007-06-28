@@ -418,6 +418,8 @@
         <include name="examples/**"/>
         <include name="src/**"/>
         <include name="xdocs/**"/>
+        <include name="test/etc/**"/>
+        <include name="test/conf/**"/>
       </zipfileset>
     </zip>
     <tar tarfile="${dist.dir}/${project.id}-src.tar" longfile="gnu">
@@ -426,6 +428,8 @@
         <include name="examples/**"/>
         <include name="src/**"/>
         <include name="xdocs/**"/>
+        <include name="test/etc/**"/>
+        <include name="test/conf/**"/>
       </tarfileset>
     </tar>
     <gzip zipfile="${dist.dir}/${project.id}-src.tar.gz"
