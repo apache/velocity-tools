@@ -83,6 +83,11 @@ public class TilesTool extends ImportSupport
      * are rendered.
      */
     protected Stack contextStack;
+    
+    /**
+     * Indicates if there is a MethodExceptionEventHandler present
+     */
+    protected boolean methodExceptionHandlerPresent = false;
 
     /******************************* Constructors ****************************/
 
@@ -109,6 +114,10 @@ public class TilesTool extends ImportSupport
         this.request = viewContext.getRequest();
         this.response = viewContext.getResponse();
         this.application = viewContext.getServletContext();
+
+        if(viewContext.getVelocityEngine().getProperty("eventhandler.methodexception.class") != null) {
+        	this.methodExceptionHandlerPresent = true;
+        }
     }
 
     /***************************** View Helpers ******************************/
@@ -128,8 +137,7 @@ public class TilesTool extends ImportSupport
      * @return the rendered template or value as a String
      * @throws Exception on failure
      */
-    public String get(Object obj)
-    {
+    public String get(Object obj) throws Exception {
         try
         {
             Object value = getCurrentContext().getAttribute(obj.toString());
@@ -142,6 +150,12 @@ public class TilesTool extends ImportSupport
         catch (Exception e)
         {
             LOG.error("Exeption while rendering Tile " + obj + ": ", e);
+
+            /* delegate exception handling to an EventHandler if present. */
+            if(methodExceptionHandlerPresent) {
+            	throw e;
+            }
+            
             return null;
         }
     }
