@@ -38,12 +38,17 @@ public abstract class AbstractLockConfig
 
     private boolean configLocked = false;
 
+    public boolean isConfigLocked()
+    {
+        return this.configLocked;
+    }
+
     /**
      * Looks for configuration values in the given params.
      */
     public void configure(Map params)
     {
-        if (!configLocked)
+        if (!isConfigLocked())
         {
             ValueParser values = new ValueParser(params);
             configure(values);
