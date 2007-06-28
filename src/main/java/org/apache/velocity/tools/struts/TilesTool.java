@@ -81,6 +81,11 @@ public class TilesTool extends ImportSupport
      * are rendered.
      */
     protected Stack contextStack;
+    
+    /**
+     * Indicates if there is a MethodExceptionEventHandler present
+     */
+    protected boolean catchExceptions = true;
 
     /******************************* Constructors ****************************/
 
@@ -106,8 +111,8 @@ public class TilesTool extends ImportSupport
     /**
      * Initializes this tool.
      *
-     * @param obj the current ViewContext
-     * @throws IllegalArgumentException if the param is not a ViewContext
+     * @param obj the current {@link Context}
+     * @throws IllegalArgumentException if the param is not a {@link Context}
      */
     public void setVelocityContext(Context context)
     {
@@ -116,6 +121,11 @@ public class TilesTool extends ImportSupport
             throw new NullPointerException("velocity context should not be null");
         }
         this.velocityContext = context;
+    }
+
+    public void setCatchExceptions(boolean catchExceptions)
+    {
+        this.catchExceptions = catchExceptions;
     }
 
     /***************************** View Helpers ******************************/
@@ -135,8 +145,7 @@ public class TilesTool extends ImportSupport
      * @return the rendered template or value as a String
      * @throws Exception on failure
      */
-    public String get(Object obj)
-    {
+    public String get(Object obj) throws Exception {
         try
         {
             Object value = getCurrentContext().getAttribute(obj.toString());
@@ -149,6 +158,12 @@ public class TilesTool extends ImportSupport
         catch (Exception e)
         {
             LOG.error("TilesTool : Exeption while rendering Tile " + obj, e);
+
+            /* delegate exception handling to an EventHandler if present. */
+            if (!this.catchExceptions) {
+            	throw e;
+            }
+            
             return null;
         }
     }
