@@ -220,19 +220,16 @@ public class ToolInfo implements java.io.Serializable
         /* if the tool is configurable and we have properties... */
         Map<String,Object> combinedProps =
             combine(this.properties, dynamicProperties);
-        if (combinedProps != null)
+        //TODO: make this step optional?
+        // look for specific setters
+        for (String name : combinedProps.keySet())
         {
-            //TODO: make this step optional?
-            // look for specific setters
-            for (String name : combinedProps.keySet())
-            {
-                setProperty(tool, name, combinedProps.get(name));
-            }
+            setProperty(tool, name, combinedProps.get(name));
+        }
 
-            if (hasConfigure())
-            {
-                invoke(getConfigure(), tool, combinedProps);
-            }
+        if (hasConfigure())
+        {
+            invoke(getConfigure(), tool, combinedProps);
         }
         return tool;
     }
@@ -344,18 +341,12 @@ public class ToolInfo implements java.io.Serializable
     protected Map<String,Object> combine(Map<String,Object>... maps)
     {
         Map<String,Object> combined = new HashMap<String,Object>();
-        boolean none = true;
         for (Map<String,Object> map : maps)
         {
             if (map != null)
             {
-                none = false;
                 combined.putAll(map);
             }
-        }
-        if (none)
-        {
-            return null;
         }
         return combined;
     }
