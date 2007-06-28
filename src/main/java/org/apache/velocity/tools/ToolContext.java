@@ -43,6 +43,7 @@ public class ToolContext implements Context
     public static final String CONTEXT_KEY = "velocityContext";
     public static final String ENGINE_KEY = "velocityEngine";
     public static final String LOG_KEY = "log";
+    public static final String CATCH_EXCEPTIONS_KEY = "catchExceptions";
 
     private List<Toolbox> toolboxes;
     // this is meant solely for tool setup,
@@ -58,6 +59,15 @@ public class ToolContext implements Context
         // add the engine and log as common tool properties
         putToolProperty(ENGINE_KEY, engine);
         putToolProperty(LOG_KEY, engine.getLog());
+
+        // tell interested tools not to catch exceptions whenever there's a
+        // method exception event handler configured for the engine
+        Object ehme =
+            engine.getProperty(VelocityEngine.EVENTHANDLER_METHODEXCEPTION);
+        if (ehme != null)
+        {
+            putToolProperty(CATCH_EXCEPTIONS_KEY, Boolean.FALSE);
+        }
     }
 
     public ToolContext(Map<String,Object> toolProps)
