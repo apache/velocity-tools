@@ -222,16 +222,16 @@ public class ToolInfo implements java.io.Serializable
             combine(this.properties, dynamicProperties);
         if (combinedProps != null)
         {
-            if (hasConfigure())
-            {
-                invoke(getConfigure(), tool, combinedProps);
-            }
-
             //TODO: make this step optional?
             // look for specific setters
             for (String name : combinedProps.keySet())
             {
                 setProperty(tool, name, combinedProps.get(name));
+            }
+
+            if (hasConfigure())
+            {
+                invoke(getConfigure(), tool, combinedProps);
             }
         }
         return tool;
