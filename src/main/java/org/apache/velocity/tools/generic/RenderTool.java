@@ -89,7 +89,9 @@ public class RenderTool extends AbstractLockConfig
      * @since VelocityTools 1.2
      */
     public static final int DEFAULT_PARSE_DEPTH = 20;
+    @Deprecated
     public static final String KEY_PARSE_DEPTH = "parse.depth";
+    @Deprecated
     public static final String KEY_CATCH_EXCEPTIONS = "catch.exceptions";
 
     private static final String LOG_TAG = "RenderTool.eval()";
@@ -103,11 +105,19 @@ public class RenderTool extends AbstractLockConfig
      */
     protected void configure(ValueParser parser)
     {
-        int depth = parser.getInt(KEY_PARSE_DEPTH, DEFAULT_PARSE_DEPTH);
-        setParseDepth(depth);
+        // look for deprecated parse.depth key
+        Integer depth = parser.getInteger(KEY_PARSE_DEPTH);
+        if (depth != null)
+        {
+            setParseDepth(depth);
+        }
 
-        boolean catchEm = parser.getBoolean(KEY_CATCH_EXCEPTIONS, true);
-        setCatchExceptions(catchEm);
+        // look for deprecated catch.exceptions key
+        Boolean catchEm = parser.getBoolean(KEY_CATCH_EXCEPTIONS);
+        if (catchEm != null)
+        {
+            setCatchExceptions(catchEm);
+        }
     }
 
     /**
@@ -126,7 +136,14 @@ public class RenderTool extends AbstractLockConfig
      */
     public void setParseDepth(int depth)
     {
-        this.parseDepth = depth;
+        if (!isConfigLocked())
+        {
+            this.parseDepth = depth;
+        }
+        else
+        {
+            throw new UnsupportedOperationException("Configuration for this RenderTool instance has been locked");
+        }
     }
 
     /**
@@ -146,7 +163,14 @@ public class RenderTool extends AbstractLockConfig
      */
     public void setCatchExceptions(boolean catchExceptions)
     {
-        this.catchExceptions = catchExceptions;
+        if (!isConfigLocked())
+        {
+            this.catchExceptions = catchExceptions;
+        }
+        else
+        {
+            throw new UnsupportedOperationException("Configuration for this RenderTool instance has been locked");
+        }
     }
 
     /**
