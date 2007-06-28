@@ -69,22 +69,22 @@ public class OldToolInfo extends ToolInfo
 
 
     @Override
-    public Object create(Map<String,Object> dynamicProperties)
+    protected void configure(Object tool, Map<String,Object> configuration)
     {
-        Object tool = super.create(dynamicProperties);
+        // have specific setters and configure(Map) called first
+        super.configure(tool, configuration);
 
         if (this.init != null)
         {
             // ctx should, in all cases where a tool has such a method,
             // actually be a View(Tool)Context, but we don't want to link
             // to that class here, so as not to pollute the generic jar
-            Object ctx = dynamicProperties.get(ToolContext.CONTEXT_KEY);
+            Object ctx = configuration.get(ToolContext.CONTEXT_KEY);
             if (ctx != null)
             {
                 invoke(this.init, tool, ctx);
             }
         }
-        return tool;
     }
 
 }

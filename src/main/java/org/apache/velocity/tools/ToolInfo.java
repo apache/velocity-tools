@@ -217,25 +217,40 @@ public class ToolInfo implements java.io.Serializable
         /* Get the tool instance */
         Object tool = newInstance();
 
-        /* if the tool is configurable and we have properties... */
+        /* put configured props into the combo last, since
+           dynamic properties will almost always be conventions
+           and we need to let configuration win out */
         Map<String,Object> combinedProps =
-            combine(this.properties, dynamicProperties);
-        //TODO: make this step optional?
-        // look for specific setters
-        for (String name : combinedProps.keySet())
-        {
-            setProperty(tool, name, combinedProps.get(name));
-        }
+            combine(dynamicProperties, this.properties);
 
-        if (hasConfigure())
-        {
-            invoke(getConfigure(), tool, combinedProps);
-        }
+        // perform the actual configuration of the new tool
+        configure(tool, combinedProps);
         return tool;
     }
 
 
     /***********************  protected methods *************************/
+
+    /**
+     * Actually performs configuration of the newly instantiated tool
+     * using the combined final set of configuration properties. First,
+     * specific setters matching the configuration keys are called, then
+     * the general configure(Map) method (if any) is called.
+     */
+    protected void configure(Object tool, Map<String,Object> configuration)
+    {
+        //TODO: make this step optional?
+        // look for specific setters
+        for (String name : configuration.keySet())
+        {
+            setProperty(tool, name, configuration.get(name));
+        }
+
+        if (hasConfigure())
+        {
+            invoke(getConfigure(), tool, configuration);
+        }
+    }
 
     protected Method getConfigure()
     {
