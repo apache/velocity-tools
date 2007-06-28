@@ -140,10 +140,6 @@ public class RenderTool extends AbstractLockConfig
         {
             this.parseDepth = depth;
         }
-        else
-        {
-            throw new UnsupportedOperationException("Configuration for this RenderTool instance has been locked");
-        }
     }
 
     /**
@@ -166,10 +162,6 @@ public class RenderTool extends AbstractLockConfig
         if (!isConfigLocked())
         {
             this.catchExceptions = catchExceptions;
-        }
-        else
-        {
-            throw new UnsupportedOperationException("Configuration for this RenderTool instance has been locked");
         }
     }
 
