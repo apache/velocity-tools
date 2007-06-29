@@ -84,7 +84,12 @@ public class BrowserTool implements java.io.Serializable
         {
             throw new NullPointerException("request should not be null");
         }
-        userAgent = request.getHeader("User-Agent").toLowerCase();
+        userAgent = request.getHeader("User-Agent");
+        if(userAgent == null) {
+            userAgent = "";
+        } else {
+            userAgent = userAgent.toLowerCase();
+        }
     }
 
     /* Generic getter for unknown tests
