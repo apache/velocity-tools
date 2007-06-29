@@ -89,7 +89,12 @@ public class BrowserSnifferTool
             throw new IllegalArgumentException("Was expecting " + ViewContext.class +
                                                " or " + HttpServletRequest.class);
         }
-        userAgent = req.getHeader("User-Agent").toLowerCase();
+        userAgent = req.getHeader("User-Agent");
+        if(userAgent == null) {
+            userAgent = "";
+        } else {
+            userAgent = userAgent.toLowerCase();
+        }
     }
 
     /* Generic getter for unknown tests
