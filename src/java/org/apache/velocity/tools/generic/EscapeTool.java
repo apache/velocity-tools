@@ -46,8 +46,8 @@ import org.apache.commons.lang.StringEscapeUtils;
  *  $sql                         -> McHale's Navy
  *  $esc.sql($sql)               -> McHale''s Navy
  *
- *  $http                        -> hello here & there
- *  $esc.http                    -> hello+here+%26+there
+ *  $url                         -> hello here & there
+ *  $esc.url                     -> hello+here+%26+there
  *
  *  $esc.dollar                  -> $
  *  $esc.d                       -> $
