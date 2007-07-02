@@ -71,9 +71,10 @@ public class ToolConfiguration extends Configuration
     /**
      * Returns the key set for this tool, if not {@link null}.  Otherwise,
      * looks for a {@link DefaultKey} annotation on the tool class.  Finally,
-     * if there is no default key, the {@link Class#getSimpleName()} is used
-     * as the key.  This should only return {@link null} if there is no key
-     * and no classname set for this tool.
+     * if there is no default key set, the {@link Class#getSimpleName()} is 
+     * transformed into the key by removing any 'Tool' suffix and lowercasing
+     * the first character.  This will only return {@link null} if there is
+     * both no key and no classname set for this tool.
      */
     public String getKey()
     {
