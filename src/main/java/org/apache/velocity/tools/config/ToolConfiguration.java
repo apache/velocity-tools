@@ -93,7 +93,19 @@ public class ToolConfiguration extends Configuration
             }
             else
             {
-                return clazz.getSimpleName();
+                // convert 'FooTool' to 'foo' to mirror most default keys
+                String name = clazz.getSimpleName();
+                if (name.endsWith("Tool")) {
+                    int i = name.indexOf("Tool");
+                    name = name.substring(0, i);
+                }
+                if (name.length() > 1) {
+                    name = name.substring(0, 1).toLowerCase() +
+                           name.substring(1, name.length());
+                } else {
+                    name = name.toLowerCase();
+                }
+                return name;
             }
         }
         return null;
