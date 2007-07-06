@@ -46,6 +46,9 @@ public class ToolConfiguration extends Configuration
     public void setKey(String key)
     {
         this.key = key;
+
+        // ensure any manually set key is also set as a property
+        setProperty("key", key);
     }
 
     /**
@@ -69,12 +72,8 @@ public class ToolConfiguration extends Configuration
     }
 
     /**
-     * Returns the key set for this tool, if not {@link null}.  Otherwise,
-     * looks for a {@link DefaultKey} annotation on the tool class.  Finally,
-     * if there is no default key set, the {@link Class#getSimpleName()} is 
-     * transformed into the key by removing any 'Tool' suffix and lowercasing
-     * the first character.  This will only return {@link null} if there is
-     * both no key and no classname set for this tool.
+     * Returns the key set for this tool. If no key has been explicitly
+     * set, this will return the result of {@link #getDefaultKey()}.
      */
     public String getKey()
     {
@@ -82,7 +81,19 @@ public class ToolConfiguration extends Configuration
         {
             return this.key;
         }
+        return getDefaultKey();
+    }
 
+    /**
+     * Returns the default key value for the set tool class.  First, this
+     * looks for a {@link DefaultKey} annotation on the tool class.  Then,
+     * if there is no default key annotation, the {@link Class#getSimpleName()}
+     * is transformed into the key by removing any 'Tool' suffix and
+     * lowercasing the first character.  This will only return {@link null}
+     * if there is both no key and no classname set for this tool.
+     */
+    public String getDefaultKey()
+    {
         if (getClassname() != null)
         {
             Class clazz = getToolClass();
