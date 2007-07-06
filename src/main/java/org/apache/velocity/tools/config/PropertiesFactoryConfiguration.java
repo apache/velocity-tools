@@ -36,7 +36,7 @@ import org.apache.commons.collections.ExtendedProperties;
  * tools.property.locale.converter = org.apache.velocity.tools.config.LocaleConverter
  * tools.request.property.xhtml = true
  * tools.request.render = org.apache.velocity.tools.view.ViewRenderTool
- * tools.request.render.parse.depth = 5
+ * tools.request.render.parseDepth = 5
  * tools.request.search = com.foo.tools.MySearchTool
  * tools.request.search.itemsPerPage = 10
  * tools.application.math = org.apache.velocity.tools.generic.MathTool
@@ -86,26 +86,29 @@ public class PropertiesFactoryConfiguration extends FileFactoryConfiguration
                                   Configuration config)
     {
         ExtendedProperties properties = configProps.subset("property");
-        for (Iterator i = properties.getKeys(); i.hasNext(); )
+        if (properties != null)
         {
-            String name = (String)i.next();
-            String value = properties.getString(name);
-
-            ExtendedProperties propProps = properties.subset(name);
-            if (propProps.isEmpty())
+            for (Iterator i = properties.getKeys(); i.hasNext(); )
             {
-                // then set this as a 'simple' property
-                config.setProperty(name, value);
-            }
-            else
-            {
-                // add it as a convertable property
-                Property property = new Property();
-                property.setName(name);
-                property.setValue(value);
+                String name = (String)i.next();
+                String value = properties.getString(name);
 
-                // set the type/converter properties
-                setProperties(propProps, property);
+                ExtendedProperties propProps = properties.subset(name);
+                if (propProps.size() == 1)
+                {
+                    // then set this as a 'simple' property
+                    config.setProperty(name, value);
+                }
+                else
+                {
+                    // add it as a convertable property
+                    Property property = new Property();
+                    property.setName(name);
+                    property.setValue(value);
+
+                    // set the type/converter properties
+                    setProperties(propProps, property);
+                }
             }
         }
     }
@@ -140,8 +143,12 @@ public class PropertiesFactoryConfiguration extends FileFactoryConfiguration
 
             String classname = tools.getString(key);
             ToolConfiguration tool = new ToolConfiguration();
-            tool.setKey(key);
             tool.setClassname(classname);
+            // only manually set the key when necessary
+            if (!key.equals(tool.getDefaultKey()))
+            {
+                tool.setKey(key);
+            }
             toolbox.addTool(tool);
 
             // get tool properties prefixed by 'property'
@@ -152,7 +159,10 @@ public class PropertiesFactoryConfiguration extends FileFactoryConfiguration
             for (Iterator j = toolProps.getKeys(); j.hasNext(); )
             {
                 String name = (String)j.next();
-                tool.setProperty(name, toolProps.getString(name));
+                if (!name.equals(tool.getKey()))
+                {
+                    tool.setProperty(name, toolProps.getString(name));
+                }
             }
 
             // get special props explicitly
@@ -163,23 +173,26 @@ public class PropertiesFactoryConfiguration extends FileFactoryConfiguration
 
     protected void readData(ExtendedProperties dataset)
     {
-        for (Iterator i = dataset.getKeys(); i.hasNext(); )
+        if (dataset != null)
         {
-            String key = (String)i.next();
-            // if it contains a period, it can't be a context key; 
-            // it must be a data property. ignore it for now.
-            if (key.indexOf('.') >= 0)
+            for (Iterator i = dataset.getKeys(); i.hasNext(); )
             {
-                continue;
+                String key = (String)i.next();
+                // if it contains a period, it can't be a context key; 
+                // it must be a data property. ignore it for now.
+                if (key.indexOf('.') >= 0)
+                {
+                    continue;
+                }
+
+                Data data = new Data();
+                data.setKey(key);
+                data.setValue(dataset.getString(key));
+
+                // get/set the type/converter properties
+                ExtendedProperties props = dataset.subset(key);
+                setProperties(props, data);
             }
-
-            Data data = new Data();
-            data.setKey(key);
-            data.setValue(dataset.getString(key));
-
-            // get/set the type/converter properties
-            ExtendedProperties props = dataset.subset(key);
-            setProperties(props, data);
         }
     }
 
