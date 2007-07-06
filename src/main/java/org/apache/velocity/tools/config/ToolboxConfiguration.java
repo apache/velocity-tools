@@ -83,6 +83,9 @@ public class ToolboxConfiguration
     public void setScope(String scope)
     {
         this.scope = scope;
+
+        // ensure the scope is also set as a property of the toolbox
+        setProperty("scope", scope);
     }
 
     public String getScope()
