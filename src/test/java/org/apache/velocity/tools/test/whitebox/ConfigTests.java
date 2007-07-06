@@ -20,30 +20,18 @@ package org.apache.velocity.tools.test.whitebox;
  */
 
 import java.util.Locale;
-import java.util.Map;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
 import org.junit.*;
 import static org.junit.Assert.*;
-
-import org.apache.velocity.tools.generic.Alternator;
-import org.apache.velocity.tools.generic.AlternatorTool;
-import org.apache.velocity.tools.generic.ComparisonDateTool;
 import org.apache.velocity.tools.generic.DateTool;
-import org.apache.velocity.tools.generic.EscapeTool;
 import org.apache.velocity.tools.generic.MathTool;
 import org.apache.velocity.tools.generic.NumberTool;
-import org.apache.velocity.tools.generic.ResourceTool;
-import org.apache.velocity.tools.ToolManager;
 import org.apache.velocity.tools.config.*;
 
 /**
  * <p>Configuration tests.</p>
  *
  * @author Nathan Bubna
- * @since Velocity Tools 2.0
+ * @since VelocityTools 2.0
  * @version $Id$
  */
 public class ConfigTests {
@@ -75,30 +63,20 @@ public class ConfigTests {
                 tool.setProperty("locale", Locale.FRENCH);
                 toolbox.addTool(tool);
             baseline.addToolbox(toolbox);
-System.out.println("baseline: \n"+baseline.toString()+"\n\n");
     }
-
-    /*public static @BeforeClass void initConfigTests() throws Exception {
-        ToolManager manager = new ToolManager(false);
-        manager.configure(TOOLBOX_PATH);
-        toolbox = manager.createContext();
-    }*/
 
     public @Test void testXmlConfig()
     {
-        XmlFactoryConfiguration xml = new XmlFactoryConfiguration();
+        FileFactoryConfiguration xml = new XmlFactoryConfiguration();
         xml.read(XML_PATH);
-System.out.println("xml: \n"+xml.toString()+"\n\n");
 
         assertConfigEquals(baseline, xml);
     }
 
     public @Test void testPropsConfig()
     {
-        PropertiesFactoryConfiguration props =
-            new PropertiesFactoryConfiguration();
+        FileFactoryConfiguration props = new PropertiesFactoryConfiguration();
         props.read(PROPS_PATH);
-System.out.println("props: \n"+props.toString()+"\n\n");
 
         assertConfigEquals(baseline, props);
     }
@@ -107,12 +85,11 @@ System.out.println("props: \n"+props.toString()+"\n\n");
     {
         EasyFactoryConfiguration easy = new EasyFactoryConfiguration();
         easy.toolbox("request")
-          .property("locale", Locale.US)
-         .tool(DateTool.class)
-         .tool("calc", MathTool.class);
+            .property("locale", Locale.US)
+            .tool(DateTool.class)
+            .tool("calc", MathTool.class);
         easy.toolbox("application")
-         .tool(NumberTool.class).property("locale", Locale.FRENCH);
-System.out.println("easy: \n"+easy.toString()+"\n\n");
+            .tool(NumberTool.class).property("locale", Locale.FRENCH);
 
         assertConfigEquals(baseline, easy);
     }
