@@ -181,18 +181,19 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
             return this.parent;
         }
 
-        public C property(String name, Object value)
+        public EasyWrap<C> property(String name, Object value)
         {
             this.config.setProperty(name, value);
-            return this.config;
+            return this;
         }
 
-        public C restrictTo(String path)
+        public EasyWrap<C> restrictTo(String path)
         {
             if (this.config instanceof ToolConfiguration)
             {
                 ToolConfiguration tool = (ToolConfiguration)this.config;
                 tool.setRestrictTo(path);
+                return this;
             }
             else if (this.config instanceof ToolboxConfiguration)
             {
@@ -201,6 +202,7 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
                 {
                     tool.setRestrictTo(path);
                 }
+                return this;
             }
             throw new IllegalStateException("Wrapping unknown "+Configuration.class.getName()+": "+getConfiguration());
         }
