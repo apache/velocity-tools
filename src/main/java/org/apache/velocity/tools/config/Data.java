@@ -96,6 +96,18 @@ public class Data
         this.converter.setTarget(clazz);
     }
 
+    public void setConverter(Class clazz)
+    {
+        try
+        {
+            convertWith((Converter)clazz.newInstance());
+        }
+        catch (Exception e)
+        {
+            throw new IllegalArgumentException("Class "+clazz+" is not a valid "+Converter.class, e);
+        }
+    }
+
     public void setConverter(String classname)
     {
         try
