@@ -47,14 +47,13 @@ public class ToolConfiguration extends Configuration
     {
         this.key = key;
 
-        // ensure any manually set key is also set as a property
-        setProperty("key", key);
+        // ensure any non-default key is also set as a property
+        if (key != null && !key.equals(getDefaultKey()))
+        {
+            setProperty("key", key);
+        }
     }
 
-    /**
-     * This doesn't take a {@link Class} parameter because
-     * this class was not created for all-java configuration.
-     */
     public void setClass(Class clazz)
     {
         setClassname(clazz.getName());
