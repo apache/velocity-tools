@@ -118,6 +118,37 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
         return this;
     }
 
+    public EasyData data(String key, Object value)
+    {
+        Data datum = new Data();
+        datum.setKey(key);
+        datum.setValue(value);
+        addData(datum);
+        return new EasyData(datum, this);
+    }
+
+    public EasyFactoryConfiguration data(String key, String type, Object value)
+    {
+        EasyData datum = data(key, value);
+        datum.type(type);
+        return this;
+    }
+
+    public EasyFactoryConfiguration string(String key, Object value)
+    {
+        return data(key, "string", value);
+    }
+
+    public EasyFactoryConfiguration number(String key, Object value)
+    {
+        return data(key, "number", value);
+    }
+
+    public EasyFactoryConfiguration bool(String key, Object value)
+    {
+        return data(key, "boolean", value);
+    }
+
     public EasyWrap<ToolboxConfiguration> toolbox(String scope)
     {
         ToolboxConfiguration toolbox = new ToolboxConfiguration();
@@ -158,6 +189,58 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
         return this;
     }
 
+
+    public class EasyData
+    {
+        private Data datum;
+        private Configuration parent;
+
+        public EasyData(Data datum, Configuration parent)
+        {
+            this.datum = datum;
+            this.parent = parent;
+        }
+
+        public Data getData()
+        {
+            return this.datum;
+        }
+
+        public Configuration getParent()
+        {
+            return this.parent;
+        }
+
+        public EasyData type(String type)
+        {
+            this.datum.setType(type);
+            return this;
+        }
+
+        public EasyData target(Class clazz)
+        {
+            this.datum.setTargetClass(clazz);
+            return this;
+        }
+
+        public EasyData classname(String classname)
+        {
+            this.datum.setClassname(classname);
+            return this;
+        }
+
+        public EasyData converter(String converter)
+        {
+            this.datum.setConverter(converter);
+            return this;
+        }
+
+        public EasyData converter(Class clazz)
+        {
+            this.datum.setConverter(clazz);
+            return this;
+        }
+    }
 
 
     public class EasyWrap<C extends Configuration>
