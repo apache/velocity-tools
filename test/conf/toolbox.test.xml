@@ -18,13 +18,24 @@
  specific language governing permissions and limitations
  under the License.
 -->
-<tools>
-    <data key="version" type="number" value="2.0"/>
-    <toolbox scope="request" locale="en_US">
-        <tool class="org.apache.velocity.tools.view.ViewRenderTool"/>
-    </toolbox>
-    <toolbox scope="application">
-        <tool key="calc" class="org.apache.velocity.tools.generic.MathTool"/>
-        <tool class="org.apache.velocity.tools.generic.NumberTool" locale="fr"/>
-    </toolbox>
-</tools>
+<toolbox>
+    <data type="number">
+        <key>version</key>
+        <value>2.0</value>
+    </data>
+    <tool>
+        <class>org.apache.velocity.tools.view.ViewRenderTool</class>
+        <key>render</key>
+    </tool>
+    <tool>
+        <class>org.apache.velocity.tools.generic.MathTool</class>
+        <key>calc</key>
+        <scope>application</scope>
+    </tool>
+    <tool>
+        <class>org.apache.velocity.tools.generic.NumberTool</class>
+        <key>number</key>
+        <scope>application</scope>
+        <parameter name="locale" value="fr"/>
+    </tool>
+</toolbox>
