@@ -22,7 +22,7 @@ package org.apache.velocity.tools.test.whitebox;
 import java.util.Locale;
 import org.junit.*;
 import static org.junit.Assert.*;
-import org.apache.velocity.tools.generic.DateTool;
+import org.apache.velocity.tools.view.ViewRenderTool;
 import org.apache.velocity.tools.generic.MathTool;
 import org.apache.velocity.tools.generic.NumberTool;
 import org.apache.velocity.tools.config.*;
@@ -37,40 +37,66 @@ import org.apache.velocity.tools.config.*;
 public class ConfigTests {
 
     private static final String XML_PATH = "@test.conf.dir@/tools.test.xml";
+    private static final String OLD_XML_PATH = "@test.conf.dir@/toolbox.test.xml";
     private static final String PROPS_PATH = "@test.conf.dir@/tools.test.properties";
 
-    private static final FactoryConfiguration baseline;
-    static
+    protected FactoryConfiguration getBaseConfig()
     {
-        baseline = new FactoryConfiguration();
-            ToolboxConfiguration toolbox = new ToolboxConfiguration();
-            toolbox.setScope("request");
-            toolbox.setProperty("locale", Locale.US);
-                ToolConfiguration tool = new ToolConfiguration();
-                tool.setClassname(DateTool.class.getName());
-                toolbox.addTool(tool);
+        FactoryConfiguration base = new FactoryConfiguration();
 
-                tool = new ToolConfiguration();
+        Data datum = new Data();
+            datum.setKey("version");
+            datum.setType("number");
+            datum.setValue("2.0");
+        base.addData(datum);
+
+        ToolboxConfiguration toolbox = new ToolboxConfiguration();
+        toolbox.setScope("request");
+        toolbox.setProperty("locale", Locale.US);
+            ToolConfiguration tool = new ToolConfiguration();
+                tool.setClass(ViewRenderTool.class);
+            toolbox.addTool(tool);
+        base.addToolbox(toolbox);
+
+        toolbox = new ToolboxConfiguration();
+        toolbox.setScope("application");
+            tool = new ToolConfiguration();
                 tool.setKey("calc");
-                tool.setClassname(MathTool.class.getName());
-                toolbox.addTool(tool);
-            baseline.addToolbox(toolbox);
+                tool.setClass(MathTool.class);
+            toolbox.addTool(tool);
 
-            toolbox = new ToolboxConfiguration();
-            toolbox.setScope("application");
-                tool = new ToolConfiguration();
-                tool.setClassname(NumberTool.class.getName());
+            tool = new ToolConfiguration();
+                tool.setClass(NumberTool.class);
                 tool.setProperty("locale", Locale.FRENCH);
-                toolbox.addTool(tool);
-            baseline.addToolbox(toolbox);
+            toolbox.addTool(tool);
+        base.addToolbox(toolbox);
+
+        return base;
     }
+
 
     public @Test void testXmlConfig()
     {
         FileFactoryConfiguration xml = new XmlFactoryConfiguration();
         xml.read(XML_PATH);
 
-        assertConfigEquals(baseline, xml);
+        assertConfigEquals(getBaseConfig(), xml);
+    }
+
+    public @Test void testOldConfig()
+    {
+        FileFactoryConfiguration old = new XmlFactoryConfiguration(true);
+        old.read(OLD_XML_PATH);
+
+        FactoryConfiguration base = getBaseConfig();
+        // remove the request toolbox property locale=en_US manually,
+        // because the old format provide no means to set properties
+        // on a whole toolbox
+        base.getToolbox("request").removeProperty("locale");
+        // add the expected deprecationSupportMode property
+        base.setProperty("deprecationSupportMode", "true");
+
+        assertConfigEquals(base, old);
     }
 
     public @Test void testPropsConfig()
@@ -78,26 +104,30 @@ public class ConfigTests {
         FileFactoryConfiguration props = new PropertiesFactoryConfiguration();
         props.read(PROPS_PATH);
 
-        assertConfigEquals(baseline, props);
+        assertConfigEquals(getBaseConfig(), props);
     }
 
     public @Test void testEasyConfig()
     {
         EasyFactoryConfiguration easy = new EasyFactoryConfiguration();
+        easy.number("version", 2.0);
         easy.toolbox("request")
-            .property("locale", Locale.US)
-            .tool(DateTool.class)
-            .tool("calc", MathTool.class);
+                .property("locale", Locale.US)
+                .tool(ViewRenderTool.class);
         easy.toolbox("application")
-            .tool(NumberTool.class).property("locale", Locale.FRENCH);
+                .tool("calc", MathTool.class)
+                .tool(NumberTool.class)
+                    .property("locale", Locale.FRENCH);
 
-        assertConfigEquals(baseline, easy);
+        assertConfigEquals(getBaseConfig(), easy);
     }
 
     protected void assertConfigEquals(Configuration one, Configuration two)
     {
         assertNotNull(one);
         assertNotNull(two);
+if (!one.toString().equals(two.toString()))
+System.out.println("\n"+one.getClass().getName()+":\n"+one+"\n"+two.getClass().getName()+":\n"+two+"\n");
 
         // for now, just compare the toString() output
         assertEquals(one.toString(), two.toString());
