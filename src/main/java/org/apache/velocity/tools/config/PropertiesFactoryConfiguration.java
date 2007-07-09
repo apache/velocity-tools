@@ -144,11 +144,7 @@ public class PropertiesFactoryConfiguration extends FileFactoryConfiguration
             String classname = tools.getString(key);
             ToolConfiguration tool = new ToolConfiguration();
             tool.setClassname(classname);
-            // only manually set the key when necessary
-            if (!key.equals(tool.getDefaultKey()))
-            {
-                tool.setKey(key);
-            }
+            tool.setKey(key);
             toolbox.addTool(tool);
 
             // get tool properties prefixed by 'property'
@@ -192,6 +188,8 @@ public class PropertiesFactoryConfiguration extends FileFactoryConfiguration
                 // get/set the type/converter properties
                 ExtendedProperties props = dataset.subset(key);
                 setProperties(props, data);
+
+                addData(data);
             }
         }
     }
