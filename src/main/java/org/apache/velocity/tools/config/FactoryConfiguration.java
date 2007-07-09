@@ -68,6 +68,18 @@ public class FactoryConfiguration
         return data.remove(datum);
     }
 
+    public Data getData(String key)
+    {
+        for (Data datum : getData())
+        {
+            if (key.equals(datum.getKey()))
+            {
+                return datum;
+            }
+        }
+        return null;
+    }
+
     public List<Data> getData()
     {
         return data;
@@ -81,6 +93,18 @@ public class FactoryConfiguration
     public void removeToolbox(ToolboxConfiguration toolbox)
     {
         removeChild(toolbox);
+    }
+
+    public ToolboxConfiguration getToolbox(String scope)
+    {
+        for (ToolboxConfiguration toolbox : getToolboxes())
+        {
+            if (scope.equals(toolbox.getScope()))
+            {
+                return toolbox;
+            }
+        }
+        return null;
     }
 
     public List<ToolboxConfiguration> getToolboxes()
