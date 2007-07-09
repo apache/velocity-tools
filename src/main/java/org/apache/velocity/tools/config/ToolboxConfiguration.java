@@ -33,6 +33,11 @@ public class ToolboxConfiguration
 {
     private String scope = ToolboxFactory.DEFAULT_SCOPE;
 
+    public ToolboxConfiguration()
+    {
+        // ensure that even the default scope is set as a property
+        setProperty("scope", this.scope);
+    }
 
     protected ToolConfiguration findMatchingChild(ToolConfiguration newTool)
     {
@@ -101,6 +106,18 @@ public class ToolboxConfiguration
     public void removeTool(ToolConfiguration tool)
     {
         removeChild(tool);
+    }
+
+    public ToolConfiguration getTool(String key)
+    {
+        for (ToolConfiguration tool : getTools())
+        {
+            if (key.equals(tool.getKey()))
+            {
+                return tool;
+            }
+        }
+        return null;
     }
 
     public List<ToolConfiguration> getTools()

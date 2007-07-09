@@ -90,6 +90,23 @@ public class Configuration<T>
         return simpleProperties;
     }
 
+    public Object getProperty(String name)
+    {
+        Object value = simpleProperties.get(name);
+        if (value != null)
+        {
+            return value;
+        }
+        for (Property prop : getConvertableProperties())
+        {
+            if (name.equals(prop.getName()))
+            {
+                return prop;
+            }
+        }
+        return null;
+    }
+
     public Map<String,Object> getProperties()
     {
         Map<String,Object> all = new HashMap<String,Object>(simpleProperties);
