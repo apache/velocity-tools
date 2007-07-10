@@ -19,9 +19,17 @@ package org.apache.velocity.tools.test.whitebox;
  * under the License.
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import org.junit.*;
 import static org.junit.Assert.*;
+import org.apache.commons.beanutils.Converter;
+import org.apache.commons.beanutils.converters.BooleanConverter;
+import org.apache.commons.beanutils.converters.DoubleConverter;
+import org.apache.commons.beanutils.converters.IntegerConverter;
+import org.apache.commons.beanutils.converters.StringConverter;
 import org.apache.velocity.tools.view.ViewRenderTool;
 import org.apache.velocity.tools.generic.MathTool;
 import org.apache.velocity.tools.generic.NumberTool;
@@ -75,11 +83,17 @@ public class ConfigTests {
     }
 
 
+    public @Test void testBaseConfig()
+    {
+        assertValid(getBaseConfig());
+    }
+
     public @Test void testXmlConfig()
     {
         FileFactoryConfiguration xml = new XmlFactoryConfiguration();
         xml.read(XML_PATH);
 
+        assertValid(xml);
         assertConfigEquals(getBaseConfig(), xml);
     }
 
@@ -96,6 +110,7 @@ public class ConfigTests {
         // add the expected deprecationSupportMode property
         base.setProperty("deprecationSupportMode", "true");
 
+        assertValid(old);
         assertConfigEquals(base, old);
     }
 
@@ -104,6 +119,7 @@ public class ConfigTests {
         FileFactoryConfiguration props = new PropertiesFactoryConfiguration();
         props.read(PROPS_PATH);
 
+        assertValid(props);
         assertConfigEquals(getBaseConfig(), props);
     }
 
@@ -119,18 +135,228 @@ public class ConfigTests {
                 .tool(NumberTool.class)
                     .property("locale", Locale.FRENCH);
 
+        assertValid(easy);
         assertConfigEquals(getBaseConfig(), easy);
     }
+
+    public @Test void testDefaultConfig()
+    {
+        FactoryConfiguration def = FactoryConfiguration.getDefault();
+        assertValid(def);
+    }
+
+    public @Test void testBadData()
+    {
+        Data datum = new Data();
+        // a fresh datum should be invalid
+        assertInvalid(datum);
+        // setting a key is not enough to be valid
+        datum.setKey("test");
+        assertInvalid(datum);
+
+        // set type to number value to a non-number
+        datum.setValue("true");
+        datum.setType("number");
+        assertInvalid(datum);
+
+        //TODO: test converter/target class stuff
+    }
+
+    public @Test void testData()
+    {
+        Data datum = new Data();
+        datum.setKey("test");
+        datum.setValue("true");
+        assertValid(datum);
+
+        // check boolean type
+        datum.setType("boolean");
+        assertValid(datum);
+        assertEquals(datum.getConvertedValue(), Boolean.TRUE);
+
+        // check number type
+        datum.setValue("3.16");
+        datum.setType("number");
+        assertValid(datum);
+        assertEquals(datum.getConvertedValue(), new Double(3.16));
+
+        // check string type
+        datum.setType("string");
+        assertValid(datum);
+        assertEquals(datum.getConvertedValue(), "3.16");
+
+        // check list type (singleton)
+        datum.setType("list");
+        assertValid(datum);
+        assertEquals(datum.getConvertedValue(), Collections.singletonList("3.16"));
+
+        // ok, try a three item list
+        datum.setValue("1,2,3");
+        assertValid(datum);
+        List three = new ArrayList(3);
+        three.add("1");
+        three.add("2");
+        three.add("3");
+        assertEquals(datum.getConvertedValue(), three);
+
+        // turn that into a list of numbers
+        datum.setType("list.number");
+        assertValid(datum);
+        three.set(0, new Integer(1));
+        three.set(1, new Integer(2));
+        three.set(2, new Integer(3));
+        assertEquals(datum.getConvertedValue(), three);
+
+        // and finally, a list of booleans
+        datum.setType("list.boolean");
+        datum.setValue("true,false");
+        List two = new ArrayList(2);
+        two.add(Boolean.TRUE);
+        two.add(Boolean.FALSE);
+        assertEquals(datum.getConvertedValue(), two);
+
+        //TODO: test converter/target class stuff
+    }
+
+    public @Test void testConfiguration()
+    {
+        Configuration conf = new Configuration();
+        // a fresh config should be valid
+        assertValid(conf);
+
+        //TODO: test adding simple and convertable properties
+    }
+
+    public @Test void testBadToolConfig()
+    {
+        ToolConfiguration tool = new ToolConfiguration();
+        // a fresh tool config should be invalid
+        assertInvalid(tool);
+
+        // set a fake class name and confirm it is invalid
+        tool.setClassname("no.such.Class");
+        assertInvalid(tool);
+    }
+
+    public @Test void testToolConfig()
+    {
+        ToolConfiguration tool = new ToolConfiguration();
+
+        // set a real class, confirm it is valid
+        tool.setClass(OldTool.class);
+        assertValid(tool);
+        // and confirm the default key
+        assertEquals("old", tool.getKey());
+
+        // the toString() should describe this as old, due
+        // to the non-deprecated init() method
+        assertTrue((tool.toString().indexOf("Old") >= 0));
+
+        // change to a more modern class, confirm it's valid
+        tool.setClassname(FakeTool.class.getName());
+        assertValid(tool);
+        // and confirm the default key annotation works
+        assertEquals("test", tool.getKey());
+
+        // change the key and ensure it overrides the default
+        tool.setKey("fake");
+        assertEquals("fake", tool.getKey());
+    }
+
+    //TODO: add tests for ToolboxConfiguration
+    //TODO: add tests for FactoryConfiguration
+
+
+
+    /************* Support classes and methods ******************/
+
+
+    public static class OldTool
+    {
+        public void init(Object foo)
+        {
+            // does nothing
+        }
+
+        // exists only to keep the testrunner happy
+        public @Test @Ignore void foo() {}
+    }
+
+    @DefaultKey("test")
+    public static class FakeTool
+    {
+        // exists only to keep the testrunner happy
+        public @Test @Ignore void foo() {}
+    }
+
 
     protected void assertConfigEquals(Configuration one, Configuration two)
     {
         assertNotNull(one);
         assertNotNull(two);
-if (!one.toString().equals(two.toString()))
-System.out.println("\n"+one.getClass().getName()+":\n"+one+"\n"+two.getClass().getName()+":\n"+two+"\n");
 
         // for now, just compare the toString() output
         assertEquals(one.toString(), two.toString());
+    }
+
+    protected void assertValid(Data valid)
+    {
+        assertNotNull(valid);
+        try
+        {
+            valid.validate();
+            // if we get past the call above, then the test passed
+        }
+        catch (ConfigurationException e)
+        {
+            // then the data was not valid
+            fail("\n**** Unexpected Invalid Data ****\n" + valid
+                 + "\n" + e);
+        }
+    }
+
+    protected void assertValid(Configuration valid)
+    {
+        assertNotNull(valid);
+        try
+        {
+            valid.validate();
+            // if we get past the call above, then the test passed
+        }
+        catch (ConfigurationException e)
+        {
+            // then the config was not valid
+            fail("\n**** Unexpected Invalid Configuration ****\n" + valid
+                 + "\n" + e);
+        }
+    }
+
+    protected void assertInvalid(Data invalid)
+    {
+        try
+        {
+            invalid.validate();
+            // if we get past the call above, then the test failed
+            fail("\n**** Unexpected Valid Data ****\n" + invalid);
+        }
+        catch (ConfigurationException e)
+        {
+            // then the data was invalid, as it ought to be
+        }
+    }
+
+    protected void assertInvalid(Configuration invalid)
+    {
+        try
+        {
+            invalid.validate();
+            // if we get past the call above, then the test failed
+            fail("\n**** Unexpected Valid Configuration ****\n" + invalid);
+        }
+        catch (ConfigurationException e)
+        {
+            // then the config was invalid, as it ought to be
+        }
     }
 
 }
