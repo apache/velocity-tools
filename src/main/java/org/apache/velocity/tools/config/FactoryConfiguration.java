@@ -157,7 +157,7 @@ public class FactoryConfiguration
         appendProperties(out);
         if (!getData().isEmpty())
         {
-            out.append(" including ");
+            out.append("including ");
             out.append(getData().size());
             out.append(" data");
         }
