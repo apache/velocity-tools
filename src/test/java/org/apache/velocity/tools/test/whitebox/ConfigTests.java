@@ -29,11 +29,11 @@ import org.apache.commons.beanutils.Converter;
 import org.apache.commons.beanutils.converters.BooleanConverter;
 import org.apache.commons.beanutils.converters.DoubleConverter;
 import org.apache.commons.beanutils.converters.IntegerConverter;
-import org.apache.commons.beanutils.converters.StringConverter;
-import org.apache.velocity.tools.view.ViewRenderTool;
+import org.apache.velocity.tools.Scope;
+import org.apache.velocity.tools.config.*;
 import org.apache.velocity.tools.generic.MathTool;
 import org.apache.velocity.tools.generic.NumberTool;
-import org.apache.velocity.tools.config.*;
+import org.apache.velocity.tools.view.ViewRenderTool;
 
 /**
  * <p>Configuration tests.</p>
@@ -59,7 +59,7 @@ public class ConfigTests {
         base.addData(datum);
 
         ToolboxConfiguration toolbox = new ToolboxConfiguration();
-        toolbox.setScope("request");
+        toolbox.setScope(Scope.REQUEST);
         toolbox.setProperty("locale", Locale.US);
             ToolConfiguration tool = new ToolConfiguration();
                 tool.setClass(ViewRenderTool.class);
@@ -67,7 +67,7 @@ public class ConfigTests {
         base.addToolbox(toolbox);
 
         toolbox = new ToolboxConfiguration();
-        toolbox.setScope("application");
+        toolbox.setScope(Scope.APPLICATION);
             tool = new ToolConfiguration();
                 tool.setKey("calc");
                 tool.setClass(MathTool.class);
@@ -159,7 +159,10 @@ public class ConfigTests {
         datum.setType("number");
         assertInvalid(datum);
 
-        //TODO: test converter/target class stuff
+        // should fail to convert a decimal string to an integer
+        datum.setValue("0.1");
+        datum.convertWith(new IntegerConverter());
+        assertInvalid(datum);
     }
 
     public @Test void testData()

@@ -41,6 +41,7 @@ import org.apache.velocity.io.VelocityWriter;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.tools.generic.log.LogChuteCommonsLog;
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.Toolbox;
 import org.apache.velocity.tools.ToolboxFactory;
 import org.apache.velocity.tools.config.ConfigurationCleaner;
@@ -368,8 +369,7 @@ public class VelocityView
         }
 
         // add any application toolbox to the application attributes
-        Toolbox appTools =
-            toolboxFactory.createToolbox(ToolboxFactory.APPLICATION_SCOPE);
+        Toolbox appTools = toolboxFactory.createToolbox(Scope.APPLICATION);
         if (appTools != null &&
             this.servletContext.getAttribute(this.toolboxKey) == null)
         {
@@ -794,12 +794,11 @@ public class VelocityView
     public void prepareToolboxes(HttpServletRequest request)
     {
         // only set a new toolbox if we need one
-        if (toolboxFactory.hasTools(ToolboxFactory.DEFAULT_SCOPE)
+        if (toolboxFactory.hasTools(Scope.REQUEST)
             && request.getAttribute(this.toolboxKey) == null)
         {
             // add request toolbox, if any
-            Toolbox reqTools =
-                toolboxFactory.createToolbox(ToolboxFactory.DEFAULT_SCOPE);
+            Toolbox reqTools = toolboxFactory.createToolbox(Scope.REQUEST);
             if (reqTools != null)
             {
                 request.setAttribute(this.toolboxKey, reqTools);

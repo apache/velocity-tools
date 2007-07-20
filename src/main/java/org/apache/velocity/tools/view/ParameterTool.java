@@ -21,6 +21,7 @@ package org.apache.velocity.tools.view;
 
 import java.util.Map;
 import javax.servlet.ServletRequest;
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
 import org.apache.velocity.tools.generic.ValueParser;
@@ -50,7 +51,7 @@ import org.apache.velocity.tools.generic.ValueParser;
  * @version $Revision$ $Date$
  */
 @DefaultKey("params")
-@ValidScope("request")
+@ValidScope(Scope.REQUEST)
 public class ParameterTool extends ValueParser
 {
     private ServletRequest request;

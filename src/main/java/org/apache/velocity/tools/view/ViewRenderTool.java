@@ -20,8 +20,9 @@ package org.apache.velocity.tools.view;
  */
 
 import org.apache.velocity.context.Context;
-import org.apache.velocity.tools.generic.RenderTool;
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.InvalidScope;
+import org.apache.velocity.tools.generic.RenderTool;
 
 /**
  * This tool expose methods to evaluate the given

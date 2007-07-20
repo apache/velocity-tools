@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.velocity.tools.view.ViewContext;
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
 
@@ -49,7 +50,7 @@ import org.apache.velocity.tools.config.ValidScope;
  * @version $Id$
  */
 @DefaultKey("form")
-@ValidScope("request")
+@ValidScope(Scope.REQUEST)
 public class FormTool
 {
 

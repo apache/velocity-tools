@@ -41,6 +41,7 @@ import org.apache.struts.util.MessageResources;
 import org.apache.struts.util.ModuleUtils;
 import org.apache.struts.validator.Resources;
 import org.apache.struts.validator.ValidatorPlugIn;
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
 import org.apache.velocity.tools.view.ViewContext;
@@ -74,7 +75,7 @@ import org.apache.velocity.tools.view.ViewToolContext;
  * @version $Revision$ $Date$
  */
 @DefaultKey("validator")
-@ValidScope("request")
+@ValidScope(Scope.REQUEST)
 public class ValidatorTool
 {
 

@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.velocity.tools.config.Data;
 import org.apache.velocity.tools.config.FactoryConfiguration;
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.ToolboxConfiguration;
 import org.apache.velocity.tools.config.ToolConfiguration;
 
@@ -36,8 +37,7 @@ import org.apache.velocity.tools.config.ToolConfiguration;
  */
 public class ToolboxFactory
 {
-    public static final String DEFAULT_SCOPE = "request";
-    public static final String APPLICATION_SCOPE = "application";
+    public static final String DEFAULT_SCOPE = Scope.REQUEST;
 
     private Map<String,Map<String,ToolInfo>> scopedToolInfo;
     private Map<String,Map<String,Object>> scopedProperties;
@@ -193,7 +193,7 @@ public class ToolboxFactory
         {
             return true;
         }
-        else if (data != null && APPLICATION_SCOPE.equals(scope))
+        else if (data != null && Scope.APPLICATION.equals(scope))
         {
             return true;
         }
@@ -231,7 +231,7 @@ public class ToolboxFactory
         // if application scoped or if there's only one toolbox,
         // then automatically include data, if we have any.
         if (data != null &&
-            (scopedToolInfo.size() == 1 || scope.equals(APPLICATION_SCOPE)))
+            (scopedToolInfo.size() == 1 || scope.equals(Scope.APPLICATION)))
         {
             toolbox.cacheData(getData());
         }

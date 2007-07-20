@@ -30,6 +30,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
 import org.apache.velocity.context.AbstractContext;
 import org.apache.velocity.context.Context;
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
 import org.apache.velocity.tools.generic.ValueParser;
@@ -60,7 +61,7 @@ import org.apache.velocity.tools.view.ViewToolContext;
  * @version $Id: ContextTool.java 385122 2006-03-11 18:37:42Z nbubna $
  */
 @DefaultKey("context")
-@InvalidScope({"application","session"})
+@InvalidScope({Scope.APPLICATION,Scope.SESSION})
 public class ContextTool
 {
     /**

@@ -33,6 +33,7 @@ import org.apache.struts.tiles.DefinitionsFactoryException;
 import org.apache.struts.tiles.DirectStringAttribute;
 import org.apache.struts.tiles.TilesUtil;
 import org.apache.velocity.context.Context;
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
 import org.apache.velocity.tools.view.ImportSupport;
@@ -66,7 +67,7 @@ import org.apache.velocity.tools.view.ViewContext;
  * @version $Revision$ $Date$
  */
 @DefaultKey("tiles")
-@ValidScope("request")
+@ValidScope(Scope.REQUEST)
 public class TilesTool extends ImportSupport
 {
     static final String PAGE_SCOPE = "page";
