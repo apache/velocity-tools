@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.Map;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.ResourceNotFoundException;
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.FactoryConfiguration;
 import org.apache.velocity.tools.config.FileFactoryConfiguration;
 import org.apache.velocity.tools.config.PropertiesFactoryConfiguration;
@@ -138,17 +139,17 @@ public class ToolManager
 
     protected boolean hasRequestTools()
     {
-        return this.factory.hasTools(ToolboxFactory.DEFAULT_SCOPE);
+        return this.factory.hasTools(Scope.REQUEST);
     }
 
     protected Toolbox getRequestToolbox()
     {
-        return this.factory.createToolbox(ToolboxFactory.DEFAULT_SCOPE);
+        return this.factory.createToolbox(Scope.REQUEST);
     }
 
     protected boolean hasApplicationTools()
     {
-        return this.factory.hasTools(ToolboxFactory.APPLICATION_SCOPE);
+        return this.factory.hasTools(Scope.APPLICATION);
     }
 
     protected Toolbox getApplicationToolbox()
@@ -156,7 +157,7 @@ public class ToolManager
         if (this.application == null)
         {
             this.application =
-                this.factory.createToolbox(ToolboxFactory.APPLICATION_SCOPE);
+                this.factory.createToolbox(Scope.APPLICATION);
         }
         return this.application;
     }

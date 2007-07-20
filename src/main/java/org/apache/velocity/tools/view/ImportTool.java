@@ -19,6 +19,7 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
 import org.apache.velocity.tools.view.ImportSupport;
@@ -43,7 +44,7 @@ import org.apache.velocity.tools.view.ImportSupport;
  * @version $Revision$ $Date$
  */
 @DefaultKey("import")
-@ValidScope("request")
+@ValidScope(Scope.REQUEST)
 public class ImportTool extends ImportSupport
 {
     /**

@@ -20,6 +20,7 @@ package org.apache.velocity.tools.config;
  */
 
 import java.util.List;
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.ToolboxFactory;
 
 /**
@@ -133,6 +134,10 @@ public class ToolboxConfiguration
         if (getScope() == null)
         {
             throw new ConfigurationException(this, "Toolbox scope cannot be null");
+        }
+        if (!Scope.exists(getScope()))
+        {
+            throw new ConfigurationException(this, "Scope '"+getScope()+"' is not recognized. Please correct or add your new custom scope with "+Scope.class.getName()+".add(\""+getScope()+"\").");
         }
 
         // validate that all tools are allowed in this scope

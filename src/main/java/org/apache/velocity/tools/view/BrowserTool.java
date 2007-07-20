@@ -23,9 +23,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
-import org.apache.velocity.tools.view.ViewContext;
 import org.apache.velocity.tools.config.InvalidScope;
+import org.apache.velocity.tools.view.ViewContext;
 
 /**
  *  <p>browser-sniffing tool (session or request scope requested, session scope advised).</p>
@@ -60,7 +61,7 @@ import org.apache.velocity.tools.config.InvalidScope;
  * @version $Revision$ $Date$
  */
 @DefaultKey("browser")
-@InvalidScope("application")
+@InvalidScope(Scope.APPLICATION)
 public class BrowserTool implements java.io.Serializable
 {
     private static final long serialVersionUID = 1734529350532353339L;

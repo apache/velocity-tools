@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
+import org.apache.velocity.tools.Scope;
 
 /**
  * <p>View tool for convenient cookie access and creation.</p>
@@ -48,7 +49,7 @@ import org.apache.velocity.tools.config.ValidScope;
  * @version $Id$
  */
 @DefaultKey("cookies")
-@ValidScope("request")
+@ValidScope(Scope.REQUEST)
 public class CookieTool
 {
 

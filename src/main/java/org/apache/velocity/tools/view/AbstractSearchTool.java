@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.velocity.runtime.log.Log;
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
 
@@ -119,7 +120,7 @@ import org.apache.velocity.tools.config.InvalidScope;
  * @version $Revision$ $Date$
  */
 @DefaultKey("search")
-@InvalidScope({"application","session"})
+@InvalidScope({Scope.APPLICATION,Scope.SESSION})
 public abstract class AbstractSearchTool extends PagerTool
 {
     public static final String DEFAULT_CRITERIA_KEY = "find";

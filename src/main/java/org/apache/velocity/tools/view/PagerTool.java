@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
 import org.apache.velocity.tools.view.ViewContext;
@@ -99,7 +100,7 @@ import org.apache.velocity.tools.view.ViewContext;
  * @version $Revision$ $Date$
  */
 @DefaultKey("pager")
-@InvalidScope({"application","session"})
+@InvalidScope({Scope.APPLICATION,Scope.SESSION})
 public class PagerTool
 {
     public static final String DEFAULT_NEW_ITEMS_KEY = "new.items";

@@ -25,6 +25,7 @@ import java.util.List;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.util.MessageResources;
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
 
@@ -54,7 +55,7 @@ import org.apache.velocity.tools.config.ValidScope;
  * @version $Id$
  */
 @DefaultKey("messages")
-@ValidScope("request")
+@ValidScope(Scope.REQUEST)
 public class ActionMessagesTool extends MessageResourcesTool
 {
     /** A reference to the queued action messages. */

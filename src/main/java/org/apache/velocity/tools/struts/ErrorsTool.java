@@ -21,6 +21,7 @@ package org.apache.velocity.tools.struts;
 
 import java.util.Map;
 import org.apache.struts.action.ActionMessages;
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
 
@@ -53,7 +54,7 @@ import org.apache.velocity.tools.config.ValidScope;
  * @version $Id$
  */
 @DefaultKey("errors")
-@ValidScope("request")
+@ValidScope(Scope.REQUEST)
 public class ErrorsTool extends ActionMessagesTool
 {
 
