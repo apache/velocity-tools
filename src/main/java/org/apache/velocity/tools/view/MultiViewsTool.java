@@ -121,7 +121,7 @@ public class MultiViewsTool
      */
     public String findLocalizedResource(String name)
     {
-        return findLocalizedResource(defaultLanguage);
+        return findLocalizedResource(name, defaultLanguage);
     }
 
     /**
