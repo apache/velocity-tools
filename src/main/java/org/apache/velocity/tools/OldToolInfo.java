@@ -35,7 +35,7 @@ public class OldToolInfo extends ToolInfo
     private static final long serialVersionUID = -4062162635847288761L;
     public static final String INIT_METHOD_NAME = "init";
 
-    private Method init;
+    private transient Method init;
 
     /**
      * Creates a new instance using the minimum required info
@@ -44,6 +44,23 @@ public class OldToolInfo extends ToolInfo
     public OldToolInfo(String key, Class clazz)
     {
         super(key, clazz);
+    }
+
+    protected Method getInit()
+    {
+        if (this.init == null)
+        {
+            try
+            {
+                // try to get an init(Object) method
+                this.init = clazz.getMethod("init", new Class[]{ Object.class });
+            }
+            catch (NoSuchMethodException nsme)
+            {
+                // ignore
+            }
+        }
+        return this.init;
     }
 
     /**
@@ -56,15 +73,8 @@ public class OldToolInfo extends ToolInfo
     {
         super.setClass(clazz);
 
-        try
-        {
-            // try to get an init(Object) method
-            this.init = clazz.getMethod("init", new Class[]{ Object.class });
-        }
-        catch (NoSuchMethodException nsme)
-        {
-            // ignore
-        }
+        // clear any existing init method
+        this.init = null;
     }
 
 
@@ -74,7 +84,8 @@ public class OldToolInfo extends ToolInfo
         // have specific setters and configure(Map) called first
         super.configure(tool, configuration);
 
-        if (this.init != null)
+        Method init = getInit();
+        if (init != null)
         {
             // ctx should, in all cases where a tool has such a method,
             // actually be a View(Tool)Context, but we don't want to link
@@ -82,7 +93,7 @@ public class OldToolInfo extends ToolInfo
             Object ctx = configuration.get(ToolContext.CONTEXT_KEY);
             if (ctx != null)
             {
-                invoke(this.init, tool, ctx);
+                invoke(init, tool, ctx);
             }
         }
     }
