@@ -227,7 +227,22 @@ public class ConfigTests {
         // a fresh config should be valid
         assertValid(conf);
 
-        //TODO: test adding simple and convertable properties
+        // add and retrieve a simple string property
+        conf.setProperty("string", "whatever");
+        assertValid(conf);
+        assertEquals("whatever", conf.getProperty("string"));
+
+        // add and retrieve a simple boolean property
+        conf.setProperty("boolean", "true");
+        assertValid(conf);
+        assertEquals(Boolean.TRUE, conf.getProperty("boolean"));
+
+        // add and retrieve an arbitrary object property
+        conf.setProperty("testclass", this);
+        assertValid(conf);
+        assertSame(this, conf.getProperty("testclass"));
+
+        //TODO: test adding convertable properties
     }
 
     public @Test void testBadToolConfig()
