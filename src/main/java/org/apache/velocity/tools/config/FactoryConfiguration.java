@@ -196,9 +196,17 @@ public class FactoryConfiguration
     {
         FileFactoryConfiguration config = new XmlFactoryConfiguration();
         config.read(GENERIC_CONFIGURATION_PATH);
+
         // view tools and struts tools may not be available
         config.read(VIEW_CONFIGURATION_PATH, false);
         config.read(STRUTS_CONFIGURATION_PATH, false);
+
+        // default should *always* be clean!
+        // otherwise we may have issues (e.g. velocity-view jar used
+        // in non webapp environment where generic jar should've been used)
+        ConfigurationCleaner cleaner = new ConfigurationCleaner();
+        cleaner.clean(config);
+        
         return config;
     }
 
