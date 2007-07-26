@@ -45,6 +45,9 @@ import org.apache.velocity.tools.config.XmlFactoryConfiguration;
  */
 public class ToolManager
 {
+    public static final String DEFAULT_XML_CONFIG_PATH = "tools.xml";
+    public static final String DEFAULT_PROPS_CONFIG_PATH = "tools.properties";
+
     private VelocityEngine engine;
     private ToolboxFactory factory;
     private Toolbox application;
@@ -60,15 +63,25 @@ public class ToolManager
 
     public ToolManager(boolean startWithDefault)
     {
-        //TODO? should we look for a tools.xml in the current dir or classpath root?
+        this.factory = new ToolboxFactory();
+
+        FactoryConfiguration config = new FactoryConfiguration();
         if (startWithDefault)
         {
-            this.factory = FactoryConfiguration.createDefaultFactory();
+            config.addConfiguration(FactoryConfiguration.getDefault());
         }
-        else
-        {
-            this.factory = new ToolboxFactory();
-        }
+
+        // look for a tools.xml in the current dir or classpath root
+        FileFactoryConfiguration xml = new XmlFactoryConfiguration();
+        xml.read(DEFAULT_XML_CONFIG_PATH, false);
+        config.addConfiguration(xml);
+
+        // look for a tools.properties in the current dir or classpath root
+        FileFactoryConfiguration props = new PropertiesFactoryConfiguration();
+        props.read(DEFAULT_PROPS_CONFIG_PATH, false);
+        config.addConfiguration(props);
+
+        configure(config);
     }
 
     public void configure(FactoryConfiguration config)
