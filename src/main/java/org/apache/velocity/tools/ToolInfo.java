@@ -168,6 +168,11 @@ public class ToolInfo implements java.io.Serializable
         return clazz.getName();
     }
 
+    public Class getToolClass()
+    {
+        return clazz;
+    }
+
     public Map<String,Object> getProperties()
     {
         return properties;

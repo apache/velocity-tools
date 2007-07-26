@@ -53,7 +53,8 @@ public class OldToolInfo extends ToolInfo
             try
             {
                 // try to get an init(Object) method
-                this.init = clazz.getMethod("init", new Class[]{ Object.class });
+                this.init =
+                    getToolClass().getMethod("init", new Class[]{ Object.class });
             }
             catch (NoSuchMethodException nsme)
             {
