@@ -123,6 +123,25 @@ public class ConfigTests {
         assertConfigEquals(getBaseConfig(), props);
     }
 
+    /**
+     * Tests that adding two equal configs produces one that is equal
+     * to the originals.
+     */
+    public @Test void testPropsPlusXmlConfig()
+    {
+        FileFactoryConfiguration props = new PropertiesFactoryConfiguration();
+        props.read(PROPS_PATH);
+
+        FileFactoryConfiguration xml = new XmlFactoryConfiguration();
+        xml.read(XML_PATH);
+        // make sure they're equal
+        assertConfigEquals(props, xml);
+        // now add them and make sure the result is equal to the original
+        xml.addConfiguration(props);
+        assertValid(xml);
+        assertConfigEquals(xml, props);
+    }
+
     public @Test void testEasyConfig()
     {
         EasyFactoryConfiguration easy = new EasyFactoryConfiguration();
@@ -141,8 +160,28 @@ public class ConfigTests {
 
     public @Test void testDefaultConfig()
     {
-        FactoryConfiguration def = FactoryConfiguration.getDefault();
+        FactoryConfiguration def = ConfigurationUtils.getDefaultTools();
         assertValid(def);
+    }
+
+    public @Test void testAutoConfig()
+    {
+        FactoryConfiguration autoMinusDef = ConfigurationUtils.getAutoLoaded(false);
+        assertValid(autoMinusDef);
+
+        assertValid(autoMinusDef);
+        assertConfigEquals(getBaseConfig(), autoMinusDef);
+
+        FactoryConfiguration auto = ConfigurationUtils.getAutoLoaded();
+        assertValid(auto);
+
+        // get the default tools
+        FactoryConfiguration def = ConfigurationUtils.getDefaultTools();
+        assertValid(def);
+        // add the autoloaded ones (sans defaults) onto the default
+        def.addConfiguration(autoMinusDef);
+        // and see that it comes out the same
+        assertConfigEquals(auto, def);
     }
 
     public @Test void testBadData()
