@@ -19,9 +19,10 @@ package org.apache.velocity.tools.config;
  * under the License.
  */
 
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.apache.velocity.tools.ToolboxFactory;
 
 /**
@@ -33,14 +34,7 @@ import org.apache.velocity.tools.ToolboxFactory;
 public class FactoryConfiguration
     extends CompoundConfiguration<ToolboxConfiguration>
 {
-    public static final String GENERIC_CONFIGURATION_PATH =
-        "/org/apache/velocity/tools/generic/tools.xml";
-    public static final String VIEW_CONFIGURATION_PATH =
-        "/org/apache/velocity/tools/view/tools.xml";
-    public static final String STRUTS_CONFIGURATION_PATH =
-        "/org/apache/velocity/tools/struts/tools.xml";
-
-    private List<Data> data = new ArrayList<Data>();
+    private Set<Data> data = new LinkedHashSet<Data>();
 
 
     @Override
@@ -80,7 +74,7 @@ public class FactoryConfiguration
         return null;
     }
 
-    public List<Data> getData()
+    public Set<Data> getData()
     {
         return data;
     }
@@ -150,6 +144,7 @@ public class FactoryConfiguration
         }
     }
 
+    @Override
     public String toString()
     {
         StringBuilder out = new StringBuilder();
@@ -178,42 +173,6 @@ public class FactoryConfiguration
     {
         ToolboxFactory factory = new ToolboxFactory();
         factory.configure(this);
-        return factory;
-    }
-
-    /**
-     * Returns the "default" {@link FactoryConfiguration}.  This includes
-     * all the standard tools developed by this project and available in
-     * the jar being used. In other words, if the velocity-tools-generic-2.x.jar
-     * is being used, then only the generic tools will be included.  If
-     * the velocity-tools-struts-2.x.jar is being used, then all VelocityTools
-     * will be available.  This also means that subclasses in the larger jars
-     * will override their superclasses.  So, if you are using the VelocityStruts
-     * jar, then your $link reference will be a StrutsLinkTool.  If you are using
-     * the VelocityView jar, it will be a standard LinkTool.
-     */
-    public static FactoryConfiguration getDefault()
-    {
-        FileFactoryConfiguration config = new XmlFactoryConfiguration();
-        config.read(GENERIC_CONFIGURATION_PATH);
-
-        // view tools and struts tools may not be available
-        config.read(VIEW_CONFIGURATION_PATH, false);
-        config.read(STRUTS_CONFIGURATION_PATH, false);
-
-        // default should *always* be clean!
-        // otherwise we may have issues (e.g. velocity-view jar used
-        // in non webapp environment where generic jar should've been used)
-        ConfigurationCleaner cleaner = new ConfigurationCleaner();
-        cleaner.clean(config);
-        
-        return config;
-    }
-
-    public static ToolboxFactory createDefaultFactory()
-    {
-        ToolboxFactory factory = new ToolboxFactory();
-        factory.configure(getDefault());
         return factory;
     }
 
