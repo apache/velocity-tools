@@ -70,6 +70,7 @@
       <fileset dir="${test.src.dir}">
         <include name="**/*.java"/>
         <include name="**/*.properties"/>
+        <include name="**/*.xml"/>
       </fileset>
     </copy>
     <copy tofile="${test.dir}/etc/jetty.xml" file="${test.dir}/etc/jetty.xml.tmpl" filtering="yes"/>
@@ -207,6 +208,32 @@
       <sysproperty key="STOP.PORT" value="${test.webcontainer.control.port}"/>
       <sysproperty key="STOP.KEY" value="verysecret"/>
     </java>
+  </target>
+
+
+  <!-- Analyze code with FindBugs -->
+  <target name="findbugs">
+    <echo>Working with FindBugs at: ${findbugs.home}</echo>
+    <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask">
+      <classpath>
+        <fileset dir="${findbugs.home}/lib">
+          <include name="findbugs-ant.jar"/>
+        </fileset>
+      </classpath>
+    </taskdef>
+    <echo>Analyzing ${dist.dir}/${project.id}.jar built from ${source.home}</echo>
+    <findbugs home="${findbugs.home}"
+              output="html"
+              outputFile="${test.build.dir}\findbugs-report.html"
+              failOnError="true">
+      <auxClasspath>
+        <fileset dir="${lib.dir}">
+          <include name="**/*.jar"/>
+        </fileset>
+      </auxClasspath>
+      <sourcePath path="${source.home}" />
+      <class location="${dist.dir}/${project.id}.jar" />
+    </findbugs>
   </target>
 
 </project>
