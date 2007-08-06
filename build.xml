@@ -106,9 +106,9 @@
 
     <!-- construct classpath of all jars in lib repository -->
     <path id="compile.classpath">
-    <fileset dir="${lib.dir}">
+      <fileset dir="${lib.dir}">
         <include name="**/*.jar"/>
-    </fileset>
+      </fileset>
     </path>
   </target>
 
@@ -122,9 +122,9 @@
 
     <!-- construct classpath of all jars needed to build docs -->
     <path id="docs.classpath">
-    <fileset dir="${lib.dir}">
+      <fileset dir="${lib.dir}">
         <include name="**/*.jar"/>
-    </fileset>
+      </fileset>
     </path>
   </target>
 
@@ -330,7 +330,7 @@
   <!-- Build Velocity-Tools documentation -->
   <target name="docs" depends="prepare.docs"
           description="Generate documentation into ${docs.dir}">
-    <taskdef name="dvsl" classname="org.apache.tools.dvsl.DVSLTask">
+    <taskdef name="dvsl" classname="org.apache.dvsl.DVSLTask">
       <classpath refid="docs.classpath"/>
     </taskdef>
 
@@ -597,6 +597,10 @@
 
   <!-- Main test target -->
   <target name="test" description="Test VelocityTools" depends="test.generic,test.view">
+  </target>
+
+  <target name="findbugs" description="Run FindBugs" depends="jar">
+    <ant antfile="${basedir}/test.xml" target="findbugs" />
   </target>
 
   <!-- Generic tests -->
