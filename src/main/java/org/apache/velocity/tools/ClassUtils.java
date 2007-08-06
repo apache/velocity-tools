@@ -19,12 +19,21 @@ package org.apache.velocity.tools;
  * under the License.
  */
 
+import java.io.InputStream;
+import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Repository for common class and reflection methods.
@@ -34,11 +43,26 @@ import java.util.Map;
  */
 public class ClassUtils
 {
+    // shortcuts for readability...
+    private static final ClassLoader getThreadContextLoader()
+    {
+        return Thread.currentThread().getContextClassLoader();
+    }
+
+    private static final ClassLoader getClassLoader()
+    {
+        return ClassUtils.class.getClassLoader();
+    }
+
     /**
-     * Return the <code>Class</code> object for the specified fully qualified
-     * class name, from this thread's current class loader.  If no
-     * class loader is set for the current thread, then the class loader
-     * that loaded this class will be used.
+     * Load a class with a given name.
+     * <p/>
+     * It will try to load the class in the following order:
+     * <ul>
+     * <li>From {@link Thread.currentThread().getContextClassLoader()}
+     * <li>Using the basic {@link Class#forName(java.lang.String) }
+     * <li>From {@link ClassUtils.class.getClassLoader()}
+     * </ul>
      *
      * @param name Fully qualified class name to be loaded
      * @return Class object
@@ -46,12 +70,21 @@ public class ClassUtils
      */
     public static Class getClass(String name) throws ClassNotFoundException
     {
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        if (loader == null)
+        try
         {
-            loader = ClassUtils.class.getClassLoader();
+            return getThreadContextLoader().loadClass(name);
         }
-        return loader.loadClass(name);
+        catch (ClassNotFoundException e)
+        {
+            try
+            {
+                return Class.forName(name);
+            }
+            catch (ClassNotFoundException ex)
+            {
+                return getClassLoader().loadClass(name);
+            }
+        }
     }
 
     public static Object getInstance(String classname)
@@ -59,6 +92,107 @@ public class ClassUtils
                 InstantiationException
     {
         return getClass(classname).newInstance();
+    }
+
+    /**
+     * Load all resources with the specified name. If none are found, we 
+     * prepend the name with '/' and try again.
+     *
+     * This will attempt to load the resources from (in this order):
+     * <ul>
+     *  <li>the result Thread.currentThread().getContextClassLoader()</li>
+     *  <li>the result of ClassUtils.class.getClassLoader()</li>
+     * </ul>
+     *
+     * @param name The name of the resources to load
+     */
+    public static List<URL> getResources(String name)
+    {
+        Set<URL> urls = new LinkedHashSet<URL>();
+
+        Enumeration<URL> e;
+        try
+        {
+            e = getThreadContextLoader().getResources(name);
+            while (e.hasMoreElements())
+            {
+                urls.add(e.nextElement());
+            }
+        }
+        catch (IOException ioe)
+        {
+            // ignore
+        }
+
+        try
+        {
+            e = getClassLoader().getResources(name);
+            while (e.hasMoreElements())
+            {
+                urls.add(e.nextElement());
+            }
+        }
+        catch (IOException ioe)
+        {
+            // ignore
+        }
+
+        if (!urls.isEmpty())
+        {
+            List<URL> result = new ArrayList<URL>(urls.size());
+            result.addAll(urls);
+            return result;
+        }
+        else if (!name.startsWith("/"))
+        {
+            // try again with a / in front of the name
+            return getResources("/"+name);
+        }
+        else
+        {
+            return Collections.emptyList();
+        }
+    }
+
+    /**
+     * Load a given resource.
+     * <p/>
+     * This method will try to load the resource using the following methods (in order):
+     * <ul>
+     * <li>From {@link Thread.currentThread().getContextClassLoader()}
+     * <li>From {@link ClassUtils.class.getClassLoader()}
+     * </ul>
+     *
+     * @param name The name of the resource to load
+     */
+    public static URL getResource(String name)
+    {
+        URL url = getThreadContextLoader().getResource(name);
+        if (url == null)
+        {
+            url = getClassLoader().getResource(name);
+        }
+        return url;
+    }
+
+    /**
+     * This is a convenience method to load a resource as a stream.
+     * <p/>
+     * The algorithm used to find the resource is given in getResource()
+     *
+     * @param name The name of the resource to load
+     */
+    public static InputStream getResourceAsStream(String name)
+    {
+        URL url = getResource(name);
+        try
+        {
+            return (url != null) ? url.openStream() : null;
+        }
+        catch (IOException e)
+        {
+            return null;
+        }
     }
 
     public static Method findMethod(Class clazz, String name, Class[] params)
