@@ -24,8 +24,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.log.Log;
+import org.apache.velocity.tools.ClassUtils;
 
 /**
  * Provides support for reading a configuration file from a specified path,
@@ -55,9 +58,19 @@ public abstract class FileFactoryConfiguration extends FactoryConfiguration
         read(path, true);
     }
 
+    public void read(URL url)
+    {
+        read(url, true);
+    }
+
     public void read(String path, boolean required)
     {
         read(path, required, null);
+    }
+
+    public void read(URL url, boolean required)
+    {
+        read(url, required, null);
     }
 
     public void read(String path, boolean required, Log log)
@@ -71,31 +84,22 @@ public abstract class FileFactoryConfiguration extends FactoryConfiguration
             log.trace("Attempting to read configuration file at: "+path);
         }
 
-        // ok, try to load the file
-        InputStream inputStream = null;
-        try
+        URL url = findURL(path);
+        if (url != null)
         {
-            // first, try the file system
-            File file = new File(path);
-            if (file.exists())
+            read(url, required, log);
+        }
+        else
+        {
+            // try and get the stream straight from this class
+            // as this seems to work with our ant-driven junit tests and 
+            // the other methods do not
+            InputStream is = getClass().getResourceAsStream(path);
+            if (is != null)
             {
-                try
-                {
-                    inputStream = new FileInputStream(file);
-                }
-                catch (FileNotFoundException fnfe)
-                {
-                    // we should not be able to get here
-                    // since we already checked whether the file exists
-                    throw new IllegalStateException(fnfe);
-                }
+                read(path, is, required, log);
             }
-            else // try the classpath
-            {
-                inputStream = getClass().getResourceAsStream(path);
-            }
-
-            if (inputStream == null)
+            else
             {
                 String msg = "Could not find configuration file at: "+path;
                 if (log != null)
@@ -107,14 +111,77 @@ public abstract class FileFactoryConfiguration extends FactoryConfiguration
                     throw new ResourceNotFoundException(msg);
                 }
             }
-            else
+        }
+    }
+
+    protected URL findURL(String path)
+    {
+        // first, try the file system
+        File file = new File(path);
+        if (file.exists())
+        {
+            try
             {
-                read(inputStream);
+                return file.toURL();
             }
+            catch (MalformedURLException mue)
+            {
+                // this doesn't seem like it should happen if the file exists
+                // but i may be wrong, in which case we should change this to
+                // just log a debug message
+                throw new IllegalStateException("Could not convert existing file path \""+path+"\" to URL", mue);
+            }
+        }
+        
+        // then search the classpath
+        URL url = ClassUtils.getResource(path);
+        if (url != null)
+        {
+            return url;
+        }
+
+        // finally, just try directly turning it into a URL
+        try
+        {
+            return new URL(path);
+        }
+        catch (MalformedURLException mue)
+        {
+            return null;
+        }
+    }
+
+    protected void read(URL url, boolean required, Log log)
+    {
+        try
+        {
+            read(url, url.openStream(), required, log);
         }
         catch (IOException ioe)
         {
-            String msg = "InputStream could not be read from file at: "+path;
+            String msg = "Could not open stream from: "+url;
+            if (log != null)
+            {
+                log.debug(msg, ioe);
+            }
+            if (required)
+            {
+                throw new RuntimeException(msg, ioe);
+            }
+        }
+    }
+
+
+    protected void read(Object source, InputStream inputStream,
+                        boolean required, Log log)
+    {
+        try
+        {
+            read(inputStream);
+        }
+        catch (IOException ioe)
+        {
+            String msg = "InputStream could not be read from: "+source;
             if (log != null)
             {
                 log.debug(msg, ioe);
@@ -137,7 +204,7 @@ public abstract class FileFactoryConfiguration extends FactoryConfiguration
             {
                 if (log != null)
                 {
-                    log.error("Failed to close input stream for "+path, ioe);
+                    log.error("Failed to close input stream for "+source, ioe);
                 }
             }
         }
