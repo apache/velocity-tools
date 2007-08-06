@@ -250,6 +250,27 @@ public class Data
         return dc;
     }
 
+    @Override
+    public int hashCode()
+    {
+        if (getKey() == null)
+        {
+            return super.hashCode();
+        }
+        return getKey().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (getKey() == null || !(obj instanceof Data))
+        {
+            return super.equals(obj);
+        }
+        return getKey().equals(((Data)obj).getKey());
+    }
+
+    @Override
     public String toString()
     {
         StringBuilder out = new StringBuilder();
