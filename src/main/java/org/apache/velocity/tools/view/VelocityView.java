@@ -41,10 +41,12 @@ import org.apache.velocity.io.VelocityWriter;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.tools.generic.log.LogChuteCommonsLog;
+import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.Toolbox;
 import org.apache.velocity.tools.ToolboxFactory;
 import org.apache.velocity.tools.config.ConfigurationCleaner;
+import org.apache.velocity.tools.config.ConfigurationUtils;
 import org.apache.velocity.tools.config.FactoryConfiguration;
 import org.apache.velocity.tools.config.FileFactoryConfiguration;
 import org.apache.velocity.tools.config.PropertiesFactoryConfiguration;
@@ -455,13 +457,13 @@ public class VelocityView
             "true".equalsIgnoreCase(loadDefaults))
         {
             // add all available default tools
-            getLog().trace("Loading default tool configurations...");
-            factoryConfig.addConfiguration(FactoryConfiguration.getDefault());
+            getLog().trace("Loading default tools configuration...");
+            factoryConfig.addConfiguration(ConfigurationUtils.getDefaultTools());
         }
         else
         {
             // let the user know that the defaults were suppressed
-            getLog().debug("Default tool configuration has been suppressed"
+            getLog().debug("Default tools configuration has been suppressed"
                            + (hasOldToolbox ?
                               " to avoid conflicts with older application's context and toolbox definition."
                               : "."));
@@ -551,7 +553,7 @@ public class VelocityView
     protected InputStream getInputStream(String path, boolean required)
     {
         // first, search the classpath
-        InputStream inputStream = getClass().getResourceAsStream(path);
+        InputStream inputStream = ClassUtils.getResourceAsStream(path);
         if (inputStream == null)
         {
             // then, try the servlet context

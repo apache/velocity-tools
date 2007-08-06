@@ -19,19 +19,11 @@ package org.apache.velocity.tools;
  * under the License.
  */
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.io.IOException;
 import java.util.Map;
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.tools.Scope;
+import org.apache.velocity.tools.config.ConfigurationUtils;
 import org.apache.velocity.tools.config.FactoryConfiguration;
-import org.apache.velocity.tools.config.FileFactoryConfiguration;
-import org.apache.velocity.tools.config.PropertiesFactoryConfiguration;
-import org.apache.velocity.tools.config.XmlFactoryConfiguration;
 
 /**
  * Manages tools for non-web applications. This simplifies the process
@@ -54,33 +46,28 @@ public class ToolManager
 
     /**
      * Constructs an instance already configured to use the 
-     * {@link FactoryConfiguration#getDefault()} configuration.
+     * {@link ConfigurationUtils#getAutoLoaded()()} configuration
+     * and any configuration specified via a "toolsConfig" system
+     * property..
      */
     public ToolManager()
     {
         this(true);
     }
 
-    public ToolManager(boolean startWithDefault)
+    public ToolManager(boolean includeDefaults)
     {
         this.factory = new ToolboxFactory();
 
-        FactoryConfiguration config = new FactoryConfiguration();
-        if (startWithDefault)
+        FactoryConfiguration config =
+            ConfigurationUtils.getAutoLoaded(includeDefaults);
+
+        // look for any specified via system property
+        FactoryConfiguration sys = ConfigurationUtils.findFromSystemProperty();
+        if (sys != null)
         {
-            config.addConfiguration(FactoryConfiguration.getDefault());
+            config.addConfiguration(sys);
         }
-
-        // look for a tools.xml in the current dir or classpath root
-        FileFactoryConfiguration xml = new XmlFactoryConfiguration();
-        xml.read(DEFAULT_XML_CONFIG_PATH, false);
-        config.addConfiguration(xml);
-
-        // look for a tools.properties in the current dir or classpath root
-        FileFactoryConfiguration props = new PropertiesFactoryConfiguration();
-        props.read(DEFAULT_PROPS_CONFIG_PATH, false);
-        config.addConfiguration(props);
-
         configure(config);
     }
 
@@ -93,7 +80,15 @@ public class ToolManager
 
     public void configure(String path)
     {
-        configure(getConfiguration(path));
+        FactoryConfiguration config = ConfigurationUtils.find(path);
+        if (config != null)
+        {
+            configure(config);
+        }
+        else
+        {
+            throw new RuntimeException("Could not find any configuration at "+path);
+        }
     }
 
     public void setVelocityEngine(VelocityEngine engine)
@@ -175,85 +170,4 @@ public class ToolManager
         return this.application;
     }
 
-    protected FactoryConfiguration getConfiguration(String path)
-    {
-        FileFactoryConfiguration config = null;
-        if (path.endsWith(".xml"))
-        {
-            config = new XmlFactoryConfiguration();
-        }
-        else if (path.endsWith(".properties"))
-        {
-            config = new PropertiesFactoryConfiguration();
-        }
-        else
-        {
-            String msg = "Unknown configuration file type: " + path +
-                         "\nOnly .xml and .properties configuration files are supported at this time.";
-            throw new UnsupportedOperationException(msg);
-        }
-
-        // now, try to read the file
-        InputStream inputStream = getInputStream(path);
-        try
-        {
-            config.read(inputStream);
-        }
-        catch (IOException ioe)
-        {
-            throw new RuntimeException("Failed to load configuration at: "+path, ioe);
-        }
-        finally
-        {
-            try
-            {
-                if (inputStream != null)
-                {
-                    inputStream.close();
-                }
-            }
-            catch (IOException ioe)
-            {
-                throw new RuntimeException("Failed to close input stream for: "+path, ioe);
-            }
-        }
-        return config;
-    }
-
-    protected InputStream getInputStream(String path)
-    {
-        // first, search the classpath
-        InputStream inputStream = getClass().getResourceAsStream(path);
-        if (inputStream == null)
-        {
-            // then, try the file system directly
-            inputStream = getFileInputStream(path);
-        }
-
-        // if we still haven't found one
-        if (inputStream == null)
-        {
-            throw new ResourceNotFoundException("Could not find file at: "+path);
-        }
-        return inputStream;
-    }
-
-    protected InputStream getFileInputStream(String path)
-    {
-        File file = new File(path);
-        if (file.exists())
-        {
-            try
-            {
-                return new FileInputStream(file);
-            }
-            catch (FileNotFoundException fnfe)
-            {
-                // we should not be able to get here
-                // since we already checked whether the file exists
-                throw new IllegalStateException(fnfe);
-            }
-        }
-        return null;
-    }
 }

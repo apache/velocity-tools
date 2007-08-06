@@ -84,7 +84,7 @@ import org.apache.velocity.tools.ToolboxFactory;
  */
 public class EasyFactoryConfiguration extends FactoryConfiguration
 {
-    private boolean addedDefault = false;
+    private boolean addedDefaults = false;
     private EasyWrap<ToolboxConfiguration> toolbox;
 
     public EasyFactoryConfiguration()
@@ -96,25 +96,37 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
      * @param startWithDefault Sets whether this instance should start with the
      *        {@link FactoryConfiguration#getDefault()} configuration or not.
      */
-    public EasyFactoryConfiguration(boolean startWithDefault)
+    public EasyFactoryConfiguration(boolean includeDefaults)
     {
-        if (startWithDefault)
+        if (includeDefaults)
         {
-            addDefault();
+            addDefaultTools();
         }
     }
 
     /**
-     * Adds the {@link FactoryConfiguration#getDefault()} configuration to this
+     * Adds the {@link ConfigurationUtils#getDefaultTools()} configuration to this
      * the current configuration.
      */
-    public EasyFactoryConfiguration addDefault()
+    public EasyFactoryConfiguration addDefaultTools()
     {
-        if (!addedDefault)
+        if (!addedDefaults)
         {
-            addConfiguration(getDefault());
-            addedDefault = true;
+            addConfiguration(ConfigurationUtils.getDefaultTools());
+            addedDefaults = true;
         }
+        return this;
+    }
+
+    public EasyFactoryConfiguration autoLoad()
+    {
+        return autoLoad(true);
+    }
+
+    public EasyFactoryConfiguration autoLoad(boolean includeDefaults)
+    {
+        addConfiguration(ConfigurationUtils.getAutoLoaded(includeDefaults));
+        addedDefaults = true;
         return this;
     }
 
@@ -290,9 +302,9 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
             throw new IllegalStateException("Wrapping unknown "+Configuration.class.getName()+": "+getConfiguration());
         }
 
-        public EasyWrap addDefault()
+        public EasyWrap addDefaultTools()
         {
-            EasyFactoryConfiguration.this.addDefault();
+            EasyFactoryConfiguration.this.addDefaultTools();
             return this;
         }
 
