@@ -107,6 +107,11 @@ public class ConfigurationCleaner extends LogSupport
         //TODO: loop on validate() until all debug scoped tools are removed
     }
 
+    public void clean(Configuration config)
+    {
+        cleanProperties(config);
+    }
+
     public void cleanProperties(Configuration config)
     {
         // go thru properties to log and remove debug ones
