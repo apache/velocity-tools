@@ -321,6 +321,15 @@ public class ConfigurationUtils
     }
 
     /**
+     * @see #findInClasspath(String path, Object caller)
+     */
+    public static FactoryConfiguration findInClasspath(String path)
+    {
+        // pretend this was called by a non-static ConfigurationUtils
+        return findInClasspath(path, new ConfigurationUtils());
+    }
+
+    /**
      * Searches the classpath for a configuration file matching the
      * specified path.  If found, it will read and return it as a
      * {@link FactoryConfiguration}.  If not found, this will return
@@ -329,10 +338,10 @@ public class ConfigurationUtils
      * (i.e. the last one will have precedence).
      * @see ClassUtils#getResources(String path)
      */
-    public static FactoryConfiguration findInClasspath(String path)
+    public static FactoryConfiguration findInClasspath(String path, Object caller)
     {
         // find all resources at this path
-        List<URL> found = ClassUtils.getResources(path);
+        List<URL> found = ClassUtils.getResources(path, caller);
         if (found.isEmpty())
         {
             return null;

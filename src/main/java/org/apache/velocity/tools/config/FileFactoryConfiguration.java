@@ -91,25 +91,14 @@ public abstract class FileFactoryConfiguration extends FactoryConfiguration
         }
         else
         {
-            // try and get the stream straight from this class
-            // as this seems to work with our ant-driven junit tests and 
-            // the other methods do not
-            InputStream is = getClass().getResourceAsStream(path);
-            if (is != null)
+            String msg = "Could not find configuration file at: "+path;
+            if (log != null)
             {
-                read(path, is, required, log);
+                log.debug(msg);
             }
-            else
+            if (required)
             {
-                String msg = "Could not find configuration file at: "+path;
-                if (log != null)
-                {
-                    log.debug(msg);
-                }
-                if (required)
-                {
-                    throw new ResourceNotFoundException(msg);
-                }
+                throw new ResourceNotFoundException(msg);
             }
         }
     }
@@ -134,7 +123,7 @@ public abstract class FileFactoryConfiguration extends FactoryConfiguration
         }
         
         // then search the classpath
-        URL url = ClassUtils.getResource(path);
+        URL url = ClassUtils.getResource(path, this);
         if (url != null)
         {
             return url;

@@ -104,7 +104,6 @@ import org.apache.velocity.util.SimplePool;
  *
  * @version $Id: VelocityView.java 511959 2007-02-26 19:24:39Z nbubna $
  */
-
 public class VelocityView
 {
     /** The HTTP content type context key. */
@@ -469,6 +468,13 @@ public class VelocityView
                               : "."));
         }
 
+        // this gets the auto loaded config from the classpath
+        // this doesn't include defaults since they're handled already
+        // and it could theoretically pick up an auto-loaded config from the
+        // filesystem, but that is highly unlikely to happen in a webapp env
+        FactoryConfiguration autoLoaded = ConfigurationUtils.getAutoLoaded(false);
+        factoryConfig.addConfiguration(autoLoaded);
+
         // check for application-wide user config in the context init params
         String appToolsPath = servletContext.getInitParameter(TOOLS_KEY);
         setConfig(factoryConfig, appToolsPath, true);
@@ -553,7 +559,7 @@ public class VelocityView
     protected InputStream getInputStream(String path, boolean required)
     {
         // first, search the classpath
-        InputStream inputStream = ClassUtils.getResourceAsStream(path);
+        InputStream inputStream = ClassUtils.getResourceAsStream(path, this);
         if (inputStream == null)
         {
             // then, try the servlet context
@@ -582,7 +588,7 @@ public class VelocityView
         // if we still haven't found one
         if (inputStream == null)
         {
-            String msg = "Could not find file at: "+path;
+            String msg = "Could not find resource at: "+path;
             getLog().debug(msg);
             if (required)
             {
