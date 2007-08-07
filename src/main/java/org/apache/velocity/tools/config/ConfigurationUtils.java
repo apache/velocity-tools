@@ -47,7 +47,8 @@ public class ConfigurationUtils
     public static final String AUTOLOADED_XML_PATH = "tools.xml";
     public static final String AUTOLOADED_PROPS_PATH = "tools.properties";
 
-    public static final String SYSTEM_PROPERTY_KEY = "toolsConfig";
+    public static final String SYSTEM_PROPERTY_KEY =
+        "org.apache.velocity.tools";
 
     /**
      * Returns the "default" {@link FactoryConfiguration}.  This includes
@@ -201,10 +202,10 @@ public class ConfigurationUtils
 
     /**
      * Returns a {@link FactoryConfiguration} loaded from the path specified
-     * in the "toolsConfig" system property (if any).  If no such property has
-     * been set {@code null} will be returned.  If, however, there is such a
-     * property but no valid configuration file was found at the specified
-     * location, this will throw a {@link ResourceNotFoundException}.
+     * in the "org.apache.velocity.tools" system property (if any).
+     * If no such property has been set {@code null} will be returned.
+     * @throws ResourceNotFoundException if the system property has a value
+     *         but no configuration file was found at the specified location
      */
     public static FactoryConfiguration findFromSystemProperty()
     {
