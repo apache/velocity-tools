@@ -47,8 +47,8 @@ public class ToolManager
     /**
      * Constructs an instance already configured to use the 
      * {@link ConfigurationUtils#getAutoLoaded()()} configuration
-     * and any configuration specified via a "toolsConfig" system
-     * property..
+     * and any configuration specified via a "org.apache.velocity.tools"
+     * system property.
      */
     public ToolManager()
     {
