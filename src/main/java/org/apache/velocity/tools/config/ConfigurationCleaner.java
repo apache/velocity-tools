@@ -109,7 +109,19 @@ public class ConfigurationCleaner extends LogSupport
 
     public void clean(Configuration config)
     {
-        cleanProperties(config);
+        // delegate to the appropriate method...
+        if (config instanceof FactoryConfiguration)
+        {
+            clean((FactoryConfiguration)config);
+        }
+        else if (config instanceof ToolboxConfiguration)
+        {
+            clean((ToolboxConfiguration)config);
+        }
+        else
+        {
+            cleanProperties(config);
+        }
     }
 
     public void cleanProperties(Configuration config)
