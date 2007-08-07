@@ -54,6 +54,18 @@ public class ClassUtils
         return ClassUtils.class.getClassLoader();
     }
 
+    private static final ClassLoader getCallerLoader(Object caller)
+    {
+        if (caller instanceof Class)
+        {
+            return ((Class)caller).getClassLoader();
+        }
+        else
+        {
+            return caller.getClass().getClassLoader();
+        }
+    }
+
     /**
      * Load a class with a given name.
      * <p/>
@@ -98,43 +110,37 @@ public class ClassUtils
      * Load all resources with the specified name. If none are found, we 
      * prepend the name with '/' and try again.
      *
-     * This will attempt to load the resources from (in this order):
+     * This will attempt to load the resources from the following methods (in order):
      * <ul>
-     *  <li>the result Thread.currentThread().getContextClassLoader()</li>
-     *  <li>the result of ClassUtils.class.getClassLoader()</li>
+     * <li>Thread.currentThread().getContextClassLoader().getResources(name)</li>
+     * <li>{@link ClassUtils}.class.getClassLoader().getResources(name)</li>
+     * <li>{@link ClassUtils}.class.getResource(name)</li>
+     * <li>{@link #getCallerLoader(Object caller)}.getResources(name)</li>
+     * <li>caller.getClass().getResource(name)</li>
      * </ul>
      *
      * @param name The name of the resources to load
+     * @param caller The instance or {@link Class} calling this method
      */
-    public static List<URL> getResources(String name)
+    public static List<URL> getResources(String name, Object caller)
     {
         Set<URL> urls = new LinkedHashSet<URL>();
 
-        Enumeration<URL> e;
-        try
+        // try to load all from the current thread context classloader
+        addResources(name, urls, getThreadContextLoader());
+
+        // try to load all from this class' classloader
+        if (!addResources(name, urls, getClassLoader()))
         {
-            e = getThreadContextLoader().getResources(name);
-            while (e.hasMoreElements())
-            {
-                urls.add(e.nextElement());
-            }
-        }
-        catch (IOException ioe)
-        {
-            // ignore
+            // ok, try to load one directly from this class
+            addResource(name, urls, ClassUtils.class);
         }
 
-        try
+        // try to load all from the classloader of the calling class
+        if (!addResources(name, urls, getCallerLoader(caller)))
         {
-            e = getClassLoader().getResources(name);
-            while (e.hasMoreElements())
-            {
-                urls.add(e.nextElement());
-            }
-        }
-        catch (IOException ioe)
-        {
-            // ignore
+            // try to load one directly from the calling class
+            addResource(name, urls, caller.getClass());
         }
 
         if (!urls.isEmpty())
@@ -146,7 +152,7 @@ public class ClassUtils
         else if (!name.startsWith("/"))
         {
             // try again with a / in front of the name
-            return getResources("/"+name);
+            return getResources("/"+name, caller);
         }
         else
         {
@@ -154,23 +160,63 @@ public class ClassUtils
         }
     }
 
+    private static final void addResource(String name, Set<URL> urls, Class c)
+    {
+        URL url = c.getResource(name);
+        if (url != null)
+        {
+            urls.add(url);
+        }
+    }
+
+    private static final boolean addResources(String name, Set<URL> urls,
+                                              ClassLoader loader)
+    {
+        boolean foundSome = false;
+        try
+        {
+            Enumeration<URL> e = loader.getResources(name);
+            while (e.hasMoreElements())
+            {
+                urls.add(e.nextElement());
+                foundSome = true;
+            }
+        }
+        catch (IOException ioe)
+        {
+            // ignore
+        }
+        return foundSome;
+    }
+
     /**
      * Load a given resource.
      * <p/>
      * This method will try to load the resource using the following methods (in order):
      * <ul>
-     * <li>From {@link Thread.currentThread().getContextClassLoader()}
-     * <li>From {@link ClassUtils.class.getClassLoader()}
+     * <li>Thread.currentThread().getContextClassLoader().getResource(name)</li>
+     * <li>{@link ClassUtils}.class.getClassLoader().getResource(name)</li>
+     * <li>{@link ClassUtils}.class.getResource(name)</li>
+     * <li>caller.getClass().getResource(name)</li>
      * </ul>
      *
      * @param name The name of the resource to load
+     * @param caller The instance or {@link Class} calling this method
      */
-    public static URL getResource(String name)
+    public static URL getResource(String name, Object caller)
     {
         URL url = getThreadContextLoader().getResource(name);
         if (url == null)
         {
             url = getClassLoader().getResource(name);
+            if (url == null)
+            {
+                url = ClassUtils.class.getResource(name);
+                if (url == null)
+                {
+                    url = caller.getClass().getResource(name);
+                }
+            }
         }
         return url;
     }
@@ -181,10 +227,11 @@ public class ClassUtils
      * The algorithm used to find the resource is given in getResource()
      *
      * @param name The name of the resource to load
+     * @param caller The instance or {@link Class} calling this method
      */
-    public static InputStream getResourceAsStream(String name)
+    public static InputStream getResourceAsStream(String name, Object caller)
     {
-        URL url = getResource(name);
+        URL url = getResource(name, caller);
         try
         {
             return (url != null) ? url.openStream() : null;
