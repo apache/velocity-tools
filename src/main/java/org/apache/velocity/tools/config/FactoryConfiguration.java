@@ -156,7 +156,14 @@ public class FactoryConfiguration
             out.append(getData().size());
             out.append(" data");
         }
-        appendChildren(out, "toolboxes: \n ", "\n ");
+        if (getToolboxes().isEmpty())
+        {
+            out.append("\n ");
+        }
+        else
+        {
+            appendChildren(out, "toolboxes: \n ", "\n ");
+        }
         if (!getData().isEmpty())
         {
             for (Data datum : getData())
