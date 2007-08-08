@@ -121,6 +121,10 @@ public class GenericToolsTests {
         assertEquals("''",escapeTool.sql("'"));
         /* xml */
         assertEquals("&quot;&amp;&lt;&gt;",escapeTool.html("\"&<>"));
+        /* unicode */
+        assertEquals("\uf00b", escapeTool.unicode("f00b"));
+        assertEquals("\u1010", escapeTool.unicode("\\u1010"));
+        assertEquals("\u1111", escapeTool.unicode(1111));
     }
 
     public @Test void testMathTool() {

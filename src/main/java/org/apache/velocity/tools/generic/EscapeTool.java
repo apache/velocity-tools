@@ -289,6 +289,34 @@ public class EscapeTool
     }
 
     /**
+     * Converts the specified Unicode code point and/or escape sequence into
+     * the associated Unicode character.  This allows numeric
+     * code points or String versions of the numeric code point to be correctly
+     * translated within a template.  This is especially useful for those
+     * creating unicode from a reference value, or injecting a unicode character
+     * into a template with a version of Velocity prior to 1.6.
+     * @param code the code to be translated/escaped, may be null
+     * @return the unicode character for that code, {@code null} if input was null
+     * @see Character#toChars(int codePoint)
+     */
+    public String unicode(Object code)
+    {
+        if (code == null)
+        {
+            return null;
+        }
+
+        String s = String.valueOf(code);
+        if (s.startsWith("\\u"))
+        {
+            s = s.substring(2, s.length());
+        }
+        int codePoint = Integer.valueOf(s, 16);
+        return String.valueOf(Character.toChars(codePoint));
+    }
+            
+
+    /**
      * Renders a dollar sign ($).
      * @return a dollar sign ($).
      * @see #getD()
