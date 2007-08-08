@@ -22,6 +22,7 @@ package org.apache.velocity.tools;
 import java.io.InputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -124,7 +125,7 @@ public class ClassUtils
      */
     public static List<URL> getResources(String name, Object caller)
     {
-        Set<URL> urls = new LinkedHashSet<URL>();
+        Set<String> urls = new LinkedHashSet<String>();
 
         // try to load all from the current thread context classloader
         addResources(name, urls, getThreadContextLoader());
@@ -146,7 +147,17 @@ public class ClassUtils
         if (!urls.isEmpty())
         {
             List<URL> result = new ArrayList<URL>(urls.size());
-            result.addAll(urls);
+            try
+            {
+                for (String url : urls)
+                {
+                    result.add(new URL(url));
+                }
+            }
+            catch (MalformedURLException mue)
+            {
+                throw new IllegalStateException("A URL could not be recreated from its own toString() form", mue);
+            }
             return result;
         }
         else if (!name.startsWith("/"))
@@ -160,16 +171,16 @@ public class ClassUtils
         }
     }
 
-    private static final void addResource(String name, Set<URL> urls, Class c)
+    private static final void addResource(String name, Set<String> urls, Class c)
     {
         URL url = c.getResource(name);
         if (url != null)
         {
-            urls.add(url);
+            urls.add(url.toString());
         }
     }
 
-    private static final boolean addResources(String name, Set<URL> urls,
+    private static final boolean addResources(String name, Set<String> urls,
                                               ClassLoader loader)
     {
         boolean foundSome = false;
@@ -178,7 +189,7 @@ public class ClassUtils
             Enumeration<URL> e = loader.getResources(name);
             while (e.hasMoreElements())
             {
-                urls.add(e.nextElement());
+                urls.add(e.nextElement().toString());
                 foundSome = true;
             }
         }
