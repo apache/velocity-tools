@@ -35,7 +35,6 @@ public class FilteredLogChuteCommonsLog  extends LogChuteCommonsLog {
 
     public FilteredLogChuteCommonsLog(String name)
     {
-        super(name);
         filter = !name.startsWith("org.apache.velocity");
     }
 
