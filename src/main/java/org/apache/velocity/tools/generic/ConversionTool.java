@@ -174,7 +174,7 @@ public class ConversionTool extends LocaleConfig
      */
     public String toString(Collection values)
     {
-        if (values == null || !values.isEmpty())
+        if (values != null && !values.isEmpty())
         {
             return String.valueOf(values.iterator().next());
         }
