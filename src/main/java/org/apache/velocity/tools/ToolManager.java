@@ -119,9 +119,9 @@ public class ToolManager
             context = new ToolContext(this.engine);
             if (toolProps != null && !toolProps.isEmpty())
             {
-                for (String key : toolProps.keySet())
+                for (Map.Entry<String,Object> prop : toolProps.entrySet())
                 {
-                    context.putToolProperty(key, toolProps.get(key));
+                    context.putToolProperty(prop.getKey(), prop.getValue());
                 }
             }
         }

@@ -129,11 +129,11 @@ public class ToolInfo implements java.io.Serializable
         // only add those new properties for which we
         // do not already have a value. first prop set wins.
         Map<String,Object> properties = getProps();
-        for (String key : parentProps.keySet())
+        for (Map.Entry<String,Object> prop : parentProps.entrySet())
         {
-            if (!properties.containsKey(key))
+            if (!properties.containsKey(prop.getKey()))
             {
-                properties.put(key, parentProps.get(key));
+                properties.put(prop.getKey(), prop.getValue());
             }
         }
     }
@@ -246,9 +246,9 @@ public class ToolInfo implements java.io.Serializable
     {
         //TODO: make this step optional?
         // look for specific setters
-        for (String name : configuration.keySet())
+        for (Map.Entry<String,Object> conf : configuration.entrySet())
         {
-            setProperty(tool, name, configuration.get(name));
+            setProperty(tool, conf.getKey(), conf.getValue());
         }
 
         if (hasConfigure())

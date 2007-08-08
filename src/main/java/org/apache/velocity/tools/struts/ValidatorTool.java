@@ -528,13 +528,12 @@ public class ValidatorTool
                 results.append("\", ");
                 results.append("new Function (\"varName\", \"");
 
-                Map vars = field.getVars();
+                Map<String,Var> vars = (Map<String,Var>)field.getVars();
                 // Loop through the field's variables.
-                Iterator varsIterator = vars.keySet().iterator();
-                while (varsIterator.hasNext())
+                for (Map.Entry<String,Var> entry : vars.entrySet())
                 {
-                    String varName = (String)varsIterator.next(); // TODO: escape?
-                    Var var = (Var)vars.get(varName);
+                    String varName = entry.getKey(); // TODO: escape?
+                    Var var = entry.getValue();
                     String varValue =
                         Resources.getVarValue(var, app, request, false);
                     String jsType = var.getJsType();

@@ -125,9 +125,9 @@ public class Configuration<T>
         }
 
         Map<String,Object> simples = config.getSimpleProperties();
-        for (String name : simples.keySet())
+        for (Map.Entry<String,Object> prop : simples.entrySet())
         {
-            setProperty(name, simples.get(name));
+            setProperty(prop.getKey(), prop.getValue());
         }
     }
 
@@ -147,11 +147,11 @@ public class Configuration<T>
             out.append("with ");
             out.append(props.size());
             out.append(" properties [");
-            for (String name : props.keySet())
+            for (Map.Entry<String,Object> prop : props.entrySet())
             {
-                out.append(name);
+                out.append(prop.getKey());
                 out.append(" => ");
-                out.append(props.get(name));
+                out.append(prop.getValue());
                 out.append("; ");
             }
             out.append("]");
