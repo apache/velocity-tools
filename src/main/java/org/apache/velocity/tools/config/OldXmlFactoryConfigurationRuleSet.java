@@ -59,7 +59,7 @@ public class OldXmlFactoryConfigurationRuleSet extends RuleSetBase
         digester.addRule("toolbox/data", new SetNextDataRule());
     }
 
-    protected class DeprecationRule extends Rule
+    protected static class DeprecationRule extends Rule
     {
         public void begin(String ns, String ln, Attributes attributes)
             throws Exception
@@ -73,7 +73,7 @@ public class OldXmlFactoryConfigurationRuleSet extends RuleSetBase
     }
 
 
-    protected class ScopeRule extends Rule
+    protected static class ScopeRule extends Rule
     {
         public void body(String namespace, String element, String value)
             throws Exception
@@ -102,7 +102,7 @@ public class OldXmlFactoryConfigurationRuleSet extends RuleSetBase
         }
     }
 
-    protected class ParameterRule extends Rule
+    protected static class ParameterRule extends Rule
     {
         public void begin(String ns, String ln, Attributes attributes)
             throws Exception
@@ -114,7 +114,7 @@ public class OldXmlFactoryConfigurationRuleSet extends RuleSetBase
         }
     }
 
-    protected class SetNextDataRule extends Rule
+    protected static class SetNextDataRule extends Rule
     {
         public void end() throws Exception
         {
@@ -124,7 +124,7 @@ public class OldXmlFactoryConfigurationRuleSet extends RuleSetBase
         }
     }
 
-    protected abstract class BooleanConfigRule extends Rule
+    protected static abstract class BooleanConfigRule extends Rule
     {
         public void body(String ns, String name, String text) throws Exception
         {
@@ -143,7 +143,7 @@ public class OldXmlFactoryConfigurationRuleSet extends RuleSetBase
         public abstract void setBoolean(FactoryConfiguration parent, Boolean value);
     }
 
-    protected class CreateSessionRule extends BooleanConfigRule
+    protected static class CreateSessionRule extends BooleanConfigRule
     {
         public void setBoolean(FactoryConfiguration factory, Boolean b)
         {
@@ -151,7 +151,7 @@ public class OldXmlFactoryConfigurationRuleSet extends RuleSetBase
         }
     }
 
-    protected class XhtmlRule extends BooleanConfigRule
+    protected static class XhtmlRule extends BooleanConfigRule
     {
         public void setBoolean(FactoryConfiguration factory, Boolean b)
         {

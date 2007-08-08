@@ -423,7 +423,7 @@ public abstract class ImportSupport
 
 
     /** Wraps responses to allow us to retrieve results as Strings. */
-    protected class ImportResponseWrapper extends HttpServletResponseWrapper
+    protected static class ImportResponseWrapper extends HttpServletResponseWrapper
     {
         /*
          * We provide either a Writer or an OutputStream as requested.
