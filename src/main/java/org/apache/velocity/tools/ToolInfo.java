@@ -175,7 +175,7 @@ public class ToolInfo implements java.io.Serializable
 
     public Map<String,Object> getProperties()
     {
-        return properties;
+        return getProps();
     }
 
     public boolean hasConfigure()
@@ -226,7 +226,7 @@ public class ToolInfo implements java.io.Serializable
            dynamic properties will almost always be conventions
            and we need to let configuration win out */
         Map<String,Object> combinedProps =
-            combine(dynamicProperties, this.properties);
+            combine(dynamicProperties, getProps());
 
         // perform the actual configuration of the new tool
         configure(tool, combinedProps);
