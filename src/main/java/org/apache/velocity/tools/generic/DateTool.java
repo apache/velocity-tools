@@ -288,7 +288,7 @@ public class DateTool extends FormatConfig
         {
             return null;
         }
-        return new Integer(cal.get(field));
+        return Integer.valueOf(cal.get(field));
     }
 
 

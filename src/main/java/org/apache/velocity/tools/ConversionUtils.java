@@ -186,12 +186,12 @@ public class ConversionUtils
         }
         if (obj instanceof Date)
         {
-            return new Long(((Date)obj).getTime());
+            return Long.valueOf(((Date)obj).getTime());
         }
         if (obj instanceof Calendar)
         {
             Date date = ((Calendar)obj).getTime();
-            return new Long(date.getTime());
+            return Long.valueOf(date.getTime());
         }
         return null;
     }

@@ -380,7 +380,7 @@ public class PagerTool
         {
             return null;
         }
-        return new Integer(Math.min(getTotal() - 1, index + itemsPerPage - 1));
+        return Integer.valueOf(Math.min(getTotal() - 1, index + itemsPerPage - 1));
     }
 
     /**
@@ -396,7 +396,7 @@ public class PagerTool
         int next = index + itemsPerPage;
         if (next < getTotal())
         {
-            return new Integer(next);
+            return Integer.valueOf(next);
         }
         return null;
     }
@@ -419,7 +419,7 @@ public class PagerTool
         {
             return null;
         }
-        return new Integer(Math.min(getTotal() - 1, index));
+        return Integer.valueOf(Math.min(getTotal() - 1, index));
     }
 
     /**
@@ -435,7 +435,7 @@ public class PagerTool
         int prev = Math.min(index, getTotal()) - itemsPerPage;
         if (index > 0)
         {
-            return new Integer(Math.max(0, prev));
+            return Integer.valueOf(Math.max(0, prev));
         }
         return null;
     }
@@ -482,7 +482,7 @@ public class PagerTool
         {
             return null;
         }
-        return new Integer(1 + i / itemsPerPage);
+        return Integer.valueOf(1 + i / itemsPerPage);
     }
 
 
@@ -597,7 +597,7 @@ public class PagerTool
         List slip = new ArrayList(slipEnd - slipStart);
         for (int i=slipStart; i < slipEnd; i++)
         {
-            slip.add(new Integer(i * itemsPerPage));
+            slip.add(Integer.valueOf(i * itemsPerPage));
         }
         return slip;
     }

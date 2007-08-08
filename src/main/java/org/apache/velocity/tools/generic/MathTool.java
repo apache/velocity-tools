@@ -180,7 +180,7 @@ public class MathTool extends FormatConfig
             return null;
         }
         int value = n1.intValue() / n2.intValue();
-        return new Integer(value);
+        return Integer.valueOf(value);
     }
 
 
@@ -205,7 +205,7 @@ public class MathTool extends FormatConfig
             return null;
         }
         int value = n1.intValue() % n2.intValue();
-        return new Integer(value);
+        return Integer.valueOf(value);
     }
 
 
@@ -279,7 +279,7 @@ public class MathTool extends FormatConfig
         {
             return null;
         }
-        return new Integer((int)Math.ceil(n.doubleValue()));
+        return Integer.valueOf((int)Math.ceil(n.doubleValue()));
     }
 
 
@@ -294,7 +294,7 @@ public class MathTool extends FormatConfig
         {
             return null;
         }
-        return new Integer((int)Math.floor(n.doubleValue()));
+        return Integer.valueOf((int)Math.floor(n.doubleValue()));
     }
 
 
@@ -313,7 +313,7 @@ public class MathTool extends FormatConfig
         {
             return null;
         }
-        return new Integer((int)Math.rint(n.doubleValue()));
+        return Integer.valueOf((int)Math.rint(n.doubleValue()));
     }
 
 
@@ -422,7 +422,7 @@ public class MathTool extends FormatConfig
         {
             return null;
         }
-        return new Integer(n.intValue());
+        return Integer.valueOf(n.intValue());
     }
 
 
@@ -514,11 +514,11 @@ public class MathTool extends FormatConfig
         }
         else if (out > Integer.MAX_VALUE || out < Integer.MIN_VALUE)
         {
-            return new Long((long)out);
+            return Long.valueOf((long)out);
         }
         else
         {
-            return new Integer((int)out);
+            return Integer.valueOf((int)out);
         }
     }
 
@@ -529,14 +529,14 @@ public class MathTool extends FormatConfig
         if (value.indexOf('.') < 0)
         {
             // check for large numbers
-            long i = new Long(value).longValue();
+            long i = Long.valueOf(value).longValue();
             if (i > Integer.MAX_VALUE || i < Integer.MIN_VALUE)
             {
-                return new Long(i);
+                return Long.valueOf(i);
             }
             else
             {
-                return new Integer((int)i);
+                return Integer.valueOf((int)i);
             }
         }
         else
@@ -759,7 +759,7 @@ public class MathTool extends FormatConfig
         {
             result += values[i];
         }
-        return new Long(result);
+        return Long.valueOf(result);
     }
 
     /**
