@@ -202,7 +202,7 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
     }
 
 
-    public class EasyData
+    public static class EasyData
     {
         private Data datum;
         private Configuration parent;

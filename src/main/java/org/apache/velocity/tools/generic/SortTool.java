@@ -198,7 +198,7 @@ public class SortTool
     /**
      * Does all of the comparisons
      */
-    public class PropertiesComparator implements Comparator
+    public static class PropertiesComparator implements Comparator
     {
         private static final int TYPE_ASCENDING = 1;
         private static final int TYPE_DESCENDING = -1;

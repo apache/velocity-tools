@@ -125,7 +125,7 @@ public class XmlFactoryConfigurationRuleSet extends RuleSetBase
     /**
      * Rule for adding configuration properties
      */
-    public class DataValueInBodyRule extends Rule
+    public static class DataValueInBodyRule extends Rule
     {
         public void body(String namespace, String element, String value)
             throws Exception
@@ -138,7 +138,7 @@ public class XmlFactoryConfigurationRuleSet extends RuleSetBase
         }
     }
 
-    public class PropertyAttributeRule extends Rule
+    public static class PropertyAttributeRule extends Rule
     {
         public void begin(String namespace, String element, Attributes attributes)
             throws Exception

@@ -106,7 +106,7 @@ public class ToolboxRuleSet extends RuleSetBase
     /**
      *
      */
-    protected class ParameterRule extends Rule
+    protected static class ParameterRule extends Rule
     {
         public void begin(String ns, String ln, Attributes attributes)
             throws Exception
