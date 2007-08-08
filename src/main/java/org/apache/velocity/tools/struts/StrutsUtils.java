@@ -413,18 +413,18 @@ public class StrutsUtils
         if(actionConfig != null)
         {
             fc = actionConfig.findForwardConfig(forward);
+        }
 
-            // No ActionConfig forward?
-            // Find the ForwardConfig in the global-forwards.
-            if(fc == null)
+        // No ActionConfig forward?
+        // Find the ForwardConfig in the global-forwards.
+        if(fc == null)
+        {
+            fc = moduleConfig.findForwardConfig(forward);
+
+            // ok, give up
+            if (fc == null)
             {
-                fc = moduleConfig.findForwardConfig(forward);
-
-                // ok, give up
-                if (fc == null)
-                {
-                    return null;
-                }
+                return null;
             }
         }
 
