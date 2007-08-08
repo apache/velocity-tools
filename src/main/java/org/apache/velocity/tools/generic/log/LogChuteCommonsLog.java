@@ -58,21 +58,6 @@ public class LogChuteCommonsLog implements org.apache.commons.logging.Log
 
 
     // ********************  begin non-static stuff *******************
-
-    private String name;
-
-    public LogChuteCommonsLog() 
-    {
-        this("");
-    }
-
-    public LogChuteCommonsLog(String name) 
-    {
-        if (name == null)
-        {
-            throw new NullPointerException("Log name cannot be null");
-        }
-    }
     
     protected Log getTarget()
     {
