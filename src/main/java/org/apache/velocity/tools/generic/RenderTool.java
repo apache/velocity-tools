@@ -269,7 +269,7 @@ public class RenderTool extends AbstractLockConfig
             if (count < parseDepth)
             {
                 // continue recursing
-                return internalRecurse(ctx, result, count++);
+                return internalRecurse(ctx, result, count + 1);
             }
             else
             {

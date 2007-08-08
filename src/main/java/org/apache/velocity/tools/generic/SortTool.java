@@ -270,7 +270,7 @@ public class SortTool
                 if (left == null && right != null)
                 {
                     // find out how right feels about left being null
-                    comparison = right.compareTo(left);
+                    comparison = right.compareTo(null);
                     // and reverse that (if it works)
                     comparison *= -1;
                 }
