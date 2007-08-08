@@ -89,12 +89,12 @@ public class ContextTool
         {
             ValueParser parser = new ValueParser(params);
             safeMode = parser.getBoolean(SAFE_MODE_KEY, true);
-        }
 
-        this.context = (ViewContext)params.get(ViewToolContext.CONTEXT_KEY);
-        this.request = (HttpServletRequest)params.get(ViewContext.REQUEST);
-        this.session = request.getSession(false);
-        this.application = (ServletContext)params.get(ViewContext.SERVLET_CONTEXT_KEY);
+            this.context = (ViewContext)params.get(ViewToolContext.CONTEXT_KEY);
+            this.request = (HttpServletRequest)params.get(ViewContext.REQUEST);
+            this.session = request.getSession(false);
+            this.application = (ServletContext)params.get(ViewContext.SERVLET_CONTEXT_KEY);
+        }
     }
 
 

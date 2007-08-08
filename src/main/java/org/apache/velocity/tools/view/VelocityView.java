@@ -688,6 +688,10 @@ public class VelocityView
             {
                 throw new UnsupportedOperationException(msg);
             }
+            else
+            {
+                return null;
+            }
         }
 
         // now, try to read the file
