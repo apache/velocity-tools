@@ -279,7 +279,7 @@ public class SortTool
                     //TODO: make it optional whether or not case is ignored
                     comparison = ((String)left).compareToIgnoreCase((String)right);
                 }
-                else
+                else if (left != null)
                 {
                     comparison = left.compareTo(right);
                 }
