@@ -563,26 +563,29 @@ public class MathTool extends FormatConfig
         {
             return null;
         }
+        double result = 0;
+        // hold the first number and use it to match return type
+        Number first = null;
         try
         {
-            double result = 0;
-            // hold the first number and use it to match return type
-            Number first = null;
             for (Iterator i = collection.iterator(); i.hasNext();)
             {
                 Object property = PropertyUtils.getProperty(i.next(), field);
                 Number value = toNumber(property);
-                if (first == null)
+                // skip over nulls (i.e. treat them as 0)
+                if (value != null)
                 {
-                    first = value;
+                    if (first == null)
+                    {
+                        first = value;
+                    }
+                    result += value.doubleValue();
                 }
-                result += value.doubleValue();
             }
             return matchType(first, result);
         }
         catch (Exception e)
         {
-            //FIXME? Log this?
             return null;
         }
     }

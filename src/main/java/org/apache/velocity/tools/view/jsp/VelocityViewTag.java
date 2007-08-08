@@ -200,11 +200,9 @@ public class VelocityViewTag extends BodyTagSupport
 
     protected void renderContent(Writer out) throws Exception
     {
-        VelocityView view = getVelocityView();
-        VelocityEngine engine = view.getVelocityEngine();
-
         if (getTemplate() != null)
         {
+            VelocityView view = getVelocityView();
             ViewToolContext context = getViewToolContext();
 
             // get the actual Template

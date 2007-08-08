@@ -95,7 +95,7 @@ public class ViewToolInfo implements ToolInfo
         {
             this.clazz = getApplicationClass(classname);
             // create an instance to make sure we can
-            Object instance = clazz.newInstance();
+            clazz.newInstance();
             try
             {
                 // try to get an init(Object) method
