@@ -169,8 +169,8 @@ public class VelocityViewTag extends BodyTagSupport
             }
             catch (Exception e)
             {
-                new JspException("Failed to render " + getClass() +
-                                 ": "+getId(), e);
+                throw new JspException("Failed to render " + getClass() +
+                                       ": "+getId(), e);
             }
         }
         return EVAL_PAGE;
