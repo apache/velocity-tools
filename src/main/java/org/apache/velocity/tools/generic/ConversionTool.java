@@ -209,7 +209,7 @@ public class ConversionTool extends LocaleConfig
             return (Integer)value;
         }
         Number num = toNumber(value);
-        return new Integer(num.intValue());
+        return Integer.valueOf(num.intValue());
     }
 
     /**

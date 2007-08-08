@@ -118,14 +118,14 @@ public class ComparisonDateTool extends DateTool
     static
     {
         Map units = new LinkedHashMap(8);
-        units.put(MILLISECOND_KEY, new Long(1));
-        units.put(SECOND_KEY, new Long(MILLIS_PER_SECOND));
-        units.put(MINUTE_KEY, new Long(MILLIS_PER_MINUTE));
-        units.put(HOUR_KEY, new Long(MILLIS_PER_HOUR));
-        units.put(DAY_KEY, new Long(MILLIS_PER_DAY));
-        units.put(WEEK_KEY, new Long(MILLIS_PER_WEEK));
-        units.put(MONTH_KEY, new Long(MILLIS_PER_MONTH));
-        units.put(YEAR_KEY, new Long(MILLIS_PER_YEAR));
+        units.put(MILLISECOND_KEY, Long.valueOf(1));
+        units.put(SECOND_KEY, Long.valueOf(MILLIS_PER_SECOND));
+        units.put(MINUTE_KEY, Long.valueOf(MILLIS_PER_MINUTE));
+        units.put(HOUR_KEY, Long.valueOf(MILLIS_PER_HOUR));
+        units.put(DAY_KEY, Long.valueOf(MILLIS_PER_DAY));
+        units.put(WEEK_KEY, Long.valueOf(MILLIS_PER_WEEK));
+        units.put(MONTH_KEY, Long.valueOf(MILLIS_PER_MONTH));
+        units.put(YEAR_KEY, Long.valueOf(MILLIS_PER_YEAR));
         TIME_UNITS = Collections.unmodifiableMap(units);
     }
 
