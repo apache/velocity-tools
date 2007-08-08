@@ -72,23 +72,18 @@ public class VelocityLayoutServlet extends VelocityViewServlet
     /**
      * The default error template's filename.
      */
-    public static String DEFAULT_ERROR_TEMPLATE = "Error.vm";
+    public static final String DEFAULT_ERROR_TEMPLATE = "Error.vm";
 
     /**
      * The default layout directory
      */
-    public static String DEFAULT_LAYOUT_DIR = "layout/";
+    public static final String DEFAULT_LAYOUT_DIR = "layout/";
 
     /**
      * The default filename for the servlet's default layout
      */
-    public static String DEFAULT_DEFAULT_LAYOUT = "Default.vm";
+    public static final String DEFAULT_DEFAULT_LAYOUT = "Default.vm";
 
-
-    //TODO? if demand for it exists, these context keys can be
-    //      made configurable by the velocity.properties
-    //      until such time, if anyone really needs to change these,
-    //      they are public and aren't final and can be altered
 
     /**
      * The context key that will hold the content of the screen.
@@ -96,26 +91,26 @@ public class VelocityLayoutServlet extends VelocityViewServlet
      * This key ($screen_content) must be present in the layout
      * template for the current screen to be rendered.
      */
-    public static String KEY_SCREEN_CONTENT = "screen_content";
+    public static final String KEY_SCREEN_CONTENT = "screen_content";
 
     /**
      * The context/parameter key used to specify an alternate
      * layout to be used for a request instead of the default layout.
      */
-    public static String KEY_LAYOUT = "layout";
+    public static final String KEY_LAYOUT = "layout";
 
 
     /**
      * The context key that holds the {@link Throwable} that
      * broke the rendering of the requested screen.
      */
-    public static String KEY_ERROR_CAUSE = "error_cause";
+    public static final String KEY_ERROR_CAUSE = "error_cause";
 
     /**
      * The context key that holds the stack trace of the error that
      * broke the rendering of the requested screen.
      */
-    public static String KEY_ERROR_STACKTRACE = "stack_trace";
+    public static final String KEY_ERROR_STACKTRACE = "stack_trace";
 
     /**
      * The context key that holds the {@link MethodInvocationException}
@@ -124,7 +119,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
      * If this value is placed in the context, then $error_cause
      * will hold the error that this invocation exception is wrapping.
      */
-    public static String KEY_ERROR_INVOCATION_EXCEPTION = "invocation_exception";
+    public static final String KEY_ERROR_INVOCATION_EXCEPTION = "invocation_exception";
 
 
     protected String errorTemplate;

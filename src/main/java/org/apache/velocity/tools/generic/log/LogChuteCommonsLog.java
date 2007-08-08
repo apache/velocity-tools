@@ -38,7 +38,15 @@ import org.apache.velocity.runtime.log.LogChute;
 public class LogChuteCommonsLog implements org.apache.commons.logging.Log
 {
 
-    protected static Log target = null;
+    private static Log target = null;
+
+    /**
+     * Allow subclasses to statically access the static target.
+     */
+    protected static Log getVelocityLog()
+    {
+        return target;
+    }
 
     /**
      * Set a VelocityEngine to handle all the log messages.

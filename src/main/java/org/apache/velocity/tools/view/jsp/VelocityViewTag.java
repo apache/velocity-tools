@@ -44,8 +44,7 @@ public class VelocityViewTag extends BodyTagSupport
     public static final String DEFAULT_NAME =
         VelocityViewTag.class.getSimpleName();
 
-    protected static int count = 0;
-
+    private static int count = 0;
     private static final long serialVersionUID = -3329444102562079189L;
 
     protected VelocityView view;
