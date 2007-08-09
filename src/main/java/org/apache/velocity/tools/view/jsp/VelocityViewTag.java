@@ -47,8 +47,8 @@ public class VelocityViewTag extends BodyTagSupport
     private static int count = 0;
     private static final long serialVersionUID = -3329444102562079189L;
 
-    protected VelocityView view;
-    protected ViewToolContext context;
+    protected transient VelocityView view;
+    protected transient ViewToolContext context;
     protected String var;
     protected String scope;
     protected String template;
