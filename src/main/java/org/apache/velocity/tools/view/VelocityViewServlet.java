@@ -92,7 +92,7 @@ public class VelocityViewServlet extends HttpServlet
         "org.apache.velocity.tools.shared.config";
     private static final long serialVersionUID = -3329444102562079189L;
 
-    private VelocityView view;
+    private transient VelocityView view;
 
     /**
      * <p>Initializes servlet and VelocityView used to process requests.
@@ -104,19 +104,8 @@ public class VelocityViewServlet extends HttpServlet
     {
         super.init(config);
 
-        // check for an init-param telling this servlet NOT
-        // to share its VelocityView with others.  by default, we
-        // play nice and share the VelocityView with the other kids.
-        String shared = findInitParameter(config, SHARED_CONFIG_PARAM);
-        if (shared == null || shared.equals("false"))
-        {
-            setVelocityView(ServletUtils.getVelocityView(config));
-        }
-        else
-        {
-            // just create our own non-shared VelocityView
-            setVelocityView(new VelocityView(config));
-        }
+        // init the VelocityView (if it hasn't been already)
+        getVelocityView();
     }
 
 
@@ -138,28 +127,37 @@ public class VelocityViewServlet extends HttpServlet
         return param;
     }
 
-    protected void setVelocityView(VelocityView view)
-    {
-        if (view == null)
-        {
-            throw new NullPointerException("VelocityView cannot be null");
-        }
-        this.view = view;
-    }
-
     protected VelocityView getVelocityView()
     {
+        if (this.view == null)
+        {
+            // check for an init-param telling this servlet NOT
+            // to share its VelocityView with others.  by default, we
+            // play nice and share the VelocityView with the other kids.
+            ServletConfig config = getServletConfig();
+            String shared = findInitParameter(config, SHARED_CONFIG_PARAM);
+            if (shared == null || shared.equals("false"))
+            {
+                this.view = ServletUtils.getVelocityView(config);
+                assert (view != null);
+            }
+            else
+            {
+                // just create our own non-shared VelocityView
+                this.view = new VelocityView(config);
+            }
+        }
         return this.view;
     }
 
     protected String getVelocityProperty(String name, String alternate)
     {
-        return this.view.getProperty(name, alternate);
+        return getVelocityView().getProperty(name, alternate);
     }
 
     protected Log getLog()
     {
-        return this.view.getLog();
+        return getVelocityView().getLog();
     }
 
     /**
@@ -220,7 +218,7 @@ public class VelocityViewServlet extends HttpServlet
     protected Context createContext(HttpServletRequest request,
                                     HttpServletResponse response)
     {
-        return view.getContext(request, response);
+        return getVelocityView().getContext(request, response);
     }
 
     protected void fillContext(Context context, HttpServletRequest request)
@@ -235,7 +233,7 @@ public class VelocityViewServlet extends HttpServlet
      *
      * <p>The default implementation is :
      * <code>
-     *    response.setContentType(view.getDefaultContentType());
+     *    response.setContentType(getVelocityView().getDefaultContentType());
      * </code>
      * where defaultContentType is set to the value of the default.contentType
      * property, or "text/html" if that was not set for the {@link VelocityView}.
@@ -247,25 +245,25 @@ public class VelocityViewServlet extends HttpServlet
     protected void setContentType(HttpServletRequest request,
                                   HttpServletResponse response)
     {
-        response.setContentType(view.getDefaultContentType());
+        response.setContentType(getVelocityView().getDefaultContentType());
     }
 
     protected Template getTemplate(HttpServletRequest request,
                                    HttpServletResponse response)
     {
-        return view.getTemplate(request, response);
+        return getVelocityView().getTemplate(request, response);
     }
 
     protected Template getTemplate(String name)
     {
-        return view.getTemplate(name);
+        return getVelocityView().getTemplate(name);
     }
 
     protected void mergeTemplate(Template template, Context context,
                                  HttpServletResponse response)
         throws IOException
     {
-        view.merge(template, context, response.getWriter());
+        getVelocityView().merge(template, context, response.getWriter());
     }
 
 
@@ -326,7 +324,7 @@ public class VelocityViewServlet extends HttpServlet
             // let's log the new exception then give up and
             // throw a runtime exception that wraps the first one
             String msg = "Exception while printing error screen";
-            view.getLog().error(msg, e2);
+            getLog().error(msg, e2);
             throw new RuntimeException(msg, e);
         }
     }
