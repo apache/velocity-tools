@@ -599,8 +599,13 @@
   <target name="test" description="Test VelocityTools" depends="test.generic,test.view">
   </target>
 
+  <!-- Code Analysis targets -->
   <target name="findbugs" description="Run FindBugs" depends="jar">
     <ant antfile="${basedir}/test.xml" target="findbugs" />
+  </target>
+
+  <target name="pmd" description="Run PMD" depends="compile">
+    <ant antfile="${basedir}/test.xml" target="pmd" />
   </target>
 
   <!-- Generic tests -->

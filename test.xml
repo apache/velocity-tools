@@ -236,4 +236,36 @@
     </findbugs>
   </target>
 
+
+  <!-- Analyze code with PMD -->
+  <target name="pmd">
+    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
+      <classpath>
+        <fileset dir="${pmd.home}/lib">
+          <include name="*.jar"/>
+        </fileset>
+      </classpath>
+    </taskdef>
+    <echo>Analyzing ${source.home}/main/java...</echo>
+    <pmd shortFilenames="true"
+         failonerror="true">
+<!-- To minimize noise keep rulesets that you are done checking here...
+-->
+      <ruleset>unusedcode</ruleset>
+      <ruleset>imports</ruleset>
+      <ruleset>braces</ruleset>
+<!-- ... and rulesets you're not ready to check here.
+      <ruleset>basic</ruleset>
+      <ruleset>strings</ruleset>
+      <ruleset>design</ruleset>
+      <ruleset>codesize</ruleset>
+-->
+      <formatter type="html"
+                 toFile="${test.build.dir}\pmd_report.html"/>
+      <fileset dir="${source.home}/main/java">
+        <include name="**/*.java"/>
+      </fileset>
+    </pmd>
+    <echo>Generated report is at ${test.build.dir}\pmd_report.html</echo>
+  </target>
 </project>
