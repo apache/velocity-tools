@@ -420,17 +420,16 @@ public class ConfigurationUtils
         }
         finally
         {
-            try
+            if (inputStream != null)
             {
-                if (inputStream != null)
+                try
                 {
                     inputStream.close();
                 }
-            }
-            catch (IOException ioe)
-            {
-                // potential memory leak here? should we throw a RuntimeException?
-                return null;
+                catch (IOException ioe)
+                {
+                    throw new RuntimeException("Could not close input stream for "+path, ioe);
+                }
             }
         }
         return config;
