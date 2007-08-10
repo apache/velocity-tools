@@ -131,7 +131,7 @@ public class SecureLinkTool extends LinkTool
             String linkString = url.toString().substring(contextPath.length());
 
             // See if link references an action somewhere in our app
-            SecureActionConfig secureConfig = getActionConfig(request, app, linkString);
+            SecureActionConfig secureConfig = getActionConfig(app, linkString);
 
             // If link is an action, find the desired port and scheme
             if (secureConfig != null &&
@@ -168,17 +168,14 @@ public class SecureLinkTool extends LinkTool
     /**
      * Finds the configuration definition for the specified action link
      *
-     * @param request the current request.
      * @param app the current ServletContext.
      * @param linkString The action we are searching for, specified as a
      *        link. (i.e. may include "..")
      * @return The SecureActionConfig object entry for this action,
      *         or null if not found
      */
-    private static SecureActionConfig getActionConfig(HttpServletRequest
-            request,
-            ServletContext app,
-            String linkString)
+    private static SecureActionConfig getActionConfig(ServletContext app,
+                                                      String linkString)
     {
         ModuleConfig moduleConfig = StrutsUtils.selectModule(linkString, app);
 
