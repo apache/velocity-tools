@@ -85,7 +85,7 @@ public class BrowserTool implements java.io.Serializable
             throw new NullPointerException("request should not be null");
         }
         userAgent = request.getHeader("User-Agent");
-        if(userAgent == null) {
+        if (userAgent == null) {
             userAgent = "";
         } else {
             userAgent = userAgent.toLowerCase();
@@ -863,7 +863,7 @@ public class BrowserTool implements java.io.Serializable
     {
         try
         {
-            if(version != null)
+            if (version != null)
             {
                 return; /* parsing of version already done */
             }
@@ -885,22 +885,28 @@ public class BrowserTool implements java.io.Serializable
                     + "[^\\s]*)" /* Throw away the remaining */
                     , Pattern.COMMENTS).matcher(userAgent);
 
-            if(v.find())
+            if (v.find())
             {
                 version = v.group(1);
                 try
                 {
                     majorVersion = Integer.parseInt(v.group(2));
                     String minor = v.group(3);
-                    if(minor.startsWith("0"))minorVersion = 0;
-                    else minorVersion = Integer.parseInt(minor);
+                    if (minor.startsWith("0"))
+                    {
+                        minorVersion = 0;
+                    }
+                    else
+                    {
+                        minorVersion = Integer.parseInt(minor);
+                    }
                 }
-                catch(NumberFormatException nfe)
+                catch (NumberFormatException nfe)
                 {}
             }
 
             /* Firefox versionning */
-            if(test("firefox"))
+            if (test("firefox"))
             {
                 Matcher fx = Pattern.compile(
                         "/"
@@ -914,23 +920,29 @@ public class BrowserTool implements java.io.Serializable
                         + "[^\\s]*)" /* Throw away the remaining */
                         , Pattern.COMMENTS)
                         .matcher(userAgent);
-                if(fx.find())
+                if (fx.find())
                 {
                     version = fx.group(1);
                     try
                     {
                         majorVersion = Integer.parseInt(fx.group(2));
                         String minor = fx.group(3);
-                        if(minor.startsWith("0"))minorVersion = 0;
-                        else minorVersion = Integer.parseInt(minor);
+                        if (minor.startsWith("0"))
+                        {
+                            minorVersion = 0;
+                        }
+                        else
+                        {
+                            minorVersion = Integer.parseInt(minor);
+                        }
                     }
-                    catch(NumberFormatException nfe)
+                    catch (NumberFormatException nfe)
                     {}
                 }
             }
 
             /* IE versionning */
-            if(test("compatible"))
+            if (test("compatible"))
             {
                 Matcher ie = Pattern.compile(
                         "compatible;"
@@ -950,23 +962,29 @@ public class BrowserTool implements java.io.Serializable
                         + "[^\\s]*)" /* Throw away remaining dots and digits */
                         , Pattern.COMMENTS)
                         .matcher(userAgent);
-                if(ie.find())
+                if (ie.find())
                 {
                     version = ie.group(1);
                     try
                     {
                         majorVersion = Integer.parseInt(ie.group(2));
                         String minor = ie.group(3);
-                        if(minor.startsWith("0"))minorVersion = 0;
-                        else minorVersion = Integer.parseInt(minor);
+                        if (minor.startsWith("0"))
+                        {
+                            minorVersion = 0;
+                        }
+                        else
+                        {
+                            minorVersion = Integer.parseInt(minor);
+                        }
                     }
-                    catch(NumberFormatException nfe)
+                    catch (NumberFormatException nfe)
                     {}
                 }
             }
 
             /* Safari versionning*/
-            if(getSafari())
+            if (getSafari())
             {
                 Matcher safari = Pattern.compile(
                         "safari/"
@@ -980,7 +998,7 @@ public class BrowserTool implements java.io.Serializable
                         /* Minor version number is digits after first dot */
                         , Pattern.COMMENTS)
                         .matcher(userAgent);
-                if(safari.find())
+                if (safari.find())
                 {
                     version = safari.group(1);
                     try
@@ -989,13 +1007,13 @@ public class BrowserTool implements java.io.Serializable
                         majorVersion = sv / 100;
                         minorVersion = sv % 100;
                     }
-                    catch(NumberFormatException nfe)
+                    catch (NumberFormatException nfe)
                     {}
                 }
             }
 
             /* Gecko-powered Netscape (i.e. Mozilla) versions */
-            if(getGecko() && getNetscape() && test("netscape"))
+            if (getGecko() && getNetscape() && test("netscape"))
             {
                 Matcher netscape = Pattern.compile(
                         "netscape/"
@@ -1009,23 +1027,29 @@ public class BrowserTool implements java.io.Serializable
                         + "[^\\s]*)" /* Throw away the remaining */
                         , Pattern.COMMENTS)
                         .matcher(userAgent);
-                if(netscape.find())
+                if (netscape.find())
                 {
                     version = netscape.group(1);
                     try
                     {
                         majorVersion = Integer.parseInt(netscape.group(2));
                         String minor = netscape.group(3);
-                        if(minor.startsWith("0"))minorVersion = 0;
-                        else minorVersion = Integer.parseInt(minor);
+                        if (minor.startsWith("0"))
+                        {
+                            minorVersion = 0;
+                        }
+                        else
+                        {
+                            minorVersion = Integer.parseInt(minor);
+                        }
                     }
-                    catch(NumberFormatException nfe)
+                    catch (NumberFormatException nfe)
                     {}
                 }
             }
 
             /* last try if version not found */
-            if(version == null)
+            if (version == null)
             {
                 Matcher mv = Pattern.compile(
                         "[\\w]+/"
@@ -1034,7 +1058,7 @@ public class BrowserTool implements java.io.Serializable
                         /* Major version number is every digit before the first dot */
                         , Pattern.COMMENTS)
                         .matcher(userAgent);
-                if(mv.find())
+                if (mv.find())
                 {
                     version = mv.group(1);
                     try
@@ -1042,33 +1066,39 @@ public class BrowserTool implements java.io.Serializable
                         majorVersion = Integer.parseInt(version);
                         minorVersion = 0;
                     }
-                    catch(NumberFormatException nfe)
+                    catch (NumberFormatException nfe)
                     {}
                 }
             }
 
             /* gecko engine version */
-            if(getGecko())
+            if (getGecko())
             {
             	Matcher g = Pattern.compile(
                         "\\([^)]*rv:(([\\d]*)\\.([\\d]*).*?)\\)"
                         ).matcher(userAgent);
-                if(g.find())
+                if (g.find())
                 {
                     geckoVersion = g.group(1);
                     try
                     {
                     	geckoMajorVersion = Integer.parseInt(g.group(2));
                     	String minor = g.group(3);
-                        if(minor.startsWith("0"))geckoMinorVersion = 0;
-                        else geckoMinorVersion = Integer.parseInt(minor);
+                        if (minor.startsWith("0"))
+                        {
+                            geckoMinorVersion = 0;
+                        }
+                        else
+                        {
+                            geckoMinorVersion = Integer.parseInt(minor);
+                        }
                     }
-                    catch(NumberFormatException nfe)
+                    catch (NumberFormatException nfe)
                     {}
                 }
             }
         }
-        catch(PatternSyntaxException nfe)
+        catch (PatternSyntaxException nfe)
         {
             // where should I log ?!
         }
