@@ -198,9 +198,11 @@ public class SortTool
         List properties;
         int[] sortTypes;
 
-        public PropertiesComparator(List properties)
+        public PropertiesComparator(List props)
         {
-            this.properties = properties;
+            // copy the list so we can safely drop :asc and :desc suffixes
+            this.properties = new ArrayList(props.size());
+            this.properties.addAll(props);
 
             // determine ascending/descending
             sortTypes = new int[properties.size()];
