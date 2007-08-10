@@ -22,7 +22,6 @@ package org.apache.velocity.tools.view;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletContext;
@@ -32,7 +31,6 @@ import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
-import org.apache.velocity.tools.generic.ValueParser;
 import org.apache.velocity.tools.view.ServletUtils;
 
 /**

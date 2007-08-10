@@ -19,9 +19,7 @@ package org.apache.velocity.tools.view.servlet;
  * under the License.
  */
 
-import javax.servlet.http.HttpServletRequest;
 import org.apache.velocity.tools.view.ViewToolInfo;
-
 
 /**
  * <p>ToolInfo implementation that holds scope information for tools

@@ -19,7 +19,6 @@ package org.apache.velocity.tools.struts;
  * under the License.
  */
 
-import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;

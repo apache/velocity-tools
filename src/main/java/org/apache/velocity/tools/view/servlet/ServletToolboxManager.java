@@ -20,8 +20,6 @@ package org.apache.velocity.tools.view.servlet;
  */
 
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;

@@ -20,9 +20,7 @@ package org.apache.velocity.tools.generic.log;
  */
 
 import org.apache.velocity.app.Velocity;
-import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.log.Log;
-import org.apache.velocity.runtime.log.LogChute;
 
 /**
  * Redirects commons-logging messages to Velocity's configured LogChute.

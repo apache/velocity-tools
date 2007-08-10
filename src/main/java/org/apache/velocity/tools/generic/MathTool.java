@@ -22,8 +22,6 @@ package org.apache.velocity.tools.generic;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.velocity.tools.ConversionUtils;
 import org.apache.velocity.tools.config.DefaultKey;

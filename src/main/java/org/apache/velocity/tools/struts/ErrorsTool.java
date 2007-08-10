@@ -19,7 +19,6 @@ package org.apache.velocity.tools.struts;
  * under the License.
  */
 
-import java.util.Map;
 import org.apache.struts.action.ActionMessages;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
