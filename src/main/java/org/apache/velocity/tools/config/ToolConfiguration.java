@@ -20,7 +20,6 @@ package org.apache.velocity.tools.config;
  */
 
 import java.lang.reflect.Method;
-import java.util.Map;
 import org.apache.velocity.tools.OldToolInfo;
 import org.apache.velocity.tools.ToolInfo;
 import org.apache.velocity.tools.ClassUtils;

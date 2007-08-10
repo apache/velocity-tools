@@ -19,9 +19,7 @@ package org.apache.velocity.tools;
  * under the License.
  */
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.apache.velocity.tools.config.Data;
 import org.apache.velocity.tools.config.FactoryConfiguration;

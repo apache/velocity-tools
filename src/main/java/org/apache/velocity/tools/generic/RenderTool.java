@@ -20,7 +20,6 @@ package org.apache.velocity.tools.generic;
  */
 
 import java.io.StringWriter;
-import java.util.Map;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;

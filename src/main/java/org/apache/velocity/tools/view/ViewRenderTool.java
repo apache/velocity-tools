@@ -20,7 +20,6 @@ package org.apache.velocity.tools.view;
  */
 
 import org.apache.velocity.context.Context;
-import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.InvalidScope;
 import org.apache.velocity.tools.generic.RenderTool;
 

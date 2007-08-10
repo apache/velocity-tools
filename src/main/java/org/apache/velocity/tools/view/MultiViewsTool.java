@@ -23,7 +23,6 @@ import java.util.Locale;
 import java.util.Map;
 import javax.servlet.ServletContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;

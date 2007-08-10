@@ -20,7 +20,6 @@ package org.apache.velocity.tools.generic;
  */
 
 import java.util.List;
-import java.util.Map;
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
