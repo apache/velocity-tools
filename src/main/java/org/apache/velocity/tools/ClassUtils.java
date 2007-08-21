@@ -21,7 +21,9 @@ package org.apache.velocity.tools;
 
 import java.io.InputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -291,6 +293,30 @@ public class ClassUtils
         }
         // otherwise, return null
         return null;
+    }
+
+    public static Object getFieldValue(String fieldPath)
+        throws ClassNotFoundException, NoSuchFieldException,
+               SecurityException, IllegalAccessException
+    {
+        int lastDot = fieldPath.lastIndexOf('.');
+        String classname = fieldPath.substring(0, lastDot);
+        String fieldname = fieldPath.substring(lastDot + 1, fieldPath.length());
+
+        Class clazz = getClass(classname);
+        return getFieldValue(clazz, fieldname);
+    }
+
+    public static Object getFieldValue(Class clazz, String fieldname)
+        throws NoSuchFieldException, SecurityException, IllegalAccessException
+    {
+        Field field = clazz.getField(fieldname);
+        int mod = field.getModifiers();
+        if (!Modifier.isStatic(mod))
+        {
+            throw new UnsupportedOperationException("Field "+fieldname+" in class "+clazz.getName()+" is not static.  Only static fields are supported.");
+        }
+        return field.get(null);
     }
 
 }
