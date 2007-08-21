@@ -33,6 +33,7 @@ import org.apache.velocity.tools.generic.AlternatorTool;
 import org.apache.velocity.tools.generic.ComparisonDateTool;
 import org.apache.velocity.tools.generic.DateTool;
 import org.apache.velocity.tools.generic.EscapeTool;
+import org.apache.velocity.tools.generic.FieldTool;
 import org.apache.velocity.tools.generic.MathTool;
 import org.apache.velocity.tools.generic.NumberTool;
 import org.apache.velocity.tools.generic.ResourceTool;
@@ -125,6 +126,36 @@ public class GenericToolsTests {
         assertEquals("\uf00b", escapeTool.unicode("f00b"));
         assertEquals("\u1010", escapeTool.unicode("\\u1010"));
         assertEquals("\u1111", escapeTool.unicode(1111));
+    }
+
+    public static String MUTABLE_FIELD = "foo";
+
+    public @Test void testFieldTool() {
+        FieldTool fieldTool = (FieldTool)toolbox.get("field");
+        assertNotNull(fieldTool);
+
+        // read a constant from the configured included Class
+        assertEquals(Integer.MAX_VALUE, fieldTool.get("MAX_VALUE"));
+
+        // read a constant from java.lang.Boolean and make sure it is the same
+        assertSame(Boolean.TRUE, fieldTool.in("java.lang.Boolean").get("TRUE"));
+
+        // tell it to read constants from a non-existant class
+        // (which should return null)
+        assertNull(fieldTool.in("no.such.Class"));
+
+        // tell field tool to read constants from this instance's Class
+        // (which should NOT return null)
+        assertNotNull(fieldTool.in(this));
+        assertEquals(MUTABLE_FIELD, fieldTool.get("MUTABLE_FIELD"));
+        // grab the mutable field
+        String foo = MUTABLE_FIELD;
+        // change it
+        MUTABLE_FIELD = MUTABLE_FIELD + MUTABLE_FIELD;
+        // make sure it changed
+        assertFalse(foo.equals(MUTABLE_FIELD));
+        // make sure the fieldtool recognized that it changed
+        assertEquals(MUTABLE_FIELD, fieldTool.get("MUTABLE_FIELD"));
     }
 
     public @Test void testMathTool() {

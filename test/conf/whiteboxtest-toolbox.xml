@@ -24,6 +24,8 @@
         <tool class="org.apache.velocity.tools.generic.ComparisonDateTool"
             format="yyyy-MM-dd" skip="month"/>
         <tool class="org.apache.velocity.tools.generic.EscapeTool"/>
+        <tool class="org.apache.velocity.tools.generic.FieldTool"
+            include="java.lang.Integer"/>
         <tool class="org.apache.velocity.tools.generic.MathTool"/>
         <tool class="org.apache.velocity.tools.generic.NumberTool"/>
         <tool class="org.apache.velocity.tools.generic.ResourceTool" locale="en_US"/>
