@@ -146,7 +146,6 @@ public class FieldTool extends AbstractLockConfig
             }
             catch (Exception e)
             {
-System.out.println(""+e);e.printStackTrace();
                 if (log != null)
                 {
                     log.debug("Unable to retrieve value of field at "+name, e);
