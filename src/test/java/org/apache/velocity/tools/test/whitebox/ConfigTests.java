@@ -216,6 +216,16 @@ public class ConfigTests {
         assertValid(datum);
         assertEquals(datum.getConvertedValue(), Boolean.TRUE);
 
+        // check valid field type
+        datum.setValue("java.lang.Boolean.TRUE");
+        datum.setType("field");
+        assertValid(datum);
+        assertSame(datum.getConvertedValue(), Boolean.TRUE);
+
+        // check invalid field value
+        datum.setValue("blahblah");
+        assertInvalid(datum);
+
         // check number type
         datum.setValue("3.16");
         datum.setType("number");
@@ -249,12 +259,17 @@ public class ConfigTests {
         three.set(2, new Integer(3));
         assertEquals(datum.getConvertedValue(), three);
 
-        // and finally, a list of booleans
+        // and a list of booleans
         datum.setType("list.boolean");
         datum.setValue("true,false");
         List two = new ArrayList(2);
         two.add(Boolean.TRUE);
         two.add(Boolean.FALSE);
+        assertEquals(datum.getConvertedValue(), two);
+
+        // and a list of fields
+        datum.setType("list.field");
+        datum.setValue("java.lang.Boolean.TRUE,java.lang.Boolean.FALSE");
         assertEquals(datum.getConvertedValue(), two);
 
         //TODO: test converter/target class stuff

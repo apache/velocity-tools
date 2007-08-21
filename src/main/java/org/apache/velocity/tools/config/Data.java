@@ -243,6 +243,11 @@ public class Data
             dc.setTarget(String.class);
             dc.setConverter(new StringConverter());
         }
+        else if (type.equals("field"))
+        {
+            dc.setTarget(Object.class);
+            dc.setConverter(new FieldConverter());
+        }
         else
         {
             return null;
@@ -349,6 +354,22 @@ public class Data
                     }
                     return convertedList;
                 }
+            }
+        }
+    }
+
+    protected static class FieldConverter implements Converter
+    {
+        public Object convert(Class type, Object value)
+        {
+            String fieldpath = (String)value;
+            try
+            {
+                return ClassUtils.getFieldValue(fieldpath);
+            }
+            catch (Exception e)
+            {
+                throw new IllegalArgumentException("Could not retrieve value for field at "+fieldpath, e);
             }
         }
     }
