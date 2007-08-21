@@ -136,6 +136,23 @@ public class FieldTool extends AbstractLockConfig
         {
             return ((MutableField)o).getValue();
         }
+        // if we have no value and the name looks like a path
+        else if (o == null && name.indexOf('.') > 0)
+        {
+            // treat the name as a full fieldpath
+            try
+            {
+                return ClassUtils.getFieldValue(name);
+            }
+            catch (Exception e)
+            {
+System.out.println(""+e);e.printStackTrace();
+                if (log != null)
+                {
+                    log.debug("Unable to retrieve value of field at "+name, e);
+                }
+            }
+        }
         // otherwise, we should have stored the value directly
         return o;
     }

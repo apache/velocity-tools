@@ -156,6 +156,9 @@ public class GenericToolsTests {
         assertFalse(foo.equals(MUTABLE_FIELD));
         // make sure the fieldtool recognized that it changed
         assertEquals(MUTABLE_FIELD, fieldTool.get("MUTABLE_FIELD"));
+
+        // pass a full field path to the get() method
+        assertEquals(Long.MIN_VALUE, fieldTool.get("java.lang.Long.MIN_VALUE"));
     }
 
     public @Test void testMathTool() {
