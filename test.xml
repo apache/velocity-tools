@@ -109,7 +109,10 @@
       includes="**/whitebox/*.java"
       source="${test.compile.source}"
       target="${test.compile.target}"
-      classpathref="test.classpath"/>
+      classpathref="test.classpath">
+      <include name="*.java"/>
+      <include name="**/whitebox/*.java"/>
+    </javac>
     <!-- copy non-java resources -->
     <copy todir="${test.classes.dir}">
       <fileset dir="${test.build.src.dir}" excludes="**/*.java"/>

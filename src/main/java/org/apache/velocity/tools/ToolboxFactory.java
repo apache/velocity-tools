@@ -76,7 +76,7 @@ public class ToolboxFactory
             }
 
             // then add the properties for this toolbox
-            Map<String,Object> newToolboxProps = toolbox.getProperties();
+            Map<String,Object> newToolboxProps = toolbox.getPropertyMap();
             putProperties(scope, newToolboxProps);
 
             // now go thru all toolinfo for this scope old and new
@@ -90,7 +90,7 @@ public class ToolboxFactory
 
         // now set all the factory-level properties
         // new ones will override old ones
-        Map<String,Object> newGlobalProps = config.getProperties();
+        Map<String,Object> newGlobalProps = config.getPropertyMap();
         putGlobalProperties(newGlobalProps);
 
         // now go thru all toolboxes in this factory

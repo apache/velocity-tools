@@ -158,6 +158,14 @@ public class ConfigTests {
         assertConfigEquals(getBaseConfig(), easy);
     }
 
+    public @Test void testToolsClassConfig()
+    {
+        FactoryConfiguration java = ConfigurationUtils.getFromClass("tools");
+
+        assertValid(java);
+        assertConfigEquals(getBaseConfig(), java);
+    }
+
     public @Test void testDefaultConfig()
     {
         FactoryConfiguration def = ConfigurationUtils.getDefaultTools();
@@ -284,17 +292,17 @@ public class ConfigTests {
         // add and retrieve a simple string property
         conf.setProperty("string", "whatever");
         assertValid(conf);
-        assertEquals("whatever", conf.getProperty("string"));
+        assertEquals("whatever", conf.getProperty("string").getValue());
 
         // add and retrieve a simple boolean property
         conf.setProperty("boolean", "true");
         assertValid(conf);
-        assertEquals(Boolean.TRUE, conf.getProperty("boolean"));
+        assertEquals(Boolean.TRUE, conf.getProperty("boolean").getConvertedValue());
 
         // add and retrieve an arbitrary object property
         conf.setProperty("testclass", this);
         assertValid(conf);
-        assertSame(this, conf.getProperty("testclass"));
+        assertSame(this, conf.getProperty("testclass").getValue());
 
         //TODO: test adding convertable properties
     }

@@ -267,7 +267,7 @@ public class ToolConfiguration extends Configuration
         info.restrictTo(getRestrictTo());
         // it's ok to use this here, because we know it's the
         // first time properties have been added to this ToolInfo
-        info.addProperties(getProperties());
+        info.addProperties(getPropertyMap());
         return info;
     }
 
@@ -313,6 +313,54 @@ public class ToolConfiguration extends Configuration
         }
     }
 
+    @Override
+    public int compareTo(Configuration conf)
+    {
+        if (!(conf instanceof ToolConfiguration))
+        {
+            throw new UnsupportedOperationException("ToolConfigurations can only be compared to other ToolConfigurations");
+        }
+
+        ToolConfiguration tool = (ToolConfiguration)conf;
+        if (getKey() == null && tool.getKey() == null)
+        {
+            return 0;
+        }
+        else if (getKey() == null)
+        {
+            return -1;
+        }
+        else if (tool.getKey() == null)
+        {
+            return 1;
+        }
+        else
+        {
+            return getKey().compareTo(tool.getKey());
+        }
+    }
+
+    @Override
+    public int hashCode()
+    {
+        if (getKey() == null)
+        {
+            return super.hashCode();
+        }
+        return getKey().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (getKey() == null || !(obj instanceof ToolConfiguration))
+        {
+            return super.equals(obj);
+        }
+        return getKey().equals(((ToolConfiguration)obj).getKey());
+    }
+
+    @Override
     public String toString()
     {
         StringBuilder out = new StringBuilder();

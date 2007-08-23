@@ -22,6 +22,9 @@ package org.apache.velocity.tools.config;
 import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -166,7 +169,7 @@ public class ConfigurationUtils
             auto = new FactoryConfiguration();
         }
 
-        //TODO: look for any ToolsConfig classes in the root of the classpath
+        //TODO: look for any Tools classes in the root of the classpath
 
         // look for all tools.xml in the classpath
         FactoryConfiguration cpXml = findInClasspath(AUTOLOADED_XML_PATH);
@@ -388,7 +391,7 @@ public class ConfigurationUtils
     public static FactoryConfiguration read(URL url)
     {
         FileFactoryConfiguration config = null;
-        String path = url.getPath();
+        String path = url.toString();
         if (path.endsWith(".xml"))
         {
             config = new XmlFactoryConfiguration();
@@ -397,9 +400,13 @@ public class ConfigurationUtils
         {
             config = new PropertiesFactoryConfiguration();
         }
-        //TODO: should/could we somehow handle *.class files?
-        //      we could just convert URL to FQN, load the class
-        //      and look for a getConfiguration() method
+        else if (path.endsWith(".class"))
+        {
+            // convert the url to a FQN
+            String fqn = path.substring(0, path.indexOf('.')).replace('/','.');
+            // retrieve a configuration from that class
+            return getFromClass(fqn);
+        }
         else
         {
             String msg = "Unknown configuration file type: " + url.toString() +
@@ -433,6 +440,78 @@ public class ConfigurationUtils
             }
         }
         return config;
+    }
+
+    public static FactoryConfiguration getFromClass(String classname)
+    {
+        try
+        {
+            Class configFactory = ClassUtils.getClass(classname);
+            return getFromClass(configFactory);
+        }
+        catch (ClassNotFoundException cnfe)
+        {
+            throw new IllegalArgumentException("Could not find class "+classname, cnfe);
+        }
+    }
+
+    public static final String CONFIG_FACTORY_METHOD = "getConfiguration";
+    public static FactoryConfiguration getFromClass(Class factory)
+    {
+        //TODO: look for a getConfiguration() method
+        Method getConf = null;
+        try
+        {
+            // check for a public setup(Map) method first
+            getConf = factory.getMethod(CONFIG_FACTORY_METHOD, (Class[])null);
+        }
+        catch (NoSuchMethodException nsme)
+        {
+            throw new IllegalArgumentException("Could not find "+CONFIG_FACTORY_METHOD+" in class "+factory.getName(), nsme);
+        }
+
+        // get an instance if the method is not static
+        Object instance = null;
+        if (!Modifier.isStatic(getConf.getModifiers()))
+        {
+            try
+            {
+                instance = factory.newInstance();
+            }
+            catch (Exception e)
+            {
+                throw new IllegalArgumentException(factory.getName()+" must have usable default constructor or else "+CONFIG_FACTORY_METHOD+" must be declared static", e);
+            }
+        }
+
+        // invoke the method
+        try
+        {
+            FactoryConfiguration result =
+                (FactoryConfiguration)getConf.invoke(instance, (Object[])null);
+            if (result == null)
+            {
+                throw new IllegalArgumentException("Method "+CONFIG_FACTORY_METHOD+" in class "+factory.getName()+" should not return null or void");
+            }
+            else
+            {
+                return result;
+            }
+        }
+        catch (IllegalAccessException iae)
+        {
+            throw new IllegalArgumentException("Failed to invoke "+CONFIG_FACTORY_METHOD+" in class "+factory.getName(), iae);
+        }
+        catch (IllegalArgumentException iae)
+        {
+            // if this happens, it's more a problem w/this code than the users
+            throw iae;
+        }
+        catch (InvocationTargetException ite)
+        {
+            // if this happens, it's all their issue
+            throw new IllegalArgumentException("There was an exception while executing "+CONFIG_FACTORY_METHOD+" in class "+factory.getName(), ite.getCause());
+        }
     }
 
 }
