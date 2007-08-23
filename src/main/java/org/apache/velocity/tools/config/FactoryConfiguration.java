@@ -19,13 +19,14 @@ package org.apache.velocity.tools.config;
  * under the License.
  */
 
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.Collection;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import org.apache.velocity.tools.ToolboxFactory;
 
 /**
- * //TODO: add ability to log all this stuff
+ * //TODO: add ability to log all this stuff and/or 
+ *         keep a running, ordered list of sources
  *
  * @author Nathan Bubna
  * @version $Id: FactoryConfiguration.java 511959 2007-02-26 19:24:39Z nbubna $
@@ -33,27 +34,20 @@ import org.apache.velocity.tools.ToolboxFactory;
 public class FactoryConfiguration
     extends CompoundConfiguration<ToolboxConfiguration>
 {
-    private Set<Data> data = new LinkedHashSet<Data>();
+    private SortedSet<Data> data = new TreeSet<Data>();
 
-
-    @Override
-    protected ToolboxConfiguration findMatchingChild(ToolboxConfiguration newToolbox)
+    public void addData(Data newDatum)
     {
-        for (ToolboxConfiguration toolbox : getToolboxes())
+        // check if we already have a matching datum
+        Data datum = getData(newDatum);
+        if (datum != null)
         {
-            // matching scope means matching toolbox
-            if (newToolbox.getScope().equals(toolbox.getScope()))
-            {
-                return toolbox;
-            }
+            // newer overrides older, so...
+            // remove the old datum
+            removeData(datum);
         }
-        return null;
-    }
-
-
-    public void addData(Data datum)
-    {
-        data.add(datum);
+        // add the new datum
+        data.add(newDatum);
     }
 
     public boolean removeData(Data datum)
@@ -63,9 +57,17 @@ public class FactoryConfiguration
 
     public Data getData(String key)
     {
-        for (Data datum : getData())
+        // create an example to search with
+        Data findme = new Data();
+        findme.setKey(key);
+        return getData(findme);
+    }
+
+    public Data getData(Data findme)
+    {
+        for (Data datum : data)
         {
-            if (key.equals(datum.getKey()))
+            if (datum.equals(findme))
             {
                 return datum;
             }
@@ -73,9 +75,22 @@ public class FactoryConfiguration
         return null;
     }
 
-    public Set<Data> getData()
+    public boolean hasData()
+    {
+        return !data.isEmpty();
+    }
+
+    public SortedSet<Data> getData()
     {
         return data;
+    }
+
+    public void setData(Collection<Data> data)
+    {
+        for (Data datum : data)
+        {
+            addData(datum);
+        }
     }
 
     public void addToolbox(ToolboxConfiguration toolbox)
@@ -100,36 +115,23 @@ public class FactoryConfiguration
         return null;
     }
 
-    public List<ToolboxConfiguration> getToolboxes()
+    public SortedSet<ToolboxConfiguration> getToolboxes()
     {
         return getChildren();
     }
 
+    public void setToolboxes(Collection<ToolboxConfiguration> toolboxes)
+    {
+        setChildren(toolboxes);
+    }
+
     public void addConfiguration(FactoryConfiguration config)
     {
-        // add config's properties to ours
+        // add config's Data to our own
+        setData(config.getData());
+
+        // pass to CompoundConfiguration's to add properties
         super.addConfiguration(config);
-
-        // add config's children to ours
-        for (ToolboxConfiguration newToolbox : config.getToolboxes())
-        {
-            ToolboxConfiguration child = findMatchingChild(newToolbox);
-            if (child == null)
-            {
-                addToolbox(newToolbox);
-            }
-            else
-            {
-                child.addConfiguration(newToolbox);
-            }
-        }
-
-        // add config's Data to the bottom of our Data list
-        // don't worry about duplicate data names, last one will win
-        for (Data datum : config.getData())
-        {
-            addData(datum);
-        }
     }
 
     @Override
@@ -137,9 +139,9 @@ public class FactoryConfiguration
     {
         super.validate();
 
-        for (Data data : getData())
+        for (Data datum : data)
         {
-            data.validate();
+            datum.validate();
         }
     }
 
@@ -149,10 +151,10 @@ public class FactoryConfiguration
         StringBuilder out = new StringBuilder();
         out.append("\nFactoryConfiguration ");
         appendProperties(out);
-        if (!getData().isEmpty())
+        if (hasData())
         {
             out.append("including ");
-            out.append(getData().size());
+            out.append(data.size());
             out.append(" data");
         }
         if (getToolboxes().isEmpty())
@@ -163,9 +165,9 @@ public class FactoryConfiguration
         {
             appendChildren(out, "toolboxes: \n ", "\n ");
         }
-        if (!getData().isEmpty())
+        if (hasData())
         {
-            for (Data datum : getData())
+            for (Data datum : data)
             {
                 out.append(datum);
                 out.append("\n ");

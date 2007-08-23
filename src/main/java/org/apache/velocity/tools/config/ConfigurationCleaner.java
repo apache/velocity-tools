@@ -127,7 +127,7 @@ public class ConfigurationCleaner extends LogSupport
     public void cleanProperties(Configuration config)
     {
         // go thru properties to log and remove debug ones
-        Iterator<Property> i = config.getConvertableProperties().iterator();
+        Iterator<Property> i = config.getProperties().iterator();
         while (i.hasNext())
         {
             Property prop = i.next();

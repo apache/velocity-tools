@@ -36,11 +36,19 @@ import org.apache.velocity.tools.ClassUtils;
  * @author Nathan Bubna
  * @version $Id: Data.java 511959 2007-02-26 19:24:39Z nbubna $
  */
-public class Data
+public class Data implements Comparable<Data>
 {
+    public static final String DEFAULT_TYPE = "auto";
+
     private String key;
+    private String type;
     private Object value;
     private DataConverter converter;
+
+    public Data()
+    {
+        setType(DEFAULT_TYPE);
+    }
 
     public void setKey(String key)
     {
@@ -75,7 +83,10 @@ public class Data
 
     public void setType(String type)
     {
-        // first check if it is a type we support automatically
+        // save the set type
+        this.type = type;
+
+        // first check if it is a type we support explicitly
         DataConverter dc = getDataConverter(type);
         if (dc != null)
         {
@@ -136,6 +147,11 @@ public class Data
     public String getKey()
     {
         return this.key;
+    }
+
+    public String getType()
+    {
+        return this.type;
     }
 
     public Object getValue()
@@ -220,7 +236,14 @@ public class Data
             dc = new DataConverter();
         }
 
-        if (type.equals("boolean"))
+        //TODO: support an "auto" type that tries to automatically
+        //      recognize common list, boolean, field, and number formats
+        if (type.equals("auto"))
+        {
+            dc.setTarget(Object.class);
+            dc.setConverter(new AutoConverter());
+        }
+        else if (type.equals("boolean"))
         {
             dc.setTarget(Boolean.class);
             dc.setConverter(new BooleanConverter());
@@ -255,6 +278,26 @@ public class Data
         return dc;
     }
 
+    public int compareTo(Data datum)
+    {
+        if (getKey() == null && datum.getKey() == null)
+        {
+            return 0;
+        }
+        else if (getKey() == null)
+        {
+            return -1;
+        }
+        else if (datum.getKey() == null)
+        {
+            return 1;
+        }
+        else
+        {
+            return getKey().compareTo(datum.getKey());
+        }
+    }
+
     @Override
     public int hashCode()
     {
@@ -282,7 +325,9 @@ public class Data
         out.append("Data '");
         out.append(key);
         out.append('\'');
-        out.append(" -> ");
+        out.append(" -");
+        out.append(type);
+        out.append("-> ");
         out.append(value);
         return out.toString();
     }
@@ -371,6 +416,30 @@ public class Data
             {
                 throw new IllegalArgumentException("Could not retrieve value for field at "+fieldpath, e);
             }
+        }
+    }
+
+    protected static class AutoConverter implements Converter
+    {
+        public Object convert(Class type, Object obj)
+        {
+            // only bother with strings for now
+            if (obj instanceof String)
+            {
+                String value = (String)obj;
+                //TODO: start using regexps here
+                if (value.equalsIgnoreCase("true"))
+                {
+                    return Boolean.TRUE;
+                }
+                else if (value.equalsIgnoreCase("false"))
+                {
+                    return Boolean.FALSE;
+                }
+                //TODO: handle other types
+                return value;
+            }
+            return obj;
         }
     }
 

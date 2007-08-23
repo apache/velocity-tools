@@ -19,10 +19,11 @@ package org.apache.velocity.tools.config;
  * under the License.
  */
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * 
@@ -31,73 +32,55 @@ import java.util.Map;
  * @version $Id: Configuration.java 511959 2007-02-26 19:24:39Z nbubna $
  */
 public class Configuration<T>
+    implements Comparable<Configuration<T>>
 {
-    private Map<String,Object> simpleProperties = new HashMap<String,Object>();
-    private List<Property> convertableProperties = new ArrayList<Property>();
+    private SortedSet<Property> properties = new TreeSet<Property>();
 
     public void addProperty(Property property)
     {
-        convertableProperties.add(property);
+        if (property.getName() == null)
+        {
+            throw new IllegalArgumentException("All properties must be named before they can be added to the configuration.");
+        }
+
+        // remove any currently properties with the same key
+        properties.remove(property);
+        // then add the new one
+        properties.add(property);
     }
 
     public boolean removeProperty(Property property)
     {
-        return convertableProperties.remove(property);
-    }
-
-    public List<Property> getConvertableProperties()
-    {
-        return convertableProperties;
-    }
-
-    public void setProperty(String name, String value)
-    {
-        //TODO: it could be very convenient to support some very simple
-        //      auto-conversion here, where we'd test if a string value
-        //      is "true" or "false" or "123" and convert those to boolean
-        //      or number values without it being necessary to specify type
-        if ("true".equals(value))
-        {
-            setProperty(name, Boolean.TRUE);
-        }
-        else if ("false".equals(value))
-        {
-            setProperty(name, Boolean.FALSE);
-        }
-        else
-        {
-            simpleProperties.put(name, value);
-        }
+        return properties.remove(property);
     }
 
     public void setProperty(String name, Object value)
     {
-        simpleProperties.put(name, value);
+        if (name == null)
+        {
+            throw new NullPointerException("Property name cannot be null");
+        }
+
+        Property prop = new Property();
+        prop.setName(name);
+        prop.setValue(value);
+        addProperty(prop);
     }
 
-    public Object removeProperty(String name)
+    public boolean removeProperty(String name)
     {
-        return simpleProperties.remove(name);
+        Property prop = getProperty(name);
+        return properties.remove(prop);
     }
 
     public boolean hasProperties()
     {
-        return !simpleProperties.isEmpty() || !convertableProperties.isEmpty();
+        return !properties.isEmpty();
     }
 
-    public Map<String,Object> getSimpleProperties()
+    public Property getProperty(String name)
     {
-        return simpleProperties;
-    }
-
-    public Object getProperty(String name)
-    {
-        Object value = simpleProperties.get(name);
-        if (value != null)
-        {
-            return value;
-        }
-        for (Property prop : getConvertableProperties())
+        for (Property prop : properties)
         {
             if (name.equals(prop.getName()))
             {
@@ -107,35 +90,70 @@ public class Configuration<T>
         return null;
     }
 
-    public Map<String,Object> getProperties()
+    public SortedSet<Property> getProperties()
     {
-        Map<String,Object> all = new HashMap<String,Object>(simpleProperties);
-        for (Property property : getConvertableProperties())
+        return new TreeSet<Property>(properties);
+    }
+
+    public Map<String,Object> getPropertyMap()
+    {
+        Map<String,Object> map = new HashMap<String,Object>();
+        for (Property prop : properties)
         {
-            all.put(property.getName(), property.getConvertedValue());
+            map.put(prop.getName(), prop.getConvertedValue());
         }
-        return all;
+        return map;
+    }
+
+    public void setProperties(Collection<Property> props)
+    {
+        for (Property newProp : props)
+        {
+            addProperty(newProp);
+        }
     }
 
     public void addConfiguration(Configuration<T> config)
     {
-        for (Property prop : config.getConvertableProperties())
-        {
-            addProperty(prop);
-        }
-
-        Map<String,Object> simples = config.getSimpleProperties();
-        for (Map.Entry<String,Object> prop : simples.entrySet())
-        {
-            setProperty(prop.getKey(), prop.getValue());
-        }
+        setProperties(config.getProperties());
     }
 
     public void validate()
     {
-        for (Property property : getConvertableProperties())
+        for (Property property : properties)
         {
             property.validate();
+        }
+    }
+
+    public int compareTo(Configuration<T> config)
+    {
+        throw new UnsupportedOperationException("Configuration is abstract and cannot be compared.");
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return properties.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        else if (!(obj instanceof Configuration))
+        {
+            return false;
+        }
+        else
+        {
+            // they're of the same type
+            Configuration<T> that = (Configuration<T>)obj;
+            // if their properties are equal, they're equal
+            return this.properties.equals(that.properties);
         }
     }
 
@@ -143,14 +161,15 @@ public class Configuration<T>
     {
         if (hasProperties())
         {
-            Map<String,Object> props = getProperties();
             out.append("with ");
-            out.append(props.size());
+            out.append(properties.size());
             out.append(" properties [");
-            for (Map.Entry<String,Object> prop : props.entrySet())
+            for (Property prop : properties)
             {
                 out.append(prop.getKey());
-                out.append(" => ");
+                out.append(" -");
+                out.append(prop.getType());
+                out.append("-> ");
                 out.append(prop.getValue());
                 out.append("; ");
             }

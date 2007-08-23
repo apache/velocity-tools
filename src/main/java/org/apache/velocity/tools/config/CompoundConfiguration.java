@@ -19,8 +19,9 @@ package org.apache.velocity.tools.config;
  * under the License.
  */
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * 
@@ -31,11 +32,36 @@ import java.util.List;
 public class CompoundConfiguration<C extends Configuration>
     extends Configuration<C>
 {
-    private List<C> children = new ArrayList<C>();
+    private SortedSet<C> children = new TreeSet<C>();
 
-    protected void addChild(C config)
+    protected void addChild(C newKid)
     {
-        children.add(config);
+        // check if we already have a matching child
+        C child = getChild(newKid);
+        if (child != null)
+        {
+            // compound children can just have the new props and kids
+            // added to the old ones, we don't need to replace the old
+            if (child instanceof CompoundConfiguration)
+            {
+                ((CompoundConfiguration)child)
+                    .addConfiguration((CompoundConfiguration)newKid);
+            }
+            else
+            {
+                // old non-compound configurations should copy their props
+                // to the new one and then be replaced by the new one
+                newKid.addConfiguration(child);
+                // remove the old kid
+                removeChild(child);
+                children.add(newKid);
+            }
+        }
+        else
+        {
+            // simply adopt the new kid
+            children.add(newKid);
+        }
     }
 
     protected boolean removeChild(C config)
@@ -48,36 +74,38 @@ public class CompoundConfiguration<C extends Configuration>
         return !children.isEmpty();
     }
 
-    protected List<C> getChildren()
+    protected SortedSet<C> getChildren()
     {
         return children;
     }
 
-    protected C findMatchingChild(C child)
+    protected void setChildren(Collection<C> kids)
     {
-        // no matches in this implementation
+        for (C kid : kids)
+        {
+            addChild(kid);
+        }
+    }
+
+    protected C getChild(C kid)
+    {
+        for (C child : children)
+        {
+            if (child.equals(kid))
+            {
+                return child;
+            }
+        }
         return null;
     }
 
     public void addConfiguration(CompoundConfiguration<C> config)
     {
+        // add config's children to our own
+        setChildren(config.getChildren());
+
         // add config's properties to ours
         super.addConfiguration(config);
-
-        for (C newKid : config.getChildren())
-        {
-            C child = findMatchingChild(newKid);
-            if (child == null)
-            {
-                // directly adopt the new kid
-                addChild(newKid);
-            }
-            else
-            {
-                // newKid isn't that new, just add new config
-                child.addConfiguration(newKid);
-            }
-        }
     }
 
     @Override
@@ -85,7 +113,7 @@ public class CompoundConfiguration<C extends Configuration>
     {
         super.validate();
 
-        for (C child : getChildren())
+        for (C child : children)
         {
             child.validate();
         }
@@ -103,14 +131,38 @@ public class CompoundConfiguration<C extends Configuration>
             {
                 out.append(" with ");
             }
-            out.append(getChildren().size());
+            out.append(children.size());
             out.append(' ');
             out.append(childrenName);
-            for (C child : getChildren())
+            for (C child : children)
             {
                 out.append(child);
                 out.append(childDelim);
             }
+        }
+    }
+
+    @Override
+    public int hashCode()
+    {
+        // add the super's and the kid's
+        return super.hashCode() + children.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        // must be of this type and have super.equals() be true
+        if (!(obj instanceof CompoundConfiguration) || !super.equals(obj))
+        {
+            return false;
+        }
+        else
+        {
+            // they're of the same type
+            CompoundConfiguration<C> that = (CompoundConfiguration<C>)obj;
+            // if their children are equal, they're equal
+            return this.children.equals(that.children);
         }
     }
 

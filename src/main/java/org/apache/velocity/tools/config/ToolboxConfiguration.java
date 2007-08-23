@@ -19,7 +19,8 @@ package org.apache.velocity.tools.config;
  * under the License.
  */
 
-import java.util.List;
+import java.util.Collection;
+import java.util.SortedSet;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.ToolboxFactory;
 
@@ -40,54 +41,12 @@ public class ToolboxConfiguration
         setProperty("scope", this.scope);
     }
 
-    protected ToolConfiguration findMatchingChild(ToolConfiguration newTool)
-    {
-        String newKey = newTool.getKey();
-        if (newKey == null)
-        {
-            // we consider it impossible to equal null here
-            return null;
-        }
-
-        for (ToolConfiguration tool : getTools())
-        {
-            // matching key means matching tool
-            if (newKey.equals(tool.getKey()))
-            {
-                return tool;
-            }
-        }
-        return null;
-    }
-
-    public void addConfiguration(ToolboxConfiguration config)
-    {
-        // add config's properties to ours
-        super.addConfiguration(config);
-
-        // add config's children to ours
-        for (ToolConfiguration newTool : config.getTools())
-        {
-            ToolConfiguration child = findMatchingChild(newTool);
-            if (child == null)
-            {
-                addTool(newTool);
-            }
-            else
-            {
-                child.addConfiguration(newTool);
-                // also, override the classname for tools
-                String newClass = newTool.getClassname();
-                if (newClass != null)
-                {
-                    child.setClassname(newClass);
-                }
-            }
-        }
-    }
-
     public void setScope(String scope)
     {
+        if (scope == null)
+        {
+            throw new NullPointerException("Toolbox scope cannot be null");
+        }
         this.scope = scope;
 
         // ensure the scope is also set as a property of the toolbox
@@ -121,9 +80,14 @@ public class ToolboxConfiguration
         return null;
     }
 
-    public List<ToolConfiguration> getTools()
+    public SortedSet<ToolConfiguration> getTools()
     {
         return getChildren();
+    }
+
+    public void setTools(Collection<ToolConfiguration> tools)
+    {
+        setChildren(tools);
     }
 
     @Override
@@ -172,6 +136,34 @@ public class ToolboxConfiguration
                 }
             }
         }
+    }
+
+    @Override
+    public int compareTo(Configuration conf)
+    {
+        if (!(conf instanceof ToolboxConfiguration))
+        {
+            throw new UnsupportedOperationException("ToolboxConfigurations can only be compared to other ToolboxConfigurations");
+        }
+
+        ToolboxConfiguration toolbox = (ToolboxConfiguration)conf;
+        return getScope().compareTo(toolbox.getScope());
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return scope.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof ToolboxConfiguration)
+        {
+            return scope.equals(((ToolboxConfiguration)obj).scope);
+        }
+        return false;
     }
 
     public String toString()
