@@ -361,20 +361,37 @@ public class Data implements Comparable<Data>
             // only bother with strings for now
             if (obj instanceof String)
             {
-                String value = (String)obj;
-                //TODO: start using regexps here
-                if (value.equalsIgnoreCase("true"))
+                try
                 {
-                    return Boolean.TRUE;
+                    return convert((String)obj);
+                    
                 }
-                else if (value.equalsIgnoreCase("false"))
+                catch (Exception e)
                 {
-                    return Boolean.FALSE;
+                    return obj;
                 }
-                //TODO: handle other types
-                return value;
             }
             return obj;
+        }
+
+        public Object convert(String value)
+        {
+            // check if this looks like a typical boolean type
+            if (value.matches("true|false|yes|no|y|n|on|off"))
+            {
+                return new BooleanConverter().convert(Boolean.class, value);
+            }
+            // check if this looks like a typical number
+            else if (value.matches("-?[0-9]+(\\.[0-9]+)?"))
+            {
+                return new NumberConverter().convert(Number.class, value);
+            }
+            // check if this looks like a typical field
+            else if (value.matches("(\\w+\\.)+\\w+"))
+            {
+                return new FieldConverter().convert(Object.class, value);
+            }
+            return value;
         }
     }
 
@@ -395,7 +412,16 @@ public class Data implements Comparable<Data>
                 // now, let's return integers for integer values
                 else if (value.indexOf('.') < 0)
                 {
-                    num = Integer.valueOf(num.intValue());
+                    // unless, of course, we need a long
+                    if (num.doubleValue() > Integer.MAX_VALUE ||
+                        num.doubleValue() < Integer.MIN_VALUE)
+                    {
+                        num = Long.valueOf(num.longValue());
+                    }
+                    else
+                    {
+                        num = Integer.valueOf(num.intValue());
+                    }
                 }
             }
             return num;
