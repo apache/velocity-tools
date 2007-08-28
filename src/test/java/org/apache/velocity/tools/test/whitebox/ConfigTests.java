@@ -219,10 +219,37 @@ public class ConfigTests {
         datum.setValue("true");
         assertValid(datum);
 
+        // check that the default type is set
+        assertSame(datum.getType(), Data.DEFAULT_TYPE);
+
+        // check that "true" auto-converted to boolean
+        assertSame(datum.getConvertedValue(), Boolean.TRUE);
+
+        // check that "1" auto-converts to integer
+        datum.setValue("1");
+        assertEquals(datum.getConvertedValue(), Integer.valueOf(1));
+
+        // check that a really big number converts to a Long
+        datum.setValue(""+Integer.MAX_VALUE+"0");
+        assertEquals(datum.getConvertedValue().getClass(), Long.class);
+
+        // check that "1.2" auto-converts to double
+        datum.setValue("1.2");
+        assertEquals(datum.getConvertedValue(), 1.2);
+        assertEquals(datum.getConvertedValue().getClass(), Double.class);
+
+        // check that java.lang.Integer.MIN_VALUE auto-converts to the field
+        datum.setValue("java.lang.Integer.MIN_VALUE");
+        assertEquals(datum.getConvertedValue(), Integer.MIN_VALUE);
+
+        // check that "yes" also auto-converts to boolean
+        datum.setValue("yes");
+        assertSame(datum.getConvertedValue(), Boolean.TRUE);
+
         // check boolean type
         datum.setType("boolean");
         assertValid(datum);
-        assertEquals(datum.getConvertedValue(), Boolean.TRUE);
+        assertSame(datum.getConvertedValue(), Boolean.TRUE);
 
         // check valid field type
         datum.setValue("java.lang.Boolean.TRUE");
