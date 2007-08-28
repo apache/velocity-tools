@@ -22,13 +22,13 @@ package org.apache.velocity.tools.config;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.beanutils.converters.BooleanConverter;
-import org.apache.commons.beanutils.converters.DoubleConverter;
-import org.apache.commons.beanutils.converters.IntegerConverter;
 import org.apache.commons.beanutils.converters.StringConverter;
-import org.apache.velocity.tools.ToolInfo;
 import org.apache.velocity.tools.ClassUtils;
+import org.apache.velocity.tools.ConversionUtils;
+import org.apache.velocity.tools.ToolInfo;
 
 /**
  * 
@@ -43,7 +43,9 @@ public class Data implements Comparable<Data>
     private String key;
     private String type;
     private Object value;
-    private DataConverter converter;
+    private boolean isList;
+    private Class target;
+    private Converter converter;
 
     public Data()
     {
@@ -86,25 +88,57 @@ public class Data implements Comparable<Data>
         // save the set type
         this.type = type;
 
-        // first check if it is a type we support explicitly
-        DataConverter dc = getDataConverter(type);
-        if (dc != null)
+        //TODO: check if this is a list type
+        //      if auto, try to sniff
+        if (type.startsWith("list."))
         {
-            this.converter = dc;
+            // use a list converter and drop to subtype
+            this.isList = true;
+            this.target = List.class;
+            type = type.substring(5, type.length());
         }
-        else // assume it is a classname
+        else if (type.equals("list"))
         {
-            setClassname(type);
+            this.isList = true;
+            this.target = List.class;
+        }
+        else
+        {
+            this.isList = false;
+        }
+
+        //TODO: support an "auto" type that tries to automatically
+        //      recognize common list, boolean, field, and number formats
+        if (type.equals("auto"))
+        {
+            this.target = Object.class;
+            this.converter = new AutoConverter();
+        }
+        else if (type.equals("boolean"))
+        {
+            this.target = Boolean.class;
+            this.converter = new BooleanConverter();
+        }
+        else if (type.equals("number"))
+        {
+            this.target = Number.class;
+            this.converter = new NumberConverter();
+        }
+        else if (type.equals("string"))
+        {
+            this.target = String.class;
+            this.converter = new StringConverter();
+        }
+        else if (type.equals("field"))
+        {
+            this.target = Object.class;
+            this.converter = new FieldConverter();
         }
     }
 
     public void setTargetClass(Class clazz)
     {
-        if (this.converter == null)
-        {
-            this.converter = new DataConverter();
-        }
-        this.converter.setTarget(clazz);
+        this.target = clazz;
     }
 
     public void setConverter(Class clazz)
@@ -137,11 +171,7 @@ public class Data implements Comparable<Data>
      */
     public void convertWith(Converter converter)
     {
-        if (this.converter == null)
-        {
-            this.converter = new DataConverter();
-        }
-        this.converter.setConverter(converter);
+        this.converter = converter;
     }
 
     public String getKey()
@@ -161,32 +191,17 @@ public class Data implements Comparable<Data>
 
     public Class getTargetClass()
     {
-        if (this.converter == null)
-        {
-            return String.class;
-        }
-        return this.converter.getTarget();
+        return this.target;
     }
 
     public Converter getConverter()
     {
-        if (this.converter == null)
-        {
-            return null;
-        }
-        return this.converter.getConverter();
+        return this.converter;
     }
 
     public Object getConvertedValue()
     {
-        if (converter == null)
-        {
-            return this.value;
-        }
-        else
-        {
-            return this.converter.convert(getValue());
-        }
+        return convert(this.value);
     }
 
     public void validate()
@@ -206,76 +221,16 @@ public class Data implements Comparable<Data>
         {
             try
             {
-                getConvertedValue();
+                if (getConvertedValue() == null && getValue() != null)
+                {
+                    throw new ConfigurationException(this, "Conversion of "+getValue()+" for '"+getKey()+"' failed and returned null");
+                }
             }
             catch (Throwable t)
             {
                 throw new ConfigurationException(this, t);
             }
         }
-    }
-
-
-    protected DataConverter getDataConverter(String type)
-    {
-        DataConverter dc;
-        if (type.startsWith("list."))
-        {
-            // use a list converter and drop to subtype
-            dc = new ListConverter();
-            type = type.substring(5, type.length());
-        }
-        else if (type.equals("list"))
-        {
-            // then this is all we do
-            return new ListConverter();
-        }
-        else
-        {
-            // use datum converter
-            dc = new DataConverter();
-        }
-
-        //TODO: support an "auto" type that tries to automatically
-        //      recognize common list, boolean, field, and number formats
-        if (type.equals("auto"))
-        {
-            dc.setTarget(Object.class);
-            dc.setConverter(new AutoConverter());
-        }
-        else if (type.equals("boolean"))
-        {
-            dc.setTarget(Boolean.class);
-            dc.setConverter(new BooleanConverter());
-        }
-        else if (type.equals("number"))
-        {
-            if (getValue() != null && getValue().toString().indexOf('.') < 0)
-            {
-                dc.setConverter(new IntegerConverter());
-                dc.setTarget(Integer.class);
-            }
-            else
-            {
-                dc.setConverter(new DoubleConverter());
-                dc.setTarget(Double.class);
-            }
-        }
-        else if (type.equals("string"))
-        {
-            dc.setTarget(String.class);
-            dc.setConverter(new StringConverter());
-        }
-        else if (type.equals("field"))
-        {
-            dc.setTarget(Object.class);
-            dc.setConverter(new FieldConverter());
-        }
-        else
-        {
-            return null;
-        }
-        return dc;
     }
 
     public int compareTo(Data datum)
@@ -334,71 +289,51 @@ public class Data implements Comparable<Data>
 
 
 
-    protected static class DataConverter
+    protected Object convert(Object value)
     {
-        private Converter converter;
-        private Class target = String.class;
-
-        public void setConverter(Converter converter)
+        if (this.isList)
         {
-            this.converter = converter;
+            return convertList(value);
         }
-
-        public Converter getConverter()
+        else if (this.converter == null)
         {
-            return this.converter;
+            return value;
         }
-
-        public void setTarget(Class target)
+        else
         {
-            this.target = target;
-        }
-
-        public Class getTarget()
-        {
-            return this.target;
-        }
-
-        public Object convert(Object value)
-        {
-            if (this.converter == null)
-            {
-                return value;
-            }
-            else
-            {
-                return this.converter.convert(this.target, value);
-            }
+            return convertValue(value);
         }
     }
 
-    protected static class ListConverter extends DataConverter
+    private Object convertValue(Object value)
     {
-        public List convert(Object val)
+        return this.converter.convert(this.target, value);
+    }
+
+    private List convertList(Object val)
+    {
+        // we assume it is a string
+        String value = (String)val;
+        if (value == null || value.trim().length() == 0)
         {
-            // we assume it is a string
-            String value = (String)val;
-            if (value == null || value.trim().length() == 0)
+            return null;
+        }
+        else
+        {
+            //TODO: make sure this works as expected...
+            List<String> list = Arrays.asList(value.split(","));
+            if (this.converter == null || this.target.equals(String.class))
             {
-                return null;
+                return list;
             }
             else
             {
-                //TODO: make sure this works as expected...
-                List<String> list = Arrays.asList(value.split(","));
-                if (getConverter() == null || getTarget() == String.class)
+                List convertedList = new ArrayList();
+                for (String item : list)
                 {
-                    return list;
+                    convertedList.add(convertValue(item));
                 }
-                else
-                {
-                    List convertedList = new ArrayList();
-                    for (String item : list)
-                    {
-                        convertedList.add(super.convert(item));
-                    }
-                    return convertedList;
-                }
+                return convertedList;
             }
         }
     }
@@ -440,6 +375,30 @@ public class Data implements Comparable<Data>
                 return value;
             }
             return obj;
+        }
+    }
+
+    protected static class NumberConverter implements Converter
+    {
+        public Object convert(Class type, Object obj)
+        {
+            Number num = ConversionUtils.toNumber(obj);
+            if (num == null)
+            {
+                String value = String.valueOf(obj);
+                num = ConversionUtils.toNumber(value, "default",
+                                               Locale.getDefault());
+                if (num == null)
+                {
+                    throw new IllegalArgumentException("Could not convert "+obj+" to a number");
+                }
+                // now, let's return integers for integer values
+                else if (value.indexOf('.') < 0)
+                {
+                    num = Integer.valueOf(num.intValue());
+                }
+            }
+            return num;
         }
     }
 
