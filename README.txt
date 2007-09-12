@@ -2,7 +2,7 @@ R E A D M E
 ===========
 
 Welcome to the VelocityTools projects. This is a subproject of the 
-Apache Velocity project hosted at http://jakarta.apache.org/velocity/
+Apache Velocity project hosted at http://velocity.apache.org/
 The VelocityTools project contains three subprojects:
 
 
@@ -90,7 +90,7 @@ included example applications have been tested with Tomcat 5.0.30
 and Tomcat 5.5.9, but should work with any servlet engine.
 
 If you observe any problems with the build process, please report this
-to the Velocity users mailing list, velocity-user@jakarta.apache.org, and
+to the Velocity users mailing list, user@velocity.apache.org, and
 put [veltools] in the subject line.
 
 
@@ -107,7 +107,7 @@ build then project, then, point your browser at docs/index.html
 Feedback
 --------
 
-We welcome your feedback to velocity-user@jakarta.apache.org.
+We welcome your feedback to user@velocity.apache.org.
 
 
 $Revision$ $Date$
