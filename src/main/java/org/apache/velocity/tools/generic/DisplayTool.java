@@ -210,7 +210,6 @@ public class DisplayTool extends AbstractLockConfig
     {
         StringBuilder sb = new StringBuilder();
         int size = list.size();
-System.out.println("formatting "+size+" items");
         Iterator iterator = list.iterator();
         for (int i = 0; i < size; i++)
         {
