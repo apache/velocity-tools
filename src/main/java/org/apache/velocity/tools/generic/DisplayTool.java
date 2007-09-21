@@ -274,8 +274,8 @@ public class DisplayTool extends AbstractLockConfig
      * in characters. If the string gets curtailed, the specified suffix
      * is used as the ending of the truncated string.
      *
+     * @param truncateMe The value to be truncated.
      * @param maxLength An int with the maximum length.
-     * @param obj The value to be truncated.
      * @param suffix A String.
      * @return A String.
      */
@@ -292,6 +292,62 @@ public class DisplayTool extends AbstractLockConfig
             return string;
         }
         return string.substring(0, maxLength - suffix.length()) + suffix;
+    }
+
+    /**
+     * Changes the first character of the string value of the specified object
+     * to upper case and returns the resulting string.
+     *
+     * @param capitalizeMe The value to be capitalized.
+     */
+    public String capitalize(Object capitalizeMe)
+    {
+        if (capitalizeMe == null)
+        {
+            return null;
+        }
+
+        String string = String.valueOf(capitalizeMe);
+        switch (string.length())
+        {
+            case 0:
+                return string;
+            case 1:
+                return string.toUpperCase();
+            default:
+                StringBuilder out = new StringBuilder(string.length());
+                out.append(string.substring(0,1).toUpperCase());
+                out.append(string.substring(1, string.length()));
+                return out.toString();
+        }
+    }
+
+    /**
+     * Changes the first character of the string value of the specified object
+     * to lower case and returns the resulting string.
+     *
+     * @param uncapitalizeMe The value to be uncapitalized.
+     */
+    public String uncapitalize(Object uncapitalizeMe)
+    {
+        if (uncapitalizeMe == null)
+        {
+            return null;
+        }
+
+        String string = String.valueOf(uncapitalizeMe);
+        switch (string.length())
+        {
+            case 0:
+                return string;
+            case 1:
+                return string.toUpperCase();
+            default:
+                StringBuilder out = new StringBuilder(string.length());
+                out.append(string.substring(0,1).toLowerCase());
+                out.append(string.substring(1, string.length()));
+                return out.toString();
+        }
     }
 
     /**
