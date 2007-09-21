@@ -247,8 +247,9 @@
   </target>
 
   <target name="velocity-dvsl-download">
-    <property name="download.name" value="velocity-dvsl" />
+    <property name="download.name" value="dvsl" />
     <property name="download.version" value="${jar.velocity-dvsl.version}" />
+    <property name="download.path" value="org/apache/dvsl/${download.name}/${download.version}" />
     <antcall target="http-download"/>
   </target>
 
