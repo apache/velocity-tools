@@ -191,6 +191,7 @@ public class EscapeTool
         }
         return buffer.toString();
     } 
+
     /**
      * Escapes the characters in a <code>String</code> using JavaScript String rules.
      * <br />
