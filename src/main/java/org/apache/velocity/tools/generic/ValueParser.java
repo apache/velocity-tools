@@ -54,10 +54,6 @@ public class ValueParser extends ConversionTool
 
     protected Map getSource()
     {
-        if (source == null)
-        {
-            throw new NullPointerException("You must set a Map source for values to be parsed.");
-        }
         return this.source;
     }
 
@@ -91,8 +87,17 @@ public class ValueParser extends ConversionTool
         return getValue(key);
     }
 
+    /**
+     * Returns the value mapped to the specified key
+     * in the {@link Map} returned by {@link #getSource()}. If there is
+     * no source, then this will always return {@code null}.
+     */
     public Object getValue(String key)
     {
+        if (getSource() == null)
+        {
+            return null;
+        }
         return getSource().get(key);
     }
 
