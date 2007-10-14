@@ -67,7 +67,7 @@ public class ContextTool
     /**
      * The key used for specifying whether to hide keys with '.' in them.
      */
-    public static final String SAFE_MODE_KEY = "safe-mode";
+    public static final String SAFE_MODE_KEY = "safeMode";
 
     protected ViewContext context;
     protected Map toolbox;

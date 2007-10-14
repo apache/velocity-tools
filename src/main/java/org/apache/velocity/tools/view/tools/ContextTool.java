@@ -19,6 +19,7 @@ package org.apache.velocity.tools.view.tools;
  * under the License.
  */
 
+import java.util.Map;
 import org.apache.velocity.tools.view.ViewContext;
 
 /**
@@ -28,6 +29,9 @@ import org.apache.velocity.tools.view.ViewContext;
 public class ContextTool extends
     org.apache.velocity.tools.view.ContextTool
 {
+    @Deprecated
+    public static final String OLD_SAFE_MODE_KEY = "safe-mode";
+
     @Deprecated
     public void init(Object obj)
     {
@@ -39,4 +43,21 @@ public class ContextTool extends
             this.application = context.getServletContext();
         }
     }
+
+    @Override
+    public void configure(Map params)
+    {
+        if (params != null)
+        {
+            // if we find a param under the old key
+            Object oldSafeMode = params.get(OLD_SAFE_MODE_KEY);
+            if (oldSafeMode != null)
+            {
+                // copy it under the new one
+                params.put(SAFE_MODE_KEY, oldSafeMode);
+            }
+            super.configure(params);
+        }
+    }
+
 }
