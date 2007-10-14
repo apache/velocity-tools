@@ -72,7 +72,7 @@ public abstract class AbstractLockConfig
                 // to prevent templates from re-configuring this instance
                 lock = values.getBoolean(OLD_LOCK_CONFIG_KEY, Boolean.TRUE);
             }
-            configLocked = lock.booleanValue();
+            setLockConfig(lock.booleanValue());
         }
     }
 
