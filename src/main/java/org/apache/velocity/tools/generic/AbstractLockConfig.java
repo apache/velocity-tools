@@ -34,9 +34,19 @@ public abstract class AbstractLockConfig
      * The key used for specifying whether or not to prevent templates
      * from reconfiguring this tool.  The default is true.
      */
-    public static final String LOCK_CONFIG_KEY = "lock-config";
+    public static final String LOCK_CONFIG_KEY = "lockConfig";
+    @Deprecated
+    public static final String OLD_LOCK_CONFIG_KEY = "lock-config";
 
     private boolean configLocked = false;
+
+    /**
+     * Only allow subclass access to this.
+     */
+    protected void setLockConfig(boolean lock)
+    {
+        this.configLocked = lock;
+    }
 
     public boolean isConfigLocked()
     {
@@ -53,9 +63,16 @@ public abstract class AbstractLockConfig
             ValueParser values = new ValueParser(params);
             configure(values);
 
-            // by default, lock down this method after use
-            // to prevent templates from re-configuring this instance
-            configLocked = values.getBoolean(LOCK_CONFIG_KEY, true);
+            // first check under the new key
+            Boolean lock = values.getBoolean(LOCK_CONFIG_KEY);
+            if (lock == null)
+            {
+                // now check the old key (for now)
+                // by default, lock down this method after use
+                // to prevent templates from re-configuring this instance
+                lock = values.getBoolean(OLD_LOCK_CONFIG_KEY, Boolean.TRUE);
+            }
+            configLocked = lock.booleanValue();
         }
     }
 
