@@ -30,8 +30,10 @@ import org.apache.velocity.tools.config.DefaultKey;
  * Provides general utility methods for controlling the display of references.
  * Currently, this class contains methods for "pretty printing" an array or
  * {@link Collection}, methods for truncating the string value of a reference
- * at a configured or specified length, and methods for displaying an alternate
- * value when a specified value is null.  
+ * at a configured or specified length, methods for displaying an alternate
+ * value when a specified value is null, a method for generating whitespace, and
+ * methods for forcing values into "cells" of equal size (via truncation or
+ * padding with whitespace).
  *
  * <p><b>Example Use:</b>
  * <pre>
@@ -68,14 +70,18 @@ public class DisplayTool extends AbstractLockConfig
 {
     public static final String LIST_DELIM_KEY = "listDelim";
     public static final String LIST_FINAL_DELIM_KEY = "listFinalDelim";
-    public static final String TRUNCATE_MAX_LENGTH_KEY = "truncateMaxLength";
+    public static final String TRUNCATE_LENGTH_KEY = "truncateLength";
     public static final String TRUNCATE_SUFFIX_KEY = "truncateSuffix";
+    public static final String CELL_LENGTH_KEY = "cellLength";
+    public static final String CELL_SUFFIX_KEY = "cellSuffix";
     public static final String DEFAULT_ALTERNATE_KEY = "defaultAlternate";
 
     private String defaultDelim = ", ";
     private String defaultFinalDelim = " and ";
-    private int defaultMaxLength = 30;
-    private String defaultSuffix = "...";
+    private int defaultTruncateLength = 30;
+    private String defaultTruncateSuffix = "...";
+    private int defaultCellLength = 30;
+    private String defaultCellSuffix = "...";
     private String defaultAlternate = "null";
 
     /**
@@ -98,16 +104,28 @@ public class DisplayTool extends AbstractLockConfig
             setListFinalDelimiter(listFinalDelim);
         }
 
-        Integer truncateMaxLength = values.getInteger(TRUNCATE_MAX_LENGTH_KEY);
-        if (truncateMaxLength != null)
+        Integer truncateLength = values.getInteger(TRUNCATE_LENGTH_KEY);
+        if (truncateLength != null)
         {
-            setTruncateMaxLength(truncateMaxLength);
+            setTruncateLength(truncateLength);
         }
 
         String truncateSuffix = values.getString(TRUNCATE_SUFFIX_KEY);
         if (truncateSuffix != null)
         {
             setTruncateSuffix(truncateSuffix);
+        }
+
+        Integer cellLength = values.getInteger(CELL_LENGTH_KEY);
+        if (cellLength != null)
+        {
+            setCellLength(cellLength);
+        }
+
+        String cellSuffix = values.getString(CELL_SUFFIX_KEY);
+        if (cellSuffix != null)
+        {
+            setCellSuffix(cellSuffix);
         }
 
         String defaultAlternate = values.getString(DEFAULT_ALTERNATE_KEY);
@@ -117,9 +135,19 @@ public class DisplayTool extends AbstractLockConfig
         }
     }
 
+    public String getListDelimiter()
+    {
+        return this.defaultDelim;
+    }
+
     protected void setListDelimiter(String delim)
     {
         this.defaultDelim = delim;
+    }
+
+    public String getListFinalDelimiter()
+    {
+        return this.defaultFinalDelim;
     }
 
     protected void setListFinalDelimiter(String finalDelim)
@@ -127,14 +155,49 @@ public class DisplayTool extends AbstractLockConfig
         this.defaultFinalDelim = finalDelim;
     }
 
-    protected void setTruncateMaxLength(int maxlen)
+    public int getTruncateLength()
     {
-        this.defaultMaxLength = maxlen;
+        return this.defaultTruncateLength;
+    }
+
+    protected void setTruncateLength(int maxlen)
+    {
+        this.defaultTruncateLength = maxlen;
+    }
+
+    public String getTruncateSuffix()
+    {
+        return this.defaultTruncateSuffix;
     }
 
     protected void setTruncateSuffix(String suffix)
     {
-        this.defaultSuffix = suffix;
+        this.defaultTruncateSuffix = suffix;
+    }
+
+    public String getCellSuffix()
+    {
+        return this.defaultCellSuffix;
+    }
+
+    protected void setCellSuffix(String suffix)
+    {
+        this.defaultCellSuffix = suffix;
+    }
+
+    public int getCellLength()
+    {
+        return this.defaultCellLength;
+    }
+
+    protected void setCellLength(int maxlen)
+    {
+        this.defaultCellLength = maxlen;
+    }
+
+    public String getDefaultAlternate()
+    {
+        return this.defaultAlternate;
     }
 
     protected void setDefaultAlternate(String dflt)
@@ -237,7 +300,7 @@ public class DisplayTool extends AbstractLockConfig
      */
     public String truncate(Object truncateMe)
     {
-        return truncate(truncateMe, this.defaultMaxLength);
+        return truncate(truncateMe, this.defaultTruncateLength);
     }
 
     /**
@@ -251,7 +314,7 @@ public class DisplayTool extends AbstractLockConfig
      */
     public String truncate(Object truncateMe, int maxLength)
     {
-        return truncate(truncateMe, maxLength, this.defaultSuffix);
+        return truncate(truncateMe, maxLength, this.defaultTruncateSuffix);
     }
 
     /**
@@ -266,7 +329,7 @@ public class DisplayTool extends AbstractLockConfig
      */
     public String truncate(Object truncateMe, String suffix)
     {
-        return truncate(truncateMe, this.defaultMaxLength, suffix);
+        return truncate(truncateMe, this.defaultTruncateLength, suffix);
     }
 
     /**
@@ -281,7 +344,7 @@ public class DisplayTool extends AbstractLockConfig
      */
     public String truncate(Object truncateMe, int maxLength, String suffix)
     {
-        if (truncateMe == null)
+        if (truncateMe == null || maxLength <= 0)
         {
             return null;
         }
@@ -291,7 +354,97 @@ public class DisplayTool extends AbstractLockConfig
         {
             return string;
         }
+        if (suffix == null || maxLength - suffix.length() <= 0)
+        {
+            // either no need or no room for suffix
+            return string.substring(0, maxLength);
+        }
+        // truncate early and append suffix
         return string.substring(0, maxLength - suffix.length()) + suffix;
+    }
+
+    /**
+     * Returns a string of spaces of the specified length.
+     * @param length the number of spaces to return
+     */
+    public String space(int length)
+    {
+        if (length < 0)
+        {
+            return null;
+        }
+
+        StringBuilder space = new StringBuilder();
+        for (int i=0; i < length; i++)
+        {
+            space.append(' ');
+        }
+        return space.toString();
+    }
+
+    /**
+     * Truncates or pads the string value of the specified object as necessary
+     * to ensure that the returned string's length equals the default cell size.
+     * @param obj the value to be put in the 'cell'
+     */
+    public String cell(Object obj)
+    {
+        return cell(obj, this.defaultCellLength);
+    }
+
+    /**
+     * Truncates or pads the string value of the specified object as necessary
+     * to ensure that the returned string's length equals the specified cell size.
+     * @param obj the value to be put in the 'cell'
+     * @param cellsize the size of the cell into which the object must be placed
+     */
+    public String cell(Object obj, int cellsize)
+    {
+        return cell(obj, cellsize, this.defaultCellSuffix);
+    }
+
+    /**
+     * Truncates or pads the string value of the specified object as necessary
+     * to ensure that the returned string's length equals the default cell size.
+     * If truncation is necessary, the specified suffix will replace the end of
+     * the string value to indicate that.
+     * @param obj the value to be put in the 'cell'
+     * @param suffix the suffix to put at the end of any values that need truncating
+     *               to indicate that they've been truncated
+     */
+    public String cell(Object obj, String suffix)
+    {
+        return cell(obj, this.defaultCellLength, suffix);
+    }
+
+    /**
+     * Truncates or pads the string value of the specified object as necessary
+     * to ensure that the returned string's length equals the specified cell size.
+     * @param obj the value to be put in the 'cell'
+     * @param cellsize the size of the cell into which the object must be placed
+     * @param suffix the suffix to put at the end of any values that need truncating
+     *               to indicate that they've been truncated
+     */
+    public String cell(Object obj, int cellsize, String suffix)
+    {
+        if (obj == null || cellsize <= 0)
+        {
+            return null;
+        }
+
+        String value = String.valueOf(obj);
+        if (value.length() == cellsize)
+        {
+            return value;
+        }
+        else if (value.length() > cellsize)
+        {
+            return truncate(value, cellsize, suffix);
+        }
+        else
+        {
+            return value + space(cellsize - value.length());
+        }    
     }
 
     /**
