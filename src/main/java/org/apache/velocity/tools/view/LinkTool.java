@@ -61,18 +61,6 @@ import org.apache.velocity.tools.view.ServletUtils;
 @ValidScope(Scope.REQUEST)
 public class LinkTool implements Cloneable
 {
-    /**
-     * Parameter key for configuring {@link #setSelfAbsolute} state
-     * @since VelocityTools 1.3
-     */
-    public static final String SELF_ABSOLUTE_KEY = "self-absolute";
-
-    /**
-     * Parameter key for configuring {@link #setSelfIncludeParameters} state
-     * @since VelocityTools 1.3
-     */
-    public static final String SELF_INCLUDE_PARAMETERS_KEY = "self-include-parameters";
-
     /** Standard HTML delimiter for query data ('&') */
     public static final String HTML_QUERY_DELIMITER = "&";
 
@@ -322,7 +310,10 @@ public class LinkTool implements Cloneable
         }
         catch (CloneNotSupportedException e)
         {
-            LOG.warn("LinkTool : Could not properly clone " + getClass(), e);
+            if (LOG != null)
+            {
+                LOG.warn("LinkTool : Could not properly clone " + getClass(), e);
+            }
 
             // "clone" manually
             LinkTool copy;
@@ -797,8 +788,11 @@ public class LinkTool implements Cloneable
         }
         catch(UnsupportedEncodingException uee)
         {
-            LOG.error("LinkTool : Response character encoding '" + 
-                      response.getCharacterEncoding() + "' is unsupported", uee);
+            if (LOG != null)
+            {
+                LOG.error("LinkTool : Response character encoding '" + 
+                          response.getCharacterEncoding() + "' is unsupported", uee);
+            }
             return null;
         }
     }
