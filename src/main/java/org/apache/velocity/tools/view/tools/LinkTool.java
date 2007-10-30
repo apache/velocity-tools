@@ -19,6 +19,8 @@ package org.apache.velocity.tools.view.tools;
  * under the License.
  */
 
+import java.util.Map;
+import org.apache.velocity.tools.generic.ValueParser;
 import org.apache.velocity.tools.view.ViewContext;
 
 /**
@@ -27,6 +29,28 @@ import org.apache.velocity.tools.view.ViewContext;
 @Deprecated
 public class LinkTool extends org.apache.velocity.tools.view.LinkTool
 {
+    @Deprecated
+    public static final String SELF_ABSOLUTE_KEY = "self-absolute";
+
+    @Deprecated
+    public static final String SELF_INCLUDE_PARAMETERS_KEY = "self-include-parameters";
+
+    @Deprecated
+    public void configure(Map params)
+    {
+        ValueParser parser = new ValueParser(params);
+        Boolean selfAbsolute = parser.getBoolean(SELF_ABSOLUTE_KEY);
+        if (selfAbsolute != null)
+        {
+            setSelfAbsolute(selfAbsolute.booleanValue());
+        }
+        Boolean selfParams = parser.getBoolean(SELF_INCLUDE_PARAMETERS_KEY);
+        if (selfParams != null)
+        {
+            setSelfIncludeParameters(selfParams.booleanValue());
+        }
+    }
+
     @Deprecated
     public void init(Object obj)
     {
