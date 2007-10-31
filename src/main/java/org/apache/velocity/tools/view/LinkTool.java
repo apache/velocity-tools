@@ -22,6 +22,7 @@ package org.apache.velocity.tools.view;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletContext;
@@ -98,6 +99,15 @@ public class LinkTool implements Cloneable
 
     /** The self-include-parameters status */
     private boolean selfParams;
+
+    /**
+     * List of parameters that should be ignored when the current request's
+     * parameters are copied.
+     *
+     * @see #addIgnore(String)
+     * @see #addAllParameters()
+     */
+    private ArrayList<String> parametersToIgnore;
 
 
     /**
@@ -300,6 +310,36 @@ public class LinkTool implements Cloneable
 
 
     /**
+     * For internal use.
+     *
+     * Copies this LinkTool and adds the specified parameter name to the
+     * ignore list in the copy.
+     *
+     * @param parameterName The name of the parameter to ignore when
+     *                      copying all parameters from the current request.
+     * @return A new LinkTool with the specified parameterName added to the
+     *         ignore list.
+     * @see #addAllParameters()
+     * @see #addIgnore()
+     */
+    protected LinkTool copyWithIgnore(String parameterName)
+    {
+        LinkTool copy = duplicate();
+        if(copy.parametersToIgnore == null)
+        {
+            copy.parametersToIgnore = new ArrayList<String>();
+        }
+        else
+        {
+            copy.parametersToIgnore =
+                (ArrayList<String>)parametersToIgnore.clone();
+        }
+        copy.parametersToIgnore.add(parameterName);
+        return copy;
+    }
+
+
+    /**
      * This is just to avoid duplicating this code for both copyWith() methods
      */
     protected LinkTool duplicate()
@@ -336,6 +376,7 @@ public class LinkTool implements Cloneable
             copy.queryDataDelim = this.queryDataDelim;
             copy.selfAbsolute = this.selfAbsolute;
             copy.selfParams = this.selfParams;
+            copy.parametersToIgnore = this.parametersToIgnore;
             return copy;
         }
     }
@@ -610,6 +651,64 @@ public class LinkTool implements Cloneable
         return getQueryData();
     }
 
+    /**
+     * Convenience method equivalent to
+     * {@link #addIgnore(String parameterName)}.
+     * @since VelocityTools 2.0
+     */
+    public LinkTool ignore(String paramName)
+    {
+        return addIgnore(paramName);
+    }
+
+    /**
+     * Instructs this LinkTool to ignore the specified parameter when
+     * copying the current request's parameters.
+     *
+     * @param parameterName The name of the parameter to ignore.
+     * @see #addAllParameters()
+     */
+    public LinkTool addIgnore(String parameterName)
+    {
+        return copyWithIgnore(parameterName);
+    }
+
+    /**
+     * Convenience method equivalent to
+     * {@link #addAllParameters()}.
+     * @since VelocityTools 2.0
+     */
+    public LinkTool selfParams()
+    {
+        return addAllParameters();
+    }
+
+    /**
+     * Adds all of the current request's parameters to this link's
+     * "query data". Any parameters that have been set to be ignored
+     * will be ignored.
+     *
+     * @return A LinkTool object with all of the current request's parameters
+     *         added to it.
+     * @see #addIgnore(String)
+     */
+    public LinkTool addAllParameters()
+    {
+        if (this.parametersToIgnore != null)
+        {
+            Map params = new HashMap(request.getParameterMap());
+            for (String name : this.parametersToIgnore)
+            {
+                params.remove(name);
+            }
+            return copyWith(params);
+        }
+        else
+        {
+            return copyWith(request.getParameterMap());
+        }
+    }
+
 
     /**
      * <p>Returns the URI that addresses this web application. E.g.
@@ -694,6 +793,7 @@ public class LinkTool implements Cloneable
      * @see #configure(Map params)
      * @see #setSelfAbsolute(boolean selfAbsolute)
      * @see #setSelfIncludeParameters(boolean selfParams)
+     * @see #addAllParameters()
      * @since VelocityTools 1.3
      */
     public LinkTool getSelf()
@@ -712,7 +812,7 @@ public class LinkTool implements Cloneable
         // then add the params (if so configured)
         if (this.selfParams)
         {
-            dupe.params(request.getParameterMap());
+            dupe = dupe.addAllParameters();
         }
         return dupe;
     }

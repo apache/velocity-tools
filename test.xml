@@ -167,7 +167,7 @@
     </junit>
   </target>
 
-  <!-- vew tools (blackbox) tests -->
+  <!-- view tools (blackbox) tests -->
   <target name="test.view">
     <antcall target="start-showcase-webapp"/>
     <junit fork="false"
@@ -179,7 +179,9 @@
         <pathelement location="${test.classes.dir}"/>
       </classpath>
       <batchtest todir="${test.rst.dir}">
-        <fileset dir="${test.classes.dir}" includes="org/apache/velocity/tools/test/blackbox/**/*"/>
+        <fileset dir="${test.classes.dir}">
+            <include name="**/blackbox/*Test*"/>
+        </fileset>
       </batchtest>
       <formatter type="plain"/>
     </junit>
