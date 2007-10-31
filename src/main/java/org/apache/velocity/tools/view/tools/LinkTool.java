@@ -60,7 +60,10 @@ public class LinkTool extends org.apache.velocity.tools.view.LinkTool
             setRequest(ctx.getRequest());
             setResponse(ctx.getResponse());
             setServletContext(ctx.getServletContext());
-            setLog(ctx.getVelocityEngine().getLog());
+            if (ctx.getVelocityEngine() != null)
+            {
+                setLog(ctx.getVelocityEngine().getLog());
+            }
         }
     }
 
