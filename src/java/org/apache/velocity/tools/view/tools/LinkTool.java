@@ -905,29 +905,31 @@ public class LinkTool implements Cloneable
      *
      * @return A LinkTool object with all of the current request's parameters
      *         added to it.
-     *
      * @see #addIgnore(String)
      */
     public LinkTool addAllParameters()
     {
-        // Since we're adding all these parameters at once, there's no
-        // reason to make a copy of each LinkTool along the way, as might
-        // be done if we wrapped a call to addQueryData in a loop over
-        // all request parameters.
-        //
-        // Instead, we copy the current parameters, filter out those we
-        // want to ignore, and then use the copyWith(Map) method to
-        // copy all the parameters into this LinkTool.
-        HashMap params = new HashMap(request.getParameterMap());
-
-        if (parametersToIgnore != null && parametersToIgnore.size() > 0)
+        if (this.parametersToIgnore != null)
         {
+            // Since we're adding all these parameters at once, there's no
+            // reason to make a copy of each LinkTool along the way, as might
+            // be done if we wrapped a call to addQueryData in a loop over
+            // all request parameters.
+            //
+            // Instead, we copy the current parameters, filter out those we
+            // want to ignore, and then use the copyWith(Map) method to
+            // copy all the parameters into this LinkTool.
+            Map params = new HashMap(request.getParameterMap());
             for (Iterator i = parametersToIgnore.iterator(); i.hasNext();)
             {
                 params.remove(i.next());
             }
+            return copyWith(params);
         }
-        return copyWith(params);
+        else
+        {
+            return copyWith(request.getParameterMap());
+        }
     }
 
 
