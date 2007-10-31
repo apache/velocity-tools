@@ -595,4 +595,9 @@
     <ant antfile="${basedir}/test.xml" target="test.view" />
   </target>
 
+  <!-- View tests -->
+  <target name="test.stop" description="Stop VelocityView Test">
+    <ant antfile="${basedir}/test.xml" target="stop-showcase-webapp" />
+  </target>
+
 </project>
