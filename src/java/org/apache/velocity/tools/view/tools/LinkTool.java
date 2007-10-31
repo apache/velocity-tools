@@ -23,6 +23,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -111,6 +112,14 @@ public class LinkTool implements Cloneable
     /** The self-include-parameters status */
     private boolean selfParams;
 
+    /**
+     * List of parameters that should be ignored when the current request's
+     * parameters are copied.
+     *
+     * @see #addIgnore(String)
+     * @see #addAllParameters()
+     */
+    private ArrayList parametersToIgnore;
 
     /** Java 1.4 encode method to use instead of deprecated 1.3 version. */
     private static Method encode = null;
@@ -286,6 +295,38 @@ public class LinkTool implements Cloneable
 
 
     /**
+     * For internal use.
+     *
+     * Copies this LinkTool and adds the specified parameter name to the
+     * ignore list in the copy.
+     *
+     * @param parameterName The name of the parameter to ignore when
+     *                      copying all parameters from the current request.
+     * @return A new LinkTool with the specified parameterName added to the
+     *         ignore list.
+     * @see #addAllParameters()
+     * @see #addIgnore()
+     */
+    protected LinkTool copyWithIgnore(String parameterName)
+    {
+        LinkTool copy = duplicate();
+
+        if(copy.parametersToIgnore == null)
+        {
+            copy.parametersToIgnore = new ArrayList();
+        }
+        else
+        {
+            copy.parametersToIgnore = (ArrayList)parametersToIgnore.clone();
+        }
+
+        copy.parametersToIgnore.add(parameterName);
+
+        return copy;
+    }
+
+
+    /**
      * This is just to avoid duplicating this code for both copyWith() methods
      */
     protected LinkTool duplicate()
@@ -319,6 +360,8 @@ public class LinkTool implements Cloneable
             copy.queryDataDelim = this.queryDataDelim;
             copy.selfAbsolute = this.selfAbsolute;
             copy.selfParams = this.selfParams;
+            copy.parametersToIgnore = this.parametersToIgnore;
+
             return copy;
         }
     }
@@ -726,6 +769,7 @@ public class LinkTool implements Cloneable
      * @see #configure(Map params)
      * @see #setSelfAbsolute(boolean selfAbsolute)
      * @see #setSelfIncludeParameters(boolean selfParams)
+     * @see #addAllParameters()
      * @since VelocityTools 1.3
      */
     public LinkTool getSelf()
@@ -744,7 +788,7 @@ public class LinkTool implements Cloneable
         // then add the params (if so configured)
         if (this.selfParams)
         {
-            dupe.params(request.getParameterMap());
+            dupe = dupe.addAllParameters();
         }
         return dupe;
     }
@@ -841,6 +885,50 @@ public class LinkTool implements Cloneable
         return URLEncoder.encode(url);
     }
 
+    /**
+     * Instructs this LinkTool to ignore the specified parameter when
+     * copying the current request's parameters.
+     *
+     * @param parameterName The name of the parameter to ignore.
+     *
+     * @see #addAllParameters()
+     */
+    public LinkTool addIgnore(String parameterName)
+    {
+        return copyWithIgnore(parameterName);
+    }
+
+    /**
+     * Adds all of the current request's parameters to this link's
+     * "query data". Any parameters that have been set to be ignored
+     * will be ignored.
+     *
+     * @return A LinkTool object with all of the current request's parameters
+     *         added to it.
+     *
+     * @see #addIgnore(String)
+     */
+    public LinkTool addAllParameters()
+    {
+        // Since we're adding all these parameters at once, there's no
+        // reason to make a copy of each LinkTool along the way, as might
+        // be done if we wrapped a call to addQueryData in a loop over
+        // all request parameters.
+        //
+        // Instead, we copy the current parameters, filter out those we
+        // want to ignore, and then use the copyWith(Map) method to
+        // copy all the parameters into this LinkTool.
+        HashMap params = new HashMap(request.getParameterMap());
+
+        if (parametersToIgnore != null && parametersToIgnore.size() > 0)
+        {
+            for (Iterator i = parametersToIgnore.iterator(); i.hasNext();)
+            {
+                params.remove(i.next());
+            }
+        }
+        return copyWith(params);
+    }
 
 
     // --------------------------------------------- Internal Class -----------
