@@ -56,7 +56,7 @@ import org.apache.velocity.tools.config.InvalidScope;
  * * http://en.wikipedia.org/wiki/User_agent
  *
  * @author <a href="mailto:claude@renegat.net">Claude Brisson</a>
- * @since VelocityTools 1.2
+ * @since VelocityTools 2.0
  * @version $Revision$ $Date$
  */
 @DefaultKey("browser")

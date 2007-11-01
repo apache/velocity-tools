@@ -57,7 +57,7 @@ import org.apache.velocity.tools.view.ViewToolContext;
  * <p>This class is only designed for use as a request-scope VelocityView tool.</p>
  *
  * @author Nathan Bubna
- * @since VelocityTools 1.3
+ * @since VelocityTools 2.0
  * @version $Id: ContextTool.java 385122 2006-03-11 18:37:42Z nbubna $
  */
 @DefaultKey("context")

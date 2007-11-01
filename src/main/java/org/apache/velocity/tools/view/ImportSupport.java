@@ -46,7 +46,7 @@ import org.apache.velocity.runtime.log.Log;
  * <p>Based on ImportSupport from the JSTL taglib by Shawn Bayern</p>
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @since VelocityTools 1.1
+ * @since VelocityTools 2.0
  * @version $Revision$ $Date$
  */
 public abstract class ImportSupport

@@ -40,7 +40,7 @@ import org.apache.velocity.tools.view.ImportSupport;
  * </pre></p>
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @since VelocityTools 1.1
+ * @since VelocityTools 2.0
  * @version $Revision$ $Date$
  */
 @DefaultKey("import")

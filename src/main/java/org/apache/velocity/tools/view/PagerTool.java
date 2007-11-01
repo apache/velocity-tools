@@ -96,6 +96,7 @@ import org.apache.velocity.tools.config.InvalidScope;
  *
  * @author Nathan Bubna
  * @version $Revision$ $Date$
+ * @since VelocityTools 2.0
  */
 @DefaultKey("pager")
 @InvalidScope({Scope.APPLICATION,Scope.SESSION})

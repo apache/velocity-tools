@@ -27,6 +27,7 @@ import java.util.Map;
  * thread-safe in templates and most other common uses.
  *
  * @author Nathan Bubna
+ * @since VelocityTools 2.0
  */
 public abstract class AbstractLockConfig
 {

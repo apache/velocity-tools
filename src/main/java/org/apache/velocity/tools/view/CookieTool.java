@@ -45,7 +45,7 @@ import org.apache.velocity.tools.Scope;
  *
  * @author <a href="mailto:dim@colebatch.com">Dmitri Colebatch</a>
  * @author Nathan Bubna
- * @since VelocityTools 1.1
+ * @since VelocityTools 2.0
  * @version $Id$
  */
 @DefaultKey("cookies")

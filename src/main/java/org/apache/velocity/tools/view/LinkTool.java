@@ -55,7 +55,7 @@ import org.apache.velocity.tools.view.ServletUtils;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author Nathan Bubna
- * @since VelocityTools 1.0
+ * @since VelocityTools 2.0
  * @version $Id$
  */
 @DefaultKey("link")

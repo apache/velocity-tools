@@ -61,7 +61,7 @@ import org.apache.velocity.tools.generic.ResourceTool;
  *
  * @author Nathan Bubna
  * @version $Revision$ $Date: 2006-11-27 10:49:37 -0800 (Mon, 27 Nov 2006) $
- * @since VelocityTools 1.3
+ * @since VelocityTools 2.0
  */
 @InvalidScope({Scope.APPLICATION,Scope.SESSION})
 public class ViewResourceTool extends ResourceTool
