@@ -20,7 +20,6 @@ package org.apache.velocity.tools.struts;
  */
 
 import org.apache.velocity.tools.view.LinkTool;
-import org.apache.velocity.runtime.log.Log;
 
 /**
  * <p>View tool to work with URI links in Struts.</p>

@@ -28,7 +28,6 @@ import org.apache.commons.beanutils.converters.BooleanConverter;
 import org.apache.commons.beanutils.converters.StringConverter;
 import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.ConversionUtils;
-import org.apache.velocity.tools.ToolInfo;
 
 /**
  * 
