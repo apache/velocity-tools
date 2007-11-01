@@ -32,11 +32,11 @@ import java.util.List;
  */
 public final class Scope
 {
-    public static String REQUEST = "request";
-    public static String SESSION = "session";
-    public static String APPLICATION = "application";
+    public static final String REQUEST = "request";
+    public static final String SESSION = "session";
+    public static final String APPLICATION = "application";
 
-    private static List<String> VALUES;
+    private static final List<String> VALUES;
     static
     {
         List<String> defaults = new ArrayList<String>(3);
