@@ -20,8 +20,6 @@ package org.apache.velocity.tools.generic;
  */
 
 import java.lang.reflect.Array;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Calendar;
@@ -724,7 +722,7 @@ public class ConversionTool extends LocaleConfig
      * @param locale - the {@link Locale}
      * @return the string as a {@link Number} or <code>null</code> if no
      *         conversion is possible
-     * @see NumberFormat#parse
+     * @see java.text.NumberFormat#parse
      */
     public Number parseNumber(String value, Locale locale)
     {
@@ -740,7 +738,7 @@ public class ConversionTool extends LocaleConfig
      * @param locale - the {@link Locale}
      * @return the string as a {@link Number} or <code>null</code> if no
      *         conversion is possible
-     * @see NumberFormat#parse
+     * @see java.text.NumberFormat#parse
      */
     public Number parseNumber(String value, String format, Object locale)
     {
@@ -793,7 +791,7 @@ public class ConversionTool extends LocaleConfig
      * @param locale - the {@link Locale}
      * @return the string as a {@link Date} or <code>null</code> if no
      *         conversion is possible
-     * @see SimpleDateFormat#parse
+     * @see java.text.SimpleDateFormat#parse
      */
     public Date parseDate(String value, Locale locale)
     {
@@ -809,7 +807,7 @@ public class ConversionTool extends LocaleConfig
      * @param locale - the {@link Locale}
      * @return the string as a {@link Date} or <code>null</code> if no
      *         conversion is possible
-     * @see SimpleDateFormat#parse
+     * @see java.text.SimpleDateFormat#parse
      */
     public Date parseDate(String value, String format, Object locale)
     {
@@ -827,7 +825,7 @@ public class ConversionTool extends LocaleConfig
      * @return the string as a {@link Date} or <code>null</code> if no
      *         conversion is possible
      * @see #getDateFormat
-     * @see SimpleDateFormat#parse
+     * @see java.text.SimpleDateFormat#parse
      */
     public Date parseDate(String value, String format,
                           Object locale, TimeZone timezone)

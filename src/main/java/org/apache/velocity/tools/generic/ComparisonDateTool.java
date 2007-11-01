@@ -20,7 +20,6 @@ package org.apache.velocity.tools.generic;
  */
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
