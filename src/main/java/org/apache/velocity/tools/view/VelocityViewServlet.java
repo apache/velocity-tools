@@ -282,7 +282,7 @@ public class VelocityViewServlet extends HttpServlet
     {
         try
         {
-            StringBuffer html = new StringBuffer();
+            StringBuilder html = new StringBuilder();
             html.append("<html>\n");
             html.append("<head><title>Error</title></head>\n");
             html.append("<body>\n");
@@ -293,7 +293,7 @@ public class VelocityViewServlet extends HttpServlet
             Throwable cause = e;
 
             String why = cause.getMessage();
-            if (why != null && why.trim().length() > 0)
+            if (why != null && why.length() > 0)
             {
                 html.append(StringEscapeUtils.escapeHtml(why));
                 html.append("\n<br>\n");

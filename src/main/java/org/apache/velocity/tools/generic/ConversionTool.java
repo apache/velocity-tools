@@ -660,7 +660,7 @@ public class ConversionTool extends LocaleConfig
      */
     protected Locale parseLocale(String value)
     {
-        if (value.indexOf("_") < 0)
+        if (value.indexOf('_') < 0)
         {
             return new Locale(value);
         }

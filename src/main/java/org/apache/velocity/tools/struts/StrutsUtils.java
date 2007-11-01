@@ -307,13 +307,13 @@ public class StrutsUtils
     public static String getActionMappingName(String action) {
 
         String value = action;
-        int question = action.indexOf("?");
+        int question = action.indexOf('?');
         if (question >= 0) {
             value = value.substring(0, question);
         }
 
-        int slash = value.lastIndexOf("/");
-        int period = value.lastIndexOf(".");
+        int slash = value.lastIndexOf('/');
+        int period = value.lastIndexOf('.');
         if ((period >= 0) && (period > slash)) {
             value = value.substring(0, period);
         }
@@ -333,7 +333,7 @@ public class StrutsUtils
                                              HttpServletRequest request,
                                              String action)
     {
-        StringBuffer value = new StringBuffer(request.getContextPath());
+        StringBuilder value = new StringBuilder(request.getContextPath());
         ModuleConfig config =
             (ModuleConfig)request.getAttribute(Globals.MODULE_KEY);
         if (config != null)
@@ -348,7 +348,7 @@ public class StrutsUtils
         if (servletMapping != null)
         {
             String queryString = null;
-            int question = action.indexOf("?");
+            int question = action.indexOf('?');
 
             if (question >= 0)
             {
@@ -428,7 +428,7 @@ public class StrutsUtils
             }
         }
 
-        StringBuffer url = new StringBuffer();
+        StringBuilder url = new StringBuilder();
         if (fc.getPath().startsWith("/"))
         {
             url.append(request.getContextPath());
@@ -511,7 +511,7 @@ public class StrutsUtils
         }
 
         /* Render the error messages appropriately if errors have been queued */
-        StringBuffer results = new StringBuffer();
+        StringBuilder results = new StringBuilder();
         String header = null;
         String footer = null;
         String prefix = null;

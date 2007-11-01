@@ -527,7 +527,7 @@ public class PagerTool
             return "0 of 0";
         }
 
-        StringBuffer out = new StringBuffer();
+        StringBuilder out = new StringBuilder();
         int first = getFirstIndex().intValue() + 1;
         int total = getTotal();
         if (first >= total)

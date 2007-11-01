@@ -114,7 +114,7 @@ public class SecureLinkTool extends LinkTool
     public String computeURL(HttpServletRequest request,
                              ServletContext app, String link)
     {
-        StringBuffer url = new StringBuffer(link);
+        StringBuilder url = new StringBuilder(link);
 
         String contextPath = request.getContextPath();
 
@@ -156,7 +156,7 @@ public class SecureLinkTool extends LinkTool
                     if (securePlugin.getSslExtAddSession() && url.toString().indexOf(";jsessionid=") < 0)
                     {
                         // Add the session identifier
-                        url = new StringBuffer(toEncoded(url.toString(),
+                        url = new StringBuilder(toEncoded(url.toString(),
                                                request.getSession().getId()));
                     }
                 }
@@ -211,14 +211,14 @@ public class SecureLinkTool extends LinkTool
 
             // Strip off the query string, if any
             // (differs from the SSL Ext. version - query string before anchor)
-            int question = linkString.indexOf("?");
+            int question = linkString.indexOf('?');
             if (question >= 0)
             {
                 linkString = linkString.substring(0, question);
             }
 
             // Strip off the anchor, if any
-            int anchor = linkString.indexOf("#");
+            int anchor = linkString.indexOf('#');
             if (anchor >= 0)
             {
                 linkString = linkString.substring(0, anchor);
@@ -255,13 +255,13 @@ public class SecureLinkTool extends LinkTool
      * @param request The current request
      * @param desiredScheme  The scheme (http or https) to be used in the new URL
      * @param desiredPort The port number to be used in th enew URL
-     * @return The new URL as a StringBuffer
+     * @return The new URL as a StringBuilder
      */
-    private static StringBuffer startNewUrlString(HttpServletRequest request,
+    private static StringBuilder startNewUrlString(HttpServletRequest request,
                                                   String desiredScheme,
                                                   String desiredPort)
     {
-        StringBuffer url = new StringBuffer();
+        StringBuilder url = new StringBuilder();
         String serverName = request.getServerName();
         url.append(desiredScheme).append("://").append(serverName);
 
@@ -305,7 +305,7 @@ public class SecureLinkTool extends LinkTool
             query = path.substring(question);
             path = path.substring(0, question);
         }
-        StringBuffer sb = new StringBuffer(path);
+        StringBuilder sb = new StringBuilder(path);
         // jsessionid can't be first.
         if (sb.length() > 0)
         {
