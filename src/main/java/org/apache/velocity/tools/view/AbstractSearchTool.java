@@ -116,7 +116,7 @@ import org.apache.velocity.tools.config.InvalidScope;
  * </p>
  *
  * @author Nathan Bubna
- * @since VelocityTools 1.0
+ * @since VelocityTools 2.0
  * @version $Revision$ $Date$
  */
 @DefaultKey("search")

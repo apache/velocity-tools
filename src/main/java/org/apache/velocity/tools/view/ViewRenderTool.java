@@ -73,6 +73,7 @@ import org.apache.velocity.tools.generic.RenderTool;
  * session scopes of a servlet environment.</p>
  *
  * @author Nathan Bubna
+ * @since VelocityTools 2.0
  * @version $Revision$ $Date$
  */
 @InvalidScope({"application","session"})

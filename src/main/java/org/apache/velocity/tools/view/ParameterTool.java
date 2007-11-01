@@ -49,6 +49,7 @@ import org.apache.velocity.tools.generic.ValueParser;
  *
  * @author Nathan Bubna
  * @version $Revision$ $Date$
+ * @since VelocityTools 2.0
  */
 @DefaultKey("params")
 @ValidScope(Scope.REQUEST)

@@ -40,6 +40,7 @@ import org.apache.velocity.tools.view.ViewToolContext;
  *
  * @version $Id$
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @since VelocityTools 2.0
  */
 @DefaultKey("i18n")
 @InvalidScope(Scope.APPLICATION)

@@ -24,6 +24,7 @@ package org.apache.velocity.tools.generic;
  * default format to be configured.
  *
  * @author Nathan Bubna
+ * @since VelocityTools 2.0
  */
 public class FormatConfig extends LocaleConfig
 {

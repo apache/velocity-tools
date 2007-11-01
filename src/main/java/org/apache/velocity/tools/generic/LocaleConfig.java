@@ -26,6 +26,7 @@ import java.util.Locale;
  * default {@link Locale} to be configured.
  *
  * @author Nathan Bubna
+ * @since VelocityTools 2.0
  */
 public class LocaleConfig extends AbstractLockConfig
 {
