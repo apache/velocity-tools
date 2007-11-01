@@ -87,14 +87,6 @@ import org.apache.velocity.tools.config.DefaultKey;
 @DefaultKey("esc")
 public class EscapeTool
 {
-
-    /**
-     * Default constructor.
-     */
-    public EscapeTool()
-    {
-    }
-
     /**
      * Escapes the characters in a <code>String</code> using Java String rules.
      * <br />

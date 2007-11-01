@@ -61,14 +61,6 @@ import org.apache.velocity.tools.config.DefaultKey;
 @DefaultKey("lists")
 public class ListTool
 {
-
-    /**
-     * Default constructor.
-     */
-    public ListTool()
-    {
-    }
-
     /**
      * Gets the specified element of a List/array.
      * It will return null under the following conditions:

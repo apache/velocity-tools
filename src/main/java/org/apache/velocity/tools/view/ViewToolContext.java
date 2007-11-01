@@ -70,10 +70,10 @@ import org.apache.velocity.tools.Toolbox;
  */
 public class ViewToolContext extends ToolContext implements ViewContext
 {
-    private HttpServletRequest request;
-    private HttpServletResponse response;
-    private ServletContext application;
-    private VelocityEngine velocity;
+    private final HttpServletRequest request;
+    private final HttpServletResponse response;
+    private final ServletContext application;
+    private final VelocityEngine velocity;
 
     public ViewToolContext(VelocityEngine velocity,
                            HttpServletRequest request,

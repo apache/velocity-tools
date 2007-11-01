@@ -35,7 +35,7 @@ public class JspToolContext extends ViewToolContext
 {
     public static final String PAGE_CONTEXT_KEY = "pageContext";
 
-    private PageContext pageContext;
+    private final PageContext pageContext;
 
     public JspToolContext(VelocityEngine velocity,
                           PageContext pageContext)

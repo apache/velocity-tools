@@ -37,8 +37,8 @@ public class ToolboxFactory
 {
     public static final String DEFAULT_SCOPE = Scope.REQUEST;
 
-    private Map<String,Map<String,ToolInfo>> scopedToolInfo;
-    private Map<String,Map<String,Object>> scopedProperties;
+    private final Map<String,Map<String,ToolInfo>> scopedToolInfo;
+    private final Map<String,Map<String,Object>> scopedProperties;
     private Map<String,Object> data;
     private Map<String,Object> globalProperties;
     

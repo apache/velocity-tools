@@ -61,6 +61,14 @@ import org.apache.struts.util.ModuleUtils;
  */
 public class StrutsUtils
 {
+    public static final StrutsUtils INSTANCE = new StrutsUtils();
+
+    private StrutsUtils() {}
+
+    public StrutsUtils getInstance()
+    {
+        return INSTANCE;
+    }
 
     /****************** Struts ServletContext Resources ****************/
 

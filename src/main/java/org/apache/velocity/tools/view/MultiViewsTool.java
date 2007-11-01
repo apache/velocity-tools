@@ -61,14 +61,6 @@ public class MultiViewsTool
     protected VelocityEngine engine;
 
     /**
-     * Creates a new uninitialized instance.  Call {@link #configure}
-     * to initialize it.
-     */
-    public MultiViewsTool()
-    {
-    }
-
-    /**
      * Extracts the default language from the specified
      * <code>ViewContext</code>, looking first at the Velocity
      * context, then the servlet context, then lastly at the JVM

@@ -90,11 +90,6 @@ public class TilesTool extends ImportSupport
 
     /******************************* Constructors ****************************/
 
-    /**
-     * Default constructor. Tool must be initialized before use.
-     */
-    public TilesTool() {}
-
     @Deprecated
     public void init(Object obj)
     {

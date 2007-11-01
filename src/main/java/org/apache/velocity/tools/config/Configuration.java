@@ -34,7 +34,7 @@ import java.util.TreeSet;
 public class Configuration<T>
     implements Comparable<Configuration<T>>
 {
-    private SortedSet<Property> properties = new TreeSet<Property>();
+    private final SortedSet<Property> properties = new TreeSet<Property>();
 
     public void addProperty(Property property)
     {

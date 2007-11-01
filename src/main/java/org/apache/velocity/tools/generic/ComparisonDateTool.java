@@ -520,11 +520,11 @@ public class ComparisonDateTool extends DateTool
 
     public class Comparison
     {
-        private long milliseconds = 0;
-        private int type = CURRENT_TYPE;
-        private int maxUnitDepth = 1;
-        private boolean abbreviate = false;
-        private Locale locale;
+        private final long milliseconds;
+        private final int type;
+        private final int maxUnitDepth;
+        private final boolean abbreviate;
+        private final Locale locale;
 
         public Comparison(long ms, int type, int depth, boolean abbr, Locale loc)
         {

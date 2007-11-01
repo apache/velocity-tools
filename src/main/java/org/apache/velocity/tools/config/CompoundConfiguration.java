@@ -32,7 +32,7 @@ import java.util.TreeSet;
 public class CompoundConfiguration<C extends Configuration>
     extends Configuration<C>
 {
-    private SortedSet<C> children = new TreeSet<C>();
+    private final SortedSet<C> children = new TreeSet<C>();
 
     protected void addChild(C newKid)
     {

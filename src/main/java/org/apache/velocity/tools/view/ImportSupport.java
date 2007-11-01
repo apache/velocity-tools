@@ -360,8 +360,8 @@ public abstract class ImportSupport
 
     protected static class SafeClosingHttpURLConnectionReader extends Reader
     {
-        private HttpURLConnection huc;
-        private Reader wrappedReader;
+        private final HttpURLConnection huc;
+        private final Reader wrappedReader;
 
         SafeClosingHttpURLConnectionReader(Reader r, HttpURLConnection huc)
         {

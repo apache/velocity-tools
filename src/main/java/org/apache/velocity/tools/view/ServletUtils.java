@@ -35,6 +35,15 @@ public class ServletUtils
     public static final String VELOCITY_VIEW_KEY =
         VelocityView.class.getName();
 
+    public static final ServletUtils INSTANCE = new ServletUtils();
+
+    private ServletUtils() {}
+
+    public ServletUtils getInstance()
+    {
+        return INSTANCE;
+    }
+
     /**
      * Retrieves the path for the specified request regardless of
      * whether this is a direct request or an include by the

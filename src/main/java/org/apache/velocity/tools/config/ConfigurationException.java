@@ -27,7 +27,7 @@ package org.apache.velocity.tools.config;
  */
 public class ConfigurationException extends RuntimeException
 {
-    private Object source;
+    private final Object source;
 
     public ConfigurationException(Data data, Throwable cause)
     {

@@ -81,12 +81,6 @@ public class ViewRenderTool extends RenderTool
     private Context context;
 
     /**
-     * Constructs a new instance
-     */
-    public ViewRenderTool()
-    {}
-
-    /**
      * Sets the current {@link Context}. This is required
      * for this tool to operate and will throw a NullPointerException
      * if this is not set or is set to {@code null}.

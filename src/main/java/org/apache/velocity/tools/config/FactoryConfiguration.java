@@ -34,7 +34,7 @@ import org.apache.velocity.tools.ToolboxFactory;
 public class FactoryConfiguration
     extends CompoundConfiguration<ToolboxConfiguration>
 {
-    private SortedSet<Data> data = new TreeSet<Data>();
+    private final SortedSet<Data> data = new TreeSet<Data>();
 
     public void addData(Data newDatum)
     {
