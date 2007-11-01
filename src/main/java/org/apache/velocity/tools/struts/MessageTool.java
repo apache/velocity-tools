@@ -278,14 +278,6 @@ public class MessageTool extends MessageResourcesTool
         private Locale locale;
 
         /**
-         * @deprecated This will be removed after VelocityTools 1.4
-         */
-        public TextKey(MessageTool tool, String key, String bundle, Object[] args)
-        {
-            this(key, bundle, args, MessageTool.this.getLocale());
-        }
-
-        /**
          * @since VelocityTools 1.4
          */
         public TextKey(String key, String bundle,
