@@ -296,7 +296,7 @@ public class MessageTool extends MessageResourcesTool
          */
         public TextKey get(String appendme)
         {
-            StringBuffer sb = new StringBuffer(this.key);
+            StringBuilder sb = new StringBuilder(this.key);
             sb.append('.');
             sb.append(appendme);
             return new TextKey(sb.toString(), this.bundle, this.args, this.locale);

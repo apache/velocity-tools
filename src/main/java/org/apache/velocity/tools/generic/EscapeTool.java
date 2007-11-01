@@ -151,10 +151,10 @@ public class EscapeTool
      * https://svn.apache.org/repos/asf/harmony/enhanced/classlib/trunk/modules/luni/src/main/java/java/util/Properties.java
      */
     protected String dumpString(String string, boolean key) {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder builder = new StringBuilder();
         int i = 0;
         if (!key && i < string.length() && string.charAt(i) == ' ') {
-            buffer.append("\\ "); //$NON-NLS-1$
+            builder.append("\\ "); //$NON-NLS-1$
             i++;
         }
 
@@ -162,34 +162,34 @@ public class EscapeTool
             char ch = string.charAt(i);
             switch (ch) {
                 case '\t':
-                    buffer.append("\\t"); //$NON-NLS-1$
+                    builder.append("\\t"); //$NON-NLS-1$
                     break;
                 case '\n':
-                    buffer.append("\\n"); //$NON-NLS-1$
+                    builder.append("\\n"); //$NON-NLS-1$
                     break;
                 case '\f':
-                    buffer.append("\\f"); //$NON-NLS-1$
+                    builder.append("\\f"); //$NON-NLS-1$
                     break;
                 case '\r':
-                    buffer.append("\\r"); //$NON-NLS-1$
+                    builder.append("\\r"); //$NON-NLS-1$
                     break;
                 default:
                     if ("\\#!=:".indexOf(ch) >= 0 || (key && ch == ' ')) {
-                        buffer.append('\\');
+                        builder.append('\\');
                     }
                     if (ch >= ' ' && ch <= '~') {
-                        buffer.append(ch);
+                        builder.append(ch);
                     } else {
                         String hex = Integer.toHexString(ch);
-                        buffer.append("\\u"); //$NON-NLS-1$
+                        builder.append("\\u"); //$NON-NLS-1$
                         for (int j = 0; j < 4 - hex.length(); j++) {
-                            buffer.append("0"); //$NON-NLS-1$
+                            builder.append("0"); //$NON-NLS-1$
                         }
-                        buffer.append(hex);
+                        builder.append(hex);
                 }
             }
         }
-        return buffer.toString();
+        return builder.toString();
     } 
 
     /**

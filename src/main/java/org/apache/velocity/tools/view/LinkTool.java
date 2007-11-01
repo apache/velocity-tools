@@ -627,7 +627,7 @@ public class LinkTool implements Cloneable
         if (queryData != null && !queryData.isEmpty())
         {
 
-            StringBuffer out = new StringBuffer();
+            StringBuilder out = new StringBuilder();
             for(int i=0; i < queryData.size(); i++)
             {
                 out.append(queryData.get(i));
@@ -721,7 +721,7 @@ public class LinkTool implements Cloneable
         String scheme = request.getScheme();
         int port = request.getServerPort();
 
-        StringBuffer out = new StringBuffer();
+        StringBuilder out = new StringBuilder();
         out.append(request.getScheme());
         out.append("://");
         out.append(request.getServerName());
@@ -774,7 +774,7 @@ public class LinkTool implements Cloneable
      */
     public String getBaseRef()
     {
-        StringBuffer out = new StringBuffer();
+        StringBuilder out = new StringBuilder();
         out.append(getContextURL());
         out.append(getRequestPath());
         return out.toString();
@@ -828,7 +828,7 @@ public class LinkTool implements Cloneable
      */
     public String toString()
     {
-        StringBuffer out = new StringBuffer();
+        StringBuilder out = new StringBuilder();
 
         if (uri != null)
         {
@@ -929,7 +929,7 @@ public class LinkTool implements Cloneable
          */
         public String toString()
         {
-            StringBuffer out = new StringBuffer();
+            StringBuilder out = new StringBuilder();
             if (value == null)
             {
                 out.append(encodeURL(key));
@@ -954,7 +954,7 @@ public class LinkTool implements Cloneable
         }
 
         /* Utility method to avoid logic duplication in toString() */
-        private void appendAsArray(StringBuffer out, String key, Object[] arr)
+        private void appendAsArray(StringBuilder out, String key, Object[] arr)
         {
             String encKey = encodeURL(key);
             for (int i=0; i < arr.length; i++)

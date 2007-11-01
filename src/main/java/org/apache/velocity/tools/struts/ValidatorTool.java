@@ -375,7 +375,7 @@ public class ValidatorTool
      */
     public String getStaticJavascript() throws Exception
     {
-        StringBuffer results = new StringBuffer();
+        StringBuilder results = new StringBuilder();
 
         results.append(getStartElement());
         if (this.htmlComment)
@@ -415,7 +415,7 @@ public class ValidatorTool
      */
     protected String getJavascript(String formName, boolean getStatic) throws Exception
     {
-        StringBuffer results = new StringBuffer();
+        StringBuilder results = new StringBuilder();
 
         Locale locale = StrutsUtils.getLocale(request, session);
 
@@ -452,7 +452,7 @@ public class ValidatorTool
                                           Locale locale,
                                           Form form)
     {
-        StringBuffer results = new StringBuffer();
+        StringBuilder results = new StringBuilder();
 
         MessageResources messages =
             StrutsUtils.getMessageResources(request, app);
@@ -525,8 +525,7 @@ public class ValidatorTool
                 results.append(field.getKey()); // TODO: escape?
                 results.append("\", \"");
                 results.append(escapeJavascript(message));
-                results.append("\", ");
-                results.append("new Function (\"varName\", \"");
+                results.append("\", new Function (\"varName\", \"");
 
                 Map<String,Var> vars = (Map<String,Var>)field.getVars();
                 // Loop through the field's variables.
@@ -617,7 +616,7 @@ public class ValidatorTool
         }
 
         // guess at how many chars we'll be adding...
-        StringBuffer out = new StringBuffer(length + 4);
+        StringBuilder out = new StringBuilder(length + 4);
         // run through the string escaping sensitive chars
         for (int i=0; i < length; i++)
         {
@@ -645,13 +644,13 @@ public class ValidatorTool
     {
         String methodOperator = " && ";
 
-        StringBuffer methods = null;
+        StringBuilder methods = null;
         for (Iterator i = actions.iterator(); i.hasNext();)
         {
             ValidatorAction va = (ValidatorAction)i.next();
             if (methods == null)
             {
-                methods = new StringBuffer(va.getMethod());
+                methods = new StringBuilder(va.getMethod());
             }
             else
             {
@@ -728,7 +727,7 @@ public class ValidatorTool
      */
     protected String getJavascriptBegin(String methods)
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         String name = jsFormName.replace('/', '_'); // remove any '/' characters
         name = jsFormName.substring(0, 1).toUpperCase() +
                       jsFormName.substring(1, jsFormName.length());
@@ -756,12 +755,10 @@ public class ValidatorTool
             sb.append("    function ");
             sb.append(methodName);
         }
-        sb.append("(form) {");
-        //FIXME? anyone know why all these spaces need to be here?
-        sb.append("                                                                   \n");
-        sb.append("        if (bCancel) \n");
-        sb.append("      return true; \n");
-        sb.append("        else \n");
+        sb.append("(form) {\n");
+        sb.append("      if (bCancel) \n");
+        sb.append("          return true; \n");
+        sb.append("      else \n");
 
         // Always return true if there aren't any Javascript validation methods
         if (methods == null || methods.length() == 0)
@@ -788,7 +785,7 @@ public class ValidatorTool
      */
     protected String getJavascriptStaticMethods(ValidatorResources resources)
     {
-        StringBuffer sb = new StringBuffer("\n\n");
+        StringBuilder sb = new StringBuilder("\n\n");
 
         Iterator actions = resources.getValidatorActions().values().iterator();
         while (actions.hasNext())
@@ -799,7 +796,8 @@ public class ValidatorTool
                 String javascript = va.getJavascript();
                 if (javascript != null && javascript.length() > 0)
                 {
-                    sb.append(javascript + "\n");
+                    sb.append(javascript);
+                    sb.append("\n");
                 }
             }
         }
@@ -814,7 +812,7 @@ public class ValidatorTool
      */
     protected String getJavascriptEnd()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("\n");
 
         if (!this.xhtml && this.htmlComment)
@@ -839,7 +837,7 @@ public class ValidatorTool
      */
     private String getStartElement()
     {
-        StringBuffer start = new StringBuffer("<script type=\"text/javascript\"");
+        StringBuilder start = new StringBuilder("<script type=\"text/javascript\"");
 
         // there is no language attribute in xhtml
         if (!this.xhtml)

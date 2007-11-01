@@ -151,7 +151,7 @@ public abstract class ImportSupport
             try
             {
                 r = new BufferedReader(acquireReader(url));
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 int i;
                 // under JIT, testing seems to show this simple loop is as fast
                 // as any of the alternatives
@@ -586,7 +586,7 @@ public abstract class ImportSupport
 
         // do a fast, simple check first
         int colonPos;
-        if ((colonPos = url.indexOf(":")) == -1)
+        if ((colonPos = url.indexOf(':')) == -1)
         {
             return false;
         }
@@ -615,7 +615,7 @@ public abstract class ImportSupport
      */
     public static String stripSession(String url)
     {
-        StringBuffer u = new StringBuffer(url);
+        StringBuilder u = new StringBuilder(url);
         int sessionStart;
         while ((sessionStart = u.toString().indexOf(";jsessionid=")) != -1)
         {
