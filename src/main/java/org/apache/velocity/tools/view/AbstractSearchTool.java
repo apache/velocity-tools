@@ -349,8 +349,8 @@ public abstract class AbstractSearchTool extends PagerTool
         /** serial version id */
         private static final long serialVersionUID = 4503130168585978169L;
 
-        private transient Object crit;
-        private transient List list;
+        private final transient Object crit;
+        private final transient List list;
 
         /**
          * Creates a new instance.

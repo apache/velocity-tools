@@ -36,11 +36,21 @@ import java.util.TimeZone;
  */
 public class ConversionUtils
 {
+    public static final ConversionUtils INSTANCE = new ConversionUtils();
+
     private static final int STYLE_NUMBER       = 0;
     private static final int STYLE_CURRENCY     = 1;
     private static final int STYLE_PERCENT      = 2;
     //NOTE: '3' belongs to a non-public "scientific" style
     private static final int STYLE_INTEGER      = 4;
+
+    private ConversionUtils() {}
+
+    public ConversionUtils getInstance()
+    {
+        return INSTANCE;
+    }
+
 
     /**
      * Returns a {@link NumberFormat} instance for the specified

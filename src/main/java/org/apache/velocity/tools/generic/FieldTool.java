@@ -281,7 +281,7 @@ public class FieldTool extends AbstractLockConfig
      */
     public static class FieldToolSub
     {
-        private Map<String,Object> results;
+        private final Map<String,Object> results;
 
         public FieldToolSub(Map<String,Object> results)
         {
@@ -315,9 +315,9 @@ public class FieldTool extends AbstractLockConfig
      */
     public static class MutableField
     {
-        private Class clazz;
-        private Field field;
-        private Log log;
+        private final Class clazz;
+        private final Field field;
+        private final Log log;
 
         public MutableField(Field f, Class c, Log l)
         {

@@ -388,6 +388,8 @@ public class ToolConfiguration extends Configuration
                 case UNINSTANTIABLE:
                     out.append("Unusable ");
                     break;
+                default:
+                    break;
             }
             out.append("Tool '");
             out.append(getKey());

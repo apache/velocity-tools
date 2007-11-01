@@ -41,6 +41,15 @@ import java.util.Set;
  */
 public class ClassUtils
 {
+    public static final ClassUtils INSTANCE = new ClassUtils();
+
+    private ClassUtils() {}
+
+    public ClassUtils getInstance()
+    {
+        return INSTANCE;
+    }
+
     // shortcuts for readability...
     private static final ClassLoader getThreadContextLoader()
     {
@@ -242,7 +251,7 @@ public class ClassUtils
         URL url = getResource(name, caller);
         try
         {
-            return (url != null) ? url.openStream() : null;
+            return (url == null) ? null : url.openStream();
         }
         catch (IOException e)
         {

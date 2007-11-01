@@ -28,7 +28,7 @@ package org.apache.velocity.tools.config;
 public class InvalidScopeException extends ConfigurationException
 {
     // this isn't crucial to keep around if the exception is serialized
-    private transient ToolConfiguration tool;
+    private final transient ToolConfiguration tool;
 
     public InvalidScopeException(ToolboxConfiguration toolbox,
                                  ToolConfiguration tool)

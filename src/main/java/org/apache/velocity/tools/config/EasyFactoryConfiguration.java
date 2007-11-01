@@ -204,8 +204,8 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
 
     public static class EasyData
     {
-        private Data datum;
-        private Configuration parent;
+        private final Data datum;
+        private final Configuration parent;
 
         public EasyData(Data datum, Configuration parent)
         {
@@ -257,8 +257,8 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
 
     public class EasyWrap<C extends Configuration>
     {
-        private C config;
-        private Configuration parent;
+        private final C config;
+        private final Configuration parent;
 
         public EasyWrap(C config, Configuration parent)
         {

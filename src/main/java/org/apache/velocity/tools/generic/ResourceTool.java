@@ -225,10 +225,10 @@ public class ResourceTool extends LocaleConfig
     public final class Key
     {
         // these are copied and/or altered when a mutator is called
-        private String[] bundles;
-        private String key;
-        private Locale locale;
-        private Object[] args;
+        private final String[] bundles;
+        private final String key;
+        private final Locale locale;
+        private final Object[] args;
 
         // these are not copied when a mutator is called
         private boolean cached = false;

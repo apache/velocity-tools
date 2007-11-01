@@ -148,12 +148,6 @@ public class ValidatorTool
     };
 
 
-    /**
-     * Default constructor. Tool must be initialized before use.
-     */
-    public ValidatorTool() {}
-
-
     @Deprecated
     public void init(Object obj)
     {

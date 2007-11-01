@@ -52,6 +52,14 @@ public class ConfigurationUtils
 
     public static final String SYSTEM_PROPERTY_KEY =
         "org.apache.velocity.tools";
+    public static final ConfigurationUtils INSTANCE = new ConfigurationUtils();
+
+    private ConfigurationUtils() {}
+
+    public ConfigurationUtils getInstance()
+    {
+        return INSTANCE;
+    }
 
     /**
      * Returns the "default" {@link FactoryConfiguration}.  This includes

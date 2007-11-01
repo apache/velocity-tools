@@ -54,13 +54,6 @@ import org.apache.velocity.tools.config.ValidScope;
 @ValidScope(Scope.REQUEST)
 public class MessageTool extends MessageResourcesTool
 {
-
-    /**
-     * Default constructor. Tool must be initialized before use.
-     */
-    public MessageTool() {}
-
-
     /**
      * Looks up and returns the localized message for the specified key.
      * The user's locale is consulted to determine the language of the
@@ -272,10 +265,10 @@ public class MessageTool extends MessageResourcesTool
      */
     public class TextKey
     {
-        private String key;
-        private String bundle;
-        private Object[] args;
-        private Locale locale;
+        private final String key;
+        private final String bundle;
+        private final Object[] args;
+        private final Locale locale;
 
         /**
          * @since VelocityTools 1.4
