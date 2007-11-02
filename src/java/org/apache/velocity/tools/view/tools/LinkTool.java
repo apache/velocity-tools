@@ -452,6 +452,7 @@ public class LinkTool implements Cloneable
             copy.queryDataDelim = this.queryDataDelim;
             copy.selfAbsolute = this.selfAbsolute;
             copy.selfParams = this.selfParams;
+            copy.autoIgnore = this.autoIgnore;
             copy.parametersToIgnore = this.parametersToIgnore;
 
             return copy;
