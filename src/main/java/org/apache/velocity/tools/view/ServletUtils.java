@@ -37,7 +37,7 @@ public class ServletUtils
 
     public static final ServletUtils INSTANCE = new ServletUtils();
 
-    private ServletUtils() {}
+    protected ServletUtils() {}
 
     public ServletUtils getInstance()
     {
