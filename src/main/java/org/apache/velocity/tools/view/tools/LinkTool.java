@@ -36,6 +36,9 @@ public class LinkTool extends org.apache.velocity.tools.view.LinkTool
     public static final String SELF_INCLUDE_PARAMETERS_KEY = "self-include-parameters";
 
     @Deprecated
+    public static final String AUTO_IGNORE_PARAMETERS_KEY = "auto-ignore-parameters";
+
+    @Deprecated
     public void configure(Map params)
     {
         ValueParser parser = new ValueParser(params);
@@ -48,6 +51,11 @@ public class LinkTool extends org.apache.velocity.tools.view.LinkTool
         if (selfParams != null)
         {
             setSelfIncludeParameters(selfParams.booleanValue());
+        }
+        Boolean autoIgnoreParams = parser.getBoolean(AUTO_IGNORE_PARAMETERS_KEY);
+        if (autoIgnoreParams != null)
+        {
+            setAutoIgnoreParameters(autoIgnoreParams.booleanValue());
         }
     }
 
