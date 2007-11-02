@@ -24,6 +24,7 @@ import java.lang.reflect.Method;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,7 @@ import org.apache.velocity.tools.view.servlet.ServletUtils;
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author Nathan Bubna
+ * @author Chris Schultz
  * @since VelocityTools 1.0
  * @version $Id$
  */
@@ -76,6 +78,12 @@ public class LinkTool implements Cloneable
      * @since VelocityTools 1.3
      */
     public static final String SELF_INCLUDE_PARAMETERS_KEY = "self-include-parameters";
+
+    /**
+     * Parameter key for configuring {@link #setAutoIgnoreParameters} state.
+     * @since VelocityTools 1.4
+     */
+    public static final String AUTO_IGNORE_PARAMETERS_KEY = "auto-ignore-parameters";
 
     /** Standard HTML delimiter for query data ('&') */
     public static final String HTML_QUERY_DELIMITER = "&";
@@ -119,7 +127,15 @@ public class LinkTool implements Cloneable
      * @see #addIgnore(String)
      * @see #addAllParameters()
      */
-    private ArrayList parametersToIgnore;
+    private HashSet parametersToIgnore;
+
+    /**
+     * <code>true</code> if parameters explicitly set on this LinkTool
+     * should be added to the ignore list.
+     *
+     * @see #parametersToIgnore
+     */
+    private boolean autoIgnore = true;
 
     /** Java 1.4 encode method to use instead of deprecated 1.3 version. */
     private static Method encode = null;
@@ -205,6 +221,30 @@ public class LinkTool implements Cloneable
         this.selfParams = selfParams;
     }
 
+    /**
+     * <p>Controls whether or not the {@link #addQueryData(String,Object)}
+     * and {@link #addQueryData(Map)} methods will
+     * automatically add the specified parameter(s) to the ignore list
+     * for {@link #addAllParameters()}</p>
+     *
+     * <p>The default for this setting is <code>true</code>.</p>
+     *
+     * @param autoIgnore if true, the {@link #addQueryData(String,Object)}
+     *     and {@link #addQueryData(Map)} methods will
+     *     automatically add the specified parameter(s) to the ignore list
+     *     for {@link #addAllParameters()}; otherwise,
+     *     {@link #addIgnore(String)} must be called explicitly for each
+     *     parameter to ignore.</p>
+     *
+     * @see #addIgnore(String)
+     * @see #addAllParameters()
+     *
+     * @since VelocityTools 1.4
+     */
+    protected void setAutoIgnoreParameters(boolean autoIgnore)
+    {
+        this.autoIgnore = autoIgnore;
+    }
 
     /**
      * For internal use.
@@ -228,6 +268,27 @@ public class LinkTool implements Cloneable
         }
         //add new pair to this LinkTool's query data
         copy.queryData.add(pair);
+
+        // Respect autoIgnore setting
+        if(autoIgnore)
+        {
+            if(copy.parametersToIgnore != null)
+            {
+                // Only clone the ignore list if we're actually going
+                // to modify it.
+                if(!copy.parametersToIgnore.contains(pair.getKey()))
+                {
+                    copy.parametersToIgnore = (HashSet)this.parametersToIgnore.clone();
+                    copy.parametersToIgnore.add(pair.getKey());
+                }
+            }
+            else
+            {
+                copy.parametersToIgnore = new HashSet();
+                copy.parametersToIgnore.add(pair.getKey());
+            }
+        }
+
         return copy;
     }
 
@@ -253,12 +314,43 @@ public class LinkTool implements Cloneable
         {
             copy.queryData = new ArrayList();
         }
+
+        boolean clonedIgnore = false;
+
         for (Iterator i = newQueryData.keySet().iterator(); i.hasNext(); )
         {
             Object key = i.next();
             Object value = newQueryData.get(key);
             copy.queryData.add(new QueryPair(String.valueOf(key), value));
+
+            if(this.autoIgnore)
+            {
+                if(copy.parametersToIgnore != null)
+                {
+                    // Only clone the ignore list if we're actually going
+                    // to modify it.
+                    if(!copy.parametersToIgnore.contains(key))
+                    {
+                        if(!clonedIgnore)
+                        {
+                            copy.parametersToIgnore
+                                = (HashSet)this.parametersToIgnore.clone();
+
+                            clonedIgnore = true;
+                        }
+
+                        copy.parametersToIgnore.add(key);
+                    }
+                }
+                else
+                {
+                    copy.parametersToIgnore = new HashSet();
+                    copy.parametersToIgnore.add(key);
+                    clonedIgnore = true;
+                }
+            }
         }
+
         return copy;
     }
 
@@ -305,7 +397,7 @@ public class LinkTool implements Cloneable
      * @return A new LinkTool with the specified parameterName added to the
      *         ignore list.
      * @see #addAllParameters()
-     * @see #addIgnore()
+     * @see #addIgnore(String)
      */
     protected LinkTool copyWithIgnore(String parameterName)
     {
@@ -313,11 +405,11 @@ public class LinkTool implements Cloneable
 
         if(copy.parametersToIgnore == null)
         {
-            copy.parametersToIgnore = new ArrayList();
+            copy.parametersToIgnore = new HashSet();
         }
         else
         {
-            copy.parametersToIgnore = (ArrayList)parametersToIgnore.clone();
+            copy.parametersToIgnore = (HashSet)parametersToIgnore.clone();
         }
 
         copy.parametersToIgnore.add(parameterName);
@@ -387,6 +479,11 @@ public class LinkTool implements Cloneable
         if (selfParams != null)
         {
             setSelfIncludeParameters(selfParams.booleanValue());
+        }
+        Boolean autoIgnoreParams = parser.getBoolean(AUTO_IGNORE_PARAMETERS_KEY);
+        if (autoIgnoreParams != null)
+        {
+            setAutoIgnoreParameters(autoIgnoreParams.booleanValue());
         }
     }
 
@@ -920,7 +1017,7 @@ public class LinkTool implements Cloneable
             // want to ignore, and then use the copyWith(Map) method to
             // copy all the parameters into this LinkTool.
             Map params = new HashMap(request.getParameterMap());
-            for (Iterator i = parametersToIgnore.iterator(); i.hasNext();)
+            for (Iterator i = parametersToIgnore.iterator(); i.hasNext(); )
             {
                 params.remove(i.next());
             }
@@ -945,7 +1042,6 @@ public class LinkTool implements Cloneable
         private final String key;
         private final Object value;
 
-
         /**
          * Construct a new query pair.
          *
@@ -956,6 +1052,14 @@ public class LinkTool implements Cloneable
         {
             this.key = key;
             this.value = value;
+        }
+
+        /**
+         * Gets the key for this QueryPair.
+         */
+        public String getKey()
+        {
+            return key;
         }
 
         /**
