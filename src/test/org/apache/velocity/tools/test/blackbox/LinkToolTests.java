@@ -27,6 +27,7 @@ import java.util.Map;
 import org.apache.velocity.tools.view.tools.LinkTool;
 import org.apache.velocity.tools.view.context.ViewContext;
 import org.apache.velocity.tools.view.context.ChainedContext;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -46,19 +47,7 @@ public class LinkToolTests
         HashMap params = new HashMap();
         params.put("a", "b");
         InvocationHandler handler = new ServletAdaptor("/test", params);
-        Object proxy
-            = Proxy.newProxyInstance(this.getClass().getClassLoader(),
-                                     new Class[] { HttpServletRequest.class,
-                                                   HttpServletResponse.class },
-                                     handler);
-
-        HttpServletRequest request = (HttpServletRequest)proxy;
-        HttpServletResponse response = (HttpServletResponse)proxy;
-        ViewContext vc = new ChainedContext(null, // Velocity
-                                            request, // Request
-                                            response, // Response
-                                            null // application
-                                            );
+        ViewContext vc = createViewContext(handler);
 
         LinkTool link = new LinkTool();
         link.init(vc);
@@ -77,19 +66,7 @@ public class LinkToolTests
         HashMap params = new HashMap();
         params.put("a", new String[] { "a", "b", "c" });
         InvocationHandler handler = new ServletAdaptor("/test", params);
-        Object proxy
-            = Proxy.newProxyInstance(this.getClass().getClassLoader(),
-                                     new Class[] { HttpServletRequest.class,
-                                                   HttpServletResponse.class },
-                                     handler);
-
-        HttpServletRequest request = (HttpServletRequest)proxy;
-        HttpServletResponse response = (HttpServletResponse)proxy;
-        ViewContext vc = new ChainedContext(null, // Velocity
-                                            request, // Request
-                                            response, // Response
-                                            null // application
-                                            );
+        ViewContext vc = createViewContext(handler);
 
         LinkTool link = new LinkTool();
         link.init(vc);
@@ -109,19 +86,8 @@ public class LinkToolTests
         params.put("a", "b");
         params.put("b", "c");
         InvocationHandler handler = new ServletAdaptor("/test", params);
-        Object proxy
-            = Proxy.newProxyInstance(this.getClass().getClassLoader(),
-                                     new Class[] { HttpServletRequest.class,
-                                                   HttpServletResponse.class },
-                                     handler);
 
-        HttpServletRequest request = (HttpServletRequest)proxy;
-        HttpServletResponse response = (HttpServletResponse)proxy;
-        ViewContext vc = new ChainedContext(null, // Velocity
-                                            request, // Request
-                                            response, // Response
-                                            null // application
-                                            );
+        ViewContext vc = createViewContext(handler);
 
         LinkTool link = new LinkTool();
         link.init(vc);
@@ -141,19 +107,7 @@ public class LinkToolTests
         HashMap params = new HashMap();
         params.put("a", "b");
         InvocationHandler handler = new ServletAdaptor("/test", params);
-        Object proxy
-            = Proxy.newProxyInstance(this.getClass().getClassLoader(),
-                                     new Class[] { HttpServletRequest.class,
-                                                   HttpServletResponse.class },
-                                     handler);
-
-        HttpServletRequest request = (HttpServletRequest)proxy;
-        HttpServletResponse response = (HttpServletResponse)proxy;
-        ViewContext vc = new ChainedContext(null, // Velocity
-                                            request, // Request
-                                            response, // Response
-                                            null // application
-                                            );
+        ViewContext vc = createViewContext(handler);
 
         LinkTool link = new LinkTool();
         link.init(vc);
@@ -167,4 +121,119 @@ public class LinkToolTests
         Assert.assertEquals("/test/target?a=b&amp;foo=bar&amp;bar=baz", url);
     }
 
+    public @Test void testAddAdditionalValue()
+    {
+        HashMap params = new HashMap();
+        params.put("a", "b");
+        InvocationHandler handler = new ServletAdaptor("/test", params);
+
+        ViewContext vc = createViewContext(handler);
+
+        LinkTool link = new LinkTool();
+        link.init(vc);
+        link.configure(Collections.singletonMap(LinkTool.AUTO_IGNORE_PARAMETERS_KEY, Boolean.FALSE));
+
+        String url = link.setRelative("/target")
+            .addQueryData("a", "c")
+            .addAllParameters()
+            .toString();
+
+        Assert.assertEquals("/test/target?a=c&amp;a=b", url);
+    }
+
+    public @Test void testAddAdditionalValueAfter()
+    {
+        HashMap params = new HashMap();
+        params.put("a", "b");
+        InvocationHandler handler = new ServletAdaptor("/test", params);
+
+        ViewContext vc = createViewContext(handler);
+
+        LinkTool link = new LinkTool();
+        link.init(vc);
+        link.configure(Collections.singletonMap(LinkTool.AUTO_IGNORE_PARAMETERS_KEY, Boolean.FALSE));
+
+        String url = link.setRelative("/target")
+            .addAllParameters()
+            .addQueryData("a", "c")
+            .toString();
+
+        Assert.assertEquals("/test/target?a=b&amp;a=c", url);
+    }
+
+    public @Test void testAutoIgnore()
+    {
+        HashMap params = new HashMap();
+        params.put("a", "b");
+        InvocationHandler handler = new ServletAdaptor("/test", params);
+
+        ViewContext vc = createViewContext(handler);
+
+        LinkTool link = new LinkTool();
+        link.init(vc);
+
+        String url = link.setRelative("/target")
+            .addQueryData("a", "c")
+            .toString();
+
+        Assert.assertEquals("/test/target?a=c", url);
+    }
+
+    public @Test void testAutoIgnoreMultiple()
+    {
+        HashMap params = new HashMap();
+        params.put("a", new String[] { "a", "b", "c" } );
+        InvocationHandler handler = new ServletAdaptor("/test", params);
+
+        ViewContext vc = createViewContext(handler);
+
+        LinkTool link = new LinkTool();
+        link.init(vc);
+
+        String url = link.setRelative("/target")
+            .addQueryData("a", "d")
+            .addAllParameters()
+            .toString();
+
+        Assert.assertEquals("/test/target?a=d", url);
+    }
+
+    public @Test void testNoIgnoreMultiple_WrongOrder()
+    {
+        HashMap params = new HashMap();
+        params.put("a", new String[] { "a", "b", "c" } );
+        InvocationHandler handler = new ServletAdaptor("/test", params);
+
+        ViewContext vc = createViewContext(handler);
+
+        LinkTool link = new LinkTool();
+        link.init(vc);
+
+        String url = link.setRelative("/target")
+            .addAllParameters()
+            .addQueryData("a", "d")
+            .toString();
+
+        Assert.assertEquals("/test/target?a=a&amp;a=b&amp;a=c&amp;a=d", url);
+    }
+
+    private ViewContext createViewContext(InvocationHandler handler)
+    {
+        Object proxy
+            = Proxy.newProxyInstance(this.getClass().getClassLoader(),
+                                     new Class[] { HttpServletRequest.class,
+                                                   HttpServletResponse.class,
+                                                   ServletContext.class },
+                                     handler);
+
+        HttpServletRequest request = (HttpServletRequest)proxy;
+        HttpServletResponse response = (HttpServletResponse)proxy;
+        ServletContext application = (ServletContext)proxy;
+
+        return new ChainedContext(null, // Velocity
+                                  request,
+                                  response,
+                                  application
+                                  );
+    }
 }
