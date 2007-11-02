@@ -121,4 +121,80 @@ public class LinkToolTests
         Assert.assertEquals("/test/target?a=b&amp;foo=bar&amp;bar=baz", url);
     }
 
+    public @Test void testAddAdditionalValue()
+    {
+        HashMap params = new HashMap();
+        params.put("a", "b");
+        InvocationHandler handler = new ServletAdaptor("/test", params);
+        LinkTool link = newLinkTool(handler);
+        link.setAutoIgnoreParameters(false);
+
+        String url = link.setRelative("/target")
+            .addQueryData("a", "c")
+            .addAllParameters()
+            .toString();
+
+        Assert.assertEquals("/test/target?a=c&amp;a=b", url);
+    }
+
+    public @Test void testAddAdditionalValueAfter()
+    {
+        HashMap params = new HashMap();
+        params.put("a", "b");
+        InvocationHandler handler = new ServletAdaptor("/test", params);
+        LinkTool link = newLinkTool(handler);
+        link.setAutoIgnoreParameters(false);
+
+        String url = link.setRelative("/target")
+            .addAllParameters()
+            .addQueryData("a", "c")
+            .toString();
+
+        Assert.assertEquals("/test/target?a=b&amp;a=c", url);
+    }
+
+    public @Test void testAutoIgnore()
+    {
+        HashMap params = new HashMap();
+        params.put("a", "b");
+        InvocationHandler handler = new ServletAdaptor("/test", params);
+        LinkTool link = newLinkTool(handler);
+
+        String url = link.setRelative("/target")
+            .addQueryData("a", "c")
+            .toString();
+
+        Assert.assertEquals("/test/target?a=c", url);
+    }
+
+    public @Test void testAutoIgnoreMultiple()
+    {
+        HashMap params = new HashMap();
+        params.put("a", new String[] { "a", "b", "c" } );
+        InvocationHandler handler = new ServletAdaptor("/test", params);
+        LinkTool link = newLinkTool(handler);
+
+        String url = link.setRelative("/target")
+            .addQueryData("a", "d")
+            .addAllParameters()
+            .toString();
+
+        Assert.assertEquals("/test/target?a=d", url);
+    }
+
+    public @Test void testNoIgnoreMultiple_WrongOrder()
+    {
+        HashMap params = new HashMap();
+        params.put("a", new String[] { "a", "b", "c" } );
+        InvocationHandler handler = new ServletAdaptor("/test", params);
+        LinkTool link = newLinkTool(handler);
+
+        String url = link.setRelative("/target")
+            .addAllParameters()
+            .addQueryData("a", "d")
+            .toString();
+
+        Assert.assertEquals("/test/target?a=a&amp;a=b&amp;a=c&amp;a=d", url);
+    }
+
 }
