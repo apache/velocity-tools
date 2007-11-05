@@ -28,6 +28,7 @@
     <tool class="MySearchTool"/>
     <tool class="org.apache.velocity.tools.view.ViewResourceTool"
           bundles="resources,otherStuff"/>
+    <tool class="org.apache.velocity.tools.view.ParameterTool" locale="en_US"/>
   </toolbox>
   <toolbox scope="application">
     <tool class="org.apache.velocity.tools.generic.ComparisonDateTool"
