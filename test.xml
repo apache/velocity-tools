@@ -172,8 +172,10 @@
     <antcall target="start-showcase-webapp"/>
     <junit fork="false"
            printSummary="withOutAndErr"
-           haltonerror="${test.haltonerror}"
-           haltonfailure="${test.haltonfailure}">
+           haltonerror="false"
+           haltonfailure="false"
+           errorproperty="test.error"
+           failureproperty="test.failure">
       <classpath>
         <path refid="test.classpath"/>
         <pathelement location="${test.classes.dir}"/>
@@ -186,6 +188,13 @@
       <formatter type="plain"/>
     </junit>
     <antcall target="stop-showcase-webapp"/>
+    <condition property="test.success">
+      <and>
+        <isfalse value="${test.error}"/>
+        <isfalse value="${test.failure}"/>
+      </and>
+    </condition>
+    <fail message="blackbox tests failed" unless="test.success"/>
   </target>
 
   <!-- start showcases webapp -->
