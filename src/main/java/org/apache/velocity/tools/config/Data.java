@@ -396,14 +396,17 @@ public class Data implements Comparable<Data>
 
     protected static class NumberConverter implements Converter
     {
+
+        /* use english locale by default for numbers */
+        private static Locale configLocale = new Locale("en");
+        
         public Object convert(Class type, Object obj)
         {
             Number num = ConversionUtils.toNumber(obj);
             if (num == null)
             {
                 String value = String.valueOf(obj);
-                num = ConversionUtils.toNumber(value, "default",
-                                               Locale.getDefault());
+                num = ConversionUtils.toNumber(value, "default", configLocale);
                 if (num == null)
                 {
                     throw new IllegalArgumentException("Could not convert "+obj+" to a number");
