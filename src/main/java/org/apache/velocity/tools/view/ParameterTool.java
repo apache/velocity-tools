@@ -109,7 +109,11 @@ public class ParameterTool extends ValueParser
      */
     public Object getValue(String key)
     {
-        return getRequest().getParameter(key);
+        Object value = getRequest().getParameter(key);
+        if(value == null && getAllowSubkeys()) {
+            value = getSubkey(key);
+        }
+        return value;
     }
 
 

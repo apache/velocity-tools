@@ -21,6 +21,9 @@ package org.apache.velocity.tools.generic;
 
 import java.util.Map;
 import java.util.Locale;
+import java.util.Set;
+import java.util.HashMap;
+
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
@@ -39,6 +42,14 @@ import org.apache.velocity.tools.config.DefaultKey;
 public class ValueParser extends ConversionTool
 {
     private Map source = null;
+
+    private boolean allowSubkeys = true; /* default to whatever, should be overridden by depreprecatedMode default value anyway */
+
+    /* when using subkeys, cache at least the presence of any subkey,
+    so that the rendering of templates not using subkeys will only
+    look once for subkeys
+     */
+    private boolean hasSubkeys = true;
 
     public ValueParser() {}
 
@@ -98,7 +109,11 @@ public class ValueParser extends ConversionTool
         {
             return null;
         }
-        return getSource().get(key);
+        Object value = getSource().get(key);
+        if (value == null && getAllowSubkeys()) {
+            value = getSubkey(key);
+        }
+        return value;
     }
 
     public Object[] getValues(String key)
@@ -359,4 +374,29 @@ public class ValueParser extends ConversionTool
         return toLocales(getValues(key));
     }
 
+    protected boolean getAllowSubkeys() {
+        return allowSubkeys;
+    }
+
+    protected void setAllowSubkeys(boolean allow) {
+        allowSubkeys = allow;
+    }
+
+    protected Object getSubkey(String subkey) {
+        if (!hasSubkeys || subkey == null || subkey.length() == 0) {
+            return null;
+        }
+        Map<String,Object> values = null;
+        subkey = subkey.concat(".");
+        for(Map.Entry<String,Object> entry:(Set<Map.Entry>)getSource().entrySet()) {
+            if(entry.getKey().startsWith(subkey)) {
+                if(values == null) {
+                    values = new HashMap<String,Object>();
+                }
+                values.put(entry.getKey().substring(subkey.length()),entry.getValue());
+            }
+        }
+        hasSubkeys = (values == null);
+        return values;
+    }
 }
