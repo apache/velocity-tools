@@ -32,7 +32,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * <p>This comes in very handy when parsing parameters.</p>
  *
  * <p>When subkeys are allowed, getValue("foo") will also search for all keys
- * of the form "foo.bar" and return a map "bar" -> value for all values found.</p>
+ * of the form "foo.bar" and return a ValueParser of the type "bar" -> value for all found values.</p>
  *
  * TODO: someone doing java configuration ought to be able to put a source Map
  *       in the tool properties, allowing this to be used like other tools
@@ -405,7 +405,7 @@ public class ValueParser extends ConversionTool
      * @param subkey
      * @return
      */
-    protected Map<String,Object> getSubkey(String subkey) {
+    protected ValueParser getSubkey(String subkey) {
         if (!hasSubkeys || subkey == null || subkey.length() == 0) {
             return null;
         }
@@ -420,6 +420,6 @@ public class ValueParser extends ConversionTool
             }
         }
         hasSubkeys = (values == null);
-        return values;
+        return new ValueParser(values); /* we could also return a new value parser ! */
     }
 }
