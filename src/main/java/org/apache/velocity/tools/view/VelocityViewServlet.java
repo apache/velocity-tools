@@ -227,7 +227,7 @@ public class VelocityViewServlet extends HttpServlet
      * @param request client request
      * @param response client response
      * @param ctx  VelocityContext to fill
-     * @deprecated This will be removed in VelocityTools 2.0.
+     * @deprecated This will be removed in VelocityTools 2.1.
      * @return Velocity Template object or null
      */
     protected Template handleRequest(HttpServletRequest request,
