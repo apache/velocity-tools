@@ -200,7 +200,7 @@ public class VelocityViewServlet extends HttpServlet
             setContentType(request, response);
 
             // get the template
-            Template template = getTemplate(request, response);
+            Template template = handleRequest(request, response, context);
 
             // merge the template and context into the response
             mergeTemplate(template, context, response);
@@ -213,6 +213,28 @@ public class VelocityViewServlet extends HttpServlet
         {
             requestCleanup(request, response, context);
         }
+    }
+
+
+
+    /**
+     * <p>This was a common extension point, but has been deprecated.
+     * It has no single replacement.  Instead, you should override 
+     * {@link #fillContext} to add custom things to the {@link Context}
+     * or override a {@link #getTemplate} method to change how
+     * {@link Template}s are retrieved</p>
+     *
+     * @param request client request
+     * @param response client response
+     * @param ctx  VelocityContext to fill
+     * @deprecated This will be removed in VelocityTools 2.0.
+     * @return Velocity Template object or null
+     */
+    protected Template handleRequest(HttpServletRequest request,
+                                     HttpServletResponse response,
+                                     Context ctx) throws Exception
+    {
+        return getTemplate(request, response);
     }
 
     protected Context createContext(HttpServletRequest request,
