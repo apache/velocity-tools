@@ -19,10 +19,7 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
-import java.util.Map;
-import java.util.Locale;
-import java.util.Set;
-import java.util.HashMap;
+import java.util.*;
 import java.lang.reflect.Array;
 
 import org.apache.velocity.tools.config.DefaultKey;
@@ -43,7 +40,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @since VelocityTools 1.2
  */
 @DefaultKey("parser")
-public class ValueParser extends ConversionTool
+public class ValueParser extends ConversionTool implements Map
 {
     private Map source = null;
 
@@ -447,5 +444,53 @@ public class ValueParser extends ConversionTool
         {
             return new ValueParser(values);
         }
+    }
+
+    public int size() {
+        return getSource().size();
+    }
+
+    public boolean isEmpty() {
+        return getSource().isEmpty();
+    }
+
+    public boolean containsKey(Object key) {
+        return getSource().containsKey(key);
+    }
+
+    public boolean containsValue(Object value) {
+        return getSource().containsValue(value);
+    }
+
+    public Object get(Object key) {
+        return get(String.valueOf(key));
+    }
+
+    public Object put(Object key, Object value) {
+        throw new UnsupportedOperationException("ValueParser is read-only");
+    }
+
+    public Object remove(Object key) {
+        throw new UnsupportedOperationException("ValueParser is read-only");
+    }
+
+    public void putAll(Map m) {
+        throw new UnsupportedOperationException("ValueParser is read-only");
+    }
+
+    public void clear() {
+        throw new UnsupportedOperationException("ValueParser is read-only");
+    }
+
+    public Set keySet() {
+        return getSource().keySet();
+    }
+
+    public Collection values() {
+        return getSource().values();
+    }
+
+    public Set entrySet() {
+        return getSource().entrySet();
     }
 }
