@@ -387,7 +387,8 @@ public class ValueParser extends ConversionTool
      * Are subkeys allowed ?
      * @return yes/no
      */
-    protected boolean getAllowSubkeys() {
+    protected boolean getAllowSubkeys()
+    {
         return allowSubkeys;
     }
 
@@ -395,7 +396,8 @@ public class ValueParser extends ConversionTool
      * allow or disallow subkeys
      * @param allow
      */
-    protected void setAllowSubkeys(boolean allow) {
+    protected void setAllowSubkeys(boolean allow)
+    {
         allowSubkeys = allow;
     }
 
@@ -405,21 +407,33 @@ public class ValueParser extends ConversionTool
      * @param subkey
      * @return
      */
-    protected ValueParser getSubkey(String subkey) {
-        if (!hasSubkeys || subkey == null || subkey.length() == 0) {
+    protected ValueParser getSubkey(String subkey)
+    {
+        if (!hasSubkeys || subkey == null || subkey.length() == 0)
+        {
             return null;
         }
         Map<String,Object> values = null;
         subkey = subkey.concat(".");
-        for(Map.Entry<String,Object> entry:(Set<Map.Entry>)getSource().entrySet()) {
-            if(entry.getKey().startsWith(subkey)) {
-                if(values == null) {
+        for(Map.Entry<String,Object> entry:(Set<Map.Entry>)getSource().entrySet())
+        {
+            if(entry.getKey().startsWith(subkey))
+            {
+                if(values == null)
+                {
                     values = new HashMap<String,Object>();
                 }
                 values.put(entry.getKey().substring(subkey.length()),entry.getValue());
             }
         }
-        hasSubkeys = (values == null);
-        return new ValueParser(values); /* we could also return a new value parser ! */
+        if (values == null)
+        {
+            hasSubkeys = false;
+            return null;
+        }
+        else
+        {
+            return new ValueParser(values);
+        }
     }
 }
