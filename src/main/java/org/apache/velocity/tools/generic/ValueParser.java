@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Locale;
 import java.util.Set;
 import java.util.HashMap;
+import java.lang.reflect.Array;
 
 import org.apache.velocity.tools.config.DefaultKey;
 
@@ -120,7 +121,7 @@ public class ValueParser extends ConversionTool
         }
         Object value = getSource().get(key);
         if (value == null && getAllowSubkeys()) {
-            value = getSubkey(key);
+            value = getSubkey(key,false);
         }
         return value;
     }
@@ -404,31 +405,42 @@ public class ValueParser extends ConversionTool
     /**
      * subkey getter that returns a map <subkey#2> -> value
      *
-     * @param subkey
+     * @param subkey subkey to search for
+     * @param expandSingletons whether to expand singleton arrays in result or not
      * @return
      */
-    protected ValueParser getSubkey(String subkey)
+    protected ValueParser getSubkey(String subkey,boolean expandSingletons)
     {
         if (!hasSubkeys || subkey == null || subkey.length() == 0)
         {
             return null;
         }
         Map<String,Object> values = null;
+        boolean foundSubkey = false;
         subkey = subkey.concat(".");
         for(Map.Entry<String,Object> entry:(Set<Map.Entry>)getSource().entrySet())
         {
-            if(entry.getKey().startsWith(subkey))
-            {
-                if(values == null)
+            int dot = entry.getKey().indexOf('.');
+            if(dot > 0 && dot < entry.getKey().length()) {
+                foundSubkey = true;
+                if(entry.getKey().startsWith(subkey))
                 {
-                    values = new HashMap<String,Object>();
+                    if(values == null)
+                    {
+                        values = new HashMap<String,Object>();
+                    }
+                    Object value = entry.getValue();
+                    if(expandSingletons && value.getClass().isArray() && Array.getLength(value) == 1) {
+                        /* expand singleton arrays */
+                        value = Array.get(value,0);
+                    }
+                    values.put(entry.getKey().substring(subkey.length()),value);
                 }
-                values.put(entry.getKey().substring(subkey.length()),entry.getValue());
             }
         }
         if (values == null)
         {
-            hasSubkeys = false;
+            hasSubkeys = foundSubkey;
             return null;
         }
         else

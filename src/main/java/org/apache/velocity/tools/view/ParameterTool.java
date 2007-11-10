@@ -112,7 +112,7 @@ public class ParameterTool extends ValueParser
         Object value = getRequest().getParameter(key);
         if(value == null && getAllowSubkeys())
         {
-            value = getSubkey(key);
+            value = getSubkey(key,true);
         }
         return value;
     }
@@ -167,5 +167,4 @@ public class ParameterTool extends ValueParser
     {
         return getSource();
     }
-
 }
