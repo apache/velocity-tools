@@ -19,8 +19,12 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
-import java.util.*;
 import java.lang.reflect.Array;
+import java.util.Map;
+import java.util.Locale;
+import java.util.Set;
+import java.util.HashMap;
+import java.util.Collection;
 
 import org.apache.velocity.tools.config.DefaultKey;
 
