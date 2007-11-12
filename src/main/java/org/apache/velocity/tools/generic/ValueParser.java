@@ -79,6 +79,43 @@ public class ValueParser extends ConversionTool implements Map
         return this.source;
     }
 
+    /**
+     * Are subkeys allowed ?
+     * @return yes/no
+     */
+    protected boolean getAllowSubkeys()
+    {
+        return allowSubkeys;
+    }
+
+    /**
+     * allow or disallow subkeys
+     * @param allow
+     */
+    protected void setAllowSubkeys(boolean allow)
+    {
+        allowSubkeys = allow;
+    }
+
+    /**
+     * Does the actual configuration. This is protected, so
+     * subclasses may share the same ValueParser and call configure
+     * at any time, while preventing templates from doing so when 
+     * configure(Map) is locked.
+     */
+    protected void configure(ValueParser values)
+    {
+        super.configure(values);
+
+        // if we're supporting 1.x behavior
+        Boolean depMode = values.getBoolean("deprecationSupportMode");
+        if (depMode != null && depMode.booleanValue())
+        {
+            // then don't allow subkeys
+            setAllowSubkeys(false);
+        }
+    }
+
     // ----------------- public parsing methods --------------------------
 
     /**
@@ -383,24 +420,6 @@ public class ValueParser extends ConversionTool implements Map
     public Locale[] getLocales(String key)
     {
         return toLocales(getValues(key));
-    }
-
-    /**
-     * Are subkeys allowed ?
-     * @return yes/no
-     */
-    protected boolean getAllowSubkeys()
-    {
-        return allowSubkeys;
-    }
-
-    /**
-     * allow or disallow subkeys
-     * @param allow
-     */
-    protected void setAllowSubkeys(boolean allow)
-    {
-        allowSubkeys = allow;
     }
 
     /**
