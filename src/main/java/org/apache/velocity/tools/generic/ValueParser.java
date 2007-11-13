@@ -44,9 +44,9 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @since VelocityTools 1.2
  */
 @DefaultKey("parser")
-public class ValueParser extends ConversionTool implements Map
+public class ValueParser extends ConversionTool implements Map<String,Object>
 {
-    private Map source = null;
+    private Map<String,Object> source = null;
 
     private boolean allowSubkeys = true; /* default to whatever, should be overridden by depreprecatedMode default value anyway */
 
@@ -54,7 +54,7 @@ public class ValueParser extends ConversionTool implements Map
     so that the rendering of templates not using subkeys will only
     look once for subkeys
      */
-    private boolean hasSubkeys = true;
+    private Boolean hasSubkeys = null;
 
     /**
      * The key used for specifying a whether to support subkeys
@@ -64,17 +64,17 @@ public class ValueParser extends ConversionTool implements Map
 
     public ValueParser() {}
 
-    public ValueParser(Map source)
+    public ValueParser(Map<String,Object> source)
     {
         setSource(source);
     }
 
-    protected void setSource(Map source)
+    protected void setSource(Map<String,Object> source)
     {
         this.source = source;
     }
 
-    protected Map getSource()
+    protected Map<String,Object> getSource()
     {
         return this.source;
     }
@@ -423,44 +423,70 @@ public class ValueParser extends ConversionTool implements Map
     }
 
     /**
+     * Determines whether there are subkeys available in the source map.
+     */
+    public boolean hasSubkeys()
+    {
+        if (getSource() == null)
+        {
+            return false;
+        }
+
+        if (hasSubkeys == null)
+        {
+            for (String key : getSource().keySet())
+            {
+                int dot = key.indexOf('.');
+                if (dot > 0 && dot < key.length())
+                {
+                    hasSubkeys = Boolean.TRUE;
+                    break;
+                }
+            }
+            if (hasSubkeys == null)
+            {
+                hasSubkeys = Boolean.FALSE;
+            }
+        }
+        return hasSubkeys;
+    }
+
+    /**
      * subkey getter that returns a map <subkey#2> -> value
      *
      * @param subkey subkey to search for
      * @param expandSingletons whether to expand singleton arrays in result or not
      * @return
      */
-    protected ValueParser getSubkey(String subkey,boolean expandSingletons)
+    protected ValueParser getSubkey(String subkey, boolean expandSingletons)
     {
-        if (!hasSubkeys || subkey == null || subkey.length() == 0)
+        if (!hasSubkeys() || subkey == null || subkey.length() == 0)
         {
             return null;
         }
+
         Map<String,Object> values = null;
-        boolean foundSubkey = false;
         subkey = subkey.concat(".");
-        for(Map.Entry<String,Object> entry:(Set<Map.Entry>)getSource().entrySet())
+        for (Map.Entry<String,Object> entry : getSource().entrySet())
         {
-            int dot = entry.getKey().indexOf('.');
-            if(dot > 0 && dot < entry.getKey().length()) {
-                foundSubkey = true;
-                if(entry.getKey().startsWith(subkey))
+            if (entry.getKey().startsWith(subkey) &&
+                entry.getKey().length() > subkey.length())
+            {
+                if(values == null)
                 {
-                    if(values == null)
-                    {
-                        values = new HashMap<String,Object>();
-                    }
-                    Object value = entry.getValue();
-                    if(expandSingletons && value.getClass().isArray() && Array.getLength(value) == 1) {
-                        /* expand singleton arrays */
-                        value = Array.get(value,0);
-                    }
-                    values.put(entry.getKey().substring(subkey.length()),value);
+                    values = new HashMap<String,Object>();
                 }
+
+                Object value = entry.getValue();
+                if (expandSingletons && value.getClass().isArray() && Array.getLength(value) == 1) {
+                    /* expand singleton arrays */
+                    value = Array.get(value,0);
+                }
+                values.put(entry.getKey().substring(subkey.length()),value);
             }
         }
         if (values == null)
         {
-            hasSubkeys = foundSubkey;
             return null;
         }
         else
@@ -489,7 +515,7 @@ public class ValueParser extends ConversionTool implements Map
         return get(String.valueOf(key));
     }
 
-    public Object put(Object key, Object value) {
+    public Object put(String key, Object value) {
         throw new UnsupportedOperationException("ValueParser is read-only");
     }
 
@@ -497,7 +523,7 @@ public class ValueParser extends ConversionTool implements Map
         throw new UnsupportedOperationException("ValueParser is read-only");
     }
 
-    public void putAll(Map m) {
+    public void putAll(Map<? extends String,? extends Object> m) {
         throw new UnsupportedOperationException("ValueParser is read-only");
     }
 
@@ -505,7 +531,7 @@ public class ValueParser extends ConversionTool implements Map
         throw new UnsupportedOperationException("ValueParser is read-only");
     }
 
-    public Set keySet() {
+    public Set<String> keySet() {
         return getSource().keySet();
     }
 
@@ -513,7 +539,7 @@ public class ValueParser extends ConversionTool implements Map
         return getSource().values();
     }
 
-    public Set entrySet() {
+    public Set<Map.Entry<String,Object>> entrySet() {
         return getSource().entrySet();
     }
 }
