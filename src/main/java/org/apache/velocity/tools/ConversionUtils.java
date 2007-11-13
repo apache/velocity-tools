@@ -289,20 +289,20 @@ public class ConversionUtils
         if (format.endsWith("_date"))
         {
             String fmt = format.substring(0, format.length() - 5);
-            int style = getStyleAsInt(fmt);
+            int style = getDateStyleAsInt(fmt);
             df = getDateFormat(style, -1, locale, timezone);
         }
         // do they want a time instance?
         else if (format.endsWith("_time"))
         {
             String fmt = format.substring(0, format.length() - 5);
-            int style = getStyleAsInt(fmt);
+            int style = getDateStyleAsInt(fmt);
             df = getDateFormat(-1, style, locale, timezone);
         }
         // ok, they either want a custom or date-time instance
         else
         {
-            int style = getStyleAsInt(format);
+            int style = getDateStyleAsInt(format);
             if (style < 0)
             {
                 // we have a custom format
@@ -332,8 +332,8 @@ public class ConversionUtils
     public static DateFormat getDateFormat(String dateStyle, String timeStyle,
                                            Locale locale, TimeZone timezone)
     {
-        int ds = getStyleAsInt(dateStyle);
-        int ts = getStyleAsInt(timeStyle);
+        int ds = getDateStyleAsInt(dateStyle);
+        int ts = getDateStyleAsInt(timeStyle);
         return getDateFormat(ds, ts, locale, timezone);
     }
 
@@ -397,7 +397,7 @@ public class ConversionUtils
      * @param style the string to be checked
      * @return the int identifying the style pattern
      */
-    public static int getStyleAsInt(String style)
+    public static int getDateStyleAsInt(String style)
     {
         // avoid needlessly running through all the string comparisons
         if (style == null || style.length() < 4 || style.length() > 7) {
