@@ -585,7 +585,7 @@ public class DateTool extends FormatConfig
     @Deprecated
     protected int getStyleAsInt(String style)
     {
-        return ConversionUtils.getStyleAsInt(style);
+        return ConversionUtils.getDateStyleAsInt(style);
     }
 
 
