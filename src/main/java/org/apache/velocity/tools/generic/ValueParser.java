@@ -546,13 +546,18 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
 
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("{ ");
+        builder.append('{');
+        boolean empty = true;
         for(Map.Entry<String,Object> entry:entrySet())
         {
+            if(!empty)
+            {
+                builder.append(", ");
+            }
+            empty = false;
             builder.append(entry.getKey());
             builder.append('=');
             builder.append(String.valueOf(entry.getValue()));
-            builder.append(' ');
         }
         builder.append('}');
         return builder.toString();
