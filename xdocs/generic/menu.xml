@@ -36,6 +36,7 @@
     </menu>
 
     <menu name="Tool Documentation">
+      <item name="ComparisonDateTool" href="../javadoc/org/apache/velocity/tools/generic/ComparisonDateTool.html"/>
       <item name="DateTool"       href="../javadoc/org/apache/velocity/tools/generic/DateTool.html"/>
       <item name="MathTool"       href="MathTool.html"/>
       <item name="NumberTool"     href="../javadoc/org/apache/velocity/tools/generic/NumberTool.html"/>

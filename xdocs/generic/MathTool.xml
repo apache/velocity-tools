@@ -66,6 +66,8 @@
 
         <methods/>
 
+        <see>The <a href="../javadoc/org/apache/velocity/tools/generic/MathTool.html">Javadoc</a> for more methods.</see>
+
     </section>
 
     <section name="add()">
