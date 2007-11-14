@@ -270,7 +270,7 @@ public class LinkTool implements Cloneable
         copy.queryData.add(pair);
 
         // Respect autoIgnore setting
-        if(autoIgnore)
+        if(copy.autoIgnore)
         {
             if(copy.parametersToIgnore != null)
             {
@@ -323,7 +323,7 @@ public class LinkTool implements Cloneable
             Object value = newQueryData.get(key);
             copy.queryData.add(new QueryPair(String.valueOf(key), value));
 
-            if(this.autoIgnore)
+            if(copy.autoIgnore)
             {
                 if(copy.parametersToIgnore != null)
                 {
