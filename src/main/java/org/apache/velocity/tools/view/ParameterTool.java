@@ -112,6 +112,7 @@ public class ParameterTool extends ValueParser
      *         <code>null</code> if there is no matching
      *         parameter
      */
+    @Override
     public Object getValue(String key)
     {
         Object value = getRequest().getParameter(key);
@@ -132,6 +133,7 @@ public class ParameterTool extends ValueParser
      *         the given request parameter has, or <code>null</code>
      *         if the parameter does not exist
      */
+    @Override
     public Object[] getValues(String key)
     {
         String[] strings = getRequest().getParameterValues(key);
@@ -151,6 +153,7 @@ public class ParameterTool extends ValueParser
      * UnsupportedOperationException, because this class uses
      * a servlet request as its source, not a Map.
      */
+    @Override
     protected void setSource(Map source)
     {
         throw new UnsupportedOperationException();
@@ -160,6 +163,7 @@ public class ParameterTool extends ValueParser
      * Overrides ValueParser.getSource() to return the result
      * of getRequest().getParameterMap().
      */
+    @Override
     protected Map getSource()
     {
         return getRequest().getParameterMap();
@@ -180,21 +184,13 @@ public class ParameterTool extends ValueParser
      * @param subkey subkey to search for
      * @return the map of found values
      */
+    @Override
     protected ValueParser getSubkey(String subkey) {
         ValueParser submap = super.getSubkey(subkey);
-        /* expand singleton arrays to reflect request.getParameter behaviour */
         if (submap != null)
         {
-            Map<String,Object> expanded = new HashMap<String,Object>(submap);
-            for(Map.Entry<String,Object> entry:expanded.entrySet())
-            {
-                Object value = entry.getValue();
-                if (value.getClass().isArray() && Array.getLength(value)==1)
-                {
-                    entry.setValue(Array.get(value,0));
-                }
-            }
-            submap = new ValueParser(expanded);
+            /* expand singleton arrays to reflect request.getParameter behaviour */
+            submap = new ValueParser(expandSingletonArrays(submap));
         }
         return submap;
     }
@@ -203,17 +199,19 @@ public class ParameterTool extends ValueParser
        to expand singleton array values
      */
 
+    @Override
     public boolean containsValue(Object value) {
         return values().contains(value);
     }
 
+    @Override
     public Collection values() {
         Set result = new HashSet();
-        for(Object value:super.values())
+        for (Object value : super.values())
         {
-            if(value.getClass().isArray() && Array.getLength(value)==1)
+            if (isSingletonArray(value))
             {
-                result.add(Array.get(value,0));
+                result.add(Array.get(value, 0));
             }
             else
             {
@@ -223,16 +221,30 @@ public class ParameterTool extends ValueParser
         return result;
     }
 
+    @Override
     public Set<Entry<String,Object>> entrySet() {
-        Map<String,Object> expanded = new HashMap<String,Object>(getSource());
-        for(Entry<String,Object> entry:expanded.entrySet())
+        return expandSingletonArrays(getSource()).entrySet();
+    }
+
+    private boolean isSingletonArray(Object value)
+    {
+        return (value != null &&
+                value.getClass().isArray() &&
+                Array.getLength(value) == 1);
+    }
+
+    private Map<String,Object> expandSingletonArrays(Map<String,Object> original)
+    {
+        Map<String,Object> expanded = new HashMap<String,Object>(original);
+        for (Map.Entry<String,Object> entry : expanded.entrySet())
         {
             Object value = entry.getValue();
-            if(value.getClass().isArray() && Array.getLength(value)==1)
+            if (isSingletonArray(value))
             {
-                entry.setValue(Array.get(value,0));
+                entry.setValue(Array.get(value, 0));
             }
         }
-        return expanded.entrySet();
+        return expanded;
     }
+
 }
