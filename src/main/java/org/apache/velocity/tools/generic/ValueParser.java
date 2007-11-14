@@ -114,6 +114,13 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
             // then don't allow subkeys
             setAllowSubkeys(false);
         }
+
+        // except if explicitely asked for
+        Boolean allow = values.getBoolean(ALLOWSUBKEYS_KEY);
+        if(allow != null)
+        {
+            setAllowSubkeys(allow);
+        }
     }
 
     // ----------------- public parsing methods --------------------------
@@ -541,5 +548,19 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
 
     public Set<Map.Entry<String,Object>> entrySet() {
         return getSource().entrySet();
+    }
+
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("{ ");
+        for(Map.Entry<String,Object> entry:entrySet())
+        {
+            builder.append(entry.getKey());
+            builder.append('=');
+            builder.append(String.valueOf(entry.getValue()));
+            builder.append(' ');
+        }
+        builder.append('}');
+        return builder.toString();
     }
 }
