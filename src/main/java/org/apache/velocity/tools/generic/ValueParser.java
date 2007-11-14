@@ -19,7 +19,6 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
-import java.lang.reflect.Array;
 import java.util.Map;
 import java.util.Locale;
 import java.util.Set;
@@ -166,7 +165,7 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
         }
         Object value = getSource().get(key);
         if (value == null && getAllowSubkeys()) {
-            value = getSubkey(key,false);
+            value = getSubkey(key);
         }
         return value;
     }
@@ -460,12 +459,12 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
 
     /**
      * subkey getter that returns a map <subkey#2> -> value
+     * for every "subkey.subkey2" found entry
      *
      * @param subkey subkey to search for
-     * @param expandSingletons whether to expand singleton arrays in result or not
-     * @return
+     * @return the map of found values
      */
-    protected ValueParser getSubkey(String subkey, boolean expandSingletons)
+    protected ValueParser getSubkey(String subkey)
     {
         if (!hasSubkeys() || subkey == null || subkey.length() == 0)
         {
@@ -484,12 +483,7 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
                     values = new HashMap<String,Object>();
                 }
 
-                Object value = entry.getValue();
-                if (expandSingletons && value.getClass().isArray() && Array.getLength(value) == 1) {
-                    /* expand singleton arrays */
-                    value = Array.get(value,0);
-                }
-                values.put(entry.getKey().substring(subkey.length()),value);
+                values.put(entry.getKey().substring(subkey.length()),entry.getValue());
             }
         }
         if (values == null)

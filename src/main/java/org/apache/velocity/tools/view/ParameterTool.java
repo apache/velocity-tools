@@ -19,7 +19,12 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
+import java.lang.reflect.Array;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.Collection;
+import java.util.Set;
+import java.util.HashSet;
 import javax.servlet.ServletRequest;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
@@ -112,7 +117,7 @@ public class ParameterTool extends ValueParser
         Object value = getRequest().getParameter(key);
         if(value == null && getAllowSubkeys())
         {
-            value = getSubkey(key,true);
+            value = getSubkey(key);
         }
         return value;
     }
@@ -166,5 +171,68 @@ public class ParameterTool extends ValueParser
     public Map getAll()
     {
         return getSource();
+    }
+
+    /**
+     * subkey getter that returns a map <subkey#2> -> value
+     * for every "subkey.subkey2" found entry
+     *
+     * @param subkey subkey to search for
+     * @return the map of found values
+     */
+    protected ValueParser getSubkey(String subkey) {
+        ValueParser submap = super.getSubkey(subkey);
+        /* expand singleton arrays to reflect request.getParameter behaviour */
+        if (submap != null)
+        {
+            Map<String,Object> expanded = new HashMap<String,Object>(submap);
+            for(Map.Entry<String,Object> entry:expanded.entrySet())
+            {
+                Object value = entry.getValue();
+                if (value.getClass().isArray() && Array.getLength(value)==1)
+                {
+                    entry.setValue(Array.get(value,0));
+                }
+            }
+            submap = new ValueParser(expanded);
+        }
+        return submap;
+    }
+
+    /* some methods of java.util.Map need to be subclassed here
+       to expand singleton array values
+     */
+
+    public boolean containsValue(Object value) {
+        return values().contains(value);
+    }
+
+    public Collection values() {
+        Set result = new HashSet();
+        for(Object value:super.values())
+        {
+            if(value.getClass().isArray() && Array.getLength(value)==1)
+            {
+                result.add(Array.get(value,0));
+            }
+            else
+            {
+                result.add(value);
+            }
+        }
+        return result;
+    }
+
+    public Set<Entry<String,Object>> entrySet() {
+        Map<String,Object> expanded = new HashMap<String,Object>(getSource());
+        for(Entry<String,Object> entry:expanded.entrySet())
+        {
+            Object value = entry.getValue();
+            if(value.getClass().isArray() && Array.getLength(value)==1)
+            {
+                entry.setValue(Array.get(value,0));
+            }
+        }
+        return expanded.entrySet();
     }
 }
