@@ -33,7 +33,7 @@
   <section name="Overview">
     <p>VelocityView provides support for rapidly and cleanly building web applications
     using Velocity templates as the view layer.  The project is designed with the
-    <a href="http://jakarta.apache.org/turbine/further-reading/pullmodel.html">Pull-MVC Model</a>
+    <a href="http://turbine.apache.org/turbine/turbine-2.2.0/pullmodel.html">Pull-MVC Model</a>
     in mind and works well in conjunction with web application frameworks that act
     as the controller (e.g. <a href="../struts/index.html">Struts</a>), but can be used
     quite effectively on its own for those creating simpler applications.

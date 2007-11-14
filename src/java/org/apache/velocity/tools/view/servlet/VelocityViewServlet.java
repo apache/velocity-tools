@@ -89,6 +89,8 @@ import org.apache.velocity.util.SimplePool;
  *                                     configuring the Velocity runtime
  * <li> {@link #setContentType} : <br>for changing the content type on a request
  *                                  by request basis
+ * <li> {@link #fillContext} : <br>for add data to the context before
+ *                               template rendering
  * <li> {@link #requestCleanup} : <br>post rendering resource or other cleanup
  * <li> {@link #error} : <br>error handling
  * </ul>
