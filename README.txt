@@ -29,7 +29,7 @@ Generic tools
 Build Instructions
 ------------------
 
-Building the project requires JDK 1.3.1 or higher and ant 1.4.1 
+Building the project requires JDK 1.5.1 or higher and ant 1.7.0 
 or higher. There is an ant script included that builds the entire 
 project, including all three subprojects, documentation, application 
 examples, etc. To build the project, start ant in the root directory 
@@ -65,29 +65,19 @@ To build only the VelocityStruts example, execute:
 
 > ant struts
 
-To build only the VelocityLayoutServlet example, execute:
+To build only the Showcase example, execute:
 
-> ant layout
+> ant showcase
 
 
 Please note:
 
-- Due to new compile-time dependencies, VelocityTools can only be compiled on JDK 1.4 
-  or higher.  But can still be run on JDK 1.3, provided you are willing to do without
-  some newer features, like the BrowserSnifferTool.
+- Due to new compile-time dependencies, VelocityTools can only be compiled on JDK 1.5 
+  or higher
 
-- During the documentation build process DVSL emits several of the following error
-  messages. They can be ingnored. A bug report has already been filed.
-
-  [dvsl] [error] ResourceManager: unable to find resource 'VM_global_library.vm' in any resource loader.
-
-- When compiling with JDK 1.4 there is a deprecation warning in LinkTool
-  involving java.net.URLEncoder.  This is to maintain compatibility with JDK 1.3.
-  However, when running the code on 1.4, the new, non-deprecated method is used.
-
-The build process has been tested with JDK 1.4.2 and JDK 1.5.0. The 
-included example applications have been tested with Tomcat 5.0.30 
-and Tomcat 5.5.9, but should work with any servlet engine.
+The build process has been tested with JDK 1.5.0. The 
+included example applications have been tested with Tomcat 5.0.22,
+but should work with any servlet engine.
 
 If you observe any problems with the build process, please report this
 to the Velocity users mailing list, user@velocity.apache.org, and
