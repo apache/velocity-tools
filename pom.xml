@@ -27,7 +27,7 @@
     <groupId>org.apache.velocity.tools</groupId>
     <artifactId>velocity-tools</artifactId>
     <name>VelocityTools</name>
-    <version>1.4-dev</version>
+    <version>1.4</version>
     <packaging>jar</packaging>
 
     <organization>
