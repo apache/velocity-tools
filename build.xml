@@ -405,7 +405,34 @@
   <!-- Convenient target for rolling releases -->
   <target name="release"
           depends="release.source,release.binaries,env"
-          description="Creates binary and source distribution files"/>
+          description="Creates binary and source distribution files">
+    <echo>
+                    ***** RELEASE INSTRUCTIONS *****
+
+    * Check that you have no uncommitted changes with 'svn status'
+
+    * Run 'ant clean compile' and 'ant clean test' with all supported JDKs
+
+    * Check that all version numbers are in sync: build.properties, changes.xml, and pom.xml
+
+    * Check that the README.txt and other documentation are up to date.
+    
+    * Now that the distribution files have been created, you will need to sign all
+      of the jar, zip, and tar.gz files with your private key.  You can simplify
+      this process with a script along the lines of:
+        #! /bin/bash
+        for i in *.tar.gz *.zip *jar; do
+          gpg --default-key [your key id here] --armor --output $i.asc --detach-sig $i
+        done
+
+    * Login to people.apache.org and create an empty folder at:
+         ~/public_html/velocity/tools/${project.version}
+    
+    * Use 'ant publish' to upload the distribution files to that folder.
+    
+    * Review http://wiki.apache.org/velocity/ReleaseProcess for more details.
+    </echo>
+  </target>
 
   <!-- Create source distribution files -->
   <target name="release.source"
@@ -445,7 +472,7 @@
 
   <!-- Create binary distribution files -->
   <target name="release.binaries"
-          depends="clean,clean.lib,prepare,jar.struts,jar.view,jar.generic,examples,javadoc,docs,test"
+          depends="clean,prepare,jar.struts,jar.view,jar.generic,examples,javadoc,docs,test"
           description="Builds everything and creates the binary distribution files">
 
     <!-- Gather misc docs/files -->
@@ -567,16 +594,34 @@
         ${dist.dir}
     to
         ${username}:${password}@${publish.server}:${publish.dir}
-
-    Once the release vote has passed, these should all be copied to
-        /x1/www/www.apache.org/dist/velocity/tools/${project.version}
-    and the jars should be copied into 
-        /x1/www/people.apache.org/repo/m1-ibiblio-rsync-repository/velocity-tools/jars
     </echo>
     <scp todir="${username}:${password}@${publish.server}:${publish.dir}"
         verbose="true" failonerror="true" trust="yes">
         <fileset dir="${dist.dir}"/>
     </scp>
+    <echo>
+                         ***** RELEASE INSTRUCTIONS *****
+
+    * Call for a release vote on private@velocity.apache.org and dev@velocity.apache.org
+
+    * Once the release vote has passed, these files should all be copied to
+        /x1/www/www.apache.org/dist/velocity/tools/${project.version}
+      and the jars should be copied into 
+        /x1/www/people.apache.org/repo/m1-ibiblio-rsync-repository/velocity-tools/jars
+
+    * Tag the release in SVN with a command such as:
+        svn copy -m 'Release Tools ${project.version}' https://svn.apache.org/repos/asf/velocity/tools/trunk \
+           https://svn.apache.org/repos/asf/velocity/tools/tags/${project.version}
+
+    * Publish the documentation for this release on the website
+
+    * Update the download and news pages on the website
+
+    * Send an announcement email to all Velocity lists and announce@apache.org
+      once most of the mirrors have been updated with the distribution files.
+    
+    * Review http://wiki.apache.org/velocity/ReleaseProcess for more details.
+    </echo>
   </target>
 
   <target name="publish.docs" depends="docs,publish.auth" if="have.auth"
