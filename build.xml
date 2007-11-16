@@ -330,7 +330,7 @@
   <!-- Build Velocity-Tools documentation -->
   <target name="docs" depends="prepare.docs"
           description="Generate documentation into ${docs.dir}">
-    <taskdef name="dvsl" classname="org.apache.tools.dvsl.DVSLTask">
+    <taskdef name="dvsl" classname="org.apache.dvsl.DVSLTask">
       <classpath refid="docs.classpath"/>
     </taskdef>
 
@@ -567,6 +567,11 @@
         ${dist.dir}
     to
         ${username}:${password}@${publish.server}:${publish.dir}
+
+    Once the release vote has passed, these should all be copied to
+        /x1/www/www.apache.org/dist/velocity/tools/${project.version}
+    and the jars should be copied into 
+        /x1/www/people.apache.org/repo/m1-ibiblio-rsync-repository/velocity-tools/jars
     </echo>
     <scp todir="${username}:${password}@${publish.server}:${publish.dir}"
         verbose="true" failonerror="true" trust="yes">
@@ -622,5 +627,5 @@
   <target name="test.stop" description="Stop VelocityView Test">
     <ant antfile="${basedir}/test.xml" target="stop-showcase-webapp" />
   </target>
-
+        
 </project>
