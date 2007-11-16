@@ -413,6 +413,8 @@
 
     * Run 'ant clean compile' and 'ant clean test' with all supported JDKs
 
+    * Check that at least 'maven clean install' works.
+
     * Check that all version numbers are in sync: build.properties, changes.xml, and pom.xml
 
     * Check that the README.txt and other documentation are up to date.
@@ -601,6 +603,10 @@
     </scp>
     <echo>
                          ***** RELEASE INSTRUCTIONS *****
+
+    * Announce the availability of the test build on the dev@velocity.apache.org list.
+    
+    * Allow a couple days for people to test the test build.
 
     * Call for a release vote on private@velocity.apache.org and dev@velocity.apache.org
 
