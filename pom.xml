@@ -51,42 +51,120 @@
         </license>
     </licenses>
 
+    <build>
+      <defaultGoal>install</defaultGoal>
+      <outputDirectory>build/classes</outputDirectory>
+      <directory>dist</directory>
+      <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <source>1.5</source>
+              <target>1.5</target>
+            </configuration>
+          </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <configuration>
+            <inputEncoding>UTF-8</inputEncoding>
+            <outputEncoding>UTF-8</outputEncoding>
+          </configuration>
+        </plugin>
+      </plugins>
+      <resources>
+        <resource>
+          <directory>src/main/java</directory>
+          <excludes>
+            <exclude>**/*.java</exclude>
+          </excludes>
+        </resource>
+      </resources>
+    </build>
+
+    <distributionManagement>
+      <site>
+        <id>velocity.apache.org</id>
+        <url>scpexe://people.apache.org/www/velocity.apache.org/tools/devel/</url>
+      </site>
+      <!--
+      <repository>
+        <id>default</id>
+        <name>Apache Release Mirroring Distribution Repository</name>
+        <url>scp://people.apache.org/www/www.apache.org/dist/velocity/tools/</url>
+      </repository>
+      -->
+      <repository>
+        <id>apache.releases</id>
+        <name>Apache Release Distribution Repository</name>
+        <url>scp://people.apache.org/www/people.apache.org/repo/m2-ibiblio-rsync-repository</url>
+      </repository>
+      <snapshotRepository>
+        <id>apache.snapshots</id>
+        <name>Apache Development Snapshot Repository</name>
+        <url>scp://people.apache.org/www/people.apache.org/repo/m2-snapshot-repository</url>
+      </snapshotRepository>
+    </distributionManagement>
+
     <developers>
         <developer>
             <id>nbubna</id>
             <name>Nathan Bubna</name>
             <email>nbubna@apache.org</email>
+            <organization>ESHA Research</organization>
             <timezone>-8</timezone>
+            <roles>
+              <role>Java Developer</role>
+            </roles>
         </developer>
         <developer>
             <id>henning</id>
             <name>Henning Schmiedehausen</name>
             <email>henning@apache.org</email>
+            <roles>
+              <role>Java Developer</role>
+            </roles>
         </developer>
         <developer>
             <id>wglass</id>
             <name>Will Glass-Husain</name>
             <email>wglass@apache.org</email>
+            <roles>
+              <role>Java Developer</role>
+            </roles>
         </developer>
         <developer>
             <id>geirm</id>
             <name>Geir Magnusson Jr.</name>
             <email>geirm@apache.org</email>
+            <roles>
+              <role>Java Developer</role>
+            </roles>
         </developer>
         <developer>
             <id>dlr</id>
             <name>Daniel Rall</name>
             <email>dlr@apache.org</email>
+            <roles>
+              <role>Java Developer</role>
+            </roles>
         </developer>
         <developer>
             <id>marino</id>
             <name>Marinó A. Jónsson</name>
             <email>marino@apache.org</email>
+            <roles>
+              <role>Java Developer</role>
+            </roles>
         </developer>
         <developer>
             <id>cbrisson</id>
             <name>Claude Brisson</name>
             <email>cbrisson@apache.org</email>
+            <roles>
+              <role>Java Developer</role>
+            </roles>
         </developer>
     </developers>
     <contributors>
@@ -95,6 +173,9 @@
         </contributor>
         <contributor>
             <name>Christopher Schultz</name>
+        </contributor>
+        <contributor>
+            <name>Chris Townsen</name>
         </contributor>
         <contributor>
             <name>Dave Bryson</name>
@@ -140,6 +221,74 @@
         </contributor>
     </contributors>
 
+    <reporting>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <reportSets>
+            <reportSet>
+              <reports>
+                <report>dependencies</report>
+                <report>issue-tracking</report>
+                <report>license</report>
+                <report>summary</report>
+                <report>scm</report>
+              </reports>
+            </reportSet>
+          </reportSets>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-changes-plugin</artifactId>
+          <reportSets>
+            <reportSet>
+              <reports>
+                <report>changes-report</report>
+                <report>jira-report</report>
+              </reports>
+            </reportSet>
+          </reportSets>
+          <configuration>
+            <!-- no FixFor yet. -->
+            <filter>sorter/field=issuekey&amp;sorter/order=ASC</filter>
+            <maxEntries>100</maxEntries>
+            <teamlist>http://velocity.apache.org/who-we-are.html</teamlist>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>taglist-maven-plugin</artifactId>
+          <configuration>
+            <tag>TODO</tag>
+            <tag>FIXME</tag>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jxr-plugin</artifactId>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <configuration>
+            <links>
+              <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
+              <link>http://jakarta.apache.org/commons/lang/api-release</link>
+              <link>http://jakarta.apache.org/commons/logging/api-release</link>
+              <link>http://jakarta.apache.org/commons/collections/api-release</link>
+              <link>http://logging.apache.org/log4j/docs/api</link>
+              <link>http://velocity.apache.org/engine/releases/velocity-1.5/apidocs</link>
+            </links>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-changelog-plugin</artifactId>
+        </plugin>
+      </plugins>
+    </reporting>
+
     <mailingLists>
         <mailingList>
             <name>Velocity User List</name>
@@ -168,39 +317,18 @@
             </otherArchives>
         </mailingList>
     </mailingLists>
+
+
     <issueManagement>
+        <system>JIRA</system>
         <url>http://issues.apache.org/jira/browse/VELTOOLS</url>
     </issueManagement>
     <scm>
         <connection>scm:svn:http://svn.apache.org/repos/asf/velocity/tools/trunk</connection>
         <developerConnection>scm:svn:https://svn.apache.org/repos/asf/velocity/tools/trunk</developerConnection>
+        <tag>HEAD</tag>
         <url>http://svn.apache.org/repos/asf/velocity/tools/trunk</url>
     </scm>
-
-    <build>
-        <defaultGoal>package</defaultGoal>
-        <outputDirectory>build/classes</outputDirectory>
-        <directory>dist</directory>
-
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                </configuration>
-            </plugin>
-        </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-        </resources>
-    </build>
 
     <dependencies>
         <dependency>
@@ -361,16 +489,4 @@
 
     </dependencies>
 
-    <distributionManagement>
-        <repository>
-            <id>default</id>
-            <name>Default Repository</name>
-            <url>scp://people.apache.org//www/www.apache.org/dist/velocity/tools/</url>
-        </repository>
-        <site>
-            <id>default</id>
-            <name>Default Site</name>
-            <url>scp://people.apache.org//www/velocity.apache.org/tools/</url>
-        </site>
-    </distributionManagement>
 </project>
