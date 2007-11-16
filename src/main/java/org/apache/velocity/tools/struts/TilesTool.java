@@ -107,7 +107,7 @@ public class TilesTool extends ImportSupport
     /**
      * Initializes this tool.
      *
-     * @param obj the current {@link Context}
+     * @param context the current {@link Context}
      * @throws IllegalArgumentException if the param is not a {@link Context}
      */
     public void setVelocityContext(Context context)

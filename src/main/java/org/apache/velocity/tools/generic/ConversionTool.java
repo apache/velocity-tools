@@ -161,7 +161,7 @@ public class ConversionTool extends LocaleConfig
     }
 
     /**
-     * @param value the Collection to be turned into a string
+     * @param values the Collection to be turned into a string
      * @return the string value of the first object in the collection
      *         or null if the collection is empty
      */
@@ -668,7 +668,7 @@ public class ConversionTool extends LocaleConfig
 
     /**
      * Converts an object to an instance of {@link Number} using the
-     * format returned by {@link #getFormat()} and the default {@link Locale}
+     * format returned by {@link #getNumberFormat()} and the default {@link Locale}
      * if the object is not already an instance of Number.
      *
      * @param value the string to parse
@@ -689,7 +689,7 @@ public class ConversionTool extends LocaleConfig
      * @param format - the format the number is in
      * @return the string as a {@link Number} or <code>null</code> if no
      *         conversion is possible
-     * @see #parseNumber(String format, Object obj, Locale locale)
+     * @see #parseNumber(String value, String format, Object locale)
      */
     public Number parseNumber(String value, String format)
     {
@@ -701,12 +701,12 @@ public class ConversionTool extends LocaleConfig
      * configured number format and the specified {@link Locale}.
      *
      * @param value - the string to parse
-     * @param locale - the {@link Locale}
+     * @param locale - the Locale to use
      * @return the string as a {@link Number} or <code>null</code> if no
      *         conversion is possible
      * @see java.text.NumberFormat#parse
      */
-    public Number parseNumber(String value, Locale locale)
+    public Number parseNumber(String value, Object locale)
     {
         return parseNumber(value, this.numberFormat, locale);
     }
@@ -717,7 +717,7 @@ public class ConversionTool extends LocaleConfig
      *
      * @param value - the string to parse
      * @param format - the format the number is in
-     * @param locale - the {@link Locale}
+     * @param locale - the Locale to use
      * @return the string as a {@link Number} or <code>null</code> if no
      *         conversion is possible
      * @see java.text.NumberFormat#parse
@@ -758,7 +758,7 @@ public class ConversionTool extends LocaleConfig
      * @param format - the format the date is in
      * @return the string as a {@link Date} or <code>null</code> if no
      *         conversion is possible
-     * @see ConversionUtils#toDate(String value, String format, Object locale, TimeZone timezone)
+     * @see ConversionUtils#toDate(String str, String format, Locale locale, TimeZone timezone)
      */
     public Date parseDate(String value, String format)
     {
@@ -770,12 +770,12 @@ public class ConversionTool extends LocaleConfig
      * configured date format and specified {@link Locale} to parse it.
      *
      * @param value - the date to convert
-     * @param locale - the {@link Locale}
+     * @param locale - the Locale to use
      * @return the string as a {@link Date} or <code>null</code> if no
      *         conversion is possible
      * @see java.text.SimpleDateFormat#parse
      */
-    public Date parseDate(String value, Locale locale)
+    public Date parseDate(String value, Object locale)
     {
         return parseDate(value, this.dateFormat, locale);
     }
@@ -786,7 +786,7 @@ public class ConversionTool extends LocaleConfig
      *
      * @param value - the date to convert
      * @param format - the format the date is in
-     * @param locale - the {@link Locale}
+     * @param locale - the Locale to use
      * @return the string as a {@link Date} or <code>null</code> if no
      *         conversion is possible
      * @see java.text.SimpleDateFormat#parse
@@ -802,7 +802,7 @@ public class ConversionTool extends LocaleConfig
      *
      * @param value - the date to convert
      * @param format - the format the date is in
-     * @param locale - the {@link Locale}
+     * @param locale - the Locale to use
      * @param timezone - the {@link TimeZone}
      * @return the string as a {@link Date} or <code>null</code> if no
      *         conversion is possible

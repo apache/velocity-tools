@@ -147,7 +147,7 @@ public class PagerTool
      * Sets the index, itemsPerPage, and/or slipSize *if* they are set
      * in the request parameters.  Likewise, this will set the item list
      * to be paged *if* there is a list pushed into the request attributes
-     * under the {@link #getItemsKey()}.
+     * under the {@link #getNewItemsKey()}.
      *
      * @param request the current HttpServletRequest
      */

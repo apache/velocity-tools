@@ -78,9 +78,9 @@ public class ClassUtils
      * <p/>
      * It will try to load the class in the following order:
      * <ul>
-     * <li>From {@link Thread.currentThread().getContextClassLoader()}
+     * <li>From {@link Thread}.currentThread().getContextClassLoader()
      * <li>Using the basic {@link Class#forName(java.lang.String) }
-     * <li>From {@link ClassUtils.class.getClassLoader()}
+     * <li>From {@link ClassUtils}.class.getClassLoader()
      * </ul>
      *
      * @param name Fully qualified class name to be loaded

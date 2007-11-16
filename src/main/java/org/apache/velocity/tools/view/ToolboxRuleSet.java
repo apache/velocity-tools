@@ -33,7 +33,7 @@ import org.xml.sax.Attributes;
  * @author <a href="mailto:henning@schmiedehausen.org">Henning P. Schmiedehausen</a>
  * @since VelocityTools 1.1
  * @version $Id$
- * @deprecated Use {@link org.apache.velocity.tools.config.XmlFactoryConfigurationRuleSet
+ * @deprecated Use {@link org.apache.velocity.tools.config.XmlFactoryConfigurationRuleSet}
  */
 @Deprecated
 public class ToolboxRuleSet extends RuleSetBase

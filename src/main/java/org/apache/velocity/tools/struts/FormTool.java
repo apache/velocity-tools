@@ -83,7 +83,7 @@ public class FormTool
     /**
      * Initializes this tool.
      *
-     * @param obj the current ViewContext
+     * @param request the current {@link HttpServletRequest}
      * @throws IllegalArgumentException if the param is not a ViewContext
      */
     public void setRequest(HttpServletRequest request)

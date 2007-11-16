@@ -93,8 +93,8 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
     }
 
     /**
-     * @param startWithDefault Sets whether this instance should start with the
-     *        {@link FactoryConfiguration#getDefault()} configuration or not.
+     * @param includeDefaults Sets whether this instance should start with the
+     *        {@link ConfigurationUtils#getDefaultTools()} configuration or not.
      */
     public EasyFactoryConfiguration(boolean includeDefaults)
     {

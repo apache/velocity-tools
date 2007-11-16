@@ -400,7 +400,7 @@ public class LinkTool implements Cloneable
      * @return A new LinkTool with the specified parameterName added to the
      *         ignore set.
      * @see #addAllParameters()
-     * @see #addIgnore()
+     * @see #addIgnore
      */
     protected LinkTool copyWithIgnore(String parameterName)
     {
@@ -871,7 +871,6 @@ public class LinkTool implements Cloneable
      * current request (in addition to any others set so far).
      *
      * @see #uri(String uri)
-     * @see #configure(Map params)
      * @see #setSelfAbsolute(boolean selfAbsolute)
      * @see #setSelfIncludeParameters(boolean selfParams)
      * @see #addAllParameters()

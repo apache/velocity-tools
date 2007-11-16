@@ -22,7 +22,7 @@ package org.apache.velocity.tools.view.tools;
 import org.apache.velocity.context.Context;
 
 /**
- * Use {@link org.apache.velocity.view.ViewRenderTool}
+ * Use {@link org.apache.velocity.tools.view.ViewRenderTool}
  */
 @Deprecated
 public class ViewRenderTool extends
