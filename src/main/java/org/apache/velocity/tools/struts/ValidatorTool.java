@@ -163,7 +163,7 @@ public class ValidatorTool
     /**
      * Initializes this tool.
      *
-     * @param obj the current ViewContext
+     * @param params the Map of configuration parameters
      * @throws IllegalArgumentException if the param is not a ViewContext
      */
     public void configure(Map params)

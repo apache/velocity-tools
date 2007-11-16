@@ -164,9 +164,8 @@ public class VelocityLayoutServlet extends VelocityViewServlet
      * Overrides VelocityViewServlet to check the request for
      * an alternate layout
      *
+     * @param ctx context for this request
      * @param request client request
-     * @param response client response
-     * @return the Context to fill
      */
     protected void fillContext(Context ctx, HttpServletRequest request)
     {

@@ -22,7 +22,7 @@ package org.apache.velocity.tools.view.tools;
 import org.apache.velocity.tools.view.ViewContext;
 
 /**
- * Use {@link org.apache.velocity.view.BrowserTool}
+ * Use {@link org.apache.velocity.tools.view.BrowserTool}
  */
 @Deprecated
 public class BrowserSnifferTool extends

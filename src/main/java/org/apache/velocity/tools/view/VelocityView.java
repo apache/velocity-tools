@@ -81,17 +81,6 @@ import org.apache.velocity.util.SimplePool;
  *     'org.apache.velocity.tools.view.velocity.properties'.</dd>
  * </dl>
  *
- * <p>There are methods you may wish to override to access, alter or control
- * any part of the request processing chain.  Please see the javadocs for
- * more information on :
- * <ul>
- * <li> {@link #setContentType} : <br>for changing the content type on a request
- *                                  by request basis
- * <li> {@link #requestCleanup} : <br>post rendering resource or other cleanup
- * <li> {@link #error} : <br>error handling
- * </ul>
- * </p>
- *
  * @author Dave Bryson
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
@@ -260,7 +249,7 @@ public class VelocityView
     /**
      * Simplifies process of getting a property from VelocityEngine,
      * because the VelocityEngine interface sucks compared to the singleton's.
-     * Use of this method assumes that {@link #initVelocity(ServletConfig,VelocityEngine)}
+     * Use of this method assumes that {@link #init(ServletConfig,VelocityEngine)}
      * has already been called.
      */
     protected String getProperty(String key, String alternate)

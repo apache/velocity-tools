@@ -69,7 +69,7 @@ public class MultiViewsTool
      * easy to setup language overrides at different levels within
      * your application.
      *
-     * @param obj the current ViewContext
+     * @param params the {@link Map} of configuration parameters
      * @throws IllegalArgumentException if the param is not a ViewContext
      */
     public void configure(Map params)

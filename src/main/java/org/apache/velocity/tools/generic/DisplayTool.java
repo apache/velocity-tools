@@ -295,7 +295,7 @@ public class DisplayTool extends AbstractLockConfig
      * If the string gets curtailed, the configured suffix
      * (default is "...") is used as the ending of the truncated string.
      *
-     * @param obj The value to be truncated.
+     * @param truncateMe The value to be truncated.
      * @return A String.
      */
     public String truncate(Object truncateMe)
@@ -309,7 +309,7 @@ public class DisplayTool extends AbstractLockConfig
      * (default is "...") is used as the ending of the truncated string.
      *
      * @param maxLength An int with the maximum length.
-     * @param obj The value to be truncated.
+     * @param truncateMe The value to be truncated.
      * @return A String.
      */
     public String truncate(Object truncateMe, int maxLength)
@@ -323,7 +323,7 @@ public class DisplayTool extends AbstractLockConfig
      * If the string gets curtailed, the specified suffix
      * is used as the ending of the truncated string.
      *
-     * @param obj The value to be truncated.
+     * @param truncateMe The value to be truncated.
      * @param suffix A String.
      * @return A String.
      */

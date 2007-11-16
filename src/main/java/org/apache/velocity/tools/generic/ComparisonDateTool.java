@@ -29,7 +29,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
- * Tool for comparing {@link Date} and {@link Calendar} values
+ * Tool for comparing {@link java.util.Date} and {@link Calendar} values
  * in Velocity templates.  This is a subclass of {@link DateTool}
  * and thus provides all the functionality of that tool and
  * augments it with the ability to find the relationship between
@@ -297,7 +297,7 @@ public class ComparisonDateTool extends DateTool
      * rendering of that Comparison will be the largest unit difference
      * between the dates followed by a description of their relative position.
      * 
-     * @param date The date in question
+     * @param then The date in question
      */
     public Comparison whenIs(Object then)
     {

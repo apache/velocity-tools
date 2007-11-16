@@ -67,9 +67,9 @@ import org.apache.velocity.tools.generic.ResourceTool;
 public class ViewResourceTool extends ResourceTool
 {
     /**
-     * Sets the current {@link ServletRequest}
+     * Sets the current {@link HttpServletRequest}
      *
-     * @param request the {@link ServletRequest} to retrieve the default Locale from
+     * @param request the {@link HttpServletRequest} to retrieve the default Locale from
      */
     public void setRequest(HttpServletRequest request)
     {

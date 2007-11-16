@@ -264,7 +264,7 @@ public class ConfigurationUtils
     }
 
     /**
-     * Returns a {@FactoryConfiguration} loaded from a configuration file
+     * Returns a {@link FactoryConfiguration} loaded from a configuration file
      * at the specified path.  If no such file is found at that path, this
      * will throw a {@link ResourceNotFoundException}.
      *
@@ -347,7 +347,7 @@ public class ConfigurationUtils
      * {@code null}.  If there are multiple matching resources in the
      * classpath, then they will be added together in the order found
      * (i.e. the last one will have precedence).
-     * @see ClassUtils#getResources(String path)
+     * @see ClassUtils#getResources(String path, Object caller)
      */
     public static FactoryConfiguration findInClasspath(String path, Object caller)
     {

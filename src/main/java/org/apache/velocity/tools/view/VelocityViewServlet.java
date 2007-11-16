@@ -66,7 +66,8 @@ import org.apache.velocity.runtime.log.Log;
  *   <dt>org.apache.velocity.tools.shared.config</dt>
  *   <dd>By default, this is {@code true}. If set to {@code false}, then
  *     the {@link VelocityView} used by this servlet will not be shared
- *     with other VelocityViewServlets or {@link VelocityViewTag}s in the
+ *     with other VelocityViewServlets or 
+ *     {@link org.apache.velocity.tools.view.jsp.VelocityViewTag}s in the
  *     application.</dd>
  *   <dt>org.apache.velocity.tools.loadDefaults</dt>
  *   <dd>By default, this is {@code true}. If set to {@code false}, then
@@ -80,7 +81,7 @@ import org.apache.velocity.runtime.log.Log;
  *     one(s) provided by yourself and/or the default configuration(s))
  *     will have all invalid tools, properties, and/or data removed prior to
  *     configuring the ToolboxFactory for this servlet by a
- *     {@link ConfigurationCleaner}</dd>
+ *     {@link org.apache.velocity.tools.config.ConfigurationCleaner}</dd>
  * </dl>
  *
  * @version $Id$

@@ -87,7 +87,7 @@ public class ToolConfiguration extends Configuration
      * looks for a {@link DefaultKey} annotation on the tool class.  Then,
      * if there is no default key annotation, the {@link Class#getSimpleName()}
      * is transformed into the key by removing any 'Tool' suffix and
-     * lowercasing the first character.  This will only return {@link null}
+     * lowercasing the first character.  This will only return {@code null}
      * if there is both no key and no classname set for this tool.
      */
     public String getDefaultKey()
