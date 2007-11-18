@@ -24,7 +24,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.apache.velocity.tools</groupId>
+    <groupId>org.apache.velocity</groupId>
     <artifactId>velocity-tools</artifactId>
     <name>VelocityTools</name>
     <version>2.0-alpha2</version>
@@ -435,7 +435,7 @@
             <version>1.3.8</version>
         </dependency>
         <dependency>
-            <groupId>velocity</groupId>
+            <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
             <version>1.5</version>
         </dependency>
