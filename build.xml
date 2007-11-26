@@ -604,6 +604,22 @@
     <echo>
                          ***** RELEASE INSTRUCTIONS *****
 
+    * SSH to ${publish.server} and verify the checksums and signatures of the uploaded
+      files with a script like:
+          #!/bin/csh
+          foreach fn ( *.tar.gz *.zip *.jar )
+            echo Verifying $fn...
+            echo GPG signature should be "Good"
+            gpg --verify $fn.asc
+            echo MD5s should be identical
+            cat $fn.md5
+            md5 -q $fn
+            echo SHA1s should be identical
+            cat $fn.sha1
+            sha1 -q $fn
+            echo
+          end
+
     * Announce the availability of the test build on the dev@velocity.apache.org list.
     
     * Allow a couple days for people to test the test build.
