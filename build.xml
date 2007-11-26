@@ -616,10 +616,10 @@
         /x1/www/people.apache.org/repo/m1-ibiblio-rsync-repository/velocity-tools/jars
 
     * Tag the release in SVN with a command such as:
-        svn copy -m 'Release Tools ${project.version}' https://svn.apache.org/repos/asf/velocity/tools/trunk \
+        svn copy -m "Release Tools ${project.version}" https://svn.apache.org/repos/asf/velocity/tools/trunk \
            https://svn.apache.org/repos/asf/velocity/tools/tags/${project.version}
 
-    * Publish the documentation for this release on the website
+    * Publish the documentation for this release on the website using 'ant publish.docs'
 
     * Update the download and news pages on the website
 
@@ -646,6 +646,17 @@
             <include name="docs.zip"/>
         </fileset>
     </scp>
+    <echo>
+                         ***** PUBLISH INSTRUCTIONS *****
+
+    * SSH into people.apache.org
+
+    * Unzip ${publish.docs.dir}docs.zip into either
+        ${publish.docs.dir}releases/${project.version}
+      or
+        ${publish.docs.dir}devel/
+      as appropriate.
+    </echo>
   </target>
 
 
