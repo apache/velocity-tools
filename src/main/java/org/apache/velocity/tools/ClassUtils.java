@@ -22,16 +22,22 @@ package org.apache.velocity.tools;
 import java.io.InputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import org.apache.velocity.util.ArrayIterator;
+import org.apache.velocity.util.EnumerationIterator;
 
 /**
  * Repository for common class and reflection methods.
@@ -326,6 +332,54 @@ public class ClassUtils
             throw new UnsupportedOperationException("Field "+fieldname+" in class "+clazz.getName()+" is not static.  Only static fields are supported.");
         }
         return field.get(null);
+    }
+
+    /**
+     * Retrieves an Iterator from or creates and Iterator for the specified object.
+     * This method is almost entirely copied from Engine's UberspectImpl class.
+     */
+    public static Iterator getIterator(Object obj)
+        throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
+    {
+        if (obj.getClass().isArray())
+        {
+            return new ArrayIterator(obj);
+        }
+        else if (obj instanceof Collection)
+        {
+            return ((Collection) obj).iterator();
+        }
+        else if (obj instanceof Map)
+        {
+            return ((Map) obj).values().iterator();
+        }
+        else if (obj instanceof Iterator)
+        {
+            return ((Iterator) obj);
+        }
+        else if (obj instanceof Iterable)
+        {
+            return ((Iterable)obj).iterator();
+        }
+        else if (obj instanceof Enumeration)
+        {
+            return new EnumerationIterator((Enumeration) obj);
+        }
+        else
+        {
+            // look for an iterator() method to support
+            // any user tools/DTOs that want to work in
+            // foreach w/o implementing the Collection interface
+            Method iter = obj.getClass().getMethod("iterator");
+            if (Iterator.class.isAssignableFrom(iter.getReturnType()))
+            {
+                return (Iterator)iter.invoke(obj);
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 
 }
