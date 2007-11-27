@@ -30,7 +30,6 @@
         <tool class="org.apache.velocity.tools.generic.DisplayTool"/>
         <tool class="org.apache.velocity.tools.generic.EscapeTool"/>
         <tool class="org.apache.velocity.tools.generic.FieldTool"/>
-        <tool class="org.apache.velocity.tools.generic.IteratorTool"/>
         <tool class="org.apache.velocity.tools.generic.ListTool"/>
         <tool class="org.apache.velocity.tools.generic.MathTool"/>
         <tool class="org.apache.velocity.tools.generic.NumberTool"/>
@@ -41,5 +40,8 @@
         This is not useful in its default form.
         <tool class="org.apache.velocity.tools.generic.ValueParser"/>
         -->
+    </toolbox>
+    <toolbox scope="request">
+        <tool class="org.apache.velocity.tools.generic.LoopTool"/>
     </toolbox>
 </tools>
