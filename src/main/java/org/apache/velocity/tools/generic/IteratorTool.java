@@ -75,8 +75,10 @@ import org.apache.velocity.tools.config.DefaultKey;
  *
  * @author <a href="mailto:jido@respublica.fr">Denis Bredelet</a>
  * @version $Id$
+ * @deprecated Use {@link LoopTool} instead
  */
 @DefaultKey("mill")
+@Deprecated
 public class IteratorTool implements Iterator {
 
 
