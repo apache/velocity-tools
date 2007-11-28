@@ -54,8 +54,8 @@ import org.apache.velocity.tools.config.ValidScope;
  *  ---
  *  #set ($list = [1, 2, 3, 4, 5, 6])
  *  #foreach( $item in $loop.watch($list) )
- *  $item
- *  #if( $item > 1 )$loop.skip(1)#end
+ *  $item ##
+ *  #if( $item >= 1 )$loop.skip(1)#end
  *  #if( $item >= 5 )$loop.stop()#end
  *  #end
  *
