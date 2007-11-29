@@ -17,6 +17,10 @@
 
 #parse( 'header.vm' )
 
+<div id="title">
+$text.appname: $text.simple.name
+</div>
+
 <div id="content">
 $screen_content
 </div>

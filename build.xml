@@ -70,6 +70,7 @@
     <delete dir="${build.dir}"/>
     <delete dir="${dist.dir}"/>
     <delete dir="${docs.dir}"/>
+    <delete dir="${mvn.build.dir}"/>
 
     <!-- Clean example applications  -->
     <ant antfile="${basedir}/examples.xml" target="clean-examples" />
@@ -105,9 +106,9 @@
 
     <!-- construct classpath of all jars in lib repository -->
     <path id="compile.classpath">
-    <fileset dir="${lib.dir}">
+      <fileset dir="${lib.dir}">
         <include name="**/*.jar"/>
-    </fileset>
+      </fileset>
     </path>
   </target>
 
@@ -121,9 +122,9 @@
 
     <!-- construct classpath of all jars needed to build docs -->
     <path id="docs.classpath">
-    <fileset dir="${lib.dir}">
+      <fileset dir="${lib.dir}">
         <include name="**/*.jar"/>
-    </fileset>
+      </fileset>
     </path>
   </target>
 
@@ -156,6 +157,8 @@
     <copy todir="${classes.dir}" filtering="yes">
       <fileset dir="${classes.src}">
         <include name="**/*.properties"/>
+        <include name="**/*.xml"/>
+        <include name="**/*.tld"/>
       </fileset>
     </copy>
   </target>
@@ -178,7 +181,11 @@
 
     <copy todir="${classes.dir}" filtering="yes">
       <fileset dir="${classes.src}">
-        <include name="**/*.properties"/>
+        <include name="**/generic/*.properties"/>
+        <include name="**/generic/*.xml"/>
+        <include name="**/view/*.properties"/>
+        <include name="**/view/*.xml"/>
+        <include name="**/*.tld"/>
       </fileset>
     </copy>
   </target>
@@ -199,6 +206,13 @@
       <exclude name="**/struts/**"/>
       <exclude name="**/view/**"/>
     </javac>
+
+    <copy todir="${classes.dir}" filtering="yes">
+      <fileset dir="${classes.src}">
+        <include name="**/generic/*.properties"/>
+        <include name="**/generic/*.xml"/>
+      </fileset>
+    </copy>
   </target>
 
 
@@ -391,7 +405,36 @@
   <!-- Convenient target for rolling releases -->
   <target name="release"
           depends="release.source,release.binaries,env"
-          description="Creates binary and source distribution files"/>
+          description="Creates binary and source distribution files">
+    <echo>
+                    ***** RELEASE INSTRUCTIONS *****
+
+    * Check that you have no uncommitted changes with 'svn status'
+
+    * Run 'ant clean compile' and 'ant clean test' with all supported JDKs
+
+    * Check that at least 'maven clean install' works.
+
+    * Check that all version numbers are in sync: build.properties, changes.xml, and pom.xml
+
+    * Check that the README.txt and other documentation are up to date.
+    
+    * Now that the distribution files have been created, you will need to sign all
+      of the jar, zip, and tar.gz files with your private key.  You can simplify
+      this process with a script along the lines of:
+        #! /bin/bash
+        for i in *.tar.gz *.zip *jar; do
+          gpg --default-key [your key id here] --armor --output $i.asc --detach-sig $i
+        done
+
+    * Login to people.apache.org and create an empty folder at:
+         ~/public_html/velocity/tools/${project.version}
+    
+    * Use 'ant publish' to upload the distribution files to that folder.
+    
+    * Review http://wiki.apache.org/velocity/ReleaseProcess for more details.
+    </echo>
+  </target>
 
   <!-- Create source distribution files -->
   <target name="release.source"
@@ -558,6 +601,49 @@
         verbose="true" failonerror="true" trust="yes">
         <fileset dir="${dist.dir}"/>
     </scp>
+    <echo>
+                         ***** RELEASE INSTRUCTIONS *****
+
+    * SSH to ${publish.server} and verify the checksums and signatures of the uploaded
+      files with a script like:
+          #!/bin/csh
+          foreach fn ( *.tar.gz *.zip *.jar )
+            echo Verifying $fn...
+            echo GPG signature should be "Good"
+            gpg --verify $fn.asc
+            echo MD5s should be identical
+            cat $fn.md5
+            md5 -q $fn
+            echo SHA1s should be identical
+            cat $fn.sha1
+            sha1 -q $fn
+            echo
+          end
+
+    * Announce the availability of the test build on the dev@velocity.apache.org list.
+    
+    * Allow a couple days for people to test the test build.
+
+    * Call for a release vote on private@velocity.apache.org and dev@velocity.apache.org
+
+    * Once the release vote has passed, these files should all be copied to
+        /x1/www/www.apache.org/dist/velocity/tools/${project.version}
+      and the jars should be copied into 
+        /x1/www/people.apache.org/repo/m1-ibiblio-rsync-repository/velocity-tools/jars
+
+    * Tag the release in SVN with a command such as:
+        svn copy -m "Release Tools ${project.version}" https://svn.apache.org/repos/asf/velocity/tools/trunk \
+           https://svn.apache.org/repos/asf/velocity/tools/tags/${project.version}
+
+    * Publish the documentation for this release on the website using 'ant publish.docs'
+
+    * Update the download and news pages on the website
+
+    * Send an announcement email to all Velocity lists and announce@apache.org
+      once most of the mirrors have been updated with the distribution files.
+    
+    * Review http://wiki.apache.org/velocity/ReleaseProcess for more details.
+    </echo>
   </target>
 
   <target name="publish.docs" depends="docs,publish.auth" if="have.auth"
@@ -576,6 +662,17 @@
             <include name="docs.zip"/>
         </fileset>
     </scp>
+    <echo>
+                         ***** PUBLISH INSTRUCTIONS *****
+
+    * SSH into people.apache.org
+
+    * Unzip ${publish.docs.dir}docs.zip into either
+        ${publish.docs.dir}releases/${project.version}
+      or
+        ${publish.docs.dir}devel/
+      as appropriate.
+    </echo>
   </target>
 
 
@@ -583,6 +680,15 @@
 
   <!-- Main test target -->
   <target name="test" description="Test VelocityTools" depends="test.generic,test.view">
+  </target>
+
+  <!-- Code Analysis targets -->
+  <target name="findbugs" description="Run FindBugs" depends="jar">
+    <ant antfile="${basedir}/test.xml" target="findbugs" />
+  </target>
+
+  <target name="pmd" description="Run PMD" depends="compile">
+    <ant antfile="${basedir}/test.xml" target="pmd" />
   </target>
 
   <!-- Generic tests -->
@@ -599,5 +705,5 @@
   <target name="test.stop" description="Stop VelocityView Test">
     <ant antfile="${basedir}/test.xml" target="stop-showcase-webapp" />
   </target>
-
+        
 </project>

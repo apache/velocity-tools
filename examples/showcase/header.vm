@@ -16,7 +16,7 @@
 ## under the License.
 <html>
 <head>
-  <title>VelocityTools - Showcase#if( $page_title ) - $page_title#end</title>
+  <title>VelocityTools - $text.appname#if( $page_title ) - $page_title#end</title>
 #if( $stylesheet )
   <style type="text/css" media="screen">@import "$link.relative($stylesheet)";</style>
 #end

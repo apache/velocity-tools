@@ -1,0 +1,118 @@
+#set( $demo = $text.demo )
+#set( $tool = $class.inspect($toolclass) )
+
+<table border="1" cellspacing="0" cellpadding="3">
+<tr>
+  <th>$demo.function</th>
+  <form method="get" action="$link.self">
+  <th nowrap="1">
+    $demo.result<br>
+    <input style="font-size: 8pt" type="submit" value="$demo.clear">
+  </th>
+  #if( $params.layout )
+    <input type="hidden" name="layout" value="$params.layout">
+  #end
+  </form>
+  <th>$demo.description</th>
+</tr>
+#foreach( $method in $tool.methods )
+  #set( $desc = $text.get("${toolname}.${method.uniqueName}") )
+  #set( $call = "${esc.d}${toolname}.#if( !$method.takesParameters() && $method.propertyName )$method.propertyName#else$method.signature#end" )
+<tr>
+  <td valign="top" id="${method.javadocRef}"><a href="$doclink#$method.javadocRef">$call</a></td>
+  #if( !$method.takesParameters() )
+    #set( $result = $call )
+    #set( $result = $render.eval($call) )
+    <td valign="top">#if( $result == $call )$text.demo.nullResult#else$result#end</td>
+  #else
+    <form method="get" action="$link.self.anchor($method.javadocRef)"> ## HttpUnit doesn't like anchor-only links
+    <td valign="top">
+    <nobr>
+      #foreach( $param in $method.parameters )
+        #set( $pname = "$method.uniqueName$velocityCount" )
+        #set( $pvalue = $params.get($pname, false) )
+        #set( $pdefault = $text.get("${toolname}.${method.uniqueName}.param$velocityCount") )
+        #if( !$pdefault.exists )
+          #set( $pdefault = "#demoDefault( $param )" )
+        #end
+        #if( $velocityCount > 1 ), #end<input type="text" name="$pname" value="#if( $pvalue )$pvalue#else$pdefault#end" size="$math.sub($math.idiv(24, $method.parameterCount), $method.parameterCount)"/>
+      #end
+      <input type="submit" value="$text.demo.try">
+    </nobr>
+    #if( $params.get("${method.uniqueName}1") )
+      #set( $call = "${esc.d}${toolname}.${method.name}(#foreach( $param in $method.parameters )#if( $velocityCount > 1 ), #end$!params.get($render.eval('$method.uniqueName$velocityCount'))#end)" )
+      #set( $result = $call )
+      #set( $result = $render.eval($call) )
+      <br>
+      $call
+      =
+      <div>#if( $result == $call )$demo.nullResult#else$result#end</div>
+    #end
+    #foreach( $param in $params.all.keySet() )
+      #if( !$param.startsWith($method.uniqueName) )
+        #foreach( $value in $params.getStrings($param) )
+          <input type="hidden" name="$param" value="$esc.html($value)">
+        #end
+      #end
+    #end
+    </td>
+    </form>
+  #end
+  <td valign="top">#if( $desc.exists )$desc#elseif( $method.uniqueName eq 'toString' )$demo.toString#else$demo.descriptionMissing#end</td>
+</tr>
+#end
+<tr>
+  <form method="get" action="$link.self.anchor('custom')">
+  <td valign="top" colspan="2" id="custom">
+    #set( $custom = $params.getValue('custom', false) )
+    #set( $default = $text.get("${toolname}.custom") )
+    #if( !$default.exists )
+      #set( $default = "$esc.d$toolname" )
+    #end
+    <input type="text" size="40" name="custom" value="#if( $custom )$custom#else$default#end">
+    <input type="submit" value="$text.demo.try">
+    #if( $params.custom )
+      #set( $result = $call )
+      #set( $result = $render.eval($params.custom) )
+      <br>
+      $params.custom
+      =
+      <div>#if( $result == $call )$demo.nullResult#else$result#end</div>
+    #end
+    #foreach( $param in $params.all.keySet() )
+      #if( $param != 'custom' )
+        #foreach( $value in $params.getStrings($param) )
+          <input type="hidden" name="$param" value="$esc.html($value)">
+        #end
+      #end
+    #end
+  </td>
+  </form>
+  <td>$text.demo.tryAnything</td>
+</tr>
+</table>
+
+<div align="center">
+  <a name="fullDemo"><h3>$demo.mainExampleHeader</h3></a>
+<form method="post" action="$link.self.anchor('fullDemo')">
+<textarea name="demo" rows="3" cols="65">##
+#if( $params.demo )##
+$params.demo##
+#else##
+$!toolDemo##
+#end##
+</textarea>
+  <br>
+  <input type="submit" value="$demo.try">
+  #if( $params.layout )
+  <input type="hidden" name="layout" value="$params.layout">
+  #end
+</form>
+
+#if( $params.demo )
+$demo.mainResultsIntro:
+<pre>
+  $render.eval($params.demo)
+</pre>
+#end
+</div>

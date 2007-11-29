@@ -21,13 +21,19 @@
 #parse( 'header.vm' )
 
 <table cellpadding="10">
+<tr bgcolor="#99CCFF">
+<th colspan="3">$text.appname: $text.table.name</th>
+</tr>
 <tr>
   <!-- left nav -->
   <td bgcolor="#99CCFF" valign="top" >
     #parse( 'toolmenu.vm' )
+  </td>
+  <td valign="top">$screen_content</td>
+  <!-- right nav -->
+  <td bgcolor="#99CCFF" valign="top" >
     #parse( 'layoutmenu.vm' )
   </td>
-  <td>$screen_content</td>
 </tr>
 </table>
 #parse( 'footer.vm' )

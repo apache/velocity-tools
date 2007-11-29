@@ -223,7 +223,7 @@ http://myserver.org/myapp/index.vm?key1=val+1
                 This makes repeated use in Velocity templates easy. Query data is
                 URL-encoded before it is appended.</p>
 
-                <see>The <a href="#setURI()">method setURI()</a> for examples.</see>
+                <p>See <a href="#setURI()">method setURI()</a> for examples.</p>
              </description>
 
         </method>

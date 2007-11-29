@@ -96,9 +96,9 @@ the additional change specified by the method call.
 <div align="center">
   <a name="fullDemo"><h3>$demo.mainExampleHeader</h3></a>
 <form method="post" action="$link.self.anchor('fullDemo')">
-<textarea name="demo" rows="5" cols="65">##
-#if( $params.demo )##
-$params.demo##
+<textarea name="fullDemo" rows="5" cols="65">##
+#if( $params.fullDemo )##
+$params.fullDemo##
 #else##
 ${esc.h}${esc.h} NOTE: this first line is done in the actual page,
 ${esc.h}${esc.h}       because ${esc.h}set() doesn't work in these demos
@@ -114,10 +114,10 @@ ${esc.h}set( ${esc.d}base = ${esc.d}link.self.anchor('fullDemo') )
   #end
 </form>
 
-#if( $params.demo )
+#if( $params.fullDemo )
 $demo.mainResultsIntro:
 <pre>
-  $render.eval($params.demo)
+  $render.eval($params.fullDemo)
 </pre>
 #end
 </div>

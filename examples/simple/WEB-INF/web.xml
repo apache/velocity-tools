@@ -23,7 +23,7 @@
 <web-app>
   <servlet>
     <servlet-name>velocity</servlet-name>
-    <servlet-class>org.apache.velocity.tools.view.servlet.VelocityViewServlet</servlet-class>
+    <servlet-class>org.apache.velocity.tools.view.VelocityViewServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>velocity</servlet-name>

@@ -18,7 +18,7 @@
 <html>
 <body>
 
-I'm a velocity template.
+I'm a velocity template processed using the VelocityViewServlet.
 
 #if( $XHTML )
   #set( $br = "<br />" )
@@ -56,6 +56,11 @@ $br
 #if( $isSimple )
 This is simple#if( $XHTML ) xhtml#end app version ${version}.
 #end
+
+$br
+$br
+
+Click <a href="index.jsp">here</a> to see the VelocityViewTag handle the same VTL markup.
 
 </body>
 </html>

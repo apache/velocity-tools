@@ -29,6 +29,20 @@
   <section name="Velocity Tools Changes">
     <p>This document tracks the changes in Velocity Tools between releases.</p>
 
+    <subsection name="2.0-dev">
+        <p>This section very briefly and generally describes changes after the 1.x series.</p>
+        <ul>
+        <li>More convention over configuration and smart defaults</li>
+        <li>New configuration formats (more concise/flexible/powerful xml, properties, java)</li>
+        <li>Entirely new core infrastructure (lazy-loading tools, easier access, standalone support etc)</li>
+        <li>Added VelocityViewTag for JSP integration</li>
+        <li>Added DisplayTool, ConversionTool, ClassTool, LoopTool, FieldTool and more</li>
+        <li>Refactored and enhanced a number of existing tools</li>
+        <li>Deprecated lots of outdated things</li>
+        <li>... and lots more. :)</li>
+        </ul>
+    </subsection>
+
     <subsection name="1.4">
         <p>This section describes changes after the 1.3 release.</p>
         <ul>

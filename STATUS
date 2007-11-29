@@ -9,15 +9,14 @@ Known Issues/Bugs:
 
 Documentation Wishlist:
    - Complete user guide.
-   - Improve documention of any or all of the view tools and the 
-     commons-logging/LogSystem bridges (either xml/dvsl or javadoc)
+   - Improve documention of the view tools (either xml/dvsl or javadoc)
    - Create a developer's guide (how to write tools, tips on extending VVS, etc.)
 
 
 Proposed Features/Upgrades:
     General:
         - finish/fix/improve Maven2 build support
-        - add automated testing of tools
+        - add more automated testing of tools
         
     Generic tools:
         - add a library of general-use velocimacros
@@ -26,15 +25,10 @@ Proposed Features/Upgrades:
 
     VelocityView:
         - add a library of velocimacros for use with these tools
-        - Improve standalone toolbox management support
-        - Pluggable toolbox manager in VelocityViewServlet
-        - Pluggable toolbox loading (i.e. from props or something instead of xml)
-        - Support for reading toolbox from properties files
         - Tool pooling/cleanup support (use commons-pool probably)
         - look into supporting arbitrary layout depth (sort of a "tiles lite")
           for the VelocityLayoutServlet (cf. Niall's work with Simple)
         - support for JSP tags
-        - adopt VelocityTag and add toolbox support
         - develop Tiles2 compatible TilesTool
 
     VelocityStruts:
@@ -45,7 +39,5 @@ Proposed Features/Upgrades:
 
 
 Example Ideas:
-   - Struts 1.3 example(s). Take the existing Struts 1.3 examples and replace 
-     the view layer with Velocity. (show off Tiles, modules, Validator, etc.)
    - a FooShop-type demo app (i.e. something closer to real-world use)
 

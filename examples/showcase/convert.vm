@@ -1,0 +1,91 @@
+## Licensed to the Apache Software Foundation (ASF) under one
+## or more contributor license agreements.  See the NOTICE file
+## distributed with this work for additional information
+## regarding copyright ownership.  The ASF licenses this file
+## to you under the Apache License, Version 2.0 (the
+## "License"); you may not use this file except in compliance
+## with the License.  You may obtain a copy of the License at
+##
+##   http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing,
+## software distributed under the License is distributed on an
+## "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+## KIND, either express or implied.  See the License for the
+## specific language governing permissions and limitations
+## under the License.
+#title( 'ConversionTool' )
+<p>
+#set( $demo = $text.demo )
+$demo.thisPage.insert("#doclink( 'ConversionTool' true )").
+</p>
+
+#demoTableStart()
+
+#set( $quote = '' )
+#set( $desc = 'Converts an object to an instance of String if the object is not already an instance of String.' )
+#demo1( 'convert' 'toString' 4 $desc )
+
+#set( $desc = 'Converts an array, Collection, delimited String, or object to an array of Strings.' )
+#demo1( 'convert' 'toStrings' 4 $desc )
+
+#set( $desc = 'Converts an object to an instance of Boolean if the object is not already an instance of Boolean.' )
+#demo1( 'convert' 'toBoolean' 4 $desc )
+
+#set( $desc = 'Converts an array, Collection, delimited String, or object to an array of Booleans.' )
+#demo1( 'convert' 'toBooleans' 4 $desc )
+
+#set( $desc = 'Converts an object to an instance of Locale if the object is not already an instance of Locale.' )
+#demo1( 'convert' 'toLocale' 4 $desc )
+
+#set( $desc = 'Converts an array, Collection, delimited String, or object to an array of Locales.' )
+#demo1( 'convert' 'toLocales' 4 $desc )
+
+#set( $desc = 'Converts an object to an instance of Integer using the format returned by $convert.numberFormat and the Locale returned by $convert.locale if the object is not already an instance of Integer.' )
+#demo1( 'convert' 'toInteger' 4 $desc )
+
+#set( $desc = 'Converts an array, Collection, delimited String, or object to an array of Ints.' )
+#demo1( 'convert' 'toInts' 4 $desc )
+
+#set( $desc = 'Converts an object to an instance of Double using the format returned by $convert.numberFormat and the Locale returned by $convert.locale if the object is not already an instance of Double.' )
+#demo1( 'convert' 'toDouble' 4 $desc )
+
+#set( $desc = 'Converts an array, Collection, delimited String, or object to an array of Doubles.' )
+#demo1( 'convert' 'toDoubles' 4 $desc )
+
+#set( $desc = 'Converts an object to an instance of Number using the format returned by $convert.numberFormat and the Locale returned by $convert.locale if the object is not already an instance of Number.' )
+#demo1( 'convert' 'toNumber' 4 $desc )
+
+#set( $desc = 'Converts an array, Collection, delimited String, or object to an array of Numbers.' )
+#demo1( 'convert' 'toNumbers' 4 $desc )
+
+#set( $quote = '"' )
+#set( $desc = 'Parses a String to an instance of Number using the specified format and the Locale returned by $convert.locale.' )
+#demo2( 'convert' 'parseNumber' 4 $desc )
+
+#set( $desc = 'Parses a String to an instance of Number using the specified format and Locale.' )
+#demo3( 'convert' 'parseNumber' 3 $desc )
+
+#set( $quote = '' )
+#set( $desc = 'Converts an object to an instance of Date using the format returned by $convert.dateFormat and the Locale returned by $convert.locale.' )
+#demo1( 'convert' 'toDate' 4 $desc )
+
+#set( $desc = 'Converts an array, Collection, delimited String, or object to an array of Dates.' )
+#demo1( 'convert' 'toDates' 4 $desc )
+
+#set( $quote = '"' )
+#set( $desc = 'Parses a String to an instance of Date using the specified format and the Locale returned by $convert.locale.' )
+#demo2( 'convert' 'parseDate' 4 $desc )
+
+#set( $desc = 'Parses a String to an instance of Date using the specified format and Locale' )
+#demo3( 'convert' 'parseDate' 3 $desc )
+
+#set( $quote = '' )
+#set( $desc = 'Converts an object to an instance of Calendar using the format returned by $convert.dateFormat and the Locale returned by $convert.locale.' )
+#demo1( 'convert' 'toCalendar' 4 $desc )
+
+#set( $desc = 'Converts an array, Collection, delimited String, or object to an array of Calendars.' )
+#demo1( 'convert' 'toCalendars' 4 $desc )
+
+#demoCustom( 'convert' )
+</table>
