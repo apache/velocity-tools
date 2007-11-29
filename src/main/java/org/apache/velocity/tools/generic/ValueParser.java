@@ -170,6 +170,23 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
         return value;
     }
 
+    /**
+     * @param key the desired parameter's key
+     * @param alternate The alternate value
+     * @return parameter matching the specified key or the
+     *         specified alternate Object if there is no matching
+     *         parameter
+     */
+    public Object getValue(String key, Object alternate)
+    {
+        Object value = getValue(key);
+        if (value == null)
+        {
+            return alternate;
+        }
+        return value;
+    }
+
     public Object[] getValues(String key)
     {
         Object value = getValue(key);
