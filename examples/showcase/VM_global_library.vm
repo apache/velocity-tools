@@ -26,9 +26,12 @@
  * Creates a link to the javadoc for the specified tool.
  *#
 #macro( doclink $toolname $generic )
-<a href="http://velocity.apache.org/tools/devel/javadoc/org/apache/velocity/tools/##
+#set( $doclink = 
+"http://velocity.apache.org/tools/devel/javadoc/org/apache/velocity/tools/##
 #if( $generic )generic/#else#**#view/#end##
-${toolname}.html">$toolname</a>#end
+${toolname}.html"
+)##
+<a href="$doclink">$toolname</a>#end
 
 #**
  * Creates a list item for the toolmenu.
@@ -37,7 +40,27 @@ ${toolname}.html">$toolname</a>#end
   <li><a href="$menulink.relative("${tool}.vm")">$text.tools.get($tool)</a></li>
 #end
 
-
+#**
+ * Creates a smart default value for a demo field.
+ *#
+#macro( demoDefault $valuetype )
+#if( $valuetype.simpleName )
+  #set( $valuetype = $valuetype.simpleName )
+#end
+#if( $valuetype eq 'String' )
+'test'##
+#elseif( $valuetype eq 'int' or $valuetype eq 'Integer'
+        or $valuetype eq 'long' or $valuetype eq 'Long' )
+1##
+#elseif( $valuetype eq 'double' or $valuetype eq 'Double'
+        or $valuetype eq 'float' or $valuetype eq 'Float' )
+1.1##
+#elseif( $valuetype eq 'boolean' or $valuetype eq 'Boolean' )
+true##
+#elseif( $valuetype eq 'Class' )
+${esc.d}class.class##
+#end##
+#end
 
 #**
  * Creates the start tag and header row for a function demonstration table.
