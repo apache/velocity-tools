@@ -303,6 +303,14 @@ public class FieldTool extends AbstractLockConfig
             // otherwise, we should have stored the value directly
             return o;
         }
+
+        /**
+         * Return the toString() value of the internal results Map for this sub.
+         */
+        public String toString()
+        {
+            return results.toString();
+        }
     }
 
 
