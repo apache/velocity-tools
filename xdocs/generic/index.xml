@@ -40,8 +40,8 @@
         <p>
           <strong>Tools:</strong>
           <dl>
-            <dt><a href="../javadoc/org/apache/velocity/tools/generic/DateTool.html"><strong>DateTool</strong></a> and <a href="../javadoc/org/apache/velocity/tools/generic/ComparisonDateTool.html"><strong>ComparisonDateTool</strong></a></dt>
-            <dd>A tool for manipulating and formatting dates and an extension of that tool with the added ability to compare dates and describe the periods between them.</dd>
+            <dt><a href="../javadoc/org/apache/velocity/tools/generic/DateTool.html"><strong>DateTool</strong></a></dt>
+            <dd>A tool for manipulating and formatting dates.</dd>
 
             <dt><a href="MathTool.html"><strong>MathTool</strong></a></dt>
             <dd>A tool for performing floating point math.</dd>

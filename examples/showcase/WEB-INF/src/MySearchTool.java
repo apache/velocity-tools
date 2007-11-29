@@ -25,15 +25,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.servlet.http.HttpServletRequest;
-import org.apache.velocity.tools.view.context.ViewContext;
-import org.apache.velocity.tools.view.tools.AbstractSearchTool;
-import org.apache.velocity.tools.view.tools.ParameterParser;
+import org.apache.velocity.tools.view.AbstractSearchTool;
 
 /**
  * This is meant to demonstrate how to extend the AbstractSearchTool.
  * A typical implementation would have no static Set as a database,
- * not override init(), not have store() methods, and have a real 
+ * , not have store() methods, and have a real 
  * executeQuery(criteria) implementation.  But this works for the 
  * purposes of this demo.
  *
@@ -97,22 +94,9 @@ public class MySearchTool extends AbstractSearchTool
      * would probably not be the search tool's responsibility to ensure
      * that there is a session.
      */
-    public void init(Object obj)
+    public boolean getCreateSession()
     {
-        ViewContext context = (ViewContext)obj;
-        context.getRequest().getSession(true);
-
-        // then pass on to the super class
-        super.init(obj);
-    }
-
-
-    public void setup(HttpServletRequest req)
-    {
-        ParameterParser pp = new ParameterParser(req);
-        setCriteria(pp.getString("find"));
-        setIndex(pp.getInt("index", 0));
-        setItemsPerPage(pp.getInt("show", DEFAULT_ITEMS_PER_PAGE));
+        return true;
     }
 
     /**
@@ -123,31 +107,21 @@ public class MySearchTool extends AbstractSearchTool
      */
     protected List executeQuery(Object crit)
     {
-        try
+        String findme = String.valueOf(crit);
+        List results = new ArrayList();
+        synchronized (DATABASE)
         {
-            String findme = String.valueOf(crit);
-            List results = new ArrayList();
-            synchronized (DATABASE)
+            for (Iterator i = DATABASE.iterator(); i.hasNext(); )
             {
-                for (Iterator i = DATABASE.iterator(); i.hasNext(); )
+                String item = String.valueOf(i.next());
+                if (item.indexOf(findme) >= 0)
                 {
-                    String item = String.valueOf(i.next());
-                    if (item.indexOf(findme) >= 0)
-                    {
-                        results.add(item);
-                    }
+                    results.add(item);
                 }
             }
-            Collections.sort(results);
-            return results;
         }
-        catch (Exception e)
-        {
-            // never return null!
-            System.out.println(e);
-            e.printStackTrace();
-            return Collections.EMPTY_LIST;
-        }
+        Collections.sort(results);
+        return results;
     }
 
 }

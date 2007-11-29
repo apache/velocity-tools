@@ -36,6 +36,17 @@
         applications using the Velocity template engine.
         </p>
 
+        <p><strong>NOTE: This documentation is not fully up to date
+        with the changes made since the 1.x series.  We are working on bringing
+        the documentation up to speed with the code.  New documentation is
+        being developed on the
+        <a href="http://wiki.apache.org/velocity/VelocityTools2">wiki</a>.
+        So you may find more current information there. Since 2.0 is backwards
+        compatible, these instructions should work for you, just know that you
+        may need to change your code or configuration later to avoid deprecated
+        techniques and tools.  Also, any place there is a conflict between the Javadoc
+        and the standard docs, the javadoc should be trusted first.</strong></p>
+
         <subsection name="GenericTools" >
             <p><a href="generic/">GenericTools</a> is a group of reuseable and
             documented tools that can be added to a Velocity context. A
@@ -113,7 +124,7 @@
         <p><strong>Releases</strong></p>
         <p>
           The latest versions are available for
-          <a href="http://velocity.apache.org/download.cgi#tools">download</a>
+          <a href="http://velocity.apache.org/download.cgi">download</a>
           in source or binary form.
         </p>
 

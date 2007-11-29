@@ -87,8 +87,6 @@
 &lt;/tool&gt;</config-example>
         </toolinfo>
 
-        <see>The <a href="../javadoc/org/apache/velocity/tools/struts/SecureLinkTool.html">Javadoc</a> for more info.</see>
-
     </section>
 
  </body>

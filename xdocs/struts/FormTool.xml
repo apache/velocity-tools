@@ -54,8 +54,6 @@
 
         <methods/>
 
-        <see>The <a href="../javadoc/org/apache/velocity/tools/struts/FormTool.html">Javadoc</a> for more info.</see>
-
     </section>
 
     <section name="getBean()">

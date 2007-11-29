@@ -1,9 +1,6 @@
 The quick and dirty guide to VLS (VelocityLayoutServlet)
 --------------------------------------------------------
 
-Ok, i'm not much for writing docs beyond javadoc and code
-comments (which you should really read :), but here goes.
-
 
 VLS - Objectives:
 
@@ -11,76 +8,59 @@ VLS - Objectives:
 2. Provide customizable error screens for said projects
 
 
-
-
 VLS - Setup:
 
-Ok, this is an extension of the VelocityViewServlet, so to use
+This is an extension of the VelocityViewServlet, so to use
 it instead of the VVS, just change the servlet-class value of
 your web.xml entry for the velocity servlet to: 
 
-<servlet-class>org.apache.velocity.tools.view.servlet.VelocityLayoutServlet</servlet-class>
+<servlet-class>org.apache.velocity.tools.view.VelocityLayoutServlet</servlet-class>
 
-that means the full entry will be something like:
+That means the full entry will be something like:
 
   <!-- Define Velocity template compiler -->
   <servlet>
     <servlet-name>velocity</servlet-name>
-    <servlet-class>org.apache.velocity.tools.view.servlet.VelocityLayoutServlet</servlet-class>
-    <init-param>
-      <param-name>org.apache.velocity.toolbox</param-name>
-      <param-value>/WEB-INF/toolbox.xml</param-value>
-    </init-param>
-    <init-param>
-      <param-name>org.apache.velocity.properties</param-name>
-      <param-value>/WEB-INF/velocity.properties</param-value>
-    </init-param>
+    <servlet-class>org.apache.velocity.tools.view.VelocityLayoutServlet</servlet-class>
     <load-on-startup>10</load-on-startup>
   </servlet>
 
 
-if you enjoy configuring filenames and paths and would rather
-not conform to the defaults like a normal person, then you'll
+If you enjoy configuring filenames and paths and would rather
+not conform to the defaults, then you'll
 want to know about these:
 
 tools.view.servlet.error.template
 tools.view.servlet.layout.directory
 tools.view.servlet.layout.default.template
 
-if you can't tell, they're the velocity.properties keys
-for configuring the behaviour of this dandy little servlet.
+These are the velocity.properties keys
+for configuring the behaviour of this dservlet.
 the first specifies the filepath of the error template
-relative to your webapps root directory.
+relative to your webapp's root directory.
 the second specifies the directory in which you will be placing
 your layout templates.
 the third specifies the filepath of the default layout template
-relative to the layout directory NOT relative to the
+relative to the layout directory, NOT relative to the
 root directory of your webapp!
 
-if you do not add any of these keys/values to your velocity.properties,
-that will result in the equivalent of putting these values in:
+If you do not add any of these keys/values to your velocity.properties,
+that will result in the equivalent of putting these default values in:
 
 tools.view.servlet.error.template = Error.vm
 tools.view.servlet.layout.directory = layout/
 tools.view.servlet.layout.default.template = Default.vm
 
-in other words, these are my oh-so-creative defaults. :)
-
-ok?
-
-
 
 VLS - Layouts:
 
-
-Now, in your layout templates, the only thing you really need is the
+In your layout templates, the only thing you really need is the
 screen content reference.  So an acceptable layout template could be
 just
 
 $screen_content
 
-...but that would be lame.  At the least, you'll probably want to 
-do something along these lines:
+...but you'll probably want to do something along these lines:
 
 <html>
 <head>
@@ -113,7 +93,7 @@ VLS provides two ways to specify an alternate template for a requested page:
     of the default layout.  It don't matter how you get the layout param into
     the query data, only that it's there.  If you're using the LinkTool, the 
     most common will likely be  
-        <a href="$link.setRelative('MyScreen.vm').addQueryData('layout','MyOtherLayout.vm')">
+        <a href="$link.relative('MyScreen.vm').param('layout','MyOtherLayout.vm')">
         
     but form post data will work just as well.
 
@@ -130,17 +110,18 @@ VLS provides two ways to specify an alternate template for a requested page:
 
                     Navigations, Tiles, and How
 
-Those of you who are (or were) Turbine or Struts users will probably want to 
-do more than just set the layout and screen content.  You want to include
-arbitrary "tiles" or "navigations", right?  Well, thanks to Velocity's built-in
+Those who are (or were) Turbine or Struts users will probably want to 
+do more than just set the layout and screen content, and include
+arbitrary "tiles" or "navigations" in the layout.  Thanks to Velocity's built-in
 #parse directive, this is easy.
 
 First, create your "tile" as a separate template file like:
 
-<div id="footer">Nathan made this!</div>
+<div id="footer">It's a footer!</div>
 
-For creativity's sake, we'll pretend this code is in a file named "Footer.vm"
-that is located in the root of my webapp like my other non-layout templates.
+Now, assuming that this code is in a file named "Footer.vm"
+located in the root of the webapp like any other non-layout templates.
+You can include the footer like this:
 
 <html>
 <head>
@@ -155,10 +136,8 @@ $screen_content
 </body>
 </html>
 
-Easy, eh?
-
-Now, what if you have a lot of different "footer" files and you want your screen
-to decide which one will be used?  No problem!  Do something like this:
+If you have a lot of different "footer" files and you want your screen
+to decide which one will be used, do something like this:
 
 <html>
 <head>
@@ -181,11 +160,9 @@ once the screen is done with it.  This lets you set variables for
 the layout and footer to use from your screens.
 
 
-
 VLS - Error screen:
 
-
-Ok, the idea here is pretty simple.  If an uncaught exception or error is thrown
+If an uncaught exception or error is thrown
 at some point during the processing of your screen and layout, the error() method
 of the VLS is called.  This overrides the default error() method of the VelocityServlet
 to render a template instead of hardcoded html.
@@ -218,6 +195,3 @@ To get those, do something like this in your error template:
     Reference name: $invocation_exception.referenceName
     Method name: $invocation_exception.methodName
 #end
-
-
-Ok, that's pretty much it.  Good luck.

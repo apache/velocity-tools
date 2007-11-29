@@ -18,41 +18,16 @@
  specific language governing permissions and limitations
  under the License.
 -->
-
-<toolbox>
-
-  <tool>
-    <key>alternator</key>
-    <class>org.apache.velocity.tools.generic.AlternatorTool</class>
-    <parameter name="auto-alternate" value="false"/>
-  </tool>
-
-  <tool>
-    <key>date</key>
-    <class>org.apache.velocity.tools.generic.ComparisonDateTool</class>
-    <parameter name="format" value="yyyy-MM-dd"/>
-    <parameter name="skip" value="month"/>
-  </tool>
-
-  <tool>
-    <key>esc</key>
-    <class>org.apache.velocity.tools.generic.EscapeTool</class>
-  </tool>
-
-  <tool>
-    <key>math</key>
-    <class>org.apache.velocity.tools.generic.MathTool</class>
-  </tool>
-
-  <tool>
-    <key>number</key>
-    <class>org.apache.velocity.tools.generic.NumberTool</class>
-  </tool>
-
-  <tool>
-    <key>text</key>
-    <class>org.apache.velocity.tools.generic.ResourceTool</class>
-    <parameter name="locale" value="en_US"/>
-  </tool>
-
-</toolbox>
+<tools>
+    <toolbox scope="application">
+        <tool class="org.apache.velocity.tools.generic.AlternatorTool" auto-alternate="false"/>
+        <tool class="org.apache.velocity.tools.generic.ComparisonDateTool"
+            format="yyyy-MM-dd" skip="month"/>
+        <tool class="org.apache.velocity.tools.generic.EscapeTool"/>
+        <tool class="org.apache.velocity.tools.generic.FieldTool"
+            include="java.lang.Integer"/>
+        <tool class="org.apache.velocity.tools.generic.MathTool" locale="en_US"/>
+        <tool class="org.apache.velocity.tools.generic.NumberTool"/>
+        <tool class="org.apache.velocity.tools.generic.ResourceTool" locale="en_US"/>
+    </toolbox>
+</tools>

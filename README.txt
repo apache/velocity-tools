@@ -29,9 +29,8 @@ Generic tools
 Build Instructions
 ------------------
 
-Building the project requires JDK 1.4 or higher and ant 1.4.1 
-or higher. Running the tests requires JDK 1.5 or higher.
-There is an ant script included that builds the entire 
+Building the project requires JDK 1.5.1 or higher and ant 1.7.0 
+or higher. There is an ant script included that builds the entire 
 project, including all three subprojects, documentation, application 
 examples, etc. To build the project, start ant in the root directory 
 of the project:
@@ -73,16 +72,11 @@ To build only the Showcase example, execute:
 
 Please note:
 
-- Due to new compile-time dependencies, VelocityTools can only be compiled on JDK 1.4 
-  or higher.  But can still be run on JDK 1.3, provided you are willing to do without
-  some newer features, like the BrowserSnifferTool.
-
-- When compiling with JDK 1.4 there is a deprecation warning in LinkTool
-  involving java.net.URLEncoder.  This is to maintain compatibility with JDK 1.3.
-  However, when running the code on 1.4, the new, non-deprecated method is used.
+- Due to new compile-time dependencies, VelocityTools can only be compiled on JDK 1.5 
+  or higher
 
 The build process has been tested with JDK 1.5.0. The 
-included example applications have been tested with Tomcat 5.5.22,
+included example applications have been tested with Tomcat 5.0.22,
 but should work with any servlet engine.
 
 If you observe any problems with the build process, please report this

@@ -34,9 +34,8 @@
     <section name="Overview">
 
         <p>The VelocityStruts sub-project integrates Velocity with the
-        <a href="http://struts.apache.org/1.x/index.html">Apache Struts 1.x</a>
-        web application framework (Struts2 integrates Velocity differently) 
-        and enables the use of Velocity templates
+        <a href="http://struts.apache.org/">Apache Struts</a>
+        web application framework and enables the use of Velocity templates
         interchangeably with JSP pages for the view layer.</p>
 
         <p>Various other
