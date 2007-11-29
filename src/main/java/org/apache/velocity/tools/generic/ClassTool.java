@@ -202,6 +202,9 @@ public class ClassTool extends AbstractLockConfig
      * the specified {@link Class}.  If the specified class
      * is null, then this will return {@code null}. All other
      * configuration settings will be copied to the new instance.
+     * If safeMode is set to {@code true} and the specified Class
+     * is not declared {@code public}, then this will return
+     * {@code null}.
      */
     public ClassTool inspect(Class type)
     {
@@ -209,7 +212,14 @@ public class ClassTool extends AbstractLockConfig
         {
             return null;
         }
-        return new ClassTool(this, type);
+        // create the new tool, but only return it if
+        // it is public or safeMode is off
+        ClassTool tool = new ClassTool(this, type);
+        if (this.safeMode && !tool.isPublic())
+        {
+            return null;
+        }
+        return tool;
     }
 
     /**
@@ -457,6 +467,11 @@ public class ClassTool extends AbstractLockConfig
         }
     }
 
+    public String toString()
+    {
+        return getType().toString();
+    }
+
 
 
     /**
@@ -484,6 +499,14 @@ public class ClassTool extends AbstractLockConfig
         public String getUniqueName()
         {
             // field names can't be overloaded
+            return field.getName();
+        }
+
+        /**
+         * Simply returns the name of the field.
+         */
+        public String getJavadocRef()
+        {
             return field.getName();
         }
 
@@ -516,6 +539,11 @@ public class ClassTool extends AbstractLockConfig
         protected int getModifiers()
         {
             return field.getModifiers();
+        }
+
+        protected String getSubType()
+        {
+            return "field";
         }
     }
 
@@ -555,6 +583,11 @@ public class ClassTool extends AbstractLockConfig
         {
             return constructor.getModifiers();
         }
+
+        protected String getSubType()
+        {
+            return "constructor";
+        }
     }
 
     /**
@@ -573,6 +606,52 @@ public class ClassTool extends AbstractLockConfig
         public String getName()
         {
             return method.getName();
+        }
+
+        /**
+         * If this method can be treated as a bean property in Velocity
+         * (which does not exactly follow the javabean spec for such things)
+         * then it will return the "bean property" equivalent of the method name.
+         * (e.g. for getFoo(), isFoo() or setFoo(foo) it will return "foo")
+         */
+        public String getPropertyName()
+        {
+            String name = getName();
+            switch (getParameterCount())
+            {
+                case 0:
+                    if (name.startsWith("get") && name.length() > 3)
+                    {
+                        return uncapitalize(name.substring(3, name.length()));
+                    }
+                    else if (name.startsWith("is") && name.length() > 2)
+                    {
+                        return uncapitalize(name.substring(2, name.length()));
+                    }
+                    break;
+                case 1:
+                    if (name.startsWith("set") && name.length() > 3)
+                    {
+                        return uncapitalize(name.substring(3, name.length()));
+                    }
+                default:
+            }
+            return null;
+        }
+
+        private String uncapitalize(String string)
+        {
+            if (string.length() > 1)
+            {
+                StringBuilder out = new StringBuilder(string.length());
+                out.append(string.substring(0,1).toLowerCase());
+                out.append(string.substring(1, string.length()));
+                return out.toString();
+            }
+            else
+            {
+                return string.toLowerCase();
+            }
         }
 
         /**
@@ -606,13 +685,25 @@ public class ClassTool extends AbstractLockConfig
         {
             return method.getModifiers();
         }
+
+        protected String getSubType()
+        {
+            return "method";
+        }
     }
 
     public abstract static class CallableSub<T extends CallableSub> extends Sub<T>
     {
         protected String uniqueName;
+        protected String javadocRef;
+        protected String signature;
 
         public abstract Class[] getParameters();
+
+        public boolean takesParameters()
+        {
+            return (getParameterCount() > 0);
+        }
 
         /**
          * Returns the number of expected parameters. If this method or
@@ -661,15 +752,89 @@ public class ClassTool extends AbstractLockConfig
             }
             return uniqueName;
         }
+
+        public String getSignature()
+        {
+            if (signature == null)
+            {
+                signature = signature(false);
+            }
+            return signature;
+        }
+
+        public String getJavadocRef()
+        {
+            if (javadocRef == null)
+            {
+                javadocRef = signature(true);
+            }
+            return javadocRef;
+        }
+
+        protected String signature(boolean fullNames)
+        {
+            Class[] params = getParameters();
+            if (params.length == 0)
+            {
+                return getName() + "()";
+            }
+            else
+            {
+                StringBuilder out = new StringBuilder(30);
+                out.append(getName());
+                out.append('(');
+                boolean first = true;
+                for (Class param : params)
+                {
+                    if (first)
+                    {
+                        first = false;
+                    }
+                    else
+                    {
+                        out.append(',');
+                    }
+                    if (param.isArray())
+                    {
+                        if (fullNames)
+                        {
+                            out.append(param.getComponentType().getName());
+                        }
+                        else
+                        {
+                            out.append(param.getComponentType().getSimpleName());
+                        }
+                        out.append("[]");
+                    }
+                    else
+                    {
+                        if (fullNames)
+                        {
+                            out.append(param.getName());
+                        }
+                        else
+                        {
+                            out.append(param.getSimpleName());
+                        }
+                    }
+                }
+                out.append(')');
+                return out.toString();
+            }
+        }
     }
 
     public abstract static class Sub<T extends Sub> implements Comparable<T>
     {
         protected abstract int getModifiers();
 
+        protected abstract String getSubType();
+
         public abstract String getName();
 
         public abstract String getUniqueName();
+
+        public abstract String getJavadocRef();
 
         public boolean isPublic()
         {
@@ -749,6 +914,11 @@ public class ClassTool extends AbstractLockConfig
                 return this.getUniqueName().equals(that.getUniqueName());
             }
             return false;
+        }
+
+        public String toString()
+        {
+            return getSubType() + ' ' + getJavadocRef();
         }
     }
 
