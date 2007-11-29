@@ -494,7 +494,7 @@ public class DisplayTool extends AbstractLockConfig
             case 0:
                 return string;
             case 1:
-                return string.toUpperCase();
+                return string.toLowerCase();
             default:
                 StringBuilder out = new StringBuilder(string.length());
                 out.append(string.substring(0,1).toLowerCase());
