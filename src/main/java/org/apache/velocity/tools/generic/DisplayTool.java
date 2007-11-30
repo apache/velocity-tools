@@ -528,4 +528,62 @@ public class DisplayTool extends AbstractLockConfig
         return checkMe;
     }
 
+    /**
+     * Returns the {@link Measurements} of the string value of the specified object.
+     */
+    public Measurements measure(Object measureMe)
+    {
+        if (measureMe == null)
+        {
+            return null;
+        }
+        return new Measurements(String.valueOf(measureMe));
+    }
+
+
+    /**
+     * Measures the dimensions of the string given to its constructor.
+     * Height is the number of lines in the string.
+     * Width is the number of characters in the longest line.
+     */
+    public static class Measurements
+    {
+        private int height;
+        private int width;
+
+        public Measurements(String s)
+        {
+            String[] lines = s.split("\n");
+            height = lines.length;
+            for (String line : lines)
+            {
+                if (line.length() > width)
+                {
+                    width = line.length();
+                }
+            }
+        }
+
+        public int getHeight()
+        {
+            return height;
+        }
+
+        public int getWidth()
+        {
+            return width;
+        }
+
+        public String toString()
+        {
+            StringBuilder out = new StringBuilder(28);
+            out.append("{ height: ");
+            out.append(height);
+            out.append(", width: ");
+            out.append(width);
+            out.append(" }");
+            return out.toString();
+        }
+    }
+
 }

@@ -128,6 +128,22 @@ public class DisplayToolTests {
         assertEquals(";", display.getListDelimiter());
     }
 
+    public @Test void methodMeasure_String() throws Exception
+    {
+        DisplayTool display = new DisplayTool();
+        assertNull(display.measure(null));
+        DisplayTool.Measurements dims = display.measure("");
+        assertNotNull(dims);
+        assertEquals(1, dims.getHeight());
+        assertEquals(0, dims.getWidth());
+        dims = display.measure("twelve chars");
+        assertEquals(12, dims.getWidth());
+        assertEquals(1, dims.getHeight());
+        dims = display.measure("one\ntwo\nthree");
+        assertEquals(5, dims.getWidth());
+        assertEquals(3, dims.getHeight());
+    }
+
     public @Test void methodList_Object() throws Exception
     {
         DisplayTool display = new DisplayTool();
