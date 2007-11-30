@@ -19,11 +19,14 @@ package org.apache.velocity.tools.generic;
  * under the License.    
  */
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.HashSet;
@@ -69,6 +72,7 @@ public class ClassTool extends AbstractLockConfig
      */
     public static final String SAFE_MODE_KEY = "safeMode";
     public static final String INSPECT_KEY = "inspect";
+    public static final String SHOW_DEPRECATED_KEY = "showDeprecated";
 
     protected Log log;
     protected Class type;
@@ -77,6 +81,7 @@ public class ClassTool extends AbstractLockConfig
     protected List<FieldSub> fields;
 
     private boolean safeMode = true;
+    private boolean showDeprecated = false;
 
     /**
      * Creates an instance with target type of {@link Object}.
@@ -102,6 +107,7 @@ public class ClassTool extends AbstractLockConfig
         // duplicate configuration of the parent tool
         this.log = tool.log;
         this.safeMode = tool.safeMode;
+        this.showDeprecated = tool.showDeprecated;
         setLockConfig(tool.isConfigLocked());
     }
 
@@ -109,6 +115,8 @@ public class ClassTool extends AbstractLockConfig
     {
         this.log = (Log)values.getValue("log");
         this.safeMode = values.getBoolean(SAFE_MODE_KEY, safeMode);
+        this.showDeprecated =
+            values.getBoolean(SHOW_DEPRECATED_KEY, showDeprecated);
 
         String classname = values.getString(INSPECT_KEY);
         if (classname != null)
@@ -140,6 +148,27 @@ public class ClassTool extends AbstractLockConfig
             throw new IllegalArgumentException("target type is null or invalid");
         }
         this.type = type;
+    }
+
+    protected static boolean isDeprecated(AnnotatedElement element)
+    {
+        return (element.getAnnotation(Deprecated.class) != null);
+    }
+
+    /**
+     * Returns the current safeMode setting.
+     */
+    public boolean getSafeMode()
+    {
+        return this.safeMode;
+    }
+
+    /**
+     * Returns the current showDeprecated setting.
+     */
+    public boolean getShowDeprecated()
+    {
+        return this.showDeprecated;
     }
 
     /**
@@ -267,6 +296,14 @@ public class ClassTool extends AbstractLockConfig
     }
 
     /**
+     * Returns true if the inspected Class has been deprecated.
+     */
+    public boolean isDeprecated()
+    {
+        return isDeprecated(getType());
+    }
+
+    /**
      * Returns true if the inspected Class is declared public.
      */
     public boolean isPublic()
@@ -348,7 +385,8 @@ public class ClassTool extends AbstractLockConfig
             for (Method method : declared)
             {
                 MethodSub sub = new MethodSub(method);
-                if (!safeMode || sub.isPublic())
+                if ((!safeMode || sub.isPublic()) &&
+                    (showDeprecated || !sub.isDeprecated()))
                 {
                     subs.add(sub);
                 }
@@ -375,7 +413,8 @@ public class ClassTool extends AbstractLockConfig
             for (Constructor constructor : declared)
             {
                 ConstructorSub sub = new ConstructorSub(constructor);
-                if (!safeMode || sub.isPublic())
+                if ((!safeMode || sub.isPublic()) &&
+                    (showDeprecated || !sub.isDeprecated()))
                 {
                     subs.add(sub);
                 }
@@ -402,7 +441,8 @@ public class ClassTool extends AbstractLockConfig
             for (Field field : declared)
             {
                 FieldSub sub = new FieldSub(field);
-                if (!safeMode || sub.isPublic())
+                if ((!safeMode || sub.isPublic()) &&
+                    (showDeprecated || !sub.isDeprecated()))
                 {
                     subs.add(sub);
                 }
@@ -467,6 +507,14 @@ public class ClassTool extends AbstractLockConfig
         }
     }
 
+    /**
+     * Returns the {@link Annotation}s of the Class being inspected.
+     */
+    public List<Annotation> getAnnotations()
+    {
+        return Arrays.asList(getType().getAnnotations());
+    }
+
     public String toString()
     {
         return getType().toString();
@@ -485,6 +533,11 @@ public class ClassTool extends AbstractLockConfig
         public FieldSub(Field field)
         {
             this.field = field;
+        }
+
+        protected AnnotatedElement getElement()
+        {
+            return field;
         }
 
         public String getName()
@@ -560,6 +613,11 @@ public class ClassTool extends AbstractLockConfig
             this.constructor = constructor;
         }
 
+        protected AnnotatedElement getElement()
+        {
+            return constructor;
+        }
+
         public String getName()
         {
             return constructor.getDeclaringClass().getSimpleName();
@@ -601,6 +659,11 @@ public class ClassTool extends AbstractLockConfig
         public MethodSub(Method method)
         {
             this.method = method;
+        }
+
+        protected AnnotatedElement getElement()
+        {
+            return method;
         }
 
         public String getName()
@@ -826,6 +889,8 @@ public class ClassTool extends AbstractLockConfig
 
     public abstract static class Sub<T extends Sub> implements Comparable<T>
     {
+        protected abstract AnnotatedElement getElement();
+
         protected abstract int getModifiers();
 
         protected abstract String getSubType();
@@ -835,6 +900,19 @@ public class ClassTool extends AbstractLockConfig
         public abstract String getUniqueName();
 
         public abstract String getJavadocRef();
+
+        /**
+         * Returns the {@link Annotation}s of the element being inspected.
+         */
+        public List<Annotation> getAnnotations()
+        {
+            return Arrays.asList(getElement().getAnnotations());
+        }
+
+        public boolean isDeprecated()
+        {
+            return ClassTool.isDeprecated(getElement());
+        }
 
         public boolean isPublic()
         {

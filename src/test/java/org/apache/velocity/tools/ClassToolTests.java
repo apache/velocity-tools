@@ -21,11 +21,13 @@ package org.apache.velocity.tools.generic;
 
 import org.junit.*;
 import static org.junit.Assert.*;
+import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.apache.velocity.runtime.log.Log;
+import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.generic.ValueParser;
 
 /**
@@ -94,6 +96,18 @@ public class ClassToolTests {
         classTool.configure(conf);
         assertEquals(Map.class, classTool.getType());
         //TODO: test other configuration settings
+    }
+
+    public @Test void methodGetAnnotations() throws Exception
+    {
+        ClassTool classTool = new ClassTool();
+        // default type is java.lang.Object
+        assertTrue(classTool.getAnnotations().isEmpty());
+        classTool.setType(MyDeprecated.class);
+        assertEquals(1, classTool.getAnnotations().size());
+        classTool.setType(ValueParser.class);
+        Annotation defaultKey = classTool.getAnnotations().get(0);
+        assertEquals(defaultKey.annotationType(), DefaultKey.class);
     }
 
     public @Test void methodGetConstructors() throws Exception
@@ -214,6 +228,21 @@ public class ClassToolTests {
         assertFalse(classTool.isAbstract());
         classTool.setType(AbstractLockConfig.class);
         assertTrue(classTool.isAbstract());
+    }
+
+    public @Test void methodIsDeprecated() throws Exception
+    {
+        ClassTool classTool = new ClassTool();
+        // default type is java.lang.Object
+        assertFalse(classTool.isDeprecated());
+        classTool.setType(MyDeprecated.class);
+        assertTrue(classTool.isDeprecated());
+    }
+
+    @Deprecated
+    protected static class MyDeprecated
+    {
+        // do nothing
     }
 
     public @Test void methodIsFinal() throws Exception
