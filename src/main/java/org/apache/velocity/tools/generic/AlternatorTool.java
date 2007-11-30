@@ -104,6 +104,7 @@ public class AlternatorTool extends AbstractLockConfig
      * @deprecated Use {@link #auto(List list)} or
      *             {@link #manual(List list)} instead.
      */
+    @Deprecated
     public Alternator make(boolean auto, List list)
     {
         if (list == null)
@@ -125,6 +126,7 @@ public class AlternatorTool extends AbstractLockConfig
      * @deprecated Use {@link #auto(Object[] array)} or
      *             {@link #manual(Object[] array)} instead.
      */
+    @Deprecated
     public Alternator make(boolean auto, Object[] array)
     {
         if (array == null)
@@ -150,6 +152,7 @@ public class AlternatorTool extends AbstractLockConfig
      * @deprecated Use {@link #auto(Object o1, Object o2)} or
      *             {@link #manual(Object o1, Object o2)} instead.
      */
+    @Deprecated
     public Alternator make(boolean auto, Object o1, Object o2)
     {
         if (o1 == null || o2 == null)
