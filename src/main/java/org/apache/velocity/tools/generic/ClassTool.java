@@ -857,8 +857,9 @@ public class ClassTool extends AbstractLockConfig
                 out.append(getName());
                 out.append('(');
                 boolean first = true;
-                for (Class param : params)
+                for (int i=0; i < params.length; i++)
                 {
+                    Class param = params[i];
                     if (first)
                     {
                         first = false;
@@ -877,7 +878,14 @@ public class ClassTool extends AbstractLockConfig
                         {
                             out.append(param.getComponentType().getSimpleName());
                         }
-                        out.append("[]");
+                        if (i == params.length - 1 && isVarArgs())
+                        {
+                            out.append("...");
+                        }
+                        else
+                        {
+                            out.append("[]");
+                        }
                     }
                     else
                     {
