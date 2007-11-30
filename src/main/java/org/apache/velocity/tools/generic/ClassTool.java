@@ -762,6 +762,7 @@ public class ClassTool extends AbstractLockConfig
         protected String signature;
 
         public abstract Class[] getParameters();
+        public abstract boolean isVarArgs();
 
         public boolean takesParameters()
         {
@@ -798,12 +799,21 @@ public class ClassTool extends AbstractLockConfig
                     StringBuilder out = new StringBuilder(30);
                     out.append(getName());
                     out.append('_');
-                    for (Class param : params)
+                    for (int i=0; i < params.length; i++)
                     {
+                        Class param = params[i];
                         if (param.isArray())
                         {
                             out.append(param.getComponentType().getSimpleName());
-                            out.append("Array");
+                            // check for vararg on last param
+                            if (i == params.length - 1 && isVarArgs())
+                            {
+                                out.append("VarArgs");
+                            }
+                            else
+                            {
+                                out.append("Array");
+                            }
                         }
                         else
                         {
