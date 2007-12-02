@@ -648,6 +648,7 @@
 
   <target name="publish.docs" depends="docs,publish.auth" if="have.auth"
           description="Updates development documentation on the website">
+    <mkdir dir="${dist.dir}"/>
     <zip zipfile="${dist.dir}/docs.zip"
          basedir="${docs.dir}"/>
     <echo>
