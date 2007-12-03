@@ -22,7 +22,7 @@
 <document>
 
     <properties>
-        <title>Velocity Tools - Layout Servlet</title>
+        <title>VelocityTools - Layout Servlet</title>
         <author>Nathan Bubna</author>
         <projectfile>xdocs/view/menu.xml</projectfile>
     </properties>
@@ -33,7 +33,7 @@
         <p>
         This is an extension to the basic VelocityViewServlet.  It provides
         a simple layout control and customizable error screens for Velocity
-        Tools based projects.  Velocity Tools is distributed with an example
+        Tools based projects.  VelocityTools is distributed with an example
         app demonstrating the use of this servlet.
         </p>
     </section>
