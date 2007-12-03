@@ -20,27 +20,32 @@
 -->
 
 <project href="index.html">
-    <title>Velocity</title>
-    <logo href="images/velocitytools.png">&lt; Velocity Tools &gt;</logo>
+    <title>VelocityTools 2.0</title>
+    <logo href="images/velocitytools.png">VelocityTools</logo>
 
     <body>
-      <uplink name="Velocity"        href="http://velocity.apache.org/" alt="top"/>
+        <uplink name="Velocity" href="http://velocity.apache.org/" alt="top"/>
 
-      <menu name="Velocity Tools">
-          <item name="Overview"               href="index.html"/>
-          <item name="Download"               href="index.html#Download"/>
-          <item name="ChangeLog"              href="changes.html"/>
-          <item name="Subversion Repository"  href="index.html#Subversion Repository"/>
-          <item name="Javadoc"                href="javadoc/index.html"/>
-          <item name="Wiki"                   href="http://wiki.apache.org/velocity/VelocityTools"/>
-          <item name="FAQ"                    href="http://wiki.apache.org/velocity/VelocityFAQ"/>
-          <item name="Report Issues"          href="http://issues.apache.org/jira/browse/VELTOOLS"/>
-      </menu>
+        <menu name="VelocityTools">
+            <item name="Overview"                  href="index.html"/>
+            <item name="Download"                  href="http://velocity.apache.org/download.cgi#Tools"/>
+            <item name="ChangeLog"                 href="changes.html"/>
+            <item name="Wiki"                      href="http://wiki.apache.org/Velocity/VelocityTools"/>
+            <item name="FAQ"                       href="http://wiki.apache.org/velocity/VelocityFAQ"/>
+            <item name="Subversion Repository"     href="index.html#Subversion%20Repository"/>
+            <item name="Report Issue"              href="http://issues.apache.org/jira/browse/VELTOOLS"/>
+        </menu>
 
-      <menu name="Subprojects">
-          <item name="GenericTools"           href="generic/"/>
-          <item name="VelocityView"           href="view/"/>
-          <item name="VelocityStruts"         href="struts/"/>
-      </menu>
+        <menu name="Subprojects">
+            <item name="GenericTools"              href="generic.html"/>
+            <item name="VelocityStruts"            href="struts.html"/>
+            <item name="VelocityView"              href="view.html"/>
+        </menu>
+
+        <menu name="Documentation">
+            <item name="Javadoc"                   href="http://velocity.apache.org/tools/devel/javadoc/index.html"/>
+            <item name="Configuration"             href="documentation/config.html"/>
+            <item name="Misc"                      href="documentation/standalone.html"/>
+        </menu>
     </body>
 </project>

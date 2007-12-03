@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+
+    <properties>
+        <title>VelocityTools Project</title>
+        <author email="nbubna@apache.org">Nathan Bubna</author>
+        <projectfile>xdocs/documentation/menu.xml</projectfile>
+    </properties>
+
+    <body>
+
+    <section name="Configuration using Java">
+        <p>
+            Of course, it is possible to configure things purely via Java, 
+            though this too is much easier than it was in VelocityTools 1.x. 
+            Here again, is an example that is equivalent to those above:
+        </p>
+
+        <sourcecode>
+EasyFactoryConfiguration config = new EasyFactoryConfiguration();
+config.toolbox("request").property("xhtml", true)
+.tool("toytool", ToyTool.class).restrictTo("index.vm")
+.tool("custom", CustomTool.class).property("randomProperty", "whatever");
+config.toolbox("session").property("create-session", true)
+.tool("map", HashMap.class);
+config.toolbox("application")
+.tool(DateTool.class);
+config.number("version", 1.1);
+config.data("date", "Mon Sep 17 10:08:03 PDT 2007")
+.target(Date.class)
+.converter(DateLocaleConverter.class);
+config.bool("isSimple", true);
+config.string("foo", "this is foo.");
+config.string("bar", "this is bar.");
+config.data("dataKeys", "list", "version,date,isSimple,foo,bar,dataKeys,switches");
+config.data("switches", "list.boolean", "true,false,false,true");
+        </sourcecode>
+
+        <p>
+            This example uses the EasyFactoryConfiguration API for brevity, 
+            but you can also directly use the FactoryConfiguration/
+            ToolboxConfiguration/ToolConfiguration/Data API, as you would 
+            probably do if you were to construct your configuration via an 
+            dependency injection framework (such as Spring).
+        </p>
+    </section>
+
+    </body>
+
+</document>

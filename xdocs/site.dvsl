@@ -129,7 +129,7 @@
         #if ($context.toolbox.PrinterFriendlyVersion.equals("yes"))            
         <td>&nbsp;</td>
         #else
-        <td width="20%" valign="top" nowrap="true">
+        <td width="20%" valign="top">
             $context.applyTemplates( $project, "body/toplink" )
             $context.applyTemplates( $project, "body/uplink" )
             $context.applyTemplates( $project, "body/menu" )
@@ -233,7 +233,7 @@
  *  process a documentation section
  *#
 #match( "section" )
-<table border="0" cellspacing="0" cellpadding="2" width="100%">
+<table border="0" cellspacing="4" cellpadding="2" width="100%">
   <tr>
     <td colspan="2" bgcolor="$banner-bg">
       <font color="$banner-fg" face="arial,helvetica.sanserif">
@@ -242,9 +242,10 @@
     </td>
   </tr>
   <tr>
-    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td nowrap="true" width="3%"></td>
     <td>
       $context.applyTemplates("*")
+      <br />
     </td>
   </tr>
 </table>
@@ -255,6 +256,7 @@
  *  process a documentation subsection
  *#
 #match( "subsection" )
+<br />
 <table border="0" cellspacing="0" cellpadding="2" width="100%">
   <tr>
     <td colspan="2" bgcolor="$sub-banner-bg">
@@ -264,9 +266,10 @@
     </td>
   </tr>
   <tr>
-    <td NOWRAP> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+    <td nowrap="true" width="3%"></td>
     <td>
       $context.applyTemplates("*")
+      <br />
     </td>
   </tr>
 </table>

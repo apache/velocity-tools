@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+
+    <properties>
+        <title>VelocityTools Project</title>
+        <author email="nbubna@apache.org">Nathan Bubna</author>
+        <projectfile>xdocs/menu.xml</projectfile>
+    </properties>
+
+    <body>
+
+    <section name="Overview">
+        <p>
+            VelocityStruts includes both the <a href="generic.html">
+            GenericTools</a> and <a href="view.html">VelocityView</a> and 
+            adds tools for use in Struts 1.x applications. These tools match 
+            the functions of the key Struts taglibs and provide access to 
+            Struts resources, messages, tiles, validation functions and more.
+        </p>
+    </section>
+
+    <section name="Default Configuration">
+        <p>
+            The default configuration provided for 
+            <a href="struts.html">VelocityStruts</a> is 
+            <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/tools.xml?view=markup">here</a> 
+            and <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/tools.xml?view=markup">
+            here</a> and <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/tools.xml?view=markup">
+            here</a>.
+        </p>
+
+    </section>
+    <section name="Dependencies">
+        <p>
+            TODO: just link to an anchor in a comprehensive dependencies overview page?
+        </p>
+
+        <subsection name="Compile Time Requirements">
+            <ul>
+                <li>commons-beanutils</li>
+                <li>commons-collections</li>
+                <li>commons-digester</li>
+                <li>commons-lang</li>
+                <li>commons-logging</li>
+                <li>commons-validator</li>
+                <li>servlet api</li>
+                <li>ssl-ext</li>
+                <li>struts-core</li>
+                <li>struts-taglib</li>
+                <li>struts-tiles</li>
+                <li>velocity</li>
+            </ul>
+        </subsection>
+
+        <subsection name="Runtime Requirements">
+            <ul>
+                <li>commons-beanutils - core infrastructure, 
+                <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/MathTool.java?view=markup">MathTool</a>, 
+                <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/SortTool.java?view=markup">SortTool</a></li>
+                <li>commons-digester - xml configuration</li>
+                <li>commons-lang - <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/EscapeTool.java?view=markup">EscapeTool</a></li>
+                <li>commons-validator - <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/ValidatorTool.java?view=markup ">ValidatorTool</a></li>
+                <li>servlet - all 
+                    <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/">VelocityView</a>
+                     and <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/">VelocityStruts</a>
+                     tools except <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/ViewRenderTool.java?view=markup">ViewRenderTool</a></li>
+                <li>ssl-ext - <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/SecureLinkTool.java?view=markup ">SecureLinkTool</a></li>
+                <li>struts-core - all <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/">VelocityStruts</a> tools</li>
+                <li>struts-taglib - <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/FormTool.java?view=markup">FormTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/SecureLinkTool.java?view=markup">SecureLinkTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/StrutsLinkTool.java?view=markup">StrutsLinkTool</a></li>
+                <li>struts-tiles - <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/TilesTool.java?view=markup ">TilesTool</a></li>
+                <li>velocity - <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/ClassTool.java?view=markup">ClassTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/AbstractSearchTool.java?view=markup">AbstractSearchTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/ContextTool.java?view=markup">ContextTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/ImportTool.java?view=markup">ImportTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/IteratorTool.java?view=markup">IteratorTool</a>, <a href="ttp://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/LinkTool.java?view=markup">LinkTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/MultiViewsTool.java?view=markup">MultiViewsTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/ViewRenderTool.java?view=markup">ViewRenderTool</a>,  <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/SecureLinkTool.java?view=markup">SecureLinkTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/StrutsLinkTool.java?view=markup">StrutsLinkTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/MessageTool.java?view=markup">MessageTool</a>.</li>
+            </ul>
+        </subsection>
+    </section>
+
+d    <section name="Tools">
+        <ul>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/ActionMessagesTool.java?view=markup">ActionMessagesTool</a> - For accessing/displaying Struts action messages.</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/ErrorsTool.java?view=markup ">ErrorsTool</a> - For accessing/displaying Struts error messages.</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/FormTool.java?view=markup">FormTool</a> - For working with HTML forms in Struts apps.</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/MessageResourcesTool.java?view=markup">MessageResourcesTool</a> - Abstract view tool that provides access to Struts message resources.</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/MessageTool.java?view=markup">MessageTool</a> - Provides methods to render Struts application resources (for i18n and other textual content access).</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/SecureLinkTool.java?view=markup">SecureLinkTool</a> - For using Struts SSL Extensions. It has the same interface as <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/StrutsLinkTool.java?view=markup">StrutsLinkTool</a> and can function as a substitute if Struts 1.x and SSL Ext are installed.</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/StrutsLinkTool.java?view=markup">StrutsLinkTool</a> - Subclass of <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/LinkTool.java?view=markup">LinkTool</a> for creating URI links in Struts by adding support for Struts actions and forwards.</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/TilesTool.java?view=markup">TilesTool</a> - For using Struts-Tiles (not for Tiles 2!) in Velocity.</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/ValidatorTool.java?view=markup">ValidatorTool</a> - Uses Struts-Validator to produce client side javascript validation for your forms.</li>
+        </ul>
+    </section>
+
+    </body>
+
+</document>
