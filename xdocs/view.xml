@@ -44,7 +44,12 @@
 
     <section name="Default Configuration">
         <p>
-            The default configuration provided for <a href="VelocityTools2/VelocityView">VelocityView</a> is <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/tools.xml?view=markup">here</a> and <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/tools.xml?view=markup">here</a>.
+            The default configuration provided for 
+            <a href="VelocityTools2/VelocityView">VelocityView</a> is 
+            <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/tools.xml?view=markup">
+            here</a> and 
+            <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/tools.xml">
+            here</a>.
         </p>
     </section>
 
@@ -68,11 +73,11 @@
 
         <subsection name="Runtime Requirements">
             <ul>
-                <li>commons-beanutils - core infrastructure, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/MathTool.java?view=markup">MathTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/SortTool.java?view=markup">SortTool</a></li>
+                <li>commons-beanutils - core infrastructure, <a href="../javadoc/org/apache/velocity/tools/generic/MathTool.html">MathTool</a>, <a href="../javadoc/org/apache/velocity/tools/generic/SortTool.html">SortTool</a></li>
                 <li>commons-digester - xml configuration</li>
-                <li>commons-lang - <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/EscapeTool.java?view=markup">EscapeTool</a></li>
-                <li>velocity - <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/ClassTool.java?view=markup">ClassTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/AbstractSearchTool.java?view=markup">AbstractSearchTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/ContextTool.java?view=markup">ContextTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/ImportTool.java?view=markup">ImportTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/IteratorTool.java?view=markup">IteratorTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/LinkTool.java?view=markup">LinkTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/MultiViewsTool.java?view=markup">MultiViewsTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/ViewRenderTool.java?view=markup">ViewRenderTool</a></li>
-                <li>servlet - all <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/">VelocityView</a> tools except <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/ViewRenderTool.java?view=markup">ViewRenderTool</a></li>
+                <li>commons-lang - <a href="../javadoc/org/apache/velocity/tools/generic/EscapeTool.html">EscapeTool</a></li>
+                <li>velocity - <a href="../javadoc/org/apache/velocity/tools/generic/ClassTool.html">ClassTool</a>, <a href="../javadoc/org/apache/velocity/tools/view/AbstractSearchTool.html">AbstractSearchTool</a>, <a href="../javadoc/org/apache/velocity/tools/view/ContextTool.html">ContextTool</a>, <a href="../javadoc/org/apache/velocity/tools/view/ImportTool.html">ImportTool</a>, <a href="../javadoc/org/apache/velocity/tools/view/IteratorTool.html">IteratorTool</a>, <a href="../javadoc/org/apache/velocity/tools/view/LinkTool.html">LinkTool</a>, <a href="../javadoc/org/apache/velocity/tools/view/MultiViewsTool.html">MultiViewsTool</a>, <a href="../javadoc/org/apache/velocity/tools/view/ViewRenderTool.html">ViewRenderTool</a></li>
+                <li>servlet - all <a href="../javadoc/org/apache/velocity/tools/view/">VelocityView</a> tools except <a href="../javadoc/org/apache/velocity/tools/view/ViewRenderTool.html">ViewRenderTool</a></li>
             </ul>
         </subsection>
     </section>
@@ -104,16 +109,16 @@
 
     <section name="Tools">
         <ul>
-            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/AbstractSearchTool.java?view=markup">AbstractSearchTool</a> - For doing "searching" and robust pagination of search results. Requires you to create a subclass.</li>
-            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/BrowserTool.java?view=markup">BrowserTool</a> - For identifying the browser and features thereof requesting the template.</li>
-            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/ContextTool.java?view=markup">ContextTool</a> - For convenient access to ViewContext data and meta-data.</li>
-            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/CookieTool.java?view=markup">CookieTool</a> - For convenient cookie access and creation.</li>
-            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/ImportTool.java?view=markup">ImportTool</a> - For pulling down textual content from a URL.</li>
-            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/LinkTool.java?view=markup">LinkTool</a> - For easy building of URLs (both relative or absolute).</li>
-            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/PagerTool.java?view=markup">PagerTool</a> - For doing request-based pagination of items in an arbitrary list.</li>
-            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/ParameterTool.java?view=markup">ParameterTool</a> - For easy retrieval and parsing of ServletRequest parameters.</li>
-            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/ViewRenderTool.java?view=markup">ViewRenderTool</a> - To evaluate and render arbitrary strings of VTL, including recursive rendering.</li>
-            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/ViewResourceTool.java?view=markup">ViewResourceTool</a> - For simplified access to ResourceBundles for internationalization or other dynamic content needs.</li>
+            <li><a href="../javadoc/org/apache/velocity/tools/view/AbstractSearchTool.html">AbstractSearchTool</a> - For doing "searching" and robust pagination of search results. Requires you to create a subclass.</li>
+            <li><a href="../javadoc/org/apache/velocity/tools/view/BrowserTool.html">BrowserTool</a> - For identifying the browser and features thereof requesting the template.</li>
+            <li><a href="../javadoc/org/apache/velocity/tools/view/ContextTool.html">ContextTool</a> - For convenient access to ViewContext data and meta-data.</li>
+            <li><a href="../javadoc/org/apache/velocity/tools/view/CookieTool.html">CookieTool</a> - For convenient cookie access and creation.</li>
+            <li><a href="../javadoc/org/apache/velocity/tools/view/ImportTool.html">ImportTool</a> - For pulling down textual content from a URL.</li>
+            <li><a href="../javadoc/org/apache/velocity/tools/view/LinkTool.html">LinkTool</a> - For easy building of URLs (both relative or absolute).</li>
+            <li><a href="../javadoc/org/apache/velocity/tools/view/PagerTool.html">PagerTool</a> - For doing request-based pagination of items in an arbitrary list.</li>
+            <li><a href="../javadoc/org/apache/velocity/tools/view/ParameterTool.html">ParameterTool</a> - For easy retrieval and parsing of ServletRequest parameters.</li>
+            <li><a href="../javadoc/org/apache/velocity/tools/view/ViewRenderTool.html">ViewRenderTool</a> - To evaluate and render arbitrary strings of VTL, including recursive rendering.</li>
+            <li><a href="../javadoc/org/apache/velocity/tools/view/ViewResourceTool.html">ViewResourceTool</a> - For simplified access to ResourceBundles for internationalization or other dynamic content needs.</li>
         </ul>
     </section>
 
