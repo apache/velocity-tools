@@ -21,13 +21,13 @@
 
 <document>
   <properties>
-    <title>Velocity Tools Changes</title>
+    <title>VelocityTools Changes</title>
     <author email="nbubna@apache.org">Nathan Bubna</author>
     <projectfile>xdocs/menu.xml</projectfile>
   </properties>
 <body>
-  <section name="Velocity Tools Changes">
-    <p>This document tracks the changes in Velocity Tools between releases.</p>
+  <section name="VelocityTools Changes">
+    <p>This document tracks the changes in VelocityTools between releases.</p>
 
     <subsection name="2.0-dev">
         <p>This section very briefly and generally describes changes after the 1.x series.</p>
