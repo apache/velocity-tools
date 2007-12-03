@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+
+    <properties>
+        <title>VelocityTools Project</title>
+        <author email="nbubna@apache.org">Nathan Bubna</author>
+        <projectfile>xdocs/menu.xml</projectfile>
+    </properties>
+
+    <body>
+
+
+    <section name="Overview">
+        <p>
+            GenericTools is the set of classes that provide basic 
+            infrastructure for using tools in standard Java SE Velocity 
+            projects, as well as a set of tools for use in generic Velocity 
+            templates. These tools have no Java EE dependencies and are often 
+            safe to use as "singletons".  Some of them are not thread-safe to 
+            allow both a no-arg constructor and configurability, but the 
+            state-changing methods are declared protected with the exception 
+            of configure(Map) which is--by default--rendered useless after 
+            being used just once.  If you require strict thread-safety, 
+            be very cautious in using any configurable tools.
+        </p>
+    </section>
+
+    <section name="Default Configuration">
+        <p>
+            The default configuration provided for GenericTools is <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/tools.xml?view=markup">here</a>.
+        </p>
+    </section>
+
+    <section name="Dependencies">
+        <p>
+            TODO: just link to an anchor in a comprehensive dependencies overview page?
+        </p>
+
+        <subsection name="Compile Time Requirements">
+            <ul>
+                <li>commons-beanutils</li>
+                <li>commons-collections</li>
+                <li>commons-digester</li>
+                <li>commons-lang</li>
+                <li>commons-logging</li>
+                <li>velocity</li>
+            </ul>
+        </subsection>
+
+        <subsection name="Runtime Requirements">
+            <ul>
+                <li>commons-beanutils - core infrastructure, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/MathTool.java?view=markup"> MathTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/SortTool.java?view=markup">SortTool</a></li>
+                <li>commons-digester - xml configuration</li>
+                <li>commons-lang - <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/EscapeTool.java?view=markup">EscapeTool</a></li>
+                <li>velocity - <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/ClassTool.java?view=markup">ClassTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/IteratorTool.java?view=markup"> IteratorTool</a>, <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/RenderTool.java?view=markup">RenderTool</a></li>
+            </ul>
+        </subsection>
+    </section>
+    <section name="Tools">
+        <ul>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/Alternator.java?view=markup">Alternator</a> &amp; <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/AlternatorTool.java?view=markup">AlternatorTool</a> - For easily alternating over values in a list or array.</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/ClassTool.java?view=markup">ClassTool</a> - For simplifying reflective lookup of information about Classes and their fields, methods and constructors.</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/ConversionTool.java?view=markup">ConversionTool</a> - For converting String values to richer object types.</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/DateTool.java?view=markup">DateTool</a> &amp; <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/ComparisonDateTool.java?view=markup">ComparisonDateTool</a> - For manipulating, formatting, and comparing dates.</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/DisplayTool.java?view=markup">DisplayTool</a> - For controlling display of references (e.g. truncating values, "pretty printing" lists, and displaying alternates when a reference is null).</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/EscapeTool.java?view=markup">EscapeTool</a> - For common escaping needs in Velocity templates (e.g. escaping html, xml, javascript etc.)</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/FieldTool.java?view=markup">FieldTool</a> - For (easy) access to static fields in a class, such as string constants.</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/IteratorTool.java?view=markup">IteratorTool</a> - Wraps lists to let the designer specify a condition to terminate the loop, and reuse the same list in different loops.</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/ListTool.java?view=markup">ListTool</a> - For working with arrays and lists, treats both transparently the same.</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/MathTool.java?view=markup">MathTool</a> - For performing math functions.</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/NumberTool.java?view=markup">NumberTool</a> - For formatting and converting numbers.</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/RenderTool.java?view=markup">RenderTool</a> - To evaluate and render arbitrary strings of VTL, including recursive rendering.</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/ResourceTool.java?view=markup">ResourceTool</a> - For simplified access to ResourceBundles for internationalization or other dynamic content needs.</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/SortTool.java?view=markup">SortTool</a> - Used to sort collections (or arrays, iterators, etc) on any arbitary set of properties exposed by the objects contained within the collection.</li>
+            <li><a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/ValueParser.java?view=markup">ValueParser</a> - Used to retrieve and parse (aka convert) String values pulled from a map.</li>
+        </ul>
+    </section>
+
+    </body>
+
+</document>
