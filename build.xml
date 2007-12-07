@@ -341,6 +341,15 @@
         <exclude name="**/*project.xml"/>
         <include name="**/*.xml"/>
     </dvsl>
+    <!-- create printer version of documentation -->
+    <dvsl basedir="${docs.src}"
+          destdir="${docs.dir}/"
+          extension="-printer.html"
+          style="${docs.src}/site.dvsl">
+        <exclude name="**/*project.xml"/>
+        <include name="**/*.xml"/>
+        <tool name="toolbox.string.PrinterFriendlyVersion" value="yes" />
+    </dvsl>
 
     <copy todir="${docs.dir}/images">
       <fileset dir="${docs.src}/images">

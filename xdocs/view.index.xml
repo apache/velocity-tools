@@ -21,7 +21,7 @@
 
 <document>
   <properties>
-    <title>VelocityView</title>
+    <title>Overview</title>
     <projectfile>xdocs/project.xml</projectfile>
     <subprojectfile>xdocs/view.project.xml</subprojectfile>
   </properties>
@@ -30,7 +30,7 @@
 
   <section name="Overview">
     <p>VelocityView provides support for rapidly and cleanly building web applications
-    using Velocity templates as the view layer.  The project is designed with the
+    using Velocity templates in the view layer.  The project is designed with the
     <a href="http://jakarta.apache.org/turbine/further-reading/pullmodel.html">Pull-MVC Model</a>
     in mind and works well in conjunction with web application frameworks that act
     as the controller (e.g. <a href="../struts/index.html">Struts</a>), but can be used

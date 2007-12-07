@@ -1,0 +1,29 @@
+#bodyColumn, #banner, #title {
+    width: 625px;
+    margin: 0px;
+}
+#organizationLogo img, #projectLogo img, #projectLogo span{
+  margin: 2px;
+}
+ul {
+    padding: 0px 0px 5px 40px;
+}
+p {
+    margin:3px 0px 5px 1px;
+}
+h1, h2 {
+    padding: 1px 1px 1px 2px;
+    margin: 2px 1px 1px 2px;
+    background-color: white;
+    color: black;
+}
+h3, h4, h5 {
+    padding: 1px 1px 1px 2px;
+    border: none;
+    color: black;
+}
+#title h1 {
+    font-size: 16pt;
+    font-weight: bold;
+    text-align: center;
+}

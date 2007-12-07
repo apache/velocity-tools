@@ -29,14 +29,6 @@
 ##     If its value is "yes", the generated page has no left-hand menu.
 ##     This facilitates the printing of documentation.
 ##
-## $context.toolbox.LinkToPrinterFriendlyVersion
-##     If its value is "yes", a link to a printer-friendly version of
-##     the same document is added to the end of the left-hand menu.
-##     The file name of the printer-frienly document is derived from the
-##     the name of the current template in the following way:
-##     filename.html becomes filename-printer.html
-##  
-##
 ## Shown below is a configuration example of an ant task:
 ##     <!-- create printer version of documentation -->
 ##     <dvsl
@@ -53,6 +45,8 @@
 ##
 
 #match( "document" )
+    ## identify if this is to be a printer-friendly version
+    #set( $printerFriendly = $context.toolbox.PrinterFriendlyVersion.equals('yes') )
     ## alias the current node
     #set( $document = $node )
     ## get path to the project file
@@ -70,11 +64,13 @@
       #set( $subtitle = $subproject.attribute('name') )
     #end
     #set( $pagetitle = $document.properties.title )
-    ## build up crumbs
-    #set( $crumbs = $project.selectNodes('breadcrumb') )
-    #set( $subcrumbs = $subproject.selectNodes('breadcrumb') )
-    #if( $subcrumbs && !$subcrumbs.empty )
-      #set( $foo = $crumbs.addAll($subcrumbs) )
+    ## build up crumbs if they'll be needed
+    #if( !$printerFriendly )
+        #set( $crumbs = $project.selectNodes('breadcrumb') )
+        #set( $subcrumbs = $subproject.selectNodes('breadcrumb') )
+        #if( $subcrumbs && !$subcrumbs.empty )
+          #set( $foo = $crumbs.addAll($subcrumbs) )
+        #end
     #end
 
     <html>
@@ -96,6 +92,9 @@
        #foreach( $style in $document.properties.selectNodes('style') )
         @import url("$style.attribute('href')");
        #end
+       #if( $printerFriendly )
+        @import url("css/print.css");
+       #end
       </style>        
     </head>
 
@@ -105,6 +104,7 @@
       <div id="banner">
         <a href="http://velocity.apache.org/" id="bannerLeft">
           <img src="http://velocity.apache.org/images/velocity_project_wide.png"
+             #if( $printerFriendly )width="400" height="40"#end
              align="left" alt="The Velocity Project" border="0"/>
         </a>
         #if( $subproject.attribute('logo') )
@@ -129,7 +129,18 @@
         </div>
       </div>
 
+      ## PRINTER FRIENDLY TITLE
+      #if( $printerFriendly )
+      <div id="title">
+        <h1>#if( $subtitle )$subtitle - #end#if( $pagetitle )$pagetitle#end</h1>
+        <div class="clear">
+          <hr/>
+        </div>
+      </div>
+      #end
+
       ## BREADCRUMB LINKS
+      #if( !$printerFriendly )
       <div id="breadcrumbs">
         <div class="xleft">
           #foreach( $crumb in $crumbs )
@@ -147,16 +158,18 @@
           <hr/>
         </div>
       </div>
+      #end
 
 
         <!-- LEFT SIDE NAVIGATION -->
-        #if( !$context.toolbox.PrinterFriendlyVersion.equals("yes") )            
+        #if( !$printerFriendly )            
         <div id="leftColumn">
           <div id="navcolumn">
             $context.applyTemplates( $project, "menu/group" )
             #if( $subproject )
                 $context.applyTemplates( $subproject, "menu/group" )
             #end
+            $context.applyTemplates( $project, "menu/printerversion" )
             <a class="poweredBy" href="http://velocity.apache.org/" title="Apache Velocity" >
               <img class="poweredBy" alt="Apache Velocity" src="http://velocity.apache.org/images/pbv90x30.png"/>
             </a>
@@ -235,11 +248,9 @@
  *   Insert a link to a printerfriendly version of the document
  *#
 #match( "printerversion" )
-<p>
-#if ($context.toolbox.LinkToPrinterFriendlyVersion.equals("yes"))
-<a href="$context.getAppValue('infilename').substring(0, $context.getAppValue('infilename').lastIndexOf("."))-printer.html">Printer-friendly Version</a>
-#end    
-</p>
+#set( $filename = $context.getAppValue('infilename') )
+#set( $filename = $filename.substring(0, $filename.lastIndexOf('.')) )
+<h5 id="printLink"><a href="${filename}-printer.html">Print-Friendly Version</a></h5>
 #end
 
 

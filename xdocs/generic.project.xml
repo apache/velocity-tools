@@ -20,7 +20,7 @@
 -->
 
 <project name="GenericTools" href="index.html"
-    logo="/images/velocitygenerictools.png">
+    logo="images/velocitygenerictools.png">
 
   <breadcrumb href="generic.index.html">GenericTools</breadcrumb>
   <menu>
