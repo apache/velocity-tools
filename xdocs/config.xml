@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+
+    <properties>
+        <title>VelocityTools Project</title>
+        <projectfile>xdocs/project.xml</projectfile>
+        <subprojectfile>xdocs/config.project.xml</subprojectfile>
+    </properties>
+
+    <body>
+
+
+    <section name="Configuration Overview">
+        <p>
+            The VelocityTools2 support infrastructure exists to 
+            provide all your templates a common set of tools 
+            and data.  This is inspired by the 
+            <a href="http://turbine.apache.org/turbine/turbine-2.2.0/pullmodel.html">
+            Pull MVC</a> model, which deviates from the strict MVC 
+            purist  approach out for the sake of convenience and 
+            clarity.  The goal here is to provide template authors 
+            a common interface of data and functions across all 
+            templates (we call this a "toolbox"), whether they 
+            need all of those functions and data or not.  This 
+            saves the template author from having to remember what 
+            keys were used where and makes it easy to drop a new 
+            template (i.e. View) into an app without having to 
+            modify the controller (which would typically involve 
+            creating a new action class).  The degree to which this 
+            Pull MVC pattern violates MVC principles can (and 
+            should) vary widely depending on your needs and goals.
+        </p>
+
+        <p>
+            The default VelocityTools2 configuration does not 
+            include any "gross MVC offenders", as such things 
+            would be hard to generalize usefully.  The default 
+            configuration primarily includes tools for 
+            manipulating values made available in the template's 
+            context by a controller and a few for accessing static 
+            resources.
+        </p>
+
+        <p>
+            However, it is likely that you will want to add your own data and 
+            tools to your VelocityTools2 configuration or at least want to 
+            change the default settings of the standard tools.  To that end, 
+            configuration of your applications "toolbox(es)" can be done via 
+            XML, Java or properties.  Different configurations can also be 
+            easily combined together.
+        </p>
+
+        <p>
+            There a few basic concepts to the configuration that 
+            it is useful to know.  First, what you are creating 
+            a configuration for is a ToolboxFactory.  This factory 
+            produces your toolbox(es) as needed by 
+            <a href="view.html">VelocityView</a> or your own 
+            application. A factory can have any number of 
+            toolboxes, all distinguished by their scope property. 
+            There are three special scopes automatically recognized 
+            by VelocityTools2:  "request", "application", and 
+            "session".  The "session" scope is only relevant within 
+            a <a href="view.html">VelocityView</a> app, but the 
+            other two may be useful anywhere.
+        </p>
+
+        <p>
+            When the "application" toolbox is requested, the 
+            ToolboxFactory will also include any "data" configured 
+            for it.  These are unchanging, static values that are 
+            meant to be available to all templates in your 
+            application. You can configure any number of data for 
+            your application and the configuration supports both 
+            automatic and explicit type conversion (via 
+            Commons-BeanUtils converters) for these values (since 
+            XML and properties formats only allow string inputs).                    
+        </p>
+        <p>
+            Other things to know are that each toolbox can have 
+            any number of tools within it, and that "properties" 
+            may be added for any and all tools, toolboxes, and the 
+            factory itself.  A "property" added to one of these 
+            also has all of the same type conversion support as 
+            the "data" values do.  Properties set on a toolbox are 
+            made available to all tools within that toolbox and 
+            properties set for the factory itself are made 
+            available to all tools in your application.                        
+        </p>
+
+        <p>
+            Now on to the formats for specifying these things...
+        </p>
+
+        <ul>
+            <li><a href="config.xml.html">XML</a></li>
+            <li><a href="config.properties.html">Properties</a></li>
+            <li><a href="config.java.html">Java</a></li>
+        </ul>
+
+    </section>
+
+    </body>
+
+</document>

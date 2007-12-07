@@ -23,8 +23,8 @@
 
     <properties>
         <title>GenericTools</title>
-        <author email="sidler@apache.org">Gabriel Sidler</author>
-        <projectfile>xdocs/generic/menu.xml</projectfile>
+        <projectfile>xdocs/project.xml</projectfile>
+        <subprojectfile>xdocs/generic.project.xml</subprojectfile>
     </properties>
 
     <body>
@@ -40,13 +40,13 @@
         <p>
           <strong>Tools:</strong>
           <dl>
-            <dt><a href="../javadoc/org/apache/velocity/tools/generic/DateTool.html"><strong>DateTool</strong></a></dt>
+            <dt><a href="javadoc/org/apache/velocity/tools/generic/DateTool.html"><strong>DateTool</strong></a></dt>
             <dd>A tool for manipulating and formatting dates.</dd>
 
             <dt><a href="MathTool.html"><strong>MathTool</strong></a></dt>
             <dd>A tool for performing floating point math.</dd>
 
-            <dt><a href="../javadoc/org/apache/velocity/tools/generic/NumberTool.html"><strong>NumberTool</strong></a></dt>
+            <dt><a href="javadoc/org/apache/velocity/tools/generic/NumberTool.html"><strong>NumberTool</strong></a></dt>
             <dd>A tool for formatting numbers.</dd>
 
             <dt><a href="RenderTool.html"><strong>RenderTool</strong></a></dt>
@@ -56,27 +56,27 @@
             <dt><a href="EscapeTool.html"><strong>EscapeTool</strong></a></dt>
             <dd>A tool to help with common escaping needs in Velocity templates.</dd>
 
-            <dt><a href="../javadoc/org/apache/velocity/tools/generic/ResourceTool.html"><strong>ResourceTool</strong></a></dt>
+            <dt><a href="javadoc/org/apache/velocity/tools/generic/ResourceTool.html"><strong>ResourceTool</strong></a></dt>
             <dd>A tool to simplify access to ResourceBundles for internationalization or other dynamic content needs.</dd>
 
-            <dt><a href="../javadoc/org/apache/velocity/tools/generic/Alternator.html"><strong>Alternator</strong></a>
-            and <a href="../javadoc/org/apache/velocity/tools/generic/AlternatorTool.html"><strong>AlternatorTool</strong></a></dt>
+            <dt><a href="javadoc/org/apache/velocity/tools/generic/Alternator.html"><strong>Alternator</strong></a>
+            and <a href="javadoc/org/apache/velocity/tools/generic/AlternatorTool.html"><strong>AlternatorTool</strong></a></dt>
             <dd>Utility class for easily alternating over values in a list and tool for easy creation of Alternators in templates.</dd>
 
-            <dt><a href="../javadoc/org/apache/velocity/tools/generic/ValueParser.html"><strong>ValueParser</strong></a></dt>
+            <dt><a href="javadoc/org/apache/velocity/tools/generic/ValueParser.html"><strong>ValueParser</strong></a></dt>
             <dd>A tool to retrieve and parse String values pulled from a map. This provides
             the basis for the <a href="../view/ParameterParser.html">ParameterParser</a> in
             <a href="../view/index.html">VelocityView</a>.</dd>
 
-            <dt><a href="../javadoc/org/apache/velocity/tools/generic/ListTool.html"><strong>ListTool</strong></a></dt>
+            <dt><a href="javadoc/org/apache/velocity/tools/generic/ListTool.html"><strong>ListTool</strong></a></dt>
             <dd>A tool to help when working with arrays or Lists. This tool transparently handles both the same way.</dd>
 
-            <dt><a href="../javadoc/org/apache/velocity/tools/generic/SortTool.html"><strong>SortTool</strong></a></dt>
+            <dt><a href="javadoc/org/apache/velocity/tools/generic/SortTool.html"><strong>SortTool</strong></a></dt>
             <dd>A tool that allows a user to sort a collection (or array, iterator, etc)
             on any arbitary set of properties exposed by the objects contained within
             the collection.</dd>
 
-            <dt><a href="../javadoc/org/apache/velocity/tools/generic/IteratorTool.html"><strong>IteratorTool</strong></a></dt>
+            <dt><a href="javadoc/org/apache/velocity/tools/generic/IteratorTool.html"><strong>IteratorTool</strong></a></dt>
             <dd>A convenience tool to use with #foreach loops. It wraps a list
             to let the designer specify a condition to terminate the loop,
             and reuse the same list in different loops.</dd>
@@ -84,11 +84,11 @@
           <br clear="all"/>
           <strong>Utilities:</strong>
           <dl>
-            <dt><a href="../javadoc/org/apache/velocity/tools/generic/log/CommonsLogLogSystem.html"><strong>CommonsLogLogSystem</strong></a></dt>
+            <dt><a href="javadoc/org/apache/velocity/tools/generic/log/CommonsLogLogSystem.html"><strong>CommonsLogLogSystem</strong></a></dt>
             <dd>An implementation of Velocity's LogSystem interface that redirects
             log output to a Commons-Logging Log instance.</dd>
 
-            <dt><a href="../javadoc/org/apache/velocity/tools/generic/log/LogSystemCommonsLog.html"><strong>LogSystemCommonsLog</strong></a></dt>
+            <dt><a href="javadoc/org/apache/velocity/tools/generic/log/LogSystemCommonsLog.html"><strong>LogSystemCommonsLog</strong></a></dt>
             <dd>An implementation of Commons-Logging's Log interface that redirects
             log output to Velocity's LogSystem.</dd>
           </dl>

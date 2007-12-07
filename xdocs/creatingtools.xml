@@ -23,12 +23,12 @@
 
     <properties>
         <title>VelocityTools Project</title>
-        <author email="nbubna@apache.org">Nathan Bubna</author>
-        <projectfile>xdocs/documentation/menu.xml</projectfile>
+        <projectfile>xdocs/project.xml</projectfile>
     </properties>
 
     <body>
-    <section name="Intergrating with Web Frameworks">
+
+    <section name="Creating your own tools">
         <p> TODO: Create page </p> 
     </section>
 

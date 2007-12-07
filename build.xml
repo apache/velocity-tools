@@ -336,15 +336,20 @@
 
     <dvsl basedir="${docs.src}"
           destdir="${docs.dir}/"
-          toolboxfile="${docs.src}/toolbox.props"
           extension=".html"
-          style="${docs.src}/site.dvsl"
-          excludes="**/*menu.xml"
-          includes="**/*.xml" />
+          style="${docs.src}/site.dvsl">
+        <exclude name="**/*project.xml"/>
+        <include name="**/*.xml"/>
+    </dvsl>
 
     <copy todir="${docs.dir}/images">
       <fileset dir="${docs.src}/images">
         <include name="*.png" />
+      </fileset>
+    </copy>
+    <copy todir="${docs.dir}/css">
+      <fileset dir="${docs.src}/css">
+        <include name="*.css" />
       </fileset>
     </copy>
   </target>

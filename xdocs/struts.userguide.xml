@@ -24,7 +24,8 @@
     <properties>
         <title>User Guide</title>
         <author email="sidler@apache.org">Gabriel Sidler</author>
-        <projectfile>xdocs/struts/menu.xml</projectfile>
+        <projectfile>xdocs/project.xml</projectfile>
+        <subprojectfile>xdocs/struts.project.xml</subprojectfile>
     </properties>
 
     <body>
