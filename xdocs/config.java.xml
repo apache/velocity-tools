@@ -23,8 +23,8 @@
 
     <properties>
         <title>VelocityTools Project</title>
-        <author email="nbubna@apache.org">Nathan Bubna</author>
-        <projectfile>xdocs/documentation/menu.xml</projectfile>
+        <projectfile>xdocs/project.xml</projectfile>
+        <subprojectfile>xdocs/config.project.xml</subprojectfile>
     </properties>
 
     <body>

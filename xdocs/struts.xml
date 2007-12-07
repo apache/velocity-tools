@@ -23,8 +23,8 @@
 
     <properties>
         <title>VelocityTools Project</title>
-        <author email="nbubna@apache.org">Nathan Bubna</author>
-        <projectfile>xdocs/menu.xml</projectfile>
+        <projectfile>xdocs/project.xml</projectfile>
+        <subprojectfile>xdocs/struts.project.xml</subprojectfile>
     </properties>
 
     <body>
@@ -77,35 +77,35 @@
         <subsection name="Runtime Requirements">
             <ul>
                 <li>commons-beanutils - core infrastructure, 
-                <a href="../javadoc/org/apache/velocity/tools/generic/MathTool.html">MathTool</a>, 
-                <a href="../javadoc/org/apache/velocity/tools/generic/SortTool.html">SortTool</a></li>
+                <a href="javadoc/org/apache/velocity/tools/generic/MathTool.html">MathTool</a>, 
+                <a href="javadoc/org/apache/velocity/tools/generic/SortTool.html">SortTool</a></li>
                 <li>commons-digester - xml configuration</li>
-                <li>commons-lang - <a href="../javadoc/org/apache/velocity/tools/generic/EscapeTool.html">EscapeTool</a></li>
-                <li>commons-validator - <a href="../javadoc/org/apache/velocity/tools/struts/ValidatorTool.java ">ValidatorTool</a></li>
+                <li>commons-lang - <a href="javadoc/org/apache/velocity/tools/generic/EscapeTool.html">EscapeTool</a></li>
+                <li>commons-validator - <a href="javadoc/org/apache/velocity/tools/struts/ValidatorTool.java ">ValidatorTool</a></li>
                 <li>servlet - all 
-                    <a href="../javadoc/org/apache/velocity/tools/view/">VelocityView</a>
-                     and <a href="../javadoc/org/apache/velocity/tools/struts/">VelocityStruts</a>
-                     tools except <a href="../javadoc/org/apache/velocity/tools/view/ViewRenderTool.html">ViewRenderTool</a></li>
-                <li>ssl-ext - <a href="../javadoc/org/apache/velocity/tools/struts/SecureLinkTool.java ">SecureLinkTool</a></li>
-                <li>struts-core - all <a href="../javadoc/org/apache/velocity/tools/struts/">VelocityStruts</a> tools</li>
-                <li>struts-taglib - <a href="../javadoc/org/apache/velocity/tools/struts/FormTool.html">FormTool</a>, <a href="../javadoc/org/apache/velocity/tools/struts/SecureLinkTool.html">SecureLinkTool</a>, <a href="../javadoc/org/apache/velocity/tools/struts/StrutsLinkTool.html">StrutsLinkTool</a></li>
-                <li>struts-tiles - <a href="../javadoc/org/apache/velocity/tools/struts/TilesTool.java ">TilesTool</a></li>
-                <li>velocity - <a href="../javadoc/org/apache/velocity/tools/generic/ClassTool.html">ClassTool</a>, <a href="../javadoc/org/apache/velocity/tools/view/AbstractSearchTool.html">AbstractSearchTool</a>, <a href="../javadoc/org/apache/velocity/tools/view/ContextTool.html">ContextTool</a>, <a href="../javadoc/org/apache/velocity/tools/view/ImportTool.html">ImportTool</a>, <a href="../javadoc/org/apache/velocity/tools/view/IteratorTool.html">IteratorTool</a>, <a href="ttp://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/LinkTool.html">LinkTool</a>, <a href="../javadoc/org/apache/velocity/tools/view/MultiViewsTool.html">MultiViewsTool</a>, <a href="../javadoc/org/apache/velocity/tools/view/ViewRenderTool.html">ViewRenderTool</a>,  <a href="../javadoc/org/apache/velocity/tools/struts/SecureLinkTool.html">SecureLinkTool</a>, <a href="../javadoc/org/apache/velocity/tools/struts/StrutsLinkTool.html">StrutsLinkTool</a>, <a href="../javadoc/org/apache/velocity/tools/struts/MessageTool.html">MessageTool</a>.</li>
+                    <a href="javadoc/org/apache/velocity/tools/view/">VelocityView</a>
+                     and <a href="javadoc/org/apache/velocity/tools/struts/">VelocityStruts</a>
+                     tools except <a href="javadoc/org/apache/velocity/tools/view/ViewRenderTool.html">ViewRenderTool</a></li>
+                <li>ssl-ext - <a href="javadoc/org/apache/velocity/tools/struts/SecureLinkTool.java ">SecureLinkTool</a></li>
+                <li>struts-core - all <a href="javadoc/org/apache/velocity/tools/struts/">VelocityStruts</a> tools</li>
+                <li>struts-taglib - <a href="javadoc/org/apache/velocity/tools/struts/FormTool.html">FormTool</a>, <a href="javadoc/org/apache/velocity/tools/struts/SecureLinkTool.html">SecureLinkTool</a>, <a href="javadoc/org/apache/velocity/tools/struts/StrutsLinkTool.html">StrutsLinkTool</a></li>
+                <li>struts-tiles - <a href="javadoc/org/apache/velocity/tools/struts/TilesTool.java ">TilesTool</a></li>
+                <li>velocity - <a href="javadoc/org/apache/velocity/tools/generic/ClassTool.html">ClassTool</a>, <a href="javadoc/org/apache/velocity/tools/view/AbstractSearchTool.html">AbstractSearchTool</a>, <a href="javadoc/org/apache/velocity/tools/view/ContextTool.html">ContextTool</a>, <a href="javadoc/org/apache/velocity/tools/view/ImportTool.html">ImportTool</a>, <a href="javadoc/org/apache/velocity/tools/view/IteratorTool.html">IteratorTool</a>, <a href="ttp://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/LinkTool.html">LinkTool</a>, <a href="javadoc/org/apache/velocity/tools/view/MultiViewsTool.html">MultiViewsTool</a>, <a href="javadoc/org/apache/velocity/tools/view/ViewRenderTool.html">ViewRenderTool</a>,  <a href="javadoc/org/apache/velocity/tools/struts/SecureLinkTool.html">SecureLinkTool</a>, <a href="javadoc/org/apache/velocity/tools/struts/StrutsLinkTool.html">StrutsLinkTool</a>, <a href="javadoc/org/apache/velocity/tools/struts/MessageTool.html">MessageTool</a>.</li>
             </ul>
         </subsection>
     </section>
 
 d    <section name="Tools">
         <ul>
-            <li><a href="../javadoc/org/apache/velocity/tools/struts/ActionMessagesTool.html">ActionMessagesTool</a> - For accessing/displaying Struts action messages.</li>
-            <li><a href="../javadoc/org/apache/velocity/tools/struts/ErrorsTool.java ">ErrorsTool</a> - For accessing/displaying Struts error messages.</li>
-            <li><a href="../javadoc/org/apache/velocity/tools/struts/FormTool.html">FormTool</a> - For working with HTML forms in Struts apps.</li>
-            <li><a href="../javadoc/org/apache/velocity/tools/struts/MessageResourcesTool.html">MessageResourcesTool</a> - Abstract view tool that provides access to Struts message resources.</li>
-            <li><a href="../javadoc/org/apache/velocity/tools/struts/MessageTool.html">MessageTool</a> - Provides methods to render Struts application resources (for i18n and other textual content access).</li>
-            <li><a href="../javadoc/org/apache/velocity/tools/struts/SecureLinkTool.html">SecureLinkTool</a> - For using Struts SSL Extensions. It has the same interface as <a href="../javadoc/org/apache/velocity/tools/struts/StrutsLinkTool.html">StrutsLinkTool</a> and can function as a substitute if Struts 1.x and SSL Ext are installed.</li>
-            <li><a href="../javadoc/org/apache/velocity/tools/struts/StrutsLinkTool.html">StrutsLinkTool</a> - Subclass of <a href="../javadoc/org/apache/velocity/tools/view/LinkTool.html">LinkTool</a> for creating URI links in Struts by adding support for Struts actions and forwards.</li>
-            <li><a href="../javadoc/org/apache/velocity/tools/struts/TilesTool.html">TilesTool</a> - For using Struts-Tiles (not for Tiles 2!) in Velocity.</li>
-            <li><a href="../javadoc/org/apache/velocity/tools/struts/ValidatorTool.html">ValidatorTool</a> - Uses Struts-Validator to produce client side javascript validation for your forms.</li>
+            <li><a href="javadoc/org/apache/velocity/tools/struts/ActionMessagesTool.html">ActionMessagesTool</a> - For accessing/displaying Struts action messages.</li>
+            <li><a href="javadoc/org/apache/velocity/tools/struts/ErrorsTool.java ">ErrorsTool</a> - For accessing/displaying Struts error messages.</li>
+            <li><a href="javadoc/org/apache/velocity/tools/struts/FormTool.html">FormTool</a> - For working with HTML forms in Struts apps.</li>
+            <li><a href="javadoc/org/apache/velocity/tools/struts/MessageResourcesTool.html">MessageResourcesTool</a> - Abstract view tool that provides access to Struts message resources.</li>
+            <li><a href="javadoc/org/apache/velocity/tools/struts/MessageTool.html">MessageTool</a> - Provides methods to render Struts application resources (for i18n and other textual content access).</li>
+            <li><a href="javadoc/org/apache/velocity/tools/struts/SecureLinkTool.html">SecureLinkTool</a> - For using Struts SSL Extensions. It has the same interface as <a href="javadoc/org/apache/velocity/tools/struts/StrutsLinkTool.html">StrutsLinkTool</a> and can function as a substitute if Struts 1.x and SSL Ext are installed.</li>
+            <li><a href="javadoc/org/apache/velocity/tools/struts/StrutsLinkTool.html">StrutsLinkTool</a> - Subclass of <a href="javadoc/org/apache/velocity/tools/view/LinkTool.html">LinkTool</a> for creating URI links in Struts by adding support for Struts actions and forwards.</li>
+            <li><a href="javadoc/org/apache/velocity/tools/struts/TilesTool.html">TilesTool</a> - For using Struts-Tiles (not for Tiles 2!) in Velocity.</li>
+            <li><a href="javadoc/org/apache/velocity/tools/struts/ValidatorTool.html">ValidatorTool</a> - Uses Struts-Validator to produce client side javascript validation for your forms.</li>
         </ul>
     </section>
 

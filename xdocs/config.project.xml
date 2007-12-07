@@ -19,20 +19,6 @@
  under the License.
 -->
 
-<document>
-
-    <properties>
-        <title>VelocityTools Project</title>
-        <author email="nbubna@apache.org">Nathan Bubna</author>
-        <projectfile>xdocs/documentation/menu.xml</projectfile>
-    </properties>
-
-    <body>
-
-    <section name="Creating your own tools">
-        <p> TODO: Create page </p> 
-    </section>
-
-    </body>
-
-</document>
+<project name="Configuration" href="config.html">
+  <breadcrumb href="config.html">Configuration</breadcrumb>
+</project>

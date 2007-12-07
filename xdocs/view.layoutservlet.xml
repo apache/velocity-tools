@@ -22,9 +22,9 @@
 <document>
 
     <properties>
-        <title>VelocityTools - Layout Servlet</title>
-        <author>Nathan Bubna</author>
-        <projectfile>xdocs/view/menu.xml</projectfile>
+        <title>Layout Servlet</title>
+        <projectfile>xdocs/project.xml</projectfile>
+        <subprojectfile>xdocs/view.project.xml</subprojectfile>
     </properties>
 
     <body>
@@ -45,7 +45,7 @@
         to the following class:</p>
 
         <p>
-        <a href="../javadoc/org/apache/velocity/tools/view/servlet/VelocityLayoutServlet.html">org.apache.velocity.tools.view.servlet.VelocityLayoutServlet</a>
+        <a href="javadoc/org/apache/velocity/tools/view/servlet/VelocityLayoutServlet.html">org.apache.velocity.tools.view.servlet.VelocityLayoutServlet</a>
         </p>
 
         <subsection name="Configuration Settings" >
