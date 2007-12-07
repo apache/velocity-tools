@@ -25,7 +25,28 @@ import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
 
 /**
- * <p>View tool to work with the Struts error messages.</p>
+ * <p>
+ * This tool deals with Struts error messages. Errors may stem from the validation
+ * of a submitted form or from the processing of a request. If there are errors,
+ * they are made available to the view to render. A few important aspects about errors
+ * are:</p>
+ * <ul>
+ *     <li>Error message strings are looked up in the message resources. Support
+ *         for internationalized messages is provided.</li>
+ *     <li>Error messages can have up to five replacement parameters.</li>
+ *     <li>Errors have an attribute <code>property</code> that describes the category of
+ *         error. This allows the view designer to place error messages precisely where an
+ *         error occurred. For example, errors that apply to the entire page can be rendered
+ *         at the top of the page, errors that apply to a specific input field can be rendered
+ *         next to this input field. Several methods of this tool provide a parameter
+ *         <code>property</code> that allows to select a specific category of errors to operate
+ *         on. Without the <code>property</code> parameter, methods operate on all error messages.</li>
+ * </ul>
+ * 
+ * <p>See the Struts User's Guide, section
+ * <a href="http://struts.apache.org/1.3.8/userGuide/building_view.html">Building View Components</a>
+ * for more information on this topic.</p>
+ * 
  * <p><pre>
  * Template example(s):
  *   #if( $errors.exist() )

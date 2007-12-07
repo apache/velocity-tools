@@ -40,7 +40,8 @@ import org.apache.velocity.tools.view.ImportSupport;
 import org.apache.velocity.tools.view.ViewContext;
 
 /**
- * View tool to use struts-tiles with Velocity.
+ * <p>The TilesTool is used to interact with the Struts-Tiles framework that is part
+ *  of Struts 1.</p>
  * <p><pre>
  * Template example(s):
  *  &lt;!-- insert a tile --&gt;

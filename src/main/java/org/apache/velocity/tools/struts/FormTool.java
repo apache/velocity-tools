@@ -29,6 +29,15 @@ import org.apache.velocity.tools.config.ValidScope;
 
 /**
  * <p>View tool to work with HTML forms in Struts.</p>
+ * 
+ * <p>Struts has support to parse incoming HTTP requests and populate a Java bean
+ * with the submitted request parameters. The same Java bean is used to populate
+ * forms with initial values. Additionally, a hook allows the application developer
+ * to include automatic form validation code.</p>
+ * 
+ * <p>FormTool provides miscellaneous methods to work with forms and form bean in
+ * the context of Struts applications.</p>
+ * 
  * <p><pre>
  * Template example(s):
  *  &lt;input type="hidden" name="$form.tokenName" value="$form.token"&gt;

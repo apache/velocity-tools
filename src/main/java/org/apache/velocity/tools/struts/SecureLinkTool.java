@@ -31,6 +31,52 @@ import org.apache.velocity.tools.view.LinkTool;
  * Tool to be able to use Struts SSL Extensions with Velocity.
  * <p>It has the same interface as StrutsLinkTool and can function as a
  * substitute if Struts 1.x and SSL Ext are installed. </p>
+ *
+ * <p>The SecureLinkTool extends the standard
+ * {@link LinkTool} and has the exact same interface as
+ * {@link StrutsLinkTool} and the same function.  It should
+ * substitute the {@link StrutsLinkTool} in the toolbox if
+ * <a href="http://sslext.sourceforge.net">SSL Ext</a> is installed.
+ * It's functionality is a subset of the functionality provided by the
+ * sslext tag library for JSP.</p>
+ * 
+ * <p>The SSL Ext. Struts extension package makes it possible to declare Struts actions
+ * secure, non-secure, or neutral in the struts config like so:</p>
+ * 
+ * <pre>
+ * &lt;action path="/someSecurePath" type="some.important.Action"&gt;
+ *     &lt;set-property property="secure" value="true"/&gt;
+ *     &lt;forward name="success" path="/somePage.vm" /&gt;
+ * &lt;/action&gt;
+ * </pre>
+ * 
+ * <p>If an action is declared secure the SecureLinkTool will render the relevant link
+ * as https (if not already in ssl-mode).  In the same way, if an action is declared
+ * non-secure the SecureLinkTool will render the relevant link as http (if in ssl-mode).
+ * If the action is declared as neutral (with a "secure" property of "any") then the
+ * SecureLinkTool won't force a protocol change either way.<br/>  If the custom
+ * request processor is also used then a request will be redirected to the correct
+ * protocol if an action URL is manually entered into the browser with the wrong protocol</p>
+ * 
+ * <p>These are the steps needed to enable SSL Ext:</p>
+ * <ul>
+ *     <li>SSL connections need to be enabled on the webserver.</li>
+ *     <li>The Java Secure Socket Extension (JSSE) package needs to be in place (it's
+ *         integrated into the Java 2 SDK Standard Edition, v. 1.4 but optional for earlier
+ *         versions)</li>
+ *     <li>In your tools.xml, add the SecureLinkTool to replace (same key) or complement
+ *         (alternate key) the {@link StrutsLinkTool}</li>
+ *     <li>In struts-conf.xml the custom action-mapping class needs to be specified</li>
+ *     <li>In struts-conf.xml the custom controller class can optionally be specified
+ *     (if the redirect feature is wanted)</li>
+ *     <li>In struts-conf.xml the SecurePlugIn needs to be added</li>
+ *     <li>In struts-conf.xml, when using Tiles, the SecureTilesPlugin substitues both the
+ *         TilesPlugin and the SecurePlugIn and it also takes care of setting the correct
+ *         controller so there is no need to specify the custom controller.</li>
+ * </ul>
+ * 
+ * See <a href="http://sslext.sourceforge.net">SSL Ext.project home</a> for more info.
+ * 
  * <p>Usage:
  * <pre>
  * Template example:

@@ -30,7 +30,24 @@ import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
 
 /**
- * <p>View tool to work with the Struts action messages.</p>
+ * <p>
+ * This tool deals with Struts action messages.  A few important aspects about action
+ * messages are:</p>
+ * <ul>
+ *     <li>Action message strings are looked up in the message resources. Support
+ *         for internationalized messages is provided.</li>
+ *     <li>Action messages can have up to five replacement parameters.</li>
+ *     <li>Actions have an attribute <code>property</code> that describes the category of
+ *         message. This allows the view designer to place action messages precisely where they are
+ *         wanted. Several methods of this tool provide a parameter
+ *         <code>property</code> that allows to select a specific category of messages to operate
+ *         on. Without the <code>property</code> parameter, methods operate on all action messages.</li>
+ * </ul>
+ * 
+ * <p>See the Struts User's Guide, section
+ * <a href="http://struts.apache.org/1.3.8/userGuide/building_view.html">Building View Components</a>
+ * for more information on this topic.</p>
+ * 
  * <p><pre>
  * Template example(s):
  *   #if( $messages.exist() )
