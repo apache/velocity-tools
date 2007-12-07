@@ -267,157 +267,9 @@
 
 
 #*
- *  process a tool method documentation
- *#
-#match( "method" )
-
-    $context.applyTemplates("*")
-    <br clear="all">
-#end
-
-#*
- *  process a one line abstract of a method documentation
- *#
-#match( "abstract" )
-    <p>
-        $node.copy()
-    </p>
-#end
-
-#*
- *  process a method signature
- *#
-#match( "signature" )
-    <p>
-    <table width="100%"><tr><td bgcolor="EEEEEE">
-    <font size="+1"><code>
-        $node.copy()
-    </code></font>
-    </td></tr></table>
-    </p>
-#end
-
-#*
- *  process a list of method parameters
- *#
-#match( "parameters" )
-    <dl>
-    <dt><strong>Parameters</strong></dt>
-    <dd>
-      <dl>
-          $context.applyTemplates("*")
-      </dl>
-    </dd>
-    </dl>
-#end
-
-#*
- *  process an individual method parameters
- *#
-#match( "parameter" )
-    <dt>$attrib.name</dt>
-    <dd>
-        $node.copy()
-    </dd>
-
-#end
-
-#*
- *  process a 'returns' tag of a method documentation
- *#
-#match( "returns" )
-    <dl>
-    <dt><strong>Returns</strong></dt>
-    <dd>
-        $node.copy()
-    </dd>
-    </dl>
-
-#end
-
-#*
- *  process a 'see' tag of a method documentation
- *#
-#match( "see" )
-<dl>
-  <dt><strong>See Also</strong></dt>
-  <dd>
-    $node.copy()
-  </dd>
-</dl>
-#end
-
-#*
- *  process a 'description' tag of a method documentation
- *#
-#match( "description" )
-      $context.applyTemplates("*")
-#end
-
-
-#*
- *  process a 'toolinfo' block
- *#
-#match( "toolinfo" )
-<table cellpadding="0" cellspacing="0">
-  <tr><td colspan="2"><strong>Class</strong></td></tr>
-  <tr><td>&nbsp;</td><td>$node.clazz.value()</td></tr>
-
-  <tr><td colspan="2"><strong>Name</strong></td></tr>
-  <tr><td>&nbsp;</td><td>$node.name.value() (this is the recommended name of the tool in 
-      the Velocity context)</td></tr>
-
-  <tr><td colspan="2"><strong>Toolbox Configuration Example</strong></td></tr>
-  <tr><td>&nbsp;</td><td><pre>$node.copy($node.config-example.children())</pre></td></tr>
-
-  <tr><td colspan="2"><strong>Author(s)</strong></td></tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>#foreach($n in $node.selectNodes("author"))#if( $n.attribute('email') )<a href="mailto:$n.attribute('email')">$n</a>#else$n#end<br>#end</td>
-  </tr>
-</table>
-#end
-
-
-#*
- *  process a 'methods' block. Generates a list of methods.
- *#
-#match( "methods" )
-<dl>
-  <dt><strong>Method Overview</strong></dt>
-  <dd>
-    <table cellpadding="2" cellspacing="2" border="0">
-    #foreach ($s in $document.body.selectNodes("section") )
-      #if ($s.method)
-        <tr>
-          <tdnowrap>
-            <a href="#$s.method.attrib("name")">$s.method.attrib("name")</a></td>
-          <td>
-            $node.copy($s.method.abstract.children())
-          </td>
-        </tr>
-      #end
-    #end
-    </table>
-  </dd>
-</dl>
-#end
-
-
-#*
  *  process a 'sourcecode' block.
  *#
 #match( "sourcecode" )
-<div class="source">
-  <pre>$node.copy()</pre>
-</div>
-#end
-
-
-#*
- *  process a 'source' block.
- *#
-#match( "source" )
 <div class="source">
   <pre>$node.copy()</pre>
 </div>
@@ -445,10 +297,6 @@ $context.applyTemplates("*")
 <th colspan="$!attrib.colspan" rowspan="$!attrib.rowspan">
   $node.copy( $node.children() )
 </th>
-#end
-
-#match ( "vel" )
-  $node.value()
 #end
 
 #match("*")
