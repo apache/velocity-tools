@@ -22,7 +22,13 @@ package org.apache.velocity.tools.struts;
 import org.apache.velocity.tools.view.LinkTool;
 
 /**
- * <p>View tool to work with URI links in Struts.</p>
+ * <p>The StrutsLinkTool extends the standard {@link LinkTool} to add methods
+ * for working with Struts' Actions and Forwards:</p>
+ * <ul>
+ *     <li>translate logical names (Struts forwards, actions ) to URI references, see
+ *       methods {@link #setAction} and {@link #setForward}</li>
+ * </ul>
+ * 
  * <p><pre>
  * Template example(s):
  *   &lt;a href="$link.action.update"&gt;update something&lt;/a&gt;

@@ -36,7 +36,19 @@ import org.apache.velocity.tools.config.ValidScope;
 import org.apache.velocity.tools.view.ServletUtils;
 
 /**
- * View tool to make building URIs pleasant and fun!
+ * <p>The LinkTool provides many methods to work with URIs and can help you:
+ * <ul>
+ *     <li>construct full URIs (absolute or relative)</li>
+ *     <li>encode session ID into a URI</li>
+ *     <li>retrieve server, port and path info for the current request</li>
+ *     <li>reconstruct or alter the current request URI</li>
+ *     <li>and more..</li>
+ * </ul></p>
+ * 
+ * <p>The LinkTool is somewhat special in that nearly all public methods return
+ * a new instance of LinkTool. This facilitates greatly the repeated use
+ * of the LinkTool in Velocity and leads to an elegant syntax.</p>
+ * 
  * <p><pre>
  * Template example(s):
  *   #set( $base = $link.relative('MyPage.vm').anchor('view') )

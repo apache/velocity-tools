@@ -27,8 +27,11 @@ import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
 
 /**
- * <p>View tool that provides methods to render Struts
- * application resources for internationalized text.</p>
+ * <p>
+ * The MessageTool is used to render internationalized message strings. Source
+ * of the strings are the message resource bundles of the Struts framework. The
+ * following methods operate on these message resources.
+ * </p>
  *
  * <p><pre>
  * Template example(s):
