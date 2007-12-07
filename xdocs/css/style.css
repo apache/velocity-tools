@@ -8,3 +8,9 @@ td {
     background-color: #a0ddf0;
     color: #000000;
 }
+
+#navcolumn h5#printLink {
+    border-top: 1px solid #AAAAAA;
+    border-bottom: none;
+    margin-top: 10px;
+}

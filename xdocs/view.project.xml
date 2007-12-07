@@ -20,7 +20,7 @@
 -->
 
 <project name="VelocityView" href="index.html"
-    logo="/images/velocityview.png">
+    logo="images/velocityview.png">
 
   <breadcrumb href="view.index.html">VelocityView</breadcrumb>
   <menu>

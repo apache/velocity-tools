@@ -66,5 +66,7 @@
             <item name="Source Code"    href="index.html#Subversion%20Repository"/>
             <item name="Report Issue"   href="http://issues.apache.org/jira/browse/VELTOOLS"/>
         </group>
+        
+        <printerversion/>
     </menu>
 </project>

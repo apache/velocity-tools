@@ -22,7 +22,7 @@
 <document>
 
     <properties>
-        <title>VelocityTools Project</title>
+        <title>Using XML</title>
         <projectfile>xdocs/project.xml</projectfile>
         <subprojectfile>xdocs/config.project.xml</subprojectfile>
     </properties>
