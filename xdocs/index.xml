@@ -50,7 +50,7 @@
         <p>
             In recognition of these varying aims, the VelocityTools project is 
             divided into three parts: <a href="generic.html">GenericTools</a>, 
-            <a href="view.html">VelocityView</a> and <a href="structs.html">
+            <a href="view.html">VelocityView</a> and <a href="struts.html">
             VelocityStruts</a>. Each of these parts builds on the previous one 
             and has its own JAR distribution.
         </p>
