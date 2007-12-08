@@ -27,3 +27,15 @@ h3, h4, h5 {
     font-weight: bold;
     text-align: center;
 }
+.source {
+  background-color: white;
+}
+th {
+    background-color: #eeeeee;
+    border: 1px dotted #111111;
+}
+td {
+    background-color: white;
+    border: 1px dotted #111111;
+}
+
