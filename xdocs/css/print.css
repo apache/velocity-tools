@@ -30,6 +30,10 @@ h3, h4, h5 {
 .source {
     background-color: white;
 }
+.note {
+    background-color: white;
+    font-style: italic;
+}
 th {
     background-color: #eeeeee;
     border: 1px dotted #111111;
