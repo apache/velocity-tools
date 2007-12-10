@@ -59,8 +59,8 @@ myVelocityEngine.evaluate(context, myOutputWriter, "This is a $text.test", "Test
     
         <p>
             Of course, if you are going to be working in a servlet environment and don't
-             want to create and configure tools yourself, then you should use a 
-            <a href="../view.html">VelocityView</a> instance.
+            want to create and configure tools yourself, then you should use a 
+            <a href="view.html">VelocityView</a> instance.
         </p>
     </section>
 
