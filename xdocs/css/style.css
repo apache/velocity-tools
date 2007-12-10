@@ -14,3 +14,9 @@ td {
     border-bottom: none;
     margin-top: 10px;
 }
+
+.note {
+    background-color: #ffeeff;
+    border: 1px dotted #111111;
+    padding: 3px 3px;
+}
