@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document>
+  <properties>
+    <title>Dependencies</title>
+    <projectfile>xdocs/project.xml</projectfile>
+  </properties>
+  <body>
+    <section name="Dependencies">
+      <p>
+        VelocityTools requires certain external jar dependencies at
+        different times. These charts should help you determine which
+        jars you need and when.
+      </p>
+      <p class="note">
+        Note: Java version 1.5+ is required for compilation, testing
+        and use of VelocityTools 2.
+      </p>
+
+      <subsection name="GenericTools">
+          <table>
+            <tr>
+              <th>Jar Name</th>
+              <th>Version</th>
+              <th>Compile</th>
+              <th>Runtime</th>
+              <th>Notes</th>
+            </tr>
+            <tr>
+              <td>commons-beanutils</td>
+              <td>1.7.0</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for infrastructure, MathTool and SortTool</td>
+            </tr>
+            <tr>
+              <td>commons-collections</td>
+              <td>3.1</td>
+              <td>Yes</td>
+              <td>No</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>commons-digester</td>
+              <td>1.8</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for xml config</td>
+            </tr>
+            <tr>
+              <td>commons-lang</td>
+              <td>2.1</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for EscapeTool</td>
+            </tr>
+            <tr>
+              <td>commons-logging</td>
+              <td>1.1</td>
+              <td>Yes</td>
+              <td>No</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>velocity</td>
+              <td>1.5</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for ClassTool, IteratorTool and RenderTool</td>
+            </tr>
+          </table>
+      </subsection>
+
+      <subsection name="VelocityView">
+          <table>
+            <tr>
+              <th>Jar Name</th>
+              <th>Version</th>
+              <th>Compile</th>
+              <th>Runtime</th>
+              <th>Notes</th>
+            </tr>
+            <tr>
+              <td>commons-beanutils</td>
+              <td>1.7.0</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for infrastructure, MathTool and SortTool</td>
+            </tr>
+            <tr>
+              <td>commons-collections</td>
+              <td>3.1</td>
+              <td>Yes</td>
+              <td>No</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>commons-digester</td>
+              <td>1.8</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for xml config</td>
+            </tr>
+            <tr>
+              <td>commons-lang</td>
+              <td>2.1</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for EscapeTool</td>
+            </tr>
+            <tr>
+              <td>commons-logging</td>
+              <td>1.1</td>
+              <td>Yes</td>
+              <td>No</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>servletapi</td>
+              <td>2.3</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for all VelocityView tools except for ViewRenderTool</td>
+            </tr>
+            <tr>
+              <td>velocity</td>
+              <td>1.5</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for AbstractSearchTool, ClassTool, ContextTool,
+              ImportTool, IteratorTool, LinkTool, MultiViewsTool, and
+              ViewRenderTool</td>
+            </tr>
+          </table>
+      </subsection>
+
+      <subsection name="VelocityStruts">
+          <table>
+            <tr>
+              <th>Jar Name</th>
+              <th>Version</th>
+              <th>Compile</th>
+              <th>Runtime</th>
+              <th>Notes</th>
+            </tr>
+            <tr>
+              <td>commons-beanutils</td>
+              <td>1.7.0</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for infrastructure, MathTool and SortTool</td>
+            </tr>
+            <tr>
+              <td>commons-collections</td>
+              <td>3.1</td>
+              <td>Yes</td>
+              <td>No</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>commons-digester</td>
+              <td>1.8</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for xml config</td>
+            </tr>
+            <tr>
+              <td>commons-lang</td>
+              <td>2.1</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for EscapeTool</td>
+            </tr>
+            <tr>
+              <td>commons-logging</td>
+              <td>1.1</td>
+              <td>Yes</td>
+              <td>No</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>struts-core</td>
+              <td>1.3.8</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for all VelocityStruts tools</td>
+            </tr>
+            <tr>
+              <td>struts-taglib</td>
+              <td>1.3.8</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for FormTool, SecureLinkTool and StrutsLinkTool</td>
+            </tr>
+            <tr>
+              <td>struts-tiles</td>
+              <td>1.3.8</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for TilesTool</td>
+            </tr>
+            <tr>
+              <td>ssl-ext</td>
+              <td>1.2</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for SecureLinkTool</td>
+            </tr>
+            <tr>
+              <td>commons-validator</td>
+              <td>1.3.1</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for ValidatorTool</td>
+            </tr>
+            <tr>
+              <td>servletapi</td>
+              <td>2.3</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for all VelocityStruts tools</td>
+            </tr>
+            <tr>
+              <td>velocity</td>
+              <td>1.5</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for AbstractSearchTool, ActionMessagesTool, ClassTool,
+              ContextTool, ErrorsTool, ImportTool, IteratorTool, SecureLinkTool,
+              StrutsLinkTool, MessageTool, MultiViewsTool, TilesTool, ViewRenderTool</td>
+            </tr>
+          </table>
+      </subsection>
+
+    </section>
+  </body>
+</document>
