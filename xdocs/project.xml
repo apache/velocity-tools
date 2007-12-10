@@ -58,11 +58,15 @@
             <item name="Standalone Use"            href="standalone.html"/>
             <item name="Web Framework Integration" href="frameworks.html"/>
             <item name="Creating Tools"            href="creatingtools.html"/>
+            <!--
+                TODO: link to glossary on main velocity site, once it is up there
+            -->
+            <item name="Glossary"                  href="glossary.html"/>
         </group>
 
         <group name="Development">
             <item name="ChangeLog"      href="changes.html"/>
-            <item name="Contributions"  href="index.html#Contributions"/>
+            <item name="Contributions"  href="index.html#Contribution"/>
             <item name="Source Code"    href="index.html#Subversion%20Repository"/>
             <item name="Report Issue"   href="http://issues.apache.org/jira/browse/VELTOOLS"/>
         </group>
