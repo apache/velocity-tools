@@ -145,7 +145,7 @@
         to render the web application views in Struts applications.</p>
 
         <p>Setup is almost identical to the standard
-        <a href="../view/index.html#Installation">VelocityViewServlet installation</a>,
+        <a href="view.index.html#Installation">VelocityViewServlet installation</a>,
         please review that for more details. The extended VelocityLayoutServlet, or any
         custom extension, can also be used with Struts. (That particular servlet adds
         the ability to reuse shared html layout across multiple pages.)</p>

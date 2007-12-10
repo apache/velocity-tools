@@ -33,7 +33,7 @@
     using Velocity templates in the view layer.  The project is designed with the
     <a href="http://jakarta.apache.org/turbine/further-reading/pullmodel.html">Pull-MVC Model</a>
     in mind and works well in conjunction with web application frameworks that act
-    as the controller (e.g. <a href="../struts/index.html">Struts</a>), but can be used
+    as the controller (e.g. <a href="struts.index.html">Struts</a>), but can be used
     quite effectively on its own for those creating simpler applications.
     </p>
     <p>Key features:</p>
@@ -59,7 +59,7 @@
 
     <p>A typical application use-case is to provide the view rendering layer for
     a servlet-based web application framework. The
-    <a href="../struts/">VelocityStruts</a> subproject
+    <a href="struts.index.html">VelocityStruts</a> subproject
     uses the approach to bring Velocity templates to the Struts application framework.</p>
   </section>
 
@@ -192,7 +192,7 @@
         <li><i>application</i> scoped tools will be instantiated only once and then
         reused for each request.  Due to this, it is <em>strongly</em> encouraged
         that your application scoped tools be completely threadsafe.  The MathTool
-        in the <a href="../generic/">GenericTools</a> section is a good example of tool meant to be application
+        in the <a href="generic.index.html">GenericTools</a> section is a good example of tool meant to be application
         scoped.  If an application scoped tool implements ViewTool, then the
         javax.servlet.ServletContext for the webapp will be passed to its
         <code>init(Object)</code> method after it is instantiated.</li>
