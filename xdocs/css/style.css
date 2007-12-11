@@ -15,8 +15,19 @@ td {
     margin-top: 10px;
 }
 
+h3 {
+    margin: 32px 0px 0px 20px;
+    background-color: whiteSmoke;
+}
+
 .note {
     background-color: #ffeeff;
     border: 1px dotted #111111;
     padding: 3px 3px;
+}
+
+.subsubSection {
+    font-weight: bold;
+    margin-top: 30px;
+    margin-bottom: -5px;
 }
