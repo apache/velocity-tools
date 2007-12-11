@@ -43,7 +43,9 @@
             automatically and transparently make these tools available to your 
             Velocity templates.  Other aims of the project include providing 
             easy integration of Velocity into the view-layer of your web 
-            applications (via the VelocityViewTag and VelocityViewServlet) 
+            applications (via the 
+            <a href="view.tag.html">VelocityViewTag</a> and 
+            <a href="view.servlet.html">VelocityViewServlet</a>) 
             and integration with Struts 1.x applications.
         </p>
 
@@ -72,8 +74,10 @@
                 <a href="generic.html">GenericTools</a> structure and 
                 specialized tools for using Velocity in the view layer of web 
                 applications (Java EE projects). This includes the 
-                VelocityViewServlet or VelocityLayoutServlet for processing 
-                Velocity template requests and the VelocityViewTag for 
+                <a href="view.servlet.html">VelocityViewServlet</a> or 
+                <a href="view.layoutservlet.html">VelocityLayoutServlet</a>
+                for processing Velocity template requests and the 
+                <a href="view.tag.html">VelocityViewTag</a> for 
                 embedding Velocity in JSP. Popular tools here are the LinkTool
                 and the ParameterTool.
             </p>
@@ -85,7 +89,7 @@
                 <a href="view.html">VelocityView</a> and <a href="generic.html">
                 GenericTools</a> and adds tools for use in Struts 1.x 
                 applications.  These tools match the functions of the key 
-                Strutstaglibs and provide access to Struts resources, messages, 
+                Struts taglibs and provide access to Struts resources, messages, 
                 tiles, validation functions and more.
             </p>
         </subsection>
@@ -95,7 +99,7 @@
             require a little configuration) are generally useful and may be 
             used within your java classes or even other template languages, 
             though you may need to instantiate and configure them manually (not 
-            difficult) to do so.  VelocityTools2 has been designed with this 
+            difficult) to do so.  VelocityTools 2 has been designed with this 
             in mind.  Ask on the user mailing list if you have questions about 
             using VelocityTools without Velocity.
         </p>
@@ -105,7 +109,7 @@
     <section name="Why 2.0?">
         <p>
             Those already familiar with VelocityTools 1.x may be curious about 
-            the goals and motivations behind developing VelocityTools2. 
+            the goals and motivations behind developing VelocityTools 2. 
             In planning and developing the 2.0 release, there were three main 
             goals:
         </p>
@@ -127,11 +131,14 @@
             </li>
 
             <li>
-                Simpler, more flexible toolbox configuration - Now you can 
-                configure via a properties file, plain java, or really 
+                Simpler, more flexible toolbox 
+                <a href="config.html">configuration</a> - Now you can 
+                configure via a 
+                <a href="config.properties.html">properties file</a>, 
+                <a href="config.java.html">plain java</a>, or really 
                 whatever you want (though perhaps with a bit more work).  No 
-                XML required anymore; though, if you do use it, it's a lot 
-                better than it was.
+                <a href="config.xml.html">XML</a> required anymore; though,
+                if you do use it, it's now a lot better than it was.
             </li>
         </ul>
 
@@ -148,7 +155,8 @@
             the old tools directly will be immediately able to take advantage 
             of the new infrastructure without even updating their 
             configuration, though eventually even the old toolbox.xml format 
-            may be retired.  Don't cry.  You'll like the new one better once 
+            may be retired.  Don't cry.  You'll like the 
+            <a href="config.xml.html">new one</a> better once 
             you get to know it!  It can do much more with much less typing.
         </p>
 
@@ -176,16 +184,19 @@
     <section name="Contribution">
         <p>
             We encourage interested developers to evaluate the 
-            project and send feedback to the velocity-user or 
-            velocity-dev mailing list.
+            project and send feedback to the user@velocity.apache.org or 
+            dev@velocity.apache.org mailing lists.
         </p>
 
         <p>
             Those interested in furthering the development of this 
-            project are especially welcome to jump in and help out. 
-            Patches can be sent to the mailing list or attached to 
-            a JIRA issue. The Wiki can also be a good place to 
-            discuss and develop ideas.
+            project have an open invitation to jump in and help out.
+            We welcome your contributions!
+            Patches can be sent to the
+            mailing list or attached to a
+            <a href="http://issues.apache.org/jira/browse/VELTOOLS">JIRA</a>
+            issue.  The <a href="http://wiki.apache.org/velocity/VelocityTools">Wiki</a>
+            can also be a good place to discuss and develop ideas.
         </p>
 
         <p>A few good places to get started include:</p>
@@ -200,9 +211,16 @@
 
         <p>
             Other project goals and proposals can be found in the project 
-            <a href="http://svn.apache.org/viewcvs.cgi/velocity/tools/trunk/STATUS?view=markup"> 
-            STATUS</a> file.
+            <a href="http://svn.apache.org/viewcvs.cgi/velocity/tools/trunk/STATUS?view=markup">STATUS</a> file.
         </p>
+
+        <p>Checklist for Code Contributions:</p>
+        <ul>
+            <li><a href="http://wiki.apache.org/velocity/CodeStandards">Velocity coding conventions</a></li>
+            <li>Javadoc included (the more detailed the better)</li>
+            <li>Examples included (in JavaDoc or as stand-alone template example)</li>
+            <li>Tests included (not required but <b>GREATLY</b> appreciated)</li>
+        </ul>
 
     </section>
 

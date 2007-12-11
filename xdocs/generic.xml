@@ -29,7 +29,6 @@
 
     <body>
 
-
     <section name="Overview">
         <p>
             GenericTools is the set of classes that provide basic 
@@ -41,7 +40,10 @@
             state-changing methods are declared protected with the exception 
             of configure(Map) which is--by default--rendered useless after 
             being used just once.  If you require strict thread-safety, 
-            be very cautious in using any configurable tools.
+            be cautious in using any configurable tools and consider
+            <a href="http://wiki.apache.org/velocity/BuildingSecureWebApplications">restricting
+            the abilities of template authors</a> to prevent circumvention
+            of the lockdown placed on configuration methods.
         </p>
     </section>
 
@@ -49,52 +51,64 @@
         <p>
             The default configuration provided for GenericTools is 
             <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/tools.xml?view=markup">
-            here</a>.
+            here</a>.  It includes all of the tools listed
+            <a href="generic.html#Tools">below</a>.
         </p>
     </section>
 
     <section name="Dependencies">
         <p>
-            TODO: just link to an anchor in a comprehensive dependencies overview page?
+        The dependencies required for GenericTools vary somewhat depending on which
+        tools you use, whether you will rely on core tool management infrastructure,
+        and if so, how you choose to configure your toolbox.  More details can be found
+        on the
+        <a href="dependencies.html#GenericTools">dependencies chart</a>.
         </p>
-
-        <subsection name="Compile Time Requirements">
-            <ul>
-                <li>commons-beanutils</li>
-                <li>commons-collections</li>
-                <li>commons-digester</li>
-                <li>commons-lang</li>
-                <li>commons-logging</li>
-                <li>velocity</li>
-            </ul>
-        </subsection>
-
-        <subsection name="Runtime Requirements">
-            <ul>
-                <li>commons-beanutils - core infrastructure, <a href="javadoc/org/apache/velocity/tools/generic/MathTool.html"> MathTool</a>, <a href="javadoc/org/apache/velocity/tools/generic/SortTool.html">SortTool</a></li>
-                <li>commons-digester - xml configuration</li>
-                <li>commons-lang - <a href="javadoc/org/apache/velocity/tools/generic/EscapeTool.html">EscapeTool</a></li>
-                <li>velocity - <a href="javadoc/org/apache/velocity/tools/generic/ClassTool.html">ClassTool</a>, <a href="javadoc/org/apache/velocity/tools/generic/IteratorTool.html"> IteratorTool</a>, <a href="javadoc/org/apache/velocity/tools/generic/RenderTool.html">RenderTool</a></li>
-            </ul>
-        </subsection>
     </section>
     <section name="Tools">
         <ul>
-            <li><a href="javadoc/org/apache/velocity/tools/generic/Alternator.html">Alternator</a> &amp; <a href="javadoc/org/apache/velocity/tools/generic/AlternatorTool.html">AlternatorTool</a> - For easily alternating over values in a list or array.</li>
-            <li><a href="javadoc/org/apache/velocity/tools/generic/ClassTool.html">ClassTool</a> - For simplifying reflective lookup of information about Classes and their fields, methods and constructors.</li>
-            <li><a href="javadoc/org/apache/velocity/tools/generic/ConversionTool.html">ConversionTool</a> - For converting String values to richer object types.</li>
-            <li><a href="javadoc/org/apache/velocity/tools/generic/DateTool.html">DateTool</a> &amp; <a href="javadoc/org/apache/velocity/tools/generic/ComparisonDateTool.html">ComparisonDateTool</a> - For manipulating, formatting, and comparing dates.</li>
-            <li><a href="javadoc/org/apache/velocity/tools/generic/DisplayTool.html">DisplayTool</a> - For controlling display of references (e.g. truncating values, "pretty printing" lists, and displaying alternates when a reference is null).</li>
-            <li><a href="javadoc/org/apache/velocity/tools/generic/EscapeTool.html">EscapeTool</a> - For common escaping needs in Velocity templates (e.g. escaping html, xml, javascript etc.)</li>
-            <li><a href="javadoc/org/apache/velocity/tools/generic/FieldTool.html">FieldTool</a> - For (easy) access to static fields in a class, such as string constants.</li>
-            <li><a href="javadoc/org/apache/velocity/tools/generic/IteratorTool.html">IteratorTool</a> - Wraps lists to let the designer specify a condition to terminate the loop, and reuse the same list in different loops.</li>
-            <li><a href="javadoc/org/apache/velocity/tools/generic/ListTool.html">ListTool</a> - For working with arrays and lists, treats both transparently the same.</li>
-            <li><a href="javadoc/org/apache/velocity/tools/generic/MathTool.html">MathTool</a> - For performing math functions.</li>
-            <li><a href="javadoc/org/apache/velocity/tools/generic/NumberTool.html">NumberTool</a> - For formatting and converting numbers.</li>
-            <li><a href="javadoc/org/apache/velocity/tools/generic/RenderTool.html">RenderTool</a> - To evaluate and render arbitrary strings of VTL, including recursive rendering.</li>
-            <li><a href="javadoc/org/apache/velocity/tools/generic/ResourceTool.html">ResourceTool</a> - For simplified access to ResourceBundles for internationalization or other dynamic content needs.</li>
-            <li><a href="javadoc/org/apache/velocity/tools/generic/SortTool.html">SortTool</a> - Used to sort collections (or arrays, iterators, etc) on any arbitary set of properties exposed by the objects contained within the collection.</li>
-            <li><a href="javadoc/org/apache/velocity/tools/generic/ValueParser.html">ValueParser</a> - Used to retrieve and parse (aka convert) String values pulled from a map.</li>
+        <li><a href="javadoc/org/apache/velocity/tools/generic/AlternatorTool.html">AlternatorTool</a>
+            - For creating <a href="javadoc/org/apache/velocity/tools/generic/Alternator.html">Alternator</a>s
+            to easily alternate over a set of values.</li>
+        <li><a href="javadoc/org/apache/velocity/tools/generic/ClassTool.html">ClassTool</a>
+            - For simplifying reflective lookup of information about
+            Classes and their fields, methods and constructors.</li>
+        <li><a href="javadoc/org/apache/velocity/tools/generic/ConversionTool.html">ConversionTool</a>
+            - For converting String values to richer object types.</li>
+        <li><a href="javadoc/org/apache/velocity/tools/generic/DateTool.html">DateTool</a>
+            &amp;
+            <a href="javadoc/org/apache/velocity/tools/generic/ComparisonDateTool.html">ComparisonDateTool</a>
+            - For manipulating, formatting, and comparing dates.</li>
+        <li><a href="javadoc/org/apache/velocity/tools/generic/DisplayTool.html">DisplayTool</a>
+            - For controlling display of references (e.g. truncating values,
+            "pretty printing" lists, and displaying alternates when a reference is null).</li>
+        <li><a href="javadoc/org/apache/velocity/tools/generic/EscapeTool.html">EscapeTool</a>
+            - For common escaping needs in Velocity templates (e.g. escaping
+            html, xml, javascript etc.)</li>
+        <li><a href="javadoc/org/apache/velocity/tools/generic/FieldTool.html">FieldTool</a>
+            - For (easy) access to static fields in a class, such as string
+            constants.</li>
+        <li><a href="javadoc/org/apache/velocity/tools/generic/LoopTool.html">LoopTool</a>
+            - A convenience tool to use with #foreach loops. It wraps a list
+            with a custom iterator to provide greater control, allowing loops
+            to end early, skip ahead and more.</li>
+        <li><a href="javadoc/org/apache/velocity/tools/generic/ListTool.html">ListTool</a>
+            - For working with arrays and lists, treats both transparently
+            the same.</li>
+        <li><a href="javadoc/org/apache/velocity/tools/generic/MathTool.html">MathTool</a>
+            - For performing math functions.</li>
+        <li><a href="javadoc/org/apache/velocity/tools/generic/NumberTool.html">NumberTool</a>
+            - For formatting and converting numbers.</li>
+        <li><a href="javadoc/org/apache/velocity/tools/generic/RenderTool.html">RenderTool</a>
+            - To evaluate and render arbitrary strings of VTL, including
+            recursive rendering.</li>
+        <li><a href="javadoc/org/apache/velocity/tools/generic/ResourceTool.html">ResourceTool</a>
+            - For simplified access to ResourceBundles for
+            internationalization or other dynamic content needs.</li>
+        <li><a href="javadoc/org/apache/velocity/tools/generic/SortTool.html">SortTool</a>
+            - Used to sort collections (or arrays, iterators, etc) on
+            any arbitary set of properties exposed by the objects contained
+            within the collection.</li>
         </ul>
     </section>
 

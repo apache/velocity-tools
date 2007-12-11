@@ -22,7 +22,7 @@
 <document>
 
     <properties>
-        <title>Layout Servlet</title>
+        <title>VelocityViewServlet</title>
         <projectfile>xdocs/project.xml</projectfile>
         <subprojectfile>xdocs/view.project.xml</subprojectfile>
     </properties>

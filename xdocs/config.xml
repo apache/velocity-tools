@@ -32,7 +32,7 @@
 
     <section name="Configuration Overview">
         <p>
-            The VelocityTools2 support infrastructure exists to 
+            The VelocityTools support infrastructure exists to 
             provide all your templates a common set of tools 
             and data.  This is inspired by the 
             <a href="http://turbine.apache.org/turbine/turbine-2.2.0/pullmodel.html">
@@ -52,7 +52,7 @@
         </p>
 
         <p>
-            The default VelocityTools2 configuration does not 
+            The default VelocityTools 2 configuration does not 
             include any "gross MVC offenders", as such things 
             would be hard to generalize usefully.  The default 
             configuration primarily includes tools for 
@@ -63,7 +63,7 @@
 
         <p>
             However, it is likely that you will want to add your own data and 
-            tools to your VelocityTools2 configuration or at least want to 
+            tools to your VelocityTools 2 configuration or at least want to 
             change the default settings of the standard tools.  To that end, 
             configuration of your applications "toolbox(es)" can be done via 
             XML, Java or properties.  Different configurations can also be 
@@ -73,16 +73,32 @@
         <p>
             There a few basic concepts to the configuration that 
             it is useful to know.  First, what you are creating 
-            a configuration for is a ToolboxFactory.  This factory 
-            produces your toolbox(es) as needed by 
+            a configuration for is a 
+            <a href="javadoc/org/apache/velocity/tools/ToolboxFactory.html">ToolboxFactory</a>.
+            This factory produces your toolbox(es) as needed by 
             <a href="view.html">VelocityView</a> or your own 
             application. A factory can have any number of 
             toolboxes, all distinguished by their scope property. 
             There are three special scopes automatically recognized 
-            by VelocityTools2:  "request", "application", and 
+            by VelocityTools 2:  "request", "application", and 
             "session".  The "session" scope is only relevant within 
             a <a href="view.html">VelocityView</a> app, but the 
-            other two may be useful anywhere.
+            other two may be useful anywhere. Placing a
+            tool within "request" scope means that a new instance
+            will be created for every context.  Placing a tool
+            within "application" scope means that only one instance
+            of the tool will be created and shared throughout the
+            application, effectively acting as a singleton. This,
+            of course, means that thread-safety must be considered
+            when putting a tool in "application" scope.
+        </p>
+
+        <p>
+            Because of such concerns, Velocity Tools now provides
+            annotations to allow developers to restrict the scope(s)
+            in which a tool can be placed. For more on these and other available
+            annotations, see
+            <a href="creatingtools.html">Creating Your Own Tools</a>.
         </p>
 
         <p>
@@ -93,7 +109,9 @@
             application. You can configure any number of data for 
             your application and the configuration supports both 
             automatic and explicit type conversion (via 
-            Commons-BeanUtils converters) for these values (since 
+            Commons-BeanUtils 
+            <a href="http://commons.apache.org/beanutils/commons-beanutils-1.7.0/docs/api/org/apache/commons/beanutils/Converter.html">converters</a>
+            ) for these values (since 
             XML and properties formats only allow string inputs).                    
         </p>
         <p>

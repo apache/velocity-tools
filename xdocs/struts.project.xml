@@ -22,14 +22,14 @@
 <project name="VelocityStruts" href="index.html"
     logo="images/velocitystruts.png">
 
-  <breadcrumb href="view.index.html">VelocityStruts</breadcrumb>
+  <breadcrumb href="view.html">VelocityStruts</breadcrumb>
   <menu>
-    <group name="VelocityStruts">
-        <item name="Overview"                href="struts.index.html"/>
-        <item name="Benefits"                href="struts.index.html#Benefits"/>
-        <item name="User Guide"              href="struts.userguide.html"/>
-        <item name="Installation"            href="struts.userguide.html#Installation"/>
-        <item name="Examples"                href="index.html#Example Applications"/>
+    <group name="VelocityStruts" href="struts.html">
+        <item name="Overview"       href="struts.html"/>
+        <item name="Benefits"       href="struts.html#Benefits"/>
+        <item name="User Guide"     href="struts.userguide.html"/>
+        <item name="Installation"   href="struts.userguide.html#Installation"/>
+        <item name="Examples"       href="struts.html#Examples"/>
         <subGroup name="Tools" href="javadoc/org/apache/velocity/tools/struts/package-summary.html">
           <item name="ActionMessagesTool" href="javadoc/org/apache/velocity/tools/struts/ActionMessagesTool.html"/>
           <item name="ErrorsTool"         href="javadoc/org/apache/velocity/tools/struts/ErrorsTool.html"/>

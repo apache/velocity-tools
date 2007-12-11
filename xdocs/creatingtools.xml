@@ -28,10 +28,90 @@
 
     <body>
 
-    <section name="Creating your own tools">
+    <section name="Overview">
         <p class="note">
-            This page is quite unfinished.
+            This page is still unfinished.
             <a href="index.html#Contribution">Help is welcome!</a>
+        </p>
+    </section>
+    <section name="Conventions">
+        <subsection name="Tool Keys/Names">
+            <p>
+            TODO: talk about [Key]Tool class name, precedence, etc
+            </p>
+        </subsection>
+        <subsection name="Tool Properties">
+            <p>
+            TODO: talk about camelCase config properties, precedence, etc
+            </p>
+        </subsection>
+    </section>
+    <section name="Annotations">
+        <p>
+        TODO: talk about
+        <a href="javadoc/org/apache/velocity/tools/config/DefaultKey.html">DefaultKey</a>,
+        <a href="javadoc/org/apache/velocity/tools/config/InvalidScope.html">InvalidScope</a> and
+        <a href="javadoc/org/apache/velocity/tools/config/ValidScope.html">ValidScope</a>
+        </p>
+    </section>
+    <section name="Support Classes">
+        <subsection name="Base Classes">
+            <p>
+            <a href="javadoc/org/apache/velocity/tools/generic/AbstractLockConfig.html">AbstractLockConfig</a>
+            - This serves as a base class for tools who need to have
+            their configuration be read-only for thread-safety or
+            other reasons.  By default, tools which extend this can
+            only be configured once.
+            </p>
+            <p>
+            <a href="javadoc/org/apache/velocity/tools/generic/LocaleConfig.html">LocaleConfig</a>
+            - Subclass of AbstractLockConfig that has standardized
+            support for configuring a Locale for the tool to use as
+            its default.
+            </p>
+            <p>
+            <a href="javadoc/org/apache/velocity/tools/generic/FormatConfig.html">FormatConfig</a>
+            - Subclass of FormatConfig that has standardized support
+            for providing a format string value for the tool to use
+            as its default.
+            </p>
+        </subsection>
+        <subsection name="Utility Classes">
+            <p>
+            <a href="javadoc/org/apache/velocity/tools/ClassUtils.html">ClassUtils</a>
+            - Provides utility methods for loading classes,
+            finding methods, accessing static field values,
+            and more.
+            </p>
+            <p>
+            <a href="javadoc/org/apache/velocity/tools/ConversionUtils.html">ConversionUtils</a>
+            - Provides utility methods for common type
+            conversions/value parsing.
+            </p>
+            <p>
+            <a href="javadoc/org/apache/velocity/tools/view/ServletUtils.html">ServletUtils</a>
+            - Utility methods for the servlet environment, mostly
+            centered on accessing the VelocityView or tool instances
+            handled thereby.
+            </p>
+            <p>
+            <a href="javadoc/org/apache/velocity/tools/generic/ValueParser.html">ValueParser</a>
+            - Used to retrieve and parse (aka convert) String
+            values pulled from a map; this is mostly commonly
+            used directly by other tools rather than within
+            templates.
+            </p>
+        </subsection>
+    </section>
+    <section name="Designing Template-friendly Interfaces">
+        <p>
+        Always return null on errors! No Exceptions!
+        </p>
+        <p>
+        TODO: talk about security
+        </p>
+        <p>
+        TODO: talk about using "subtools" for a fluent API
         </p>
     </section>
 

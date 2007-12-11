@@ -27,13 +27,72 @@
     </properties>
 
     <body>
-    <section name="Integrating with Web Frameworks">
+    <section name="Overview">
         <p class="note">
             This page is quite unfinished.
             <a href="index.html#Contribution">Help is welcome!</a>
         </p>
     </section>
-
+    <section name="Integration Via VelocityView">
+        <subsection name="Configuring">
+            <p>
+            <a href="javadoc/org/apache/velocity/tools/view/VelocityView.html">VelocityView</a>
+            supports the following configuration parameters as
+            &lt;init-param&gt;s in web.xml:
+            </p>
+            <dl>
+              <dt>org.apache.velocity.toolbox</dt>
+              <dd>Path and name of the toolbox configuration file. The path must be
+                relative to the web application root directory. If this parameter is
+                not found, the servlet will check for a toolbox file at
+                <code>/WEB-INF/tools.xml</code>.</dd>
+              <dt>org.apache.velocity.properties</dt>
+              <dd>Path and name of the Velocity configuration file. The path must be
+                relative to the web application root directory. If this parameter
+                is not present, Velocity will check for a properties file at
+                <code>/WEB-INF/velocity.properties</code>.
+                If no file is found there, then
+                Velocity is initialized with the settings in the classpath at
+                <code>org.apache.velocity.tools.view.velocity.properties</code>.
+                </dd>
+            </dl>
+            <p>
+            TODO: talk about deprecationSupportMode
+            </p>
+        </subsection>
+        <subsection name="Retrieving">
+            <p>
+            TODO: finish this
+            </p>
+        </subsection>
+        <subsection name="Sharing">
+            <p>
+            TODO: finish this
+            </p>
+        </subsection>
+        <subsection name="Using">
+            <p>
+            TODO: finish this
+            </p>
+        </subsection>
+    </section>
+    <section name="Other Ways to Integrate VelocityTools">
+        <subsection name="Direct Use Of Tools">
+            <p>
+            TODO: finish this
+            </p>
+        </subsection>
+        <subsection name="ToolboxFactory">
+            <p>
+            TODO: finish this
+            </p>
+        </subsection>
+        <subsection name="ToolManager">
+            <p>
+            TODO: finish this
+            </p>
+        </subsection>
+    </section>
     </body>
 
 </document>

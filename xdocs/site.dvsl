@@ -259,7 +259,12 @@
  *#
 #match( "section" )
 <a name="$attrib.name"></a>##
-<div class="section"><h2>$attrib.name</h2>
+<div class="section">##
+#if( $attrib.href )
+<a href="$attrib.href"><h2>$attrib.name</h2></a>
+#else
+<h2>$attrib.name</h2>
+#end
   $context.applyTemplates("*")
 </div>
 #end
@@ -270,7 +275,12 @@
  *#
 #match( "subsection" )
 <a name="$attrib.name"></a>##
-<div class="subsection"><h3>$attrib.name</h3>
+<div class="subsection">##
+#if( $attrib.href )
+<a href="$attrib.href"><h3>$attrib.name</h3></a>
+#else
+<h3>$attrib.name</h3>
+#end
     $context.applyTemplates("*")
 </div>
 #end

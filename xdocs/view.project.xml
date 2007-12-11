@@ -22,12 +22,13 @@
 <project name="VelocityView" href="index.html"
     logo="images/velocityview.png">
 
-  <breadcrumb href="view.index.html">VelocityView</breadcrumb>
+  <breadcrumb href="view.html">VelocityView</breadcrumb>
   <menu>
-    <group name="VelocityView">
-      <item name="Installation"   href="index.html#Installation"/>
-      <item name="LayoutServlet"  href="view.layoutservlet.html"/>
-      <item name="Examples"       href="index.html#Examples"/>
+    <group name="VelocityView" href="view.html">
+      <item name="VelocityViewServlet"      href="view.servlet.html"/>
+      <item name="VelocityLayoutServlet"    href="view.layoutservlet.html"/>
+      <item name="VelocityViewTag"          href="view.tag.html"/>
+      <item name="Examples"                 href="view.html#Examples"/>
       <subGroup name="Tools" href="javadoc/org/apache/velocity/tools/view/package-summary.html">
         <item name="AbstractSearchTool" href="javadoc/org/apache/velocity/tools/view/AbstractSearchTool.html"/>
         <item name="BrowserTool"        href="javadoc/org/apache/velocity/tools/view/BrowserTool.html"/>
