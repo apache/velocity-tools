@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+    <properties>
+        <title>VelocityViewTag</title>
+        <projectfile>xdocs/project.xml</projectfile>
+        <subprojectfile>xdocs/view.project.xml</subprojectfile>
+    </properties>
+    <body>
+        <section name="Overview">
+            <p class="note">
+                This page is still unfinished.
+                <a href="index.html#Contribution">Help is welcome!</a>
+            </p>
+            <p>
+            This is a JSP tag that allows you to use Velocity and VelocityTools
+            from within your JSP tags and files.
+            This tag can both process templates in separate files:
+            </p>
+        <sourcecode>
+&lt;%@taglib prefix="velocity" uri="http://velocity.apache.org/velocity-view" %&gt;
+
+&lt;velocity:view template="foo.vm"/&gt;
+        </sourcecode>
+            <p>
+             VTL in the body of the tag:
+            </p>
+        <sourcecode>
+&lt;%@taglib prefix="velocity" uri="http://velocity.apache.org/velocity-view" %&gt;
+
+&lt;velocity:view&gt;
+#if( $date.E eq 'Friday' )
+ Hooray!
+#else
+ Boo!
+#end
+&lt;/velocity:view&gt;
+        </sourcecode>
+            <p>
+            or combine both by first processing the body of the tag, then
+            inserting the results of that into the context for the separate
+            template as $bodyContent:
+            </p>
+        <sourcecode>
+&lt;%@taglib prefix="velocity" uri="http://velocity.apache.org/velocity-view" %&gt;
+
+&lt;velocity:view template="foo.vm"&gt;
+#if( $date.E eq 'Friday' )
+ Hooray!
+#else
+ Boo!
+#end
+&lt;/velocity:view&gt;
+        </sourcecode>
+            <p>
+            For more information, see the
+            <a href="javadoc/org/apache/velocity/tools/view/jsp/VelocityViewTag.html">Javadoc</a>.
+            </p>
+        </section>
+    </body>
+</document>

@@ -30,7 +30,11 @@
               <td>1.7.0</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for infrastructure, MathTool and SortTool</td>
+              <td>Required for core infrastructure,
+                <a href="javadoc/org/apache/velocity/tools/generic/MathTool.html">MathTool</a>
+                and
+                <a href="javadoc/org/apache/velocity/tools/generic/SortTool.html">SortTool</a>
+              </td>
             </tr>
             <tr>
               <td>commons-collections</td>
@@ -44,14 +48,18 @@
               <td>1.8</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for xml config</td>
+              <td>Required for
+                <a href="config.xml.html">xml configuration</a>
+              </td>
             </tr>
             <tr>
               <td>commons-lang</td>
               <td>2.1</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for EscapeTool</td>
+              <td>Required for
+                <a href="javadoc/org/apache/velocity/tools/generic/EscapeTool.html">EscapeTool</a>
+              </td>
             </tr>
             <tr>
               <td>commons-logging</td>
@@ -65,7 +73,12 @@
               <td>1.5</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for ClassTool, IteratorTool and RenderTool</td>
+              <td>Required for
+                <a href="javadoc/org/apache/velocity/tools/generic/ClassTool.html">ClassTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/generic/LoopTool.html">LoopTool</a>
+                and
+                <a href="javadoc/org/apache/velocity/tools/generic/RenderTool.html">RenderTool</a>
+              </td>
             </tr>
           </table>
       </subsection>
@@ -84,7 +97,11 @@
               <td>1.7.0</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for infrastructure, MathTool and SortTool</td>
+              <td>Required for core infrastructure,
+                <a href="javadoc/org/apache/velocity/tools/generic/MathTool.html">MathTool</a>
+                and
+                <a href="javadoc/org/apache/velocity/tools/generic/SortTool.html">SortTool</a>
+              </td>
             </tr>
             <tr>
               <td>commons-collections</td>
@@ -98,14 +115,18 @@
               <td>1.8</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for xml config</td>
+              <td>Required for
+                <a href="config.xml.html">xml configuration</a>
+              </td>
             </tr>
             <tr>
               <td>commons-lang</td>
               <td>2.1</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for EscapeTool</td>
+              <td>Required for
+                <a href="javadoc/org/apache/velocity/tools/generic/EscapeTool.html">EscapeTool</a>
+              </td>
             </tr>
             <tr>
               <td>commons-logging</td>
@@ -119,16 +140,28 @@
               <td>2.3</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for all VelocityView tools except for ViewRenderTool</td>
+              <td>Required for all
+                <a href="javadoc/org/apache/velocity/tools/view/package-summary.html">VelocityView</a>
+                tools except for
+                <a href="javadoc/org/apache/velocity/tools/view/ViewRenderTool.html">ViewRenderTool</a>
+              </td>
             </tr>
             <tr>
               <td>velocity</td>
               <td>1.5</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for AbstractSearchTool, ClassTool, ContextTool,
-              ImportTool, IteratorTool, LinkTool, MultiViewsTool, and
-              ViewRenderTool</td>
+              <td>Required for 
+                <a href="javadoc/org/apache/velocity/tools/generic/ClassTool.html">ClassTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/view/AbstractSearchTool.html">AbstractSearchTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/view/ContextTool.html">ContextTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/view/ImportTool.html">ImportTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/view/LinkTool.html">LinkTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/view/LoopTool.html">LoopTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/view/MultiViewsTool.html">MultiViewsTool</a>
+                and
+                <a href="javadoc/org/apache/velocity/tools/view/ViewRenderTool.html">ViewRenderTool</a>
+              </td>
             </tr>
           </table>
       </subsection>
@@ -147,7 +180,11 @@
               <td>1.7.0</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for infrastructure, MathTool and SortTool</td>
+              <td>Required for core infrastructure,
+                <a href="javadoc/org/apache/velocity/tools/generic/MathTool.html">MathTool</a>
+                and
+                <a href="javadoc/org/apache/velocity/tools/generic/SortTool.html">SortTool</a>
+              </td>
             </tr>
             <tr>
               <td>commons-collections</td>
@@ -161,14 +198,18 @@
               <td>1.8</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for xml config</td>
+              <td>Required for
+                <a href="config.xml.html">xml configuration</a>
+              </td>
             </tr>
             <tr>
               <td>commons-lang</td>
               <td>2.1</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for EscapeTool</td>
+              <td>Required for
+                <a href="javadoc/org/apache/velocity/tools/generic/EscapeTool.html">EscapeTool</a>
+              </td>
             </tr>
             <tr>
               <td>commons-logging</td>
@@ -182,51 +223,83 @@
               <td>1.3.8</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for all VelocityStruts tools</td>
+              <td>Required for all
+                <a href="javadoc/org/apache/velocity/tools/struts/package-summary.html">VelocityStruts</a>
+                tools
+              </td>
             </tr>
             <tr>
               <td>struts-taglib</td>
               <td>1.3.8</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for FormTool, SecureLinkTool and StrutsLinkTool</td>
+              <td>Required for
+                <a href="javadoc/org/apache/velocity/tools/struts/FormTool.html">FormTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/struts/SecureLinkTool.html">SecureLinkTool</a>
+                and
+                <a href="javadoc/org/apache/velocity/tools/struts/StrutsLinkTool.html">StrutsLinkTool</a>
+              </td>
             </tr>
             <tr>
               <td>struts-tiles</td>
               <td>1.3.8</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for TilesTool</td>
+              <td>Required for
+                <a href="javadoc/org/apache/velocity/tools/struts/TilesTool.html">TilesTool</a>
+              </td>
             </tr>
             <tr>
               <td>ssl-ext</td>
               <td>1.2</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for SecureLinkTool</td>
+              <td>Required for
+                <a href="javadoc/org/apache/velocity/tools/struts/SecureLinkTool.html">SecureLinkTool</a>
+              </td>
             </tr>
             <tr>
               <td>commons-validator</td>
               <td>1.3.1</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for ValidatorTool</td>
+              <td>Required for 
+                <a href="javadoc/org/apache/velocity/tools/struts/ValidatorTool.java">ValidatorTool</a>
+              </td>
             </tr>
             <tr>
               <td>servletapi</td>
               <td>2.3</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for all VelocityStruts tools</td>
+              <td>Required for all
+                <a href="javadoc/org/apache/velocity/tools/struts/package-summary.html">VelocityStruts</a>
+                tools and all
+                <a href="javadoc/org/apache/velocity/tools/view/package-summary.html">VelocityView</a>
+                tools except for
+                <a href="javadoc/org/apache/velocity/tools/view/ViewRenderTool.html">ViewRenderTool</a>
+              </td>
             </tr>
             <tr>
               <td>velocity</td>
               <td>1.5</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for AbstractSearchTool, ActionMessagesTool, ClassTool,
-              ContextTool, ErrorsTool, ImportTool, IteratorTool, SecureLinkTool,
-              StrutsLinkTool, MessageTool, MultiViewsTool, TilesTool, ViewRenderTool</td>
+              <td>Required for 
+                <a href="javadoc/org/apache/velocity/tools/generic/ClassTool.html">ClassTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/view/AbstractSearchTool.html">AbstractSearchTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/view/ContextTool.html">ContextTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/view/ImportTool.html">ImportTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/view/LinkTool.html">LinkTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/view/LoopTool.html">LoopTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/view/MultiViewsTool.html">MultiViewsTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/view/ViewRenderTool.html">ViewRenderTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/struts/SecureLinkTool.html">SecureLinkTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/struts/StrutsLinkTool.html">StrutsLinkTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/struts/TilesTool.html">TilesTool</a>
+                and
+                <a href="javadoc/org/apache/velocity/tools/struts/MessageTool.html">MessageTool</a>
+              </td>
             </tr>
           </table>
       </subsection>

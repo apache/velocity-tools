@@ -22,10 +22,10 @@
 <project name="GenericTools" href="index.html"
     logo="images/velocitygenerictools.png">
 
-  <breadcrumb href="generic.index.html">GenericTools</breadcrumb>
+  <breadcrumb href="generic.html">GenericTools</breadcrumb>
   <menu>
-    <group name="GenericTools">
-        <item name="Overview"         href="generic.index.html"/>
+    <group name="GenericTools" href="generic.html">
+        <item name="Overview"         href="generic.html"/>
         <subGroup name="Tools" href="javadoc/org/apache/velocity/tools/generic/package-summary.html">
           <item name="AlternatorTool"       href="javadoc/org/apache/velocity/tools/generic/AlternatorTool.html"/> />
           <item name="ClassTool"            href="javadoc/org/apache/velocity/tools/generic/ClassTool.html"/>

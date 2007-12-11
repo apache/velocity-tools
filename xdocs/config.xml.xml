@@ -34,9 +34,9 @@
             Providing an xml format configuration file is still the standard, 
             but unlike VelocityTools 1.x, it is no longer necessary at all, 
             thanks to the introduction of default configurations.  The default 
-            configurations for <a href="VelocityTools2/GenericTools">
-            GenericTools</a>, <a href="VelocityTools2/VelocityView">
-            VelocityView</a> and <a href="VelocityTools2/VelocityStruts">
+            configurations for <a href="generic.html">
+            GenericTools</a>, <a href="view.html">
+            VelocityView</a> and <a href="struts.html">
             VelocityStruts</a> are all defined via XML.
         </p>
 

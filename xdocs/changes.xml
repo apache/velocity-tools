@@ -37,6 +37,7 @@
         <li>Added VelocityViewTag for JSP integration</li>
         <li>Added DisplayTool, ConversionTool, ClassTool, LoopTool, FieldTool and more</li>
         <li>Refactored and enhanced a number of existing tools</li>
+        <li>Improved documentation</li>
         <li>Deprecated lots of outdated things</li>
         <li>... and lots more. :)</li>
         </ul>
