@@ -181,46 +181,70 @@
 
     </section>
 
-    <section name="Contribution">
-        <p>
-            We encourage interested developers to evaluate the 
-            project and send feedback to the user@velocity.apache.org or 
-            dev@velocity.apache.org mailing lists.
-        </p>
-
-        <p>
+    <section name="Helping Out">
+        <subsection name="Communication">
+            <p>
+            Feedback about the project, whether positive or gently critical,
+            is always helpful to those working on the project.  Such feedback
+            may be sent to either the user@velocity.apache.org or 
+            dev@velocity.apache.org 
+            <a href="http://velocity.apache.org/contact.html">mailing lists</a>.
+            </p>
+            <p>
+            Another great way to help is to simply participate in conversations
+            on the mailing list.  On the user list, you can help answer questions
+            that other users have. This frees the developers to focus on
+            development more than user support.  On the dev list, you can
+            participate in design discussions and release votes to help
+            maintain the high quality of the releases and direct the future
+            directions of the project.
+            </p>
+        </subsection>
+        <subsection name="Contribution">
+            <p>
             Those interested in furthering the development of this 
             project have an open invitation to jump in and help out.
             We welcome your contributions!
-            Patches can be sent to the
-            mailing list or attached to a
+            Patches can be sent to the mailing list or attached to a
             <a href="http://issues.apache.org/jira/browse/VELTOOLS">JIRA</a>
             issue.  The <a href="http://wiki.apache.org/velocity/VelocityTools">Wiki</a>
             can also be a good place to discuss and develop ideas.
-        </p>
-
-        <p>A few good places to get started include:</p>
-
-        <ul>
-            <li>Documentation (patches for the site or additions to 
-            the Wiki)</li>
-            <li>Improving the example apps</li>
-            <li>Contributing to the 
-                <a href="http://wiki.apache.org/velocity/VelocimacroLibrary">VelocimacroLibrary</a></li>
-        </ul>
-
-        <p>
+            </p>
+            <p>A few good places to get started include:</p>
+            <ul>
+                <li>Documentation (patches for the site or additions to 
+                the Wiki)</li>
+                <li>Improving the example apps</li>
+                <li>Working on unresolved tasks in
+                    <a href="http://issues.apache.org/jira/browse/VELTOOLS">JIRA</a></li>
+                <li>Contributing to the 
+                    <a href="http://wiki.apache.org/velocity/VelocimacroLibrary">VelocimacroLibrary</a></li>
+            </ul>
+            <p>
             Other project goals and proposals can be found in the project 
             <a href="http://svn.apache.org/viewcvs.cgi/velocity/tools/trunk/STATUS?view=markup">STATUS</a> file.
-        </p>
-
-        <p>Checklist for Code Contributions:</p>
-        <ul>
-            <li><a href="http://wiki.apache.org/velocity/CodeStandards">Velocity coding conventions</a></li>
-            <li>Javadoc included (the more detailed the better)</li>
-            <li>Examples included (in JavaDoc or as stand-alone template example)</li>
-            <li>Tests included (not required but <b>GREATLY</b> appreciated)</li>
-        </ul>
+            </p>
+        </subsection>
+        <subsection name="Code">
+            <p>
+            When contributing code, it helps <strong>immensely</strong> if you follow
+            through with the things on this checklist, especially the coding conventions.
+            Keeping our code style consistent, our codebase stays easy to read and easy
+            to patch.  Adding javadoc (and examples therein) simplifies the documentation
+            process and reduces confusion about the purpose of various methods and classes.
+            Tests make sure that things work as expected, especially as development continues
+            down the road.  Of course, contributions that don't follow the checklist will
+            be considered and often accepted, but you can expect the project committers
+            to be slower and less enthusiastic in doing so. :)
+            </p>
+            <p><b>Checklist for Code Contributions</b>:</p>
+            <ul>
+                <li><a href="http://wiki.apache.org/velocity/CodeStandards">Velocity coding conventions</a></li>
+                <li>Javadoc included (the more detailed the better)</li>
+                <li>Examples included (in JavaDoc or as stand-alone template example)</li>
+                <li>Tests included (not required but <b>GREATLY</b> appreciated)</li>
+            </ul>
+        </subsection>
 
     </section>
 

@@ -61,7 +61,7 @@
     &lt;/toolbox&gt;
 
     &lt;data type="number" key="version" value="1.1"/&gt;
-    &lt;data key="date" value="Mon Sep 17 10:08:03 PDT 2007" class="java.util.Date" 
+    &lt;data key="startdate" value="Mon Sep 17 10:08:03 PDT 2007" class="java.util.Date" 
              converter="org.apache.commons.beanutils.locale.converters.DateLocaleConverter"/&gt;
     &lt;data type="boolean" key="isSimple" value="true"/&gt;
     &lt;data key="foo" value="this is foo."/&gt;

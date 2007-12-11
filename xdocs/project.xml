@@ -22,9 +22,9 @@
 <project name="VelocityTools" href="index.html"
     logo="images/velocitytools.png">
 
-    <style href="css/style.css"/>
     <style href="css/maven-theme.css"/>
     <style href="css/maven-base.css"/>
+    <style href="css/style.css"/>
     <breadcrumb href="http://velocity.apache.org">Velocity</breadcrumb>
     <breadcrumb href="index.html">VelocityTools</breadcrumb>
     <sibling href="http://velocity.apache.org/engine/devel/">Engine</sibling>
@@ -66,7 +66,7 @@
 
         <group name="Development">
             <item name="ChangeLog"      href="changes.html"/>
-            <item name="Contributions"  href="index.html#Contribution"/>
+            <item name="Participating"  href="index.html#Helping%20Out"/>
             <item name="Dependencies"   href="dependencies.html"/>
             <item name="Source Code"    href="index.html#Subversion%20Repository"/>
             <item name="Report Issue"   href="http://issues.apache.org/jira/browse/VELTOOLS"/>
