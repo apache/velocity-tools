@@ -19,7 +19,7 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Utility class for easily alternating over values in a list.
@@ -59,16 +59,7 @@ public class Alternator
      * Creates a new Alternator for the specified list.  Alternation
      * defaults to automatic.
      */
-    public Alternator(List list)
-    {
-        this(true, list);
-    }
-
-    /**
-     * Creates a new Alternator for the specified list.  Alternation
-     * defaults to automatic.
-     */
-    public Alternator(Object[] list)
+    public Alternator(Object... list)
     {
         this(true, list);
     }
@@ -78,26 +69,19 @@ public class Alternator
      * automatic shifting preference.
      *
      * @param auto See {@link #setAuto(boolean auto)}.
-     * @param list The (non-<code>null</code>) list of elements to
-     * alternate.
+     * @param list The elements to alternate over
      */
-    public Alternator(boolean auto, List list)
-    {
-        this(auto, list.toArray(new Object[list.size()]));
-    }
-
-    /**
-     * Creates a new Alternator for the specified list with the specified
-     * automatic shifting preference.
-     *
-     * @param auto See {@link #setAuto(boolean auto)}.
-     * @param list The (non-<code>null</code>) list of elements to
-     * alternate.
-     */
-    public Alternator(boolean auto, Object[] list)
+    public Alternator(boolean auto, Object... list)
     {
         this.auto = auto;
-        this.list = list;
+        if (list.length == 1 && list[0] instanceof Collection)
+        {
+            this.list = ((Collection)list[0]).toArray();
+        }
+        else
+        {
+            this.list = list;
+        }
     }
 
     /**

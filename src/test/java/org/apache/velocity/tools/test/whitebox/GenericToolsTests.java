@@ -61,27 +61,6 @@ public class GenericToolsTests {
         toolbox = manager.createContext();
     }
 
-    public @Test void testAlternatorTool() {
-        AlternatorTool alternatorTool = (AlternatorTool)toolbox.get("alternator");
-        assertNotNull(alternatorTool);
-        /* test automatic alternator */
-        Alternator auto = alternatorTool.auto(new String[] {"red","blue","yellow"});
-        assertStringEquals("red", auto.getCurrent());
-        assertStringEquals("red", auto.getNext());
-        assertStringEquals("blue", auto);
-        assertStringEquals("yellow", auto);
-        assertStringEquals("red", auto);
-        /* test manual alternator (use 'make()' and not 'manual()' since we define the default to be manual in toolbox.xml*/
-         Alternator manual = alternatorTool.make(new String[] {"red","blue","yellow"});
-        assertStringEquals("red", manual);
-        assertStringEquals("red", manual);
-        manual.shift();
-        assertStringEquals("blue", manual);
-        manual.shift();
-        manual.shift();
-        assertStringEquals("red", manual);
-    }
-
     protected void assertStringEquals(String expected, Object testThis) {
         assertEquals(expected, String.valueOf(testThis));
     }

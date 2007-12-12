@@ -19,7 +19,7 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
-import java.util.List;
+import java.util.Collection;
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
@@ -93,21 +93,29 @@ public class AlternatorTool extends AbstractLockConfig
     }
 
     /**
-     * Make an automatic {@link Alternator} from a List.
+     * Make an automatic {@link Alternator} from the specifed objects.
      */
-    public Alternator make(List list)
+    public Alternator make(Object... list)
     {
         return make(autoAlternateDefault, list);
     }
 
     /**
-     * @deprecated Use {@link #auto(List list)} or
-     *             {@link #manual(List list)} instead.
+     * Returns a new Alternator for the specified list with the specified
+     * automatic shifting preference.
+     *
+     * @param auto See {@link Alternator#setAuto(boolean auto)}.
+     * @param list The list of elements to alternate.
      */
-    @Deprecated
-    public Alternator make(boolean auto, List list)
+    public Alternator make(boolean auto, Object... list)
     {
-        if (list == null)
+        if (list == null || list.length == 0)
+        {
+            return null;
+        }
+        else if (list.length == 1 &&
+                 list[0] instanceof Collection &&
+                 ((Collection)list[0]).isEmpty())
         {
             return null;
         }
@@ -115,42 +123,16 @@ public class AlternatorTool extends AbstractLockConfig
     }
 
     /**
-     * Make an automatic {@link Alternator} from an object array.
-     */
-    public Alternator make(Object[] array)
-    {
-        return make(autoAlternateDefault, array);
-    }
-
-    /**
-     * @deprecated Use {@link #auto(Object[] array)} or
-     *             {@link #manual(Object[] array)} instead.
+     * @deprecated Will be unnecessary with Velocity 1.6
      */
     @Deprecated
-    public Alternator make(boolean auto, Object[] array)
-    {
-        if (array == null)
-        {
-            return null;
-        }
-        return new Alternator(auto, array);
-    }
-
-    /**
-     * Make an automatic {@link Alternator} from a list containing the two
-     * specified objects.
-     *
-     * @return The new Alternator, or <code>null</code> if arguments
-     * were illegal.
-     */
     public Alternator make(Object o1, Object o2)
     {
         return make(autoAlternateDefault, o1, o2);
     }
 
     /**
-     * @deprecated Use {@link #auto(Object o1, Object o2)} or
-     *             {@link #manual(Object o1, Object o2)} instead.
+     * @deprecated Will be unnecessary with Velocity 1.6
      */
     @Deprecated
     public Alternator make(boolean auto, Object o1, Object o2)
@@ -163,82 +145,42 @@ public class AlternatorTool extends AbstractLockConfig
     }
 
     /**
-     * Make an automatic {@link Alternator} from values in the specified List.
+     * Make an automatic {@link Alternator} from the specified objects.
      *
-     * @return a new, automatic Alternator with the values in the List or 
-     *         <code>null</code> if the List is <code>null</code>.
+     * @return a new, automatic Alternator with the specified values or 
+     *         <code>null</code> if there are none specified.
      * @since VelocityTools 1.3
      */
-    public Alternator auto(List list)
+    public Alternator auto(Object... list)
     {
         return make(true, list);
     }
 
     /**
-     * Make an automatic {@link Alternator} from the specified object array.
-     *
-     * @return a new, automatic Alternator with the values in the array or 
-     *         <code>null</code> if the array is <code>null</code>.
-     * @since VelocityTools 1.3
+     * @deprecated Will be unnecessary with Velocity 1.6
      */
-    public Alternator auto(Object[] array)
-    {
-        return make(true, array);
-    }
-
-    /**
-     * Make an automatic {@link Alternator} from a list containing the two
-     * specified objects.
-     *
-     * @param o1 The first of two objects for alternation between.
-     * Must be non-<code>null</code>.
-     * @param o2 The second of two objects for alternation between.
-     * Must be non-<code>null</code>.
-     * @return The new Alternator, or <code>null</code> if an argument
-     * was <code>null</code>.
-     * @since VelocityTools 1.3
-     */
+    @Deprecated
     public Alternator auto(Object o1, Object o2)
     {
         return make(true, o1, o2);
     }
 
     /**
-     * Make a manual {@link Alternator} from values in the specified List.
-     *
-     * @return a new, manual Alternator with the values in the List or 
-     *         <code>null</code> if the List is <code>null</code>.
-     * @since VelocityTools 1.3
-     */
-    public Alternator manual(List list)
-    {
-        return make(false, list);
-    }
-
-    /**
-     * Make a manual {@link Alternator} from the specified object array.
+     * Make a manual {@link Alternator} from the specified objects.
      *
      * @return a new, manual Alternator with the values in the array or 
      *         <code>null</code> if the array is <code>null</code>.
      * @since VelocityTools 1.3
      */
-    public Alternator manual(Object[] array)
+    public Alternator manual(Object... list)
     {
-        return make(false, array);
+        return make(false, list);
     }
 
     /**
-     * Make a manual {@link Alternator} from a list containing the two
-     * specified objects.
-     *
-     * @param o1 The first of two objects for alternation between.
-     * Must be non-<code>null</code>.
-     * @param o2 The second of two objects for alternation between.
-     * Must be non-<code>null</code>.
-     * @return The new Alternator, or <code>null</code> if an argument
-     * was <code>null</code>.
-     * @since VelocityTools 1.3
+     * @deprecated Will be unnecessary with Velocity 1.6
      */
+    @Deprecated
     public Alternator manual(Object o1, Object o2)
     {
         return make(false, o1, o2);
