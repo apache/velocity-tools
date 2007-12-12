@@ -20,7 +20,6 @@
 -->
 <tools>
     <toolbox scope="application">
-        <tool class="org.apache.velocity.tools.generic.AlternatorTool" auto-alternate="false"/>
         <tool class="org.apache.velocity.tools.generic.ComparisonDateTool"
             format="yyyy-MM-dd" skip="month"/>
         <tool class="org.apache.velocity.tools.generic.EscapeTool"/>
