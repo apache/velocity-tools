@@ -26,18 +26,13 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 
 /**
- * <p>Objects implementing this interface are passed to view tools
- * upon initialization by the
- * {@link org.apache.velocity.tools.view.servlet.ServletToolboxManager}.</p>
- *
- * <p>The interface provides view tools in a servlet environment
+ * <p>This interface provides view tools in a servlet environment
  * access to relevant context information, like servlet request, servlet
  * context and the velocity context.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @author Nathan Bubna
- *
  * @version $Id$
  */
 public interface ViewContext
