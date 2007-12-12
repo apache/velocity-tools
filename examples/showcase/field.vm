@@ -25,6 +25,7 @@ $text.field.intro
 ## The demo.vm template expects the following values to be set
 #set( $toolname = 'field' )
 #set( $toolclass = $field.class )
+#set( $toollink = $doclink )
 #set( $toolDemo = 
 "${esc.d}field.in(0).MIN_VALUE
 ${esc.h}${esc.h} once a class's fields have been searched, they remain available

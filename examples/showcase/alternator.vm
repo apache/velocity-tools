@@ -16,36 +16,33 @@
 ## under the License.
 #title( 'AlternatorTool' )
 <p>
-#set( $demo = $text.demo )
-$demo.thisPage.insert("#doclink( 'AlternatorTool' true )").
-The <a href="#fullDemo">example</a> at the bottom is a good demonstration of the
-difference between an automatic #doclink( 'Alternator' true ) and a manual one.
+$text.demo.thisPage.insert("#doclink( 'AlternatorTool' true )").
+#set( $toollink = $doclink )
+$text.alternator.intro.insert("#doclink( 'Alternator' true )")
 </p>
 
+## The demo.vm template expects the following values to be set
+#set( $toolname = 'alternator' )
+#set( $toolclass = $alternator.class )
+#set( $toolDemo = 
+"${esc.h}set( ${esc.d}color = ${esc.d}alternator.auto('red', 'blue') )
+${esc.h}${esc.h} use manual alternation for this one
+${esc.h}set( ${esc.d}style = ${esc.d}alternator.manual(['hip','fly','groovy']) )
+${esc.h}foreach( ${esc.d}i in [1..5] )
+ Number ${esc.d}i is ${esc.d}color and ${esc.d}style. I dig $style.next numbers.
+${esc.h}end"
+)
+
+#parse( 'demo.vm' )
+#*
 #demoTableStart()
 
 #set( $quote = '' )
 
-#set( $desc = "Returns <code>true</code> if #doclink( 'Alternator' true )s created by this tool will auto-alternate by default." )
-#demo( 'alternator' 'autoAlternateDefault'  $desc )
-
-#set( $desc = "Returns a new, default #doclink( 'Alternator' true ) that alternates over the specified List or Object array of values." )
-#demo1( 'alternator' 'make' 5 $desc)
-
-#set( $desc = "Return a new, default #doclink( 'Alternator' true ) that alternates between the two specified values." )
-#demo2( 'alternator' 'make' 5 $desc )
-
-#set( $desc = "Returns a new, automatically alternating #doclink( 'Alternator' true ) that alternates over the specified List or Object array of values." )
-#demo1( 'alternator' 'auto' 5 $desc)
-
-#set( $desc = "Return a new, automatically alternating #doclink( 'Alternator' true ) that alternates between the two specified values." )
-#demo2( 'alternator' 'auto' 5 $desc )
-
-#set( $desc = "Returns a new, manually alternating #doclink( 'Alternator' true ) that alternates over the specified List or Object array of values." )
-#demo1( 'alternator' 'manual' 5 $desc)
-
-#set( $desc = "Return a new, manually alternating #doclink( 'Alternator' true ) that alternates between the two specified values." )
-#demo2( 'alternator' 'manual' 5 $desc )
+alternator.autoAlternateDefault = Returns <code>true</code> if Alternators created by this tool will auto-alternate by default.
+alternator.make = Returns a new, default Alternator that alternates over the specified values.
+alternator.auto = Returns a new, automatically alternating Alternator that alternates over the specified values.
+alternator.manual = Returns a new, manually alternating Alternator that alternates over the specified values.
 
 #demoCustom( "alternator.make(['b','c','a'])" )
 </table>
@@ -79,3 +76,4 @@ $demo.mainResultsIntro:
 </pre>
 #end
 </div>
+*#
