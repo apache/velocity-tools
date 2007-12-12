@@ -67,7 +67,7 @@ import org.apache.velocity.util.SimplePool;
  * <p>VelocityView supports the following configuration parameters
  * in web.xml:</p>
  * <dl>
- *   <dt>org.apache.velocity.toolbox</dt>
+ *   <dt>org.apache.velocity.tools</dt>
  *   <dd>Path and name of the toolbox configuration file. The path must be
  *     relative to the web application root directory. If this parameter is
  *     not found, the servlet will check for a toolbox file at
@@ -421,6 +421,28 @@ public class VelocityView
     }
 
 
+    /**
+     * Here's the configuration lookup/loading order:
+     * <ol>
+     * <li>If deprecationSupportMode is true:
+     *   <ol>
+     *   <li>Config file optionally specified by {@code org.apache.velocity.toolbox} init-param (servlet or servletContext)</li>
+     *   <li>If none, config file optionally at {@code /WEB-INF/toolbox.xml} (deprecated conventional location)</li>
+     *   </ol>
+     * </li>
+     * <li>If no old toolbox or loadDefaults is true, {@link ConfigurationUtils#getDefaultTools()}</li>
+     * <li>{@link ConfigurationUtils#getAutoLoaded}(false)</li>
+     * <li>Config file optionally specified by servletContext {@code org.apache.velocity.tools} init-param</li>
+     * <li>Config file optionally at {@code /WEB-INF/tools.xml} (new conventional location)</li>
+     * <li>Config file optionally specified by servlet {@code org.apache.velocity.tools} init-param</li>
+     * </ol>
+     * Remember that as these configurations are added on top of each other,
+     * the newer values will always override the older ones.  Also, once they
+     * are all loaded, this method can "clean" your configuration of all invalid
+     * tool, toolbox or data configurations if you set the 
+     * {@code org.apache.velocity.tools.cleanConfiguration} init-param to true in
+     * either your servlet or servletContext init-params.
+     */
     protected void configure(final ServletConfig config, final ToolboxFactory factory)
     {
         FactoryConfiguration factoryConfig = new FactoryConfiguration();
@@ -489,23 +511,33 @@ public class VelocityView
         factory.configure(factoryConfig);
     }
 
+    /**
+     * First tries to find a path to a toolbox under the deprecated
+     * {@code org.apache.velocity.toolbox} key.
+     * If found, it tries to load the configuration there and will blow up
+     * if there is no config file there.
+     * If not found, it looks for a config file at /WEB-INF/toolbox.xml
+     * (the deprecated default location) and tries to load it if found.
+     */
     @Deprecated
     protected FactoryConfiguration getDeprecatedConfig(ServletConfig config)
     {
-        // check for deprecated user configuration at the old conventional
-        // location.  be silent if missing, log deprecation warning otherwise
-        String oldPath = DEPRECATED_USER_TOOLS_PATH;
-        FactoryConfiguration toolbox = getConfiguration(oldPath);
-        if (toolbox == null)
+        FactoryConfiguration toolbox = null;
+
+        // look for specified path under the deprecated toolbox key
+        String oldPath = findInitParameter(DEPRECATED_TOOLS_KEY, config);
+        if (oldPath != null)
         {
-            // look for an alternate path under the deprecated toolbox key
-            oldPath = findInitParameter(DEPRECATED_TOOLS_KEY, config);
-            if (oldPath != null)
-            {
-                // ok, this time they said the toolbox.xml should be there
-                // so this should blow up if it is not
-                toolbox = getConfiguration(oldPath, true);
-            }
+            // ok, they said the toolbox.xml should be there
+            // so this should blow up if it is not
+            toolbox = getConfiguration(oldPath, true);
+        }
+        else
+        {
+            // check for deprecated user configuration at the old conventional
+            // location.  be silent if missing, log deprecation warning otherwise
+            oldPath = DEPRECATED_USER_TOOLS_PATH;
+            toolbox = getConfiguration(oldPath);
         }
 
         if (toolbox != null)
