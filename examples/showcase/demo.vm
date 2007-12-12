@@ -1,3 +1,34 @@
+## Licensed to the Apache Software Foundation (ASF) under one
+## or more contributor license agreements.  See the NOTICE file
+## distributed with this work for additional information
+## regarding copyright ownership.  The ASF licenses this file
+## to you under the Apache License, Version 2.0 (the
+## "License"); you may not use this file except in compliance
+## with the License.  You may obtain a copy of the License at
+##
+##   http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing,
+## software distributed under the License is distributed on an
+## "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+## KIND, either express or implied.  See the License for the
+## specific language governing permissions and limitations
+## under the License.
+
+#*
+ * This template exists to automatically generate demos for a tool.
+ * It expects the following values to be set before it is parsed:
+ *   $toolname -> should be the context key of the tool
+ *   $toolclass -> should be the actual Class of the tool
+ *   $toollink -> a URL for the javadoc of the tool Class on velocity.apache.org
+ *               This is usually set copying the $doclink reference that is set
+ *               whenever the #doclink() macro is used.
+ * Optionally, you can also set:
+ *   $toolDemo -> to specify the default text for the full demo at the bottom
+ *
+ * If you're wondering why this is a template, instead of a macro;
+ * it is because it takes less memory in the cache this way.
+ *#
 #set( $demo = $text.demo )
 #set( $tool = $class.inspect($toolclass) )
 
@@ -9,37 +40,50 @@
     $demo.result<br>
     <input style="font-size: 8pt" type="submit" value="$demo.clear">
   </th>
+  ## be sure not to lose the current layout when clearing other params
   #if( $params.layout )
     <input type="hidden" name="layout" value="$params.layout">
   #end
   </form>
   <th>$demo.description</th>
 </tr>
+## generate a demo for each method
 #foreach( $method in $tool.methods )
-  #set( $desc = $text.get("${toolname}.${method.uniqueName}") )
-  #set( $call = "${esc.d}${toolname}.#if( !$method.takesParameters() && $method.propertyName )$method.propertyName#else$method.signature#end" )
 <tr>
-  <td valign="top" id="${method.javadocRef}"><a href="$doclink#$method.javadocRef">$call</a></td>
+  ## create a fake call of the method to use as the name/signature
+  #set( $call = "${esc.d}${toolname}.#if( !$method.takesParameters() && $method.propertyName )$method.propertyName#else$method.signature#end" )
+  <td valign="top" id="${method.javadocRef}"><a href="$toollink#$method.javadocRef">$call</a></td>
   #if( !$method.takesParameters() )
+    ## simply call the method
     #set( $result = $call )
     #set( $result = $render.eval($call) )
     <td valign="top">#if( $result == $call )$text.demo.nullResult#else$result#end</td>
   #else
+    ## create a form to allow the user to input values and call the method
     <form method="get" action="$link.self.anchor($method.javadocRef)"> ## HttpUnit doesn't like anchor-only links
     <td valign="top">
     <nobr>
+      ## create a text field for each parameter
+      ## whose size is inversely proportional to the number of fields
+      #set( $fieldsize = $math.sub($math.idiv(24, $method.parameterCount), $method.parameterCount) )
       #foreach( $param in $method.parameters )
-        #set( $pname = "$method.uniqueName$velocityCount" )
-        #set( $pvalue = $params.get($pname, false) )
-        #set( $pdefault = $text.get("${toolname}.${method.uniqueName}.param$velocityCount") )
-        #if( !$pdefault.exists )
-          #set( $pdefault = "#demoDefault( $param )" )
+        #set( $fieldname = "$method.uniqueName$velocityCount" )
+        ## look for a default value
+        #set( $fielddefault = $text.get("${toolname}.${method.uniqueName}.param$velocityCount") )
+        #if( !$fielddefault.exists )
+          ## generate a reasonable default for the param type
+          #set( $fielddefault = "#demoDefault( $param )" )
         #end
-        #if( $velocityCount > 1 ), #end<input type="text" name="$pname" value="#if( $pvalue )$pvalue#else$pdefault#end" size="$math.sub($math.idiv(24, $method.parameterCount), $method.parameterCount)"/>
+        ## look for a value in the params, use the default if none is found
+        #set( $fieldvalue = $display.alt($params.get($fieldname), $fielddefault) )
+        #if( $velocityCount > 1 ),#end
+        <input type="text" name="$fieldname" value="$fieldvalue" size="$fieldsize"/>
       #end
       <input type="submit" value="$text.demo.try">
     </nobr>
+    ## if we have at least one param value
     #if( $params.get("${method.uniqueName}1") )
+      ## do the actual call using the provided param values
       #set( $call = "${esc.d}${toolname}.${method.name}(#foreach( $param in $method.parameters )#if( $velocityCount > 1 ), #end$!params.get($render.eval('$method.uniqueName$velocityCount'))#end)" )
       #set( $result = $call )
       #set( $result = $render.eval($call) )
@@ -48,8 +92,9 @@
       =
       <div>#if( $result == $call )$demo.nullResult#else$result#end</div>
     #end
+    ## maintain all params for other method demos
     #foreach( $param in $params.all.keySet() )
-      #if( !$param.startsWith($method.uniqueName) )
+      #if( !$param.startsWith($method.uniqueName) && $param != 'fullDemo' )
         #foreach( $value in $params.getStrings($param) )
           <input type="hidden" name="$param" value="$esc.html($value)">
         #end
@@ -58,15 +103,43 @@
     </td>
     </form>
   #end
-  <td valign="top">#if( $desc.exists )$desc#elseif( $method.uniqueName eq 'toString' )$demo.toString#else$demo.descriptionMissing#end</td>
+  ## look for a description of the specific method
+  #set( $desc = $text.get("${toolname}.${method.uniqueName}") )
+  #if( !$desc.exists )
+    ## look for a description of all methods with that name
+    #set( $desc = $text.get("${toolname}.${method.name}") )
+    #if( !$desc.exists )
+      #if( $method.propertyName )
+        ## look for a tool-specific generic property description
+        #set( $desc = $text.get("${toolname}.propertyDescription").insert($method.propertyName) )
+      #else
+        ## look for a generic method descirption for the tool
+        #set( $desc = $text.get("${toolname}.methodDescription") )
+      #end
+      #if( !$desc.exists )
+        #if( $method.uniqueName eq 'toString' )
+          ## use the generic toString description 
+          #set( $desc = $demo.toString )
+        #else
+          ## use the generic description missing message
+          #set( $desc = $demo.descriptionMissing )
+        #end
+      #end
+    #end
+  #end
+  <td valign="top">$desc</td>
 </tr>
 #end
 <tr>
+  ## create a space for an extended, custom, one line demo
   <form method="get" action="$link.self.anchor('custom')">
   <td valign="top" colspan="2" id="custom">
+    ## first check the params for a custom demo
     #set( $custom = $params.getValue('custom', false) )
+    ## then look for a default in the resources
     #set( $default = $text.get("${toolname}.custom") )
     #if( !$default.exists )
+      ## ok, just have a dumb little custom demo
       #set( $default = "$esc.d$toolname" )
     #end
     <input type="text" size="40" name="custom" value="#if( $custom )$custom#else$default#end">
@@ -79,8 +152,9 @@
       =
       <div>#if( $result == $call )$demo.nullResult#else$result#end</div>
     #end
+    ## maintain params for all the other demos
     #foreach( $param in $params.all.keySet() )
-      #if( $param != 'custom' )
+      #if( $param != 'custom' && $param != 'fullDemo' )
         #foreach( $value in $params.getStrings($param) )
           <input type="hidden" name="$param" value="$esc.html($value)">
         #end
@@ -92,27 +166,44 @@
 </tr>
 </table>
 
-<div align="center">
-  <a name="fullDemo"><h3>$demo.mainExampleHeader</h3></a>
-<form method="post" action="$link.self.anchor('fullDemo')">
-<textarea name="demo" rows="3" cols="65">##
-#if( $params.demo )##
-$params.demo##
-#else##
-$!toolDemo##
-#end##
-</textarea>
-  <br>
-  <input type="submit" value="$demo.try">
-  #if( $params.layout )
-  <input type="hidden" name="layout" value="$params.layout">
+## look for a full demo in the params
+#set( $fullDemo = $params.fullDemo )
+#if( !$fullDemo )
+  ## see if one was set in the parent template
+  #if( $toolDemo )
+    #set( $fullDemo = $toolDemo )
+  #else
+    ## ok, try looking for one in the resources
+    #set( $fullDemo = $text.get("${toolname}.fullDemo") )
+    #if( !$fullDemo.exists )
+      ## give up and hide the full demo
+      #set( $fullDemo = false )
+    #end
   #end
-</form>
-
-#if( $params.demo )
-$demo.mainResultsIntro:
-<pre>
-  $render.eval($params.demo)
-</pre>
 #end
-</div>
+#if( $fullDemo )
+  #set( $dims = $display.measure($fullDemo) )
+  <div align="center">
+    <a name="fullDemo"><h3>$demo.mainExampleHeader</h3></a>
+    <form method="post" action="$link.self.anchor('fullDemo')">
+      <textarea name="fullDemo" rows="$dims.height" cols="$dims.width">$!fullDemo</textarea>
+      <br>
+      <input type="submit" value="$demo.try">
+      ## maintain params for all the other demos
+      #foreach( $param in $params.all.keySet() )
+        #if( $param != 'fullDemo' )
+          #foreach( $value in $params.getStrings($param) )
+            <input type="hidden" name="$param" value="$esc.html($value)">
+          #end
+        #end
+      #end
+    </form>
+    ## evaluate and display results if they hit submit
+    #if( $params.fullDemo )
+      $demo.mainResultsIntro:
+      <pre>
+        $render.eval($params.fullDemo)
+      </pre>
+    #end
+  </div>
+#end
