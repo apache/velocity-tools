@@ -327,7 +327,7 @@ public class VelocityView
         {
             String msg = "Could not initialize VelocityEngine";
             getLog().error(msg, e);
-            throw new RuntimeException(msg, e);
+            throw new RuntimeException(msg + ": e", e);
         }
     }
 
