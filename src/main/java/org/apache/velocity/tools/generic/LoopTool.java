@@ -38,11 +38,14 @@ import org.apache.velocity.tools.config.ValidScope;
  * to understand and use.  Rather than try to migrate that implementation
  * via deprecation and new methods, it was simplest to just create an
  * entirely new tool with a simplified API, support for nested loops
- * (which can optionally be given names), and skipping ahead in loops.
+ * (which can optionally be given names), skipping ahead in loops,
+ * getting the iteration count of loops, and identifying if a loop is
+ * on its first or last iteration.
  * </p>
  * <p>
  * Most users, of course, will probably never need anything beyond the 
- * simple {@link #watch(Object)}, {@link #stop}, and {@link #skip(int)}
+ * simple {@link #watch(Object)}, {@link #stop}, {@link #isFirst},
+ * {@link #isLast}, {@link #getCount}, or maybe {@link #skip(int)}
  * methods, if even that much.  However, it is with complicated nested
  * #foreach loops and varying "break" conditions that this tool can
  * probably do the most to simplify your templates.
@@ -250,14 +253,131 @@ public class LoopTool
     public void skip(int number, String name)
     {
         // just tell the matching one to skip
+        ManagedIterator iterator = findIterator(name);
+        if (iterator != null)
+        {
+            iterator.skip(number);
+        }
+    }
+
+    /**
+     * Returns {@code true} if the current loop is on its first iteration.
+     */
+    public Boolean isFirst()
+    {
+        if (iterators.empty())
+        {
+            return null;
+        }
+        return iterators.peek().isFirst();
+    }
+
+    /**
+     * Returns {@code true} if the loop with the specified name
+     * is on its first iteration.
+     */
+    public Boolean isFirst(String name)
+    {
+        // just tell the matching one to skip
+        ManagedIterator iterator = findIterator(name);
+        if (iterator != null)
+        {
+            return iterator.isFirst();
+        }
+        return null;
+    }
+
+    /**
+     * Returns the result of {@link #isFirst}. Exists to allow $loop.first syntax.
+     */
+    public Boolean getFirst()
+    {
+        return isFirst();
+    }
+
+    /**
+     * Returns {@code true} if the current loop is on its last iteration.
+     */
+    public Boolean isLast()
+    {
+        if (iterators.empty())
+        {
+            return null;
+        }
+        return iterators.peek().isLast();
+    }
+
+    /**
+     * Returns {@code true} if the loop with the specified name
+     * is on its last iteration.
+     */
+    public Boolean isLast(String name)
+    {
+        // just tell the matching one to skip
+        ManagedIterator iterator = findIterator(name);
+        if (iterator != null)
+        {
+            return iterator.isLast();
+        }
+        return null;
+    }
+
+    /**
+     * Returns the result of {@link #isLast}. Exists to allow $loop.last syntax.
+     */
+    public Boolean getLast()
+    {
+        return isLast();
+    }
+
+    /**
+     * Returns the number of items the current loop has handled. So, if this
+     * is the first iteration, then the count will be 1.  If you {@link #skip}
+     * ahead in this loop, those skipped iterations will still be included in
+     * the count.
+     */
+    public Integer getCount()
+    {
+        if (iterators.empty())
+        {
+            return null;
+        }
+        return iterators.peek().getCount();
+    }
+
+    /**
+     * Returns the number of items the specified loop has handled. So, if this
+     * is the first iteration, then the count will be 1.  If you {@link #skip}
+     * ahead in this loop, those skipped iterations will still be included in
+     * the count.
+     */
+    public Integer getCount(String name)
+    {
+        // just tell the matching one to skip
+        ManagedIterator iterator = findIterator(name);
+        if (iterator != null)
+        {
+            return iterator.getCount();
+        }
+        return null;
+    }
+
+
+    /**
+     * Finds the {@link ManagedIterator} with the specified name
+     * if it is in this instance's iterator stack.
+     */
+    protected ManagedIterator findIterator(String name)
+    {
+        // look for the one with the specified name
         for (ManagedIterator iterator : iterators)
         {
             if (iterator.getName().equals(name))
             {
-                iterator.skip(number);
-                break;
+                return iterator;
             }
         }
+        return null;
     }
 
     /**
@@ -305,6 +425,8 @@ public class LoopTool
         private Iterator iterator;
         private LoopTool owner;
         private boolean stopped = false;
+        private Boolean first = null;
+        private int count = 0;
 
         public ManagedIterator(Iterator iterator, LoopTool owner)
         {
@@ -327,6 +449,20 @@ public class LoopTool
             return this.name;
         }
 
+        public boolean isFirst()
+        {
+            if (first == null || first.booleanValue())
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public boolean isLast()
+        {
+            return !iterator.hasNext();
+        }
+
         public boolean hasNext()
         {
             if (!stopped)
@@ -336,6 +472,8 @@ public class LoopTool
                 if (!hasNext)
                 {
                     owner.pop();
+                    // and make sure we don't pop twice
+                    stopped = true;
                 }
                 return hasNext;
             }
@@ -345,8 +483,22 @@ public class LoopTool
             }
         }
 
+        public int getCount()
+        {
+            return count;
+        }
+
         public Object next()
         {
+            if (first == null)
+            {
+                first = Boolean.TRUE;
+            }
+            else if (first.booleanValue())
+            {
+                first = Boolean.FALSE;
+            }
+            count++;
             return iterator.next();
         }
 
@@ -367,13 +519,19 @@ public class LoopTool
             {
                 if (iterator.hasNext())
                 {
-                    iterator.next();
+                    next();
                 }
                 else
                 {
                     break;
                 }
             }
+        }
+
+        @Override
+        public String toString()
+        {
+            return ManagedIterator.class.getSimpleName()+':'+getName();
         }
     }
 

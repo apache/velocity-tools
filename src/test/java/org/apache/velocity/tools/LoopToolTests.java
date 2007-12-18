@@ -193,5 +193,116 @@ public class LoopToolTests {
         assertNotNull(loop.watch(ARRAY, "name"));
     }
 
+    public @Test void methodIsFirst() throws Exception
+    {
+        LoopTool loop = new LoopTool();
+        Iterator i = loop.watch(ARRAY);
+        assertTrue(loop.isFirst());
+        i.next();
+        assertTrue(loop.isFirst());
+        i.next();
+        assertFalse(loop.isFirst());
+    }
+
+    public @Test void methodIsFirst_String() throws Exception
+    {
+        LoopTool loop = new LoopTool();
+        Iterator i = loop.watch(ARRAY, "i");
+        assertTrue(loop.isFirst());
+        i.next();
+        Iterator j = loop.watch(ARRAY, "j");
+        assertTrue(loop.isFirst());
+        assertTrue(loop.isFirst("i"));
+        assertTrue(loop.isFirst("j"));
+        i.next();
+        assertFalse(loop.isFirst("i"));
+        j.next();
+        assertTrue(loop.isFirst());
+        assertTrue(loop.isFirst("j"));
+        j.next();
+        assertFalse(loop.isFirst("j"));
+    }
+
+    public @Test void methodIsLast() throws Exception
+    {
+        LoopTool loop = new LoopTool();
+        Iterator i = loop.watch(ARRAY);
+        assertFalse(loop.isLast());
+        i.next();
+        assertFalse(loop.isLast());
+        i.next();
+        assertFalse(loop.isLast());
+        i.next();
+        assertTrue(loop.isLast());
+    }
+
+    public @Test void methodIsLast_String() throws Exception
+    {
+        LoopTool loop = new LoopTool();
+        Iterator i = loop.watch(ARRAY, "i");
+        assertFalse(loop.isLast());
+        i.next();
+        i.next();
+        i.next();
+        assertTrue(loop.isLast());
+        Iterator j = loop.watch(ARRAY, "j");
+        assertFalse(loop.isLast());
+        assertTrue(loop.isLast("i"));
+        assertFalse(loop.isLast("j"));
+        j.next();
+        j.next();
+        j.next();
+        assertTrue(loop.isLast());
+        assertTrue(loop.isLast("j"));
+    }
+
+    public @Test void methodGetCount() throws Exception
+    {
+        LoopTool loop = new LoopTool();
+        Iterator i = loop.watch(ARRAY);
+        assertEquals(0, loop.getCount());
+        i.next();
+        assertEquals(1, loop.getCount());
+        i.next();
+        assertEquals(2, loop.getCount());
+        i.next();
+        assertEquals(3, loop.getCount());
+        loop.pop();
+        // test that skipped iterations are still included
+        i = loop.watch(ARRAY);
+        loop.skip(2);
+        assertEquals(2, loop.getCount());
+    }
+
+    public @Test void methodGetCount_String() throws Exception
+    {
+        LoopTool loop = new LoopTool();
+        Iterator i = loop.watch(ARRAY, "i");
+        assertEquals(0, loop.getCount("i"));
+        i.next();
+        assertEquals(1, loop.getCount("i"));
+        Iterator j = loop.watch(ARRAY, "j");
+        loop.skip(2);
+        assertEquals(2, loop.getCount("j"));
+        assertEquals(1, loop.getCount("i"));
+    }
+
+    public @Test void aliasMethods() throws Exception
+    {
+        LoopTool loop = new LoopTool();
+        Iterator i = loop.watch(ARRAY);
+        assertEquals(loop.isFirst(), loop.getFirst());
+        assertEquals(loop.isLast(), loop.getLast());
+        i.next();
+        assertEquals(loop.isFirst(), loop.getFirst());
+        assertEquals(loop.isLast(), loop.getLast());
+        i.next();
+        assertEquals(loop.isFirst(), loop.getFirst());
+        assertEquals(loop.isLast(), loop.getLast());
+        i.next();
+        assertEquals(loop.isFirst(), loop.getFirst());
+        assertEquals(loop.isLast(), loop.getLast());
+    }
+
 }
         

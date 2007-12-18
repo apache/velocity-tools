@@ -19,23 +19,29 @@
 #set( $demo = $text.demo )
 $demo.thisPage.insert("#doclink( 'LoopTool' true )").
 This tool is a convenience tool to use with ${esc.h}foreach loops. It wraps a
-list to let the designer specify a condition to terminate the loop,
-and reuse the same list in different loops.
+list to let you prematurely end stop iterating, skip iterations, easily
+determine if you are on the first or last iteration, get the number of iterations
+completed, and even easily do all the above with complex, nested loops.
 </p>
 
 <form method="post" action="$link.self">
   <textarea name="demo" rows="10" cols="65">
 #if( $params.demo )##
-$params.demo
+$params.demo##
 #else##
-${esc.h}set( ${esc.d}list = [1, 2, 3, 4, 5, 6] )
-${esc.h}foreach( ${esc.d}item in ${esc.d}loop.watch(${esc.d}list) )
-${esc.d}item
-${esc.h}if( ${esc.d}item > 1 )${esc.d}loop.skip(1)${esc.h}end
-${esc.h}if( ${esc.d}item >= 5 )${esc.d}loop.stop()${esc.h}end
+${esc.h}set( ${esc.d}numbers = [1, 2, 3, 4, 5, 6] )
+${esc.h}set( ${esc.d}letters = ['A','B','C'] )
+${esc.h}foreach( ${esc.d}l in ${esc.d}loop.watch(${esc.d}letters, 'l') )
+${esc.h}foreach( ${esc.d}n in ${esc.d}loop.watch(${esc.d}numbers) )
+${esc.h}if( ${esc.d}loop.first )${esc.d}l[${esc.h}end${esc.h}${esc.h}
+${esc.d}n${esc.h}${esc.h}
+${esc.h}if( ${esc.d}loop.last )]  ${esc.h}else, ${esc.h}end${esc.h}${esc.h}
+${esc.h}if( ${esc.d}n > 1 )${esc.d}loop.skip(1)${esc.h}end${esc.h}${esc.h} skip ahead each number over 1
+${esc.h}if( ${esc.d}l == 'B' )${esc.d}loop.stop('l')${esc.h}end${esc.h}${esc.h} stop the letter loop after B
 ${esc.h}end
-#end
-  </textarea>
+${esc.h}end##
+#end#*
+*#</textarea>
   <input type="submit" value="$demo.try">
   #if( $params.layout )
   <input type="hidden" name="layout" value="$params.layout">
