@@ -16,72 +16,22 @@
 ## under the License.
 #title( 'DisplayTool' )
 <p>
-#set( $demo = $text.demo )
-$demo.thisPage.insert("#doclink( 'DisplayTool' true )").
+$text.demo.thisPage.insert("#doclink( 'DisplayTool' true )").
+$text.get('display.intro')
 </p>
 
-#demoTableStart()
-
-## set quote character to empty string so values are not treated as strings
-#set( $quote = '' )
-
-#set( $desc = 'Formats a collection or array into the form "A, B and C".' )
-#demo1( 'display' 'list' 5 $desc )
-
-#set( $desc = 'Formats a collection or array into a string delimited by the second argument' )
-#demo2( 'display' 'list' 5 $desc )
-
-#set( $desc = 'Formats a collection or array into a string delimited by the second argument, except the last two arguments are delimited by the third argument' )
-#demo3( 'display' 'list' 5 $desc )
-
-#set( $desc = 'Limits the string output of the specified value to the configured max length in characters (default is 30 characters). If the string gets curtailed, the configured suffix (default is "...") is used as the ending of the truncated string.' )
-#demo1( 'display' 'truncate' 8 $desc )
-
-#set( $desc = 'Limits the string output of the second argument to the specified number of characters.  If the string gets curtailed, the configured suffix (default is "...") is used as the ending of the truncated string.' )
-#demo2( 'display' 'truncate' 5 $desc )
-
-#set( $desc = 'Limits the string output of the first argument to the configured max length in characters (default is 30 characters). If the string gets curtailed, the specified suffix is used as the ending of the truncated string.' )
-#demo2( 'display' 'truncate' 5 $desc )
-
-#set( $desc = 'Limits the string output of the second argument to the specified number of characters. If the string gets curtailed, the specified suffix is used as the ending of the truncated string.' )
-#demo3( 'display' 'truncate' 4 $desc )
-
-#set( $desc = 'Returns the configured default value ("null" by default) if the specified value is null.' )
-#demo1( 'display' 'alt' 8 $desc )
-
-#set( $desc = 'Returns the second argument if first argument specified is null.' )
-#demo2( 'display' 'alt' 5 $desc )
-
-#demoCustom( 'display' )
-</table>
-
-#set( $primes = [1, 2, 3, 5, 7, 11] )
-<div align="center">
-  <a name="fullDemo"><h3>$demo.mainExampleHeader</h3></a>
-<form method="post" action="$link.self.anchor('fullDemo')">
-<textarea name="demo" rows="7" cols="65">##
-#if( $params.demo )##
-$params.demo##
-#else##
-${esc.d}primes
+#set( $toolname = 'display' )
+#set( $toolclass = $display.class )
+#set( $toollink = $doclink )
+#set( $toolDemo = 
+"${esc.h}set( ${esc.d}primes = [1, 2, 3, 5, 7, 11] )
 ${esc.d}display.list(${esc.d}primes)
-${esc.d}display.truncate("This sentence should be truncated at 30 characters.")
-${esc.d}display.truncate("This will be cut at 15.", 15)
+${esc.d}display.truncate('This sentence should be truncated at 30 characters.')
+${esc.d}display.truncate('This will be cut at 15.', 15)
 ${esc.d}display.alt(${esc.d}primes)
-${esc.d}display.alt(${esc.d}null, "--")##
-#end##
-</textarea>
-  <br>
-  <input type="submit" value="$demo.try">
-  #if( $params.layout )
-  <input type="hidden" name="layout" value="$params.layout">
-  #end
-</form>
+${esc.d}display.alt(${esc.d}null, '--')
+${esc.h}set( ${esc.d}demoSize = ${esc.d}display.measure(${esc.d}toolDemo) )
+This demo is ${esc.d}demoSize.height lines with a max length of ${esc.d}demoSize.width chars."
+)
 
-#if( $params.demo )
-$demo.mainResultsIntro:
-<pre>
-  $render.eval($params.demo)
-</pre>
-#end
-</div>
+#parse( 'demo.vm' )
