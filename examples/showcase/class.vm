@@ -26,7 +26,8 @@ $text.get('class.intro')
 #set( $toolclass = $class.class )
 #set( $toollink = $doclink )
 #set( $toolDemo = 
-"${esc.h}foreach( ${esc.d}method in ${esc.d}class.methods )
+"${esc.h}set( ${esc.d}classTool = ${esc.d}class.inspect(${esc.d}class) )
+${esc.h}foreach( ${esc.d}method in ${esc.d}classTool.methods )
 ${esc.d}method.javadocRef
 ${esc.h}end"
 )

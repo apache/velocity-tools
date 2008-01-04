@@ -49,6 +49,7 @@
 </tr>
 ## generate a demo for each method
 #foreach( $method in $tool.methods )
+#if( $method.signature != 'configure(Map)' )
 <tr>
   ## create a fake call of the method to use as the name/signature
   #set( $call = "${esc.d}${toolname}.#if( !$method.takesParameters() && $method.propertyName )$method.propertyName#else$method.signature#end" )
@@ -129,6 +130,7 @@
   #end
   <td valign="top">$desc</td>
 </tr>
+#end
 #end
 <tr>
   ## create a space for an extended, custom, one line demo
