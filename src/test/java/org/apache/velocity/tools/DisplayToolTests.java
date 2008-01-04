@@ -144,6 +144,19 @@ public class DisplayToolTests {
         assertEquals(3, dims.getHeight());
     }
 
+    public @Test void methodMessage_StringObjectVarArgs() throws Exception
+    {
+        DisplayTool display = new DisplayTool();
+        assertNull(display.message(null));
+        assertEquals("foo", display.message("foo"));
+        assertEquals("foo", display.message("foo", (Object[])null));
+        assertEquals("foo", display.message("foo", new Object[] {}));
+        assertEquals("foo", display.message("foo", new ArrayList()));
+        assertEquals("foo", display.message("foo", 1));
+        assertEquals("foo bar", display.message("foo {0}", "bar"));
+        assertEquals("foo 2 bar", display.message("foo {1} {0}", "bar", 2));
+    }
+
     public @Test void methodList_Object() throws Exception
     {
         DisplayTool display = new DisplayTool();
