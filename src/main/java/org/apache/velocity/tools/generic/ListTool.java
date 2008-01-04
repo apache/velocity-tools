@@ -25,13 +25,19 @@ import org.apache.velocity.tools.config.DefaultKey;
 
 /**
  * Tool for working with Lists and arrays in Velocity templates.
+ * <p>
+ * Once Velocity 1.6 is released, this class will be largely obsolete since
+ * Velocity 1.6 now allows all List methods to be called on arrays
+ * within templates.
+ * </p>
+ * <p>
  * It provides a method to get and set specified elements.
  * Also provides methods to perform the following actions to Lists and arrays:
  * <ul>
  *   <li>Check if it is empty.</li>
  *   <li>Check if it contains a certain element.</li>
  * </ul>
- *
+ * </p>
  * <p><pre>
  * Example uses:
  *  $primes                    -> new int[] {2, 3, 5, 7}

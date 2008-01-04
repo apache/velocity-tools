@@ -32,7 +32,15 @@ import org.apache.velocity.tools.view.ViewToolContext;
 import org.apache.velocity.tools.view.VelocityView;
 
 /**
- * <p>JSP tag implementation to allow use of Velocity and VelocityTools.</p>
+ * <p>This tag enables use of Velocity and VelocityTools within JSP files and tags.
+ * This makes it trivial to render embedded VTL (Velocity Template Language)
+ * or include a separate Velocity template within a JSP using the current
+ * page context.  This also automatically provides the typical 
+ * {@link VelocityView} toolbox support, much like the VelocityViewServlet
+ * and VelocityLayoutServlets have.  In fact, this will by default share
+ * the {@link VelocityView} instance used with those servlets.  This allows
+ * for consistent configuration and shared resources (better performance).
+ * </p>
  *
  * @author Nathan Bubna
  * @version $Id: VelocityViewTag.java,v 1.1 2001/08/14 00:07:39 geirm Exp $

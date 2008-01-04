@@ -30,38 +30,6 @@ import org.apache.velocity.tools.view.ViewToolContext;
 import org.apache.velocity.tools.view.context.ViewContext;
 
 /**
- * <p>Velocity context implementation specific to the Servlet environment.</p>
- *
- * <p>It provides the following special features:</p>
- * <ul>
- *   <li>puts the request, response, session, and servlet context objects
- *       into the Velocity context for direct access, and keeps them
- *       read-only</li>
- *   <li>supports a read-only toolbox of view tools</li>
- *   <li>auto-searches servlet request attributes, session attributes and
- *       servlet context attribues for objects</li>
- * </ul>
- *
- * <p>The {@link #internalGet(String key)} method implements the following search order
- * for objects:</p>
- * <ol>
- *   <li>toolbox</li>
- *   <li>servlet request, servlet response, servlet session, servlet context</li>
- *   <li>local hashtable of objects (traditional use)</li>
- *   <li>servlet request attribues, servlet session attribute, servlet context
- *     attributes</li>
- * </ol>
- *
- * <p>The purpose of this class is to make it easy for web designer to work
- * with Java servlet based web applications. They do not need to be concerned
- * with the concepts of request, session or application attributes and the
- * lifetime of objects in these scopes.</p>
- *
- * <p>Note that the put() method always puts objects into the local hashtable.
- * </p>
- *
- * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
- * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @deprecated Use {@link ViewToolContext} instead
  * @version $Id$
  */

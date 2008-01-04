@@ -40,9 +40,9 @@ import org.apache.velocity.tools.config.DefaultKey;
  * This tool is meant to simplify reflective lookup of information about
  * a {@link Class} and its {@link Field}s, {@link Method}s, and {@link Constructor}s.
  * This is ideally aimed at those wishing to generate documentation, demo code, or
- * other content based on the properties of a specified Class or Classes. It was not
+ * other content based on runtime reflection of a specified Class or Classes. It was not
  * designed with reflective execution of code in mind and thus provides no facilities
- * for code execution, nor direct access to the actual method, constructors or fields
+ * for code execution, nor direct access to the actual methods, constructors or fields
  * of the class being inspected.
  * </p>
  *
