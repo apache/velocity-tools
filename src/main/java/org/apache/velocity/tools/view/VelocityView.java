@@ -154,10 +154,35 @@ public class VelocityView
     public  static final String USER_PROPERTIES_PATH =
         "/WEB-INF/velocity.properties";
 
+    /**
+     * Controls loading of available default tool configurations
+     * provided by VelocityTools.  The default behavior is conditional;
+     * if {@link #DEPRECATION_SUPPORT_MODE_KEY} has not been set to
+     * {@code false} and there is an old {@code toolbox.xml} configuration
+     * present, then the defaults will not be loaded unless you explicitly
+     * set this property to {@code true} in your init params.  If there
+     * is no {@code toolbox.xml} and/or the deprecation support is turned off,
+     * then the default tools will be loaded automatically unless you
+     * explicitly set this property to {@code false} in your init params.
+     */
     public static final String LOAD_DEFAULTS_KEY =
         "org.apache.velocity.tools.loadDefaults";
+
+    /**
+     * Controls removal of tools or data with invalid configurations
+     * before initialization is finished.
+     * The default is false; set to {@code true} to turn this feature on.
+     */
     public static final String CLEAN_CONFIGURATION_KEY =
         "org.apache.velocity.tools.cleanConfiguration";
+
+    /**
+     * Controls support for deprecated tools and configuration.
+     * The default is {@code true}; set to {@code false} to turn off
+     * support for deprecated tools and configuration.
+     */
+    public static final String DEPRECATION_SUPPORT_MODE_KEY =
+        "org.apache.velocity.tools.deprecationSupportMode";
 
 
     private static SimplePool writerPool = new SimplePool(40);
@@ -277,6 +302,12 @@ public class VelocityView
      */
     protected void init(ServletConfig config)
     {
+        String depMode = findInitParameter(DEPRECATION_SUPPORT_MODE_KEY, config);
+        if (depMode != null && depMode.equalsIgnoreCase("false"))
+        {
+            setDeprecationSupportMode(false);
+        }
+        
         // initialize a new VelocityEngine
         init(config, new VelocityEngine());
 
