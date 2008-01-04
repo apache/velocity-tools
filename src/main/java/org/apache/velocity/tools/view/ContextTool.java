@@ -70,7 +70,7 @@ public class ContextTool
     public static final String SAFE_MODE_KEY = "safeMode";
 
     protected ViewContext context;
-    protected Map toolbox;
+    protected Map<String,Object> toolbox;
     protected HttpServletRequest request;
     protected HttpSession session;
     protected ServletContext application;
@@ -112,7 +112,7 @@ public class ContextTool
      * @return a map of all available tools for this request
      *         or {@code null} if such a map is not available
      */
-    public Map getToolbox()
+    public Map<String,Object> getToolbox()
     {
         if (this.toolbox == null && this.context instanceof ViewToolContext)
         {
