@@ -16,56 +16,19 @@
 ## under the License.
 #title( 'ContextTool' )
 <p>
-#set( $demo = $text.demo )
-$demo.thisPage.insert("#doclink( 'ContextTool' false )").
+$text.demo.thisPage.insert("#doclink( 'ContextTool' false )").
+</p>
+<p>
+$text.get('context.intro')
 </p>
 
-#demoTableStart()
-
-#set( $desc = 'Returns the ViewContext being analyzed by this tool' )
-#demo( 'context' 'this' $desc )
-
-#set( $desc = 'Returns <code>true</code> if there is a value available in the current request context for the specified key' )
-#demo1( 'context' 'contains' 6 $desc )
-
-#set( $desc = 'Returns the value for the specified key in the current request context' )
-#demo1( 'context' 'get' 6 $desc )
-
-#set( $desc = 'Returns a java.util.Set of the keys available in the current request context' )
-#demo( 'context' 'keys' $desc )
-
-#set( $desc = 'Returns a java.util.Map of the tools available in the current request context and their context keys' )
-#demo( 'context' 'toolbox' $desc )
-
-#set( $desc = 'Returns a java.util.Set of the values available in the current request context' )
-#demo( 'context' 'values' $desc )
-
-#demoCustom( 'context' )
-</table>
-
-<div align="center">
-  <a name="fullDemo"><h3>$demo.mainExampleHeader</h3></a>
-<form method="post" action="$link.self.anchor('fullDemo')">
-<textarea name="demo" rows="6" cols="65">##
-#if( $params.demo )##
-$params.demo##
-#else##
-${esc.h}foreach( ${esc.d}key in ${esc.d}context.keys )
+#set( $toolname = 'context' )
+#set( $toolclass = $context.class )
+#set( $toollink = $doclink )
+#set( $toolDemo = 
+"${esc.h}foreach( ${esc.d}key in ${esc.d}context.keys )
   ${esc.d}key = ${esc.d}context.get(${esc.d}key)
-${esc.h}end##
-#end##
-</textarea>
-  <br>
-  <input type="submit" value="$demo.try">
-  #if( $params.layout )
-  <input type="hidden" name="layout" value="$params.layout">
-  #end
-</form>
+${esc.h}end"
+)
 
-#if( $params.demo )
-$demo.mainResultsIntro:
-<pre>
-  $render.eval($params.demo)
-</pre>
-#end
-</div>
+#parse( 'demo.vm' )
