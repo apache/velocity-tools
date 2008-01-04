@@ -19,8 +19,7 @@
  under the License.
 -->
 
-<project name="VelocityStruts" href="index.html"
-    logo="images/velocitystruts.png">
+<project name="VelocityStruts" href="index.html">
 
   <breadcrumb href="view.html">VelocityStruts</breadcrumb>
   <menu>

@@ -19,8 +19,7 @@
  under the License.
 -->
 
-<project name="GenericTools" href="index.html"
-    logo="images/velocitygenerictools.png">
+<project name="GenericTools" href="index.html">
 
   <breadcrumb href="generic.html">GenericTools</breadcrumb>
   <menu>
