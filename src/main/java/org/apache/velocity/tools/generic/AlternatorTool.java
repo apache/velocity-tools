@@ -24,7 +24,8 @@ import org.apache.velocity.tools.config.DefaultKey;
 
 /**
  * Simple tool to provide easy in-template instantiation of
- * {@link Alternator}s from varying "list" types.
+ * {@link Alternator}s from varying "list" types or individual
+ * arguments.
  *
  * <p><b>Example Use:</b>
  * <pre>
@@ -38,7 +39,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * template...
  * #set( $color = $alternator.auto('red', 'blue') )
  * ## use manual alternation for this one
- * #set( $style = $alternator.manual(['hip','fly','groovy']) )
+ * #set( $style = $alternator.manual('hip','fly','groovy') )
  * #foreach( $i in [1..5] )
  *   Number $i is $color and $style. I dig $style.next numbers.
  * #end *
@@ -57,8 +58,10 @@ import org.apache.velocity.tools.config.DefaultKey;
 @DefaultKey("alternator")
 public class AlternatorTool extends AbstractLockConfig
 {
-    /** @since VelocityTools 1.3 */
-    public static final String AUTO_ALTERNATE_DEFAULT_KEY = "auto-alternate";
+    @Deprecated
+    public static final String OLD_AUTO_ALTERNATE_DEFAULT_KEY = "auto-alternate";
+
+    public static final String AUTO_ALTERNATE_DEFAULT_KEY = "autoAlternate";
 
     // it's true by default in Alternator
     private boolean autoAlternateDefault = true;
@@ -69,9 +72,14 @@ public class AlternatorTool extends AbstractLockConfig
      */
     protected void configure(ValueParser parser)
     {
-        // it's true by default in Alternator
-        autoAlternateDefault =
-            parser.getBoolean(AUTO_ALTERNATE_DEFAULT_KEY, true);
+        Boolean auto = parser.getBoolean(AUTO_ALTERNATE_DEFAULT_KEY);
+        if (auto == null)
+        {
+            // check for old key, use true as default (just like Alternator)
+            auto = parser.getBoolean(OLD_AUTO_ALTERNATE_DEFAULT_KEY,
+                                     Boolean.TRUE);
+        }
+        this.autoAlternateDefault = auto.booleanValue();
     }
 
     /**
@@ -101,6 +109,15 @@ public class AlternatorTool extends AbstractLockConfig
     }
 
     /**
+     * @deprecated Will be unnecessary with Velocity 1.6
+     */
+    @Deprecated 
+    public Alternator make(Collection list)
+    {
+        return make(autoAlternateDefault, list);
+    }
+
+    /**
      * Returns a new Alternator for the specified list with the specified
      * automatic shifting preference.
      *
@@ -120,6 +137,15 @@ public class AlternatorTool extends AbstractLockConfig
             return null;
         }
         return new Alternator(auto, list);
+    }
+
+    /**
+     * @deprecated Will be unnecessary with Velocity 1.6
+     */
+    @Deprecated 
+    public Alternator make(boolean auto, Collection list)
+    {
+        return make(auto, new Object[] { list });
     }
 
     /**
@@ -160,6 +186,15 @@ public class AlternatorTool extends AbstractLockConfig
      * @deprecated Will be unnecessary with Velocity 1.6
      */
     @Deprecated
+    public Alternator auto(Collection list)
+    {
+        return make(true, list);
+    }
+
+    /**
+     * @deprecated Will be unnecessary with Velocity 1.6
+     */
+    @Deprecated
     public Alternator auto(Object o1, Object o2)
     {
         return make(true, o1, o2);
@@ -173,6 +208,15 @@ public class AlternatorTool extends AbstractLockConfig
      * @since VelocityTools 1.3
      */
     public Alternator manual(Object... list)
+    {
+        return make(false, list);
+    }
+
+    /**
+     * @deprecated Will be unnecessary with Velocity 1.6
+     */
+    @Deprecated
+    public Alternator manual(Collection list)
     {
         return make(false, list);
     }
