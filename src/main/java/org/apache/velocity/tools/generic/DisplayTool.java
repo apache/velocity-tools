@@ -20,6 +20,7 @@ package org.apache.velocity.tools.generic;
  */
 
 import java.lang.reflect.Array;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,7 +32,8 @@ import org.apache.velocity.tools.config.DefaultKey;
  * Currently, this class contains methods for "pretty printing" an array or
  * {@link Collection}, methods for truncating the string value of a reference
  * at a configured or specified length, methods for displaying an alternate
- * value when a specified value is null, a method for generating whitespace, and
+ * value when a specified value is null, a method for generating whitespace, 
+ * a "printf" type of method for formatting messages, and
  * methods for forcing values into "cells" of equal size (via truncation or
  * padding with whitespace).
  *
@@ -287,6 +289,63 @@ public class DisplayTool extends AbstractLockConfig
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * @deprecated Will be unnecessary with Velocity 1.6
+     */
+    @Deprecated 
+    public String message(String printf, Collection args)
+    {
+        return message(printf, new Object[] { args });
+    }
+
+    /**
+     * @deprecated Will be unnecessary with Velocity 1.6
+     */
+    @Deprecated 
+    public String message(String printf, Object arg)
+    {
+        return message(printf, new Object[] { arg });
+    }
+
+    /**
+     * @deprecated Will be unnecessary with Velocity 1.6
+     */
+    @Deprecated 
+    public String message(String printf, Object arg1, Object arg2)
+    {
+        return message(printf, new Object[] { arg1, arg2 });
+    }
+
+    /**
+     * Uses {@link MessageFormat} to format the specified String with
+     * the specified arguments. If there are no arguments, then the String
+     * is returned directly.
+     */
+    public String message(String printf, Object... args)
+    {
+        if (printf == null)
+        {
+            return null;
+        }
+        if (args == null || args.length == 0)
+        {
+            return printf;
+        }
+        else if (args.length == 1 && args[0] instanceof Collection)
+        {
+            Collection list = (Collection)args[0];
+            if (list.isEmpty())
+            {
+                return printf;
+            }
+            else
+            {
+                args = list.toArray();
+            }
+        }
+        return MessageFormat.format(printf, args);
     }
 
     /**
