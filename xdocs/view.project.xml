@@ -19,8 +19,7 @@
  under the License.
 -->
 
-<project name="VelocityView" href="index.html"
-    logo="images/velocityview.png">
+<project name="VelocityView" href="index.html">
 
   <breadcrumb href="view.html">VelocityView</breadcrumb>
   <menu>
