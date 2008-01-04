@@ -24,6 +24,10 @@
   <servlet>
     <servlet-name>velocity</servlet-name>
     <servlet-class>org.apache.velocity.tools.view.VelocityLayoutServlet</servlet-class>
+    <init-param>
+      <param-name>org.apache.velocity.tools.deprecationSupportMode</param-name>
+      <param-value>false</param-value>
+    </init-param>
   </servlet>
   <servlet-mapping>
     <servlet-name>velocity</servlet-name>
