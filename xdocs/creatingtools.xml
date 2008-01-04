@@ -71,7 +71,7 @@
             </p>
             <p>
             <a href="javadoc/org/apache/velocity/tools/generic/FormatConfig.html">FormatConfig</a>
-            - Subclass of FormatConfig that has standardized support
+            - Subclass of LocaleConfig that has standardized support
             for providing a format string value for the tool to use
             as its default.
             </p>
