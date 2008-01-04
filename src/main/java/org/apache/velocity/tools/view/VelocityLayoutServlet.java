@@ -33,10 +33,6 @@ import org.apache.velocity.exception.MethodInvocationException;
  * Extension of the VelocityViewServlet to perform "two-pass"
  * layout rendering and allow for a customized error screen.
  *
- * For a brief user-guide to this, i suggest trying to track down
- * the VLS_README.txt file that hopefully made it into the docs
- * somewhere.
- *
  * @author Nathan Bubna
  * @version $Id$
  */

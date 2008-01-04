@@ -22,9 +22,20 @@ package org.apache.velocity.tools.generic;
 import java.util.Map;
 
 /**
- * Implements common logic and constants for tools which by default
- * lock down the public configure(Map) method, to keep the tool
- * thread-safe in templates and most other common uses.
+ * Implements common logic and constants for tools which automatically
+ * locks down the {@code public void configure(Map params)} method after
+ * it is called once.
+ * This keeps application or session scoped tools thread-safe in templates,
+ * which generally have access to the tool after configuration has happened.
+ * <p>
+ * Once "locked down", the {@link configure(Map)} may still be called,
+ * however it will do nothing (unless some subclass is foolish enough to
+ * override it and not check if {@link #isConfigLocked} before changing
+ * configurations.  The proper method for subclasses to override is
+ * {@link #configure(ValueParser)} which will only be called by 
+ * {@link #configure(Map)} when the {@link #isConfigLocked} is false
+ * (i.e. the first time only).
+ * </p>
  *
  * @author Nathan Bubna
  * @since VelocityTools 2.0
@@ -49,13 +60,23 @@ public abstract class AbstractLockConfig
         this.configLocked = lock;
     }
 
+    /**
+     * Returns {@code true} if the {@link #configure(Map)} method
+     * has been locked.
+     */
     public boolean isConfigLocked()
     {
         return this.configLocked;
     }
 
     /**
-     * Looks for configuration values in the given params.
+     * If {@link #isConfigLocked} returns {@code true}, then this method
+     * does nothing; otherwise, if {@code false}, this will create a new
+     * {@link ValueParser} from the specified Map of params and call
+     * {@link configure(ValueParser)} with it.  Then this will check
+     * the parameters itself to find out whether or not the configuration
+     * for this tool should be locked.  This should be a boolean value
+     * under the key {@link #LOCK_CONFIG_KEY}.
      */
     public void configure(Map params)
     {
