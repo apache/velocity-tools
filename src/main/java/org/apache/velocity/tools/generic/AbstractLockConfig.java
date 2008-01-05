@@ -28,7 +28,7 @@ import java.util.Map;
  * This keeps application or session scoped tools thread-safe in templates,
  * which generally have access to the tool after configuration has happened.
  * <p>
- * Once "locked down", the {@link configure(Map)} may still be called,
+ * Once "locked down", the {@link #configure(Map)} may still be called,
  * however it will do nothing (unless some subclass is foolish enough to
  * override it and not check if {@link #isConfigLocked} before changing
  * configurations.  The proper method for subclasses to override is
@@ -73,7 +73,7 @@ public abstract class AbstractLockConfig
      * If {@link #isConfigLocked} returns {@code true}, then this method
      * does nothing; otherwise, if {@code false}, this will create a new
      * {@link ValueParser} from the specified Map of params and call
-     * {@link configure(ValueParser)} with it.  Then this will check
+     * {@link #configure(ValueParser)} with it.  Then this will check
      * the parameters itself to find out whether or not the configuration
      * for this tool should be locked.  This should be a boolean value
      * under the key {@link #LOCK_CONFIG_KEY}.
