@@ -42,13 +42,14 @@ import org.apache.velocity.tools.config.ValidScope;
  * via deprecation and new methods, it was simplest to just create an
  * entirely new tool with a simplified API, support for nested loops
  * (which can optionally be given names), skipping ahead in loops,
- * getting the iteration count of loops, and identifying if a loop is
- * on its first or last iteration.
+ * getting the iteration count of loops, identifying if a loop is
+ * on its first or last iteration, and so on.
  * </p>
  * <p>
  * Most users, of course, will probably never need anything beyond the 
- * simple {@link #watch(Object)}, {@link #stop}, {@link #isFirst},
- * {@link #isLast}, {@link #getCount}, or maybe {@link #skip(int)}
+ * simple {@link #watch(Object)}, {@link ManagedIterator#stop(Object)}, 
+ * {@link ManagedIterator#exclude(Object)}, {@link #isFirst},
+ * {@link #isLast},and maybe {@link #getCount}
  * methods, if even that much.  However, it is with complicated nested
  * #foreach loops and varying "break" conditions that this tool can
  * probably do the most to simplify your templates.
@@ -58,16 +59,15 @@ import org.apache.velocity.tools.config.ValidScope;
  * <pre>
  *  Template
  *  ---
- *  #set ($list = [1, 2, 3, 4, 5, 6])
- *  #foreach( $item in $loop.watch($list) )
+ *  #set ($list = [1..10])
+ *  #foreach( $item in $loop.watch($list).exclude(3) )
  *  $item ##
- *  #if( $item >= 1 )$loop.skip(1)#end
  *  #if( $item >= 5 )$loop.stop()#end
  *  #end
  *
  *  Output
  *  ------
- *  1 3 5
+ *  1 2 4 5
  *
  * Example tools.xml config (if you want to use this with VelocityView):
  * &lt;tools&gt;
@@ -107,7 +107,7 @@ public class LoopTool
             return null;
         }
 
-        ManagedIterator managed = new ManagedIterator(iterator, this);
+        ManagedIterator managed = manage(iterator, null);
         iterators.push(managed);
         return managed;
     }
@@ -135,9 +135,14 @@ public class LoopTool
             return null;
         }
 
-        ManagedIterator managed = new ManagedIterator(name, iterator, this);
+        ManagedIterator managed = manage(iterator, name);
         iterators.push(managed);
         return managed;
+    }
+
+    protected ManagedIterator manage(Iterator iterator, String name)
+    {
+        return new ManagedIterator(name, iterator, this);
     }
 
     /**
@@ -465,18 +470,16 @@ public class LoopTool
         private Object next;
         private List<ActionCondition> conditions;
 
-        public ManagedIterator(Iterator iterator, LoopTool owner)
-        {
-            this("loop"+owner.getDepth(), iterator, owner);
-        }
-
         public ManagedIterator(String name, Iterator iterator, LoopTool owner)
         {
             if (name == null)
             {
-                throw new NullPointerException("name cannot be null");
+                this.name = "loop"+owner.getDepth();
             }
-            this.name = name;
+            else
+            {
+                this.name = name;
+            }
             this.iterator = iterator;
             this.owner = owner;
         }
