@@ -85,6 +85,21 @@ public class ViewToolsTests {
      * Utility function to check the text content of an HTML element
      * @param resp web response
      * @param id HTML element id
+     * @param start expected start of the text
+     * @param end expected end of the text
+     * @throws Exception
+     */
+    private void checkTextStartEnd(WebResponse resp,String id,String start,String end) throws Exception {
+        HTMLElement element = resp.getElementWithID(id);
+        assertNotNull(element);
+        assertTrue(element.getText().startsWith(start));
+        assertTrue(element.getText().endsWith(end));
+    }
+
+    /**
+     * Utility function to check the text content of an HTML element
+     * @param resp web response
+     * @param id HTML element id
      * @param text expected contained text
      * @throws Exception
      */
@@ -106,7 +121,10 @@ public class ViewToolsTests {
         assertNotNull(element);
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(element.getText());
-        assertTrue(matcher.matches());
+        if (!matcher.matches())
+        {
+            fail(element.getText()+" did not match "+regex);
+        }
     }
 
     /**
@@ -157,24 +175,24 @@ public class ViewToolsTests {
         WebResponse resp = conv.getResponse(req);
 
         /* check that getThis() is a ChainedContext instance */
-        checkTextStart(resp,"this","org.apache.velocity.tools.view.context.ChainedContext");
+        checkTextStart(resp,"getThis()","org.apache.velocity.tools.view.ViewToolContext");
 
         /* check contains('context') */
-        resp = submitWithParam(resp,"contains","contains","context");
-        checkText(resp,"contains","true");
+        resp = submitWithParam(resp,"contains_Object","contains_Object1","'context'");
+        checkText(resp,"contains(java.lang.Object)","true");
 
         /* check get('context') */
-        resp = submitWithParam(resp,"get","get","context");
-        checkTextStart(resp,"get","org.apache.velocity.tools.view.ContextTool");
+        resp = submitWithParam(resp,"get_Object","get_Object1","'context'");
+        checkTextStart(resp,"get(java.lang.Object)","org.apache.velocity.tools.view.ContextTool");
 
         /* check keys (the only expected uppercase is in 'velocityCount') */
-        checkTextRegex(resp,"keys","^\\[[a-z_A-Z]+(?:,\\s*[a-z_A-Z]+)*\\]$");
+        checkTextRegex(resp,"getKeys()","^\\[[a-z_A-Z]+(?:,\\s*[a-z_A-Z]+)*\\]$");
 
         /* check toolbox */
-        checkTextRegex(resp,"toolbox","^\\{[a-z_A-Z]+=.*(?:,\\s*[a-z_A-Z]+=.*)*\\}$");
+        checkTextRegex(resp,"getToolbox()","^\\{[a-z_A-Z]+=.*(?:,\\s*[a-z_A-Z]+=.*)*\\}$");
 
         /* check values */
-        checkTextRegex(resp,"values","^\\[.*\\]$");
+        checkTextStartEnd(resp,"getValues()","[","]");
     }
 
     public @Test void testCookiesTool() throws Exception {

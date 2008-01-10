@@ -21,7 +21,7 @@
  *   $toolname -> should be the context key of the tool
  *   $toolclass -> should be the actual Class of the tool
  *   $toollink -> a URL for the javadoc of the tool Class on velocity.apache.org
- *               This is usually set copying the $doclink reference that is set
+ *               This is usually set by copying the $doclink reference that is set
  *               whenever the #doclink() macro is used.
  * Optionally, you can also set:
  *   $toolDemo -> to specify the default text for the full demo at the bottom
@@ -47,21 +47,20 @@
   </form>
   <th>$demo.description</th>
 </tr>
-## generate a demo for each method
-#foreach( $method in $tool.methods )
-#if( $method.signature != 'configure(Map)' )
+## generate a demo for each method (except the configure(Map) method)
+#foreach( $method in $loop.watch($tool.methods).exclude('method configure(java.util.Map)') )
 <tr>
   ## create a fake call of the method to use as the name/signature
   #set( $call = "${esc.d}${toolname}.#if( !$method.takesParameters() && $method.propertyName )$method.propertyName#else$method.signature#end" )
-  <td valign="top" id="${method.javadocRef}"><a href="$toollink#$method.javadocRef">$call</a></td>
+  <td valign="top"><a href="$toollink#$method.javadocRef">$call</a></td>
   #if( !$method.takesParameters() )
     ## simply call the method
     #set( $result = $call )
     #set( $result = $render.eval($call) )
-    <td valign="top">#if( $result == $call )$text.demo.nullResult#else$result#end</td>
+    <td valign="top" id="${method.javadocRef}">#if( $result == $call )$text.demo.nullResult#else$result#end</td>
   #else
     ## create a form to allow the user to input values and call the method
-    <form method="get" action="$link.self.anchor($method.javadocRef)"> ## HttpUnit doesn't like anchor-only links
+    <form method="get" name="$method.uniqueName" action="$link.self.anchor($method.javadocRef)"> ## HttpUnit doesn't like anchor-only links
     <td valign="top">
     <nobr>
       ## create a text field for each parameter
@@ -91,7 +90,7 @@
       <br>
       $call
       =
-      <div>#if( $result == $call )$demo.nullResult#else$result#end</div>
+      <div id="$method.javadocRef">#if( $result == $call )$demo.nullResult#else$result#end</div>
     #end
     ## maintain all params for other method demos
     #foreach( $param in $params.all.keySet() )
@@ -130,7 +129,6 @@
   #end
   <td valign="top">$desc</td>
 </tr>
-#end
 #end
 <tr>
   ## create a space for an extended, custom, one line demo
