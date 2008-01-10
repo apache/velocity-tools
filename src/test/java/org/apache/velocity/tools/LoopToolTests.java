@@ -304,5 +304,38 @@ public class LoopToolTests {
         assertEquals(loop.isLast(), loop.getLast());
     }
 
+    public @Test void watchAndExclude() throws Exception
+    {
+        LoopTool loop = new LoopTool();
+        Iterator i = loop.watch(ARRAY).exclude("bar");
+        assertEquals(i.next(), "foo");
+        assertEquals(i.next(), "woogie");
+        assertTrue(loop.isLast());
+        assertFalse(i.hasNext());
+    }
+
+    public @Test void watchAndStop() throws Exception
+    {
+        LoopTool loop = new LoopTool();
+        Iterator i = loop.watch(ARRAY).stop("bar");
+        assertEquals(i.next(), "foo");
+        assertTrue(loop.isLast());
+        assertFalse(i.hasNext());
+    }
+
+    public @Test void method_getDepth() throws Exception
+    {
+        LoopTool loop = new LoopTool();
+        assertEquals(0, loop.getDepth());
+        loop.watch(ARRAY);
+        assertEquals(1, loop.getDepth());
+        loop.watch(ARRAY);
+        assertEquals(2, loop.getDepth());
+        loop.pop();
+        assertEquals(1, loop.getDepth());
+        loop.pop();
+        assertEquals(0, loop.getDepth());
+    }
+
 }
         

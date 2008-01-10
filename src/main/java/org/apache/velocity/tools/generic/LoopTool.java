@@ -19,7 +19,10 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Stack;
 import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.Scope;
@@ -96,7 +99,7 @@ public class LoopTool
      * @param obj an object that Velocity's #foreach directive can iterate over
      * @return a {@link ManagedIterator} that this tool instance will track
      */
-    public Iterator watch(Object obj)
+    public ManagedIterator watch(Object obj)
     {
         Iterator iterator = getIterator(obj);
         if (iterator == null)
@@ -119,7 +122,7 @@ public class LoopTool
      * be {@code null}.
      * @see #watch(Object)
      */
-    public Iterator watch(Object obj, String name)
+    public ManagedIterator watch(Object obj, String name)
     {
         // don't mess around with null names
         if (name == null)
@@ -231,9 +234,13 @@ public class LoopTool
         }
     }
 
+
     /**
-     * This tells the current loop to skip ahead the specified number of
-     * iterations before doing the next iteration.
+     * Skips ahead the specified number of iterations (if possible).
+     * Since this is manual skipping (unlike the automatic skipping
+     * provided by the likes of {@link ManagedIterator#exclude(Object)}, any elements
+     * skipped are still considered in the results returned by {@link #getCount()}
+     * and {@link #isFirst()}.
      */
     public void skip(int number)
     {
@@ -241,13 +248,13 @@ public class LoopTool
         if (!iterators.empty())
         {
             // tell the top one to skip the specified number
-            iterators.peek().skip(number);
+            skip(number, iterators.peek());
         }
     }
 
     /**
      * This tells the specified loop to skip ahead the specified number of
-     * iterations before doing the next iteration.
+     * iterations.
      * @see #skip(int)
      */
     public void skip(int number, String name)
@@ -256,7 +263,23 @@ public class LoopTool
         ManagedIterator iterator = findIterator(name);
         if (iterator != null)
         {
-            iterator.skip(number);
+            skip(number, iterator);
+        }
+    }
+
+    // does the actual skipping by manually advancing the ManagedIterator
+    private void skip(int number, ManagedIterator iterator)
+    {
+        for (int i=0; i < number; i++)
+        {
+            if (iterator.hasNext())
+            {
+                iterator.next();
+            }
+            else
+            {
+                break;
+            }
         }
     }
 
@@ -362,6 +385,15 @@ public class LoopTool
         return null;
     }
 
+    /**
+     * Returns the number of loops currently on the stack to tell
+     * how deeply nested the current loop is.
+     */
+    public int getDepth()
+    {
+        return iterators.size();
+    }
+
 
     /**
      * Finds the {@link ManagedIterator} with the specified name
@@ -418,8 +450,11 @@ public class LoopTool
      * Iterator implementation that wraps a standard {@link Iterator}
      * and allows it to be prematurely stopped, skipped ahead, and 
      * associated with a name for advanced nested loop control.
+     * This also allows a arbitrary {@link ActionCondition}s to be added
+     * in order to have it automatically skip over or stop before
+     * certain elements in the iterator.
      */
-    protected static class ManagedIterator implements Iterator
+    public static class ManagedIterator implements Iterator
     {
         private String name;
         private Iterator iterator;
@@ -427,10 +462,12 @@ public class LoopTool
         private boolean stopped = false;
         private Boolean first = null;
         private int count = 0;
+        private Object next;
+        private List<ActionCondition> conditions;
 
         public ManagedIterator(Iterator iterator, LoopTool owner)
         {
-            this(iterator.toString(), iterator, owner);
+            this("loop"+owner.getDepth(), iterator, owner);
         }
 
         public ManagedIterator(String name, Iterator iterator, LoopTool owner)
@@ -444,11 +481,18 @@ public class LoopTool
             this.owner = owner;
         }
 
+        /**
+         * Returns the name of this instance.
+         */
         public String getName()
         {
             return this.name;
         }
 
+        /**
+         * Returns true if either 0 or 1 elements have been returned
+         * by {@link #next()}.
+         */
         public boolean isFirst()
         {
             if (first == null || first.booleanValue())
@@ -458,80 +502,296 @@ public class LoopTool
             return false;
         }
 
+        /**
+         * Returns true if the last element returned by {@link #next()}
+         * is the last element available in the iterator being managed
+         * which satisfies any/all {@link ActionCondition}s set for this
+         * instance. Otherwise, returns false.
+         */
         public boolean isLast()
         {
-            return !iterator.hasNext();
+            return !hasNext(false);
         }
 
+        /**
+         * Returns true if there are more elements in the iterator
+         * being managed by this instance which satisfy all the
+         * {@link ActionCondition}s set for this instance.  Returns
+         * false if there are no more valid elements available.
+         */
         public boolean hasNext()
         {
-            if (!stopped)
-            {
-                boolean hasNext = iterator.hasNext();
-                // once this iterator is done, pop it from the owner's stack
-                if (!hasNext)
-                {
-                    owner.pop();
-                    // and make sure we don't pop twice
-                    stopped = true;
-                }
-                return hasNext;
-            }
-            else // if stopped
+            return hasNext(true);
+        }
+
+        // version that lets isLast check w/o popping this from the stack
+        private boolean hasNext(boolean popWhenDone)
+        {
+            // we don't if we've stopped
+            if (stopped)
             {
                 return false;
             }
+            // we're not stopped, so do we have a next cached?
+            if (this.next != null)
+            {
+                return true;
+            }
+            // try to get a next that satisfies the conditions
+            // if there isn't one, return false; if there is, return true
+            return cacheNext(popWhenDone);
         }
 
+        // Tries to get a next that satisfies the conditions.
+        // Returns true if there is a next to get.
+        private boolean cacheNext(boolean popWhenDone)
+        {
+            // ok, let's see if we can get a next
+            if (!iterator.hasNext())
+            {
+                if (popWhenDone)
+                {
+                    // this iterator is done, pop it from the owner's stack
+                    owner.pop();
+                    // and make sure we don't pop twice
+                    stop();
+                }
+                return false;
+            }
+
+            // ok, the iterator has more, but do they work for us?
+            this.next = iterator.next();
+            if (conditions != null)
+            {
+                for (ActionCondition condition : conditions)
+                {
+                    if (condition.matches(this.next))
+                    {
+                        switch (condition.action)
+                        {
+                            case EXCLUDE:
+                                // recurse on to the next one
+                                return cacheNext(popWhenDone);
+                            case STOP:
+                                stop();
+                                return false;
+                            default:
+                                throw new IllegalStateException("ActionConditions should never have a null Action");
+                        }
+                    }
+                }
+            }
+
+            // ok, looks like we have a next that met all the conditions
+            return true;
+        }
+
+        /**
+         * Returns the number of elements returned by {@link #next()} so far.
+         */
         public int getCount()
         {
             return count;
         }
 
+        /**
+         * Returns the next element that meets the set {@link ActionCondition}s
+         * (if any) in the iterator being managed. If there are none left, then
+         * this will throw a {@link NoSuchElementException}.
+         */
         public Object next()
         {
+            // if no next is cached...
+            if (this.next == null)
+            {
+                // try to cache one
+                if (!cacheNext(true))
+                {
+                    // naughty! calling next() without knowing if there is one!
+                    throw new NoSuchElementException("There are no more valid elements in this iterator");
+                }
+            }
+
+            // if we haven't returned any elements, first = true
             if (first == null)
             {
                 first = Boolean.TRUE;
             }
+            // or if we've only returned one, first = false
             else if (first.booleanValue())
             {
                 first = Boolean.FALSE;
             }
+            // update the number of iterations made
             count++;
-            return iterator.next();
+
+            // get the cached next value
+            Object value = this.next;
+            // clear the cache
+            this.next = null;
+            // return the no-longer-cached value
+            return value;
         }
 
+        /**
+         * This operation is unsupported.
+         */
         public void remove()
         {
-            // Let the iterator decide whether to implement this or not
-            this.iterator.remove();
+            // at this point, i don't see any use for this, so...
+            throw new UnsupportedOperationException("remove is not currently supported");
         }
 
+        /**
+         * Stops this iterator from doing any further iteration.
+         */
         public void stop()
         {
             this.stopped = true;
+            this.next = null;
         }
 
-        public void skip(int number)
+        /**
+         * Directs this instance to completely exclude
+         * any elements equal to the specified Object.
+         * @return This same {@link ManagedIterator} instance
+         */
+        public ManagedIterator exclude(Object compare)
         {
-            for (int i=0; i < number; i++)
+            return condition(new ActionCondition(Action.EXCLUDE, new Equals(compare)));
+        }
+
+
+        /**
+         * Directs this instance to stop iterating immediately prior to
+         * any element equal to the specified Object.
+         * @return This same {@link ManagedIterator} instance
+         */
+        public ManagedIterator stop(Object compare)
+        {
+            return condition(new ActionCondition(Action.STOP, new Equals(compare)));
+        }
+
+        /**
+         * Adds a new {@link ActionCondition} for this instance to check
+         * against the elements in the iterator being managed.
+         * @return This same {@link ManagedIterator} instance
+         */
+        public ManagedIterator condition(ActionCondition condition)
+        {
+            if (condition == null)
             {
-                if (iterator.hasNext())
-                {
-                    next();
-                }
-                else
-                {
-                    break;
-                }
+                return null;
             }
+            if (conditions == null)
+            {
+                conditions = new ArrayList<ActionCondition>();
+            }
+            conditions.add(condition);
+            return this;
         }
 
         @Override
         public String toString()
         {
             return ManagedIterator.class.getSimpleName()+':'+getName();
+        }
+    }
+
+    /**
+     * Represents an automatic action taken by a {@link ManagedIterator}
+     * when a {@link Condition} is satisfied by the subsequent element.
+     */
+    public static enum Action
+    {
+        EXCLUDE, STOP;
+    }
+
+    /**
+     * Composition class which associates an {@link Action} and {@link Condition}
+     * for a {@link ManagedIterator}.
+     */
+    public static class ActionCondition
+    {
+        protected Condition condition;
+        protected Action action;
+
+        public ActionCondition(Action action, Condition condition)
+        {
+            if (condition == null || action == null)
+            {
+                throw new IllegalArgumentException("Condition and Action must both not be null");
+            }
+            this.condition = condition;
+            this.action = action;
+        }
+
+        /**
+         * Returns true if the specified value meets the set {@link Condition}
+         */
+        public boolean matches(Object value)
+        {
+            return condition.test(value);
+        }
+    }
+
+    /**
+     * Represents a function into which a {@link ManagedIterator} can
+     * pass it's next element to see if an {@link Action} should be taken.
+     */
+    public static interface Condition
+    {
+        public boolean test(Object value);
+    }
+
+    /**
+     * Base condition class for conditions (assumption here is that
+     * conditions are all comparative.  Not much else makes sense to me
+     * for this context at this point.
+     */
+    public static abstract class Comparison implements Condition
+    {
+        protected Object compare;
+
+        public Comparison(Object compare)
+        {
+            if (compare == null)
+            {
+                throw new IllegalArgumentException("Condition must have something to compare to");
+            }
+            this.compare = compare;
+        }
+    }
+
+    /**
+     * Simple condition that checks elements in the iterator
+     * for equality to a specified Object.
+     */
+    public static class Equals extends Comparison
+    {
+        public Equals(Object compare)
+        {
+            super(compare);
+        }
+
+        public boolean test(Object value)
+        {
+            if (value == null)
+            {
+                return false;
+            }
+            if (compare.equals(value))
+            {
+                return true;
+            }
+            if (value.getClass().equals(compare.getClass()))
+            {
+                // no point in going on to string comparison
+                // if the classes are the same
+                return false;
+            }
+            // compare them as strings as a last resort
+            return String.valueOf(value).equals(String.valueOf(compare));
         }
     }
 
