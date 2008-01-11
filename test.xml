@@ -188,6 +188,7 @@
       <formatter type="plain"/>
     </junit>
     <antcall target="stop-showcase-webapp"/>
+    <antcall target="clean-showcase-webapp"/>
     <condition property="test.success">
       <and>
         <isfalse value="${test.error}"/>
@@ -228,6 +229,16 @@
     </java>
   </target>
 
+  <!-- cleanup showcase webapp -->
+  <target name="clean-showcase-webapp">
+    <waitfor maxwait="2" maxwaitunit="minute" checkevery="500">
+      <not>
+        <http url="http://localhost:${test.webcontainer.port}/"/>
+      </not>
+    </waitfor>
+    <property name="target" value="clean"/>
+    <ant antfile="${basedir}/examples.xml" target="showcase-example" />
+  </target>
 
   <!-- Analyze code with FindBugs -->
   <target name="findbugs">
