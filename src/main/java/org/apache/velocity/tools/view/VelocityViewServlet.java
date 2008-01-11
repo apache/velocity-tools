@@ -22,6 +22,7 @@ package org.apache.velocity.tools.view;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.IOException;
+import java.io.Writer;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -82,6 +83,16 @@ import org.apache.velocity.runtime.log.Log;
  *     will have all invalid tools, properties, and/or data removed prior to
  *     configuring the ToolboxFactory for this servlet by a
  *     {@link org.apache.velocity.tools.config.ConfigurationCleaner}</dd>
+ *   <dt>org.apache.velocity.tools.bufferOutput</dt>
+ *   <dd>By default, the processed templates are merged directly into
+ *     the {@link HttpServletResponse}'s writer.  If this parameter is
+ *     set to {@code true}, then the output of the merge process will be
+ *     buffered before being fed to the response. This allows the {@link #error}
+ *     method to be overridden to return a "500 Internal Server Error" or
+ *     at least not return any of the failed request content. Essentially,
+ *     setting this to {@code true} degrades performance in order to enable
+ *     a more "correct" error response"</dd>
+ *  </dd>
  * </dl>
  *
  * @version $Id$
@@ -91,9 +102,12 @@ public class VelocityViewServlet extends HttpServlet
 {
     public static final String SHARED_CONFIG_PARAM =
         "org.apache.velocity.tools.shared.config";
+    public static final String BUFFER_OUTPUT_PARAM =
+        "org.apache.velocity.tools.bufferOutput";
     private static final long serialVersionUID = -3329444102562079189L;
 
     private transient VelocityView view;
+    private boolean bufferOutput = false;
 
     /**
      * <p>Initializes servlet and VelocityView used to process requests.
@@ -107,6 +121,13 @@ public class VelocityViewServlet extends HttpServlet
 
         // init the VelocityView (if it hasn't been already)
         getVelocityView();
+
+        String buffer = findInitParameter(config, BUFFER_OUTPUT_PARAM);
+        if (buffer != null && buffer.equals("true"))
+        {
+            this.bufferOutput = true;
+            getLog().debug("VelocityViewServlet will buffer mergeTemplate output.");
+        }
     }
 
 
@@ -286,7 +307,22 @@ public class VelocityViewServlet extends HttpServlet
                                  HttpServletResponse response)
         throws IOException
     {
-        getVelocityView().merge(template, context, response.getWriter());
+        Writer writer;
+        if (this.bufferOutput)
+        {
+            writer = new StringWriter();
+        }
+        else
+        {
+            writer = response.getWriter();
+        }
+
+        getVelocityView().merge(template, context, writer);
+
+        if (this.bufferOutput)
+        {
+            response.getWriter().write(writer.toString());
+        }
     }
 
 
