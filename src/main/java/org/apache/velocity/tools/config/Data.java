@@ -37,10 +37,10 @@ import org.apache.velocity.tools.ConversionUtils;
  */
 public class Data implements Comparable<Data>
 {
-    public static final String DEFAULT_TYPE = "auto";
+    public static final Type DEFAULT_TYPE = Type.AUTO;
 
     private String key;
-    private String type;
+    private String typeValue;
     private Object value;
     private boolean isList;
     private Class target;
@@ -82,56 +82,34 @@ public class Data implements Comparable<Data>
         setClassname(classname);
     }
 
-    public void setType(String type)
+    protected void setType(Type type)
     {
-        // save the set type
-        this.type = type;
+        this.isList = type.isList();
 
-        //TODO: check if this is a list type
-        //      if auto, try to sniff
-        if (type.startsWith("list."))
+        // make sure we don't override a custom target or converter
+        if (!type.isCustom())
         {
-            // use a list converter and drop to subtype
-            this.isList = true;
-            this.target = List.class;
-            type = type.substring(5, type.length());
+            this.typeValue = type.value();
+            this.target = type.getTarget();
+            this.converter = type.getConverter();
         }
-        else if (type.equals("list"))
+        else if (type.isList())
         {
-            this.isList = true;
-            this.target = List.class;
+            // go ahead and set the target and type value for custom lists
+            this.typeValue = type.value();
+            this.target = type.getTarget();
         }
-        else
-        {
-            this.isList = false;
-        }
+    }
 
-        //TODO: support an "auto" type that tries to automatically
-        //      recognize common list, boolean, field, and number formats
-        if (type.equals("auto"))
+    public void setType(String t)
+    {
+        // save the set type value (good for error feedback and whatnot)
+        this.typeValue = t;
+        // and try to convert it to a Type
+        Type type = Type.get(this.typeValue);
+        if (type != null)
         {
-            this.target = Object.class;
-            this.converter = new AutoConverter();
-        }
-        else if (type.equals("boolean"))
-        {
-            this.target = Boolean.class;
-            this.converter = new BooleanConverter();
-        }
-        else if (type.equals("number"))
-        {
-            this.target = Number.class;
-            this.converter = new NumberConverter();
-        }
-        else if (type.equals("string"))
-        {
-            this.target = String.class;
-            this.converter = new StringConverter();
-        }
-        else if (type.equals("field"))
-        {
-            this.target = Object.class;
-            this.converter = new FieldConverter();
+            setType(type);
         }
     }
 
@@ -180,7 +158,7 @@ public class Data implements Comparable<Data>
 
     public String getType()
     {
-        return this.type;
+        return this.typeValue;
     }
 
     public Object getValue()
@@ -280,7 +258,7 @@ public class Data implements Comparable<Data>
         out.append(key);
         out.append('\'');
         out.append(" -");
-        out.append(type);
+        out.append(this.typeValue);
         out.append("-> ");
         out.append(value);
         return out.toString();
@@ -337,6 +315,78 @@ public class Data implements Comparable<Data>
         }
     }
 
+
+
+    // ------------- Subclasses -----------------
+
+    /**
+     * Delineates the standard, known types and their
+     * associated target classes ({@link #setTargetClass} and
+     * converters ({@link #setConverter}).
+     */
+    protected static enum Type
+    {
+        AUTO(Object.class, new AutoConverter()),
+        BOOLEAN(Boolean.class, new BooleanConverter()),
+        CUSTOM(null, null),
+        FIELD(Object.class, new FieldConverter()),
+        NUMBER(Number.class, new NumberConverter()),
+        STRING(String.class, new StringConverter()),
+        LIST(List.class, null),
+        LIST_AUTO(List.class, AUTO.getConverter()),
+        LIST_BOOLEAN(List.class, BOOLEAN.getConverter()),
+        LIST_FIELD(List.class, FIELD.getConverter()),
+        LIST_NUMBER(List.class, NUMBER.getConverter()),
+        LIST_STRING(List.class, STRING.getConverter());
+
+        private Class target;
+        private Converter converter;
+
+        Type(Class t, Converter c)
+        {
+            this.target = t;
+            this.converter = c;
+        }
+
+        public boolean isCustom()
+        {
+            // custom ones require the user to provide the converter
+            return (this.converter == null);
+        }
+
+        public boolean isList()
+        {
+            // all list types return lists
+            return (this.target == List.class);
+        }
+
+        public Class getTarget()
+        {
+            return this.target;
+        }
+
+        public Converter getConverter()
+        {
+            return this.converter;
+        }
+
+        public String value()
+        {
+            // make 'LIST_AUTO' into 'list.auto'
+            return name().replace('_','.').toLowerCase();
+        }
+
+        public static Type get(String type)
+        {
+            if (type == null || type.length() == 0)
+            {
+                return CUSTOM;
+            }
+            // make 'list.auto' eq 'LIST_AUTO'
+            return valueOf(type.replace('.','_').toUpperCase());
+        }
+    }
+
     protected static class FieldConverter implements Converter
     {
         public Object convert(Class type, Object value)
@@ -378,17 +428,17 @@ public class Data implements Comparable<Data>
             // check if this looks like a typical boolean type
             if (value.matches("true|false|yes|no|y|n|on|off"))
             {
-                return new BooleanConverter().convert(Boolean.class, value);
+                return Type.BOOLEAN.getConverter().convert(Boolean.class, value);
             }
             // check if this looks like a typical number
             else if (value.matches("-?[0-9]+(\\.[0-9]+)?"))
             {
-                return new NumberConverter().convert(Number.class, value);
+                return Type.NUMBER.getConverter().convert(Number.class, value);
             }
             // check if this looks like a typical field
             else if (value.matches("(\\w+\\.)+\\w+"))
             {
-                return new FieldConverter().convert(Object.class, value);
+                return Type.FIELD.getConverter().convert(Object.class, value);
             }
             return value;
         }

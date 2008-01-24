@@ -26,23 +26,23 @@ import org.apache.velocity.tools.ToolboxFactory;
  * configuration a {@link ToolboxFactory} in Java without the use of an
  * xml or properties configuration file.  Below is an example:
  *
- * <code>
+ * <pre><code>
  * EasyFactoryConfiguration config = new EasyFactoryConfiguration();
- * config.toolbox("request").property("locale", Locale.US)
+ * config.toolbox(Scope.REQUEST).property("locale", Locale.US)
  *  .tool(DateTool.class)
  *  .tool("myTool", MyTool.class);
- * config.toolbox("application")
+ * config.toolbox(Scope.APPLICATION)
  *  .tool(NumberTool.class).property("locale", Locale.FR);
  * ToolboxFactory factory = config.createFactory();
- * </code></p>
+ * </code></pre></p>
  *
  * <p>Doing the above without this class would require the following to
  *    create an equivalent {@link FactoryConfiguration} in Java:
  *
- * <code>
+ * <pre><code>
  * FactoryConfiguration factoryConfig = new FactoryConfiguration();
  * ToolboxConfiguration toolbox = new ToolboxConfiguration();
- * toolbox.setScope("request");
+ * toolbox.setScope(Scope.REQUEST);
  * toolbox.setProperty("locale", Locale.US);
  * ToolConfiguration tool = new ToolConfiguration();
  * tool.setClassname(DateTool.class.getName());
@@ -51,27 +51,27 @@ import org.apache.velocity.tools.ToolboxFactory;
  * tool.setClassname(MyTool.class.getName());
  * toolbox.addTool(tool);
  * toolbox = new ToolboxConfiguration();
- * toolbox.setScope("application");
+ * toolbox.setScope(Scope.APPLICATION);
  * tool = new ToolConfiguration();
  * tool.setClassname(NumberTool.class.getName());
  * tool.setProperty("locale", Locale.FR);
  * toolbox.addTool(tool);
  * factoryConfig.addToolbox(toolbox);
  * ToolboxFactory factory = factoryConfig.createFactory();
- * </code></p>
+ * </code></pre></p>
  *
  * <p>Of course, you could directly configure a {@link ToolboxFactory}
  *    with relatively little effort as well:
  *
- * <code>
+ * <pre><code>
  * ToolboxFactory factory = new ToolboxFactory();
- * factory.putProperty("request", "locale", Locale.US);
- * factory.addToolInfo("request", new ToolInfo("date", DateTool.class));
- * factory.addToolInfo("request", new ToolInfo("render", ViewRenderTool.class));
+ * factory.putProperty(Scope.REQUEST, "locale", Locale.US);
+ * factory.addToolInfo(Scope.REQUEST, new ToolInfo("date", DateTool.class));
+ * factory.addToolInfo(Scope.REQUEST, new ToolInfo("render", ViewRenderTool.class));
  * ToolInfo info = new ToolInfo("number", NumberTool.class);
  * info.setProperty("locale", Locale.FR);
- * factory.addToolInfo("application", info);
- * </code>
+ * factory.addToolInfo(Scope.APPLICATION, info);
+ * </code></pre>
  *
  * But this is not reusable.  Why does that matter?  Well, it doesn't matter
  * for application developers.  But, if another framework wishes to provide
@@ -146,19 +146,26 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
         return this;
     }
 
+    protected EasyFactoryConfiguration data(String key, Data.Type type, Object value)
+    {
+        EasyData datum = data(key, value);
+        datum.type(type);
+        return this;
+    }
+
     public EasyFactoryConfiguration string(String key, Object value)
     {
-        return data(key, "string", value);
+        return data(key, Data.Type.STRING, value);
     }
 
     public EasyFactoryConfiguration number(String key, Object value)
     {
-        return data(key, "number", value);
+        return data(key, Data.Type.NUMBER, value);
     }
 
     public EasyFactoryConfiguration bool(String key, Object value)
     {
-        return data(key, "boolean", value);
+        return data(key, Data.Type.BOOLEAN, value);
     }
 
     public EasyWrap<ToolboxConfiguration> toolbox(String scope)
@@ -224,6 +231,12 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
         }
 
         public EasyData type(String type)
+        {
+            this.datum.setType(type);
+            return this;
+        }
+
+        protected EasyData type(Data.Type type)
         {
             this.datum.setType(type);
             return this;
