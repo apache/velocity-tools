@@ -64,6 +64,11 @@ import org.apache.velocity.tools.config.DefaultKey;
  *  $esc.singleQuote             -> '
  *  $esc.s                       -> '
  *
+ *  $esc.newline                 -> 
+ *
+ *  $esc.n                       -> 
+ *
+ *
  *  $esc.exclamation             -> !
  *  $esc.e                       -> !
  *
@@ -407,6 +412,26 @@ public class EscapeTool
     public String getS()
     {
         return this.getSingleQuote();
+    }
+
+    /**
+     * Renders a new line character appropriate for the
+     * operating system ("\n" in java).
+     * @see #getN()
+     */
+    public String getNewline()
+    {
+        return "\n";
+    }
+
+    /**
+     * Renders a new line character appropriate for the
+     * operating system ("\n" in java).
+     * @see #getNewline()
+     */
+    public String getN()
+    {
+        return this.getNewline();
     }
 
     /**

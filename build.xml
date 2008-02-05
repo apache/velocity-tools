@@ -325,7 +325,25 @@
     </javadoc>
   </target>
 
+  <!-- Build JDocs (for jdocs.com) -->
+  <target name="jdocs" description="Builds JDocs for the whole project">
+    <taskdef name="jdocs" classname="com.dzone.jdocs.ant.jdk15.task.Jdocs"/>
+    <mkdir dir="${javadoc.dir}" />
+    <jdocs packagenames="org.apache.velocity.tools.*"
+             destdir="${docs.dir}/javadoc"
+             author="true"
+             private="true"
+             version="true"
+             doctitle="&lt;h1&gt;${javadoc.title}&lt;/h1&gt;"
+             windowtitle="${javadoc.title}"
+             bottom="Copyright (c) ${javadoc.year} Apache Software Foundation" >
 
+      <classpath refid="compile.classpath"/>
+      <sourcepath>
+        <pathelement path="${classes.src}" />
+      </sourcepath>
+    </jdocs>
+  </target>
 
   <!-- Build Velocity-Tools documentation -->
   <target name="docs" depends="prepare.docs"
@@ -641,9 +659,9 @@
     * Call for a release vote on private@velocity.apache.org and dev@velocity.apache.org
 
     * Once the release vote has passed, these files should all be copied to
-        /x1/www/www.apache.org/dist/velocity/tools/${project.version}
+        /www/www.apache.org/dist/velocity/tools/${project.version}
       and the jars should be copied into 
-        /x1/www/people.apache.org/repo/m1-ibiblio-rsync-repository/velocity-tools/jars
+        /www/people.apache.org/repo/m2-ibiblio-rsync-repository/org/apache/velocity/velocity-tools/${project.version}/
 
     * Tag the release in SVN with a command such as:
         svn copy -m "Release Tools ${project.version}" https://svn.apache.org/repos/asf/velocity/tools/trunk \
