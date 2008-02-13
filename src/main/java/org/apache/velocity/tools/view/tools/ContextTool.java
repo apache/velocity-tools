@@ -21,13 +21,13 @@ package org.apache.velocity.tools.view.tools;
 
 import java.util.Map;
 import org.apache.velocity.tools.view.ViewContext;
+import org.apache.velocity.tools.view.ViewContextTool;
 
 /**
- * Use {@link org.apache.velocity.tools.view.ContextTool}
+ * Use {@link org.apache.velocity.tools.view.ViewContextTool}
  */
 @Deprecated
-public class ContextTool extends
-    org.apache.velocity.tools.view.ContextTool
+public class ContextTool extends ViewContextTool
 {
     @Deprecated
     public static final String OLD_SAFE_MODE_KEY = "safe-mode";
@@ -37,10 +37,11 @@ public class ContextTool extends
     {
         if (obj instanceof ViewContext)
         {
-            this.context = (ViewContext)obj;
-            this.request = context.getRequest();
+            ViewContext ctx = (ViewContext)obj;
+            this.context = ctx.getVelocityContext();
+            this.request = ctx.getRequest();
             this.session = request.getSession(false);
-            this.application = context.getServletContext();
+            this.application = ctx.getServletContext();
         }
     }
 
