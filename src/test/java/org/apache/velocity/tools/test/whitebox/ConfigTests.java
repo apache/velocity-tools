@@ -219,8 +219,8 @@ public class ConfigTests {
         datum.setValue("true");
         assertValid(datum);
 
-        // check that the default type is set
-        assertSame(datum.getType(), Data.DEFAULT_TYPE);
+        // check that the default type is "auto"
+        assertEquals(datum.getType(), "auto");
 
         // check that "true" auto-converted to boolean
         assertSame(datum.getConvertedValue(), Boolean.TRUE);
