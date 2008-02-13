@@ -22,12 +22,12 @@
 <tools> 
     <data type="boolean" key="VIEW_TOOLS_AVAILABLE" value="true"/>
     <toolbox scope="request">
-        <tool class="org.apache.velocity.tools.view.ContextTool"/>
         <tool class="org.apache.velocity.tools.view.CookieTool"/>
         <tool class="org.apache.velocity.tools.view.ImportTool"/>
         <tool class="org.apache.velocity.tools.view.LinkTool"/>
         <tool class="org.apache.velocity.tools.view.PagerTool"/>
         <tool class="org.apache.velocity.tools.view.ParameterTool"/>
+        <tool class="org.apache.velocity.tools.view.ViewContextTool"/>
         <tool class="org.apache.velocity.tools.view.ViewRenderTool"/>
         <tool class="org.apache.velocity.tools.view.ViewResourceTool"/>
         <!-- 

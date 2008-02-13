@@ -149,10 +149,6 @@
           the template.
         </li>
         <li>
-          <a href="javadoc/org/apache/velocity/tools/view/ContextTool.html">ContextTool</a>
-          - For convenient access to ViewContext data and meta-data.
-        </li>
-        <li>
           <a href="javadoc/org/apache/velocity/tools/view/CookieTool.html">CookieTool</a>
           - For convenient cookie access and creation.
         </li>
@@ -172,6 +168,10 @@
         <li>
           <a href="javadoc/org/apache/velocity/tools/view/ParameterTool.html">ParameterTool</a>
           - For easy retrieval and parsing of ServletRequest parameters.
+        </li>
+        <li>
+          <a href="javadoc/org/apache/velocity/tools/view/ViewContextTool.html">ViewContextTool</a>
+          - For convenient access to ViewContext data and meta-data.
         </li>
         <li>
           <a href="javadoc/org/apache/velocity/tools/view/ViewRenderTool.html">ViewRenderTool</a>

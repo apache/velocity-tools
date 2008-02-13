@@ -36,12 +36,14 @@
         <tool class="org.apache.velocity.tools.generic.RenderTool"/>
         <tool class="org.apache.velocity.tools.generic.ResourceTool"/>
         <tool class="org.apache.velocity.tools.generic.SortTool"/>
-        <!-- 
-        This is not useful in its default form.
-        <tool class="org.apache.velocity.tools.generic.ValueParser"/>
-        -->
     </toolbox>
     <toolbox scope="request">
+        <tool class="org.apache.velocity.tools.generic.ContextTool"/>
         <tool class="org.apache.velocity.tools.generic.LoopTool"/>
+        <!-- 
+        This is not useful in its default form.
+        But, if it were, it'd be request-scoped.
+        <tool class="org.apache.velocity.tools.generic.ValueParser"/>
+        -->
     </toolbox>
 </tools>

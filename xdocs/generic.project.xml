@@ -29,6 +29,7 @@
           <item name="AlternatorTool"       href="javadoc/org/apache/velocity/tools/generic/AlternatorTool.html"/> />
           <item name="ClassTool"            href="javadoc/org/apache/velocity/tools/generic/ClassTool.html"/>
           <item name="ComparisonDateTool"   href="javadoc/org/apache/velocity/tools/generic/ComparisonDateTool.html"/>
+          <item name="ContextTool"          href="javadoc/org/apache/velocity/tools/generic/ContextTool.html"/>
           <item name="ConversionTool"       href="javadoc/org/apache/velocity/tools/generic/ConversionTool.html"/>
           <item name="DateTool"             href="javadoc/org/apache/velocity/tools/generic/DateTool.html"/>
           <item name="DisplayTool"          href="javadoc/org/apache/velocity/tools/generic/DisplayTool.html"/>
