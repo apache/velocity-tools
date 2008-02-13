@@ -37,7 +37,7 @@ import org.apache.velocity.tools.ConversionUtils;
  */
 public class Data implements Comparable<Data>
 {
-    public static final Type DEFAULT_TYPE = Type.AUTO;
+    protected static final Type DEFAULT_TYPE = Type.AUTO;
 
     private String key;
     private String typeValue;
