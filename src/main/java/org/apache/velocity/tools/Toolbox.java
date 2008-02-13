@@ -21,6 +21,7 @@ package org.apache.velocity.tools;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -156,7 +157,11 @@ public class Toolbox implements java.io.Serializable
 
     public Set<String> getKeys()
     {
-        return Collections.unmodifiableSet(infoMap.keySet());
+        // add keys for all available tools
+        Set<String> keys = new HashSet<String>(infoMap.keySet());
+        // be sure to add cache, which holds data keys
+        keys.addAll(cache.keySet());
+        return keys;
     }
 
     public Map<String,Object> getAll(Map<String,Object> context)
