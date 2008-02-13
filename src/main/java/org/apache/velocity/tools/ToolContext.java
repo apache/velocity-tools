@@ -107,6 +107,22 @@ public class ToolContext implements Context
         toolboxes.add(toolbox);
     }
 
+    /**
+     * Returns a {@link Map} of all tools available to this
+     * context. NOTE: this is not a cheap operation as it will
+     * request and initialize an instance of every available tool.
+     */
+    public Map<String,Object> getToolbox()
+    {
+        Map<String,Object> aggregate = new HashMap<String,Object>();
+        Map<String,Object> toolProps = getToolProperties();
+        for (Toolbox toolbox : getToolboxes())
+        {
+            aggregate.putAll(toolbox.getAll(toolProps));
+        }
+        return aggregate;
+    }
+
     protected List<Toolbox> getToolboxes()
     {
         return this.toolboxes;
