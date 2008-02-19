@@ -33,7 +33,6 @@
         <tool class="org.apache.velocity.tools.generic.ListTool"/>
         <tool class="org.apache.velocity.tools.generic.MathTool"/>
         <tool class="org.apache.velocity.tools.generic.NumberTool"/>
-        <tool class="org.apache.velocity.tools.generic.RenderTool"/>
         <tool class="org.apache.velocity.tools.generic.ResourceTool"/>
         <tool class="org.apache.velocity.tools.generic.SortTool"/>
     </toolbox>
