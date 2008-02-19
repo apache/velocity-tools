@@ -26,11 +26,14 @@ import org.apache.velocity.tools.config.DefaultKey;
 
 /**
  * Tool for working with escaping in Velocity templates.
- * It provides methods to escape outputs for Java, JavaScript, HTML, HTTP, XML and SQL.
+ * It provides methods to escape outputs for Velocity, Java, JavaScript, HTML, HTTP, XML and SQL.
  * Also provides methods to render VTL characters that otherwise needs escaping.
  *
  * <p><pre>
  * Example uses:
+ *  $velocity                    -> Please escape $ and #!
+ *  $esc.velocity($velocity)     -> Please escape ${esc.d} and ${esc.h}!
+ *
  *  $java                        -> He didn't say, "Stop!"
  *  $esc.java($java)             -> He didn't say, \"Stop!\"
  *
@@ -90,8 +93,85 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @see StringEscapeUtils
  */
 @DefaultKey("esc")
-public class EscapeTool
+public class EscapeTool extends AbstractLockConfig
 {
+    public static final String DEFAULT_KEY = "esc";
+    
+    private String key = DEFAULT_KEY;
+
+    /**
+     * Does the actual configuration. This is protected, so
+     * subclasses may share the same ValueParser and call configure
+     * at any time, while preventing templates from doing so when 
+     * configure(Map) is locked.
+     */
+    protected void configure(ValueParser values)
+    {
+        String altkey = values.getString("key");
+        if (altkey != null)
+        {
+            setKey(altkey);
+        }
+    }
+
+    /**
+     * Sets the key under which this tool has been configured.
+     * @see #velocity
+     */
+    protected void setKey(String key)
+    {
+        if (key == null)
+        {
+            throw new NullPointerException("EscapeTool key cannot be null");
+        }
+        this.key = key;
+    }
+
+    /**
+     * Should return the key under which this tool has been configured.
+     * The default is 'esc'.
+     * @see #velocity
+     */
+    public String getKey()
+    {
+        return this.key;
+    }
+
+
+    /**
+     * <p>Escapes the characters in a <code>String</code> using "poor man's
+     * escaping" for Velocity templates by replacing all '$' characters
+     * with '${esc.d}' and all '#' characters with '${esc.h}'.  This form
+     * of escaping is far more reliable and consistent than using '\' to
+     * escape valid references, directives and macros, though it does require
+     * that you have the EscapeTool available in the context when you later
+     * go to process the result returned by this method.
+     * </p><p>
+     * <b>NOTE</b>: This will only work so long as the EscapeTool is placed
+     * in the context using its default key 'esc' <i>or</i> you are using
+     * VelocityTools 2.0+ and have put this tool in one of your toolboxes
+     * under an alternate key (in which case the EscapeTool will automatically
+     * be told what its new key is).  If for some strange reason you wish
+     * to use an alternate key and are not using the tool management facilities
+     * of VelocityTools 2.0+, you must subclass this tool and manually call
+     * setKey(String) before using this method.
+     * </p>
+     *
+     * @param obj the string value that needs escaping
+     * @return String with escaped values, <code>null</code> if null string input
+     */
+    public String velocity(Object obj)
+    {
+        if (obj == null)
+        {
+            return null;
+        }
+        String string = String.valueOf(obj);
+        // must escape $ first, so we don't escape our hash escapes!
+        return string.replace("$", "${"+getKey()+".d}")
+                     .replace("#", "${"+getKey()+".h}");
+    }
+
     /**
      * Escapes the characters in a <code>String</code> using Java String rules.
      * <br />
