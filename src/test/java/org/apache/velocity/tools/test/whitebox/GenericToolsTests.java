@@ -85,6 +85,7 @@ public class GenericToolsTests {
     public @Test void testEscapeTool() {
         EscapeTool escapeTool = (EscapeTool)toolbox.get("esc");
         assertNotNull(escapeTool);
+        assertEquals("${esc.d}foo ${esc.h}bar()",escapeTool.velocity("$foo #bar()"));
         /* propertyKey */
         assertEquals("\\ C\\:\\\\Program\\ Files",escapeTool.propertyKey(" C:\\Program Files"));
         /* propertyValue */
