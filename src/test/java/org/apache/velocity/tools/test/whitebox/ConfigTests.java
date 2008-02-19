@@ -33,7 +33,7 @@ import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.*;
 import org.apache.velocity.tools.generic.MathTool;
 import org.apache.velocity.tools.generic.NumberTool;
-import org.apache.velocity.tools.view.ViewRenderTool;
+import org.apache.velocity.tools.view.ViewResourceTool;
 
 /**
  * <p>Configuration tests.</p>
@@ -62,7 +62,7 @@ public class ConfigTests {
         toolbox.setScope(Scope.REQUEST);
         toolbox.setProperty("locale", Locale.US);
             ToolConfiguration tool = new ToolConfiguration();
-                tool.setClass(ViewRenderTool.class);
+                tool.setClass(ViewResourceTool.class);
             toolbox.addTool(tool);
         base.addToolbox(toolbox);
 
@@ -148,7 +148,7 @@ public class ConfigTests {
         easy.number("version", 2.0);
         easy.toolbox("request")
                 .property("locale", Locale.US)
-                .tool(ViewRenderTool.class);
+                .tool(ViewResourceTool.class);
         easy.toolbox("application")
                 .tool("calc", MathTool.class)
                 .tool(NumberTool.class)

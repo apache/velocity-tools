@@ -22,7 +22,7 @@ import org.apache.velocity.tools.config.EasyFactoryConfiguration;
 import org.apache.velocity.tools.config.FactoryConfiguration;
 import org.apache.velocity.tools.generic.MathTool;
 import org.apache.velocity.tools.generic.NumberTool;
-import org.apache.velocity.tools.view.ViewRenderTool;
+import org.apache.velocity.tools.view.ViewResourceTool;
 
 /**
  * Test java configuration class
@@ -38,7 +38,7 @@ public class tools
         easy.number("version", 2.0);
         easy.toolbox("request")
                 .property("locale", Locale.US)
-                .tool(ViewRenderTool.class);
+                .tool(ViewResourceTool.class);
         easy.toolbox("application")
                 .tool("calc", MathTool.class)
                 .tool(NumberTool.class)
