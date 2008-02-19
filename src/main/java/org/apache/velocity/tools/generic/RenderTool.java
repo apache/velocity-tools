@@ -20,21 +20,18 @@ package org.apache.velocity.tools.generic;
  */
 
 import java.io.StringWriter;
+import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
  * This tool exposes methods to evaluate the given
  * strings as VTL (Velocity Template Language)
- * using the given context.
- * <p>
- *   NOTE: These examples assume you have placed an
- *   instance of the current context within itself
- *   as 'ctx'. And, of course, the RenderTool is
- *   assumed to be available as 'render'.
- * </p>
+ * using either a pre-configured context or one you
+ * provide directly.
  * <pre>
  * Example of eval():
  *      Input
@@ -42,7 +39,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  *      #set( $list = [1,2,3] )
  *      #set( $object = '$list' )
  *      #set( $method = 'size()' )
- *      $render.eval($ctx, "${object}.$method")
+ *      $render.eval("${object}.$method")
  *
  *      Output
  *      ------
@@ -54,7 +51,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  *      #macro( say_hi )hello world!#end
  *      #set( $foo = '#say_hi()' )
  *      #set( $bar = '$foo' )
- *      $render.recurse($ctx, $bar)
+ *      $render.recurse($bar)
  *
  *      Output
  *      ------
@@ -63,8 +60,10 @@ import org.apache.velocity.tools.config.DefaultKey;
  *
  * Toolbox configuration:
  * &lt;tools&gt;
- *   &lt;toolbox scope="application"&gt;
- *     &lt;tool class="org.apache.velocity.tools.generic.RenderTool"/&gt;
+ *   &lt;toolbox scope="request"&gt;
+ *     &lt;tool class="org.apache.velocity.tools.generic.RenderTool"&gt;
+ *       &lt;property name="parseDepth" type="number" value="10"/&gt;
+ *     &lt;/tool&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
  * </pre>
@@ -74,8 +73,27 @@ import org.apache.velocity.tools.config.DefaultKey;
  * and we always tell them to write a tool.  Now we can just tell
  * them to use this tool.</p>
  *
- * <p>This tool is safe (and optimized) for use in the application
- * scope of a servlet environment.</p>
+ * <p>This tool may be used in any scope, however, the context provided
+ * for the {@link #eval(String)} and {@link #recurse(String)} methods
+ * will only be current if the tool is request scoped.  If application or
+ * session scoped, then the context will be the same one set at the time
+ * of the tool's first use. In such a case, each call to eval(String) or
+ * recurse(String) will by default create a new Context that wraps the
+ * configured one to prevent modifications to the configured Context
+ * (concurrent or otherwise).  If you wish to risk it and accrete changes
+ * then you can relax the thread-safety by setting the 'forceThreadSafe'
+ * property to 'false'. </p>
+ *
+ * <p>Of course none of the previous paragraph likely applies if you are
+ * not using the core tool management facilities or if you stick to the
+ * {@link #eval(Context,String)} and {@link #recurse(Context,String)}
+ * methods. :)</p>
+ *
+ * <p>This tool by default will catch
+ * and log any exceptions thrown during rendering and
+ * instead return null in such cases. It also limits recursion, by default,
+ * to 20 cycles, to prevent infinite loops. Both settings may be configured
+ * to behave otherwise.</p>
  *
  * @author Nathan Bubna
  * @version $Revision$ $Date$
@@ -93,14 +111,19 @@ public class RenderTool extends AbstractLockConfig
     @Deprecated
     public static final String KEY_CATCH_EXCEPTIONS = "catch.exceptions";
 
+    public static final String KEY_FORCE_THREAD_SAFE = "forceThreadSafe";
+
     private static final String LOG_TAG = "RenderTool.eval()";
 
     private VelocityEngine engine = null;
+    private Context context;
     private int parseDepth = DEFAULT_PARSE_DEPTH;
     private boolean catchExceptions = true;
+    private boolean forceThreadSafe = true;
 
     /**
-     * Looks for parse depth and catch.exceptions parameters.
+     * Looks for deprecated parse depth and catch.exceptions properties,
+     * as well as any 'forceThreadSafe' setting.
      */
     protected void configure(ValueParser parser)
     {
@@ -116,6 +139,15 @@ public class RenderTool extends AbstractLockConfig
         if (catchEm != null)
         {
             setCatchExceptions(catchEm);
+        }
+
+        // check if they want thread-safety manually turned off
+        this.forceThreadSafe =
+            parser.getBoolean(KEY_FORCE_THREAD_SAFE, forceThreadSafe);
+        // if we're request-scoped, then there's no point in forcing the issue
+        if (Scope.REQUEST.equals(parser.getString("scope")))
+        {
+            this.forceThreadSafe = false;
         }
     }
 
@@ -138,6 +170,30 @@ public class RenderTool extends AbstractLockConfig
         if (!isConfigLocked())
         {
             this.parseDepth = depth;
+        }
+        else if (this.parseDepth != depth)
+        {
+            debug("RenderTool: Attempt was made to alter parse depth while config was locked.");
+        }
+    }
+
+    /**
+     * Sets the {@link Context} to be used by the {@link #eval(String)}
+     * and {@link #recurse(String)} methods.
+     */
+    public void setVelocityContext(Context context)
+    {
+        if (!isConfigLocked())
+        {
+            if (context == null)
+            {
+                throw new NullPointerException("context must not be null");
+            }
+            this.context = context;
+        }
+        else if (this.context != context)
+        {
+            debug("RenderTool: Attempt was made to set a new context while config was locked.");
         }
     }
 
@@ -162,6 +218,10 @@ public class RenderTool extends AbstractLockConfig
         {
             this.catchExceptions = catchExceptions;
         }
+        else if (this.catchExceptions != catchExceptions)
+        {
+            debug("RenderTool: Attempt was made to alter catchE while config was locked.");
+        }
     }
 
     /**
@@ -172,6 +232,44 @@ public class RenderTool extends AbstractLockConfig
     public boolean getCatchExceptions()
     {
         return this.catchExceptions;
+    }
+
+    /**
+     * <p>Evaluates a String containing VTL using the context passed
+     * to the {@link #setVelocityContext} method. If this tool is request
+     * scoped, then this will be the current context and open to modification
+     * by the rendered VTL.  If application or session scoped, the context
+     * will be a new wrapper around the configured context to protect it
+     * from modification.
+     * The results of the rendering are returned as a String.  By default,
+     * <code>null</code> will be returned when this throws an exception.
+     * This evaluation is not recursive.</p>
+     *
+     * @param vtl the code to be evaluated
+     * @return the evaluated code as a String
+     */
+    public String eval(String vtl) throws Exception
+    {
+        Context ctx = forceThreadSafe ? new VelocityContext(context) : context;
+        return eval(ctx, vtl);
+    }
+
+
+    /**
+     * <p>Recursively evaluates a String containing VTL using the
+     * current context, and returns the result as a String. It
+     * will continue to re-evaluate the output of the last
+     * evaluation until an evaluation returns the same code
+     * that was fed into it.</p>
+     *
+     * @see #eval(String)
+     * @param vtl the code to be evaluated
+     * @return the evaluated code as a String
+     */
+    public String recurse(String vtl) throws Exception
+    {
+        Context ctx = forceThreadSafe ? new VelocityContext(context) : context;
+        return recurse(ctx, vtl);
     }
 
     /**
@@ -194,15 +292,7 @@ public class RenderTool extends AbstractLockConfig
             }
             catch (Exception e)
             {
-                String msg = LOG_TAG + " threw Exception: " + e;
-                if (engine == null)
-                {
-                    Velocity.getLog().debug(msg);
-                }
-                else
-                {
-                    engine.getLog().debug(msg);
-                }
+                debug(LOG_TAG+" failed due to "+e, e);
                 return null;
             }
         }
@@ -214,7 +304,7 @@ public class RenderTool extends AbstractLockConfig
 
 
     /* Internal implementation of the eval() method function. */
-    private String internalEval(Context ctx, String vtl) throws Exception
+    protected String internalEval(Context ctx, String vtl) throws Exception
     {
         if (vtl == null)
         {
@@ -272,10 +362,36 @@ public class RenderTool extends AbstractLockConfig
             }
             else
             {
-                // abort and return what we have so far
-                //FIXME: notify the developer or user somehow??
+                // abort, log and return what we have so far
+                debug("RenderTool.recurse() exceeded the maximum parse depth of "
+                      + parseDepth + "on the following template: "+vtl);
                 return result;
             }
+        }
+    }
+
+    // internal convenience methods
+    private void debug(String message)
+    {
+        if (engine == null)
+        {
+            Velocity.getLog().debug(message);
+        }
+        else
+        {
+            engine.getLog().debug(message);
+        }
+    }
+
+    private void debug(String message, Throwable t)
+    {
+        if (engine == null)
+        {
+            Velocity.getLog().debug(message, t);
+        }
+        else
+        {
+            engine.getLog().debug(message, t);
         }
     }
 

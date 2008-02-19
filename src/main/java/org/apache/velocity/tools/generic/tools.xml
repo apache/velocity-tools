@@ -40,6 +40,7 @@
     <toolbox scope="request">
         <tool class="org.apache.velocity.tools.generic.ContextTool"/>
         <tool class="org.apache.velocity.tools.generic.LoopTool"/>
+        <tool class="org.apache.velocity.tools.generic.RenderTool"/>
         <!-- 
         This is not useful in its default form.
         But, if it were, it'd be request-scoped.

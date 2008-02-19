@@ -28,7 +28,6 @@
         <tool class="org.apache.velocity.tools.view.PagerTool"/>
         <tool class="org.apache.velocity.tools.view.ParameterTool"/>
         <tool class="org.apache.velocity.tools.view.ViewContextTool"/>
-        <tool class="org.apache.velocity.tools.view.ViewRenderTool"/>
         <tool class="org.apache.velocity.tools.view.ViewResourceTool"/>
         <!-- 
         This is not directly useable.

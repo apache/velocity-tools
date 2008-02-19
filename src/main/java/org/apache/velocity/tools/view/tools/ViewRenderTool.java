@@ -22,11 +22,11 @@ package org.apache.velocity.tools.view.tools;
 import org.apache.velocity.context.Context;
 
 /**
- * Use {@link org.apache.velocity.tools.view.ViewRenderTool}
+ * Use {@link org.apache.velocity.tools.generic.RenderTool}
  */
 @Deprecated
 public class ViewRenderTool extends
-    org.apache.velocity.tools.view.ViewRenderTool
+    org.apache.velocity.tools.generic.RenderTool
 {
     @Deprecated
     public void init(Object obj)
