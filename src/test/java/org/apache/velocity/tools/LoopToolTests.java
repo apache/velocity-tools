@@ -256,35 +256,97 @@ public class LoopToolTests {
         assertTrue(loop.isLast("j"));
     }
 
-    public @Test void methodGetCount() throws Exception
+    public @Test void methodGet() throws Exception
+    {
+        LoopTool loop = new LoopTool();
+        // sync an array with itself
+        Iterator i = loop.watch(ARRAY).sync(ARRAY, "twin");
+        while (i.hasNext())
+        {
+            // make sure they match
+            assertEquals(i.next(), loop.get("twin"));
+        }
+
+        // sync a shorter array with a longer one to be
+        // sure the values turn to null once they're gone
+        int[] little = { 10, 20, 30 };
+        Integer[] big = { 1, 2, 3, 4, 5 };
+        i = loop.watch(big).sync(little, "little");
+        while (i.hasNext())
+        {
+            Integer val = (Integer)i.next();
+            if (val < 4)
+            {
+                assertEquals(val * 10, loop.get("little"));
+            }
+            else
+            {
+                assertNull(loop.get("little"));
+            }
+        }
+    }
+
+    public @Test void methodGet_StringString() throws Exception
+    {
+        LoopTool loop = new LoopTool();
+        int[] other = { 1, 2, 3 };
+
+        // sync arrays with nested loops using default names
+        // the way we iterate over both i and j together below
+        // is, of course, impossible in a template, but it
+        // makes writing a reasonable test for this method a lot
+        // easier.
+        //NOTE: this reliese on the default name for synced iterators
+        //      being "synced", for i being "loop0", and for j being "loop1"
+        Iterator i = loop.watch(ARRAY).sync(other);
+        Iterator j = loop.watch(other).sync(ARRAY);
+        while (i.hasNext() && j.hasNext())
+        {
+            // i and loop.synced (aka loop.get("loop1","synced")) should match
+            assertEquals(i.next(), loop.get("synced"));
+            // j and loop.get("loop0","synced") should match
+            assertEquals(j.next(), loop.get("loop0", "synced"));
+        }
+    }
+
+    public @Test void methodGetCountOrGetIndex() throws Exception
     {
         LoopTool loop = new LoopTool();
         Iterator i = loop.watch(ARRAY);
         assertEquals(0, loop.getCount());
+        assertNull(loop.getIndex());
         i.next();
         assertEquals(1, loop.getCount());
+        assertEquals(0, loop.getIndex());
         i.next();
         assertEquals(2, loop.getCount());
+        assertEquals(1, loop.getIndex());
         i.next();
         assertEquals(3, loop.getCount());
+        assertEquals(2, loop.getIndex());
         loop.pop();
         // test that skipped iterations are still included
         i = loop.watch(ARRAY);
         loop.skip(2);
         assertEquals(2, loop.getCount());
+        assertEquals(1, loop.getIndex());
     }
 
-    public @Test void methodGetCount_String() throws Exception
+    public @Test void methodGetCountOrGetIndex_String() throws Exception
     {
         LoopTool loop = new LoopTool();
         Iterator i = loop.watch(ARRAY, "i");
         assertEquals(0, loop.getCount("i"));
+        assertNull(loop.getIndex("i"));
         i.next();
         assertEquals(1, loop.getCount("i"));
+        assertEquals(0, loop.getIndex("i"));
         Iterator j = loop.watch(ARRAY, "j");
         loop.skip(2);
         assertEquals(2, loop.getCount("j"));
+        assertEquals(1, loop.getIndex("j"));
         assertEquals(1, loop.getCount("i"));
+        assertEquals(0, loop.getIndex("i"));
     }
 
     public @Test void aliasMethods() throws Exception

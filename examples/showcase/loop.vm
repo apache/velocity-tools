@@ -16,41 +16,24 @@
 ## under the License.
 #title( 'LoopTool' )
 <p>
-#set( $demo = $text.demo )
-$demo.thisPage.insert("#doclink( 'LoopTool' true )").
-This tool is a convenience tool to use with ${esc.h}foreach loops. It wraps a
-list to let you prematurely end stop iterating, skip iterations, easily
-determine if you are on the first or last iteration, get the number of iterations
-completed, automatically exclude or break on particular elements and easily
-do all the above with complex, nested loops.
+$text.demo.thisPage.insert("#doclink( 'LoopTool' true )").
+</p>
+<p>
+$text.loop.intro
 </p>
 
-<form method="post" action="$link.self">
-  <textarea name="demo" rows="10" cols="65">
-#if( $params.demo )##
-$params.demo##
-#else##
-${esc.h}set( ${esc.d}numbers = [1, 2, 3, 4, 5, 6] )
-${esc.h}set( ${esc.d}letters = ['A','B','C'] )
-${esc.h}foreach( ${esc.d}l in ${esc.d}loop.watch(${esc.d}letters, 'l') )
-${esc.h}foreach( ${esc.d}n in ${esc.d}loop.watch(${esc.d}numbers).exclude(3) )
-${esc.h}if( ${esc.d}loop.first )${esc.d}l[${esc.h}end${esc.h}${esc.h}
-${esc.d}n${esc.h}${esc.h}
-${esc.h}if( ${esc.d}loop.last )]  ${esc.h}else, ${esc.h}end${esc.h}${esc.h}
-${esc.h}if( ${esc.d}l == 'B' )${esc.d}loop.stop('l')${esc.h}end${esc.h}${esc.h} stop the letter loop after B
-${esc.h}end
-${esc.h}end##
-#end#*
-*#</textarea>
-  <input type="submit" value="$demo.try">
-  #if( $params.layout )
-  <input type="hidden" name="layout" value="$params.layout">
+#set( $fullDemo =
+'#set( $numbers = [1..5] )
+#set( $letters = ["A","B","C"] )
+#set( $symbols = ["!", "@"] )
+#foreach( $l in $loop.watch($letters, "l").sync($symbols, "s") )
+  #foreach( $n in $loop.watch($numbers).exclude(3) )
+#if( $loop.first )$l$loop.s[#end##
+$n##
+#if( $loop.last )]  #else, #end##
+#if( $l == "B" )$loop.stop("l")#end## stop the letter loop after B
   #end
-</form>
+#end'
+)
 
-#if( $params.demo )
-$demo.mainResultsIntro:
-<pre>
-  $render.eval($params.demo)
-</pre>
-#end
+#parse( 'fullDemo.vm' )

@@ -20,8 +20,10 @@ package org.apache.velocity.tools.generic;
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Stack;
 import org.apache.velocity.tools.ClassUtils;
@@ -32,26 +34,27 @@ import org.apache.velocity.tools.config.ValidScope;
 /**
  * <p>
  * A convenience tool to use with #foreach loops. It wraps a list
- * with a custom iterator to let the designer specify a condition
- * to stop looping over the items early.
+ * with a custom iterator to provide additional controls and feedback
+ * for managing loops.
  * </p>
  * <p>
- * This tool is heavily inspired the now-deprecated IteratorTool,
- * which provided similar functionality but was somewhat more difficult
+ * This tool was originally inspired the now-deprecated IteratorTool,
+ * which provided similar base functionality but was somewhat more difficult
  * to understand and use.  Rather than try to migrate that implementation
  * via deprecation and new methods, it was simplest to just create an
- * entirely new tool with a simplified API, support for nested loops
- * (which can optionally be given names), skipping ahead in loops,
- * getting the iteration count of loops, identifying if a loop is
+ * entirely new tool that simplified the original API and was easy
+ * to augment with useful new features like support for nested 
+ * (and nameable) loops, skipping ahead in loops, synchronizing multiple
+ * iterators, getting the iteration count of loops, identifying if a loop is
  * on its first or last iteration, and so on.
  * </p>
  * <p>
- * Most users, of course, will probably never need anything beyond the 
- * simple {@link #watch(Object)}, {@link ManagedIterator#stop(Object)}, 
- * {@link ManagedIterator#exclude(Object)}, {@link #isFirst},
- * {@link #isLast},and maybe {@link #getCount}
+ * Most usage, of course, will probably never go much beyond the 
+ * simple {@link #watch(Object)}, {@link ManagedIterator#sync(Object)}, 
+ * {@link ManagedIterator#stop(Object)}, {@link #isFirst},
+ * {@link #isLast},and maybe {@link #getCount} or {@link #getIndex}
  * methods, if even that much.  However, it is with complicated nested
- * #foreach loops and varying "break" conditions that this tool can
+ * #foreach loops and varying "break" conditions,  that this tool can
  * probably do the most to simplify your templates.
  * </p>
  * <p>
@@ -59,15 +62,20 @@ import org.apache.velocity.tools.config.ValidScope;
  * <pre>
  *  Template
  *  ---
- *  #set ($list = [1..10])
- *  #foreach( $item in $loop.watch($list).exclude(3) )
- *  $item ##
+ *  #set( $list = [1..7] )
+ *  #set( $others = [3..10] )
+ *  #foreach( $item in $loop.watch($list).sync($others, 'other') )
+ *  $item -> $loop.other
  *  #if( $item >= 5 )$loop.stop()#end
  *  #end
  *
  *  Output
  *  ------
- *  1 2 4 5
+ *  1 -> 3
+ *  2 -> 4
+ *  3 -> 5
+ *  4 -> 6
+ *  5 -> 7
  *
  * Example tools.xml config (if you want to use this with VelocityView):
  * &lt;tools&gt;
@@ -359,6 +367,76 @@ public class LoopTool
     }
 
     /**
+     * Searches all the loops being managed for one with a sync'ed
+     * Iterator under the specified name and returns the current value
+     * for that sync'ed iterator, if any.
+     */
+    public Object get(String synced)
+    {
+        // search all iterators in reverse
+        // (so nested ones take priority)
+        // for one that is responsible for synced
+        for (int i=iterators.size() - 1; i >= 0; i--)
+        {
+            ManagedIterator iterator = iterators.get(i);
+            if (iterator.isSyncedWith(synced))
+            {
+                return iterator.get(synced);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Asks the loop with the specified name for the current value
+     * of the specified sync'ed iterator, if any.
+     */
+    public Object get(String name, String synced)
+    {
+        // just ask the matching iterator for the sync'ed value
+        ManagedIterator iterator = findIterator(name);
+        if (iterator != null)
+        {
+            return iterator.get(synced);
+        }
+        return null;
+    }
+
+    /**
+     * Returns the 0-based index of the item the current loop is handling.
+     * So, if this is the first iteration, then the index will be 0. If
+     * you {@link #skip} ahead in this loop, those skipped iterations will
+     * still be reflected in the index.  If iteration has not begun, this
+     * will return {@code null}.
+     */
+    public Integer getIndex()
+    {
+        Integer count = getCount();
+        if (count == null || count == 0)
+        {
+            return null;
+        }
+        return count - 1;
+    }
+
+    /**
+     * Returns the 0-based index of the item the specified loop is handling.
+     * So, if this is the first iteration, then the index will be 0. If
+     * you {@link #skip} ahead in this loop, those skipped iterations will
+     * still be reflected in the index.  If iteration has not begun, this
+     * will return {@code null}.
+     */
+    public Integer getIndex(String name)
+    {
+        Integer count = getCount(name);
+        if (count == null || count == 0)
+        {
+            return null;
+        }
+        return count - 1;
+    }
+
+    /**
      * Returns the number of items the current loop has handled. So, if this
      * is the first iteration, then the count will be 1.  If you {@link #skip}
      * ahead in this loop, those skipped iterations will still be included in
@@ -469,6 +547,7 @@ public class LoopTool
         private int count = 0;
         private Object next;
         private List<ActionCondition> conditions;
+        private Map<String,SyncedIterator> synced;
 
         public ManagedIterator(String name, Iterator iterator, LoopTool owner)
         {
@@ -586,7 +665,51 @@ public class LoopTool
             }
 
             // ok, looks like we have a next that met all the conditions
+            shiftSynced();
             return true;
+        }
+
+        private void shiftSynced()
+        {
+            if (synced != null)
+            {
+                for (SyncedIterator parallel : synced.values())
+                {
+                    parallel.shift();
+                }
+            }
+        }
+
+        /**
+         * Returns {@code true} if this ManagedIterator has a sync'ed
+         * iterator with the specified name.
+         */
+        public boolean isSyncedWith(String name)
+        {
+            if (synced == null)
+            {
+                return false;
+            }
+            return synced.containsKey(name);
+        }
+
+        /**
+         * Returns the parallel value from the specified sync'ed iterator.
+         * If no sync'ed iterator exists with that name or that iterator
+         * is finished, this will return {@code null}.
+         */
+        public Object get(String name)
+        {
+            if (synced == null)
+            {
+                return null;
+            }
+            SyncedIterator parallel = synced.get(name);
+            if (parallel == null)
+            {
+                return null;
+            }
+            return parallel.get();
         }
 
         /**
@@ -694,6 +817,53 @@ public class LoopTool
             return this;
         }
 
+        /**
+         * <p>Adds another iterator to be kept in sync with the one
+         * being managed by this instance.  The values of the parallel
+         * iterator can be retrieved from the LoopTool under the
+         * name s"synced" (e.g. $loop.synched or $loop.get('synced'))
+         * and are automatically updated for each iteration by this instance.
+         * </p><p><b>NOTE</b>: if you are sync'ing multiple iterators
+         * with the same managed iterator, you must use 
+         * {@link #sync(Object,String)} or else your the later iterators
+         * will simply replace the earlier ones under the default
+         * 'synced' key.</p>
+         *
+         * @return This same {@link ManagedIterator} instance
+         * @see SyncedIterator
+         * @see #get(String)
+         */
+        public ManagedIterator sync(Object iterable)
+        {
+            return sync(iterable, "synced");
+        }
+
+        /**
+         * Adds another iterator to be kept in sync with the one
+         * being managed by this instance.  The values of the parallel
+         * iterator can be retrieved from the LoopTool under the
+         * name specified here (e.g. $loop.name or $loop.get('name'))
+         * and are automatically updated for each iteration by this instance.
+         *
+         * @return This same {@link ManagedIterator} instance
+         * @see SyncedIterator
+         * @see #get(String)
+         */
+        public ManagedIterator sync(Object iterable, String name)
+        {
+            Iterator parallel = LoopTool.getIterator(iterable);
+            if (parallel == null)
+            {
+                return null;
+            }
+            if (synced == null)
+            {
+                synced = new HashMap<String,SyncedIterator>();
+            }
+            synced.put(name, new SyncedIterator(parallel));
+            return this;
+        }
+
         @Override
         public String toString()
         {
@@ -795,6 +965,53 @@ public class LoopTool
             }
             // compare them as strings as a last resort
             return String.valueOf(value).equals(String.valueOf(compare));
+        }
+    }
+
+
+    /**
+     * Simple wrapper to make it easy to keep an arbitray Iterator
+     * in sync with a {@link ManagedIterator}.
+     */
+    public static class SyncedIterator
+    {
+        private Iterator iterator;
+        private Object current;
+
+        public SyncedIterator(Iterator iterator)
+        {
+            if (iterator == null)
+            {
+                // do we really care?  perhaps we should just keep quiet...
+                throw new NullPointerException("Cannot synchronize a null Iterator");
+            }
+            this.iterator = iterator;
+        }
+
+        /**
+         * If the sync'ed iterator has any more values,
+         * this sets the next() value as the current one.
+         * If there are no more values, this sets the current
+         * one to {@code null}.
+         */
+        public void shift()
+        {
+            if (iterator.hasNext())
+            {
+                current = iterator.next();
+            }
+            else
+            {
+                current = null;
+            }
+        }
+
+        /**
+         * Returns the currently parallel value, if any.
+         */
+        public Object get()
+        {
+            return current;
         }
     }
 
