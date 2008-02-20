@@ -18,6 +18,9 @@
 <p>
 #set( $demo = $text.demo )
 $demo.thisPage.insert("#doclink( 'ListTool' true )").
+Once Velocity 1.6 is released, this tool will be obsolete since
+Velocity 1.6 now allows all List methods to be called directly on arrays
+within templates.
 </p>
 
 #demoTableStart()
