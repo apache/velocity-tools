@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.Writer;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -196,10 +197,20 @@ public class VelocityView
 
     public VelocityView(ServletConfig config)
     {
+        this(new JeeConfig(config));
+    }
+
+    public VelocityView(FilterConfig config)
+    {
+        this(new JeeConfig(config));
+    }
+
+    public VelocityView(JeeConfig config)
+    {
         this(config, DEFAULT_TOOLBOX_KEY);
     }
 
-    public VelocityView(ServletConfig config, String toolboxKey)
+    public VelocityView(JeeConfig config, String toolboxKey)
     {
         setToolboxKey(toolboxKey);
 
@@ -209,18 +220,7 @@ public class VelocityView
 
     public VelocityView(ServletContext context)
     {
-        this(context, DEFAULT_TOOLBOX_KEY);
-    }
-
-    public VelocityView(ServletContext context, String toolboxKey)
-    {
-        setToolboxKey(toolboxKey);
-
-        if (context == null)
-        {
-            throw new NullPointerException("ServletContext cannot be null");
-        }
-        this.servletContext = context;
+        this(new JeeConfig(context), DEFAULT_TOOLBOX_KEY);
     }
 
     /**
@@ -300,7 +300,7 @@ public class VelocityView
      *
      * @param config servlet configuation
      */
-    protected void init(ServletConfig config)
+    protected void init(JeeConfig config)
     {
         String depMode = findInitParameter(DEPRECATION_SUPPORT_MODE_KEY, config);
         if (depMode != null && depMode.equalsIgnoreCase("false"))
@@ -320,7 +320,7 @@ public class VelocityView
 
     /**
      * Initializes the Velocity runtime, first calling
-     * loadConfiguration(ServletConfig) to get a
+     * loadConfiguration(JeeConfig) to get a
      * org.apache.commons.collections.ExtendedProperties
      * of configuration information
      * and then calling velocityEngine.init().  Override this
@@ -330,7 +330,7 @@ public class VelocityView
      *
      * @param config servlet configuration parameters
      */
-    protected void init(ServletConfig config, final VelocityEngine velocity)
+    protected void init(JeeConfig config, final VelocityEngine velocity)
     {
         if (velocity == null)
         {
@@ -370,7 +370,7 @@ public class VelocityView
      * @param config servlet configuation
      * @param factory the ToolboxFactory to be initialized for this VelocityView
      */
-    protected void init(final ServletConfig config, final ToolboxFactory factory)
+    protected void init(final JeeConfig config, final ToolboxFactory factory)
     {
         if (factory == null)
         {
@@ -397,7 +397,7 @@ public class VelocityView
         }
     }
 
-    protected String findInitParameter(String key, ServletConfig config)
+    protected String findInitParameter(String key, JeeConfig config)
     {
         String param = config.getInitParameter(key);
         if (param == null)
@@ -408,7 +408,7 @@ public class VelocityView
     }
 
 
-    protected void configure(final ServletConfig config, final VelocityEngine velocity)
+    protected void configure(final JeeConfig config, final VelocityEngine velocity)
     {
         // first get the default properties, and bail if we don't find them
         velocity.setExtendedProperties(getProperties(DEFAULT_PROPERTIES_PATH, true));
@@ -475,7 +475,7 @@ public class VelocityView
      * {@code org.apache.velocity.tools.cleanConfiguration} init-param to true in
      * either your servlet or servletContext init-params.
      */
-    protected void configure(final ServletConfig config, final ToolboxFactory factory)
+    protected void configure(final JeeConfig config, final ToolboxFactory factory)
     {
         FactoryConfiguration factoryConfig = new FactoryConfiguration();
 
@@ -552,7 +552,7 @@ public class VelocityView
      * (the deprecated default location) and tries to load it if found.
      */
     @Deprecated
-    protected FactoryConfiguration getDeprecatedConfig(ServletConfig config)
+    protected FactoryConfiguration getDeprecatedConfig(JeeConfig config)
     {
         FactoryConfiguration toolbox = null;
 
@@ -777,7 +777,7 @@ public class VelocityView
     }
 
 
-    protected void setEncoding(ServletConfig config)
+    protected void setEncoding(JeeConfig config)
     {
         // we can get these now that velocity is initialized
         this.defaultContentType =
@@ -869,7 +869,7 @@ public class VelocityView
         }
 
         //TODO: move this string constant somewhere static
-        if (toolboxFactory.hasTools("session"))
+        if (toolboxFactory.hasTools(Scope.SESSION))
         {
             //FIXME? does this honor createSession props set on the session Toolbox?
             HttpSession session = request.getSession(this.createSession);
@@ -881,7 +881,7 @@ public class VelocityView
                     if (session.getAttribute(this.toolboxKey) == null)
                     {
                         Toolbox sessTools =
-                            toolboxFactory.createToolbox("session");
+                            toolboxFactory.createToolbox(Scope.SESSION);
                         session.setAttribute(this.toolboxKey, sessTools);
                     }
                 }
