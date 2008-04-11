@@ -19,6 +19,7 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -73,16 +74,36 @@ public class ServletUtils
 
     /**
      * Returns the shared {@link VelocityView} for the specified
-     * {@link ServletConfig}.  If one has not yet been created, it
+     * {@link ServletConfig}'s context. If one has not yet been created, it
      * will create, store it for future access, and then return it.
      */
     public static VelocityView getVelocityView(ServletConfig config)
     {
+        return getVelocityView(new JeeConfig(config));
+    }
+
+
+    /**
+     * Returns the shared {@link VelocityView} for the specified
+     * {@link FilterConfig}'s context. If one has not yet been created, it
+     * will create, store it for future access, and then return it.
+     */
+    public static VelocityView getVelocityView(FilterConfig config)
+    {
+        return getVelocityView(new JeeConfig(config));
+    }
+
+    /**
+     * Returns the shared {@link VelocityView} for the specified
+     * {@link JeeConfig}'s context. If one has not yet been created, it
+     * will create, store it for future access, and then return it.
+     */
+    public static VelocityView getVelocityView(JeeConfig config)
+    {
         ServletContext application = config.getServletContext();
 
         // check for an already initialized VelocityView to use
-        VelocityView view =
-            (VelocityView)application.getAttribute(VELOCITY_VIEW_KEY);
+        VelocityView view = getVelocityView(application);
         if (view == null)
         {
             // only create a new one if we don't already have one
@@ -93,6 +114,15 @@ public class ServletUtils
             application.setAttribute(VELOCITY_VIEW_KEY, view);
         }
         return view;
+    }
+
+    /**
+     * Returns the shared {@link VelocityView} for the specified
+     * {@link ServletContext}, if any. 
+     */
+    public static VelocityView getVelocityView(ServletContext application)
+    {
+        return (VelocityView)application.getAttribute(VELOCITY_VIEW_KEY);
     }
 
 
