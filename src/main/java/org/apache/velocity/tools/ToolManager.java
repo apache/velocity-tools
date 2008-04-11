@@ -37,9 +37,6 @@ import org.apache.velocity.tools.config.FactoryConfiguration;
  */
 public class ToolManager
 {
-    public static final String DEFAULT_XML_CONFIG_PATH = "tools.xml";
-    public static final String DEFAULT_PROPS_CONFIG_PATH = "tools.properties";
-
     private VelocityEngine engine;
     private ToolboxFactory factory;
     private Toolbox application;
