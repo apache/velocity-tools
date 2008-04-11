@@ -160,8 +160,28 @@ public class Toolbox implements java.io.Serializable
         // add keys for all available tools
         Set<String> keys = new HashSet<String>(infoMap.keySet());
         // be sure to add cache, which holds data keys
-        keys.addAll(cache.keySet());
+        if (cache != null)
+        {
+            keys.addAll(cache.keySet());
+        }
         return keys;
+    }
+
+    /**
+     * Return a new {@link Map} link tools' keys to their {@link Class}es.
+     * This will not instantiate any tools, it is merely informational.
+     * This will not include the keys for any cached data. Note that inclusion
+     * in this map does NOT mean that all these tools will be available for
+     * all requests, as this map ignores all path restrictions on the tools.
+     */
+    public Map<String,Class> getToolClassMap()
+    {
+        Map<String,Class> classMap = new HashMap<String,Class>(infoMap.size());
+        for (Map.Entry<String,ToolInfo> entry : infoMap.entrySet())
+        {
+            classMap.put(entry.getKey(), entry.getValue().getToolClass());
+        }
+        return classMap;
     }
 
     public Map<String,Object> getAll(Map<String,Object> context)
