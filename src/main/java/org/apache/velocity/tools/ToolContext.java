@@ -123,6 +123,20 @@ public class ToolContext implements Context
         return aggregate;
     }
 
+    /**
+     * Gets a map of keys to classes for all available tools.
+     * This does not include any data nor any local context values.
+     */
+    public Map<String,Class> getToolClassMap()
+    {
+        Map<String,Class> toolClasses = new HashMap<String,Class>();
+        for (Toolbox toolbox : toolboxes)
+        {
+            toolClasses.putAll(toolbox.getToolClassMap());
+        }
+        return toolClasses;
+    }
+
     protected List<Toolbox> getToolboxes()
     {
         return this.toolboxes;
@@ -171,6 +185,7 @@ public class ToolContext implements Context
         }
         return null;
     }
+        
 
     public Set<String> keySet()
     {
