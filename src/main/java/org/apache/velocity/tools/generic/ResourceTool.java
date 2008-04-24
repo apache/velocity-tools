@@ -208,12 +208,7 @@ public class ResourceTool extends LocaleConfig
      */
     public String render(Object resource, Object[] args)
     {
-        String value = String.valueOf(resource);
-        if (args == null)
-        {
-            return value;
-        }
-        return MessageFormat.format(value, args);
+        return MessageFormat.format(String.valueOf(resource), args);
     }
 
 
