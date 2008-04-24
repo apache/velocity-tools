@@ -200,11 +200,9 @@ public class ResourceTool extends LocaleConfig
     }
 
     /**
-     * Renders the specified resource value  and arguments as a String.
-     * If there are no arguments, then the String value of the resource
-     * is returned directly. If there are arguments, then the resource
-     * is treated as a {@link MessageFormat} pattern and used to format
-     * the specified argument values.
+     * Renders the specified resource value and arguments as a String.
+     * The resource is treated as a {@link MessageFormat} pattern which
+     * is used for formatting along with any specified argument values.
      */
     public String render(Object resource, Object[] args)
     {
