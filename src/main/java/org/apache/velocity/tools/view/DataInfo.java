@@ -45,7 +45,7 @@ package org.apache.velocity.tools.view;
  * </pre></p>
  *
  * @author Nathan Bubna
- * @deprecated Use {@link org.apache.velocity.tools.ToolInfo}
+ * @deprecated Use {@link org.apache.velocity.tools.config.Data}
  * @version $Id$
  */
 @Deprecated

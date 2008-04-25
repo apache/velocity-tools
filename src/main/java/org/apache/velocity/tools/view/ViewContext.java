@@ -29,6 +29,7 @@ import org.apache.velocity.context.Context;
  * <p>This interface provides view tools in a servlet environment
  * access to relevant context information, like servlet request, servlet
  * context and the velocity context.</p>
+ * <p>The standard implementation is {@link ViewToolContext}.</p>
  *
  * @author <a href="mailto:sidler@teamup.com">Gabe Sidler</a>
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
