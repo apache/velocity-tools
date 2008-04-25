@@ -104,7 +104,6 @@ public class ResourceTool extends LocaleConfig
     @Deprecated
     public void setDeprecationSupportMode(boolean depMode)
     {
-        System.out.println("ResourceTool.depMode = "+depMode);
         this.deprecationSupportMode = depMode;
     }
 
