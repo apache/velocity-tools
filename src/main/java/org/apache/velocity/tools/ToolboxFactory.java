@@ -28,7 +28,32 @@ import org.apache.velocity.tools.config.ToolboxConfiguration;
 import org.apache.velocity.tools.config.ToolConfiguration;
 
 /**
- * 
+ * <p>This class is the central point of action for VelocityTools.
+ * It manages the configured and scoped {@link ToolInfo} and {@link Data}
+ * and is meant to stick around for the life of the application.
+ * </p><p>
+ * It works like this:
+ * <ol>
+ * <li>Build up your {@link FactoryConfiguration}(s)</li>
+ * <li>Create a {@link ToolboxFactory} instance</li>
+ * <li>Pass the configuration to {@link #configure}</li>
+ * <li>When appropriate for each scope, use {@link #createToolbox}
+ * to create the {@link Toolbox} for that scope and put that toolbox
+ * somewhere appropriate to that scope.</li>
+ * <li>When you want a tool, get that {@link Toolbox} and
+ * ask it for the tool you want (e.g. <code>toolbox.get("math")</code>).</li>
+ * </ol>
+ * </p><p>
+ * Of course, most users will not have to do any of this
+ * as much of it is handled for them by some combination of 
+ * {@link ToolManager} or {@link org.apache.velocity.tools.view.VelocityView}
+ * and a {@link ToolContext} or {@link org.apache.velocity.tools.view.ViewToolContext}.
+ * </p><p>
+ * <strong>NOTE:</strong> While you are free to pass in new configuration info
+ * at any time, that data will only affect {@link Toolbox}es created subsequently.
+ * Any previously created toolboxes will have to be re-created and replaced to
+ * reflect the changes to the configuration.
+ * </p>
  *
  * @author Nathan Bubna
  * @version $Id: ToolboxFactory.java 511959 2007-02-26 19:24:39Z nbubna $

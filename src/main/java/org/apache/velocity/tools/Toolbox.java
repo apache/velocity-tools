@@ -26,7 +26,16 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 
+ * <p>Instances of this class are typically created by a {@link ToolboxFactory}
+ * on a one-per-scope basis.  So, for each application, there would be one
+ * application-scoped Toolbox from which you would retrieve tool instances,
+ * and for each request, there would be one request-scoped Toolbox.
+ * Of course, none of the above is enforced.  There's no reason that you can't
+ * manually create a Toolbox or have multiple Toolboxes for each scope.
+ * </p><p>
+ * When a Toolbox creates a tool instance asked of it (see {@link #get}),
+ * it will cache that instance for future requests.
+ * </p>
  *
  * @author Nathan Bubna
  * @version $Id: Toolbox.java 511959 2007-02-26 19:24:39Z nbubna $

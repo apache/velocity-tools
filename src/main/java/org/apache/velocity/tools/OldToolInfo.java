@@ -24,8 +24,7 @@ import java.util.Map;
 import org.apache.velocity.tools.ToolContext;
 
 /**
- * Manages old tools which still use deprecated init() and configure()
- * methods.
+ * Manages old tools which still use the deprecated init() method.
  *
  * @author Nathan Bubna
  * @version $Id: OldToolInfo.java 511959 2007-02-26 19:24:39Z nbubna $

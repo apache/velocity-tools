@@ -32,7 +32,7 @@ import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.Toolbox;
 
 /**
- * <p>Velocity context implementation specific to the Servlet environment.</p>
+ * <p>{@link ToolContext} implementation specific to the servlet environment.</p>
  *
  * <p>It provides the following special features:</p>
  * <ul>
@@ -44,14 +44,15 @@ import org.apache.velocity.tools.Toolbox;
  *       servlet context attribues for objects</li>
  * </ul>
  *
- * <p>The {@link #internalGet(String key)} method implements the following search order
+ * <p>The {@link #get(String key)} method implements the following search order
  * for objects:</p>
  * <ol>
- *   <li>toolbox</li>
- *   <li>servlet request, servlet response, servlet session, servlet context</li>
- *   <li>local hashtable of objects (traditional use)</li>
- *   <li>servlet request attribues, servlet session attribute, servlet context
- *     attributes</li>
+ *   <li>tool in a request scoped toolbox</li>
+ *   <li>tool in a session scoped toolbox</li>
+ *   <li>tool in a application scoped toolbox</li>
+ *   <li>request, response, session, or servlet context</li>
+ *   <li>object in the local map of objects (traditional use)</li>
+ *   <li>request attributes, session attributes, servlet context attributes</li>
  * </ol>
  *
  * <p>The purpose of this class is to make it easy for web designer to work
@@ -59,7 +60,8 @@ import org.apache.velocity.tools.Toolbox;
  * with the concepts of request, session or application attributes and the
  * lifetime of objects in these scopes.</p>
  *
- * <p>Note that the put() method always puts objects into the local hashtable.
+ * <p>Note that the put() method always puts objects into the local map
+ * and does not allow tools or servlet classes to be overridden.
  * </p>
  *
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
