@@ -91,12 +91,14 @@ public class XmlFactoryConfigurationRuleSet extends RuleSetBase
     public void addRuleInstances(Digester digester)
     {
         // create the config objects
+        digester.addObjectCreate("tools/property", propertyClass);
         digester.addObjectCreate("tools/*/property", propertyClass);
         digester.addObjectCreate("tools/data", dataClass);
         digester.addObjectCreate("tools/toolbox", toolboxConfigurationClass);
         digester.addObjectCreate("tools/toolbox/tool", toolConfigurationClass);
 
         // to apply matching attributes to specific setters of config objects
+        digester.addSetProperties("tools/property");
         digester.addSetProperties("tools/*/property");
         digester.addSetProperties("tools");
         digester.addSetProperties("tools/data");
@@ -113,6 +115,7 @@ public class XmlFactoryConfigurationRuleSet extends RuleSetBase
         digester.addRule("tools/*/property", new DataValueInBodyRule());
 
         // to finish a config and move on to the next
+        digester.addSetNext("tools/property", "addProperty");
         digester.addSetNext("tools/*/property", "addProperty");
         digester.addSetNext("tools/data", "addData");
         digester.addSetNext("tools/toolbox", "addToolbox");
