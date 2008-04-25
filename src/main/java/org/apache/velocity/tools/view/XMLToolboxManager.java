@@ -96,6 +96,9 @@ public class XMLToolboxManager implements ToolboxManager
     {
         toolinfo = new ArrayList();
         data = new HashMap();
+
+        LOG.warn("XMLToolboxManager has been deprecated. Please use "+
+                 "org.apache.velocity.tools.ToolboxFactory instead.");
     }
 
 

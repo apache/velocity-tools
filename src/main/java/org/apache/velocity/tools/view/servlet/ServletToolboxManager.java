@@ -127,6 +127,9 @@ public class ServletToolboxManager extends XMLToolboxManager
         sessionToolInfo = new ArrayList();
         requestToolInfo = new ArrayList();
         createSession = true;
+
+        LOG.warn("ServletToolboxManager has been deprecated. Please use "+
+                 "org.apache.velocity.tools.ToolboxFactory instead.");
     }
 
 

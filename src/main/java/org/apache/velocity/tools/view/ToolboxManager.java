@@ -30,6 +30,7 @@ import java.util.Map;
  * @author <a href="mailto:henning@schmiedehausen.org">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
+@Deprecated
 public interface ToolboxManager
 {
 

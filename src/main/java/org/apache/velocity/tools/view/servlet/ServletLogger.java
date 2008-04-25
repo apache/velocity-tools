@@ -19,6 +19,7 @@ package org.apache.velocity.tools.view.servlet;
  * under the License.
  */
 
+import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.log.LogSystem;
 import org.apache.velocity.tools.view.ServletLogChute;
 
@@ -36,6 +37,14 @@ import org.apache.velocity.tools.view.ServletLogChute;
 @Deprecated
 public class ServletLogger extends ServletLogChute implements LogSystem
 {
+    @Override
+    public void init(RuntimeServices rs) throws Exception
+    {
+        super.init(rs);
+        log(LogSystem.WARN_ID, "ServletLogger has been deprecated. Use " +
+                               super.getClass().getName() + " instead.");
+    }
+
     /**
      * Send a log message from Velocity.
      */
