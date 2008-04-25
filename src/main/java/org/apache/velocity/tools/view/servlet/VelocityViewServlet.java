@@ -20,6 +20,8 @@ package org.apache.velocity.tools.view.servlet;
  */
 
 import org.apache.velocity.tools.view.VelocityView;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 
 /**
  * @deprecated This class has moved to {@link org.apache.velocity.tools.view.VelocityViewServlet}
@@ -40,4 +42,14 @@ public class VelocityViewServlet
      */
     protected static final String DEFAULT_TOOLBOX_PATH =
         VelocityView.DEPRECATED_USER_TOOLS_PATH;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException
+    {
+        super.init(config);
+
+        getLog().debug(this.getClass().getName() +
+                       " has been deprecated. Use " +
+                       super.getClass().getName() + " instead.");
+    }
 }

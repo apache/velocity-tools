@@ -20,6 +20,7 @@ package org.apache.velocity.tools.view.servlet;
  */
 
 import org.apache.velocity.tools.view.WebappResourceLoader;
+import org.apache.commons.collections.ExtendedProperties;
 
 /**
  * <p>This is basically an empty subclass of {@link WebappResourceLoader} that exists
@@ -33,4 +34,10 @@ import org.apache.velocity.tools.view.WebappResourceLoader;
 @Deprecated
 public class WebappLoader extends WebappResourceLoader
 {
+    public void init(ExtendedProperties configuration)
+    {
+        log.warn("WebappLoader is deprecated. Use "+
+                 WebappResourceLoader.class.getName()+" instead.");
+        super.init(configuration);
+    }
 }

@@ -19,6 +19,9 @@ package org.apache.velocity.tools.view.servlet;
  * under the License.
  */
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+
 /**
  * @author Nathan Bubna
  * @deprecated This has moved to {@link org.apache.velocity.tools.view.VelocityLayoutServlet}
@@ -28,4 +31,13 @@ package org.apache.velocity.tools.view.servlet;
 public class VelocityLayoutServlet
     extends org.apache.velocity.tools.view.VelocityLayoutServlet
 {
+    @Override
+    public void init(ServletConfig config) throws ServletException
+    {
+        super.init(config);
+
+        getLog().debug(this.getClass().getName() +
+                       " has been deprecated. Use " +
+                       super.getClass().getName() + " instead.");
+    }
 }
