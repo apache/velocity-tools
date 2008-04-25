@@ -230,7 +230,8 @@ public class FieldTool extends AbstractLockConfig
             if (Modifier.isStatic(mod) && Modifier.isPublic(mod))
             {
                 // make it easy to debug key collisions
-                if (log.isDebugEnabled() && results.containsKey(field.getName()))
+                if (log != null && log.isDebugEnabled() &&
+                    results.containsKey(field.getName()))
                 {
                     log.debug("FieldTool: "+field.getName()+
                               " is being overridden by "+clazz.getName());
