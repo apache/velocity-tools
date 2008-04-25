@@ -28,6 +28,11 @@ import org.apache.velocity.tools.view.ViewContext;
 public class ViewResourceTool extends
     org.apache.velocity.tools.view.ViewResourceTool
 {
+    public ViewResourceTool() {
+        // force depMode for this deprecated version
+        setDeprecationSupportMode(true);
+    }
+
     @Deprecated
     public void init(Object obj)
     {
