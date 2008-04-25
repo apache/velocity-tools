@@ -148,6 +148,11 @@ public class LoopTool
         return managed;
     }
 
+    public ManagedIterator sync(Object main, Object synced)
+    {
+        return watch(main).sync(synced);
+    }
+
     protected ManagedIterator manage(Iterator iterator, String name)
     {
         return new ManagedIterator(name, iterator, this);
