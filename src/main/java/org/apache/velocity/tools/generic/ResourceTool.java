@@ -68,6 +68,7 @@ public class ResourceTool extends LocaleConfig
     public static final String BUNDLES_KEY = "bundles";
 
     private String[] bundles = new String[] { "resources" };
+    private boolean deprecationSupportMode = false;
 
 
     protected final void setDefaultBundle(String bundle)
@@ -98,6 +99,13 @@ public class ResourceTool extends LocaleConfig
     protected final Locale getDefaultLocale()
     {
         return super.getLocale();
+    }
+
+    @Deprecated
+    public void setDeprecationSupportMode(boolean depMode)
+    {
+        System.out.println("ResourceTool.depMode = "+depMode);
+        this.deprecationSupportMode = depMode;
     }
 
 
@@ -203,10 +211,18 @@ public class ResourceTool extends LocaleConfig
      * Renders the specified resource value and arguments as a String.
      * The resource is treated as a {@link MessageFormat} pattern which
      * is used for formatting along with any specified argument values.
+     * If <code>deprecationSupportMode</code> is set to true, then this
+     * will return the resource directly when there are no args (as it
+     * did in 1.x versions).
      */
     public String render(Object resource, Object[] args)
     {
-        return MessageFormat.format(String.valueOf(resource), args);
+        String value = String.valueOf(resource);
+        if (deprecationSupportMode && args == null)
+        {
+            return value;
+        }
+        return MessageFormat.format(value, args);
     }
 
 
