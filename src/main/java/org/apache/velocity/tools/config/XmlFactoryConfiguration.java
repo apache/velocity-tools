@@ -38,11 +38,22 @@ public class XmlFactoryConfiguration extends FileFactoryConfiguration
 
     public XmlFactoryConfiguration()
     {
-        this(false);
+        this(false, "");
     }
 
     public XmlFactoryConfiguration(boolean supportOldConfig)
     {
+        this(supportOldConfig, String.valueOf(supportOldConfig));
+    }
+
+    public XmlFactoryConfiguration(String source)
+    {
+        this(false, source);
+    }
+
+    public XmlFactoryConfiguration(boolean supportOldConfig, String source)
+    {
+        super(XmlFactoryConfiguration.class, source);
         setRuleSet(new XmlFactoryConfigurationRuleSet());
         this.supportOldXml = supportOldConfig;
     }

@@ -74,7 +74,8 @@ public class ConfigurationUtils
      */
     public static FactoryConfiguration getDefaultTools()
     {
-        FileFactoryConfiguration config = new XmlFactoryConfiguration();
+        FileFactoryConfiguration config =
+            new XmlFactoryConfiguration("ConfigurationUtils.getDefaultTools()");
         config.read(GENERIC_DEFAULTS_PATH);
 
         // view tools and struts tools may not be available
@@ -92,7 +93,8 @@ public class ConfigurationUtils
      */
     public static FactoryConfiguration getGenericTools()
     {
-        FileFactoryConfiguration config = new XmlFactoryConfiguration();
+        FileFactoryConfiguration config =
+            new XmlFactoryConfiguration("ConfigurationUtils.getGenericTools()");
         config.read(GENERIC_DEFAULTS_PATH);
 
         // defaults should *always* be clean!
@@ -108,7 +110,8 @@ public class ConfigurationUtils
      */
     public static FactoryConfiguration getVelocityView()
     {
-        FileFactoryConfiguration config = new XmlFactoryConfiguration();
+        FileFactoryConfiguration config =
+            new XmlFactoryConfiguration("ConfigurationUtils.getVelocityView()");
         config.read(GENERIC_DEFAULTS_PATH);
         config.read(VIEW_DEFAULTS_PATH);
 
@@ -126,7 +129,8 @@ public class ConfigurationUtils
      */
     public static FactoryConfiguration getVelocityStruts()
     {
-        FileFactoryConfiguration config = new XmlFactoryConfiguration();
+        FileFactoryConfiguration config =
+            new XmlFactoryConfiguration("ConfigurationUtils.getVelocityStruts()");
         config.read(GENERIC_DEFAULTS_PATH);
         config.read(VIEW_DEFAULTS_PATH);
         config.read(STRUTS_DEFAULTS_PATH);
@@ -174,7 +178,7 @@ public class ConfigurationUtils
         else
         {
             // start out blank
-            auto = new FactoryConfiguration();
+            auto = new FactoryConfiguration("ConfigurationUtils.getAutoLoaded(false)");
         }
 
         //TODO: look for any Tools classes in the root of the classpath
@@ -365,7 +369,8 @@ public class ConfigurationUtils
         else
         {
             // create a base config to combine the others into
-            FactoryConfiguration config = new FactoryConfiguration();
+            FactoryConfiguration config =
+                new FactoryConfiguration("ConfigurationUtils.findInClassPath("+path+","+caller+")");
             boolean readAConfig = false;
             for (URL resource : found)
             {
@@ -400,13 +405,14 @@ public class ConfigurationUtils
     {
         FileFactoryConfiguration config = null;
         String path = url.toString();
+        String source = "ConfigurationUtils.read("+url.toString()+")";
         if (path.endsWith(".xml"))
         {
-            config = new XmlFactoryConfiguration();
+            config = new XmlFactoryConfiguration(source);
         }
         else if (path.endsWith(".properties"))
         {
-            config = new PropertiesFactoryConfiguration();
+            config = new PropertiesFactoryConfiguration(source);
         }
         else if (path.endsWith(".class"))
         {

@@ -406,6 +406,15 @@ public class ConfigTests {
         assertEquals(one.toString(), two.toString());
     }
 
+    protected void assertConfigEquals(FactoryConfiguration one, FactoryConfiguration two)
+    {
+        assertNotNull(one);
+        assertNotNull(two);
+
+        // for now, just compare the toString() output without source info
+        assertEquals(one.toString(false), two.toString(false));
+    }
+
     protected void assertValid(Data valid)
     {
         assertNotNull(valid);

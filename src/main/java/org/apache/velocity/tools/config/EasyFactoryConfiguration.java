@@ -19,6 +19,7 @@ package org.apache.velocity.tools.config;
  * under the License.
  */
 
+import java.util.List;
 import org.apache.velocity.tools.ToolboxFactory;
 
 /**
@@ -98,9 +99,28 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
      */
     public EasyFactoryConfiguration(boolean includeDefaults)
     {
+        // just give the param name as source
+        this(includeDefaults, String.valueOf(includeDefaults));
+    }
+
+    /**
+     * @param includeDefaults Sets whether this instance should start with the
+     *        {@link ConfigurationUtils#getDefaultTools()} configuration or not.
+     * @param source a string identify where this instance was created, or
+     *        something else useful to identify this instance during debugging
+     */
+    public EasyFactoryConfiguration(boolean includeDefaults, String source)
+    {
+        super(EasyFactoryConfiguration.class, source);
+
         if (includeDefaults)
         {
             addDefaultTools();
+            // now put the root source last, since the defaults were really first
+            // and nothing could have been added prior to them
+            List<String> sources = getSources();
+            String first = sources.remove(0);
+            sources.add(first);
         }
     }
 
