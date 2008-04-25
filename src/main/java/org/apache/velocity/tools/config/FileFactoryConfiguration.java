@@ -37,6 +37,11 @@ import org.apache.velocity.tools.ClassUtils;
  */
 public abstract class FileFactoryConfiguration extends FactoryConfiguration
 {
+    protected FileFactoryConfiguration(Class clazz, String source)
+    {
+        super(clazz, source);
+    }
+
     /**
      * <p>Reads an configuration from an {@link InputStream}.</p>
      * 
@@ -143,6 +148,8 @@ public abstract class FileFactoryConfiguration extends FactoryConfiguration
         try
         {
             read(url, url.openStream(), required, log);
+            // only add the sources which can be read
+            addSource("    .read("+url.toString()+")");
         }
         catch (IOException ioe)
         {

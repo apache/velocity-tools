@@ -477,7 +477,7 @@ public class VelocityView
      */
     protected void configure(final JeeConfig config, final ToolboxFactory factory)
     {
-        FactoryConfiguration factoryConfig = new FactoryConfiguration();
+        FactoryConfiguration factoryConfig = new FactoryConfiguration("VelocityView.configure(config,factory)");
 
         boolean hasOldToolbox = false;
         if (this.deprecationSupportMode)
@@ -722,13 +722,14 @@ public class VelocityView
 
         // then make sure it's a file type we recognize
         FileFactoryConfiguration config = null;
+        String source = "VelocityView.getConfiguration("+path+","+required+")";
         if (path.endsWith(".xml"))
         {
-            config = new XmlFactoryConfiguration(this.deprecationSupportMode);
+            config = new XmlFactoryConfiguration(this.deprecationSupportMode, source);
         }
         else if (path.endsWith(".properties"))
         {
-            config = new PropertiesFactoryConfiguration();
+            config = new PropertiesFactoryConfiguration(source);
         }
         else
         {

@@ -54,6 +54,16 @@ import org.apache.commons.collections.ExtendedProperties;
  */
 public class PropertiesFactoryConfiguration extends FileFactoryConfiguration
 {
+    public PropertiesFactoryConfiguration()
+    {
+        this("");
+    }
+
+    public PropertiesFactoryConfiguration(String source)
+    {
+        super(PropertiesFactoryConfiguration.class, source);
+    }
+
     /**
      * <p>Reads an properties file from an {@link InputStream}
      * and uses it to configure this {@link FactoryConfiguration}.</p>

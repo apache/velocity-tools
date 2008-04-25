@@ -19,7 +19,9 @@ package org.apache.velocity.tools.config;
  * under the License.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import org.apache.velocity.tools.ToolboxFactory;
@@ -35,6 +37,44 @@ public class FactoryConfiguration
     extends CompoundConfiguration<ToolboxConfiguration>
 {
     private final SortedSet<Data> data = new TreeSet<Data>();
+    private final List<String> sources = new ArrayList<String>();
+
+    public FactoryConfiguration()
+    {
+        this("");
+    }
+    
+    /**
+     * Creates a new instance with the specified source name
+     * combined with this class's name as the initial source.
+     */
+    public FactoryConfiguration(String source)
+    {
+        this(FactoryConfiguration.class, source);
+    }
+
+    /**
+     * Allows subclasses to construct an instance that uses their classname.
+     */
+    protected FactoryConfiguration(Class clazz, String source)
+    {
+        addSource(clazz.getName()+"("+source+")");
+    }
+
+    /**
+     * Returns the list of sources for this configuration info in
+     * order starting from the source name given to this instance
+     * (if any) and going to the most recently added source.
+     */
+    public List<String> getSources()
+    {
+        return this.sources;
+    }
+
+    public void addSource(String source)
+    {
+        this.sources.add(source);
+    }
 
     public void addData(Data newDatum)
     {
@@ -130,6 +170,12 @@ public class FactoryConfiguration
         // add config's Data to our own
         setData(config.getData());
 
+        // add config's sources to our own
+        for (String source : config.getSources())
+        {
+            addSource(source);
+        }
+
         // pass to CompoundConfiguration's to add properties
         super.addConfiguration(config);
     }
@@ -148,8 +194,18 @@ public class FactoryConfiguration
     @Override
     public String toString()
     {
+        return toString(true);
+    }
+
+    public String toString(boolean includeSources)
+    {
         StringBuilder out = new StringBuilder();
-        out.append("\nFactoryConfiguration ");
+        out.append("\nFactoryConfiguration from ");
+        if (includeSources)
+        {
+            out.append(getSources().size());
+            out.append(" sources ");
+        }
         appendProperties(out);
         if (hasData())
         {
@@ -172,6 +228,18 @@ public class FactoryConfiguration
                 out.append(datum);
                 out.append("\n ");
             }
+        }
+        if (includeSources)
+        {
+            int count = 0;
+            for (String source : getSources())
+            {
+                out.append("\n Source ");
+                out.append(count++);
+                out.append(": ");
+                out.append(source);
+            }
+            out.append("\n");
         }
         return out.toString();
     }
