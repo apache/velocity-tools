@@ -114,7 +114,7 @@ public abstract class FileFactoryConfiguration extends FactoryConfiguration
         {
             try
             {
-                return file.toURL();
+                return file.toURI().toURL();
             }
             catch (MalformedURLException mue)
             {
