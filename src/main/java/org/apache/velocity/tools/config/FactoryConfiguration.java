@@ -191,6 +191,32 @@ public class FactoryConfiguration
         }
     }
 
+    /**
+     * This will consider the object equal if it is a FactoryConfiguration
+     * and whose {@link #toString(boolean)} method, when passed <code>false</code>,
+     * returns a String equal to that returned by a call to toString(false) on this
+     * instance.  {@link #toString(boolean)} is used since that returns a String
+     * encompassing all relevant info about the configuration except for the
+     * source information.  In other words, two FactoryConfigurations are considered
+     * equal if they have the same data, properties and toolboxes in String form.
+     */
+    @Override
+    public boolean equals(Object o)
+    {
+        if (o instanceof FactoryConfiguration)
+        {
+            FactoryConfiguration that = (FactoryConfiguration)o;
+            return that.toString(false).equals(this.toString(false));
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return toString(false).hashCode();
+    }
+
     @Override
     public String toString()
     {
