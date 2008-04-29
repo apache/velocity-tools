@@ -120,6 +120,15 @@ public class ResourceTool extends LocaleConfig
     }
 
 
+    /**
+     * Accepts objects and uses their string value as the key.
+     */
+    public Key get(Object k)
+    {
+        String key = k == null ? null : String.valueOf(k);
+        return get(key);
+    }
+
     public Key get(String key)
     {
         return new Key(key, this.bundles, getLocale(), null);
@@ -161,12 +170,13 @@ public class ResourceTool extends LocaleConfig
      * the specified basename and locale.  If no such resource can be
      * found, no errors are thrown and {@code null} is returned.
      */
-    public Object get(String key, String baseName, Locale locale)
+    public Object get(Object k, String baseName, Locale locale)
     {
-        if (baseName == null || key == null)
+        if (baseName == null || k == null)
         {
             return null;
         }
+        String key = k == null ? null : String.valueOf(k);
         if (locale == null)
         {
             locale = getLocale();
@@ -193,8 +203,9 @@ public class ResourceTool extends LocaleConfig
      * If no resource is found, no exception will be thrown and {@code null}
      * will be returned.
      */
-    public Object get(String key, String[] bundles, Locale locale)
+    public Object get(Object k, String[] bundles, Locale locale)
     {
+        String key = k == null ? null : String.valueOf(k);
         for (int i=0; i < bundles.length; i++)
         {
             Object resource = get(key, bundles[i], locale);
@@ -251,6 +262,11 @@ public class ResourceTool extends LocaleConfig
         }
 
         // ----- mutators (these return an altered duplicate) ---
+
+        public Key get(Object k)
+        {
+            return get(String.valueOf(k));
+        }
 
         public Key get(String key)
         {
