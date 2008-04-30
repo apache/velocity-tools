@@ -25,7 +25,19 @@ import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.ToolboxFactory;
 
 /**
- * 
+ * <p>This class handles configuration info for the Toolbox instances
+ * that will eventually be produced by {@link ToolboxFactory}.
+ * It contains {@link ToolConfiguration}s for tools which will be managed
+ * by those toolboxes, as well the toolboxes' scope and
+ * any other {@link Property}s which you intend to be available
+ * to all the tools in the toolbox.</p>
+ * <p>
+ * Most users will not find themselves directly using the API of this class.
+ * </p>
+ * <p>NOTE: Two instances of this class are considered equal() if their scopes
+ * are equal. This is not the intuitive behavior at this level but is done
+ * to facilitate intuitive behavior in the higher APIs, which are much more
+ * likely to be used directly.</p>
  *
  * @author Nathan Bubna
  * @version $Id: ToolboxConfiguration.java 511959 2007-02-26 19:24:39Z nbubna $

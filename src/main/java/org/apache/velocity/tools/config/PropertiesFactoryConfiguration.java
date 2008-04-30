@@ -26,8 +26,8 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.ExtendedProperties;
 
 /**
- * NOTE: "property", "data", and "toolbox" are essentially reserved words
- *       do not use them as tool keys or toolbox scopes.
+ * <p> This reads in configuration info formatted as a property
+ * file using {@link ExtendedProperties} from Commons-Collections.</p>
  * <p>This reads in a configuration such as:
  * <code>
  * tools.toolbox = request,application
@@ -47,7 +47,9 @@ import org.apache.commons.collections.ExtendedProperties;
  * tools.data.version.type = number
  * tools.data.debug = false
  * tools.data.debug.type = boolean
- * </code></p>
+ * </code>
+ * <strong>NOTE</strong>: "property", "data", and "toolbox" are
+ * reserved words do not use them as tool keys or toolbox scopes.</p>
  *
  * @author Nathan Bubna
  * @version $Id: PropertiesFactoryConfiguration.java 511959 2007-02-26 19:24:39Z nbubna $

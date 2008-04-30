@@ -26,7 +26,13 @@ import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RuleSet;
 
 /**
- * 
+ * <p>This reads in configuration info formatted as an XML file
+ * using Commons-{@link Digester}.  This uses 
+ * {@link XmlFactoryConfigurationRuleSet} as the default set of rules
+ * for processing the XML.  However, you may always change this by
+ * passing a new {@link RuleSet} to the {@link #setRuleSet} method.
+ * See the configuration documentation on the main web site for 
+ * instructions on the XML format supported by the default rules.</p>
  *
  * @author Nathan Bubna
  * @version $Id: XmlFactoryConfiguration.java 511959 2007-02-26 19:24:39Z nbubna $

@@ -24,7 +24,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * 
+ * This class manages a {@link SortedSet} of child {@link Configuration}s
+ * as well as being a {@link Configuration} itself.
  *
  * @author Nathan Bubna
  * @version $Id: Configuration.java 511959 2007-02-26 19:24:39Z nbubna $

@@ -30,7 +30,27 @@ import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.ConversionUtils;
 
 /**
- * 
+ * <p>This class represents configured data.  If added to a
+ * {@link FactoryConfiguration}, its values will be made
+ * available in the application-scoped toolboxes
+ * produced by any ToolboxFactory configured using
+ * that configuration.</p>
+ * <p>This class also implements all the functionality of
+ * {@link Property}s, which may added to <strong>any</strong>
+ * {@link Configuration} subclass, including
+ * {@link ToolConfiguration}, {@link ToolboxConfiguration},
+ * and {@link FactoryConfiguration}.  In other words,
+ * anything you can do in a {@link Data} configuration, you
+ * can do with a {@link Property}.</p>
+ * <p>Some features supported here are:
+ * <ul>
+ * <li>built in {@link Type}s for strings, booleans, numbers, fields 
+ *     and lists thereof</li>
+ * <li>auto-conversion of numbers, booleans and fields in data
+ *     with no explicit type</li>
+ * <li>support for any Commons-BeanUtils {@link Converter} implementation</li>
+ * </ul>
+ * </p>
  *
  * @author Nathan Bubna
  * @version $Id: Data.java 511959 2007-02-26 19:24:39Z nbubna $

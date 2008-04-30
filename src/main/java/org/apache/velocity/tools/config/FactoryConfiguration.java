@@ -27,8 +27,37 @@ import java.util.TreeSet;
 import org.apache.velocity.tools.ToolboxFactory;
 
 /**
- * //TODO: add ability to log all this stuff and/or 
- *         keep a running, ordered list of sources
+ * <p>This class serves to define configuration info for a {@link ToolboxFactory}.
+ * It contains the {@link ToolboxConfiguration}s for the factory as well
+ * as any {@link Data} which is to be made available in the application scope
+ * by the factory and any {@link Property}s which you intend to be available
+ * to <strong>all</strong> tools managed by the factory, regardless of
+ * toolbox or scope.
+ * </p><p>
+ * Most users will not find themselves directly using the API of this class,
+ * as its subclasses generally provide much simpler means of inputting
+ * the actual configuration info whether from XML, Java or a Properties files.
+ * </p><p>
+ * When combining any {@link Configuration}s via the various
+ * {@link #addConfiguration} methods in each class, it is
+ * <strong>essential</strong> to remember that subsequent configurations
+ * always override previous ones.  This is a "last entry wins" approach
+ * to configuration!
+ * </p><p>
+ * For debugging, this class tracks its "sources", keeping a chronological list
+ * of all sources for configuration data.  When you add configuration info
+ * to this class via {@link #addConfiguration}, the source lists from those
+ * {@link FactoryConfiguration}s is appended to this instance's list.  The
+ * initial item in this list will typically be the name of the FactoryConfiguration
+ * class (or subclass) along with a caller-provided string identifying where
+ * this instance was created.  This aids greatly in debugging combined, complex
+ * configurations.  You may add further sources at any time via
+ * {@link #addSource}.
+ * </p><p>
+ * The {@link #toString()} method of this class provides a complete and
+ * well-formatted listing of the configuration info contained within this
+ * instance and is also very useful for debugging.
+ * </p>
  *
  * @author Nathan Bubna
  * @version $Id: FactoryConfiguration.java 511959 2007-02-26 19:24:39Z nbubna $
