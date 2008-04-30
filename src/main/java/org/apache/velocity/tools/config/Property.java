@@ -21,7 +21,7 @@ package org.apache.velocity.tools.config;
 
 /**
  * Simple extension of {@link Data} that treats "name" as an alias
- * for "key".
+ * for "key".  See {@link Data} for a description and feature list.
  *
  * @author Nathan Bubna
  * @version $Id: Property.java 511959 2007-02-26 19:24:39Z nbubna $

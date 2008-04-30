@@ -274,7 +274,7 @@ public class VelocityView
     /**
      * Simplifies process of getting a property from VelocityEngine,
      * because the VelocityEngine interface sucks compared to the singleton's.
-     * Use of this method assumes that {@link #init(ServletConfig,VelocityEngine)}
+     * Use of this method assumes that {@link #init(JeeConfig,VelocityEngine)}
      * has already been called.
      */
     protected String getProperty(String key, String alternate)

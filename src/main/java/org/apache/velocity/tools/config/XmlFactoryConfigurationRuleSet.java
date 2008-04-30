@@ -25,7 +25,31 @@ import org.apache.commons.digester.RuleSetBase;
 import org.xml.sax.Attributes;
 
 /**
- * 
+ * <p>This provides set of {@link Rule}s used by 
+ * Commons-{@link Digester} to process configuration info
+ * formatted as XML.  This is the default RuleSet used by
+ * {@link XmlFactoryConfiguration}.</p>
+ * <p>Here is a short example XML:
+ * <code>
+ * &lt;tools&gt; 
+ *     &lt;data type="number" key="version" value="1.1"/&gt;
+ *     &lt;data key="isConvertedProp" value="false" class="java.lang.Boolean" converter="org.apache.commons.beanutils.converters.BooleanConverter"/&gt;
+ *     &lt;data type="boolean" key="isKnownType" value="true"/&gt;
+ *     &lt;data key="isAutoType" value="true"/&gt;
+ *     &lt;data key="foo" value="this is foo."/&gt;
+ *     &lt;data key="bar"&gt;this is bar.&lt;/data&gt;
+ *     &lt;toolbox scope="request" xhtml="true"&gt;
+ *         &lt;tool key="toytool" class="ToyTool" restrictTo="index.vm"/&gt;
+ *     &lt;/toolbox&gt;
+ *     &lt;toolbox scope="session"&gt;
+ *         &lt;property name="createSession" value="true" type="boolean"/&gt;
+ *         &lt;tool key="map" class="java.util.HashMap"/&gt;
+ *     &lt;/toolbox&gt;
+ *     &lt;toolbox scope="application"&gt;
+ *         &lt;tool class="org.apache.velocity.tools.generic.DateTool"/&gt;
+ *     &lt;/toolbox&gt;
+ * &lt;/tools&gt;
+ * </code></p>
  *
  * @author Nathan Bubna
  * @version $Id: XmlConfiguration.java 511959 2007-02-26 19:24:39Z nbubna $
@@ -56,26 +80,6 @@ public class XmlFactoryConfigurationRuleSet extends RuleSetBase
     {
         this.propertyClass = clazz;
     }
-
-/*
-<tools> 
-    <data type="number" key="version" value="1.1"/>
-    <data key="isConvertedProp" value="false" class="java.lang.Boolean" converter="org.apache.commons.beanutils.converters.BooleanConverter"/>
-    <data type="boolean" key="isSimple" value="true"/>
-    <data key="foo" value="this is foo."/>
-    <data key="bar">this is bar.</data>
-    <toolbox scope="request" xhtml="true">
-        <tool key="toytool" class="ToyTool" restrictTo="index.vm"/>
-    </toolbox>
-    <toolbox scope="session">
-        <property name="create-session" value="true" type="boolean"/>
-        <tool key="map" class="java.util.HashMap"/>
-    </toolbox>
-    <toolbox scope="application">
-        <tool key="date" class="org.apache.velocity.tools.generic.DateTool"/>
-    </toolbox>
-</tools>
-*/
 
     /**
      * <p>Add the set of Rule instances defined in this RuleSet to the

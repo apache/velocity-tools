@@ -26,7 +26,13 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * 
+ * <p>This base configuration class manages a set of {@link Property}s
+ * for whatever thing the instance of this class represents. When
+ * combined with another {@link Configuration} instance via
+ * {@link #addConfiguration}, the {@link Property}s of both instances are
+ * combined.</p><p>NOTE: Though this class appears {@link Comparable},
+ * the {@link #compareTo} method is unsupported. Proper comparison is
+ * left up to subclasses.</p>
  *
  * @author Nathan Bubna
  * @version $Id: Configuration.java 511959 2007-02-26 19:24:39Z nbubna $

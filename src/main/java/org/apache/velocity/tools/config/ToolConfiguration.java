@@ -25,7 +25,15 @@ import org.apache.velocity.tools.ToolInfo;
 import org.apache.velocity.tools.ClassUtils;
 
 /**
- * 
+ * <p>This class handles configuration info for tools, including their key,
+ * classname, path restriction, and properties.  It also does fairly
+ * aggresive validation and is able to identify if the tool is "old"
+ * (i.e. designed for VelocityTools 1.x).  Once configuration is
+ * complete, a {@link ToolInfo} instance can be created by calling
+ * {@link #createInfo}.</p>
+ * <p>
+ * Most users will not find themselves directly using the API of this class.
+ * </p>
  *
  * @author Nathan Bubna
  * @version $Id: ToolConfiguration.java 511959 2007-02-26 19:24:39Z nbubna $
