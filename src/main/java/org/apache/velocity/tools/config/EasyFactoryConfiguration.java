@@ -24,7 +24,7 @@ import org.apache.velocity.tools.ToolboxFactory;
 
 /**
  * <p>{@link FactoryConfiguration} subclass that simplifies the process of
- * configuration a {@link ToolboxFactory} in Java without the use of an
+ * configuring a {@link ToolboxFactory} in Java without the use of an
  * xml or properties configuration file.  Below is an example:
  *
  * <pre><code>
