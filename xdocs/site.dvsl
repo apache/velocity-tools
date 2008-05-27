@@ -274,13 +274,10 @@
  *  process a documentation subsection
  *#
 #match( "subsection" )
-<a name="$attrib.name"></a>##
 <div class="subsection">##
-#if( $attrib.href )
-<a href="$attrib.href"><h3>$attrib.name</h3></a>
-#else
-<h3>$attrib.name</h3>
-#end
+<h3><a name="$!attrib.name.replace(' ','_')"#*
+   *##if( $attrib.href ) href="$attrib.href"#*
+   *##else class="nolink"#end>$attrib.name</a></h3>
     $context.applyTemplates("*")
 </div>
 #end

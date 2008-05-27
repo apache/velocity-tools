@@ -14,10 +14,19 @@ td {
     border-bottom: none;
     margin-top: 10px;
 }
-
-h3 {
-    margin: 32px 0px 0px 20px;
-    background-color: whiteSmoke;
+.subsection h3 {
+    border: 0px;
+    padding: 0px;
+    margin: 25px 0px -10px 0px;
+}
+.subsection h3 a {
+    border-bottom: 1px dotted black;
+    display: block;
+    font-size: 1.2em;
+}
+.subsection h3 a.nolink, .subsection h3 a.nolink:hover {
+    text-decoration: none;
+    color: black;
 }
 
 .note {
