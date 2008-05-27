@@ -258,13 +258,9 @@
  *  process a documentation section
  *#
 #match( "section" )
-<a name="$attrib.name"></a>##
 <div class="section">##
-#if( $attrib.href )
-<a href="$attrib.href"><h2>$attrib.name</h2></a>
-#else
-<h2>$attrib.name</h2>
-#end
+<a name="$!attrib.name.replace(' ','_')"#*
+  *##if( $attrib.href ) href="$attrib.href"#end><h2>$attrib.name</h2></a>
   $context.applyTemplates("*")
 </div>
 #end

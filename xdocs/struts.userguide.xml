@@ -55,14 +55,14 @@
         <p><strong>Table of Contents</strong></p>
         <ol>
           <li><a href="#Background">Background</a></li>
-          <li><a href="#Model 2 Architecture">Model 2 Architecture</a></li>
+          <li><a href="#Model_2_Architecture">Model 2 Architecture</a></li>
           <li><a href="#Installation">Installation</a></li>
-          <li><a href="#Rendering the View">Rendering the View</a>
+          <li><a href="#Rendering_the_View">Rendering the View</a>
             <ol>
-                <li><a href="#Velocity Template Language">Velocity Template Language</a></li>
-                <li><a href="#Exposing Data">Exposing Data</a></li>
-                <li><a href="#Access to Servlet Resources">Access to Servlet Resources</a></li>
-                <li><a href="#Access to Struts Framework Resources">Access to Struts Framework Resources</a></li>
+                <li><a href="#Velocity_Template_Language">Velocity Template Language</a></li>
+                <li><a href="#Exposing_Data">Exposing Data</a></li>
+                <li><a href="#Access_to_Servlet_Resources">Access to Servlet Resources</a></li>
+                <li><a href="#Access_to_Struts_Framework_Resources">Access to Struts Framework Resources</a></li>
             </ol>
           </li>
         </ol>
