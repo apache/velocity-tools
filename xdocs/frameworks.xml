@@ -28,10 +28,16 @@
 
     <body>
     <section name="Overview">
-        <p class="note">
-            This page is quite unfinished.
-            <a href="index.html#Contribution">Help is welcome!</a>
-        </p>
+        <todo>
+            <ul>
+            <li>Finish this page,</li>
+            <li>add a TOC for it,</li>
+            <li>incorporate the instructions and code for
+            integrating Tools 2 that are laid out in
+            <a href="http://velocity.markmail.org/search/?q=subject%3A%22upgrading%22#query:subject%3Aupgrading%20order%3Adate-forward+page:3+mid:pw56jxgsudhwwnnd+state:results">this email thread</a>,</li>
+            <li>and perhaps link to some examples.</li>
+            </ul>
+        </todo>
     </section>
     <section name="Integration Via VelocityView">
         <subsection name="Configuring">
@@ -56,40 +62,41 @@
                 <code>org.apache.velocity.tools.view.velocity.properties</code>.
                 </dd>
             </dl>
-            <p>
-            TODO: talk about deprecationSupportMode
-            </p>
+            <todo>talk about deprecationSupportMode</todo>
         </subsection>
         <subsection name="Retrieving">
-            <p>
-            TODO: finish this
-            </p>
+            <todo>talk about ServletUtils and constructors</todo>
         </subsection>
         <subsection name="Sharing">
-            <p>
-            TODO: finish this
-            </p>
+            <todo>
+                talk about motives, servlets, tags, filters
+                and org.apache.velocity.tools.shared.config
+            </todo>
         </subsection>
         <subsection name="Using">
-            <p>
-            TODO: finish this
-            </p>
+            <todo>discuss basic functions, config options, etc</todo>
         </subsection>
     </section>
     <section name="Other Ways to Integrate VelocityTools">
-        <subsection name="Direct Use Of Tools">
-            <p>
-            TODO: finish this
-            </p>
-        </subsection>
         <subsection name="ToolboxFactory">
-            <p>
-            TODO: finish this
-            </p>
+            <todo>discuss lifecycle, configuration, and use</todo>
         </subsection>
-        <subsection name="ToolManager">
+        <subsection name="Standalone Use" href="standalone.html">
             <p>
-            TODO: finish this
+            The so-called "standalone" methods of tool use
+            developed from a desire to
+            <a href="standalone.html#Just_Use_Them!">use tools directly</a>,
+            particularly the GenericTools which had no servlet
+            dependencies.  However, now many VelocityView tools
+            can also be used "standalone" with varying degrees
+            of effort and no need to create any VelocityView instances.
+            Most of the time, you just treat them like any other
+            POJO--create an instance, provide any need values/objects
+            and use it.
+            </p>
+            <p>
+            If you want a little more help with things, consider using a
+            <a href="standalone.html#ToolManager">ToolManager</a>.
             </p>
         </subsection>
     </section>
