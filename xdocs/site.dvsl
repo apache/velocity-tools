@@ -278,6 +278,16 @@
 </div>
 #end
 
+#*
+ *  process a TODO note
+ *#
+#match( "todo" )
+<p class="note">
+    This is still unfinished.
+    <a href="index.html#Contribution">Help is welcome!</a><br>
+    TODO: $node.copy()
+</p>
+#end
 
 
 #*
