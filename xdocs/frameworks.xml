@@ -27,17 +27,51 @@
     </properties>
 
     <body>
+    <section name="Content">
+        <p>
+            <ul>
+            <li><a href="#Introduction">Introduction</a></li>
+            <li>
+                <a href="#Integration_Via_VelocityView">VelocityView Integration</a>
+                <ul>
+                <li><a href="#Configuring">Configuration</a></li>
+                <li><a href="#Retrieving">Access</a></li>
+                <li><a href="#Sharing">Shared Instances</a></li>
+                <li><a href="#Using">Usage</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="Other_Ways_to_Integrate_VelocityTools">Other Ways to Integrate VelocityTools</a>
+                <ul>
+                <li><a href="#Toolbox_Factory">Toolbox Factory</a></li>
+                <li><a href="#Standalone_Use">Standalone Use</a></li>
+                </ul>
+            </li>
+            </ul>
+        </p>
+    </section>
     <section name="Overview">
         <todo>
-            <ul>
-            <li>Finish this page,</li>
-            <li>add a TOC for it,</li>
-            <li>incorporate the instructions and code for
+            Incorporate the instructions and code for
             integrating Tools 2 that are laid out in
             <a href="http://velocity.markmail.org/search/?q=subject%3A%22upgrading%22#query:subject%3Aupgrading%20order%3Adate-forward+page:3+mid:pw56jxgsudhwwnnd+state:results">this email thread</a>,</li>
-            <li>and perhaps link to some examples.</li>
-            </ul>
         </todo>
+        <p>
+        VelocityTools is not meant to be a framework in itself,
+        but rather should ideally be integrated with other frameworks
+        for applications of much size.  The simplest means of integration
+        is to have your framework handle requests, placing necessary data
+        into the request, session or servlet context attributes where
+        templates and/or tools can find them, then forward those requests
+        to a VelocityViewServlet or VelocityLayoutServlet, letting those
+        servlets manage your VelocityView support for you and render
+        your templates into the response.  If, however,
+        your framework is one like Spring MVC and you either cannot or
+        do not wish to forward requests to one of the provided servlets,
+        then the instructions, tips and code below should make it easy
+        for you to integrate VelocityTools support into your framework
+        of choice.
+        </p>
     </section>
     <section name="Integration Via VelocityView">
         <subsection name="Configuring">

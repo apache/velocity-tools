@@ -60,7 +60,7 @@
             <li><a href="#Be_Robust">Be Robust</a></li>
             <li><a href="#Be_Flexible">Be Flexible</a></li>
             <li><a href="#Be_Careful">Be Careful</a></li>
-            <li><a href="#Be_Natural">Be Natural</a></li>
+            <li><a href="#Be_Fluent">Be Fluent</a></li>
             </ol>
         </li>
         </ol>
@@ -222,7 +222,7 @@ public class PagerTool
         <li><a href="#Be_Robust">Be robust.</a> Catch exceptions and return <code>null</code> on errors.</li>
         <li><a href="#Be_Flexible">Be flexible.</a> Have methods accept <code>Object</code> when possible.</li>
         <li><a href="#Be_Careful">Be careful.</a> Choose scope carefully and be aware of thread safety issues.</li>
-        <li><a href="#Be_Natural">Be natural.</a> Consider using "subtools" to create a fluent API</li>
+        <li><a href="#Be_Fluent">Be fluent.</a> Subtools or <code>get(key)</code> methods can make a clear and flexible API.</li>
         </ul>
         </p>
         <subsection name="Be Robust">
@@ -337,31 +337,113 @@ public class PagerTool
             be currently defined by the tool itself.
             </p>
         </subsection>
-        <subsection name="Be Natural">
-            <todo>
-                talk about using "subtools" for a 
-                <a href="http://www.martinfowler.com/bliki/FluentInterface.html">fluent API</a>.
-            </todo>
+        <subsection name="Be Fluent">
             <p>
-            Here's a few examples:
+            When writing tools, you should take care in how you design its methods
+            to make the resulting syntax in the templates clear, succinct and simple
+            and thus decrease typos and "visual clutter".  Readability is important for
+            maintainability and things can get ugly and unreadable fast if you aren't
+            careful.  Typical Java method naming tends to be fairly verbose, which
+            works fine in Java development environment with auto-complete and Java
+            conventions to respect.  It wouldn't be out of line for a BubbleGum class to
+            have a method <code>getStickWithName(String name)</code>,
+            but using that in a template (e.g. 
+            <code>$bubbleGum.getStickWithName('bigred')</code>) is not ideal.
+            It would be much better to have a simple <code>get(String name)</code>
+            method to simplify that down to just <code>$bubbleGum.bigred</code>.
+            </p>
+            <p>
+            One of your best assets when trying to simplify your tools' template-facing
+            interface is the fact that Velocity includes <code>get('name')</code> in
+            the method lookup for <code>$tool.name</code>.  For some tools, this can
+            greatly simplify the syntax, as shown above.  Also, by encouraging the
+            use of such short syntax, you give yourself greater flexibility in making
+            changes to the tool later, which you would not have if the template
+            references were all explicit method calls like <code>$tool.getName()</code>.
+            </p>
+            <p>
+            Another handy technique available to tool author's like yourself is
+            the use of what we call subtools.  These are examples of the
+            <a href="http://www.martinfowler.com/bliki/FluentInterface.html">fluent
+            interface pattern</a>.  Essentially, the idea is that most methods
+            return either the tool itself again, or else another object that has
+            a similar or otherwise naturally subsequent interface.
+            Such "fluent" interfaces tend to be very natural, clear and succinct,
+            both saving keystrokes and keeping templates easy to read and maintain.
+            </p>
+            <p>
+            In VelocityTools' standard set of tools, this practice is put
+            into place often and in a few different ways.
+            Here's a few examples, out of the many tools which make good
+            use of fluent interfaces and a <code>get(key)</code> method.
             <ul>
             <li>
                 <a href="javadoc/org/apache/velocity/tools/generic/ResourceTool.html">ResourceTool</a>
-                uses "subs" to allow you to type <code>$text.org.com.Foo</code> instead of
+                uses subtools to allow you to type <code>$text.org.com.Foo</code> instead of
                 <code>$text.get('org.com.Foo')</code> or worse, something very java-ish like
-                <code>$text.getResourceFromBundle('messages.properties', 'org.com.Foo')</code>
+                <code>$text.getResourceFromBundle('messages.properties', 'org.com.Foo')</code>.
+                This is achieved by having the get() method return a new instance of its 
+                <code>Key</code> subclass that carries with it the value to be gotten.
+                The Key, in turn, has a get() method that does the same (and more),
+                returning a new Key instance that carries the concatenated values of
+                both get() calls.  And so on it goes, until the final resulting value
+                is rendered by Velocity calling the last Key's toString() method.
+                <br/><br/>
             </li>
             <li>
                 <a href="javadoc/org/apache/velocity/tools/view/LinkTool.html">LinkTool</a>
+                takes a different approach.  Rather than use a subclass as the subtool, it
+                uses itself.  Almost every method in LinkTool returns a copy of the
+                original instance with the addition of the latest value.  Both this
+                approach and that of ResourceTool provide great flexibility to
+                the template author.  They can use the tools however they wish,
+                with no concerns about thread collisions, shared state or lifecycle.
+                And with modern JVMs, the performance cost of this flexibility
+                is minimal--light object creation and reflection have become cheap and fast,
+                and short-lived instances like those created in the process are
+                quickly garbage collected.
+                <br/><br/>
             </li>
             <li>
                 <a href="javadoc/org/apache/velocity/tools/generic/ClassTool.html">ClassTool</a>
+                uses subtools to a somewhat different end.  Rather than simply replicating
+                the interface of the parent, the subtools provide a natural interface wrapping
+                around the result of the previous call.  This is done because the reflection
+                API provided by JavaSE is not at all template-friendly.  ClassTool wraps
+                almost all returned methods, contructors and fields with subtools that
+                continue to provide a natural, template-friendly interface.
+                <br/><br/>
             </li>
             <li>
-                <a href="javadoc/org/apache/velocity/tools/struts/MessageTool.html">MessageTool</a>
+                <a href="javadoc/org/apache/velocity/tools/generic/AlternatorTool.html">AlternatorTool</a>
+                falls into a very simple class of "subtool" uses.  In this case,
+                the AlternatorTool class serves only as a factory for creating
+                instances of the separate Alternator class.  In this case,
+                the so-called "subtool" is really the main thing and the tool
+                exists solely to provide access to it.
+                <br/><br/>
+            </li>
+            <li>
+                <a href="javadoc/org/apache/velocity/tools/generic/LoopTool.html">LoopTool</a>
+                might be the strangest of them all.  It is unlikely that you
+                would find need to create such a tool, but if you are curious,
+                read on.  LoopTool exists to add value and convenience to using
+                the #foreach directive.  The methods on the main class are either
+                used when starting a #foreach loop or else for use during said loop.
+                The starting ones return a "subtool" of sorts called
+                <a href="javadoc/org/apache/velocity/tools/generic/LoopTool.ManagedIterator.html">ManagedIterator</a>,
+                which provides a few fluent methods for refinement of the loop
+                control.  The final result of those, however, is largely just
+                used by #foreach internally.  While the loop is going, however,
+                the original LoopTool itself may be directly used to observe
+                and/or influence the ManagedIterator being used internally by
+                #foreach.  This is because the main LoopTool keeps track of
+                all its subtool instances in a Stack.  This is very different
+                from most subtool situations, where the tool and subtool are
+                immediately disassociated.
+                <br/><br/>
             </li>
             </ul>
-            and more...
             </p>
         </subsection>
     </section>
