@@ -53,18 +53,25 @@ public class ImportTool extends ImportSupport
      * @param url the URL to import
      * @return the URL as a string
      */
-    public String read(String url) {
-        try {
-            // check the URL
-            if (url == null || url.equals("")) {
-                LOG.warn("ImportTool : Import URL is null or empty");
-                return null;
-            }
-
+    public String read(Object obj) {
+        if (obj == null)
+        {
+            LOG.warn("ImportTool.read(): url is null!");
+            return null;
+        }
+        String url = String.valueOf(obj).trim();
+        if (url.length() == 0)
+        {
+            LOG.warn("ImportTool.read(): url is empty string!");
+            return null;
+        }
+        try
+        {
             return acquireString(url);
         }
-        catch (Exception ex) {
-            LOG.error("ImportTool : Exception while importing URL", ex);
+        catch (Exception ex)
+        {
+            LOG.error("ImportTool.read(): Exception while aquiring '"+url+"'", ex);
             return null;
         }
     }
