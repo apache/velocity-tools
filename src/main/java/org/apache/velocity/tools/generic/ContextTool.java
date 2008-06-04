@@ -57,36 +57,18 @@ import org.apache.velocity.tools.generic.ValueParser;
  */
 @DefaultKey("context")
 @InvalidScope({Scope.APPLICATION,Scope.SESSION})
-public class ContextTool
+public class ContextTool extends AbstractLockConfig
 {
-    /**
-     * The key used for specifying whether to hide keys with '.' in them.
-     */
-    public static final String SAFE_MODE_KEY = "safeMode";
-
     protected Context context;
     protected Map<String,Object> toolbox;
-
-    private boolean safeMode = true;
-
 
     /**
      * Initializes this instance for the current request.
      * Also looks for a safe-mode configuration setting. By default,
      * safeMode is true and thus keys with '.' in them are hidden.
      */
-    public void configure(Map params)
-    {
-        if (params != null)
-        {
-            configure(new ValueParser(params));
-        }
-    }
-
     protected void configure(ValueParser parser)
     {
-        this.safeMode = parser.getBoolean(SAFE_MODE_KEY, true);
-
         this.context = (Context)parser.get(ToolContext.CONTEXT_KEY);
     }
 
@@ -126,7 +108,7 @@ public class ContextTool
         fillKeyset(keys);
 
         // if we're in safe mode, remove keys that contain '.'
-        if (this.safeMode)
+        if (isSafeMode())
         {
             for (Iterator i = keys.iterator(); i.hasNext(); )
             {
@@ -202,7 +184,7 @@ public class ContextTool
     public Object get(Object refName)
     {
         String key = String.valueOf(refName);
-        if (safeMode && key.indexOf('.') >= 0)
+        if (isSafeMode() && key.indexOf('.') >= 0)
         {
             return null;
         }
