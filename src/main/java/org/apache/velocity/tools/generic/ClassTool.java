@@ -67,10 +67,6 @@ import org.apache.velocity.tools.config.DefaultKey;
 @DefaultKey("class")
 public class ClassTool extends AbstractLockConfig
 {
-    /**
-     * The key used for specifying whether to hide keys with '.' in them.
-     */
-    public static final String SAFE_MODE_KEY = "safeMode";
     public static final String INSPECT_KEY = "inspect";
     public static final String SHOW_DEPRECATED_KEY = "showDeprecated";
 
@@ -80,7 +76,6 @@ public class ClassTool extends AbstractLockConfig
     protected List<ConstructorSub> constructors;
     protected List<FieldSub> fields;
 
-    private boolean safeMode = true;
     private boolean showDeprecated = false;
 
     /**
@@ -104,17 +99,16 @@ public class ClassTool extends AbstractLockConfig
             throw new IllegalArgumentException("parent tool must not be null");
         }
 
-        // duplicate configuration of the parent tool
+        // manually duplicate configuration of the parent tool
         this.log = tool.log;
-        this.safeMode = tool.safeMode;
         this.showDeprecated = tool.showDeprecated;
+        setSafeMode(tool.isSafeMode());
         setLockConfig(tool.isConfigLocked());
     }
 
     protected void configure(ValueParser values)
     {
         this.log = (Log)values.getValue("log");
-        this.safeMode = values.getBoolean(SAFE_MODE_KEY, safeMode);
         this.showDeprecated =
             values.getBoolean(SHOW_DEPRECATED_KEY, showDeprecated);
 
@@ -153,14 +147,6 @@ public class ClassTool extends AbstractLockConfig
     protected static boolean isDeprecated(AnnotatedElement element)
     {
         return (element.getAnnotation(Deprecated.class) != null);
-    }
-
-    /**
-     * Returns the current safeMode setting.
-     */
-    public boolean getSafeMode()
-    {
-        return this.safeMode;
     }
 
     /**
@@ -231,7 +217,7 @@ public class ClassTool extends AbstractLockConfig
      * the specified {@link Class}.  If the specified class
      * is null, then this will return {@code null}. All other
      * configuration settings will be copied to the new instance.
-     * If safeMode is set to {@code true} and the specified Class
+     * If {@link #isSafeMode()} is {@code true} and the specified Class
      * is not declared {@code public}, then this will return
      * {@code null}.
      */
@@ -242,9 +228,9 @@ public class ClassTool extends AbstractLockConfig
             return null;
         }
         // create the new tool, but only return it if
-        // it is public or safeMode is off
+        // it is public or isSafeMode() is off
         ClassTool tool = new ClassTool(this, type);
-        if (this.safeMode && !tool.isPublic())
+        if (isSafeMode() && !tool.isPublic())
         {
             return null;
         }
@@ -385,7 +371,7 @@ public class ClassTool extends AbstractLockConfig
             for (Method method : declared)
             {
                 MethodSub sub = new MethodSub(method);
-                if ((!safeMode || sub.isPublic()) &&
+                if ((!isSafeMode() || sub.isPublic()) &&
                     (showDeprecated || !sub.isDeprecated()))
                 {
                     subs.add(sub);
@@ -413,7 +399,7 @@ public class ClassTool extends AbstractLockConfig
             for (Constructor constructor : declared)
             {
                 ConstructorSub sub = new ConstructorSub(constructor);
-                if ((!safeMode || sub.isPublic()) &&
+                if ((!isSafeMode() || sub.isPublic()) &&
                     (showDeprecated || !sub.isDeprecated()))
                 {
                     subs.add(sub);
@@ -441,7 +427,7 @@ public class ClassTool extends AbstractLockConfig
             for (Field field : declared)
             {
                 FieldSub sub = new FieldSub(field);
-                if ((!safeMode || sub.isPublic()) &&
+                if ((!isSafeMode() || sub.isPublic()) &&
                     (showDeprecated || !sub.isDeprecated()))
                 {
                     subs.add(sub);
@@ -463,7 +449,7 @@ public class ClassTool extends AbstractLockConfig
         Set<Class> types = new HashSet<Class>();
         for (MethodSub method : getMethods())
         {
-            if (!safeMode || method.isPublic())
+            if (!isSafeMode() || method.isPublic())
             {
                 if (!method.isVoid())
                 {
@@ -477,7 +463,7 @@ public class ClassTool extends AbstractLockConfig
         }
         for (ConstructorSub constructor : getConstructors())
         {
-            if (!safeMode || constructor.isPublic())
+            if (!isSafeMode() || constructor.isPublic())
             {
                 for (Class type : constructor.getParameters())
                 {
@@ -487,7 +473,7 @@ public class ClassTool extends AbstractLockConfig
         }
         for (FieldSub field : getFields())
         {
-            if (!safeMode || field.isPublic())
+            if (!isSafeMode() || field.isPublic())
             {
                 addType(types, field.getType());
             }
