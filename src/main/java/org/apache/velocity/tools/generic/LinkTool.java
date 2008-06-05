@@ -116,7 +116,7 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
 
 
     /**
-     * Default constructor. Tool must be initialized before use.
+     * Default constructor. Tool typically is configured before use.
      */
     public LinkTool()
     {
@@ -211,7 +211,7 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
      * <p>Subclasses may easily override the init() method to set this
      *    appropriately and then call super.init()</p>
      *
-     * @param useXhtml if true, the XHTML query data delimiter ('&amp;amp;')
+     * @param xhtml if true, the XHTML query data delimiter ('&amp;amp;')
      *        will be used.  if false, then '&' will be used.
      * @see <a href="http://www.w3.org/TR/xhtml1/#C_12">Using Ampersands in Attribute Values (and Elsewhere)</a>
      */
@@ -248,9 +248,13 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
         else
         {
             this.scheme = String.valueOf(obj);
+            if (scheme.length() == 0)
+            {
+                this.scheme = null;
+            }
             if (scheme.endsWith(":"))
             {
-                scheme = scheme.substring(0, scheme.length() - 1);
+                this.scheme = scheme.substring(0, scheme.length() - 1);
             }
         }
     }
@@ -599,6 +603,9 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
 
     // --------------------------------------------- Template Methods -----------
 
+    /**
+     * Returns a new instance with the specified value set as its scheme.
+     */
     public LinkTool scheme(Object scheme)
     {
         LinkTool copy = duplicate();
@@ -606,26 +613,41 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
         return copy;
     }
 
+    /**
+     * Returns a new instance with the scheme set to "https".
+     */
     public LinkTool secure()
     {
         return scheme(SECURE_SCHEME);
     }
 
+    /**
+     * Returns a new instance with the scheme set to "http".
+     */
     public LinkTool insecure()
     {
         return scheme(DEFAULT_SCHEME);
     }
 
+    /**
+     * Return the scheme value for this instance.
+     */
     public String getScheme()
     {
         return scheme;
     }
 
+    /**
+     * Returns true if this instance's scheme is "https".
+     */
     public boolean isSecure()
     {
         return SECURE_SCHEME.equalsIgnoreCase(getScheme());
     }
 
+    /**
+     * Returns true if this instance has a scheme value.
+     */
     public boolean isAbsolute()
     {
         if (this.scheme == null)
@@ -635,11 +657,19 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
         return true;
     }
 
+    /**
+     * Returns true if this instance represents an opaque URI.
+     * @see URI
+     */
     public boolean isOpaque()
     {
         return this.opaque;
     }
 
+    /**
+     * Returns a new instance with the specified value
+     * set as its user info.
+     */
     public LinkTool user(Object info)
     {
         LinkTool copy = duplicate();
@@ -647,11 +677,19 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
         return copy;
     }
 
+    /**
+     * Returns the {@link URI#getUserInfo()} value for this instance.
+     */
     public String getUser()
     {
         return this.user;
     }
 
+    /**
+     * Returns a new instance with the specified value set as its
+     * host.  If no scheme has yet been set, the new instance will
+     * also have its scheme set to the {@link #DEFAULT_SCHEME} (http).
+     */
     public LinkTool host(Object host)
     {
         LinkTool copy = duplicate();
@@ -665,11 +703,22 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
         return copy;
     }
 
+    /**
+     * Return the host value for this instance.
+     */
     public String getHost()
     {
         return this.host;
     }
 
+    /**
+     * Returns a new instance with the specified value set
+     * as its port number.  If the value cannot be parsed into
+     * an integer, the returned instance will always return
+     * null for {@link #toString} and other
+     * {@link #createURI}-dependent methods to alert the user
+     * to the error.
+     */
     public LinkTool port(Object port)
     {
         LinkTool copy = duplicate();
@@ -677,6 +726,9 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
         return copy;
     }
 
+    /**
+     * Returns the  port value, if any.
+     */
     public Integer getPort()
     {
         if (this.port < 0)
@@ -686,6 +738,10 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
         return this.port;
     }
 
+    /**
+     * Returns a new instance with the specified value
+     * set as its path.
+     */
     public LinkTool path(Object pth)
     {
         LinkTool copy = duplicate();
@@ -693,11 +749,18 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
         return copy;
     }
 
+    /**
+     * Returns the current path value for this instance.
+     */
     public String getPath()
     {
         return this.path;
     }
 
+    /**
+     * Appends the given value to the end of the current
+     * path value.
+     */
     public LinkTool append(Object pth)
     {
         LinkTool copy = duplicate();
@@ -706,7 +769,7 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
     }
 
     /**
-     * At this level, this method returns all "folders"
+     * At this level, this method returns all "directories"
      * in the set {@link #getPath()} value, by just trimming
      * of the last "/" and all that follows.
      */
@@ -746,8 +809,9 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
      * Returns the "root" for this URI, if it has one.
      * This does not stick close to URI dogma and will
      * try to insert the default scheme if there is none,
-     * and will return null if there is no host. It
-     * is also unfriendly to opaque URIs.
+     * and will return null if there is no host, as that
+     * is the core piece of the "root". It thus will
+     * return null for any opaque URLs as well.
      */
     public String getRoot()
     {
@@ -776,10 +840,10 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
         
 
     /**
-     * <p>Returns the URI that addresses this web application. E.g.
-     * <code>http://myserver.net/myapp</code>. This string does not end
-     * with a "/".  Note! This will not represent any URI reference or
-     * query data set for this LinkTool.</p>
+     * <p>Returns the URI that addresses the current "directory"
+     * of this instance. This string does not end with a "/" and
+     * is essentially a concatenation of {@link #getRoot} and
+     * {@link #getContextPath}</p>
      */
     public String getContextURL()
     {
@@ -802,7 +866,7 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
      * produces something like</br>
      * <code>&lt;a href="/myapp/templates/login/index.vm"&gt;Login Page&lt;/a&gt;</code><br>
      *
-     * @param path A context-relative URI reference. A context-relative URI
+     * @param obj A context-relative URI reference. A context-relative URI
      *        is a URI that is relative to the root of this web application.
      * @return a new instance of LinkTool with the specified URI
      */
@@ -834,7 +898,7 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
      * produces something like<br/>
      * <code>&lt;a href="http://theirserver.net/index.jsp"&gt;Their, Inc.&lt;/a&gt;</code><br>
      *
-     * @param uri A context-relative URI reference or absolute URL.
+     * @param obj A context-relative URI reference or absolute URL.
      * @return a new instance of LinkTool with the specified URI
      * @see #uri(Object uri)
      * @since VelocityTools 1.3
@@ -868,11 +932,10 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
 
     /**
      * <p>Returns a copy of the link with the given URI reference set.
-     * No conversions are applied to the given URI reference. The URI
+     * Few changes are applied to the given URI reference. The URI
      * reference can be absolute, server-relative, relative and may
-     * contain query parameters. This method will overwrite any
-     * previous URI reference settings but will copy the query
-     * string.</p>
+     * contain query parameters. This method will overwrite all previous
+     * settings for scheme, host port, path, query and anchor.</p>
      *
      * @param uri URI reference to set
      * @return a new instance of LinkTool
@@ -888,6 +951,12 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
         return null;
     }
 
+    /**
+     * If the tool is not in "safe mode"--which it is by default--
+     * this will return the {@link URI} representation of this instance,
+     * if any.
+     * @see AbstractLockConfig#isSafeMode()
+     */
     public URI getUri()
     {
         if (!isSafeMode())
@@ -913,6 +982,10 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
         return copy.toString();
     }
 
+    /**
+     * Sets the specified value as the current query string,
+     * after normalizing the pair delimiters.
+     */
     public LinkTool query(Object query)
     {
         LinkTool copy = duplicate();
@@ -920,6 +993,9 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
         return copy;
     }
 
+    /**
+     * Returns the current query string, if any.
+     */
     public String getQuery()
     {
         return this.query;

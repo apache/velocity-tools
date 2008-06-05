@@ -50,7 +50,7 @@ public class ImportTool extends ImportSupport
     /**
      * Returns the supplied URL rendered as a String.
      *
-     * @param url the URL to import
+     * @param obj the URL to import
      * @return the URL as a string
      */
     public String read(Object obj) {
