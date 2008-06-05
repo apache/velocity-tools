@@ -65,8 +65,9 @@
               <td>commons-logging</td>
               <td>1.1</td>
               <td>Yes</td>
-              <td>No</td>
-              <td></td>
+              <td>Yes</td>
+              <td>Required for
+                <a href="javadoc/org/apache/velocity/tools/generic/LinkTool.html">LinkTool</a></td>
             </tr>
             <tr>
               <td>velocity</td>

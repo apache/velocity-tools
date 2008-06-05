@@ -45,6 +45,12 @@ import org.apache.velocity.tools.view.ServletUtils;
  *     <li>and more..</li>
  * </ul></p>
  * 
+ * <p>This VelocityView version of LinkTool is not currently a subclass of the
+ * newer, GenericTools' version.  This is likely, however, to happen in the
+ * future.  To best future proof your use of this tool against deprecations,
+ * try not to rely upon differences between the two versions, except of course
+ * where this tool provides additional servlet-related functions.</p>
+ * 
  * <p>The LinkTool is somewhat special in that nearly all public methods return
  * a new instance of LinkTool. This facilitates greatly the repeated use
  * of the LinkTool in Velocity and leads to an elegant syntax.</p>

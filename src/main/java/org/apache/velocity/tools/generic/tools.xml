@@ -38,6 +38,7 @@
     </toolbox>
     <toolbox scope="request">
         <tool class="org.apache.velocity.tools.generic.ContextTool"/>
+        <tool class="org.apache.velocity.tools.generic.LinkTool"/>
         <tool class="org.apache.velocity.tools.generic.LoopTool"/>
         <tool class="org.apache.velocity.tools.generic.RenderTool"/>
         <!-- 
