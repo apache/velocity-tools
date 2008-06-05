@@ -35,7 +35,7 @@
         <li>New configuration formats (more concise/flexible/powerful xml, properties, java)</li>
         <li>Entirely new core infrastructure (lazy-loading tools, easier access, standalone support etc)</li>
         <li>Added VelocityViewTag for JSP integration</li>
-        <li>Added DisplayTool, ConversionTool, ClassTool, LoopTool, FieldTool and more</li>
+        <li>Added DisplayTool, ConversionTool, ClassTool, LoopTool, FieldTool, a generic version of LinkTool and more</li>
         <li>Refactored and enhanced a number of existing tools</li>
         <li>Improved documentation</li>
         <li>Deprecated lots of outdated things</li>
