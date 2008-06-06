@@ -1054,7 +1054,7 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
 
     public Map getParams()
     {
-        if (this.query == null || this.query.isEmpty())
+        if (this.query == null || this.query.length() == 0)
         {
             return null;
         }
