@@ -214,13 +214,19 @@ public class LoopToolTests {
         assertTrue(loop.isFirst());
         assertTrue(loop.isFirst("i"));
         assertTrue(loop.isFirst("j"));
+        // check short syntax too
+        assertTrue((Boolean)loop.get("first_i"));
+        assertTrue((Boolean)loop.get("first_j"));
         i.next();
         assertFalse(loop.isFirst("i"));
+        assertFalse((Boolean)loop.get("first_i"));
         j.next();
         assertTrue(loop.isFirst());
         assertTrue(loop.isFirst("j"));
+        assertTrue((Boolean)loop.get("first_j"));
         j.next();
         assertFalse(loop.isFirst("j"));
+        assertFalse((Boolean)loop.get("first_j"));
     }
 
     public @Test void methodIsLast() throws Exception
@@ -249,11 +255,15 @@ public class LoopToolTests {
         assertFalse(loop.isLast());
         assertTrue(loop.isLast("i"));
         assertFalse(loop.isLast("j"));
+        // check short syntax too
+        assertTrue((Boolean)loop.get("last_i"));
+        assertFalse((Boolean)loop.get("last_j"));
         j.next();
         j.next();
         j.next();
         assertTrue(loop.isLast());
         assertTrue(loop.isLast("j"));
+        assertTrue((Boolean)loop.get("last_j"));
     }
 
     public @Test void methodGet() throws Exception
@@ -347,6 +357,11 @@ public class LoopToolTests {
         assertEquals(1, loop.getIndex("j"));
         assertEquals(1, loop.getCount("i"));
         assertEquals(0, loop.getIndex("i"));
+        // check short syntax too
+        assertEquals(2, loop.get("count_j"));
+        assertEquals(1, loop.get("index_j"));
+        assertEquals(1, loop.get("count_i"));
+        assertEquals(0, loop.get("index_i"));
     }
 
     public @Test void aliasMethods() throws Exception
