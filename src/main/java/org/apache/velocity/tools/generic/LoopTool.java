@@ -372,11 +372,21 @@ public class LoopTool
     }
 
     /**
-     * Searches all the loops being managed for one with a sync'ed
-     * Iterator under the specified name and returns the current value
-     * for that sync'ed iterator, if any.
+     * <p>This serves two purposes:
+     * <ul><li>Getting the current value of a sync'ed iterator</li>
+     * <li>Abbreviate syntax for properties of outer loops</li></ul></p>
+     * <p>First, it searches all the loops being managed for one
+     * with a sync'ed Iterator under the specified name and
+     * returns the current value for that sync'ed iterator,
+     * if any. If there is no sync'ed iterators or none with
+     * that name, then this will check if the specified key
+     * is requesting a "property" of an outer loop (e.g.
+     * {@code $loop.foo_count} or {@code $loop.foo_first}).
+     * This syntax is shorter and clearer than {@code $loop.getCount('foo')}.
+     * If the key starts with a property name and ends with an outer loop
+     * name, then the value of that property for that loop is returned.
      */
-    public Object get(String synced)
+    public Object get(String key)
     {
         // search all iterators in reverse
         // (so nested ones take priority)
@@ -384,10 +394,31 @@ public class LoopTool
         for (int i=iterators.size() - 1; i >= 0; i--)
         {
             ManagedIterator iterator = iterators.get(i);
-            if (iterator.isSyncedWith(synced))
+            if (iterator.isSyncedWith(key))
             {
-                return iterator.get(synced);
+                return iterator.get(key);
             }
+        }
+        // shortest key would be "last_X" where X is the loop name
+        if (key == null || key.length() < 6)
+        {
+            return null;
+        }
+        if (key.startsWith("last_"))
+        {
+            return isLast(key.substring(5, key.length()));
+        }
+        if (key.startsWith("count_"))
+        {
+            return getCount(key.substring(6, key.length()));
+        }
+        if (key.startsWith("index_"))
+        {
+            return getIndex(key.substring(6, key.length()));
+        }
+        if (key.startsWith("first_"))
+        {
+            return isFirst(key.substring(6, key.length()));
         }
         return null;
     }
