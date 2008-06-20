@@ -74,10 +74,7 @@ public class StrutsUtils
     public static MessageResources getMessageResources(HttpServletRequest request,
                                                        ServletContext app)
     {
-        /* Identify the current module */
-        ModuleConfig moduleConfig = ModuleUtils.getInstance().getModuleConfig(request, app);
-        return (MessageResources)app.getAttribute(Globals.MESSAGES_KEY +
-                                                  moduleConfig.getPrefix());
+        return getMessageResources(request, app, null);
     }
 
 
@@ -94,23 +91,20 @@ public class StrutsUtils
                                                        ServletContext app,
                                                        String bundle)
     {
-        MessageResources resources = null;
-
         /* Identify the current module */
         ModuleConfig moduleConfig = ModuleUtils.getInstance().getModuleConfig(request, app);
-
 
         if (bundle == null) {
             bundle = Globals.MESSAGES_KEY;
         }
 
         // First check request scope
-        resources = (MessageResources) request.getAttribute(bundle + moduleConfig.getPrefix());
+        MessageResources resources =
+            (MessageResources)request.getAttribute(bundle + moduleConfig.getPrefix());
 
         if (resources == null) {
             resources = (MessageResources) app.getAttribute(bundle + moduleConfig.getPrefix());
         }
-
         return resources;
     }
 
