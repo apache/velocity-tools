@@ -69,7 +69,7 @@ public class JeeConfig
 
     public JeeConfig(ServletContext context)
     {
-        if (filter == null)
+        if (context == null)
         {
             throw new NullPointerException("ServletContext must not be null");
         }
