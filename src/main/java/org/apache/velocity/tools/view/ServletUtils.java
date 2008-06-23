@@ -103,7 +103,7 @@ public class ServletUtils
         ServletContext application = config.getServletContext();
 
         // check for an already initialized VelocityView to use
-        VelocityView view = getVelocityView(application);
+        VelocityView view = getVelocityView(application, false);
         if (view == null)
         {
             // only create a new one if we don't already have one
@@ -118,11 +118,30 @@ public class ServletUtils
 
     /**
      * Returns the shared {@link VelocityView} for the specified
-     * {@link ServletContext}, if any. 
+     * {@link ServletContext}. If one has not yet been created,
+     * it will create one, store it for future access, and then return it.
      */
     public static VelocityView getVelocityView(ServletContext application)
     {
-        return (VelocityView)application.getAttribute(VELOCITY_VIEW_KEY);
+        return getVelocityView(application, true);
+    }
+
+    /**
+     * Returns the shared {@link VelocityView} for the specified
+     * {@link ServletContext}. If one has not yet been created and
+     * the second parameter is <code>true</code>, then it will
+     * create one, store it for future access, and return it.
+     */
+    public static VelocityView getVelocityView(ServletContext application,
+                                               boolean createIfMissing) {
+        VelocityView view =
+            (VelocityView)application.getAttribute(VELOCITY_VIEW_KEY);
+        if (view == null && createIfMissing)
+        {
+            view = new VelocityView(application);
+            application.setAttribute(VELOCITY_VIEW_KEY, view);
+        }
+        return view;
     }
 
 
