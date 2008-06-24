@@ -42,6 +42,7 @@ public class ToolContext implements Context
     public static final String PATH_KEY = "requestPath";
     public static final String CONTEXT_KEY = "velocityContext";
     public static final String ENGINE_KEY = "velocityEngine";
+    public static final String LOCALE_KEY = "locale";
     public static final String LOG_KEY = "log";
     public static final String CATCH_EXCEPTIONS_KEY = "catchExceptions";
 
