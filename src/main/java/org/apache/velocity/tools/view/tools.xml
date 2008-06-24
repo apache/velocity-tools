@@ -28,11 +28,12 @@
         <tool class="org.apache.velocity.tools.view.PagerTool"/>
         <tool class="org.apache.velocity.tools.view.ParameterTool"/>
         <tool class="org.apache.velocity.tools.view.ViewContextTool"/>
-        <tool class="org.apache.velocity.tools.view.ViewResourceTool"/>
         <!-- 
         This is not directly useable.
         <tool class="org.apache.velocity.tools.view.AbstractSearchTool"/>
         -->
+        <!-- move this to request scope -->
+        <tool class="org.apache.velocity.tools.generic.ResourceTool"/>
     </toolbox>
     <toolbox scope="session" createSession="false">
         <tool class="org.apache.velocity.tools.view.BrowserTool"/>

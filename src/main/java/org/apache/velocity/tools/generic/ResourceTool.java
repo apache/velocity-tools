@@ -49,8 +49,15 @@ import org.apache.velocity.tools.config.DefaultKey;
  *
  * <p>This comes in very handy when internationalizing templates.
  *    Note that the default resource bundle baseName is "resources", and
- *    the default locale is the system locale.  These may both be overridden
- *    in your toolbox config as demonstrated above.
+ *    the default locale is either:
+ *    <ul>
+ *      <li>the result of HttpServletRequest.getLocale() (if used in request scope
+ *          of a VelocityView app)</li>
+ *      <li>the configured locale for this tool (as shown above)<li>
+ *      <li>the configured locale for the toolbox this tool is in<li>
+ *      <li>the configured locale for the toolbox factory managing this tool</li>
+ *      <li>the system locale, if none of the above</li>
+ *    </ul>.
  * </p>
  * <p>Also, be aware that very few performance considerations have been made
  *    in this initial version.  It should do fine, but if you have performance

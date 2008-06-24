@@ -20,6 +20,7 @@ package org.apache.velocity.tools.generic;
  */
 
 import java.util.Locale;
+import org.apache.velocity.tools.ToolContext;
 
 /**
  * Implements common logic and constants for tools which allow their
@@ -35,11 +36,6 @@ public class LocaleConfig extends AbstractLockConfig
      */
     public static final Locale DEFAULT_LOCALE = Locale.getDefault();
 
-    /**
-     * The key used for specifying a default locale via tool configuration.
-     */
-    public static final String LOCALE_KEY = "locale";
-
     private Locale locale = DEFAULT_LOCALE;
 
     /**
@@ -50,7 +46,7 @@ public class LocaleConfig extends AbstractLockConfig
      */
     protected void configure(ValueParser values)
     {
-        Locale locale = values.getLocale(LOCALE_KEY);
+        Locale locale = values.getLocale(ToolContext.LOCALE_KEY);
         if (locale != null)
         {
             setLocale(locale);

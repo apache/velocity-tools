@@ -96,6 +96,10 @@ public class ViewToolContext extends ToolContext implements ViewContext
     protected void putToolProperties()
     {
         putToolProperty(REQUEST, getRequest());
+        if (getRequest() != null)
+        {
+            putToolProperty(LOCALE_KEY, getRequest().getLocale());
+        }
         putToolProperty(RESPONSE, getResponse());
         putToolProperty(SESSION, getSession());
         putToolProperty(SERVLET_CONTEXT_KEY, getServletContext());
