@@ -58,6 +58,7 @@
             <item name="Standalone Use"            href="standalone.html"/>
             <item name="Web Framework Integration" href="frameworks.html"/>
             <item name="Creating Tools"            href="creatingtools.html"/>
+            <item name="Upgrading to 2.0"          href="upgrading.html"/>
             <!--
                 TODO: link to glossary on main velocity site, once it is up there
             -->
