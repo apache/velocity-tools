@@ -43,7 +43,7 @@
             <li>
                 <a href="Other_Ways_to_Integrate_VelocityTools">Other Ways to Integrate VelocityTools</a>
                 <ul>
-                <li><a href="#Toolbox_Factory">Toolbox Factory</a></li>
+                <li><a href="#ToolboxFactory">ToolboxFactory</a></li>
                 <li><a href="#Standalone_Use">Standalone Use</a></li>
                 </ul>
             </li>
@@ -51,16 +51,11 @@
         </p>
     </section>
     <section name="Overview">
-        <todo>
-            Incorporate the instructions and code for
-            integrating Tools 2 that are laid out in
-            <a href="http://velocity.markmail.org/search/?q=subject%3A%22upgrading%22#query:subject%3Aupgrading%20order%3Adate-forward+page:3+mid:pw56jxgsudhwwnnd+state:results">this email thread</a>,
-        </todo>
         <p>
         VelocityTools is not meant to be a framework in itself,
         but rather should ideally be integrated with other frameworks
         for applications of much size.  The simplest means of integration
-        is to have your framework handle requests, placing necessary data
+        is to have your framework handle requests, placing contextual data
         into the request, session or servlet context attributes where
         templates and/or tools can find them, then forward those requests
         to a VelocityViewServlet or VelocityLayoutServlet, letting those
@@ -96,16 +91,42 @@
                 <code>org.apache.velocity.tools.view.velocity.properties</code>.
                 </dd>
             </dl>
-            <todo>talk about deprecationSupportMode</todo>
+            <todo>Describe what deprecationSupportMode provides for backwards
+            compatibility with Tools 1.x</todo>
+            <p>
+            The VelocityView instance is typically the heart of any
+            VelocityTools-using application.  It encapsulates all necessary
+            VelocityEngine and ToolboxFactory configuration and provides
+            a simple API for processing templates or other VTL (e.g. VelocityViewTag
+            body content).
+            </p>
         </subsection>
-        <subsection name="Retrieving">
-            <todo>talk about ServletUtils and constructors</todo>
-        </subsection>
-        <subsection name="Sharing">
-            <todo>
-                talk about motives, servlets, tags, filters
-                and org.apache.velocity.tools.shared.config
-            </todo>
+        <subsection name="Retrieving and Sharing">
+            <p>You can, of course, simply create a VelocityView instance
+            for your framework to use, but if you are supporting multiple
+            ways of using Velocity (e.g. VelocityViewTag and separate templates)
+            or if you suspect your users might want access to the VelocityView
+            facilities, it is better to get your VelocityView instance using
+            the getVelocityView(...) methods of the
+            <code>org.apache.velocity.tools.view.ServletUtils</code> class.
+            These methods will automatically create an instance, store it for
+            you, return it, and then retrieve it again on subsequent calls to
+            any of those methods.  This allows the VelocityView (which is a
+            rather heavy object) to be shared across multiple
+            servlets, tags, and filters in the same application.  Of course,
+            if you do not wish to share your VelocityEngine configuration
+            (template cache, global macros) or Toolbox configuration(s),
+            then you should explicitly avoid using these methods and
+            construct and manage your own VelocityView instance.</p>
+            <p>
+            If you are using VelocityViewServlet, VelocityLayoutServlet,
+            and/or VelocityViewTag in the same application and do not want
+            them to share a VelocityView instance for some reason, you
+            can tell them to keep their VelocityViews private by setting
+            <code>org.apache.velocity.tools.shared.config</code> to
+            <code>false</code> in the <code>init-param</code>s of the
+            servlet config.
+            </p>
         </subsection>
         <subsection name="Using">
             <todo>discuss basic functions, config options, etc</todo>
@@ -113,7 +134,10 @@
     </section>
     <section name="Other Ways to Integrate VelocityTools">
         <subsection name="ToolboxFactory">
-            <todo>discuss lifecycle, configuration, and use</todo>
+            <todo>Discuss lifecycle, configuration, and use.<br/>
+            See <a href="http://velocity.markmail.org/search/?q=subject%3A%22upgrading%22#query:subject%3Aupgrading%20order%3Adate-forward+page:3+mid:pw56jxgsudhwwnnd+state:results">this
+            email thread</a> for more on this, including code samples.
+            </todo>
         </subsection>
         <subsection name="Standalone Use" href="standalone.html">
             <p>

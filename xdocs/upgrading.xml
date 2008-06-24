@@ -206,6 +206,29 @@
             <p>Other available formats are <a href="config.properties.html">a
             properties file</a> or <a href="config.java.xml">plain java</a>.
             </p>
+<!-- Tools 2 comes with a default tools.xml file each for GenericTools,
+VelocityView and VelocityStruts, and the VelocityViewServlet (and
+friends) will automatically look for and load those unless you
+explicitly tell it not to or are using a deprecated toolbox.xml.
+
+you can explicitly turn this off by adding the init-param
+org.apache.velocity.tools.loadDefaults with the value of false.
+
+overriding these default settings is as simple as providing your own
+config for those tools.  tool configurations are key-centric.  if you
+just want to provide a different default format for the DateTool, your
+tools.xml can be just:
+
+<tools>
+<toolbox scope="application">
+<tool key="date" format="MM/dd/yy"/>
+</toolbox>
+</tools>
+
+this just overrides the format property for the "date" tool in the
+configuration.  since "date" already has a class set in the default
+tools.xml that comes with the GenericTools package, you don't need to
+include that. -->
         </subsection>
         <subsection name="Integration with 2.0">
             <p>
@@ -214,11 +237,61 @@
             </p>
         </subsection>
         <subsection name="Custom Tools in 2.0">
-            <todo>
-                Incorporate the instructions and code for custom tools laid out in
-                <a href="http://velocity.markmail.org/search/?q=subject%3A%22upgrading%22#query:subject%3Aupgrading%20order%3Adate-forward+page:3+mid:pw56jxgsudhwwnnd+state:results">this email thread</a>,
-            </todo>
             <p>
+            Those of you who write your own custom tools may want to 
+            make a few changes to upgrade your custom
+            tools to do things the "Tools 2 way".  Here's a few quick starts for
+            that, though this doesn't cover everything.  More details can be
+            found <a href="creatingtools.html">here</a>.
+            </p>
+            <p><b>Naming:</b>
+            The recommended practice is to give a tool to be used as 
+            <code>$foo</code> the name <code>FooTool</code>.
+            This is not required but is a convention that keeps things easy
+            follow and learn.  If you have to name a tool FooBarUtility but want
+            it to be <code>$foo</code> in templates, the second best thing is to
+            provide a
+            <code>@org.apache.velocity.tools.config.DefaultKey("foo")</code>
+            annotation on the class, though this introduces a dependency on
+            VelocityTools.  As a last resort, if you are providing tools
+            for a framework or otherwise can influence or control the configuration,
+            you might consider providing a default configuration--perhaps even
+            one automatically discoverable by <code>ConfigurationUtils</code>--to
+            set the tool's key for your users.
+            </p>
+            <p><b>Scoping:</b>
+            If your tool is only meant to be used in a particular scope,
+            it's recommended that you give the class a 
+            <code>@org.apache.velocity.tools.config.ValidScope(Scope.REQUEST)</code>
+            annotation as well.  If you only want to ban a particular scope and
+            allow all others, you could provide a
+            <code>@org.apache.velocity.tools.config.InvalidScope(Scope.APPLICATION)</code>
+            annotation on the class.  The 
+            <code>org.apache.velocity.tools.Scope</code> class provides constants for
+            REQUEST, SESSION, and APPLICATION.  Other scopes are now
+            theoretically possible, but only a little work and no testing has
+            been done there at this point.
+            </p>
+            <p><b>Configuration:</b>
+            If you have a configurable tool whose configuration should not changed
+            by the templates which use it, then consider having your tool extend
+            the SafeConfig class (or FormatConfig or LocaleConfig). These safely
+            standardize configuration of these common configuration properties.
+            Also take note that the configure(Map) and init(Object) methods have been
+            changed into just the configure(Map) and individual setter methods
+            (e.g. setRequest, setSession, etc).  Basically, when it's time to
+            instantiate a tool, the tool manager will gather all the "configuration
+            properties" for that tool, its toolbox, etc and combine it into a
+            single map with the "init data" (context, request, session, etc).  The
+            manager searches for relevant setter methods that accept that data and
+            also for a configure(Map) method.  The setters get what they're asking
+            for (if available) and the configure() method accepts the whole combined
+            Map.  The upshot of this approach is that tools no longer need to
+            conform to any interfaces or patterns.  In fact, it's possible to
+            write a FooTool that doesn't know anything about any VelocityTools
+            classes whatsoever and yet be fully instantiable and configurable by
+            VelocityTools.  Your tools don't need to know about anything except
+            what they need to know about.
             </p>
         </subsection>
     </section>
