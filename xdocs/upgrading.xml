@@ -27,10 +27,8 @@
     </properties>
 
     <body>
-    <section name="Content">
+    <section name="Upgrading VelocityTools">
         <p>
-            This document provides helpful instructions in upgrading from
-            previous versions of VelocityTools.
             <ul>
             <li>
                 <a href="#Upgrading_to_2.0">Upgrading to 2.0</a>
@@ -78,12 +76,16 @@
         </p>
         <subsection name="Renamings in 2.0">
             <p>
-            In general, anything in the packages
-            <code>org.apache.velocity.tools.view.tools</code>,
-            <code>org.apache.velocity.tools.view.servlet</code> or
-            <code>org.apache.velocity.tools.view.context</code>,
-            has been moved to
-            <code>org.apache.velocity.tools.view</code>. The
+            In general, anything in the packages:
+            </p>
+            <ul>
+            <li><code>org.apache.velocity.tools.view.tools</code>,</li>
+            <li><code>org.apache.velocity.tools.view.servlet</code> or</li>
+            <li><code>org.apache.velocity.tools.view.context</code>,</li>
+            </ul>
+            <p>
+            has been moved to:<blockquote>
+            <code>org.apache.velocity.tools.view</code></blockquote> The
             extra packages had proved superfluous and problematic.
             All VelocityView classes are now in the
             <code>org.apache.velocity.view</code> package. Those
@@ -94,29 +96,31 @@
             </p><p>
             Some specific ones to watch out for are as follows.
             If you directly referenced:
+            </p>
             <ul>
             <li>VelocityViewServlet, it is now at
-                <code>org.apache.velocity.tools.view.VelocityViewServlet</code></li>
+                <javadoc package="view" name="VelocityViewServlet" full="true"/></li>
             <li>VelocityLayoutServlet, it is now at
-                <code>org.apache.velocity.tools.view.VelocityLayoutServlet</code></li>
+                <javadoc package="view" name="VelocityLayoutServlet" full="true"/></li>
             <li>WebappLoader, it is now at
-                <code>org.apache.velocity.tools.view.WebappResourceLoader</code></li>
+                <javadoc package="view" name="WebappResourceLoader" full="true"/></li>
             <li>ViewContext, it is now at
-                <code>org.apache.velocity.tools.view.ViewContext</code></li>
+                <javadoc package="view" name="ViewContext" full="true"/></li>
             <li>ServletLogger, it has been replaced by
-                <code>org.apache.velocity.tools.view.ServletLogChute</code></li>
+                <javadoc package="view" name="ServletLogChute" full="true"/></li>
             <li>ServletUtils, it is now at
-                <code>org.apache.velocity.tools.view.ServletUtils</code></li>
+                <javadoc package="view" name="ServletUtils" full="true"/></li>
             <li>BrowserSniffer, it is now at
-                <code>org.apache.velocity.tools.view.BrowserTool</code></li>
+                <javadoc package="view" name="BrowserTool" full="true"/></li>
             <li>AbstractPagerTool, it is now at
-                <code>org.apache.velocity.tools.view.PagerTool</code></li>
+                <javadoc package="view" name="PagerTool" full="true"/></li>
             <li>ParameterParser, it is now at
-                <code>org.apache.velocity.tools.view.ParameterTool</code></li>
+                <javadoc package="view" name="ParameterTool" full="true"/></li>
             <li>ContextTool, it is now at
-                <code>org.apache.velocity.tools.view.ViewContextTool</code></li>
+                <javadoc package="view" name="ViewContextTool" full="true"/></li>
             </ul>
-            <b>NOTE:</b> if you are still using the old toolbox.xml format
+            <p>
+            <b>NOTE:</b> If you are still using the old toolbox.xml format
             do NOT update the tool paths in that file!  First,
             <a href="#Configuration">update your configuration</a>, otherwise
             your tools may not work as expected.
@@ -143,22 +147,24 @@
             XMLToolboxManager directly, you should familiarize
             yourself with these classes:
             <ul>
-            <li>org.apache.velocity.tools.ToolManager</li>
-            <li>org.apache.velocity.tools.config.ConfigurationUtils</li>
-            <li>org.apache.velocity.tools.config.FactoryConfiguration</li>
-            <li>org.apache.velocity.tools.ToolboxFactory</li>
-            <li>org.apache.velocity.tools.ToolContext</li>
+            <li><javadoc name="ToolManager"/></li>
+            <li><javadoc package="config" name="ConfigurationUtils"/></li>
+            <li><javadoc package="config" name="FactoryConfiguration"/></li>
+            <li><javadoc name="ToolboxFactory"/></li>
+            <li><javadoc name="ToolContext"/></li>
             </ul>
             If you used ServletToolboxManager directly, you should learn
             about all of the above classes (except perhaps ToolManager) and
             the following ones as well:
             <ul>
-            <li>org.apache.velocity.tools.view.VelocityView</li>
-            <li>org.apache.velocity.tools.view.ViewToolContext</li>
-            <li>org.apache.velocity.tools.view.ServletUtils</li>
+            <li><javadoc package="view" name="VelocityView"/></li>
+            <li><javadoc package="view" name="ViewToolContext"/></li>
+            <li><javadoc package="view" name="ServletUtils"/></li>
             </ul>
             <b>NOTE:</b> For the vast majority of users and developers,
-            ToolManager or VelocityView should be all they really need
+            <javadoc name="ToolManager"/> or
+            <javadoc package="view" name="VelocityView"/>
+            should be all they really need
             to work with directly.  Don't waste time trying to manage
             <code>Toolbox</code>es yourself until you are sure that
             ToolManager/VelocityView can't do the job for you.
@@ -169,9 +175,9 @@
             of generic tools have become obsolete.  If you used:
             <ul>
             <li>ViewRenderTool, you should now just use
-                <code>org.apache.velocity.tools.RenderTool</code></li>
+                <code><javadoc full="true" package="generic" name="RenderTool"/></code></li>
             <li>ViewResourceTool, you should now just use
-                <code>org.apache.velocity.tools.ResourceTool</code></li>
+                <code><javadoc full="true" package="generic" name="ResourceTool"/></code></li>
             </ul>
             </p>
         </subsection>
@@ -184,12 +190,23 @@
             in Tools 2, unless the
             user is doing something to trigger the "deprecation support mode" for
             VelocityView (using the old toolbox.xml format would do this)
-            or explicitly telling VelocityView not to load the default tools,
-            then all of the supported,
+            or explicitly telling 
+            <javadoc package="view" name="VelocityView"/>
+            not to load the default tools, then all of the supported,
             standard VelocityTools will be automatically made available by
             default.  If you don't custom configure any of the provided tools
             and don't have any custom tools of your own, then you don't actually
-            need a configuration at all!
+            need a configuration at all! Tools 2 comes with a default tools.xml
+            file each for GenericTools, VelocityView and VelocityStruts, and
+            the 
+            <javadoc name="ToolManager"/>,
+            <javadoc package="view" name="VelocityViewServlet"/>,
+            <javadoc package="view" name="VelocityLayoutServlet"/> and
+            <javadoc package="view" name="VelocityViewTag"/>
+            will all automatically look for
+            and load those unless you explicitly 
+            <a href="frameworks.html#Retrieving_and_Sharing">tell them not to</a>
+            or are using a deprecated toolbox.xml file.
             </p>
             <p>
             If you do need a configuration, you should update your configuration to
@@ -203,32 +220,36 @@
             avoid using the deprecated versions as those will eventually be
             removed.
             </p>
-            <p>Other available formats are <a href="config.properties.html">a
-            properties file</a> or <a href="config.java.xml">plain java</a>.
+            <p>
+            If you are largely happy with the default tools.xml configuration,
+            but wish to override just a few parts, you can override them with
+            your own file.  Tool configurations are key-centric.  If you just
+            want to provide a different default format for the 
+            <javadoc package="generic" name="DateTool"/> and
+            a second bundle for the ResourceTool, your tools.xml can be just:
             </p>
-<!-- Tools 2 comes with a default tools.xml file each for GenericTools,
-VelocityView and VelocityStruts, and the VelocityViewServlet (and
-friends) will automatically look for and load those unless you
-explicitly tell it not to or are using a deprecated toolbox.xml.
-
-you can explicitly turn this off by adding the init-param
-org.apache.velocity.tools.loadDefaults with the value of false.
-
-overriding these default settings is as simple as providing your own
-config for those tools.  tool configurations are key-centric.  if you
-just want to provide a different default format for the DateTool, your
-tools.xml can be just:
-
-<tools>
-<toolbox scope="application">
-<tool key="date" format="MM/dd/yy"/>
-</toolbox>
-</tools>
-
-this just overrides the format property for the "date" tool in the
-configuration.  since "date" already has a class set in the default
-tools.xml that comes with the GenericTools package, you don't need to
-include that. -->
+<sourcecode>
+&lt;tools&gt;
+  &lt;toolbox scope="application"&gt;
+    &lt;tool key="date" format="MM/dd/yy"/&gt;
+  &lt;/toolbox&gt;
+  &lt;toolbox scope="request"&gt;
+    &lt;tool key="text" bundles="resources,otherResources"/&gt;
+  &lt;/toolbox&gt;
+&lt;/tools&gt;
+</sourcecode>
+            <p>
+            This just overrides the format property of the "date" tool
+            and the bundles property of the "text" tool in the configuration.
+            Since "date" and "text" already have classes set in the default
+            tools.xml files that come with the GenericTools and VelocityView
+            packages, you don't need to include those.
+            </p>
+            <p>
+            You don't even have to use XML to override/extend the defaults.
+            Other available formats are <a href="config.properties.html">a
+            properties file</a> or <a href="config.java.html">plain java</a>.
+            </p>
         </subsection>
         <subsection name="Integration with 2.0">
             <p>
@@ -251,21 +272,22 @@ include that. -->
             follow and learn.  If you have to name a tool FooBarUtility but want
             it to be <code>$foo</code> in templates, the second best thing is to
             provide a
-            <code>@org.apache.velocity.tools.config.DefaultKey("foo")</code>
+            <code>@<javadoc full="true" package="config" name="DefaultKey"/>("foo")</code>
             annotation on the class, though this introduces a dependency on
             VelocityTools.  As a last resort, if you are providing tools
             for a framework or otherwise can influence or control the configuration,
             you might consider providing a default configuration--perhaps even
-            one automatically discoverable by <code>ConfigurationUtils</code>--to
+            one automatically discoverable by 
+            <javadoc package="config" name="ConfigurationUtils"/>--to
             set the tool's key for your users.
             </p>
             <p><b>Scoping:</b>
             If your tool is only meant to be used in a particular scope,
             it's recommended that you give the class a 
-            <code>@org.apache.velocity.tools.config.ValidScope(Scope.REQUEST)</code>
+            <code>@<javadoc full="true" package="config" name="ValidScope"/>(Scope.REQUEST)</code>
             annotation as well.  If you only want to ban a particular scope and
             allow all others, you could provide a
-            <code>@org.apache.velocity.tools.config.InvalidScope(Scope.APPLICATION)</code>
+            <code>@<javadoc full="true" package="config" name="InvalidScope"/>(Scope.APPLICATION)</code>
             annotation on the class.  The 
             <code>org.apache.velocity.tools.Scope</code> class provides constants for
             REQUEST, SESSION, and APPLICATION.  Other scopes are now
@@ -275,7 +297,9 @@ include that. -->
             <p><b>Configuration:</b>
             If you have a configurable tool whose configuration should not changed
             by the templates which use it, then consider having your tool extend
-            the SafeConfig class (or FormatConfig or LocaleConfig). These safely
+            the <javadoc package="generic" name="SafeConfig"/> class (or 
+            <javadoc package="generic" name="FormatConfig"/> or 
+            <javadoc package="generic" name="LocaleConfig"/>). These safely
             standardize configuration of these common configuration properties.
             Also take note that the configure(Map) and init(Object) methods have been
             changed into just the configure(Map) and individual setter methods
