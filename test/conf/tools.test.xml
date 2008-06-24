@@ -21,7 +21,7 @@
 <tools>
     <data key="version" type="number" value="2.0"/>
     <toolbox scope="request" locale="en_US">
-        <tool class="org.apache.velocity.tools.view.ViewResourceTool"/>
+        <tool class="org.apache.velocity.tools.generic.ResourceTool"/>
     </toolbox>
     <toolbox scope="application">
         <tool key="calc" class="org.apache.velocity.tools.generic.MathTool"/>

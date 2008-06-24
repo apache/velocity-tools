@@ -27,6 +27,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 import org.apache.velocity.tools.ConversionUtils;
+import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
@@ -73,7 +74,7 @@ public class DateTool extends FormatConfig
     public static final String DEFAULT_FORMAT_KEY = FORMAT_KEY;
 
     @Deprecated
-    public static final String DEFAULT_LOCALE_KEY = LOCALE_KEY;
+    public static final String DEFAULT_LOCALE_KEY = ToolContext.LOCALE_KEY;
 
 
     // ------------------------- system date access ------------------
