@@ -57,7 +57,7 @@ import org.apache.velocity.tools.generic.ValueParser;
  */
 @DefaultKey("context")
 @InvalidScope({Scope.APPLICATION,Scope.SESSION})
-public class ContextTool extends AbstractLockConfig
+public class ContextTool extends SafeConfig
 {
     protected Context context;
     protected Map<String,Object> toolbox;

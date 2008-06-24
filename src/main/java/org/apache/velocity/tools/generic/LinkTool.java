@@ -77,7 +77,7 @@ import org.apache.velocity.tools.config.ValidScope;
  */
 @DefaultKey("link")
 @ValidScope(Scope.REQUEST)
-public class LinkTool extends AbstractLockConfig implements Cloneable
+public class LinkTool extends SafeConfig implements Cloneable
 {
     /** Standard HTML delimiter for query data ('&') */
     public static final String HTML_QUERY_DELIMITER = "&";
@@ -955,7 +955,7 @@ public class LinkTool extends AbstractLockConfig implements Cloneable
      * If the tool is not in "safe mode"--which it is by default--
      * this will return the {@link URI} representation of this instance,
      * if any.
-     * @see AbstractLockConfig#isSafeMode()
+     * @see SafeConfig#isSafeMode()
      */
     public URI getUri()
     {

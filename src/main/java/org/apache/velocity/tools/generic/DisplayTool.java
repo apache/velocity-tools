@@ -68,7 +68,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Id: DisplayTool.java 463298 2006-10-12 16:10:32Z henning $
  */
 @DefaultKey("display")
-public class DisplayTool extends AbstractLockConfig
+public class DisplayTool extends SafeConfig
 {
     public static final String LIST_DELIM_KEY = "listDelim";
     public static final String LIST_FINAL_DELIM_KEY = "listFinalDelim";

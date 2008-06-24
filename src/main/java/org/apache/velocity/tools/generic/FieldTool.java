@@ -75,7 +75,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Id: FieldTool.java 463298 2006-10-12 16:10:32Z henning $
  */
 @DefaultKey("field")
-public class FieldTool extends AbstractLockConfig
+public class FieldTool extends SafeConfig
 {
     /**
      * The key used for specifying which classes should be inspected

@@ -99,7 +99,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Revision$ $Date$
  */
 @DefaultKey("render")
-public class RenderTool extends AbstractLockConfig
+public class RenderTool extends SafeConfig
 {
     /**
      * The maximum number of loops allowed when recursing.

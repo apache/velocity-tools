@@ -56,7 +56,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Revision$ $Date$
  */
 @DefaultKey("alternator")
-public class AlternatorTool extends AbstractLockConfig
+public class AlternatorTool extends SafeConfig
 {
     @Deprecated
     public static final String OLD_AUTO_ALTERNATE_DEFAULT_KEY = "auto-alternate";

@@ -93,7 +93,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @see StringEscapeUtils
  */
 @DefaultKey("esc")
-public class EscapeTool extends AbstractLockConfig
+public class EscapeTool extends SafeConfig
 {
     public static final String DEFAULT_KEY = "esc";
     
