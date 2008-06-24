@@ -231,9 +231,9 @@
 
   <!-- cleanup showcase webapp -->
   <target name="clean-showcase-webapp">
-    <waitfor maxwait="2" maxwaitunit="minute" checkevery="500">
+    <waitfor maxwait="30" maxwaitunit="second" checkevery="1000">
       <not>
-        <http url="http://localhost:${test.webcontainer.port}/"/>
+        <isreachable url="http://localhost:${test.webcontainer.port}/"/>
       </not>
     </waitfor>
     <property name="target" value="clean"/>
