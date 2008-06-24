@@ -283,15 +283,14 @@
  *#
 #match( "todo" )
 <p class="note">
-    This is still unfinished.
-    <a href="index.html#Contribution">Help is welcome!</a><br>
+    This is unfinished.
+    <a href="index.html#Contribution">You can help fix that!</a><br>
 #set( $todo = "$!node.copy()" )
 #if( $todo != '<todo/>' )
     TODO: $todo
 #end
 </p>
 #end
-
 
 #*
  *  process a 'sourcecode' block.
@@ -326,7 +325,50 @@ $context.applyTemplates("*")
 </th>
 #end
 
-#match("*")
-$node.copy()
+#*
+ *  process a javadoc element
+ *#
+#match( 'javadoc' )##
+#if( $attrib.package )
+    #set( $package = $attrib.package )
+    #if( !$package.startsWith('org.apache.velocity.tools') )
+        #set( $package = "org.apache.velocity.tools.$package" )
+    #end
+#else
+    #set( $package = 'org.apache.velocity.tools' )
+#end
+#set( $href = "javadoc/$package.replace('.','/')/${attrib.name}.html" )
+#set( $content = "$!node.value()" )
+#if( $content == '' )
+    #if( $attrib.full )
+        #set( $content = $package + '.' + $attrib.name )
+    #else
+        #set( $content = $attrib.name )
+    #end
+#end
+<a href="$href">$content</a>
 #end
 
+#*
+ *  macro to navigate document and replace <javadoc> tags
+ *#
+#macro( digFor $name $tag )
+#set( $kids = $tag.children() )
+#if( "$!tag.name()" == $name )
+    $context.applyTemplates($tag)
+#elseif( $kids.isEmpty() )
+    $tag.copy()
+#elseif( $tag.selectNodes("$name|*//$name").isEmpty() )
+    $tag.copy()
+#else
+    <$tag.name()#foreach( $key in $attrib.keySet() ) $key="$!attrib.get($key)"#end>
+    #foreach( $kid in $kids )
+        #digFor( $name $kid )
+    #end
+    </$tag.name()>
+#end
+#end
+
+#match("*")
+#digFor( 'javadoc' $node )
+#end

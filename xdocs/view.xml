@@ -76,7 +76,7 @@
 
     <section name="VelocityView Object">
         <p>
-        The <a href="javadoc/org/apache/velocity/tools/view/VelocityView.html">VelocityView</a>
+        The <javadoc package="view" name="VelocityView"/>
         object forms the core of the VelocityView infrastructure.  In particular,
         it serves as the base class for the following:
         </p>
@@ -84,7 +84,7 @@
         <subsection name="VelocityViewServlet" href="view.servlet.html">
             <p>
             The 
-            <a href="javadoc/org/apache/velocity/tools/view/VelocityViewServlet.html">VelocityViewServlet</a>
+            <javadoc package="view" name="VelocityViewServlet"/>
             class is a standalone servlet that renders Velocity
             templates. It can be invoked directly from web client's 
             requests, or via servlet forwarding similar to how JSP files
@@ -139,49 +139,39 @@
         </p>
         <ul>
         <li>
-          <a href="javadoc/org/apache/velocity/tools/view/AbstractSearchTool.html">AbstractSearchTool</a>
+          <javadoc package="view" name="AbstractSearchTool"/>
           - For doing "searching" and robust pagination of search
           results. Requires you to create a subclass.
         </li>
         <li>
-          <a href="javadoc/org/apache/velocity/tools/view/BrowserTool.html">BrowserTool</a>
+          <javadoc package="view" name="BrowserTool"/>
           - For identifying the browser and features thereof requesting
           the template.
         </li>
         <li>
-          <a href="javadoc/org/apache/velocity/tools/view/CookieTool.html">CookieTool</a>
+          <javadoc package="view" name="CookieTool"/>
           - For convenient cookie access and creation.
         </li>
         <li>
-          <a href="javadoc/org/apache/velocity/tools/view/ImportTool.html">ImportTool</a>
+          <javadoc package="view" name="ImportTool"/>
           - For pulling down textual content from a URL.
         </li>
         <li>
-          <a href="javadoc/org/apache/velocity/tools/view/LinkTool.html">LinkTool</a>
+          <javadoc package="view" name="LinkTool"/>
           - For easy building of URLs (both relative or absolute).
         </li>
         <li>
-          <a href="javadoc/org/apache/velocity/tools/view/PagerTool.html">PagerTool</a>
+          <javadoc package="view" name="PagerTool"/>
           - For doing request-based pagination of items in an
           arbitrary list.
         </li>
         <li>
-          <a href="javadoc/org/apache/velocity/tools/view/ParameterTool.html">ParameterTool</a>
+          <javadoc package="view" name="ParameterTool"/>
           - For easy retrieval and parsing of ServletRequest parameters.
         </li>
         <li>
-          <a href="javadoc/org/apache/velocity/tools/view/ViewContextTool.html">ViewContextTool</a>
+          <javadoc package="view" name="ViewContextTool"/>
           - For convenient access to ViewContext data and meta-data.
-        </li>
-        <li>
-          <a href="javadoc/org/apache/velocity/tools/view/ViewRenderTool.html">ViewRenderTool</a>
-          - To evaluate and render arbitrary strings of VTL,
-          including recursive rendering.
-        </li>
-        <li>
-          <a href="javadoc/org/apache/velocity/tools/view/ViewResourceTool.html">ViewResourceTool</a>
-          - For simplified access to ResourceBundles for
-          internationalization or other dynamic content needs.
         </li>
         </ul>
     </section>
