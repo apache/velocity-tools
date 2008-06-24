@@ -22,11 +22,11 @@ package org.apache.velocity.tools.view.tools;
 import org.apache.velocity.tools.view.ViewContext;
 
 /**
- * Use {@link org.apache.velocity.tools.view.ViewResourceTool}
+ * Use {@link org.apache.velocity.tools.generic.ResourceTool}
  */
 @Deprecated
 public class ViewResourceTool extends
-    org.apache.velocity.tools.view.ViewResourceTool
+    org.apache.velocity.tools.generic.ResourceTool
 {
     public ViewResourceTool() {
         // force depMode for this deprecated version
@@ -38,7 +38,7 @@ public class ViewResourceTool extends
     {
         if (obj instanceof ViewContext)
         {
-            setRequest(((ViewContext)obj).getRequest());
+            setLocale(((ViewContext)obj).getRequest().getLocale());
         }
     }
 }
