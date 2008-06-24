@@ -29,7 +29,7 @@ import org.apache.velocity.tools.ToolContext;
  * @author Nathan Bubna
  * @since VelocityTools 2.0
  */
-public class LocaleConfig extends AbstractLockConfig
+public class LocaleConfig extends SafeConfig
 {
     /**
      * The default {@link Locale} to be used when none is specified.

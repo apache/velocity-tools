@@ -29,6 +29,7 @@ import java.util.Set;
 import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.generic.ValueParser;
+import org.apache.velocity.tools.view.AbstractSearchTool;
 
 /**
  * <p>Tests for {@link ClassTool}</p>
@@ -195,7 +196,7 @@ public class ClassToolTests {
         // default type is java.lang.Object which has no super
         assertNull(classTool.inspectSuper());
         classTool.setType(ClassTool.class);
-        assertEquals(classTool.inspectSuper().getType(), AbstractLockConfig.class);
+        assertEquals(classTool.inspectSuper().getType(), SafeConfig.class);
     }
 
     public @Test void methodInspect_Class() throws Exception
@@ -226,7 +227,7 @@ public class ClassToolTests {
         ClassTool classTool = new ClassTool();
         // default type is java.lang.Object
         assertFalse(classTool.isAbstract());
-        classTool.setType(AbstractLockConfig.class);
+        classTool.setType(AbstractSearchTool.class);
         assertTrue(classTool.isAbstract());
     }
 

@@ -129,7 +129,7 @@ public class FooBar {
             on your template authors to avoid using those setters or just want
             to make sure nothing can be changed from within the template,
             you will probably want to use the configure() method and have
-            your tool extend AbstractLockConfig or one of its subclasses.
+            your tool extend SafeConfig or one of its subclasses.
             (This is discussed more later.)
             </p>
         </subsection>
@@ -168,7 +168,7 @@ public class PagerTool
     <section name="Support Classes">
         <subsection name="Base Classes">
             <p>
-            <a href="javadoc/org/apache/velocity/tools/generic/AbstractLockConfig.html">AbstractLockConfig</a>
+            <a href="javadoc/org/apache/velocity/tools/generic/SafeConfig.html">SafeConfig</a>
             - This serves as a base class for tools who need to have
             their configuration be read-only for thread-safety or
             other reasons.  By default, tools which extend this can
@@ -176,7 +176,7 @@ public class PagerTool
             </p>
             <p>
             <a href="javadoc/org/apache/velocity/tools/generic/LocaleConfig.html">LocaleConfig</a>
-            - Subclass of AbstractLockConfig that has standardized
+            - Subclass of SafeConfig that has standardized
             support for configuring a Locale for the tool to use as
             its default.
             </p>
@@ -294,7 +294,7 @@ public class PagerTool
             its permissions, its class's permissions or else put some sort of
             guard into the implementation of the method that renders it harmless
             when used by a template.  See the implementation of <code>configure(Map)</code>
-            in <a href="javadoc/org/apache/velocity/tools/generic/AbstractLockConfig.html">AbstractLockConfig</a>
+            in <a href="javadoc/org/apache/velocity/tools/generic/SafeConfig.html">SafeConfig</a>
             for an example of the latter option.
             </p>
             <p>
@@ -318,7 +318,7 @@ public class PagerTool
             that may not know what each other are doing at any one time.
             </p>
             <p>
-            <a href="javadoc/org/apache/velocity/tools/generic/AbstractLockConfig.html">AbstractLockConfig</a>
+            <a href="javadoc/org/apache/velocity/tools/generic/SafeConfig.html">SafeConfig</a>
             and its subclasses can help you have safely configurable tools
             in any scope.  They do this by only allowing the public
             <code>configure(Map)</code> method to be called once.  All other

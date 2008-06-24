@@ -65,7 +65,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Id: ClassTool.java 463298 2006-10-12 16:10:32Z henning $
  */
 @DefaultKey("class")
-public class ClassTool extends AbstractLockConfig
+public class ClassTool extends SafeConfig
 {
     public static final String INSPECT_KEY = "inspect";
     public static final String SHOW_DEPRECATED_KEY = "showDeprecated";
