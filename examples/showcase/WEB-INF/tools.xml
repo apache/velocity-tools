@@ -26,8 +26,7 @@
     <tool class="org.apache.velocity.tools.view.PagerTool"
           createSession="true"/>
     <tool class="MySearchTool"/>
-    <tool class="org.apache.velocity.tools.view.ViewResourceTool"
-          bundles="resources,otherStuff"/>
+    <tool key="text" bundles="resources,otherStuff"/>
     <tool class="org.apache.velocity.tools.view.ParameterTool" locale="en_US"/>
   </toolbox>
   <toolbox scope="application">
