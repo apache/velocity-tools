@@ -99,7 +99,7 @@
         </p>
         <ul>
         <li>
-          <a href="javadoc/org/apache/velocity/tools/struts/ActionMessagesTool.html">ActionMessagesTool</a>
+          <javadoc package="struts" name="ActionMessagesTool"/>
           - For accessing/displaying Struts action messages.
         </li>
         <li>
@@ -107,41 +107,41 @@
           - For accessing/displaying Struts error messages.
         </li>
         <li>
-          <a href="javadoc/org/apache/velocity/tools/struts/FormTool.html">FormTool</a>
+          <javadoc package="struts" name="FormTool"/>
           - For working with HTML forms in Struts apps.
         </li>
         <li>
-          <a href="javadoc/org/apache/velocity/tools/struts/MessageResourcesTool.html">MessageResourcesTool</a>
+          <javadoc package="struts" name="MessageResourcesTool"/>
           - Abstract view tool that provides access to Struts
           message resources.
         </li>
         <li>
-          <a href="javadoc/org/apache/velocity/tools/struts/MessageTool.html">MessageTool</a>
+          <javadoc package="struts" name="MessageTool"/>
           - Provides methods to render Struts application resources
           (for i18n and other textual content access).
         </li>
         <li>
-          <a href="javadoc/org/apache/velocity/tools/struts/SecureLinkTool.html">SecureLinkTool</a>
+          <javadoc package="struts" name="SecureLinkTool"/>
           - For using Struts SSL Extensions. It has the same
           interface as
-          <a href="javadoc/org/apache/velocity/tools/struts/StrutsLinkTool.html">StrutsLinkTool</a>
+          <javadoc package="struts" name="StrutsLinkTool"/>
           and can function as a substitute if Struts 1.x
           and SSL Ext are installed.
         </li>
         <li>
-          <a href="javadoc/org/apache/velocity/tools/struts/StrutsLinkTool.html">StrutsLinkTool</a>
+          <javadoc package="struts" name="StrutsLinkTool"/>
           - Subclass of 
-          <a href="javadoc/org/apache/velocity/tools/view/LinkTool.html">LinkTool</a>
+          <javadoc package="view" name="LinkTool"/>
           for creating URI links in Struts by adding support
           for Struts actions and forwards.
         </li>
         <li>
-          <a href="javadoc/org/apache/velocity/tools/struts/TilesTool.html">TilesTool</a>
+          <javadoc package="struts" name="TilesTool"/>
           - For using Struts-Tiles (not for Tiles 2!)
           in Velocity.
         </li>
         <li>
-          <a href="javadoc/org/apache/velocity/tools/struts/ValidatorTool.html">ValidatorTool</a>
+          <javadoc package="struts" name="ValidatorTool"/>
           - Uses Struts-Validator to produce client side
           javascript validation for your forms.
         </li>
