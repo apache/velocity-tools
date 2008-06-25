@@ -264,7 +264,7 @@
             make a few changes to upgrade your custom
             tools to do things the "Tools 2 way".  Here's a few quick starts for
             that, though this doesn't cover everything.  More details can be
-            found <a href="creatingtools.html">here</a>.
+            found in the <a href="creatingtools.html">instructions for creating tools</a>.
             </p>
             <p><b>Naming:</b>
             The recommended practice is to give a tool to be used as 
@@ -273,7 +273,7 @@
             follow and learn.  If you have to name a tool FooBarUtility but want
             it to be <code>$foo</code> in templates, the second best thing is to
             provide a
-            <code>@<javadoc full="true" package="config" name="DefaultKey"/>("foo")</code>
+            <javadoc package="config" name="DefaultKey">@DefaultKey("foo")</javadoc>
             annotation on the class, though this introduces a dependency on
             VelocityTools.  As a last resort, if you are providing tools
             for a framework or otherwise can influence or control the configuration,
@@ -285,12 +285,12 @@
             <p><b>Scoping:</b>
             If your tool is only meant to be used in a particular scope,
             it's recommended that you give the class a 
-            <code>@<javadoc full="true" package="config" name="ValidScope"/>(Scope.REQUEST)</code>
+            <javadoc package="config" name="ValidScope">@ValidScope(Scope.REQUEST)</javadoc>
             annotation as well.  If you only want to ban a particular scope and
             allow all others, you could provide a
-            <code>@<javadoc full="true" package="config" name="InvalidScope"/>(Scope.APPLICATION)</code>
+            <javadoc package="config" name="InvalidScope">@InvalidScope(Scope.APPLICATION)</javadoc>
             annotation on the class.  The 
-            <code>org.apache.velocity.tools.Scope</code> class provides constants for
+            <code><javadoc name="Scope"/></code> class provides constants for
             REQUEST, SESSION, and APPLICATION.  Other scopes are now
             theoretically possible, but only a little work and no testing has
             been done there at this point.
