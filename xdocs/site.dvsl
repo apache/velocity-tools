@@ -330,23 +330,23 @@ $context.applyTemplates("*")
  *#
 #match( 'javadoc' )##
 #if( $attrib.package )
-    #set( $package = $attrib.package )
-    #if( !$package.startsWith('org.apache.velocity.tools') )
-        #set( $package = "org.apache.velocity.tools.$package" )
-    #end
+#set( $package = $attrib.package )
+#if( !$package.startsWith('org.apache.velocity.tools') )
+#set( $package = "org.apache.velocity.tools.$package" )
+#end
 #else
-    #set( $package = 'org.apache.velocity.tools' )
+#set( $package = 'org.apache.velocity.tools' )
 #end
 #set( $href = "javadoc/$package.replace('.','/')/${attrib.name}.html" )
 #set( $content = "$!node.value()" )
 #if( $content == '' )
-    #if( $attrib.full )
-        #set( $content = $package + '.' + $attrib.name )
-    #else
-        #set( $content = $attrib.name )
-    #end
+#if( $attrib.full )
+#set( $content = $package + '.' + $attrib.name )
+#else
+#set( $content = $attrib.name )
 #end
-<a href="$href">$content</a>
+#end##
+<a href="$href">$content</a>##
 #end
 
 #*
