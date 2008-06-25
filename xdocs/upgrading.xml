@@ -204,9 +204,10 @@
             <javadoc package="view" name="VelocityLayoutServlet"/> and
             <javadoc package="view" name="VelocityViewTag"/>
             will all automatically look for
-            and load those unless you explicitly 
-            <a href="frameworks.html#Retrieving_and_Sharing">tell them not to</a>
-            or are using a deprecated toolbox.xml file.
+            and load those unless you are using a deprecated toolbox.xml file
+            or explicitly tell them not to by adding the init-param
+            <code>org.apache.velocity.tools.loadDefaults</code> with the value of false
+            to the relevant servlet.
             </p>
             <p>
             If you do need a configuration, you should update your configuration to
