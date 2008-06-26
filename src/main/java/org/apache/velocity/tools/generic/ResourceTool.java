@@ -23,6 +23,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import org.apache.velocity.tools.ConversionUtils;
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
@@ -146,7 +147,7 @@ public class ResourceTool extends LocaleConfig
         return new Key(null, new String[] { bundle }, getLocale(), null);
     }
 
-    public Key locale(Locale locale)
+    public Key locale(Object locale)
     {
         return new Key(null, this.bundles, locale, null);
     }
@@ -176,17 +177,31 @@ public class ResourceTool extends LocaleConfig
      * Returns the value for the specified key in the ResourceBundle for
      * the specified basename and locale.  If no such resource can be
      * found, no errors are thrown and {@code null} is returned.
+     *
+     * @param k the key for the requested resource
+     * @param baseName the base name of the resource bundle to search
+     * @param l the locale to use
      */
-    public Object get(Object k, String baseName, Locale locale)
+    public Object get(Object k, String baseName, Object l)
     {
         if (baseName == null || k == null)
         {
             return null;
         }
         String key = k == null ? null : String.valueOf(k);
-        if (locale == null)
+        Locale locale;
+        if (l == null)
         {
             locale = getLocale();
+        }
+        else
+        {
+            locale = toLocale(l);
+            // if conversion fails, return null to indicate an error
+            if (locale == null)
+            {
+                return null;
+            }
         }
 
         ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale);
@@ -209,19 +224,37 @@ public class ResourceTool extends LocaleConfig
      * specified bundles in which a matching resource is found.
      * If no resource is found, no exception will be thrown and {@code null}
      * will be returned.
+     *
+     * @param k the key for the requested resource
+     * @param bundles the resource bundles to search
+     * @param l the locale to use
      */
-    public Object get(Object k, String[] bundles, Locale locale)
+    public Object get(Object k, String[] bundles, Object l)
     {
         String key = k == null ? null : String.valueOf(k);
         for (int i=0; i < bundles.length; i++)
         {
-            Object resource = get(key, bundles[i], locale);
+            Object resource = get(key, bundles[i], l);
             if (resource != null)
             {
                 return resource;
             }
         }
         return null;
+    }
+
+    private Locale toLocale(Object obj)
+    {
+        if (obj == null)
+        {
+            return null;
+        }
+        if (obj instanceof Locale)
+        {
+            return (Locale)obj;
+        }
+        String s = String.valueOf(obj);
+        return ConversionUtils.toLocale(s);
     }
 
     /**
@@ -253,14 +286,14 @@ public class ResourceTool extends LocaleConfig
         // these are copied and/or altered when a mutator is called
         private final String[] bundles;
         private final String key;
-        private final Locale locale;
+        private final Object locale;
         private final Object[] args;
 
         // these are not copied when a mutator is called
         private boolean cached = false;
         private Object rawValue;
 
-        public Key(String key, String[] bundles, Locale locale, Object[] args)
+        public Key(String key, String[] bundles, Object locale, Object[] args)
         {
             this.key = key;
             this.bundles = bundles;
@@ -295,7 +328,7 @@ public class ResourceTool extends LocaleConfig
             return new Key(this.key, newBundles, this.locale, this.args);
         }
 
-        public Key locale(Locale locale)
+        public Key locale(Object locale)
         {
             return new Key(this.key, this.bundles, locale, this.args);
         }

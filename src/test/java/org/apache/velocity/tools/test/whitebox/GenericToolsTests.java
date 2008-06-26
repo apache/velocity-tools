@@ -194,7 +194,7 @@ public class GenericToolsTests {
         ResourceTool.Key halfFrenchHelloWorld = helloWorld.locale(Locale.FRENCH);
         assertStringEquals("Bonjour World!", halfFrenchHelloWorld);
 
-        ResourceTool.Key frenchTool = textTool.locale(Locale.FRENCH);
+        ResourceTool.Key frenchTool = textTool.locale("fr");
         ResourceTool.Key frenchHelloWorld =
             frenchTool.get("hello.whoever").insert(frenchTool.get("world"));
         assertStringEquals("Bonjour Monde!", frenchHelloWorld);
