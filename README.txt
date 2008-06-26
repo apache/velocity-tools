@@ -76,8 +76,8 @@ Please note:
   or higher
 
 The build process has been tested with JDK 1.5.0. The 
-included example applications have been tested with Tomcat 5.0.22,
-but should work with any servlet engine.
+included example applications have been tested with Tomcat,
+but should work with any web container.
 
 If you observe any problems with the build process, please report this
 to the Velocity users mailing list, user@velocity.apache.org, and
