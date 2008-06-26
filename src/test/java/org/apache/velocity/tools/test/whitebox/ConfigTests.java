@@ -331,8 +331,16 @@ public class ConfigTests {
         assertValid(conf);
         assertSame(this, conf.getProperty("testclass").getValue());
 
+        // test addConfiguration
+        Configuration cfg = new Configuration();
+        cfg.setProperty("string", "whoever");
+        conf.addConfiguration(cfg);
+        assertEquals("whoever", conf.getProperty("string").getValue());
+
         //TODO: test adding convertable properties
     }
+
+    //TODO: public @Test void testCompoundConfiguration()
 
     public @Test void testBadToolConfig()
     {
@@ -368,6 +376,19 @@ public class ConfigTests {
         // change the key and ensure it overrides the default
         tool.setKey("fake");
         assertEquals("fake", tool.getKey());
+
+        // test that adding A to B copies A's class to B when B has no class
+        ToolConfiguration alt = new ToolConfiguration();
+        assertNull(alt.getClassname());
+        alt.addConfiguration((Configuration)tool);
+        assertNotNull(alt.getClassname());
+        assertEquals(FakeTool.class.getName(), alt.getClassname());
+
+        // test that adding A to B doesn't copy A's class to B when A has no class
+        alt = new ToolConfiguration();
+        assertNull(alt.getClassname());
+        tool.addConfiguration(alt);
+        assertEquals(FakeTool.class.getName(), tool.getClassname());
     }
 
     //TODO: add tests for ToolboxConfiguration

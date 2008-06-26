@@ -31,7 +31,7 @@ import java.util.TreeSet;
  * @version $Id: Configuration.java 511959 2007-02-26 19:24:39Z nbubna $
  */
 public class CompoundConfiguration<C extends Configuration>
-    extends Configuration<C>
+    extends Configuration
 {
     private final SortedSet<C> children = new TreeSet<C>();
 
@@ -50,12 +50,8 @@ public class CompoundConfiguration<C extends Configuration>
             }
             else
             {
-                // old non-compound configurations should copy their props
-                // to the new one and then be replaced by the new one
-                newKid.addConfiguration(child);
-                // remove the old kid
-                removeChild(child);
-                children.add(newKid);
+                // add newKid's values to childs (overwriting any dupes)
+                child.addConfiguration(newKid);
             }
         }
         else

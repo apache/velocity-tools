@@ -37,8 +37,7 @@ import java.util.TreeSet;
  * @author Nathan Bubna
  * @version $Id: Configuration.java 511959 2007-02-26 19:24:39Z nbubna $
  */
-public class Configuration<T>
-    implements Comparable<Configuration<T>>
+public class Configuration implements Comparable<Configuration>
 {
     private final SortedSet<Property> properties = new TreeSet<Property>();
 
@@ -49,7 +48,7 @@ public class Configuration<T>
             throw new IllegalArgumentException("All properties must be named before they can be added to the configuration.");
         }
 
-        // remove any currently properties with the same key
+        // remove any current properties with the same key
         properties.remove(property);
         // then add the new one
         properties.add(property);
@@ -119,7 +118,7 @@ public class Configuration<T>
         }
     }
 
-    public void addConfiguration(Configuration<T> config)
+    public void addConfiguration(Configuration config)
     {
         setProperties(config.getProperties());
     }
@@ -132,7 +131,7 @@ public class Configuration<T>
         }
     }
 
-    public int compareTo(Configuration<T> config)
+    public int compareTo(Configuration config)
     {
         throw new UnsupportedOperationException("Configuration is abstract and cannot be compared.");
     }
@@ -157,7 +156,7 @@ public class Configuration<T>
         else
         {
             // they're of the same type
-            Configuration<T> that = (Configuration<T>)obj;
+            Configuration that = (Configuration)obj;
             // if their properties are equal, they're equal
             return this.properties.equals(that.properties);
         }

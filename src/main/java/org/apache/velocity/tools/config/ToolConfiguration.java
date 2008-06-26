@@ -300,6 +300,27 @@ public class ToolConfiguration extends Configuration
     }
 
     @Override
+    public void addConfiguration(Configuration config)
+    {
+        // copy properties
+        super.addConfiguration(config);
+
+        // copy values specific to tool configs
+        if (config instanceof ToolConfiguration)
+        {
+            ToolConfiguration that = (ToolConfiguration)config;
+            if (that.getClassname() != null)
+            {
+                setClassname(that.getClassname());
+            }
+            if (that.getRestrictTo() != null)
+            {
+                setRestrictTo(that.getRestrictTo());
+            }
+        }
+    }
+
+    @Override
     public void validate()
     {
         super.validate();
