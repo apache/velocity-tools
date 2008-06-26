@@ -39,7 +39,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  *
  * Toolbox configuration example:
  * &lt;tools&gt;
- *   &lt;toolbox scope="application"&gt;
+ *   &lt;toolbox scope="request"&gt;
  *     &lt;tool class="org.apache.velocity.tools.generic.ResourceTool"
  *              bundles="resources,com.foo.moreResources"
  *              locale="en_US"/&gt;
