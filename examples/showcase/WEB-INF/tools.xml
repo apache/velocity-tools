@@ -23,17 +23,14 @@
   <data key="author">Nathan Bubna</data>
   <toolbox scope="request">
     <tool class="LayoutLinkTool"/>
-    <tool class="org.apache.velocity.tools.view.PagerTool"
-          createSession="true"/>
     <tool class="MySearchTool"/>
+    <tool key="pager" createSession="true"/>
     <tool key="text" bundles="resources,otherStuff"/>
-    <tool class="org.apache.velocity.tools.view.ParameterTool" locale="en_US"/>
+    <tool key="params" locale="en_US"/>
   </toolbox>
   <toolbox scope="application">
-    <tool class="org.apache.velocity.tools.generic.ComparisonDateTool"
-          format="yyyy-MM-dd" depth="2" skip="month"/>
-    <tool class="org.apache.velocity.tools.generic.ConversionTool"
-          dateFormat="yyyy-MM-dd"/>
-    <tool class="org.apache.velocity.tools.generic.NumberTool" format="#0.0"/>
+    <tool key="date" format="yyyy-MM-dd" depth="2" skip="month"/>
+    <tool key="convert" dateFormat="yyyy-MM-dd"/>
+    <tool key="number" format="#0.0"/>
   </toolbox>
 </tools>
