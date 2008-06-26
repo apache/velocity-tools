@@ -17,7 +17,7 @@
 #title( 'ResourceTool' )
 <p>
 #set( $demo = $text.demo )
-$demo.thisPage.insert("#doclink( 'ViewResourceTool' false )").  This tool
+$demo.thisPage.insert("#doclink( 'ResourceTool' true )").  This tool
 is similar to the <a href="$link.relative('link.vm')">LinkTool</a> in that most methods
 return a new object that has mostly the same methods as the original, allowing you
 to build up parameters elegantly and simply, rather than try to remember how to use
