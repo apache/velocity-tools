@@ -19,12 +19,11 @@ Proposed Features/Upgrades:
         - add more automated testing of tools
         
     Generic tools:
-        - add a library of general-use velocimacros
+        - TableTool (VELTOOLS-102)
         - Template debugging tool(s)/support
         - Add support for ValueParser to use a properties file as a source
 
     VelocityView:
-        - add a library of velocimacros for use with these tools
         - Tool pooling/cleanup support (use commons-pool probably)
         - look into supporting arbitrary layout depth (sort of a "tiles lite")
           for the VelocityLayoutServlet (cf. Niall's work with Simple)
