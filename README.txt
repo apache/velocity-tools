@@ -29,7 +29,7 @@ Generic tools
 Build Instructions
 ------------------
 
-Building the project requires JDK 1.5.1 or higher and ant 1.7.0 
+Building the project requires JDK 1.5 or higher and ant 1.7 
 or higher. There is an ant script included that builds the entire 
 project, including all three subprojects, documentation, application 
 examples, etc. To build the project, start ant in the root directory 
@@ -75,7 +75,7 @@ Please note:
 - Due to new compile-time dependencies, VelocityTools can only be compiled on JDK 1.5 
   or higher
 
-The build process has been tested with JDK 1.5.0. The 
+The build process has been tested with JDK 1.5. The 
 included example applications have been tested with Tomcat,
 but should work with any web container.
 
