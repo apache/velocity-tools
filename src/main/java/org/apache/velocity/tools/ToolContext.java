@@ -131,8 +131,12 @@ public class ToolContext implements Context
     public Map<String,Class> getToolClassMap()
     {
         Map<String,Class> toolClasses = new HashMap<String,Class>();
-        for (Toolbox toolbox : toolboxes)
+        // go thru toolboxes backwards so final map matches
+        // what would be found in lookups
+        int n = toolboxes.size();
+        for (int i = toolboxes.size() - 1; i >= 0; i--)
         {
+            Toolbox toolbox = toolboxes.get(i);
             toolClasses.putAll(toolbox.getToolClassMap());
         }
         return toolClasses;
