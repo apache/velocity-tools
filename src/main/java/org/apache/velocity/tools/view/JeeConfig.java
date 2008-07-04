@@ -89,6 +89,22 @@ public class JeeConfig
         return null;
     }
 
+    /**
+     * Looks for the specified init-param in the servlet/filter config
+     * (i.e. calls {@link #getInitParameter}). If no such init-param is
+     * found there, it checks the {@link ServletContext}'s init-params
+     * for the specified parameter.
+     */
+    public String findInitParameter(String key)
+    {
+        String param = getInitParameter(key);
+        if (param == null)
+        {
+            param = getServletContext().getInitParameter(key);
+        }
+        return param;
+    }
+
     public Enumeration getInitParameterNames()
     {
         if (filter != null)

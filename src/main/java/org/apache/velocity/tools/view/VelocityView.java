@@ -399,12 +399,7 @@ public class VelocityView
 
     protected String findInitParameter(String key, JeeConfig config)
     {
-        String param = config.getInitParameter(key);
-        if (param == null)
-        {
-            param = config.getServletContext().getInitParameter(key);
-        }
-        return param;
+        return config.findInitParameter(key);
     }
 
 
