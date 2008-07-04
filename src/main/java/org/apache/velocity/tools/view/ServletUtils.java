@@ -19,11 +19,13 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
+import java.lang.reflect.Constructor;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.Toolbox;
 
 /**
@@ -35,6 +37,8 @@ public class ServletUtils
 {
     public static final String VELOCITY_VIEW_KEY =
         VelocityView.class.getName();
+    public static final String ALT_VELOCITY_VIEW_KEY =
+        "org.apache.velocity.tools.view.class";
 
     public static final ServletUtils INSTANCE = new ServletUtils();
 
@@ -107,13 +111,51 @@ public class ServletUtils
         if (view == null)
         {
             // only create a new one if we don't already have one
-            view = new VelocityView(config);
+            view = createView(config);
 
             // and store it in the application attributes, so other
             // servlets, filters, or tags can use it
             application.setAttribute(VELOCITY_VIEW_KEY, view);
         }
         return view;
+    }
+
+    private static VelocityView createView(JeeConfig config)
+    {
+        String cls = config.findInitParameter(ALT_VELOCITY_VIEW_KEY);
+        if (cls == null)
+        {
+            return new VelocityView(config);
+        }
+        try
+        {
+            return createView(ClassUtils.getClass(cls), config);
+        }
+        catch (ClassNotFoundException cnfe)
+        {
+            throw new IllegalArgumentException("Could not find class "+cls, cnfe);
+        }
+    }
+
+    private static VelocityView createView(Class klass, JeeConfig config)
+    {
+        if (!VelocityView.class.isAssignableFrom(klass))
+        {
+            throw new IllegalArgumentException(klass+" must extend "+VelocityView.class);
+        }
+        try
+        {
+            Constructor ctor = klass.getConstructor(JeeConfig.class);
+            return (VelocityView)ctor.newInstance(config);
+        }
+        catch (NoSuchMethodException nsme)
+        {
+            throw new IllegalArgumentException(klass+" must have a constructor that takes "+JeeConfig.class, nsme);
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException("Could not instantiate "+klass+" with "+config, e);
+        }
     }
 
     /**
@@ -123,7 +165,7 @@ public class ServletUtils
      */
     public static VelocityView getVelocityView(ServletContext application)
     {
-        return getVelocityView(application, true);
+        return getVelocityView(new JeeConfig(application));
     }
 
     /**
@@ -138,8 +180,7 @@ public class ServletUtils
             (VelocityView)application.getAttribute(VELOCITY_VIEW_KEY);
         if (view == null && createIfMissing)
         {
-            view = new VelocityView(application);
-            application.setAttribute(VELOCITY_VIEW_KEY, view);
+            return getVelocityView(application);
         }
         return view;
     }
