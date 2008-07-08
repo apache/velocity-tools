@@ -227,7 +227,8 @@ public class ConversionTool extends LocaleConfig
      */
     public Number toNumber(Object value)
     {
-        Number number = ConversionUtils.toNumber(value);
+        // don't do string conversion yet
+        Number number = ConversionUtils.toNumber(value, false);
         if (number != null)
         {
             return number;

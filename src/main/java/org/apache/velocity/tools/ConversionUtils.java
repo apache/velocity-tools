@@ -180,11 +180,25 @@ public class ConversionUtils
      * Attempts to convert an unidentified {@link Object} into a {@link Number},
      * just short of turning it into a string and parsing it.  In other words,
      * this will convert to {@link Number} from a {@link Number}, {@link Calendar},
-     * or {@link Date}.  If it can't do that, it will return {@code null}.
-     *
+     * or {@link Date}.  If it can't do that, it will get the string value and have 
+     * {@link #toNumber(String,String,Locale)} try to parse it using the
+     * default Locale and format.
+     
      * @param obj - the object to convert
      */
     public static Number toNumber(Object obj)
+    {
+        return toNumber(obj, true);
+    }
+
+    /**
+     * Just like {@link #toNumber(Object)} except that you can tell
+     * this to attempt parsing the object as a String by passing {@code true}
+     * as the second parameter.  If you do so, then it will have
+     * {@link #toNumber(String,String,Locale)} try to parse it using the
+     * default Locale and format.
+     */
+    public static Number toNumber(Object obj, boolean handleStrings)
     {
         if (obj == null)
         {
@@ -202,6 +216,11 @@ public class ConversionUtils
         {
             Date date = ((Calendar)obj).getTime();
             return Long.valueOf(date.getTime());
+        }
+        if (handleStrings)
+        {
+            // try parsing with default format and locale
+            return toNumber(obj.toString(), "default", Locale.getDefault());
         }
         return null;
     }
@@ -248,7 +267,7 @@ public class ConversionUtils
     public static Number toNumber(Object value, String format, Locale locale)
     {
         // first try the easy stuff
-        Number number = toNumber(value);
+        Number number = toNumber(value, false);
         if (number != null)
         {
             return number;
