@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<foo x="true" this="that">
+  <a name="test" baz="true"/>
+  <bar>woogie</bar>
+  <bar>wiggie</bar>
+</foo>

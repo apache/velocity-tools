@@ -44,4 +44,5 @@
 #toolMenuItem( $llink 'text' )
 #toolMenuItem( $llink 'search' )
 #toolMenuItem( $llink 'sorter' )
+#toolMenuItem( $llink 'xml' )
 </ul>

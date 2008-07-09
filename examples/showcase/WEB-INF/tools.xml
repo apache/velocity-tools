@@ -32,5 +32,6 @@
     <tool key="date" format="yyyy-MM-dd" depth="2" skip="month"/>
     <tool key="convert" dateFormat="yyyy-MM-dd"/>
     <tool key="number" format="#0.0"/>
+    <tool key="xml" file="file.xml" safeMode="false"/>
   </toolbox>
 </tools>

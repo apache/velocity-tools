@@ -63,6 +63,10 @@
     <pathconvert property="test.conf.dir.java" targetos="unix">
         <path location="${test.conf.dir}"/>
     </pathconvert>
+    <pathconvert property="test.file.dir" targetos="unix">
+        <path location="${test.src.dir}"/>
+    </pathconvert>
+    <filter token="test.file.dir" value="${test.file.dir}"/>
     <filter token="test.conf.dir" value="${test.conf.dir.java}"/>
     <filter token="test.log.dir" value="${test.log.dir}"/>
     <filter token="test.webcontainer.port" value="${test.webcontainer.port}"/>
