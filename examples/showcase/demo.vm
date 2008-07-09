@@ -57,7 +57,7 @@
     ## simply call the method
     #set( $result = $call )
     #set( $result = $render.eval($call) )
-    <td valign="top" id="${method.javadocRef}">#if( $result == $call )$text.demo.nullResult#else$result#end</td>
+    <td valign="top" id="${method.javadocRef}">#if( $result == $call )$text.demo.nullResult#else$esc.xml($result)#end</td>
   #else
     ## create a form to allow the user to input values and call the method
     <form method="get" name="$method.uniqueName" action="$link.self.anchor($method.javadocRef)"> ## HttpUnit doesn't like anchor-only links
@@ -90,7 +90,7 @@
       <br>
       $call
       =
-      <div id="$method.javadocRef">#if( $result == $call )$demo.nullResult#else$result#end</div>
+      <div id="$method.javadocRef">#if( $result == $call )$demo.nullResult#else$esc.xml($result)#end</div>
     #end
     ## maintain all params for other method demos
     #foreach( $param in $params.all.keySet() )
@@ -150,7 +150,7 @@
       <br>
       $params.custom
       =
-      <div>#if( $result == $call )$demo.nullResult#else$result#end</div>
+      <div>#if( $result == $call )$demo.nullResult#else$esc.xml($result)#end</div>
     #end
     ## maintain params for all the other demos
     #foreach( $param in $params.all.keySet() )
