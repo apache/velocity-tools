@@ -49,6 +49,7 @@
     <antcall target="commons-lang-download" />
     <antcall target="commons-logging-download" />
     <antcall target="commons-validator-download" />
+    <antcall target="dom4j-download" />
     <antcall target="oro-download" />
     <antcall target="servletapi-download" />
     <antcall target="sslext-download" />
@@ -60,7 +61,6 @@
   <target name="docs-download"
           depends="base-download"
           description="Download dependencies needed to render VelocityTools documentation from the central repository">
-    <antcall target="dom4j-download" />
     <antcall target="velocity-dvsl-download" />
   </target>
 

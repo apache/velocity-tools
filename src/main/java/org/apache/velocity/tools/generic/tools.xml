@@ -35,6 +35,7 @@
         <tool class="org.apache.velocity.tools.generic.NumberTool"/>
         <tool class="org.apache.velocity.tools.generic.ResourceTool"/>
         <tool class="org.apache.velocity.tools.generic.SortTool"/>
+        <tool class="org.apache.velocity.tools.generic.XmlTool"/>
     </toolbox>
     <toolbox scope="request">
         <tool class="org.apache.velocity.tools.generic.ContextTool"/>
