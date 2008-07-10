@@ -49,9 +49,9 @@ import org.apache.velocity.tools.config.DefaultKey;
  *   &lt;foo&gt;&lt;bar&gt;woogie&lt;/bar&gt;&lt;a name="test"/&gt;&lt;/foo&gt;
  *
  * Template:
- *   $doc.foo.bar
- *   $doc.find('a')
- *   $doc.a.name
+ *   $foo.bar.text
+ *   $foo.find('a')
+ *   $foo.a.name
  *
  * Output:
  *   woogie
@@ -62,7 +62,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * &lt;tools&gt;
  *   &lt;toolbox scope="application"&gt;
  *     &lt;tool class="org.apache.velocity.tools.generic.XmlTool"
- *              key="doc" file="doc.xml"/&gt;
+ *              key="foo" file="doc.xml"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
  * </pre></p>
