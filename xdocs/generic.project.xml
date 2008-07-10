@@ -44,6 +44,7 @@
           <item name="ResourceTool"         href="javadoc/org/apache/velocity/tools/generic/ResourceTool.html"/> />
           <item name="SortTool"             href="javadoc/org/apache/velocity/tools/generic/SortTool.html"/>
           <item name="ValueParser"          href="javadoc/org/apache/velocity/tools/generic/ValueParser.html"/>
+          <item name="XmlTool"              href="javadoc/org/apache/velocity/tools/generic/XmlTool.html"/>
         </subGroup>
     </group>
   </menu>
