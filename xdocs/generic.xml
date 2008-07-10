@@ -114,6 +114,9 @@
             - Used to sort collections (or arrays, iterators, etc) on
             any arbitary set of properties exposed by the objects contained
             within the collection.</li>
+        <li><javadoc package="generic" name="XmlTool"/>
+            - For reading/navigating XML files.  This uses dom4j under the
+            covers and provides complete XPath support.</li>
         </ul>
     </section>
 

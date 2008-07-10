@@ -70,6 +70,14 @@
                 <a href="javadoc/org/apache/velocity/tools/generic/LinkTool.html">LinkTool</a></td>
             </tr>
             <tr>
+              <td>dom4j</td>
+              <td>1.1+</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required only for
+                <a href="javadoc/org/apache/velocity/tools/generic/XmlTool.html">XmlTool</a></td>
+            </tr>
+            <tr>
               <td>velocity</td>
               <td>1.5</td>
               <td>Yes</td>
@@ -77,8 +85,9 @@
               <td>Required for
                 <a href="javadoc/org/apache/velocity/tools/generic/ClassTool.html">ClassTool</a>,
                 <a href="javadoc/org/apache/velocity/tools/generic/LoopTool.html">LoopTool</a>
-                and
                 <a href="javadoc/org/apache/velocity/tools/generic/RenderTool.html">RenderTool</a>
+                and
+                <a href="javadoc/org/apache/velocity/tools/generic/XmlTool.html">XmlTool</a>
               </td>
             </tr>
           </table>
@@ -137,6 +146,14 @@
               <td></td>
             </tr>
             <tr>
+              <td>dom4j</td>
+              <td>1.1+</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required only for
+                <a href="javadoc/org/apache/velocity/tools/generic/XmlTool.html">XmlTool</a></td>
+            </tr>
+            <tr>
               <td>servletapi</td>
               <td>2.3</td>
               <td>Yes</td>
@@ -144,7 +161,7 @@
               <td>Required for all
                 <a href="javadoc/org/apache/velocity/tools/view/package-summary.html">VelocityView</a>
                 tools except for
-                <a href="javadoc/org/apache/velocity/tools/view/ViewRenderTool.html">ViewRenderTool</a>
+                <a href="javadoc/org/apache/velocity/tools/generic/RenderTool.html">RenderTool</a>
               </td>
             </tr>
             <tr>
@@ -154,14 +171,15 @@
               <td>Yes</td>
               <td>Required for 
                 <a href="javadoc/org/apache/velocity/tools/generic/ClassTool.html">ClassTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/generic/RenderTool.html">RenderTool</a>
+                <a href="javadoc/org/apache/velocity/tools/generic/XmlTool.html">XmlTool</a>
                 <a href="javadoc/org/apache/velocity/tools/view/AbstractSearchTool.html">AbstractSearchTool</a>,
                 <a href="javadoc/org/apache/velocity/tools/view/ContextTool.html">ContextTool</a>,
                 <a href="javadoc/org/apache/velocity/tools/view/ImportTool.html">ImportTool</a>,
                 <a href="javadoc/org/apache/velocity/tools/view/LinkTool.html">LinkTool</a>,
                 <a href="javadoc/org/apache/velocity/tools/view/LoopTool.html">LoopTool</a>,
-                <a href="javadoc/org/apache/velocity/tools/view/MultiViewsTool.html">MultiViewsTool</a>
                 and
-                <a href="javadoc/org/apache/velocity/tools/view/ViewRenderTool.html">ViewRenderTool</a>
+                <a href="javadoc/org/apache/velocity/tools/view/MultiViewsTool.html">MultiViewsTool</a>
               </td>
             </tr>
           </table>
@@ -218,6 +236,14 @@
               <td>Yes</td>
               <td>No</td>
               <td></td>
+            </tr>
+            <tr>
+              <td>dom4j</td>
+              <td>1.1+</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required only for
+                <a href="javadoc/org/apache/velocity/tools/generic/XmlTool.html">XmlTool</a></td>
             </tr>
             <tr>
               <td>struts-core</td>
@@ -278,7 +304,7 @@
                 tools and all
                 <a href="javadoc/org/apache/velocity/tools/view/package-summary.html">VelocityView</a>
                 tools except for
-                <a href="javadoc/org/apache/velocity/tools/view/ViewRenderTool.html">ViewRenderTool</a>
+                <a href="javadoc/org/apache/velocity/tools/generic/RenderTool.html">RenderTool</a>
               </td>
             </tr>
             <tr>
@@ -288,13 +314,14 @@
               <td>Yes</td>
               <td>Required for 
                 <a href="javadoc/org/apache/velocity/tools/generic/ClassTool.html">ClassTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/generic/RenderTool.html">RenderTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/generic/XmlTool.html">XmlTool</a>,
                 <a href="javadoc/org/apache/velocity/tools/view/AbstractSearchTool.html">AbstractSearchTool</a>,
                 <a href="javadoc/org/apache/velocity/tools/view/ContextTool.html">ContextTool</a>,
                 <a href="javadoc/org/apache/velocity/tools/view/ImportTool.html">ImportTool</a>,
                 <a href="javadoc/org/apache/velocity/tools/view/LinkTool.html">LinkTool</a>,
                 <a href="javadoc/org/apache/velocity/tools/view/LoopTool.html">LoopTool</a>,
                 <a href="javadoc/org/apache/velocity/tools/view/MultiViewsTool.html">MultiViewsTool</a>,
-                <a href="javadoc/org/apache/velocity/tools/view/ViewRenderTool.html">ViewRenderTool</a>,
                 <a href="javadoc/org/apache/velocity/tools/struts/SecureLinkTool.html">SecureLinkTool</a>,
                 <a href="javadoc/org/apache/velocity/tools/struts/StrutsLinkTool.html">StrutsLinkTool</a>,
                 <a href="javadoc/org/apache/velocity/tools/struts/TilesTool.html">TilesTool</a>
