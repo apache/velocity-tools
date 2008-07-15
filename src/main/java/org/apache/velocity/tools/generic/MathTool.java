@@ -57,83 +57,147 @@ import org.apache.velocity.tools.config.DefaultKey;
 @DefaultKey("math")
 public class MathTool extends FormatConfig
 {
+    /* Old non-vararg methods (can be removed once we require Velocity 1.6) */
+
+    public Number add(Object num1, Object num2)
+    {
+        return add(new Object[] { num1, num2 });
+    }
+
+    public Number sub(Object num1, Object num2)
+    {
+        return sub(new Object[] { num1, num2 });
+    }
+
+    public Number mul(Object num1, Object num2)
+    {
+        return mul(new Object[] { num1, num2 });
+    }
+
+    public Number div(Object num1, Object num2)
+    {
+        return div(new Object[] { num1, num2 });
+    }
+
+    public Number max(Object num1, Object num2)
+    {
+        return max(new Object[] { num1, num2 });
+    }
+
+    public Number min(Object num1, Object num2)
+    {
+        return min(new Object[] { num1, num2 });
+    }
+
     /**
-     * @param num1 the first number
-     * @param num2 the second number
+     * @param nums the numbers to be added
      * @return the sum of the numbers or
      *         <code>null</code> if they're invalid
      * @see #toNumber
      */
-    public Number add(Object num1, Object num2)
+    public Number add(Object... nums)
     {
-        Number n1 = toNumber(num1);
-        Number n2 = toNumber(num2);
-        if (n1 == null || n2 == null)
+        double value = 0;
+        Number[] ns = new Number[nums.length];
+        for (Object num : nums)
         {
-            return null;
+            Number n = toNumber(num);
+            if (n == null)
+            {
+                return null;
+            }
+            value += n.doubleValue();
         }
-        double value = n1.doubleValue() + n2.doubleValue();
-        return matchType(n1, n2, value);
+        return matchType(value, ns);
     }
 
 
     /**
-     * @param num1 the first number
-     * @param num2 the second number
-     * @return the difference of the numbers or
+     * @param nums the numbers to be subtracted
+     * @return the difference of the numbers (subtracted in order) or
      *         <code>null</code> if they're invalid
      * @see #toNumber
      */
-    public Number sub(Object num1, Object num2)
+    public Number sub(Object... nums)
     {
-        Number n1 = toNumber(num1);
-        Number n2 = toNumber(num2);
-        if (n1 == null || n2 == null)
+        double value = 0;
+        Number[] ns = new Number[nums.length];
+        for (int i=0; i<nums.length; i++)
         {
-            return null;
+            Number n = toNumber(nums[i]);
+            if (n == null)
+            {
+                return null;
+            }
+            if (i == 0)
+            {
+                value = n.doubleValue();
+            }
+            else
+            {
+                value -= n.doubleValue();
+            }
         }
-        double value = n1.doubleValue() - n2.doubleValue();
-        return matchType(n1, n2, value);
+        return matchType(value, ns);
     }
 
 
     /**
-     * @param num1 the first number
-     * @param num2 the second number
+     * @param nums the numbers to be multiplied
      * @return the product of the numbers or
      *         <code>null</code> if they're invalid
      * @see #toNumber
      */
-    public Number mul(Object num1, Object num2)
+    public Number mul(Object... nums)
     {
-        Number n1 = toNumber(num1);
-        Number n2 = toNumber(num2);
-        if (n1 == null || n2 == null)
+        double value = 1;
+        Number[] ns = new Number[nums.length];
+        for (Object num : nums)
         {
-            return null;
+            Number n = toNumber(num);
+            if (n == null)
+            {
+                return null;
+            }
+            value *= n.doubleValue();
         }
-        double value = n1.doubleValue() * n2.doubleValue();
-        return matchType(n1, n2, value);
+        return matchType(value, ns);
     }
 
 
     /**
-     * @param num1 the first number
-     * @param num2 the second number
+     * @param nums the numbers to be divided
      * @return the quotient of the numbers or
      *         <code>null</code> if they're invalid
+     *         or if any denominator equals zero
      * @see #toNumber
      */
-    public Number div(Object num1, Object num2)
+    public Number div(Object... nums)
     {
-        Number n1 = toNumber(num1);
-        Number n2 = toNumber(num2);
-        if (n1 == null || n2 == null || n2.doubleValue() == 0.0)
+        double value = 0;
+        Number[] ns = new Number[nums.length];
+        for (int i=0; i<nums.length; i++)
         {
-            return null;
+            Number n = toNumber(nums[i]);
+            if (n == null)
+            {
+                return null;
+            }
+            if (i == 0)
+            {
+                value = n.doubleValue();
+            }
+            else
+            {
+                double denominator = n.doubleValue();
+                if (denominator == 0.0)
+                {
+                    return null;
+                }
+                value /= denominator;
+            }
         }
-        double value = n1.doubleValue() / n2.doubleValue();
-        return matchType(n1, n2, value);
+        return matchType(value, ns);
     }
 
 
@@ -208,42 +272,48 @@ public class MathTool extends FormatConfig
 
 
     /**
-     * @param num1 the first number
-     * @param num2 the second number
+     * @param nums the numbers to be searched
      * @return the largest of the numbers or
      *         <code>null</code> if they're invalid
      * @see #toNumber
      */
-    public Number max(Object num1, Object num2)
+    public Number max(Object... nums)
     {
-        Number n1 = toNumber(num1);
-        Number n2 = toNumber(num2);
-        if (n1 == null || n2 == null)
+        double value = Double.MIN_VALUE;
+        Number[] ns = new Number[nums.length];
+        for (Object num : nums)
         {
-            return null;
+            Number n = toNumber(num);
+            if (n == null)
+            {
+                return null;
+            }
+            value = Math.max(value, n.doubleValue());
         }
-        double value = Math.max(n1.doubleValue(), n2.doubleValue());
-        return matchType(n1, n2, value);
+        return matchType(value, ns);
     }
 
 
     /**
-     * @param num1 the first number
-     * @param num2 the second number
+     * @param nums the numbers to be searched
      * @return the smallest of the numbers or
      *         <code>null</code> if they're invalid
      * @see #toNumber
      */
-    public Number min(Object num1, Object num2)
+    public Number min(Object... nums)
     {
-        Number n1 = toNumber(num1);
-        Number n2 = toNumber(num2);
-        if (n1 == null || n2 == null)
+        double value = Double.MAX_VALUE;
+        Number[] ns = new Number[nums.length];
+        for (Object num : nums)
         {
-            return null;
+            Number n = toNumber(num);
+            if (n == null)
+            {
+                return null;
+            }
+            value = Math.min(value, n.doubleValue());
         }
-        double value = Math.min(n1.doubleValue(), n2.doubleValue());
-        return matchType(n1, n2, value);
+        return matchType(value, ns);
     }
 
 
@@ -464,13 +534,20 @@ public class MathTool extends FormatConfig
     // --------------------------- protected methods ------------------
 
     /**
-     * @see #matchType(Number,Number,double)
+     * @see #matchType(Number[],double)
      */
     protected Number matchType(Number in, double out)
     {
-        return matchType(in, null, out);
+        return matchType(out, new Number[] { in });
     }
 
+    /**
+     * @see #matchType(Number[],double)
+     */
+    protected Number matchType(Number in1, Number in2, double out)
+    {
+        return matchType(out, new Number[] { in1, in2 });
+    }
 
     /**
      * Takes the original argument(s) and returns the resulting value as
@@ -480,7 +557,7 @@ public class MathTool extends FormatConfig
      * If not and the result is < -2147483648 or > 2147483647, then a
      * Long will be returned.  Otherwise, an Integer will be returned.
      */
-    protected Number matchType(Number in1, Number in2, double out)
+    protected Number matchType(double out, Number... in)
     {
         //NOTE: if we just checked class types, we could miss custom
         //      extensions of java.lang.Number, and if we only checked
@@ -488,25 +565,25 @@ public class MathTool extends FormatConfig
         //      as '3'.  To get the expected result, we check what we're
         //      concerned about: the rendered string.
 
-        // first check if the result is a whole number
-        boolean isWhole = (Math.rint(out) == out);
-
-        if (isWhole)
+        // first check if the result is even a whole number
+        boolean isIntegral = (Math.rint(out) == out);
+        if (isIntegral)
         {
-            // assume that 1st arg is not null,
-            // check for floating points
-            String in = in1.toString();
-            isWhole = (in.indexOf('.') < 0);
-
-            // if we don't have a decimal yet but do have a second arg
-            if (isWhole && in2 != null)
+            for (Number n : in)
             {
-                in = in2.toString();
-                isWhole = (in.indexOf('.') < 0);
+                if (n == null)
+                {
+                    break;
+                }
+                else if (hasFloatingPoint(n.toString()))
+                {
+                    isIntegral = false;
+                    break;
+                }
             }
         }
 
-        if (!isWhole)
+        if (!isIntegral)
         {
             return new Double(out);
         }
@@ -520,11 +597,16 @@ public class MathTool extends FormatConfig
         }
     }
 
+    protected boolean hasFloatingPoint(String value)
+    {
+        return value.indexOf('.') >= 0;
+    }
+
     @Deprecated
     protected Number parseNumber(String value)
     {
         // check for the floating point
-        if (value.indexOf('.') < 0)
+        if (!hasFloatingPoint(value))
         {
             // check for large numbers
             long i = Long.valueOf(value).longValue();
@@ -689,7 +771,7 @@ public class MathTool extends FormatConfig
      * @param array  An array containing number values
      * @return The sum of the values in <i>array</i>.
      */
-    public Number getTotal(Object[] array)
+    public Number getTotal(Object... array)
     {
         return getTotal(Arrays.asList(array));
     }
@@ -700,7 +782,7 @@ public class MathTool extends FormatConfig
      * @param array  An array containing number values
      * @return The sum of the values in <i>array</i>.
      */
-    public Number getAverage(Object[] array)
+    public Number getAverage(Object... array)
     {
         return getAverage(Arrays.asList(array));
     }
@@ -711,7 +793,7 @@ public class MathTool extends FormatConfig
      * @param values The list of double values to add up.
      * @return The sum of the arrays
      */
-    public Number getTotal(double[] values)
+    public Number getTotal(double... values)
     {
         if (values == null)
         {
@@ -732,7 +814,7 @@ public class MathTool extends FormatConfig
      * @param values The list of double values
      * @return The average of the array of values
      */
-    public Number getAverage(double[] values)
+    public Number getAverage(double... values)
     {
         Number total = getTotal(values);
         if (total == null)
@@ -748,7 +830,7 @@ public class MathTool extends FormatConfig
      * @param values The list of long values to add up.
      * @return The sum of the arrays
      */
-    public Number getTotal(long[] values)
+    public Number getTotal(long... values)
     {
         if (values == null)
         {
@@ -769,7 +851,7 @@ public class MathTool extends FormatConfig
      * @param values The list of long values
      * @return The average of the array of values
      */
-    public Number getAverage(long[] values)
+    public Number getAverage(long... values)
     {
         Number total = getTotal(values);
         if (total == null)
