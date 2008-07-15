@@ -100,8 +100,6 @@ import org.apache.velocity.runtime.log.Log;
 
 public class VelocityViewServlet extends HttpServlet
 {
-    public static final String SHARED_CONFIG_PARAM =
-        "org.apache.velocity.tools.shared.config";
     public static final String BUFFER_OUTPUT_PARAM =
         "org.apache.velocity.tools.bufferOutput";
     private static final long serialVersionUID = -3329444102562079189L;
@@ -153,21 +151,8 @@ public class VelocityViewServlet extends HttpServlet
     {
         if (this.view == null)
         {
-            // check for an init-param telling this servlet NOT
-            // to share its VelocityView with others.  by default, we
-            // play nice and share the VelocityView with the other kids.
-            ServletConfig config = getServletConfig();
-            String shared = findInitParameter(config, SHARED_CONFIG_PARAM);
-            if (shared == null || shared.equals("false"))
-            {
-                this.view = ServletUtils.getVelocityView(config);
-                assert (view != null);
-            }
-            else
-            {
-                // just create our own non-shared VelocityView
-                this.view = new VelocityView(config);
-            }
+            this.view = ServletUtils.getVelocityView(getServletConfig());
+            assert (view != null);
         }
         return this.view;
     }

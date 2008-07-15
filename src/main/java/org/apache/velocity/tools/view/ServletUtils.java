@@ -37,6 +37,8 @@ public class ServletUtils
 {
     public static final String VELOCITY_VIEW_KEY =
         VelocityView.class.getName();
+    public static final String SHARED_CONFIG_PARAM =
+        "org.apache.velocity.tools.shared.config";
     public static final String ALT_VELOCITY_VIEW_KEY =
         "org.apache.velocity.tools.view.class";
 
@@ -104,6 +106,16 @@ public class ServletUtils
      */
     public static VelocityView getVelocityView(JeeConfig config)
     {
+        // check for an init-param telling this servlet/filter NOT
+        // to share its VelocityView with others.  by default, we
+        // play nice and share the VelocityView with the other kids.
+        String shared = config.findInitParameter(SHARED_CONFIG_PARAM);
+        if (shared != null && shared.equals("false"))
+        {
+            // just create a new, non-shared VelocityView
+            return createView(config);
+        }
+
         ServletContext application = config.getServletContext();
 
         // check for an already initialized VelocityView to use
