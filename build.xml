@@ -36,7 +36,6 @@
 
 <!-- ========== Targets ======================================== -->
 
-
   <!-- Main Target -->
   <target name="all" depends="clean,jar.struts,examples,javadoc,docs,env"
           description="Clean and build velocity-tools library, examples, and documentation."/>
@@ -553,7 +552,12 @@
     <gzip zipfile="${dist.dir}/${project.id}.tar.gz"
           src="${dist.dir}/${project.id}.tar"/>
 
+    <!-- Create a distribution ready POM -->
+    <copy file="pom.xml" tofile="${dist.dir}/${project.id}.pom"/>
+
     <!-- Create checksums for the binary distribution files -->
+    <checksum file="${dist.dir}/${project.id}.pom" algorithm="md5" fileext=".md5"/>
+    <checksum file="${dist.dir}/${project.id}.pom" algorithm="sha1" fileext=".sha1"/>
     <checksum file="${dist.dir}/${project.id}.zip" algorithm="md5" fileext=".md5"/>
     <checksum file="${dist.dir}/${project.id}.zip" algorithm="sha1" fileext=".sha1"/>
     <checksum file="${dist.dir}/${project.id}.tar.gz" algorithm="md5" fileext=".md5"/>
@@ -639,7 +643,7 @@
     * SSH to ${publish.server} and verify the checksums and signatures of the uploaded
       files with a script like:
           #!/bin/csh
-          foreach fn ( *.tar.gz *.zip *.jar )
+          foreach fn ( *.tar.gz *.zip *.jar *.pom )
             echo Verifying $fn...
             echo GPG signature should be "Good"
             gpg --verify $fn.asc
@@ -660,7 +664,7 @@
 
     * Once the release vote has passed, these files should all be copied to
         /www/www.apache.org/dist/velocity/tools/${project.version}
-      and the jars should be copied into 
+      and the full jar, pom and their md5 and sha1 files should be copied into 
         /www/people.apache.org/repo/m2-ibiblio-rsync-repository/org/apache/velocity/velocity-tools/${project.version}/
 
     * Tag the release in SVN with a command such as:
