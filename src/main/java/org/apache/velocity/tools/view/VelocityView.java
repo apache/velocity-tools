@@ -28,6 +28,7 @@ import java.io.Writer;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -850,21 +851,16 @@ public class VelocityView
     }
 
 
+    /**
+     * Prepares the request scope toolbox, if one is configured for
+     * the toolbox factory, and then prepares the session toolbox
+     * if one is configured for the factory and has not yet been created
+     * for the current session.
+     */
     public void prepareToolboxes(HttpServletRequest request)
     {
-        // only set a new toolbox if we need one
-        if (toolboxFactory.hasTools(Scope.REQUEST)
-            && request.getAttribute(this.toolboxKey) == null)
-        {
-            // add request toolbox, if any
-            Toolbox reqTools = toolboxFactory.createToolbox(Scope.REQUEST);
-            if (reqTools != null)
-            {
-                request.setAttribute(this.toolboxKey, reqTools);
-            }
-        }
+        prepareToolbox(request);
 
-        //TODO: move this string constant somewhere static
         if (toolboxFactory.hasTools(Scope.SESSION))
         {
             //FIXME? does this honor createSession props set on the session Toolbox?
@@ -881,6 +877,30 @@ public class VelocityView
                         session.setAttribute(this.toolboxKey, sessTools);
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * Prepares the request scope toolbox, if one is configured for
+     * the toolbox factory.
+     */
+    public void prepareToolboxes(ServletRequest request)
+    {
+        prepareToolbox(request);
+    }
+
+    private void prepareToolbox(ServletRequest request)
+    {
+        // only set a new toolbox if we need one
+        if (toolboxFactory.hasTools(Scope.REQUEST)
+            && request.getAttribute(this.toolboxKey) == null)
+        {
+            // add request toolbox, if any
+            Toolbox reqTools = toolboxFactory.createToolbox(Scope.REQUEST);
+            if (reqTools != null)
+            {
+                request.setAttribute(this.toolboxKey, reqTools);
             }
         }
     }
