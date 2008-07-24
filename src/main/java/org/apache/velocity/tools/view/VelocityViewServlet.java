@@ -63,11 +63,11 @@ import org.apache.velocity.runtime.log.Log;
  *     is not present, Velocity will check for a properties file at
  *     '/WEB-INF/velocity.properties'.  If no file is found there, then
  *     Velocity is initialized with the settings in the classpath at
- *     'org.apache.velocity.tools.view.servlet.velocity.properties'.</dd>
+ *     'org.apache.velocity.tools.view.velocity.properties'.</dd>
  *   <dt>org.apache.velocity.tools.shared.config</dt>
  *   <dd>By default, this is {@code true}. If set to {@code false}, then
  *     the {@link VelocityView} used by this servlet will not be shared
- *     with other VelocityViewServlets or 
+ *     with {@link VelocityViewFilters}, other VelocityViewServlets or 
  *     {@link org.apache.velocity.tools.view.jsp.VelocityViewTag}s in the
  *     application.</dd>
  *   <dt>org.apache.velocity.tools.loadDefaults</dt>
