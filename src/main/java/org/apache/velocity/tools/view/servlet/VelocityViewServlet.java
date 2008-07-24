@@ -43,6 +43,8 @@ public class VelocityViewServlet
     protected static final String DEFAULT_TOOLBOX_PATH =
         VelocityView.DEPRECATED_USER_TOOLS_PATH;
 
+    private transient VelocityView view;
+
     @Override
     public void init(ServletConfig config) throws ServletException
     {
@@ -51,5 +53,19 @@ public class VelocityViewServlet
         getLog().debug(this.getClass().getName() +
                        " has been deprecated. Use " +
                        super.getClass().getName() + " instead.");
+    }
+
+    /**
+     * Overrides parent to ensure each VVS instance has
+     * it's own separate configuration, just like in Tools 1.x.
+     */
+    @Override
+    protected VelocityView getVelocityView()
+    {
+        if (this.view == null)
+        {
+            this.view = new VelocityView(getServletConfig());
+        }
+        return this.view;
     }
 }
