@@ -120,7 +120,9 @@ public class ViewToolsTests {
         HTMLElement element = resp.getElementWithID(id);
         assertNotNull(element);
         Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(element.getText());
+        // strip new lines from string to be tested
+        String text = element.getText().replace("\n","");
+        Matcher matcher = pattern.matcher(text);
         if (!matcher.matches())
         {
             fail(element.getText()+" did not match "+regex);
