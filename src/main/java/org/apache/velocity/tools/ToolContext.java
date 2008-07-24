@@ -218,4 +218,9 @@ public class ToolContext implements Context
         //tools and their props cannot be removed
         return localContext.remove(key);
     }
+
+    public void putAll(Map context)
+    {
+        localContext.putAll(context);
+    }
 }
