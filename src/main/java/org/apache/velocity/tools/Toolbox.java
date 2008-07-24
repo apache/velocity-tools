@@ -42,6 +42,11 @@ import java.util.Set;
  */
 public class Toolbox implements java.io.Serializable
 {
+    /**
+     * The key used to place instances in various scopes.
+     */
+    public static final String KEY = Toolbox.class.getName();
+
     private static final long serialVersionUID = 888081253188664649L;
 
     private Map<String,ToolInfo> infoMap;
@@ -205,20 +210,24 @@ public class Toolbox implements java.io.Serializable
     }
 
     /**
-     * Returns a new {@link Toolbox} that is a combination of this
-     * toolbox with one or more specified {@link Toolbox}es.
+     * Returns a new {@link Toolbox} that is a combination of
+     * this Toolbox with one or more specified {@link Toolbox}es.
+     * Neither this instance nor those specified are modified.
      */
     public Toolbox combine(Toolbox... toolboxes)
     {
         Map<String,ToolInfo> info = new HashMap<String,ToolInfo>(this.infoMap);
-        Map<String,Object> props = new HashMap<String,Object>(properties);
+        Map<String,Object> props = new HashMap<String,Object>(this.properties);
+        Map<String,Object> data = new HashMap<String,Object>(this.cache);
         for (Toolbox toolbox : toolboxes)
         {
-            cache.putAll(toolbox.cache);
             info.putAll(toolbox.infoMap);
             props.putAll(toolbox.properties);
+            data.putAll(toolbox.cache);
         }
-        return new Toolbox(info, props);
+        Toolbox combination = new Toolbox(info, props);
+        combination.cacheData(data);
+        return combination;
     }
 
 }

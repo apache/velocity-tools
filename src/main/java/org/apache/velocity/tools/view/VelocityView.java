@@ -105,8 +105,7 @@ public class VelocityView
     public static final String SERVLET_CONTEXT_KEY =
         ServletContext.class.getName();
 
-    public static final String DEFAULT_TOOLBOX_KEY =
-        Toolbox.class.getName();
+    public static final String DEFAULT_TOOLBOX_KEY = Toolbox.KEY;
 
     public static final String CREATE_SESSION_PROPERTY = "createSession";
 
@@ -262,7 +261,10 @@ public class VelocityView
         return getVelocityEngine().getLog();
     }
 
-    protected ToolboxFactory getToolboxFactory()
+    /**
+     * Returns the underlying {@link ToolboxFactory} being used.
+     */
+    public ToolboxFactory getToolboxFactory()
     {
         return this.toolboxFactory;
     }
@@ -896,12 +898,8 @@ public class VelocityView
         if (toolboxFactory.hasTools(Scope.REQUEST)
             && request.getAttribute(this.toolboxKey) == null)
         {
-            // add request toolbox, if any
             Toolbox reqTools = toolboxFactory.createToolbox(Scope.REQUEST);
-            if (reqTools != null)
-            {
-                request.setAttribute(this.toolboxKey, reqTools);
-            }
+            request.setAttribute(this.toolboxKey, reqTools);
         }
     }
 
