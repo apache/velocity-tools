@@ -174,7 +174,7 @@ public class ParameterTool extends ValueParser
      */
     public Map getAll()
     {
-        return getSource();
+        return expandSingletonArrays(getSource());
     }
 
     /**
