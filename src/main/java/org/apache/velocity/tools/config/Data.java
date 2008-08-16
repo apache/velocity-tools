@@ -468,7 +468,7 @@ public class Data implements Comparable<Data>
     {
         public Object convert(Class type, Object obj)
         {
-            Number num = ConversionUtils.toNumber(obj);
+            Number num = ConversionUtils.toNumber(obj,"default",Locale.US);
             if (num == null)
             {
                 throw new IllegalArgumentException("Could not convert "+obj+" to a number");
