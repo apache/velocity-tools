@@ -256,7 +256,7 @@ public class VelocityView
         return velocity;
     }
 
-    protected Log getLog()
+    public Log getLog()
     {
         return getVelocityEngine().getLog();
     }
