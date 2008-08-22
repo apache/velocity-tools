@@ -282,7 +282,7 @@ public class VelocityView
      */
     protected String getProperty(String key, String alternate)
     {
-        String prop = (String)velocity.getProperty(key);
+        String prop = (String)getVelocityEngine().getProperty(key);
         if (prop == null || prop.length() == 0)
         {
             return alternate;
@@ -947,11 +947,11 @@ public class VelocityView
         ViewToolContext ctx;
         if (this.deprecationSupportMode)
         {
-            ctx = new ChainedContext(velocity, request, response, servletContext);
+            ctx = new ChainedContext(getVelocityEngine(), request, response, servletContext);
         }
         else
         {
-            ctx = new ViewToolContext(velocity, request, response, servletContext);
+            ctx = new ViewToolContext(getVelocityEngine(), request, response, servletContext);
         }
         prepareContext(ctx);
         return ctx;
