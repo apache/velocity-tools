@@ -214,7 +214,6 @@ public class VelocityView
     {
         setToolboxKey(toolboxKey);
 
-        this.servletContext = config.getServletContext();
         init(config);
     }
 
@@ -305,14 +304,19 @@ public class VelocityView
      */
     protected void init(JeeConfig config)
     {
+        this.servletContext = config.getServletContext();
+
         String depMode = findInitParameter(DEPRECATION_SUPPORT_MODE_KEY, config);
         if (depMode != null && depMode.equalsIgnoreCase("false"))
         {
             setDeprecationSupportMode(false);
         }
         
-        // initialize a new VelocityEngine
-        init(config, new VelocityEngine());
+        if (getVelocityEngine() == null)
+        {
+            // initialize a new VelocityEngine
+            init(config, new VelocityEngine());
+        }
 
         // initialize a new ToolboxFactory
         init(config, new ToolboxFactory());
