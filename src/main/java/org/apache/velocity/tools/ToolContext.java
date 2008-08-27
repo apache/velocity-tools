@@ -157,6 +157,17 @@ public class ToolContext implements Context
         return toolProps.put(key, value);
     }
 
+    public void putToolProperties(Map<String,Object> props)
+    {
+        if (props != null)
+        {
+            for (Map.Entry<String,Object> prop : props.entrySet())
+            {
+                putToolProperty(prop.getKey(), prop.getValue());
+            }
+        }
+    }
+
     public Object put(String key, Object value)
     {
         return localContext.put(key, value);
