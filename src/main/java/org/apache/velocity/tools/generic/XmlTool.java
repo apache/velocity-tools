@@ -19,7 +19,6 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
-import java.io.File;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
@@ -36,7 +35,6 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.io.XMLWriter;
 import org.dom4j.io.SAXReader;
 import org.apache.velocity.runtime.log.Log;
-import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.ConversionUtils;
 import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.config.DefaultKey;
@@ -114,6 +112,10 @@ public class XmlTool extends SafeConfig
             {
                 read(file);
             }
+            catch (IllegalArgumentException iae)
+            {
+                throw iae;
+            }
             catch (Exception e)
             {
                 throw new RuntimeException("Could not read XML file at: "+file, e);
@@ -134,23 +136,6 @@ public class XmlTool extends SafeConfig
         this.nodes.add(node);
     }
 
-    //FIXME: dupe of FileFactoryConfiguration; move to one place
-    private URL getURL(String name) throws Exception
-    {
-        //TODO: grab the VelocityEngine so we can read files from there?
-        File file = new File(name);
-        if (file.exists())
-        {
-            return file.toURI().toURL();
-        }
-        URL url = ClassUtils.getResource(name, this);
-        if (url != null)
-        {
-            return url;
-        }
-        return new URL(name);
-    }
-
     private void log(Object o, Throwable t)
     {
         if (LOG != null)
@@ -164,7 +149,12 @@ public class XmlTool extends SafeConfig
      */
     protected void read(String file) throws Exception
     {
-        read(getURL(file));
+        URL url = ConversionUtils.toURL(file, this);
+        if (url == null)
+        {
+            throw new IllegalArgumentException("Could not find file, classpath resource or standard URL for '"+file+"'.");
+        }
+        read(url);
     }
 
     /**

@@ -19,14 +19,12 @@ package org.apache.velocity.tools.config;
  * under the License.
  */
 
-import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.log.Log;
-import org.apache.velocity.tools.ClassUtils;
+import org.apache.velocity.tools.ConversionUtils;
 
 /**
  * Provides support for reading a configuration file from a specified path,
@@ -108,39 +106,7 @@ public abstract class FileFactoryConfiguration extends FactoryConfiguration
 
     protected URL findURL(String path)
     {
-        // first, try the file system
-        File file = new File(path);
-        if (file.exists())
-        {
-            try
-            {
-                return file.toURI().toURL();
-            }
-            catch (MalformedURLException mue)
-            {
-                // this doesn't seem like it should happen if the file exists
-                // but i may be wrong, in which case we should change this to
-                // just log a debug message
-                throw new IllegalStateException("Could not convert existing file path \""+path+"\" to URL", mue);
-            }
-        }
-        
-        // then search the classpath
-        URL url = ClassUtils.getResource(path, this);
-        if (url != null)
-        {
-            return url;
-        }
-
-        // finally, just try directly turning it into a URL
-        try
-        {
-            return new URL(path);
-        }
-        catch (MalformedURLException mue)
-        {
-            return null;
-        }
+        return ConversionUtils.toURL(path, this);
     }
 
     protected void read(URL url, boolean required, Log log)
