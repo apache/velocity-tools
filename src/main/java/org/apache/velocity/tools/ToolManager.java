@@ -114,13 +114,7 @@ public class ToolManager
         if (this.engine != null)
         {
             context = new ToolContext(this.engine);
-            if (toolProps != null && !toolProps.isEmpty())
-            {
-                for (Map.Entry<String,Object> prop : toolProps.entrySet())
-                {
-                    context.putToolProperty(prop.getKey(), prop.getValue());
-                }
-            }
+            context.putToolProperties(toolProps);
         }
         else
         {
@@ -142,27 +136,36 @@ public class ToolManager
         }
     }
 
+    protected boolean hasTools(String scope)
+    {
+        return this.factory.hasTools(scope);
+    }
+
+    protected Toolbox createToolbox(String scope)
+    {
+        return this.factory.createToolbox(scope);
+    }
+
     protected boolean hasRequestTools()
     {
-        return this.factory.hasTools(Scope.REQUEST);
+        return hasTools(Scope.REQUEST);
     }
 
     protected Toolbox getRequestToolbox()
     {
-        return this.factory.createToolbox(Scope.REQUEST);
+        return createToolbox(Scope.REQUEST);
     }
 
     protected boolean hasApplicationTools()
     {
-        return this.factory.hasTools(Scope.APPLICATION);
+        return hasTools(Scope.APPLICATION);
     }
 
     protected Toolbox getApplicationToolbox()
     {
         if (this.application == null)
         {
-            this.application =
-                this.factory.createToolbox(Scope.APPLICATION);
+            this.application = createToolbox(Scope.APPLICATION);
         }
         return this.application;
     }
