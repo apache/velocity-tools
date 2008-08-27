@@ -220,7 +220,8 @@ public class ClassUtils
      * <li>Thread.currentThread().getContextClassLoader().getResource(name)</li>
      * <li>{@link ClassUtils}.class.getClassLoader().getResource(name)</li>
      * <li>{@link ClassUtils}.class.getResource(name)</li>
-     * <li>caller.getClass().getResource(name)</li>
+     * <li>caller.getClass().getResource(name) or, if caller is a Class,
+     *     caller.getResource(name)</li>
      * </ul>
      *
      * @param name The name of the resource to load
@@ -235,9 +236,14 @@ public class ClassUtils
             if (url == null)
             {
                 url = ClassUtils.class.getResource(name);
-                if (url == null)
+                if (url == null && caller != null)
                 {
-                    url = caller.getClass().getResource(name);
+                    Class callingClass = caller.getClass();
+                    if (callingClass == Class.class)
+                    {
+                        callingClass = (Class)caller;
+                    }
+                    url = callingClass.getResource(name);
                 }
             }
         }
