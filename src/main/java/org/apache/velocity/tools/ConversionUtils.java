@@ -19,6 +19,8 @@ package org.apache.velocity.tools;
  * under the License.
  */
 
+import java.io.File;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -588,4 +590,63 @@ public class ConversionUtils
             return null;
         }
     }
+
+    /**
+     * Converts a string to a {@link URL}.  It will first try to
+     * treat the string as a File name, then a classpath resource,
+     * then finally as a literal URL.  If none of these work, then
+     * this will return {@code null}.
+     *
+     * @param value - the string to parse
+     * @return the {@link URL} form of the string or {@code null}
+     * @see File
+     * @see ClassUtils#getResource(String,Object)
+     * @see URL
+     */
+    public static URL toURL(String name)
+    {
+        return toURL(name, ConversionUtils.class);
+    }
+
+    /**
+     * Converts a string to a {@link URL}.  It will first try to
+     * treat the string as a File name, then a classpath resource,
+     * then finally as a literal URL.  If none of these work, then
+     * this will return {@code null}.
+     *
+     * @param value - the string to parse
+     * @param caller - the object or Class seeking the url
+     * @return the {@link URL} form of the string or {@code null}
+     * @see File
+     * @see ClassUtils#getResource(String,Object)
+     * @see URL
+     */
+    public static URL toURL(String name, Object caller)
+    {
+        try
+        {
+            File file = new File(name);
+            if (file.exists())
+            {
+                return file.toURI().toURL();
+            }
+        }
+        catch (Exception e) {}
+        try
+        {
+            URL url = ClassUtils.getResource(name, caller);
+            if (url != null)
+            {
+                return url;
+            }
+        }
+        catch (Exception e) {}
+        try
+        {
+            return new URL(name);
+        }
+        catch (Exception e) {}
+        return null;
+    }
+
 }
