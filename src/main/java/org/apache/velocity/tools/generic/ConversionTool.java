@@ -56,14 +56,17 @@ import org.apache.velocity.tools.config.DefaultKey;
 public class ConversionTool extends LocaleConfig
 {
     public static final String STRINGS_DELIMITER_FORMAT_KEY = "stringsDelimiter";
+    public static final String STRINGS_TRIM_KEY = "trimStrings";
     public static final String DATE_FORMAT_KEY = "dateFormat";
     public static final String NUMBER_FORMAT_KEY = "numberFormat";
 
     public static final String DEFAULT_STRINGS_DELIMITER = ",";
+    public static final boolean DEFAULT_STRINGS_TRIM = true;
     public static final String DEFAULT_NUMBER_FORMAT = "default";
     public static final String DEFAULT_DATE_FORMAT = "default";
 
     private String stringsDelimiter = DEFAULT_STRINGS_DELIMITER;
+    private boolean stringsTrim = DEFAULT_STRINGS_TRIM;
     private String numberFormat = DEFAULT_NUMBER_FORMAT;
     private String dateFormat = DEFAULT_DATE_FORMAT;
 
@@ -110,6 +113,23 @@ public class ConversionTool extends LocaleConfig
     public final String getStringsDelimiter()
     {
         return this.stringsDelimiter;
+    }
+
+    /**
+     * Sets whether strings should be trimmed when separated from
+     * a delimited string value.
+     * The default is true.
+     *
+     * @see #parseStringList
+     */
+    protected final void setStringsTrim(boolean stringsTrim)
+    {
+        this.stringsTrim = stringsTrim;
+    }
+
+    public final boolean getStringsTrim()
+    {
+        return this.stringsTrim;
     }
 
     protected final void setNumberFormat(String format)
@@ -643,16 +663,28 @@ public class ConversionTool extends LocaleConfig
 
     /**
      * Converts a single String value into an array of Strings by splitting
-     * it on the tool's set stringsDelimiter.  The default stringsDelimiter is a comma.
-     *
+     * it on the tool's set stringsDelimiter.  The default stringsDelimiter is a comma,
+     * and by default, all strings parsed out are trimmed before returning.
      */
     protected String[] parseStringList(String value)
     {
+        String[] values;
         if (value.indexOf(this.stringsDelimiter) < 0)
         {
-            return new String[] { value };
+            values = new String[] { value };
         }
-        return value.split(this.stringsDelimiter);
+        else
+        {
+            values = value.split(this.stringsDelimiter);
+        }
+        if (this.stringsTrim)
+        {
+            for (int i=0,l=values.length; i < l; i++)
+            {
+                values[i] = values[i].trim();
+            }
+        }
+        return values;
     }
 
     /**
