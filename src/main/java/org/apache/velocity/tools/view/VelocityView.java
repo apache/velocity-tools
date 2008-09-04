@@ -117,7 +117,9 @@ public class VelocityView
 
     /**
      * Key used to access the toolbox configuration file path from the
-     * Servlet or webapp init parameters ("org.apache.velocity.tools").
+     * Servlet or webapp init parameters ("org.apache.velocity.tools")
+     * or to access a live {@link FactoryConfiguration} previously
+     * placed in the ServletContext attributes.
      */
     public static final String TOOLS_KEY =
         "org.apache.velocity.tools";
@@ -205,6 +207,11 @@ public class VelocityView
         this(new JeeConfig(config));
     }
 
+    public VelocityView(ServletContext context)
+    {
+        this(new JeeConfig(context));
+    }
+
     public VelocityView(JeeConfig config)
     {
         this(config, DEFAULT_TOOLBOX_KEY);
@@ -217,24 +224,23 @@ public class VelocityView
         init(config);
     }
 
-    public VelocityView(ServletContext context)
-    {
-        this(new JeeConfig(context), DEFAULT_TOOLBOX_KEY);
-    }
-
     /**
      * This method should be private until someone thinks of a good
      * reason to change toolbox keys arbitrarily.  If it is opened up,
      * then we need to be sure any "application" toolbox
      * is copied or moved to be under the new key.
      */
-    private final void setToolboxKey(String toolboxKey)
+    private final void setToolboxKey(String key)
     {
-        if (toolboxKey == null)
+        if (key == null)
         {
             throw new NullPointerException("toolboxKey cannot be null");
         }
-        this.toolboxKey = toolboxKey;
+        if (!key.equals(toolboxKey))
+        {
+            this.toolboxKey = key;
+            debug("Toolbox key was changed to %s", key);
+        }
     }
 
     protected final String getToolboxKey()
@@ -242,9 +248,11 @@ public class VelocityView
         return this.toolboxKey;
     }
 
+    @Deprecated
     protected final void setDeprecationSupportMode(boolean support)
     {
         this.deprecationSupportMode = support;
+        debug("deprecationSupportMode is %s", (support ? "on" : "off"));
     }
 
     /**
@@ -255,9 +263,34 @@ public class VelocityView
         return velocity;
     }
 
+    /**
+     * Sets the underlying VelocityEngine being used.
+     * <b>If you use this, be sure that your VelocityEngine
+     * is already properly configured and initialized or
+     * you had better call {@link #init(JeeConfig,VelocityEngine)}
+     * after you call this method.</b>
+     */
+    public void setVelocityEngine(VelocityEngine engine)
+    {
+        if (engine == null)
+        {
+            throw new NullPointerException("VelocityEngine cannot be null");
+        }
+        debug("VelocityEngine instance was changed to %s", engine);
+        this.velocity = engine;
+    }
+
     public Log getLog()
     {
-        return getVelocityEngine().getLog();
+        return velocity.getLog();
+    }
+
+    private void debug(String msg, Object... args)
+    {
+        if (getLog().isDebugEnabled())
+        {
+            getLog().debug(String.format(msg, args));
+        }
     }
 
     /**
@@ -268,9 +301,52 @@ public class VelocityView
         return this.toolboxFactory;
     }
 
+    /**
+     * Sets the underlying ToolboxFactory being used.
+     * <b>If you use this, be sure that your ToolboxFactory
+     * is already properly configured and initialized or
+     * you had better call {@link #init(JeeConfig,ToolboxFactory)}
+     * after you call this method.</b>
+     */
+    public void setToolboxFactory(ToolboxFactory factory)
+    {
+        if (factory == null)
+        {
+            throw new NullPointerException("ToolboxFactory cannot be null");
+        }
+        debug("ToolboxFactory instance was changed to %s", factory);
+        this.toolboxFactory = factory;
+    }
+
+    /**
+     * Returns the configured default Content-Type.
+     */
     public String getDefaultContentType()
     {
         return this.defaultContentType;
+    }
+
+    /**
+     * Sets the configured default Content-Type.
+     */
+    public void setDefaultContentType(String type)
+    {
+        this.defaultContentType = type;
+        debug("Default Content-Type was changed to %s", type);
+    }
+
+    /**
+     * Sets whether or not VelocityView should create a new HttpSession
+     * when there are session scoped tools, but no session has been
+     * created yet.
+     */
+    public void setCreateSession(boolean create)
+    {
+        if (create != this.createSession)
+        {
+            debug("Create session setting was changed to %s", create);
+            this.createSession = create;
+        }
     }
 
     /**
@@ -281,7 +357,7 @@ public class VelocityView
      */
     protected String getProperty(String key, String alternate)
     {
-        String prop = (String)getVelocityEngine().getProperty(key);
+        String prop = (String)velocity.getProperty(key);
         if (prop == null || prop.length() == 0)
         {
             return alternate;
@@ -306,20 +382,27 @@ public class VelocityView
     {
         this.servletContext = config.getServletContext();
 
+        // create engine and factory if none are set yet
+        if (velocity == null)
+        {
+            this.velocity = new VelocityEngine();
+        }
+        if (toolboxFactory == null)
+        {
+            this.toolboxFactory = new ToolboxFactory();
+        }
+
         String depMode = findInitParameter(DEPRECATION_SUPPORT_MODE_KEY, config);
         if (depMode != null && depMode.equalsIgnoreCase("false"))
         {
             setDeprecationSupportMode(false);
         }
         
-        if (getVelocityEngine() == null)
-        {
-            // initialize a new VelocityEngine
-            init(config, new VelocityEngine());
-        }
+        // initialize the VelocityEngine
+        init(config, velocity);
 
-        // initialize a new ToolboxFactory
-        init(config, new ToolboxFactory());
+        // initialize the ToolboxFactory
+        init(config, toolboxFactory);
 
         // set encoding & content-type
         setEncoding(config);
@@ -339,12 +422,6 @@ public class VelocityView
      */
     protected void init(JeeConfig config, final VelocityEngine velocity)
     {
-        if (velocity == null)
-        {
-            throw new NullPointerException("VelocityEngine cannot be null");
-        }
-        this.velocity = velocity;
-
         // register this engine to be the default handler of log messages
         // if the user points commons-logging to the LogSystemCommonsLog
         LogChuteCommonsLog.setVelocityLog(getLog());
@@ -379,12 +456,6 @@ public class VelocityView
      */
     protected void init(final JeeConfig config, final ToolboxFactory factory)
     {
-        if (factory == null)
-        {
-            throw new NullPointerException("ToolboxFactory cannot be null");
-        }
-        this.toolboxFactory = factory;
-
         configure(config, toolboxFactory);
 
         // check for a createSession setting
@@ -392,7 +463,7 @@ public class VelocityView
             (Boolean)toolboxFactory.getGlobalProperty(CREATE_SESSION_PROPERTY);
         if (bool != null)
         {
-            this.createSession = bool;
+            setCreateSession(bool);
         }
 
         // add any application toolbox to the application attributes
@@ -445,8 +516,7 @@ public class VelocityView
             return false;
         }
 
-        getLog().debug("Configuring Velocity with properties at: "
-                       + path);
+        debug("Configuring Velocity with properties at: %s", path);
 
         // these props will override those already set
         velocity.setExtendedProperties(props);
@@ -505,10 +575,10 @@ public class VelocityView
         else
         {
             // let the user know that the defaults were suppressed
-            getLog().debug("Default tools configuration has been suppressed"
-                           + (hasOldToolbox ?
-                              " to avoid conflicts with older application's context and toolbox definition."
-                              : "."));
+            debug("Default tools configuration has been suppressed%s",
+                  (hasOldToolbox ?
+                   " to avoid conflicts with older application's context and toolbox definition." :
+                   "."));
         }
 
         // this gets the auto loaded config from the classpath
@@ -530,6 +600,18 @@ public class VelocityView
         String servletToolsPath = config.getInitParameter(TOOLS_KEY);
         setConfig(factoryConfig, servletToolsPath, true);
 
+        // check for "injected" configuration in application attributes
+        Object obj = servletContext.getAttribute(TOOLS_KEY);
+        if (obj instanceof FactoryConfiguration)
+        {
+            debug("Adding configuration found in servletContext under key '%s'", TOOLS_KEY);
+            FactoryConfiguration injected = (FactoryConfiguration)obj;
+            // make note of where we found this
+            String source = injected.getSource();
+            injected.setSource(source+" from ServletContext.getAttribute("+TOOLS_KEY+")");
+            factoryConfig.addConfiguration(injected);
+        }
+
         // see if we should only keep valid tools, data, and properties
         String cleanConfig = findInitParameter(CLEAN_CONFIGURATION_KEY, config);
         if ("true".equals(cleanConfig))
@@ -541,7 +623,7 @@ public class VelocityView
         }
 
         // apply this configuration to the specified factory
-        getLog().debug("Configuring toolboxFactory with: "+factoryConfig);
+        debug("Configuring toolboxFactory with: %s", factoryConfig);
         factory.configure(factoryConfig);
     }
 
@@ -576,7 +658,7 @@ public class VelocityView
 
         if (toolbox != null)
         {
-            getLog().debug("Loaded deprecated configuration from: " + oldPath);
+            debug("Loaded deprecated configuration from: %s", oldPath);
             getLog().warn("Please upgrade to new \"/WEB-INF/tools.xml\" format and conventional location."+
                           " Support for \"/WEB-INF/toolbox.xml\" format and conventional file name will "+
                           "be removed in a future version.");
@@ -601,7 +683,7 @@ public class VelocityView
             return false;
         }
 
-        getLog().debug("Loaded configuration from: " + path);
+        debug("Loaded configuration from: %s", path);
         factory.addConfiguration(config);
 
         // notify that new config was added
@@ -642,11 +724,12 @@ public class VelocityView
         if (inputStream == null)
         {
             String msg = "Could not find resource at: "+path;
-            getLog().debug(msg);
             if (required)
             {
+                getLog().error(msg);
                 throw new ResourceNotFoundException(msg);
             }
+            debug(msg);
             return null;
         }
         return inputStream;
@@ -737,13 +820,14 @@ public class VelocityView
         {
             String msg = "Unknown configuration file type: " + path +
                          "\nOnly .xml and .properties configuration files are supported at this time.";
-            getLog().debug(msg);
             if (required)
             {
+                getLog().error(msg);
                 throw new UnsupportedOperationException(msg);
             }
             else
             {
+                debug(msg);
                 return null;
             }
         }
@@ -809,7 +893,7 @@ public class VelocityView
             }
         }
 
-        getLog().debug("Default content-type is: " + defaultContentType);
+        debug("Default Content-Type is: %s", defaultContentType);
     }
 
 
@@ -1051,11 +1135,11 @@ public class VelocityView
         {
             if (encoding == null)
             {
-                return getVelocityEngine().getTemplate(name);
+                return velocity.getTemplate(name);
             }
             else
             {
-                return getVelocityEngine().getTemplate(name, encoding);
+                return velocity.getTemplate(name, encoding);
             }
         }
         catch (Exception e)
@@ -1108,7 +1192,7 @@ public class VelocityView
                 }
                 catch (Exception e)
                 {
-                    getLog().debug("Trouble releasing VelocityWriter: " + 
+                    getLog().error("Trouble releasing VelocityWriter: " + 
                                    e.getMessage(), e);
                 }
             }
