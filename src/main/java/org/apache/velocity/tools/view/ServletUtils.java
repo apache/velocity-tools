@@ -19,6 +19,11 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletConfig;
@@ -27,9 +32,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.Toolbox;
+import org.apache.velocity.tools.config.FactoryConfiguration;
+import org.apache.velocity.tools.config.FileFactoryConfiguration;
+import org.apache.velocity.tools.config.PropertiesFactoryConfiguration;
+import org.apache.velocity.tools.config.XmlFactoryConfiguration;
 
 /**
- * <p>A set of utility methods for the servlet environment.</p>
+ * <p>A set of utility methods for supporting and using
+ * VelocityTools in the servlet environment.</p>
  *
  * @version $Id: ServletUtils.java 471244 2006-11-04 18:34:38Z henning $
  */
@@ -277,6 +287,131 @@ public class ServletUtils
         }
 
         return null;
+    }
+
+    public static InputStream getInputStream(String path, ServletContext application)
+    {
+        // first, search the classpath
+        InputStream inputStream = ClassUtils.getResourceAsStream(path, ServletUtils.class);
+        if (inputStream == null)
+        {
+            // then, try the servlet context
+            inputStream = application.getResourceAsStream(path);
+
+            if (inputStream == null)
+            {
+                // then, try the file system directly
+                File file = new File(path);
+                if (file.exists())
+                {
+                    try
+                    {
+                        inputStream = new FileInputStream(file);
+                    }
+                    catch (FileNotFoundException fnfe)
+                    {
+                        // we should not be able to get here
+                        // since we already checked whether the file exists
+                        throw new IllegalStateException(fnfe);
+                    }
+                }
+            }
+        }
+        return inputStream;
+    }
+
+    public static FactoryConfiguration getConfiguration(String path,
+                                                        ServletContext application)
+    {
+        return getConfiguration(path, application, path.endsWith("toolbox.xml"));
+    }
+
+    public static FactoryConfiguration getConfiguration(String path,
+                                                        ServletContext application,
+                                                        boolean deprecationSupportMode)
+    {
+        // first make sure we can even get such a file
+        InputStream inputStream = getInputStream(path, application);
+        if (inputStream == null)
+        {
+            return null;
+        }
+
+        // then make sure it's a file type we recognize
+        FileFactoryConfiguration config = null;
+        String source = "ServletUtils.getConfiguration("+path+",ServletContext[,depMode])";
+        if (path.endsWith(".xml"))
+        {
+            config = new XmlFactoryConfiguration(deprecationSupportMode, source);
+        }
+        else if (path.endsWith(".properties"))
+        {
+            config = new PropertiesFactoryConfiguration(source);
+        }
+        else
+        {
+            String msg = "Unknown configuration file type: " + path +
+                         "\nOnly .xml and .properties configuration files are supported at this time.";
+            throw new UnsupportedOperationException(msg);
+        }
+
+        // now, try to read the file
+        try
+        {
+            config.read(inputStream);
+        }
+        catch (IOException ioe)
+        {
+            throw new RuntimeException("Failed to load configuration at: "+path, ioe);
+        }
+        finally
+        {
+            try
+            {
+                if (inputStream != null)
+                {
+                    inputStream.close();
+                }
+            }
+            catch (IOException ioe)
+            {
+                throw new RuntimeException("Failed to close input stream for "+path, ioe);
+            }
+        }
+        return config;
+    }
+
+    /**
+     * Returns a mutex (lock object) unique to the specified session
+     * and stored under the specified key to allow for reliable
+     * synchronization on the session.
+     */
+    public static Object getMutex(HttpSession session, String key, Object caller)
+    {
+        // yes, this uses double-checked locking, but it is safe here
+        // since partial initialization of the lock is not an issue
+        Object lock = session.getAttribute(key);
+        if (lock == null)
+        {
+            // one thread per caller at a time
+            synchronized(caller)
+            {
+                // in case another thread already came thru
+                lock = session.getAttribute(key);
+                if (lock == null)
+                {
+                    // use a small, serializable object
+                    // that is unlikely to be unfortunately optimized
+                    lock = new SessionMutex();
+                    session.setAttribute(key, lock);
+                }
+            }
+        }
+        return lock;
+    }
+
+    private static class SessionMutex implements java.io.Serializable
+    {
     }
 
 }
