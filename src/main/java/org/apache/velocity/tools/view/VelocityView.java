@@ -19,9 +19,6 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.Writer;
@@ -48,9 +45,6 @@ import org.apache.velocity.tools.ToolboxFactory;
 import org.apache.velocity.tools.config.ConfigurationCleaner;
 import org.apache.velocity.tools.config.ConfigurationUtils;
 import org.apache.velocity.tools.config.FactoryConfiguration;
-import org.apache.velocity.tools.config.FileFactoryConfiguration;
-import org.apache.velocity.tools.config.PropertiesFactoryConfiguration;
-import org.apache.velocity.tools.config.XmlFactoryConfiguration;
 import org.apache.velocity.tools.view.ViewToolContext;
 import org.apache.velocity.tools.view.context.ChainedContext;
 import org.apache.velocity.util.SimplePool;
@@ -694,33 +688,9 @@ public class VelocityView
     protected InputStream getInputStream(String path, boolean required)
     {
         // first, search the classpath
-        InputStream inputStream = ClassUtils.getResourceAsStream(path, this);
-        if (inputStream == null)
-        {
-            // then, try the servlet context
-            inputStream = this.servletContext.getResourceAsStream(path);
+        InputStream inputStream = ServletUtils.getInputStream(path, this.servletContext);
 
-            if (inputStream == null)
-            {
-                // then, try the file system directly
-                File file = new File(path);
-                if (file.exists())
-                {
-                    try
-                    {
-                        inputStream = new FileInputStream(file);
-                    }
-                    catch (FileNotFoundException fnfe)
-                    {
-                        // we should not be able to get here
-                        // since we already checked whether the file exists
-                        throw new IllegalStateException(fnfe);
-                    }
-                }
-            }
-        }
-
-        // if we still haven't found one
+        // if we didn't find one
         if (inputStream == null)
         {
             String msg = "Could not find resource at: "+path;
@@ -765,7 +735,7 @@ public class VelocityView
             getLog().error(msg, ioe);
             if (required)
             {
-                throw new RuntimeException(ioe);
+                throw new RuntimeException(msg, ioe);
             }
         }
         finally
@@ -798,67 +768,34 @@ public class VelocityView
             getLog().trace("Searching for configuration at: "+path);
         }
 
-        // first make sure we can even get such a file
-        InputStream inputStream = getInputStream(path, required);
-        if (inputStream == null)
-        {
-            return null;
-        }
-
-        // then make sure it's a file type we recognize
-        FileFactoryConfiguration config = null;
-        String source = "VelocityView.getConfiguration("+path+","+required+")";
-        if (path.endsWith(".xml"))
-        {
-            config = new XmlFactoryConfiguration(this.deprecationSupportMode, source);
-        }
-        else if (path.endsWith(".properties"))
-        {
-            config = new PropertiesFactoryConfiguration(source);
-        }
-        else
-        {
-            String msg = "Unknown configuration file type: " + path +
-                         "\nOnly .xml and .properties configuration files are supported at this time.";
-            if (required)
-            {
-                getLog().error(msg);
-                throw new UnsupportedOperationException(msg);
-            }
-            else
-            {
-                debug(msg);
-                return null;
-            }
-        }
-
-        // now, try to read the file
+        FactoryConfiguration config = null;
         try
         {
-            config.read(inputStream);
-        }
-        catch (IOException ioe)
-        {
-            String msg = "Failed to load configuration at: "+path;
-            getLog().error(msg, ioe);
-            if (required)
+            config = ServletUtils.getConfiguration(path,
+                                                   this.servletContext,
+                                                   this.deprecationSupportMode);
+            if (config == null)
             {
-                throw new RuntimeException(ioe);
-            }
-        }
-        finally
-        {
-            try
-            {
-                if (inputStream != null)
+                String msg = "Could not find resource at: "+path;
+                if (required)
                 {
-                    inputStream.close();
+                    getLog().error(msg);
+                    throw new ResourceNotFoundException(msg);
+                }
+                else
+                {
+                    debug(msg);
                 }
             }
-            catch (IOException ioe)
+        }
+        catch (RuntimeException re)
+        {
+            if (required)
             {
-                getLog().error("Failed to close input stream for "+path, ioe);
+                getLog().error(re.getMessage(), re);
+                throw re;
             }
+            getLog().debug(re.getMessage(), re);
         }
         return config;
     }
@@ -998,25 +935,7 @@ public class VelocityView
      */
     protected Object getMutex(HttpSession session)
     {
-        // yes, this uses double-checked locking, but it is safe here
-        // since partial initialization of the lock is not an issue
-        Object lock = session.getAttribute("session.mutex");
-        if (lock == null)
-        {
-            // one thread per toolbox manager at a time
-            synchronized(this)
-            {
-                // in case another thread already came thru
-                lock = session.getAttribute("session.mutex");
-                if (lock == null)
-                {
-                    // use a Boolean because it is serializable and small
-                    lock = new Boolean(true);
-                    session.setAttribute("session.mutex", lock);
-                }
-            }
-        }
-        return lock;
+        return ServletUtils.getMutex(session, "session.mutex", this);
     }
 
 
