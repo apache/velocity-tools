@@ -92,7 +92,7 @@ public class ToolboxConfiguration
         return null;
     }
 
-    public SortedSet<ToolConfiguration> getTools()
+    public Collection<ToolConfiguration> getTools()
     {
         return getChildren();
     }

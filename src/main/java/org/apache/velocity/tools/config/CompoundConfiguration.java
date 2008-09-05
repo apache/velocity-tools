@@ -71,7 +71,7 @@ public class CompoundConfiguration<C extends Configuration>
         return !children.isEmpty();
     }
 
-    protected SortedSet<C> getChildren()
+    protected Collection<C> getChildren()
     {
         return children;
     }

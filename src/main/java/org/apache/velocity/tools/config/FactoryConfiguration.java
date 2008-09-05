@@ -91,6 +91,23 @@ public class FactoryConfiguration
     }
 
     /**
+     * Returns the original source of this particular instance.
+     */
+    public String getSource()
+    {
+        return this.sources.get(0);
+    }
+
+    /**
+     * Sets the name of the original source of this particular instance.
+     * This does not affect subsequently added sources.
+     */
+    public void setSource(String source)
+    {
+        this.sources.set(0, source);
+    }
+
+    /**
      * Returns the list of sources for this configuration info in
      * order starting from the source name given to this instance
      * (if any) and going to the most recently added source.
@@ -184,7 +201,7 @@ public class FactoryConfiguration
         return null;
     }
 
-    public SortedSet<ToolboxConfiguration> getToolboxes()
+    public Collection<ToolboxConfiguration> getToolboxes()
     {
         return getChildren();
     }

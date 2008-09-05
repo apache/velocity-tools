@@ -110,6 +110,14 @@ public class Configuration implements Comparable<Configuration>
         return map;
     }
 
+    public void setPropertyMap(Map<String,Object> props)
+    {
+        for (Map.Entry<String,Object> entry : props.entrySet())
+        {
+            setProperty(entry.getKey(), entry.getValue());
+        }
+    }
+
     public void setProperties(Collection<Property> props)
     {
         for (Property newProp : props)
