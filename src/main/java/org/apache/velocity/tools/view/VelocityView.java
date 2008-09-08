@@ -788,6 +788,11 @@ public class VelocityView
                 }
             }
         }
+        catch (ResourceNotFoundException rnfe)
+        {
+            // no need to re-log this
+            throw rnfe;
+        }
         catch (RuntimeException re)
         {
             if (required)
