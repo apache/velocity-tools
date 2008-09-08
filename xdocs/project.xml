@@ -67,9 +67,9 @@
 
         <group name="Development">
             <item name="ChangeLog"      href="changes.html"/>
-            <item name="Participating"  href="index.html#Helping%20Out"/>
+            <item name="Participating"  href="index.html#Helping_Out"/>
             <item name="Dependencies"   href="dependencies.html"/>
-            <item name="Source Code"    href="index.html#Subversion%20Repository"/>
+            <item name="Source Code"    href="index.html#Subversion_Repository"/>
             <item name="Report Issue"   href="http://issues.apache.org/jira/browse/VELTOOLS"/>
         </group>
         
