@@ -30,6 +30,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.velocity.context.Context;
+import org.apache.velocity.tools.Toolbox;
 import org.apache.velocity.tools.view.VelocityView;
 import org.apache.velocity.tools.view.ViewToolContext;
 

@@ -67,7 +67,7 @@ import org.apache.velocity.runtime.log.Log;
  *   <dt>org.apache.velocity.tools.shared.config</dt>
  *   <dd>By default, this is {@code true}. If set to {@code false}, then
  *     the {@link VelocityView} used by this servlet will not be shared
- *     with {@link VelocityViewFilters}, other VelocityViewServlets or 
+ *     with {@link VelocityViewFilter}s, other VelocityViewServlets or 
  *     {@link org.apache.velocity.tools.view.jsp.VelocityViewTag}s in the
  *     application.</dd>
  *   <dt>org.apache.velocity.tools.loadDefaults</dt>
