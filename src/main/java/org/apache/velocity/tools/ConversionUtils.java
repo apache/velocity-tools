@@ -603,9 +603,9 @@ public class ConversionUtils
      * @see ClassUtils#getResource(String,Object)
      * @see URL
      */
-    public static URL toURL(String name)
+    public static URL toURL(String value)
     {
-        return toURL(name, ConversionUtils.class);
+        return toURL(value, ConversionUtils.class);
     }
 
     /**
@@ -621,11 +621,11 @@ public class ConversionUtils
      * @see ClassUtils#getResource(String,Object)
      * @see URL
      */
-    public static URL toURL(String name, Object caller)
+    public static URL toURL(String value, Object caller)
     {
         try
         {
-            File file = new File(name);
+            File file = new File(value);
             if (file.exists())
             {
                 return file.toURI().toURL();
@@ -634,7 +634,7 @@ public class ConversionUtils
         catch (Exception e) {}
         try
         {
-            URL url = ClassUtils.getResource(name, caller);
+            URL url = ClassUtils.getResource(value, caller);
             if (url != null)
             {
                 return url;
@@ -643,7 +643,7 @@ public class ConversionUtils
         catch (Exception e) {}
         try
         {
-            return new URL(name);
+            return new URL(value);
         }
         catch (Exception e) {}
         return null;

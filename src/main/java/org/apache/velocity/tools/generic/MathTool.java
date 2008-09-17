@@ -534,7 +534,7 @@ public class MathTool extends FormatConfig
     // --------------------------- protected methods ------------------
 
     /**
-     * @see #matchType(Number[],double)
+     * @see #matchType(double,Number...)
      */
     protected Number matchType(Number in, double out)
     {
@@ -542,7 +542,7 @@ public class MathTool extends FormatConfig
     }
 
     /**
-     * @see #matchType(Number[],double)
+     * @see #matchType(double,Number...)
      */
     protected Number matchType(Number in1, Number in2, double out)
     {

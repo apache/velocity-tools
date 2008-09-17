@@ -77,7 +77,7 @@ public class XmlFactoryConfiguration extends FileFactoryConfiguration
      * format from VelocityTools 1.x.
      *
      * @param supportOldConfig whether the old toolbox.xml format should be supported
-     * @param name the name of the "source" of this instance
+     * @param id the name of the "source" of this instance
      * @see FactoryConfiguration#setSource(String)
      */
     public XmlFactoryConfiguration(boolean supportOldConfig, String id)
