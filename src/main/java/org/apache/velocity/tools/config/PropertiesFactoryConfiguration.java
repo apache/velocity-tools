@@ -28,8 +28,14 @@ import org.apache.commons.collections.ExtendedProperties;
 /**
  * <p> This reads in configuration info formatted as a property
  * file using {@link ExtendedProperties} from Commons-Collections.</p>
+ * <p>Example usage:
+ * <pre>
+ * FactoryConfiguration cfg = new PropertiesFactoryConfiguration();
+ * cfg.read("my.properties");
+ * ToolboxFactory factory = cfg.createFactory();
+ * </pre></p>
  * <p>This reads in a configuration such as:
- * <code>
+ * <pre>
  * tools.toolbox = request,application
  * tools.property.locale = en_us
  * tools.property.locale.class = java.util.Locale
@@ -47,7 +53,7 @@ import org.apache.commons.collections.ExtendedProperties;
  * tools.data.version.type = number
  * tools.data.debug = false
  * tools.data.debug.type = boolean
- * </code>
+ * </pre>
  * <strong>NOTE</strong>: "property", "data", and "toolbox" are
  * reserved words do not use them as tool keys or toolbox scopes.</p>
  *
@@ -61,9 +67,16 @@ public class PropertiesFactoryConfiguration extends FileFactoryConfiguration
         this("");
     }
 
-    public PropertiesFactoryConfiguration(String source)
+    /**
+     * Creates an instance using the specified string
+     * as an identifier to distinguish this instance when debugging.
+     *
+     * @param id the name of the "source" of this instance
+     * @see FactoryConfiguration#setSource(String)
+     */
+    public PropertiesFactoryConfiguration(String id)
     {
-        super(PropertiesFactoryConfiguration.class, source);
+        super(PropertiesFactoryConfiguration.class, id);
     }
 
     /**
