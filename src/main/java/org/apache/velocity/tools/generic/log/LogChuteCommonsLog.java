@@ -26,9 +26,9 @@ import org.apache.velocity.runtime.log.Log;
  * Redirects commons-logging messages to Velocity's configured LogChute.
  *
  * <p>To use, specify this class in your commons-logging.properties:
- * <code>
+ * <pre><code>
  * org.apache.commons.logging.Log=org.apache.velocity.tools.log.LogChuteCommonsLog
- * </code>
+ * </code></pre>
  * </p>
  * @since VelocityTools 2.0
  * @version $Id: LogChuteCommonsLog.java 72115 2004-11-11 07:00:54Z nbubna $
