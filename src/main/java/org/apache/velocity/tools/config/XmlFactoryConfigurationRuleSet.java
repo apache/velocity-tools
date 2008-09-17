@@ -30,7 +30,7 @@ import org.xml.sax.Attributes;
  * formatted as XML.  This is the default RuleSet used by
  * {@link XmlFactoryConfiguration}.</p>
  * <p>Here is a short example XML:
- * <code>
+ * <pre><code>
  * &lt;tools&gt; 
  *     &lt;data type="number" key="version" value="1.1"/&gt;
  *     &lt;data key="isConvertedProp" value="false" class="java.lang.Boolean" converter="org.apache.commons.beanutils.converters.BooleanConverter"/&gt;
@@ -49,7 +49,7 @@ import org.xml.sax.Attributes;
  *         &lt;tool class="org.apache.velocity.tools.generic.DateTool"/&gt;
  *     &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </code></p>
+ * </code></pre></p>
  *
  * @author Nathan Bubna
  * @version $Id: XmlConfiguration.java 511959 2007-02-26 19:24:39Z nbubna $
