@@ -33,6 +33,12 @@ import org.apache.commons.digester.RuleSet;
  * passing a new {@link RuleSet} to the {@link #setRuleSet} method.
  * See the configuration documentation on the main web site for 
  * instructions on the XML format supported by the default rules.</p>
+ * <p>Example usage:
+ * <pre>
+ * FactoryConfiguration cfg = new XmlFactoryConfiguration("Dev Tools");
+ * cfg.read("devtools.xml");
+ * ToolboxFactory factory = cfg.createFactory();
+ * </pre></p>
  *
  * @author Nathan Bubna
  * @version $Id: XmlFactoryConfiguration.java 511959 2007-02-26 19:24:39Z nbubna $
@@ -52,14 +58,31 @@ public class XmlFactoryConfiguration extends FileFactoryConfiguration
         this(supportOldConfig, String.valueOf(supportOldConfig));
     }
 
-    public XmlFactoryConfiguration(String source)
+    /**
+     * Creates an instance using the specified string
+     * as an identifier to distinguish this instance when debugging.
+     *
+     * @param id the name of the "source" of this instance
+     * @see FactoryConfiguration#setSource(String)
+     */
+    public XmlFactoryConfiguration(String id)
     {
-        this(false, source);
+        this(false, id);
     }
 
-    public XmlFactoryConfiguration(boolean supportOldConfig, String source)
+    /**
+     * Creates an instance using the specified string
+     * as an identifier to distinguish this instance when debugging
+     * and using the specified setting for supporting the old toolbox.xml
+     * format from VelocityTools 1.x.
+     *
+     * @param supportOldConfig whether the old toolbox.xml format should be supported
+     * @param name the name of the "source" of this instance
+     * @see FactoryConfiguration#setSource(String)
+     */
+    public XmlFactoryConfiguration(boolean supportOldConfig, String id)
     {
-        super(XmlFactoryConfiguration.class, source);
+        super(XmlFactoryConfiguration.class, id);
         setRuleSet(new XmlFactoryConfigurationRuleSet());
         this.supportOldXml = supportOldConfig;
     }

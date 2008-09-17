@@ -35,9 +35,9 @@ import org.apache.velocity.tools.ConversionUtils;
  */
 public abstract class FileFactoryConfiguration extends FactoryConfiguration
 {
-    protected FileFactoryConfiguration(Class clazz, String source)
+    protected FileFactoryConfiguration(Class clazz, String id)
     {
-        super(clazz, source);
+        super(clazz, id);
     }
 
     /**
