@@ -247,7 +247,7 @@ public class VelocityViewServlet extends HttpServlet
     protected Context createContext(HttpServletRequest request,
                                     HttpServletResponse response)
     {
-        return getVelocityView().getContext(request, response);
+        return getVelocityView().createContext(request, response);
     }
 
     protected void fillContext(Context context, HttpServletRequest request)

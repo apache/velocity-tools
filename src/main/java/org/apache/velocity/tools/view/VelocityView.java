@@ -87,7 +87,7 @@ import org.apache.velocity.util.SimplePool;
  *
  * @version $Id: VelocityView.java 511959 2007-02-26 19:24:39Z nbubna $
  */
-public class VelocityView
+public class VelocityView extends ViewToolManager
 {
     /** The HTTP content type context key. */
     public static final String CONTENT_TYPE_KEY = "default.contentType";
@@ -98,10 +98,6 @@ public class VelocityView
      */
     public static final String SERVLET_CONTEXT_KEY =
         ServletContext.class.getName();
-
-    public static final String DEFAULT_TOOLBOX_KEY = Toolbox.KEY;
-
-    public static final String CREATE_SESSION_PROPERTY = "createSession";
 
     /** The default content type for the response */
     public static final String DEFAULT_CONTENT_TYPE = "text/html";
@@ -115,8 +111,7 @@ public class VelocityView
      * or to access a live {@link FactoryConfiguration} previously
      * placed in the ServletContext attributes.
      */
-    public static final String TOOLS_KEY =
-        "org.apache.velocity.tools";
+    public static final String TOOLS_KEY = ServletUtils.CONFIGURATION_KEY;
     @Deprecated
     public static final String DEPRECATED_TOOLS_KEY =
         "org.apache.velocity.toolbox";
@@ -183,12 +178,7 @@ public class VelocityView
 
 
     private static SimplePool writerPool = new SimplePool(40);
-    private ToolboxFactory toolboxFactory = null;
-    private VelocityEngine velocity = null;
-    private ServletContext servletContext;
     private String defaultContentType = DEFAULT_CONTENT_TYPE;
-    private String toolboxKey = DEFAULT_TOOLBOX_KEY;
-    private boolean createSession = true;
     private boolean deprecationSupportMode = true;
 
     public VelocityView(ServletConfig config)
@@ -208,108 +198,33 @@ public class VelocityView
 
     public VelocityView(JeeConfig config)
     {
-        this(config, DEFAULT_TOOLBOX_KEY);
-    }
-
-    public VelocityView(JeeConfig config, String toolboxKey)
-    {
-        setToolboxKey(toolboxKey);
+        // suppress auto-config, as we have our own config lookup order here
+        super(config.getServletContext(), false, false);
 
         init(config);
-    }
-
-    /**
-     * This method should be private until someone thinks of a good
-     * reason to change toolbox keys arbitrarily.  If it is opened up,
-     * then we need to be sure any "application" toolbox
-     * is copied or moved to be under the new key.
-     */
-    private final void setToolboxKey(String key)
-    {
-        if (key == null)
-        {
-            throw new NullPointerException("toolboxKey cannot be null");
-        }
-        if (!key.equals(toolboxKey))
-        {
-            this.toolboxKey = key;
-            debug("Toolbox key was changed to %s", key);
-        }
-    }
-
-    protected final String getToolboxKey()
-    {
-        return this.toolboxKey;
     }
 
     @Deprecated
     protected final void setDeprecationSupportMode(boolean support)
     {
-        this.deprecationSupportMode = support;
-        debug("deprecationSupportMode is %s", (support ? "on" : "off"));
+        if (deprecationSupportMode != support)
+        {
+            this.deprecationSupportMode = support;
+            debug("deprecationSupportMode is now %s", (support ? "on" : "off"));
+        }
     }
 
     /**
-     * Returns the underlying VelocityEngine being used.
+     * Overrides super class to ensure engine is not set to null.
      */
-    public VelocityEngine getVelocityEngine()
-    {
-        return velocity;
-    }
-
-    /**
-     * Sets the underlying VelocityEngine being used.
-     * <b>If you use this, be sure that your VelocityEngine
-     * is already properly configured and initialized or
-     * you had better call {@link #init(JeeConfig,VelocityEngine)}
-     * after you call this method.</b>
-     */
+    @Override
     public void setVelocityEngine(VelocityEngine engine)
     {
         if (engine == null)
         {
             throw new NullPointerException("VelocityEngine cannot be null");
         }
-        debug("VelocityEngine instance was changed to %s", engine);
-        this.velocity = engine;
-    }
-
-    public Log getLog()
-    {
-        return velocity.getLog();
-    }
-
-    private void debug(String msg, Object... args)
-    {
-        if (getLog().isDebugEnabled())
-        {
-            getLog().debug(String.format(msg, args));
-        }
-    }
-
-    /**
-     * Returns the underlying {@link ToolboxFactory} being used.
-     */
-    public ToolboxFactory getToolboxFactory()
-    {
-        return this.toolboxFactory;
-    }
-
-    /**
-     * Sets the underlying ToolboxFactory being used.
-     * <b>If you use this, be sure that your ToolboxFactory
-     * is already properly configured and initialized or
-     * you had better call {@link #init(JeeConfig,ToolboxFactory)}
-     * after you call this method.</b>
-     */
-    public void setToolboxFactory(ToolboxFactory factory)
-    {
-        if (factory == null)
-        {
-            throw new NullPointerException("ToolboxFactory cannot be null");
-        }
-        debug("ToolboxFactory instance was changed to %s", factory);
-        this.toolboxFactory = factory;
+        super.setVelocityEngine(engine);
     }
 
     /**
@@ -325,21 +240,10 @@ public class VelocityView
      */
     public void setDefaultContentType(String type)
     {
-        this.defaultContentType = type;
-        debug("Default Content-Type was changed to %s", type);
-    }
-
-    /**
-     * Sets whether or not VelocityView should create a new HttpSession
-     * when there are session scoped tools, but no session has been
-     * created yet.
-     */
-    public void setCreateSession(boolean create)
-    {
-        if (create != this.createSession)
+        if (!defaultContentType.equals(type))
         {
-            debug("Create session setting was changed to %s", create);
-            this.createSession = create;
+            this.defaultContentType = type;
+            debug("Default Content-Type was changed to %s", type);
         }
     }
 
@@ -374,29 +278,24 @@ public class VelocityView
      */
     protected void init(JeeConfig config)
     {
-        this.servletContext = config.getServletContext();
-
-        // create engine and factory if none are set yet
-        if (velocity == null)
+        // create an engine if none is set yet
+        // (servletContext and factory should already be set by now
+        if (this.velocity == null)
         {
             this.velocity = new VelocityEngine();
         }
-        if (toolboxFactory == null)
-        {
-            this.toolboxFactory = new ToolboxFactory();
-        }
 
-        String depMode = findInitParameter(DEPRECATION_SUPPORT_MODE_KEY, config);
+        String depMode = config.findInitParameter(DEPRECATION_SUPPORT_MODE_KEY);
         if (depMode != null && depMode.equalsIgnoreCase("false"))
         {
             setDeprecationSupportMode(false);
         }
         
-        // initialize the VelocityEngine
+        // configure and initialize the VelocityEngine
         init(config, velocity);
 
-        // initialize the ToolboxFactory
-        init(config, toolboxFactory);
+        // configure the ToolboxFactory
+        configure(config, factory);
 
         // set encoding & content-type
         setEncoding(config);
@@ -440,40 +339,6 @@ public class VelocityView
             throw new RuntimeException(msg + ": "+e, e);
         }
     }
-
-
-    /**
-     * Initializes the ToolboxFactory.
-     *
-     * @param config servlet configuation
-     * @param factory the ToolboxFactory to be initialized for this VelocityView
-     */
-    protected void init(final JeeConfig config, final ToolboxFactory factory)
-    {
-        configure(config, toolboxFactory);
-
-        // check for a createSession setting
-        Boolean bool = 
-            (Boolean)toolboxFactory.getGlobalProperty(CREATE_SESSION_PROPERTY);
-        if (bool != null)
-        {
-            setCreateSession(bool);
-        }
-
-        // add any application toolbox to the application attributes
-        Toolbox appTools = toolboxFactory.createToolbox(Scope.APPLICATION);
-        if (appTools != null &&
-            this.servletContext.getAttribute(this.toolboxKey) == null)
-        {
-            this.servletContext.setAttribute(this.toolboxKey, appTools);
-        }
-    }
-
-    protected String findInitParameter(String key, JeeConfig config)
-    {
-        return config.findInitParameter(key);
-    }
-
 
     protected void configure(final JeeConfig config, final VelocityEngine velocity)
     {
@@ -558,7 +423,7 @@ public class VelocityView
 
         // only load the default tools if they have explicitly said to
         // or if they are not using an old toolbox and have said nothing
-        String loadDefaults = findInitParameter(LOAD_DEFAULTS_KEY, config);
+        String loadDefaults = config.findInitParameter(LOAD_DEFAULTS_KEY);
         if ((!hasOldToolbox && loadDefaults == null) ||
             "true".equalsIgnoreCase(loadDefaults))
         {
@@ -595,19 +460,15 @@ public class VelocityView
         setConfig(factoryConfig, servletToolsPath, true);
 
         // check for "injected" configuration in application attributes
-        Object obj = servletContext.getAttribute(TOOLS_KEY);
-        if (obj instanceof FactoryConfiguration)
+        FactoryConfiguration injected = ServletUtils.getConfiguration(servletContext);
+        if (injected != null)
         {
-            debug("Adding configuration found in servletContext under key '%s'", TOOLS_KEY);
-            FactoryConfiguration injected = (FactoryConfiguration)obj;
-            // make note of where we found this
-            String source = injected.getSource();
-            injected.setSource(source+" from ServletContext.getAttribute("+TOOLS_KEY+")");
+            debug("Adding configuration instance in servletContext attributes as '%s'", TOOLS_KEY);
             factoryConfig.addConfiguration(injected);
         }
 
         // see if we should only keep valid tools, data, and properties
-        String cleanConfig = findInitParameter(CLEAN_CONFIGURATION_KEY, config);
+        String cleanConfig = config.findInitParameter(CLEAN_CONFIGURATION_KEY);
         if ("true".equals(cleanConfig))
         {
             // remove invalid tools, data, and properties from the configuration
@@ -617,8 +478,8 @@ public class VelocityView
         }
 
         // apply this configuration to the specified factory
-        debug("Configuring toolboxFactory with: %s", factoryConfig);
-        factory.configure(factoryConfig);
+        debug("Configuring factory with: %s", factoryConfig);
+        configure(factoryConfig);
     }
 
     /**
@@ -635,7 +496,7 @@ public class VelocityView
         FactoryConfiguration toolbox = null;
 
         // look for specified path under the deprecated toolbox key
-        String oldPath = findInitParameter(DEPRECATED_TOOLS_KEY, config);
+        String oldPath = config.findInitParameter(DEPRECATED_TOOLS_KEY);
         if (oldPath != null)
         {
             // ok, they said the toolbox.xml should be there
@@ -856,7 +717,7 @@ public class VelocityView
                           HttpServletResponse response) throws IOException
     {
         // then get a context
-        Context context = getContext(request, response);
+        Context context = createContext(request, response);
 
         // get the template
         Template template = getTemplate(request, response);
@@ -871,7 +732,7 @@ public class VelocityView
         throws IOException
     {
         // then get a context
-        Context context = getContext(request);
+        Context context = createContext(request, null);
 
         // get the template
         Template template = getTemplate(request);
@@ -884,67 +745,6 @@ public class VelocityView
 
 
     /**
-     * Prepares the request scope toolbox, if one is configured for
-     * the toolbox factory, and then prepares the session toolbox
-     * if one is configured for the factory and has not yet been created
-     * for the current session.
-     */
-    public void prepareToolboxes(HttpServletRequest request)
-    {
-        prepareToolbox(request);
-
-        if (toolboxFactory.hasTools(Scope.SESSION))
-        {
-            //FIXME? does this honor createSession props set on the session Toolbox?
-            HttpSession session = request.getSession(this.createSession);
-            if (session != null)
-            {
-                // allow only one thread per session at a time
-                synchronized(getMutex(session))
-                {
-                    if (session.getAttribute(this.toolboxKey) == null)
-                    {
-                        Toolbox sessTools =
-                            toolboxFactory.createToolbox(Scope.SESSION);
-                        session.setAttribute(this.toolboxKey, sessTools);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Prepares the request scope toolbox, if one is configured for
-     * the toolbox factory.
-     */
-    public void prepareToolboxes(ServletRequest request)
-    {
-        prepareToolbox(request);
-    }
-
-    private void prepareToolbox(ServletRequest request)
-    {
-        // only set a new toolbox if we need one
-        if (toolboxFactory.hasTools(Scope.REQUEST)
-            && request.getAttribute(this.toolboxKey) == null)
-        {
-            Toolbox reqTools = toolboxFactory.createToolbox(Scope.REQUEST);
-            request.setAttribute(this.toolboxKey, reqTools);
-        }
-    }
-
-
-    /**
-     * Returns a mutex (lock object) unique to the specified session
-     * to allow for reliable synchronization on the session.
-     */
-    protected Object getMutex(HttpSession session)
-    {
-        return ServletUtils.getMutex(session, "session.mutex", this);
-    }
-
-
-    /**
      * <p>Creates and returns an initialized Velocity context.</p>
      *
      * A new context of class {@link ViewToolContext} is created and
@@ -953,49 +753,22 @@ public class VelocityView
      * @param request servlet request from client
      * @param response servlet reponse to client
      */
-    protected ViewToolContext createContext(HttpServletRequest request,
-                                            HttpServletResponse response)
+    @Override
+    public ViewToolContext createContext(HttpServletRequest request,
+                                         HttpServletResponse response)
     {
         ViewToolContext ctx;
         if (this.deprecationSupportMode)
         {
-            ctx = new ChainedContext(getVelocityEngine(), request, response, servletContext);
+            ctx = new ChainedContext(velocity, request, response, servletContext);
         }
         else
         {
-            ctx = new ViewToolContext(getVelocityEngine(), request, response, servletContext);
+            ctx = new ViewToolContext(velocity, request, response, servletContext);
         }
-        prepareContext(ctx);
+        prepareContext(ctx, request);
         return ctx;
     }
-
-    public void prepareContext(ViewToolContext context)
-    {
-        // if this view is storing toolboxes under a non-standard key,
-        // then retrieve it's toolboxes here, since ViewToolContext won't
-        // know where to find them
-        if (!this.toolboxKey.equals(DEFAULT_TOOLBOX_KEY))
-        {
-            context.addToolboxesUnderKey(this.toolboxKey);
-        }
-    }
-
-
-    public Context getContext(HttpServletRequest request)
-    {
-        return getContext(request, null);
-    }
-
-    public Context getContext(HttpServletRequest request,
-                              HttpServletResponse response)
-    {
-        // first make sure request and session toolboxes are added
-        prepareToolboxes(request);
-
-        // then create the context
-        return createContext(request, response);
-    }
-
 
 
     /**
