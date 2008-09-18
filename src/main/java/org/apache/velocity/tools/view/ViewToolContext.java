@@ -76,6 +76,7 @@ public class ViewToolContext extends ToolContext implements ViewContext
     private final HttpServletResponse response;
     private final ServletContext application;
     private final VelocityEngine velocity;
+    private String toolboxKey = DEFAULT_TOOLBOX_KEY;
 
     public ViewToolContext(VelocityEngine velocity,
                            HttpServletRequest request,
@@ -91,6 +92,11 @@ public class ViewToolContext extends ToolContext implements ViewContext
 
         // automagically set common tool properties
         putToolProperties();
+    }
+
+    protected void setToolboxKey(String key)
+    {
+        this.toolboxKey = key;
     }
 
     protected void putToolProperties()
@@ -112,16 +118,16 @@ public class ViewToolContext extends ToolContext implements ViewContext
         // then we stop looking.  adding boxes to
         // the request/session/application attributes
         // later will not work.  once one is in, any
-        // later additions must be direct via addToolbox()
-        // or addToolboxes(String toolboxKey)
+        // later additions must be via addToolbox(Toolbox)
+        // or addToolboxesUnderKey(String toolboxKey)
         if (super.getToolboxes().isEmpty())
         {
-            addToolboxesUnderKey(DEFAULT_TOOLBOX_KEY);
+            addToolboxesUnderKey(this.toolboxKey);
         }
         return super.getToolboxes();
     }
 
-    public void addToolboxesUnderKey(String toolboxKey)
+    protected void addToolboxesUnderKey(String toolboxKey)
     {
         Toolbox reqTools = (Toolbox)getRequest().getAttribute(toolboxKey);
         if (reqTools != null)

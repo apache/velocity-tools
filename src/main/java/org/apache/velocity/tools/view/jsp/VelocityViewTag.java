@@ -194,8 +194,7 @@ public class VelocityViewTag extends BodyTagSupport
         ViewToolContext context =
             new JspToolContext(view.getVelocityEngine(), this.pageContext);
 
-        view.prepareToolboxes((HttpServletRequest)this.pageContext.getRequest());
-        view.prepareContext(context);
+        view.prepareContext(context, (HttpServletRequest)this.pageContext.getRequest());
 
         setVelocityView(view);
         setViewToolContext(context);

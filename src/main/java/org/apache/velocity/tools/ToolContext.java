@@ -46,61 +46,41 @@ public class ToolContext implements Context
     public static final String LOG_KEY = "log";
     public static final String CATCH_EXCEPTIONS_KEY = "catchExceptions";
 
-    private List<Toolbox> toolboxes;
+    private List<Toolbox> toolboxes = new ArrayList<Toolbox>();
     // this is meant solely for tool setup,
     // values in here are not part of the Context
-    private Map<String,Object> toolProps;
+    private Map<String,Object> toolProps = new HashMap<String,Object>(12);
     // this is only for values added during use of this context
-    private Map<String,Object> localContext;
+    private Map<String,Object> localContext = new HashMap<String,Object>();
 
-    public ToolContext(VelocityEngine engine)
+    public ToolContext()
     {
-        this(null, null);
-
-        // add the engine and log as common tool properties
-        putToolProperty(ENGINE_KEY, engine);
-        putToolProperty(LOG_KEY, engine.getLog());
-
-        // tell interested tools not to catch exceptions whenever there's a
-        // method exception event handler configured for the engine
-        Object ehme =
-            engine.getProperty(VelocityEngine.EVENTHANDLER_METHODEXCEPTION);
-        if (ehme != null)
-        {
-            putToolProperty(CATCH_EXCEPTIONS_KEY, Boolean.FALSE);
-        }
-    }
-
-    public ToolContext(Map<String,Object> toolProps)
-    {
-        this(toolProps, null);
-    }
-
-    public ToolContext(Toolbox toolbox)
-    {
-        this(null, toolbox);
-    }
-
-    public ToolContext(Map<String,Object> toolProps, Toolbox toolbox)
-    {
-        if (toolProps != null)
-        {
-            this.toolProps = toolProps;
-        }
-        else
-        {
-            this.toolProps = new HashMap<String,Object>(8);
-        }
         // add this as a common tool property
         putToolProperty(CONTEXT_KEY, this);
+    }
 
-        toolboxes = new ArrayList<Toolbox>();
-        if (toolbox != null)
+    /**
+     * Creates an instance that automatically has the specified
+     * VelocityEngine and related tool properties set.
+     */
+    public ToolContext(VelocityEngine engine)
+    {
+        this();
+
+        putVelocityEngine(engine);
+    }
+
+    /**
+     * Creates an instance starting with the specified tool properties.
+     */
+    public ToolContext(Map<String,Object> toolProps)
+    {
+        this();
+
+        if (toolProps != null)
         {
-            toolboxes.add(toolbox);
+            this.toolProps.putAll(toolProps);
         }
-
-        this.localContext = new HashMap<String,Object>();
     }
 
     public void addToolbox(Toolbox toolbox)
@@ -150,6 +130,29 @@ public class ToolContext implements Context
     protected Map<String,Object> getToolProperties()
     {
         return this.toolProps;
+    }
+
+    /**
+     * Puts the specified VelocityEngine in the tool properties,
+     * as well as the Log for that engine.  Last, if the specified
+     * engine has a MethodExceptionEventHandler configured, then
+     * this will automatically set {@link #CATCH_EXCEPTIONS_KEY}
+     * to false in the tool properties.
+     */
+    public void putVelocityEngine(VelocityEngine engine)
+    {
+        // add the engine and log as common tool properties
+        putToolProperty(ENGINE_KEY, engine);
+        putToolProperty(LOG_KEY, engine.getLog());
+
+        // tell interested tools not to catch exceptions whenever there's a
+        // method exception event handler configured for the engine
+        Object ehme =
+            engine.getProperty(VelocityEngine.EVENTHANDLER_METHODEXCEPTION);
+        if (ehme != null)
+        {
+            putToolProperty(CATCH_EXCEPTIONS_KEY, Boolean.FALSE);
+        }
     }
 
     public Object putToolProperty(String key, Object value)

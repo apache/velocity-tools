@@ -51,6 +51,12 @@ public class ServletUtils
         "org.apache.velocity.tools.shared.config";
     public static final String ALT_VELOCITY_VIEW_KEY =
         "org.apache.velocity.tools.view.class";
+    /**
+     * Key used to access a live {@link FactoryConfiguration} previously
+     * placed in the ServletContext attributes.
+     */
+    public static final String CONFIGURATION_KEY =
+        "org.apache.velocity.tools";
 
     public static final ServletUtils INSTANCE = new ServletUtils();
 
@@ -318,6 +324,24 @@ public class ServletUtils
             }
         }
         return inputStream;
+    }
+
+    public static FactoryConfiguration getConfiguration(ServletContext application)
+    {
+        Object obj = application.getAttribute(CONFIGURATION_KEY);
+        if (obj instanceof FactoryConfiguration)
+        {
+            FactoryConfiguration injected = (FactoryConfiguration)obj;
+            // make note of where we found this
+            String source = injected.getSource();
+            String addnote = " from ServletContext.getAttribute("+CONFIGURATION_KEY+")";
+            if (!source.endsWith(addnote))
+            {
+                injected.setSource(source+addnote);
+            }
+            return injected;
+        }
+        return null;
     }
 
     public static FactoryConfiguration getConfiguration(String path,

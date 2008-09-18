@@ -160,15 +160,17 @@ public class VelocityViewFilter implements Filter
                          FilterChain chain)
         throws java.io.IOException, ServletException
     {
-        // prepare toolbox(es)
-        getVelocityView().prepareToolboxes(request);
-
         // can/should we create the context for the request?
         if (contextKey != null && request instanceof HttpServletRequest)
         {
             Context context = createContext((HttpServletRequest)request,
                                             (HttpServletResponse)response);
             request.setAttribute(contextKey, context);
+        }
+        else
+        {
+            // just publish the toolboxes
+            getVelocityView().publishToolboxes(request);
         }
 
         // move down the chain

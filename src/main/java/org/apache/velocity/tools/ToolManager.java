@@ -21,6 +21,7 @@ package org.apache.velocity.tools;
 
 import java.util.Map;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.ConfigurationUtils;
 import org.apache.velocity.tools.config.FactoryConfiguration;
@@ -37,25 +38,38 @@ import org.apache.velocity.tools.config.FactoryConfiguration;
  */
 public class ToolManager
 {
-    private VelocityEngine engine;
-    private ToolboxFactory factory;
+    protected VelocityEngine velocity;
+    protected ToolboxFactory factory;
     private Toolbox application;
 
     /**
      * Constructs an instance already configured to use the 
-     * {@link ConfigurationUtils#getAutoLoaded()()} configuration
+     * {@link ConfigurationUtils#getAutoLoaded()} configuration
      * and any configuration specified via a "org.apache.velocity.tools"
      * system property.
      */
     public ToolManager()
     {
-        this(true);
+        this(true, true);
     }
 
     public ToolManager(boolean includeDefaults)
     {
-        this.factory = new ToolboxFactory();
+        this(true, includeDefaults);
+    }
 
+    public ToolManager(boolean autoConfig, boolean includeDefaults)
+    {
+        this.factory = new ToolboxFactory();
+        
+        if (autoConfig)
+        {
+            autoConfigure(includeDefaults);
+        }
+    }
+
+    public void autoConfigure(boolean includeDefaults)
+    {
         FactoryConfiguration config =
             ConfigurationUtils.getAutoLoaded(includeDefaults);
 
@@ -77,7 +91,7 @@ public class ToolManager
 
     public void configure(String path)
     {
-        FactoryConfiguration config = ConfigurationUtils.find(path);
+        FactoryConfiguration config = findConfig(path);
         if (config != null)
         {
             configure(config);
@@ -88,40 +102,93 @@ public class ToolManager
         }
     }
 
+    protected FactoryConfiguration findConfig(String path)
+    {
+        return ConfigurationUtils.find(path);
+    }
+
+    /**
+     * Returns the underlying {@link ToolboxFactory} being used.
+     */
+    public ToolboxFactory getToolboxFactory()
+    {
+        return this.factory;
+    }
+
+    /**
+     * Sets the underlying ToolboxFactory being used.
+     * <b>If you use this, be sure that your ToolboxFactory
+     * is already properly configured.</b>
+     */
+    public void setToolboxFactory(ToolboxFactory factory)
+    {
+        if (this.factory != factory)
+        {
+            if (factory == null)
+            {
+                throw new NullPointerException("ToolboxFactory cannot be null");
+            }
+            debug("ToolboxFactory instance was changed to %s", factory);
+            this.factory = factory;
+        }
+    }
+
+    /**
+     * Sets the underlying VelocityEngine being used.
+     * <b>If you use this, be sure that your VelocityEngine
+     * is already properly configured and initialized.</b>
+     */
     public void setVelocityEngine(VelocityEngine engine)
     {
-        this.engine = engine;
+        if (velocity != engine)
+        {
+            debug("VelocityEngine instance was changed to %s", engine);
+            this.velocity = engine;
+        }
+    }
+
+    public VelocityEngine getVelocityEngine()
+    {
+        return this.velocity;
+    }
+
+    public Log getLog()
+    {
+        if (velocity == null)
+        {
+            return null;
+        }
+        return velocity.getLog();
+    }
+
+    protected final void debug(String msg, Object... args)
+    {
+        Log log = getLog();
+        if (log != null && log.isDebugEnabled())
+        {
+            log.debug(String.format(msg, args));
+        }
     }
 
     public ToolContext createContext()
     {
-        ToolContext context;
-        if (this.engine != null)
-        {
-            context = new ToolContext(this.engine);
-        }
-        else
-        {
-            context = new ToolContext((Map<String,Object>)null);
-        }
-        addToolboxes(context);
-        return context;
+        return createContext(null);
     }
 
     public ToolContext createContext(Map<String,Object> toolProps)
     {
-        ToolContext context;
-        if (this.engine != null)
+        ToolContext context = new ToolContext(toolProps);
+        prepareContext(context);
+        return context;
+    }
+
+    protected void prepareContext(ToolContext context)
+    {
+        if (this.velocity != null)
         {
-            context = new ToolContext(this.engine);
-            context.putToolProperties(toolProps);
-        }
-        else
-        {
-            context = new ToolContext(toolProps);
+            context.putVelocityEngine(this.velocity);
         }
         addToolboxes(context);
-        return context;
     }
 
     protected void addToolboxes(ToolContext context)
@@ -163,7 +230,7 @@ public class ToolManager
 
     protected Toolbox getApplicationToolbox()
     {
-        if (this.application == null)
+        if (this.application == null && hasApplicationTools())
         {
             this.application = createToolbox(Scope.APPLICATION);
         }
