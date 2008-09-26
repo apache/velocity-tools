@@ -31,6 +31,7 @@ import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.config.DefaultKey;
+import org.apache.velocity.tools.config.SkipSetters;
 import org.apache.velocity.tools.config.ValidScope;
 
 /**
@@ -76,6 +77,7 @@ import org.apache.velocity.tools.config.ValidScope;
  * @version $Id: LinkTool.java 601976 2007-12-07 03:50:51Z nbubna $
  */
 @DefaultKey("link")
+@SkipSetters
 @ValidScope(Scope.REQUEST)
 public class LinkTool extends SafeConfig implements Cloneable
 {
@@ -133,11 +135,11 @@ public class LinkTool extends SafeConfig implements Cloneable
         self = this;
     }
 
-    private void logError(String msg, Throwable t)
+    protected final void debug(String msg, Throwable t, Object... args)
     {
-        if (this.LOG != null)
+        if (LOG != null && LOG.isDebugEnabled())
         {
-            this.LOG.error("LinkTool: "+msg, t);
+            LOG.debug("LinkTool: "+String.format(msg, args), t);
         }
     }
 
@@ -193,7 +195,7 @@ public class LinkTool extends SafeConfig implements Cloneable
         String chrst = props.getString(CHARSET_KEY);
         if (chrst != null)
         {
-            this.charset = chrst;
+            setCharacterEncoding(chrst);
         }
 
         Boolean xhtml = props.getBoolean(XHTML_MODE_KEY);
@@ -201,23 +203,6 @@ public class LinkTool extends SafeConfig implements Cloneable
         {
             setXHTML(xhtml);
         }
-    }
-
-    /**
-     * <p>Controls the delimiter used for separating query data pairs.
-     *    By default, the standard '&' character is used.</p>
-     * <p>This is not exposed to templates as this decision is best not
-     *    made at that level.</p>
-     * <p>Subclasses may easily override the init() method to set this
-     *    appropriately and then call super.init()</p>
-     *
-     * @param xhtml if true, the XHTML query data delimiter ('&amp;amp;')
-     *        will be used.  if false, then '&' will be used.
-     * @see <a href="http://www.w3.org/TR/xhtml1/#C_12">Using Ampersands in Attribute Values (and Elsewhere)</a>
-     */
-    protected void setXHTML(boolean xhtml)
-    {
-        queryDelim = (xhtml) ? XHTML_QUERY_DELIMITER : HTML_QUERY_DELIMITER;
     }
 
     /**
@@ -234,12 +219,41 @@ public class LinkTool extends SafeConfig implements Cloneable
         catch (CloneNotSupportedException e)
         {
             String msg = "Could not properly clone " + getClass();
-            logError(msg, e);
+            if (LOG != null)
+            {
+                LOG.error(msg, e);
+            }
             throw new RuntimeException(msg, e);
         }
     }
 
-    protected void setScheme(Object obj)
+    public void setCharacterEncoding(String chrst)
+    {
+        this.charset = chrst;
+    }
+
+    /**
+     * <p>Controls the delimiter used for separating query data pairs.
+     *    By default, the standard '&' character is used.</p>
+     * <p>This is not exposed to templates as this decision is best not
+     *    made at that level.</p>
+     * <p>Subclasses may easily override the init() method to set this
+     *    appropriately and then call super.init()</p>
+     *
+     * @param xhtml if true, the XHTML query data delimiter ('&amp;amp;')
+     *        will be used.  if false, then '&' will be used.
+     * @see <a href="http://www.w3.org/TR/xhtml1/#C_12">Using Ampersands in Attribute Values (and Elsewhere)</a>
+     */
+    public void setXHTML(boolean xhtml)
+    {
+        queryDelim = (xhtml) ? XHTML_QUERY_DELIMITER : HTML_QUERY_DELIMITER;
+    }
+
+    /**
+     * This will treat empty strings like null values
+     * and will trim any trailing ':' character.
+     */
+    public void setScheme(Object obj)
     {
         if (obj == null)
         {
@@ -259,17 +273,22 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
     }
 
-    protected void setUserInfo(Object obj)
+    public void setUserInfo(Object obj)
     {
         this.user = obj == null ? null : String.valueOf(obj);
     }
 
-    protected void setHost(Object obj)
+    public void setHost(Object obj)
     {
         this.host = obj == null ? null : String.valueOf(obj);
     }
 
-    protected void setPort(Object obj)
+    /**
+     * If the specified object is null, this will set the port value
+     * to -1 to indicate that.  If it is non-null and cannot be converted
+     * to an integer, then it will be set to -2 to indicate an error.
+     */
+    public void setPort(Object obj)
     {
         if (obj == null)
         {
@@ -287,13 +306,18 @@ public class LinkTool extends SafeConfig implements Cloneable
             }
             catch (NumberFormatException nfe)
             {
-                logError("Could convert '"+obj+"' to int", nfe);
+                debug("Could convert '%s' to int", nfe, obj);
                 this.port = -2; // use this to mean error
             }
         }
     }
 
-    protected void setPath(Object obj)
+    /**
+     * If this instance is not opaque and the specified value does
+     * not start with a '/' character, then that will be prepended
+     * automatically.
+     */
+    public void setPath(Object obj)
     {
         if (obj == null)
         {
@@ -309,7 +333,13 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
     }
 
-    protected void appendPath(Object obj)
+    /**
+     * Uses {@link #combinePath} to add the specified value
+     * to the current {@link #getPath} value.  If the specified
+     * value is null or this instance is opaque, then this is
+     * a no-op.
+     */
+    public void appendPath(Object obj)
     {
         if (obj != null && !this.opaque)
         {
@@ -317,6 +347,12 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
     }
 
+    /**
+     * If end is null, this will return start and vice versa.
+     * If neither is null, this will append the end to the start,
+     * making sure that there is only one '/' character between
+     * the two values.
+     */
     protected String combinePath(String start, String end)
     {
         if (end == null)
@@ -345,7 +381,15 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
     }
 
-    protected void setQuery(Object obj)
+    /**
+     * This will trim any '?' character at the start of the
+     * specified value.  It will also check the value to see if
+     * it already includes multiple query pairs by checking for
+     * any '&amp;' characters in the string.  If there are some, then
+     * the delimiters between the pairs will all be replaced
+     * with this instance's configured query delimiter.
+     */
+    public void setQuery(Object obj)
     {
         if (obj == null)
         {
@@ -368,7 +412,32 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
     }
 
-    protected void appendQuery(Object obj)
+    /**
+     * Converts the map of keys to values into a query string
+     * and uses {@link #appendQuery(Object)} to add it to the
+     * current {@link #getQuery} value.
+     */
+    public void appendQuery(Map parameters)
+    {
+        StringBuilder query = new StringBuilder();
+        for (Object e : parameters.entrySet())
+        {
+            Map.Entry entry = (Map.Entry)e;
+            //add new pair to this LinkTool's query data
+            if (query.length() > 0)
+            {
+                query.append(queryDelim);
+            }
+            query.append(toQuery(entry.getKey(), entry.getValue()));
+        }
+        appendQuery(query);
+    }
+
+    /**
+     * Uses {@link #combineQuery} to append the specified value
+     * to the current {@link #getQuery} value.
+     */
+    public void appendQuery(Object obj)
     {
         if (obj != null)
         {
@@ -376,6 +445,13 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
     }
 
+    /**
+     * If the second param is null or empty, this will simply return the first
+     * and vice versa.  Otherwise, it will trim any '?'
+     * at the start of the second param and any '&amp;' or '&amp;amp;' at the
+     * end of the first one, then combine the two, making sure that they
+     * are separated by only one delimiter.
+     */
     protected String combineQuery(String current, String add)
     {
         if (add == null || add.length() == 0)
@@ -386,7 +462,7 @@ public class LinkTool extends SafeConfig implements Cloneable
         {
             add = add.substring(1, add.length());
         }
-        if (current == null)
+        if (current == null || current.length() == 0)
         {
             return add;
         }
@@ -410,6 +486,12 @@ public class LinkTool extends SafeConfig implements Cloneable
         return current + queryDelim + add;
     }
 
+    /**
+     * Turns the specified key and value into a properly encoded
+     * query pair string.  If the value is an array or List, then
+     * this will create a delimited string of query pairs, reusing 
+     * the same key for each of the values separately.
+     */
     protected String toQuery(Object key, Object value)
     {
         StringBuilder out = new StringBuilder();
@@ -437,7 +519,7 @@ public class LinkTool extends SafeConfig implements Cloneable
     }
 
     /* Utility method to avoid logic duplication in toQuery() */
-    private void appendAsArray(StringBuilder out, Object key, Object[] arr)
+    protected void appendAsArray(StringBuilder out, Object key, Object[] arr)
     {
         String encKey = encode(key);
         for (int i=0; i < arr.length; i++)
@@ -455,7 +537,23 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
     }
 
+    /**
+     * Uses {@link #parseQuery(String,String)} to parse the specified
+     * query string using this instance's current query delimiter.
+     */
     protected Map<String,Object> parseQuery(String query)
+    {
+        return parseQuery(query, this.queryDelim);
+    }
+
+    /**
+     * This will use the specified query delimiter to parse the specified
+     * query string into a map of keys to values.
+     * If there are multiple query pairs in the string that have the same
+     * key, then the values will be combined into a single List value
+     * associated with that key.
+     */
+    protected Map<String,Object> parseQuery(String query, String queryDelim)
     {
         if (query.startsWith("?"))
         {
@@ -493,7 +591,10 @@ public class LinkTool extends SafeConfig implements Cloneable
         return params;
     }
 
-    protected void setFragment(Object obj)
+    /**
+     * Sets the anchor for this instance and treats empty strings like null.
+     */
+    public void setFragment(Object obj)
     {
         if (obj == null)
         {
@@ -509,6 +610,13 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
     }
 
+    /**
+     * If the specified value is null, this will set the scheme, userInfo,
+     * host, port, path, query, and fragment all to their null-equivalent
+     * values.  Otherwise, this will
+     * convert the specified object into a {@link URI}, then those same
+     * values from the URI object to this instance.
+     */
     protected boolean setFromURI(Object obj)
     {
         if (obj == null)
@@ -537,7 +645,7 @@ public class LinkTool extends SafeConfig implements Cloneable
             }
             catch (Exception e)
             {
-                logError("Could convert '"+obj+"' to URI", e);
+                debug("Could convert '%s' to URI", e, obj);
                 return false;
             }
         }
@@ -565,6 +673,11 @@ public class LinkTool extends SafeConfig implements Cloneable
         return true;
     }
 
+    /**
+     * Tries to create a URI from the current port, opacity, scheme,
+     * userInfo, host, path, query and fragment set for this instance,
+     * using the {@link URI} constructor that is appropriate to the opacity.
+     */
     protected URI createURI()
     {
         try
@@ -596,12 +709,32 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
         catch (Exception e)
         {
-            logError("Could not create URI", e);
+            debug("Could not create URI", e);
         }
         return null;
     }
 
     // --------------------------------------------- Template Methods -----------
+
+    /**
+     * Returns the configured charset used by the {@link #encode} and
+     * {@link #decode} methods.
+     */
+    public String getCharacterEncoding()
+    {
+        return this.charset;
+    }
+
+    /**
+     * Returns true if the query delimiter used by this instance is
+     * using <code>&amp;amp;</code> as the delimiter for query data pairs
+     * or just using <code>&amp;</code>.
+     */
+    public boolean isXHTML()
+    {
+        return queryDelim.equals(XHTML_QUERY_DELIMITER);
+    }
+
 
     /**
      * Returns a new instance with the specified value set as its scheme.
@@ -809,13 +942,14 @@ public class LinkTool extends SafeConfig implements Cloneable
      * Returns the "root" for this URI, if it has one.
      * This does not stick close to URI dogma and will
      * try to insert the default scheme if there is none,
-     * and will return null if there is no host, as that
-     * is the core piece of the "root". It thus will
-     * return null for any opaque URLs as well.
+     * and will return null if there is no host or if there
+     * was an error when the port value was last set. It will
+     * return null for any opaque URLs as well, as those have
+     * no host or port.
      */
     public String getRoot()
     {
-        if (host == null)
+        if (host == null || opaque || port == -2)
         {
             return null;
         }
@@ -1037,18 +1171,7 @@ public class LinkTool extends SafeConfig implements Cloneable
             return this;
         }
         LinkTool copy = duplicate();
-        StringBuilder query = new StringBuilder();
-        for (Object e : parameters.entrySet())
-        {
-            Map.Entry entry = (Map.Entry)e;
-            //add new pair to this LinkTool's query data
-            if (query.length() > 0)
-            {
-                query.append(queryDelim);
-            }
-            query.append(toQuery(entry.getKey(), entry.getValue()));
-        }
-        copy.appendQuery(query);
+        copy.appendQuery(parameters);
         return copy;
     }
 
@@ -1170,7 +1293,7 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
         catch (UnsupportedEncodingException uee)
         {
-            logError("Character encoding '"+charset+"' is unsupported", uee);
+            debug("Character encoding '%s' is unsupported", uee, charset);
             return null;
         }
     }
@@ -1193,7 +1316,7 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
         catch (UnsupportedEncodingException uee)
         {
-            logError("Character encoding '"+charset+"' is unsupported", uee);
+            debug("Character encoding '%s' is unsupported", uee, charset);
             return null;
         }
     }
