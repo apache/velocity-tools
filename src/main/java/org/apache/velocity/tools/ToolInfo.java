@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.velocity.tools.ClassUtils;
+import org.apache.velocity.tools.config.SkipSetters;
 
 /**
  * Manages data needed to create instances of a tool. New instances
@@ -44,6 +45,7 @@ public class ToolInfo implements java.io.Serializable
     private boolean restrictToIsExact;
     private String restrictTo;
     private Map<String,Object> properties;
+    private Boolean skipSetters;
     private transient Method configure = null;
 
     /**
@@ -119,6 +121,11 @@ public class ToolInfo implements java.io.Serializable
         }
     }
 
+    public void setSkipSetters(boolean cfgOnly)
+    {
+        this.skipSetters = cfgOnly;
+    }
+
     /**
      * Adds a map of properties from a parent scope to the properties
      * for this tool.  Only new properties will be added; any that
@@ -181,6 +188,15 @@ public class ToolInfo implements java.io.Serializable
     public boolean hasConfigure()
     {
         return (getConfigure() != null);
+    }
+
+    public boolean isSkipSetters()
+    {
+        if (skipSetters == null)
+        {
+            skipSetters = (clazz.getAnnotation(SkipSetters.class) != null);
+        }
+        return skipSetters;
     }
 
     /**
@@ -246,17 +262,30 @@ public class ToolInfo implements java.io.Serializable
     /**
      * Actually performs configuration of the newly instantiated tool
      * using the combined final set of configuration properties. First,
+     * if the class lacks the {@link SkipSetters} annotation, then any
      * specific setters matching the configuration keys are called, then
      * the general configure(Map) method (if any) is called.
      */
     protected void configure(Object tool, Map<String,Object> configuration)
     {
-        if (configuration != null)
+        if (!isSkipSetters() && configuration != null)
         {
-            // look for specific setters
-            for (Map.Entry<String,Object> conf : configuration.entrySet())
+            try
             {
-                setProperty(tool, conf.getKey(), conf.getValue());
+                // look for specific setters
+                for (Map.Entry<String,Object> conf : configuration.entrySet())
+                {
+                    setProperty(tool, conf.getKey(), conf.getValue());
+                }
+            }
+            catch (RuntimeException re)
+            {
+                throw re;
+            }
+            catch (Exception e)
+            {
+                // convert to a runtime exception, and re-throw
+                throw new RuntimeException(e);
             }
         }
 
@@ -348,21 +377,13 @@ public class ToolInfo implements java.io.Serializable
     }
 
 
-    protected void setProperty(Object tool, String name, Object value)
+    protected void setProperty(Object tool, String name, Object value) throws Exception
     {
-        try
+        if (PropertyUtils.isWriteable(tool, name))
         {
-            if (PropertyUtils.isWriteable(tool, name))
-            {
-                //TODO? support property conversion here?
-                //      heavy-handed way is BeanUtils.copyProperty(...)
-                PropertyUtils.setProperty(tool, name, value);
-            }
-        }
-        catch (Exception e)
-        {
-            // convert to a runtime exception, and re-throw
-            throw new RuntimeException(e);
+            //TODO? support property conversion here?
+            //      heavy-handed way is BeanUtils.copyProperty(...)
+            PropertyUtils.setProperty(tool, name, value);
         }
     }
 
