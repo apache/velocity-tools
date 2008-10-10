@@ -87,6 +87,8 @@ public class LinkTool extends SafeConfig implements Cloneable
     /** XHTML delimiter for query data ('&amp;amp;') */
     public static final String XHTML_QUERY_DELIMITER = "&amp;";
 
+    public static final String APPEND_PARAMS_KEY = "appendParameters";
+    public static final String FORCE_RELATIVE_KEY = "forceRelative";
     public static final String DEFAULT_CHARSET = "UTF-8";
     public static final String DEFAULT_SCHEME = "http";
     public static final String SECURE_SCHEME = "https";
@@ -108,10 +110,12 @@ public class LinkTool extends SafeConfig implements Cloneable
     protected String host;
     protected int port;
     protected String path;
-    protected String query;
+    protected Map query;
     protected String fragment;
     protected String charset;
     protected String queryDelim;
+    protected boolean appendParams;
+    protected boolean forceRelative;
 
     private boolean opaque;
     private final LinkTool self;
@@ -132,6 +136,8 @@ public class LinkTool extends SafeConfig implements Cloneable
         charset = DEFAULT_CHARSET;
         queryDelim = XHTML_QUERY_DELIMITER;
         opaque = false;
+        appendParams = true;
+        forceRelative = false;
         self = this;
     }
 
@@ -203,6 +209,16 @@ public class LinkTool extends SafeConfig implements Cloneable
         {
             setXHTML(xhtml);
         }
+        Boolean addParams = props.getBoolean(APPEND_PARAMS_KEY);
+        if (addParams != null)
+        {
+            setAppendParams(addParams);
+        }
+        Boolean forceRelative = props.getBoolean(FORCE_RELATIVE_KEY);
+        if (forceRelative != null)
+        {
+            setForceRelative(forceRelative);
+        }
     }
 
     /**
@@ -212,9 +228,25 @@ public class LinkTool extends SafeConfig implements Cloneable
      */
     protected LinkTool duplicate()
     {
+        return duplicate(false);
+    }
+
+    /**
+     * Equivalent to clone, but with no checked exceptions.
+     * If for some unfathomable reason clone() doesn't work,
+     * this will throw a RuntimeException.  If doing a deep
+     * clone, then the parameter Map will also be cloned.
+     */
+    protected LinkTool duplicate(boolean deep)
+    {
         try
         {
-            return (LinkTool)this.clone();
+            LinkTool that = (LinkTool)this.clone();
+            if (deep && query != null)
+            {
+                that.query = new LinkedHashMap(query);
+            }
+            return that;
         }
         catch (CloneNotSupportedException e)
         {
@@ -247,6 +279,29 @@ public class LinkTool extends SafeConfig implements Cloneable
     public void setXHTML(boolean xhtml)
     {
         queryDelim = (xhtml) ? XHTML_QUERY_DELIMITER : HTML_QUERY_DELIMITER;
+    }
+
+    /**
+     * Sets whether or not the {@link #setParam(Object,Object)} method
+     * will override existing query values for the same key or simply append
+     * the new value to a list of existing values.
+     */
+    public void setAppendParams(boolean addParams)
+    {
+        this.appendParams = addParams;
+    }
+
+    /**
+     * Sets whether or not the {@link #createURI} method should ignore the
+     * scheme, user, port and host values for non-opaque URIs, thus making
+     * {@link #toString} print the link as a relative one, not an absolute
+     * one.  NOTE: using {@link #absolute()}, {@link #absolute(Object)},
+     * {@link #relative()}, or {@link #relative(Object)} will alter this
+     * setting accordingly on the new instances they return.
+     */
+    public void setForceRelative(boolean forceRelative)
+    {
+        this.forceRelative = forceRelative;
     }
 
     /**
@@ -382,12 +437,11 @@ public class LinkTool extends SafeConfig implements Cloneable
     }
 
     /**
-     * This will trim any '?' character at the start of the
-     * specified value.  It will also check the value to see if
-     * it already includes multiple query pairs by checking for
-     * any '&amp;' characters in the string.  If there are some, then
-     * the delimiters between the pairs will all be replaced
-     * with this instance's configured query delimiter.
+     * If the specified value is null, it will set the query to null.
+     * If a Map, it will copy all those values into a new LinkedHashMap and
+     * replace any current query value with that. If it is a String,
+     * it will use {@link #parseQuery(String)} to parse it into a map
+     * of keys to values.
      */
     public void setQuery(Object obj)
     {
@@ -395,30 +449,38 @@ public class LinkTool extends SafeConfig implements Cloneable
         {
             this.query = null;
         }
+        else if (obj instanceof Map)
+        {
+            this.query = new LinkedHashMap((Map)obj);
+        }
         else
         {
-            this.query = String.valueOf(obj);
-            if (query.startsWith("?"))
-            {
-                this.query = query.substring(1, query.length());
-            }
-            // if we have multiple pairs...
-            if (query.contains("&"))
-            {
-                // ensure the delimeters match the xhtml setting
-                // this impl is not at all efficient, but it's easy
-                this.query = query.replaceAll("&(amp;)?", queryDelim);
-            }
+            String qs = normalizeQuery(String.valueOf(obj));
+            this.query = parseQuery(qs);
         }
     }
 
-    /**
-     * Converts the map of keys to values into a query string
-     * and uses {@link #appendQuery(Object)} to add it to the
-     * current {@link #getQuery} value.
-     */
-    public void appendQuery(Map parameters)
+    protected String normalizeQuery(String qs)
     {
+        // if we have multiple pairs...
+        if (qs.indexOf('&') >= 0)
+        {
+            // ensure the delimeters match the xhtml setting
+            // this impl is not at all efficient, but it's easy
+            qs = qs.replaceAll("&(amp;)?", queryDelim);
+        }
+        return qs;
+    }
+
+    /**
+     * Converts the map of keys to values into a query string.
+     */
+    public String toQuery(Map parameters)
+    {
+        if (parameters == null)
+        {
+            return null;
+        }
         StringBuilder query = new StringBuilder();
         for (Object e : parameters.entrySet())
         {
@@ -430,7 +492,7 @@ public class LinkTool extends SafeConfig implements Cloneable
             }
             query.append(toQuery(entry.getKey(), entry.getValue()));
         }
-        appendQuery(query);
+        return query.toString();
     }
 
     /**
@@ -442,6 +504,140 @@ public class LinkTool extends SafeConfig implements Cloneable
         if (obj != null)
         {
             setQuery(combineQuery(getQuery(), String.valueOf(obj)));
+        }
+    }
+
+    /**
+     * If there is no existing value for this key in the query, it
+     * will simply add it and its value to the query.  If the key
+     * already is present in the query and append
+     * is true, this will add the specified value to those
+     * already under that key.  If {@link #appendParams} is
+     * false, this will override the existing values with the
+     * specified new value.
+     */
+    public void setParam(Object key, Object value, boolean append)
+    {
+        // use all keys as strings, even null -> "null"
+        key = String.valueOf(key);
+        if (this.query == null)
+        {
+            this.query = new LinkedHashMap();
+            query.put(key, value);
+        }
+        else if (append)
+        {
+            appendParam((String)key, value);
+        }
+        else
+        {
+            query.put(key, value);
+        }
+    }
+
+    private void appendParam(String key, Object value)
+    {
+        if (query.containsKey(key))
+        {
+            Object cur = query.get(key);
+            if (cur instanceof List)
+            {
+                addToList((List)cur, value);
+            }
+            else
+            {
+                List vals = new ArrayList();
+                vals.add(cur);
+                addToList(vals, value);
+                query.put(key, vals);
+            }
+        }
+        else
+        {
+            query.put(key, value);
+        }
+    }
+
+    private void addToList(List vals, Object value)
+    {
+        if (value instanceof List)
+        {
+            for (Object v : ((List)value))
+            {
+                vals.add(v);
+            }
+        }
+        else if (value instanceof Object[])
+        {
+            for (Object v : ((Object[])value))
+            {
+                vals.add(v);
+            }
+        }
+        else
+        {
+            vals.add(value);
+        }
+    }
+
+    /**
+     * If append is false, this simply delegates to {@link #setQuery}.
+     * Otherwise, if the specified object is null, it does nothing.  If the object
+     * is not a Map, it will turn it into a String and use {@link #parseQuery} to
+     * parse it. Once it is a Map, it will iterate through the entries appending
+     * each key/value to the current query data.
+     */
+    public void setParams(Object obj, boolean append)
+    {
+        if (!append)
+        {
+            setQuery(obj);
+        }
+        else if (obj != null)
+        {
+            if (!(obj instanceof Map))
+            {
+                obj = parseQuery(String.valueOf(obj));
+            }
+            if (obj != null)
+            {
+                if (query == null)
+                {
+                    this.query = new LinkedHashMap();
+                }
+                for (Object e : ((Map)obj).entrySet())
+                {
+                    Map.Entry entry = (Map.Entry)e;
+                    String key = String.valueOf(entry.getKey());
+                    appendParam(key, entry.getValue());
+                }
+            }
+        }
+    }
+
+    /**
+     * Removes the query pair(s) with the specified key from the
+     * query data and returns the remove value(s), if any.
+     */
+    public Object removeParam(Object key)
+    {
+        if (query != null)
+        {
+            key = String.valueOf(key);
+            return query.remove(key);
+        }
+        return null;
+    }
+
+    /**
+     * In this class, this method ignores true values.  If passed a false value,
+     * it will call {@link #setQuery} with a null value to clear all query data.
+     */
+    protected void handleParamsBoolean(boolean keep)
+    {
+        if (!keep)
+        {
+            setQuery(null);
         }
     }
 
@@ -538,12 +734,14 @@ public class LinkTool extends SafeConfig implements Cloneable
     }
 
     /**
-     * Uses {@link #parseQuery(String,String)} to parse the specified
-     * query string using this instance's current query delimiter.
+     * Uses {@link #normalizeQuery} to make all delimiters in the
+     * specified query string match the current query delimiter 
+     * and then uses {@link #parseQuery(String,String)} to parse it
+     * according to that same delimiter.
      */
     protected Map<String,Object> parseQuery(String query)
     {
-        return parseQuery(query, this.queryDelim);
+        return parseQuery(normalizeQuery(query), this.queryDelim);
     }
 
     /**
@@ -632,22 +830,10 @@ public class LinkTool extends SafeConfig implements Cloneable
             return true;
         }
 
-        URI uri;
-        if (obj instanceof URI)
+        URI uri = toURI(obj);
+        if (uri == null)
         {
-            uri = (URI)obj;
-        }
-        else
-        {
-            try
-            {
-                uri = new URI(String.valueOf(obj));
-            }
-            catch (Exception e)
-            {
-                debug("Could convert '%s' to URI", e, obj);
-                return false;
-            }
+            return false;
         }
         setScheme(uri.getScheme());
         if (uri.isOpaque())
@@ -674,6 +860,29 @@ public class LinkTool extends SafeConfig implements Cloneable
     }
 
     /**
+     * Turns the specified object into a string and thereby a URI.
+     */
+    protected URI toURI(Object obj)
+    {
+        if (obj instanceof URI)
+        {
+            return (URI)obj;
+        }
+        else
+        {
+            try
+            {
+                return new URI(String.valueOf(obj));
+            }
+            catch (Exception e)
+            {
+                debug("Could convert '%s' to URI", e, obj);
+                return null;
+            }
+        }
+    }
+
+    /**
      * Tries to create a URI from the current port, opacity, scheme,
      * userInfo, host, path, query and fragment set for this instance,
      * using the {@link URI} constructor that is appropriate to the opacity.
@@ -695,6 +904,14 @@ public class LinkTool extends SafeConfig implements Cloneable
                     // path is used as scheme-specific part
                     return new URI(scheme, path, anchor);
                 }
+                else if (forceRelative)
+                {
+                    if (path == null && query == null && fragment == null)
+                    {
+                        return null;
+                    }
+                    return new URI(null, null, null, -1, path, toQuery(query), anchor);
+                }
                 else
                 {
                     // only create the URI if we have some values besides a port
@@ -703,7 +920,7 @@ public class LinkTool extends SafeConfig implements Cloneable
                     {
                         return null;
                     }
-                    return new URI(scheme, user, host, port, path, query, fragment);
+                    return new URI(scheme, user, host, port, path, toQuery(query), anchor);
                 }
             }
         }
@@ -733,6 +950,15 @@ public class LinkTool extends SafeConfig implements Cloneable
     public boolean isXHTML()
     {
         return queryDelim.equals(XHTML_QUERY_DELIMITER);
+    }
+
+    /**
+     * Returns true if {@link #param(Object,Object)} appends values;
+     * false if the method overwrites existing value(s) for the specified key.
+     */
+    public boolean getAppendParams()
+    {
+        return this.appendParams;
     }
 
 
@@ -776,18 +1002,6 @@ public class LinkTool extends SafeConfig implements Cloneable
     public boolean isSecure()
     {
         return SECURE_SCHEME.equalsIgnoreCase(getScheme());
-    }
-
-    /**
-     * Returns true if this instance has a scheme value.
-     */
-    public boolean isAbsolute()
-    {
-        if (this.scheme == null)
-        {
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -902,40 +1116,40 @@ public class LinkTool extends SafeConfig implements Cloneable
     }
 
     /**
-     * At this level, this method returns all "directories"
+     * Returns the directory stack
      * in the set {@link #getPath()} value, by just trimming
-     * of the last "/" and all that follows.
+     * off all that follows the last "/".
      */
-    public String getContextPath()
+    public String getDirectory()
     {
         if (this.path == null || this.opaque)
         {
             return null;
         }
         int lastSlash = this.path.lastIndexOf('/');
-        if (lastSlash <= 0)
+        if (lastSlash < 0)
         {
             return "";
         }
-        return this.path.substring(0, lastSlash);
+        return this.path.substring(0, lastSlash + 1);
     }
 
     /**
-     * At this level, this method returns the last section
-     * of the path, from the final "/" onward.
+     * Returns the last section of the path,
+     * which is all that follows the final "/".
      */
-    public String getRequestPath()
+    public String getFile()
     {
         if (this.path == null || this.opaque)
         {
             return null;
         }
         int lastSlash = this.path.lastIndexOf('/');
-        if (lastSlash <= 0)
+        if (lastSlash < 0)
         {
             return this.path;
         }
-        return this.path.substring(lastSlash, this.path.length());
+        return this.path.substring(lastSlash + 1, this.path.length());
     }
 
     /**
@@ -949,117 +1163,198 @@ public class LinkTool extends SafeConfig implements Cloneable
      */
     public String getRoot()
     {
-        if (host == null || opaque || port == -2)
-        {
-            return null;
-        }
-        if (scheme == null)
-        {
-            scheme = DEFAULT_SCHEME;
-        }
-        StringBuilder out = new StringBuilder();
-        out.append(scheme);
-        out.append("://");
-        out.append(host);
-        // if we have a port that's not a default for the scheme
-        if (port >= 0 &&
-            ((scheme.equals(DEFAULT_SCHEME) && port != 80) ||
-            (isSecure() && port != 443)))
-        {
-            out.append(':');
-            out.append(port);
-        }
-        return out.toString();
-    }
-        
-
-    /**
-     * <p>Returns the URI that addresses the current "directory"
-     * of this instance. This string does not end with a "/" and
-     * is essentially a concatenation of {@link #getRoot} and
-     * {@link #getContextPath}</p>
-     */
-    public String getContextURL()
-    {
-        String root = getRoot();
+        LinkTool root = root();
         if (root == null)
         {
             return null;
         }
-        return combinePath(root, getContextPath());
+        return root.toString();
     }
 
     /**
-     * <p>Returns a copy of the link with the specified context-relative
-     * URI reference converted to a server-relative URI reference. This
-     * method will overwrite any previous URI reference settings but will
-     * copy the query string.</p>
+     * Returns a new LinkTool instance that represents
+     * the "root" of the current one, if it has one.
+     * This essentially calls {@link #absolute()} and
+     * sets the path, query, and fragment to null on
+     * the returned instance.
+     * @see #getRoot()
+     */
+    public LinkTool root()
+    {
+        if (host == null || opaque || port == -2)
+        {
+            return null;
+        }
+        LinkTool copy = absolute();
+        copy.setPath(null);
+        copy.setQuery(null);
+        copy.setFragment(null);
+        return copy;
+    }
+
+    /**
+     * Returns a new LinkTool instance with
+     * the path set to the result of {@link #getDirectory()}
+     * and the query and fragment set to null.
+     */
+    public LinkTool directory()
+    {
+        LinkTool copy = root();
+        if (copy == null)
+        {
+            copy = duplicate();
+            // clear query and fragment, since root() didn't
+            copy.setQuery(null);
+            copy.setFragment(null);
+        }
+        copy.setPath(getDirectory());
+        return copy;
+    }
+
+    /**
+     * Returns true if this instance is being forced to
+     * return relative URIs or has a null scheme value.
+     */
+    public boolean isRelative()
+    {
+        return (this.forceRelative || this.scheme == null);
+    }
+
+    /**
+     * Returns a copy of this LinkTool instance that has
+     * {@link #setForceRelative} set to true.
+     */
+    public LinkTool relative()
+    {
+        LinkTool copy = duplicate();
+        copy.setForceRelative(true);
+        return copy;
+    }
+
+    /**
+     * <p>Returns a copy of the link with the specified directory-relative
+     * URI reference set as the end of the path and {@link #setForceRelative}
+     * set to true.</p>
      *
      * Example:<br>
-     * <code>&lt;a href='$link.relative("/templates/login/index.vm")'&gt;Login Page&lt;/a&gt;</code><br>
+     * <code>&lt;a href='$link.relative("/login/index.vm")'&gt;Login Page&lt;/a&gt;</code><br>
      * produces something like</br>
-     * <code>&lt;a href="/myapp/templates/login/index.vm"&gt;Login Page&lt;/a&gt;</code><br>
+     * <code>&lt;a href="/myapp/login/index.vm"&gt;Login Page&lt;/a&gt;</code><br>
      *
-     * @param obj A context-relative URI reference. A context-relative URI
-     *        is a URI that is relative to the root of this web application.
-     * @return a new instance of LinkTool with the specified URI
+     * @param obj A directory-relative URI reference (e.g. file path in current directory)
+     * @return a new instance of LinkTool with the specified changes
+     * @see #relative()
      */
     public LinkTool relative(Object obj)
     {
         if (obj == null)
         {
-            return path(getContextPath());
+            return path(getDirectory());
         }
         String pth = String.valueOf(obj);
+        LinkTool copy = relative();
+        // prepend relative paths with the current directory
+        copy.setPath(combinePath(getDirectory(), pth));
+        return copy;
+    }
+
+    /**
+     * Returns true if this instance has a scheme value
+     * and is not being forced to create relative URIs.
+     */
+    public boolean isAbsolute()
+    {
+        return (this.scheme != null && !this.forceRelative);
+    }
+
+    /**
+     * Returns a copy of this LinkTool instance that has
+     * {@link #setForceRelative} set to false and sets the
+     * scheme to the "http" if no scheme has been set yet.
+     */
+    public LinkTool absolute()
+    {
         LinkTool copy = duplicate();
-        // prepend relative paths with context path
-        copy.setPath(combinePath(getContextPath(), pth));
+        copy.setForceRelative(false);
+        if (copy.getScheme() == null)
+        {
+            copy.setScheme(DEFAULT_SCHEME);
+        }
         return copy;
     }
 
     /**
      * <p>Returns a copy of the link with the specified URI reference
      * either used as or converted to an absolute (non-relative)
-     * URI reference. This method will overwrite any previous URI
-     * reference settings but will copy the query string.</p>
+     * URI reference. Unless the specified URI contains a query
+     * or anchor, those values will not be overwritten when using
+     * this method.</p>
      *
      * Example:<br>
-     * <code>&lt;a href='$link.absolute("/templates/login/index.vm")'&gt;Login Page&lt;/a&gt;</code><br>
+     * <code>&lt;a href='$link.absolute("login/index.vm")'&gt;Login Page&lt;/a&gt;</code><br>
      * produces something like<br/>
-     * <code>&lt;a href="http://myserver.net/myapp/templates/login/index.vm"&gt;Login Page&lt;/a&gt;</code><br>
+     * <code>&lt;a href="http://myserver.net/myapp/login/index.vm"&gt;Login Page&lt;/a&gt;</code>;<br>
+     * <code>&lt;a href='$link.absolute("/login/index.vm")'&gt;Login Page&lt;/a&gt;</code><br>
+     * produces something like<br/>
+     * <code>&lt;a href="http://myserver.net/login/index.vm"&gt;Login Page&lt;/a&gt;</code>;<br>
      * and<br>
      * <code>&lt;a href='$link.absolute("http://theirserver.com/index.jsp")'&gt;Their, Inc.&lt;/a&gt;</code><br>
      * produces something like<br/>
      * <code>&lt;a href="http://theirserver.net/index.jsp"&gt;Their, Inc.&lt;/a&gt;</code><br>
      *
-     * @param obj A context-relative URI reference or absolute URL.
-     * @return a new instance of LinkTool with the specified URI
-     * @see #uri(Object uri)
-     * @since VelocityTools 1.3
+     * @param obj A root-relative or context-relative path or an absolute URI.
+     * @return a new instance of LinkTool with the specified path or URI
+     * @see #absolute()
      */
     public LinkTool absolute(Object obj)
     {
+        // assume it's just a path value to go with current scheme/host/port
+        LinkTool copy = absolute();
+        String pth;
         if (obj == null)
         {
-            // use uri's null handling
-            return uri(obj);
+            // just use the current directory path, if any
+            pth = getDirectory();
         }
-        String pth = String.valueOf(obj);
-        if (pth.startsWith(DEFAULT_SCHEME))
+        else
         {
-            // looks absolute already
-            return uri(pth);
+            pth = String.valueOf(obj);
+            if (pth.startsWith(DEFAULT_SCHEME))
+            {
+                // looks absolute already
+                URI uri = toURI(pth);
+                if (uri == null)
+                {
+                    return null;
+                }
+                copy.setScheme(uri.getScheme());
+                copy.setUserInfo(uri.getUserInfo());
+                copy.setHost(uri.getHost());
+                copy.setPort(uri.getPort());
+                // handle path, query and fragment with care
+                pth = uri.getPath();
+                if (pth.equals("/") || pth.length() == 0)
+                {
+                    pth = null;
+                }
+                copy.setPath(pth);
+                if (uri.getQuery() != null)
+                {
+                    copy.setQuery(uri.getQuery());
+                }
+                if (uri.getFragment() != null)
+                {
+                    copy.setFragment(uri.getFragment());
+                }
+                return copy;
+            }
+            else if (!pth.startsWith("/"))
+            {
+                // paths that don't start with '/'
+                // are considered relative to the current directory
+                pth = combinePath(getDirectory(), pth);
+            }
         }
-
-        // assume it's relative and try to make it absolute
-        String root = getRoot();
-        if (root != null)
-        {
-            return uri(combinePath(root, pth));
-        }
-        // ugh. this is about all we can do here w/o a host
-        LinkTool copy = duplicate();
-        copy.setScheme(DEFAULT_SCHEME);
         copy.setPath(pth);
         return copy;
     }
@@ -1073,7 +1368,6 @@ public class LinkTool extends SafeConfig implements Cloneable
      *
      * @param uri URI reference to set
      * @return a new instance of LinkTool
-     * @since VelocityTools 1.3
      */
     public LinkTool uri(Object uri)
     {
@@ -1117,8 +1411,9 @@ public class LinkTool extends SafeConfig implements Cloneable
     }
 
     /**
-     * Sets the specified value as the current query string,
-     * after normalizing the pair delimiters.
+     * Sets the specified value as the current query data,
+     * after normalizing the pair delimiters.  This overrides
+     * any existing query.
      */
     public LinkTool query(Object query)
     {
@@ -1128,60 +1423,121 @@ public class LinkTool extends SafeConfig implements Cloneable
     }
 
     /**
-     * Returns the current query string, if any.
+     * Returns the current query as a string, if any.
      */
     public String getQuery()
     {
-        return this.query;
+        return toQuery(this.query);
     }
 
     /**
-     * <p>Adds a key=value pair to the query data. This returns a new LinkTool
-     * containing both a copy of this LinkTool's query data and the new data.
-     * Query data is URL encoded before it is appended.</p>
+     * <p>Adds a key=value pair to the query data. Whether
+     * this new query pair is appended to the current query
+     * or overwrites any previous pair(s) with the same key
+     * is controlled by the {@link #getAppendsParam} value.
+     * The default behavior is to append.</p>
      *
      * @param key key of new query parameter
      * @param value value of new query parameter
-     *
      * @return a new instance of LinkTool
-     * @since VelocityTools 1.3
      */
     public LinkTool param(Object key, Object value)
     {
-        LinkTool copy = duplicate();
-        copy.appendQuery(toQuery(key, value));
+        LinkTool copy = duplicate(true);
+        copy.setParam(key, value, this.appendParams);
         return copy;
     }
 
     /**
-     * <p>Adds multiple key=value pairs to the query data.
-     * This returns a new LinkTool containing both a copy of
-     * this LinkTool's query data and the new data.
-     * Query data is URL encoded before it is appended.</p>
+     * Appends a new key=value pair to the existing query
+     * data.
      *
-     * @param parameters map of new query data keys to values
+     * @param key key of new query parameter
+     * @param value value of new query parameter
      * @return a new instance of LinkTool
-     * @since VelocityTools 1.3
      */
-    public LinkTool params(Map parameters)
+    public LinkTool append(Object key, Object value)
+    {
+        LinkTool copy = duplicate(true);
+        copy.setParam(key, value, true);
+        return copy;
+    }
+
+    /**
+     * Sets a new key=value pair to the existing query
+     * data, overwriting any previous pair(s) that have
+     * the same key.
+     *
+     * @param key key of new query parameter
+     * @param value value of new query parameter
+     * @return a new instance of LinkTool
+     */
+    public LinkTool set(Object key, Object value)
+    {
+        LinkTool copy = duplicate(true);
+        copy.setParam(key, value, false);
+        return copy;
+    }
+
+    /**
+     * Returns a new LinkTool instance that has any
+     * value(s) under the specified key removed from the query data.
+     *
+     * @param key key of the query pair(s) to be removed
+     * @return a new instance of LinkTool
+     */
+    public LinkTool remove(Object key)
+    {
+        LinkTool copy = duplicate(true);
+        copy.removeParam(key);
+        return copy;
+    }
+
+    /**
+     * This method can do two different things.  If you pass in a
+     * boolean, it will create a new LinkTool duplicate and call
+     * {@link #handleParamsBoolean(boolean)} on it. In this class, true
+     * values do nothing (subclasses may have use for them), but false
+     * values will clear out all params in the query for that instance.
+     * If you pass in a query string or a Map of parameters, those
+     * values will be added to the new LinkTool, either overwriting
+     * previous value(s) with those keys or appending to them,
+     * depending on the {@link #getAppendParams} value.
+     *
+     * @param parameters a boolean or new query data (either Map or query string)
+     * @return a new instance of LinkTool
+     */
+    public LinkTool params(Object parameters)
     {
         // don't waste time with null/empty data
-        if (parameters == null || parameters.isEmpty())
+        if (parameters == null)
         {
             return this;
         }
-        LinkTool copy = duplicate();
-        copy.appendQuery(parameters);
+        if (parameters instanceof Boolean)
+        {
+            Boolean action = ((Boolean)parameters).booleanValue();
+            LinkTool copy = duplicate(true);
+            copy.handleParamsBoolean(action);
+            return copy;
+        }
+        if (parameters instanceof Map && ((Map)parameters).isEmpty())
+        {
+            return duplicate(false);
+        }
+
+        LinkTool copy = duplicate(this.appendParams);
+        copy.setParams(parameters, this.appendParams);
         return copy;
     }
 
     public Map getParams()
     {
-        if (this.query == null || this.query.length() == 0)
+        if (this.query == null || this.query.isEmpty())
         {
             return null;
         }
-        return parseQuery(this.query);
+        return this.query;
     }
 
     /**
@@ -1195,7 +1551,6 @@ public class LinkTool extends SafeConfig implements Cloneable
      *
      * @param anchor an internal document reference
      * @return a new instance of LinkTool with the set anchor
-     * @since VelocityTools 1.3
      */
     public LinkTool anchor(Object anchor)
     {
