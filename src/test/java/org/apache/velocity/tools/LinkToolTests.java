@@ -105,9 +105,21 @@ public class LinkToolTests {
         assertSame(link.getUser(), result.getUser());
         assertSame(link.getHost(), result.getHost());
         assertSame(link.getPath(), result.getPath());
-        assertSame(link.getQuery(), result.getQuery());
+        assertSame(link.query, result.query);
         assertSame(link.getAnchor(), result.getAnchor());
         assertSame(link.getSelf(), result.getSelf());
+    }
+
+    public @Test void methodDuplicate_boolean() throws Exception
+    {
+        LinkTool link = newInstance("http://apache.org/foo.html?foo=bar");
+        LinkTool result = link.duplicate(true);
+        assertFalse(link == result);
+        assertSame(link.getPath(), result.getPath());
+        assertFalse(link.query == result.query);
+        assertEquals(link.getQuery(), result.getQuery());
+        assertSame(link.getSelf(), result.getSelf());
+        assertSame(result.query, result.duplicate(false).query);
     }
 
     public @Test void methodEncode_Object() throws Exception
@@ -337,20 +349,26 @@ public class LinkToolTests {
         assertEquals("/bar/foo", link.append("foo").getPath());
     }
 
-    public @Test void methodGetContextPath() throws Exception
+    public @Test void methodGetDirectory() throws Exception
     {
         LinkTool link = newInstance("http://foo.com/ctx/request.vm?this=that#anc");
-        assertEquals("/ctx", link.getContextPath());
-        link = newInstance("http://foo.com/foo/bar/request.vm?this=that#anc");
-        assertEquals("/foo/bar", link.getContextPath());
+        assertEquals("/ctx/", link.getDirectory());
+        link = newInstance("http://foo.com");
+        assertNull(link.getDirectory());
+        link = newInstance("http://foo.com/bar");
+        assertEquals("/", link.getDirectory());
+        link = newInstance("http://foo.com/bar/foo/bar/foo");
+        assertEquals("/bar/foo/bar/", link.getDirectory());
     }
 
-    public @Test void methodGetRequestPath() throws Exception
+    public @Test void methodGetFile() throws Exception
     {
         LinkTool link = newInstance("http://foo.com/ctx/request.vm?this=that#anc");
-        assertEquals("/request.vm", link.getRequestPath());
+        assertEquals("request.vm", link.getFile());
         link = newInstance("http://foo.com/foo/bar/request.vm?this=that#anc");
-        assertEquals("/request.vm", link.getRequestPath());
+        assertEquals("request.vm", link.getFile());
+        link = newInstance("http://foo.com/bar/");
+        assertEquals("", link.getFile());
     }
 
     public @Test void methodGetRoot() throws Exception
@@ -361,37 +379,64 @@ public class LinkToolTests {
         assertEquals("https://apache.org", link.secure().getRoot());
     }
 
-    public @Test void methodGetContextURL() throws Exception
+    public @Test void methodDirectory() throws Exception
     {
         LinkTool link = newInstance("http://foo.com/ctx/request.vm?this=that#anc");
-        assertEquals("http://foo.com/ctx", link.getContextURL());
+        assertEquals("http://foo.com/ctx/", link.directory().toString());
         link = newInstance("http://foo.com");
-        assertEquals("http://foo.com", link.getContextURL());
+        assertEquals("http://foo.com", link.directory().toString());
+    }
+
+    public @Test void methodRoot() throws Exception
+    {
+        LinkTool link = newInstance("http://foo.com/ctx/request.vm?this=that#anc");
+        assertEquals("http://foo.com", link.root().toString());
+        link = newInstance("http://foo.com");
+        assertEquals("http://foo.com", link.root().toString());
+        link = newInstance("dev@velocity.apache.org");
+        assertNull(link.root());
+    }
+
+    public @Test void methodSetForceRelative_boolean() throws Exception
+    {
+        LinkTool link = newInstance("http://apache.org/bar");
+        assertEquals("http://apache.org/bar", link.toString());
+        link.setForceRelative(true);
+        assertEquals("/bar", link.toString());
     }
 
     public @Test void methodRelative_Object() throws Exception
     {
         LinkTool link = newInstance("/ctx/request.vm?this=that#anc");
         assertEquals("/ctx/request.vm", link.getPath());
-        assertEquals("/ctx", link.getContextPath());
+        assertEquals("/ctx/", link.getDirectory());
         assertEquals("this=that", link.getQuery());
         assertEquals("anc", link.getAnchor());
         assertEquals("/ctx/request.vm?this=that#anc", link.toString());
-        assertEquals("/ctx?this=that#anc", link.relative(null).toString());
+        assertEquals("/ctx/?this=that#anc", link.relative(null).toString());
         assertEquals("/ctx/other.vm?this=that#anc", link.relative("other.vm").toString());
         link = newInstance("http://foo.com/bar/");
-        assertEquals("http://foo.com/bar/woogie.vm", link.relative("woogie.vm").toString());
+        assertEquals("/bar/woogie.vm", link.relative("woogie.vm").toString());
         link = newInstance("/bar/");
         assertEquals("/bar/foo/woogie.vm", link.relative("foo/woogie.vm").toString());
         assertEquals("/bar/yo", link.relative("yo").toString());
+    }
+
+    public @Test void methodIsRelative() throws Exception
+    {
+        LinkTool link = newInstance("/ctx/request.vm?this=that#anc");
+        assertTrue(link.isRelative());
+        link = newInstance("http://foo.com/bar.vm?q=woogie");
+        assertFalse(link.isRelative());
+        assertTrue(link.relative().isRelative());
+        link = newInstance("http://apache.org").relative("foo.vm");
+        assertTrue(link.isRelative());
     }
 
     public @Test void methodAbsolute_Object() throws Exception
     {
         LinkTool link = newInstance();
         LinkTool result = link.absolute(null);
-        // nulls should be handled by uri()
-        assertEquals(link.uri(null), result);
 
         result = link.absolute("http://apache.org");
         assertEquals(link.uri("http://apache.org"), result);
@@ -409,7 +454,9 @@ public class LinkToolTests {
         result = result.host("apache.org");
         assertEquals("http://apache.org/test/foo.vm", result.toString());
         result = result.absolute("bar.vm");
-        assertEquals("http://apache.org/bar.vm", result.toString());
+        assertEquals("http://apache.org/test/bar.vm", result.toString());
+        result = result.absolute("/woogie.vm");
+        assertEquals("http://apache.org/woogie.vm", result.toString());
     }
 
     public @Test void methodGetBaseRef() throws Exception
@@ -442,6 +489,20 @@ public class LinkToolTests {
         assertEquals("velocity.apache.org", link.getHost());
     }
 
+    public @Test void methodToURI_Object() throws Exception
+    {
+        LinkTool link = newInstance();
+        URI uri = new URI("http://apache.org");
+        assertSame(uri, link.toURI(uri));
+        assertNull(link.toURI("*%&$^%#$*&^!"));
+        assertNotNull(link.toURI("http://velocity.apache.org"));
+        assertNotNull(link.toURI(new Object() {
+            public String toString() {
+                return "http://google.com";
+            }
+        }));
+    }
+
     public @Test void methodCreateURI() throws Exception
     {
         LinkTool link = newInstance();
@@ -471,6 +532,16 @@ public class LinkToolTests {
         assertEquals("mailto:nbubna@apache.org", link.uri(uri).toString());
     }
 
+    public @Test void methodSetAppendParams_boolean() throws Exception
+    {
+        LinkTool link = newInstance("/bar?a=b");
+        LinkTool result = link.param("a","c");
+        assertEquals("a=b&amp;a=c", result.getQuery());
+        link.setAppendParams(false);
+        result = link.param("a", "d");
+        assertEquals("a=d", result.getQuery());
+    }
+
     public @Test void methodSetQuery_Object() throws Exception
     {
         LinkTool link = newInstance("/bar?a=b");
@@ -483,6 +554,15 @@ public class LinkToolTests {
         assertEquals("x=1&y=2", link.getQuery());
         link.setQuery(null);
         assertEquals(null, link.getQuery());
+    }
+
+    public @Test void methodNormalizeQuery_String() throws Exception
+    {
+        LinkTool link = new LinkTool();
+        assertEquals("a=b", link.normalizeQuery("a=b"));
+        assertEquals("a=b&amp;b=c", link.normalizeQuery("a=b&b=c"));
+        assertEquals("a=b&amp;b=c", link.normalizeQuery("a=b&amp;b=c"));
+        assertEquals("a=b&amp;b=c&amp;t=f", link.normalizeQuery("a=b&amp;b=c&t=f"));
     }
 
     public @Test void methodGetQuery() throws Exception
@@ -532,6 +612,19 @@ public class LinkToolTests {
         assertEquals("z=3", link.getQuery());
     }
 
+    public @Test void methodToQuery_Map() throws Exception
+    {
+        LinkTool link = new LinkTool();
+        Map test = new LinkedHashMap();
+        test.put("a", "b");
+        assertEquals("a=b", link.toQuery(test));
+        test.put("b", "c");
+        assertEquals("a=b&amp;b=c", link.toQuery(test));
+        Boolean[] array = new Boolean[] { Boolean.TRUE, Boolean.FALSE };
+        test.put("b", array);
+        assertEquals("a=b&amp;b=true&amp;b=false", link.toQuery(test));
+    }
+
     public @Test void methodToQuery_ObjectObject() throws Exception
     {
         LinkTool link = newInstance();
@@ -542,14 +635,101 @@ public class LinkToolTests {
         assertEquals("path=%2Ffoo+bar%2Fnew", link.toQuery("path", "/foo bar/new"));
     }
 
+    public @Test void methodSetParam_ObjectObjectboolean() throws Exception
+    {
+        LinkTool link = newInstance();
+        assertNull(link.query);
+        link.setParam("a","b", true);
+        assertNotNull(link.query);
+        assertEquals("a=b", link.getQuery());
+        link.setParam("a", "c", true);
+        assertEquals("a=b&amp;a=c", link.getQuery());
+        link.setParam("a", "foo", false);
+        assertEquals("a=foo", link.getQuery());
+    }
+
+    public @Test void methodSetParams_Objectboolean() throws Exception
+    {
+        LinkTool link = newInstance();
+        assertNull(link.query);
+        link.setParams("a=b", true);
+        assertNotNull(link.query);
+        assertEquals("a=b", link.getQuery());
+        link.setParams("a=c&a=d", true);
+        assertEquals("a=b&amp;a=c&amp;a=d", link.getQuery());
+        Map test = new LinkedHashMap();
+        test.put("a", "foo");
+        link.setParams(test, false);
+        assertEquals("a=foo", link.getQuery());
+    }
+
+    public @Test void methodParams_Object() throws Exception
+    {
+        LinkTool link = newInstance();
+        Map test = new LinkedHashMap();
+        test.put("a", "foo");
+        assertEquals("a=foo", link.params(test).getQuery());
+        assertEquals("a=b&amp;b=c", link.params("a=b&b=c").getQuery());
+        link = newInstance("/foo?q=a&a=q");
+        assertEquals("/foo", link.params(false).toString());
+        assertEquals("/foo?q=a&amp;a=q", link.params(true).toString());
+    }
+
     public @Test void methodParam_ObjectObject() throws Exception
     {
         LinkTool link = newInstance();
-        assertEquals("null=", link.param(null ,null).getQuery());
+        assertEquals("null=", link.param(null, null).getQuery());
         assertEquals("x=1", link.param("x",1).getQuery());
         assertEquals("x=1&amp;y=2", link.param("x",1).param("y",2).getQuery());
         link = newInstance("/hee/haa.vm?a=b");
         assertEquals("/hee/haa.vm?a=b&amp;b=true", link.param('b', true).toString());
+    }
+
+    public @Test void methodAppend_ObjectObject() throws Exception
+    {
+        LinkTool link = newInstance();
+        link.setAppendParams(false); //using append(key,val) should override
+        assertEquals("x=1", link.append("x",1).getQuery());
+        assertEquals("x=1&amp;x=2", link.append("x",1).append("x",2).getQuery());
+    }
+
+    public @Test void methodSet_ObjectObject() throws Exception
+    {
+        LinkTool link = newInstance();
+        link.setAppendParams(true); //using set(key,val) should override
+        assertEquals("x=1", link.set("x",1).getQuery());
+        assertEquals("x=2", link.set("x",1).set("x",2).getQuery());
+    }
+
+    public @Test void methodRemove_Object() throws Exception
+    {
+        LinkTool link = newInstance("/foo?q=bar");
+        assertEquals("q=bar", link.getQuery());
+        assertEquals("", link.remove("q").getQuery());
+        assertEquals("q=bar", link.set("x",1).remove("x").getQuery());
+    }
+
+    public @Test void methodRemoveParam_Object() throws Exception
+    {
+        LinkTool link = newInstance();
+        assertNull(link.removeParam("a"));
+        link.setParam("a","b",true);
+        assertEquals("a=b", link.getQuery());
+        assertEquals("b", link.removeParam("a"));
+        assertNull(link.removeParam("a"));
+    }
+
+    public @Test void methodHandleParamsBoolean_boolean() throws Exception
+    {
+        LinkTool link = newInstance();
+        assertNull(link.query);
+        link.setParam("a","b",true);
+        Map q = link.query;
+        link.handleParamsBoolean(true);
+        assertSame(q, link.query);
+        assertEquals("a=b", link.getQuery());
+        link.handleParamsBoolean(false);
+        assertNull(link.query);
     }
 
     public @Test void methodParams_Map() throws Exception
@@ -567,12 +747,14 @@ public class LinkToolTests {
     public @Test void methodParseQuery_String() throws Exception
     {
         LinkTool link = newInstance();
-        Map result = link.parseQuery("a=b&amp;x=1");
+        Map result = link.parseQuery("a=b&x=1");
         assertEquals("b", result.get("a"));
         assertEquals("1", result.get("x"));
         link.setXHTML(false);
-        result = link.parseQuery("true=false");
+        result = link.parseQuery("true=false&amp;false=true&black=white");
         assertEquals("false", result.get("true"));
+        assertEquals("true", result.get("false"));
+        assertEquals("white", result.get("black"));
     }
 
     public @Test void methodGetParams() throws Exception
@@ -581,9 +763,10 @@ public class LinkToolTests {
         Map result = link.getParams();
         assertEquals("b", result.get("a"));
         assertEquals("true", result.get("x"));
-        result = link.param('y',false).getParams();
-        assertEquals("b", result.get("a"));
-        assertEquals("false", result.get("y"));
+        Map newresult = link.param('y',false).getParams();
+        assertFalse(result.equals(newresult));
+        assertEquals("b", newresult.get("a"));
+        assertEquals(Boolean.FALSE, newresult.get("y"));
     }
 
     public @Test void methodSetFragment_Object() throws Exception
@@ -595,7 +778,7 @@ public class LinkToolTests {
         assertEquals(null, link.toString());
         link = newInstance("/foo#bar");
         link.setFragment("woo gie");
-        assertEquals("/foo#woo%20gie", link.toString());
+        assertEquals("/foo#woo+gie", link.toString());
     }
 
     public @Test void methodGetAnchor() throws Exception
@@ -624,7 +807,7 @@ public class LinkToolTests {
         assertEquals("a b", link.anchor(space).getAnchor());
         link = newInstance("http://go.com#foo");
         assertEquals("http://go.com#true", link.anchor(true).toString());
-        assertEquals("http://go.com#a%20b", link.anchor(space).toString());
+        assertEquals("http://go.com#a+b", link.anchor(space).toString());
     }
 
     public @Test void methodGetSelf() throws Exception
