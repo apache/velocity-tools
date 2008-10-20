@@ -1234,7 +1234,8 @@ public class LinkTool extends SafeConfig implements Cloneable
     /**
      * <p>Returns a copy of the link with the specified directory-relative
      * URI reference set as the end of the path and {@link #setForceRelative}
-     * set to true.</p>
+     * set to true. If the specified relative path is null, that is treated
+     * the same as an empty path.</p>
      *
      * Example:<br>
      * <code>&lt;a href='$link.relative("/login/index.vm")'&gt;Login Page&lt;/a&gt;</code><br>
@@ -1247,14 +1248,18 @@ public class LinkTool extends SafeConfig implements Cloneable
      */
     public LinkTool relative(Object obj)
     {
-        if (obj == null)
-        {
-            return path(getDirectory());
-        }
-        String pth = String.valueOf(obj);
         LinkTool copy = relative();
         // prepend relative paths with the current directory
-        copy.setPath(combinePath(getDirectory(), pth));
+        String pth;
+        if (obj == null)
+        {
+            pth = getDirectory();
+        }
+        else
+        {
+            pth = combinePath(getDirectory(), String.valueOf(obj));
+        }
+        copy.setPath(pth);
         return copy;
     }
 
