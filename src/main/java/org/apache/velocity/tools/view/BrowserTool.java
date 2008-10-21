@@ -37,10 +37,10 @@ import org.apache.velocity.tools.config.InvalidScope;
  * <ul>
  * <li><i>Versioning:</i>version majorVersion minorVersion geckoVersion</li>
  * <li><i>Browser:</i>mosaic netscape nav2 nav3 nav4 nav4up nav45 nav45up nav6 nav6up navgold firefox safari
- * ie ie3 ie4 ie4up ie5 ie5up ie55 ie55up ie6 opera opera3 opera4 opera5 opera6 opera7 lynx links
- * aol aol3 aol4 aol5 aol6 neoplanet neoplanet2 amaya icab avantgo emacs mozilla gecko webtv staroffice
- * lotusnotes konqueror</li>
- * <li><i>Operating systems:</i>win16 win3x win31 win95 win98 winnt windows win32 win2k winxp winme dotnet
+ * ie ie3 ie4 ie4up ie5 ie5up ie55 ie55up ie6 ie6up ie7 ie7up ie8 ie8up opera opera3 opera4 opera5 opera6 opera7 opera8 opera9 lynx links w3m
+ * aol aol3 aol4 aol5 aol6 neoplanet neoplanet2 amaya icab avantgo emacs mozilla gecko webtv staroffice java hotjava httpclient lobo
+ * lotusnotes konqueror galeon kmeleon chrome</li>
+ * <li><i>Operating systems:</i>win16 win3x win31 win95 win98 winnt windows win32 winme win2k winxp vista dotnet
  * mac macosx mac68k macppc os2 unix sun sun4 sun5 suni86 irix irix5 irix6 hpux hpux9 hpux10 aix aix1 aix2 aix3 aix4
  * linux sco unixware mpras reliant dec sinix freebsd bsd vms x11 amiga</li>
  * <li><i>Devices:</i>palm audrey iopener wap blackberry</li>
@@ -52,8 +52,8 @@ import org.apache.velocity.tools.config.InvalidScope;
  * Thanks to Lee Semel (lee@semel.net), the author of the HTTP::BrowserDetect Perl module.
  * See also:
  * * http://www.zytrax.com/tech/web/browser_ids.htm
- * * http://www.mozilla.org/docs/web-developer/sniffer/browser_type.html
  * * http://en.wikipedia.org/wiki/User_agent
+ * * http://www.user-agents.org/
  *
  * @author <a href="mailto:claude@renegat.net">Claude Brisson</a>
  * @since VelocityTools 2.0
@@ -141,7 +141,7 @@ public class BrowserTool implements java.io.Serializable
 
     public boolean getGecko()
     {
-        return test("gecko");
+        return test("gecko") && !test("like gecko");
     }
 
     public boolean getFirefox()
@@ -154,6 +154,16 @@ public class BrowserTool implements java.io.Serializable
         return test("iceweasel");
     }
 
+    public boolean getGaleon()
+    {
+        return test("galeon");
+    }
+
+    public boolean getKmeleon()
+    {
+        return test("k-meleon");
+    }
+
     public boolean getEpiphany()
     {
         return test("epiphany");
@@ -161,12 +171,21 @@ public class BrowserTool implements java.io.Serializable
 
     public boolean getSafari()
     {
-        return test("safari") || test("applewebkit");
+        return (test("safari") || test("applewebkit")) && !test("chrome");
+    }
+
+    public boolean getChrome() {
+        return test("chrome");
+    }
+
+    public boolean getDillo()
+    {
+        return test("dillo");
     }
 
     public boolean getNetscape()
     {
-        return !getFirefox() && !getSafari() && test("mozilla") &&
+        return test("netscape") || !getFirefox() && !getSafari() && test("mozilla") &&
                !test("spoofer") && !test("compatible") && !test("opera") &&
                !test("webtv") && !test("hotjava");
     }
@@ -282,7 +301,17 @@ public class BrowserTool implements java.io.Serializable
 
     public boolean getIe7up()
     {
-        return getIe() && getMajorVersion() >= 6;
+        return getIe() && getMajorVersion() >= 7;
+    }
+
+    public boolean getIe8()
+    {
+        return getIe() && getMajorVersion() == 8;
+    }
+
+    public boolean getIe8up()
+    {
+        return getIe() && getMajorVersion() >= 8;
     }
 
     public boolean getNeoplanet()
@@ -380,6 +409,16 @@ public class BrowserTool implements java.io.Serializable
         return getHotjava() && getMajorVersion() >= 3;
     }
 
+    public boolean getLobo()
+    {
+        return test("lobo");
+    }
+
+    public boolean getHttpclient()
+    {
+        return test("httpclient");
+    }
+
     public boolean getAmaya()
     {
         return test("amaya");
@@ -420,6 +459,11 @@ public class BrowserTool implements java.io.Serializable
         return test("links");
     }
 
+    public boolean getW3m()
+    {
+        return test("w3m");
+    }
+
     public boolean getWebTV()
     {
         return test("webtv");
@@ -457,7 +501,7 @@ public class BrowserTool implements java.io.Serializable
 
     public boolean getJava()
     {
-        return test("java") || test("jdk") || test("httpunit");
+        return test("java") || test("jdk") || test("httpunit") || test("httpclient") || test("lobo");
     }
 
     public boolean getAltavista()
@@ -801,6 +845,7 @@ public class BrowserTool implements java.io.Serializable
                getKonqueror() ||
                (getOpera() && getMajorVersion() >= 3) ||
                getSafari() ||
+               getChrome() ||
                getLinks();
     }
 
@@ -817,7 +862,8 @@ public class BrowserTool implements java.io.Serializable
                getGecko() || // && version >= ?
                (getOpera() && getMajorVersion() >= 4) ||
                (getSafari() && getMajorVersion() >= 2) ||
-               (getKonqueror() && getMajorVersion() >= 2);
+               (getKonqueror() && getMajorVersion() >= 2) ||
+               getChrome();
     }
 
     public boolean getDom0()
@@ -827,6 +873,7 @@ public class BrowserTool implements java.io.Serializable
                (getOpera() && getMajorVersion() >= 3) ||
                getGecko() ||
                getSafari() ||
+               getChrome() ||
                getKonqueror();
     }
 
@@ -836,7 +883,8 @@ public class BrowserTool implements java.io.Serializable
                getGecko() ||
                (getSafari() && getMajorVersion() >= 2) ||
                (getOpera() && getMajorVersion() >= 4) ||
-               (getKonqueror() && getMajorVersion() >= 2);
+               (getKonqueror() && getMajorVersion() >= 2)
+               || getChrome();
     }
 
     public boolean getDom2()
@@ -844,7 +892,8 @@ public class BrowserTool implements java.io.Serializable
         return (getIe() && getMajorVersion() >= 6) ||
                (getMozilla() && getMajorVersion() >= 5.0) ||
                (getOpera() && getMajorVersion() >= 7) ||
-               getFirefox();
+               getFirefox() ||
+               getChrome();
     }
 
     public boolean getJavascript()
