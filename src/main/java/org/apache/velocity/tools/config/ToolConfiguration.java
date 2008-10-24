@@ -47,7 +47,7 @@ public class ToolConfiguration extends Configuration
     private String key;
     private String classname;
     private String restrictTo;
-    private boolean skipSetters;
+    private Boolean skipSetters;
     private Status status;
     private Throwable problem;
 
@@ -78,7 +78,7 @@ public class ToolConfiguration extends Configuration
         this.restrictTo = path;
     }
 
-    public void setSkipSetters(boolean cfgOnly)
+    public void setSkipSetters(Boolean cfgOnly)
     {
         this.skipSetters = cfgOnly;
     }
@@ -262,7 +262,7 @@ public class ToolConfiguration extends Configuration
         return this.restrictTo;
     }
 
-    public boolean getSkipSetters()
+    public Boolean getSkipSetters()
     {
         return this.skipSetters;
     }
@@ -284,7 +284,10 @@ public class ToolConfiguration extends Configuration
         }
 
         info.restrictTo(getRestrictTo());
-        info.setSkipSetters(getSkipSetters());
+        if (getSkipSetters() != null)
+        {
+            info.setSkipSetters(getSkipSetters());
+        }
         // it's ok to use this here, because we know it's the
         // first time properties have been added to this ToolInfo
         info.addProperties(getPropertyMap());
