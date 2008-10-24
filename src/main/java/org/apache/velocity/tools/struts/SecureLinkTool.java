@@ -114,10 +114,6 @@ public class SecureLinkTool extends LinkTool
     @Override
     protected void configure(ValueParser props)
     {
-        // request values override configured defaults 
-        //NOTE: not sure this is the most intuitive way in all cases;
-        // it might make sense to provide the option of whether req/res
-        // values override configured ones or vice versa.
         super.configure(props);
 
         this.application = (ServletContext)props.getValue(ViewContext.SERVLET_CONTEXT_KEY);
