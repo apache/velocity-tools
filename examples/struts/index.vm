@@ -18,7 +18,7 @@
 <HTML>
 <HEAD>
   <TITLE>VelocityStruts $version</TITLE>
-  <link rel="stylesheet" href="$link.setRelative('styles.css')" type="text/css">
+  <link rel="stylesheet" href="$link.relative('styles.css')" type="text/css">
 </HEAD>
 
 <BODY>
