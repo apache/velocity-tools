@@ -116,9 +116,8 @@ public class LinkTool extends SafeConfig implements Cloneable
     protected String queryDelim;
     protected boolean appendParams;
     protected boolean forceRelative;
-
-    private boolean opaque;
-    private final LinkTool self;
+    protected boolean opaque;
+    protected final LinkTool self;
 
 
     /**
@@ -139,6 +138,11 @@ public class LinkTool extends SafeConfig implements Cloneable
         appendParams = true;
         forceRelative = false;
         self = this;
+    }
+
+    protected final void debug(String msg, Object... args)
+    {
+        debug(msg, null, args);
     }
 
     protected final void debug(String msg, Throwable t, Object... args)
@@ -523,7 +527,7 @@ public class LinkTool extends SafeConfig implements Cloneable
         if (this.query == null)
         {
             this.query = new LinkedHashMap();
-            query.put(key, value);
+            putParam(key, value);
         }
         else if (append)
         {
@@ -531,7 +535,7 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
         else
         {
-            query.put(key, value);
+            putParam(key, value);
         }
     }
 
@@ -549,13 +553,27 @@ public class LinkTool extends SafeConfig implements Cloneable
                 List vals = new ArrayList();
                 vals.add(cur);
                 addToList(vals, value);
-                query.put(key, vals);
+                putParam(key, vals);
             }
         }
         else
         {
-            query.put(key, value);
+            putParam(key, value);
         }
+    }
+
+    private void putParam(Object key, Object value)
+    {
+        if (value instanceof Object[])
+        {
+            List vals = new ArrayList();
+            for (Object v : ((Object[])value))
+            {
+                vals.add(v);
+            }
+            value = vals;
+        }
+        query.put(key, value);
     }
 
     private void addToList(List vals, Object value)
@@ -1253,14 +1271,26 @@ public class LinkTool extends SafeConfig implements Cloneable
         String pth;
         if (obj == null)
         {
-            pth = getDirectory();
+            pth = getContextPath();
         }
         else
         {
-            pth = combinePath(getDirectory(), String.valueOf(obj));
+            pth = combinePath(getContextPath(), String.valueOf(obj));
         }
         copy.setPath(pth);
         return copy;
+    }
+
+    /**
+     * At this level, this only returns the result of {@link #getDirectory}.
+     * It is here as an extension hook for subclasses to change the
+     * "context" for relative links.
+     * @see #relative(Object)
+     * @see #getDirectory
+     */
+    public String getContextPath()
+    {
+        return getDirectory();
     }
 
     /**
