@@ -38,14 +38,25 @@ public class ServletAdaptor implements InvocationHandler
 {
     private Map _params;
     private String _contextPath;
+    private String _pathInfo;
 
     public ServletAdaptor(String contextPath,
                           Map params)
+    {
+        this(contextPath, "", params);
+    }
+
+    public ServletAdaptor(String contextPath, String pathInfo, Map params)
     {
         _contextPath = contextPath;
         if(null == _contextPath)
         {
             _contextPath = "";
+        }
+        _pathInfo = pathInfo;
+        if(null == _pathInfo)
+        {
+            _pathInfo = "";
         }
 
         _params = params;
@@ -166,6 +177,26 @@ public class ServletAdaptor implements InvocationHandler
             {
                 return null;
             }
+        }
+        else if ("getScheme".equals(methodName))
+        {
+            return "http";
+        }
+        else if ("getServerPort".equals(methodName))
+        {
+            return new Integer(8081);
+        }
+        else if ("getServerName".equals(methodName))
+        {
+            return "localhost";
+        }
+        else if ("getServletPath".equals(methodName))
+        {
+            return _contextPath;
+        }
+        else if ("getPathInfo".equals(methodName))
+        {
+            return _pathInfo;
         }
         else if("getCharacterEncoding".equals(methodName))
         {
