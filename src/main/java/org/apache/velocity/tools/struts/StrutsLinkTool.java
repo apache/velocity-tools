@@ -20,7 +20,9 @@ package org.apache.velocity.tools.struts;
  */
 
 import javax.servlet.ServletContext;
+import org.apache.velocity.tools.generic.ValueParser;
 import org.apache.velocity.tools.view.LinkTool;
+import org.apache.velocity.tools.view.ViewContext;
 
 /**
  * <p>The StrutsLinkTool extends the standard {@link LinkTool} to add methods
@@ -54,13 +56,19 @@ import org.apache.velocity.tools.view.LinkTool;
  */
 public class StrutsLinkTool extends LinkTool
 {
-
     protected ServletContext application;
     private String get;
 
-    public void setServletContext(ServletContext app)
+    @Override
+    protected void configure(ValueParser props)
     {
-        this.application = app;
+        // request values override configured defaults 
+        //NOTE: not sure this is the most intuitive way in all cases;
+        // it might make sense to provide the option of whether req/res
+        // values override configured ones or vice versa.
+        super.configure(props);
+
+        this.application = (ServletContext)props.getValue(ViewContext.SERVLET_CONTEXT_KEY);
     }
 
     /**
