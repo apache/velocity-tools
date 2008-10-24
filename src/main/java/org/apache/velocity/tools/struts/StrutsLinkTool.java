@@ -19,6 +19,7 @@ package org.apache.velocity.tools.struts;
  * under the License.
  */
 
+import javax.servlet.ServletContext;
 import org.apache.velocity.tools.view.LinkTool;
 
 /**
@@ -53,7 +54,14 @@ import org.apache.velocity.tools.view.LinkTool;
  */
 public class StrutsLinkTool extends LinkTool
 {
+
+    protected ServletContext application;
     private String get;
+
+    public void setServletContext(ServletContext app)
+    {
+        this.application = app;
+    }
 
     /**
      * <p>This exists to enable a simplified syntax for using this tool in a
@@ -104,11 +112,11 @@ public class StrutsLinkTool extends LinkTool
             StrutsUtils.getActionMappingURL(application, request, action);
         if (url == null)
         {
-            LOG.warn("StrutsLinkTool : In method setAction("+action+
-                     "): Parameter does not map to a valid action.");
+            debug("StrutsLinkTool : In method setAction("+action+
+                  "): Parameter does not map to a valid action.");
             return null;
         }
-        return (StrutsLinkTool)copyWith(url);
+        return (StrutsLinkTool)absolute(url);
     }
 
 
@@ -130,11 +138,11 @@ public class StrutsLinkTool extends LinkTool
         String url = StrutsUtils.getForwardURL(request, application, forward);
         if (url == null)
         {
-            LOG.warn("StrutsLinkTool : In method setForward(" + forward +
-                     "): Parameter does not map to a valid forward.");
+            debug("StrutsLinkTool : In method setForward(" + forward +
+                  "): Parameter does not map to a valid forward.");
             return null;
         }
-        return (StrutsLinkTool)copyWith(url);
+        return (StrutsLinkTool)absolute(url);
     }
 
 }

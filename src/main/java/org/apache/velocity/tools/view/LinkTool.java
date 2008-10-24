@@ -19,20 +19,12 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
-import javax.servlet.ServletContext;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.velocity.runtime.log.Log;
-import org.apache.velocity.tools.Scope;
-import org.apache.velocity.tools.config.DefaultKey;
-import org.apache.velocity.tools.config.ValidScope;
+import org.apache.velocity.tools.generic.ValueParser;
 import org.apache.velocity.tools.view.ServletUtils;
 
 /**
@@ -45,19 +37,13 @@ import org.apache.velocity.tools.view.ServletUtils;
  *     <li>and more..</li>
  * </ul></p>
  * 
- * <p>This VelocityView version of LinkTool is not currently a subclass of the
- * newer, GenericTools' version.  This is likely, however, to happen in the
- * future.  To best future proof your use of this tool against deprecations,
- * try not to rely upon differences between the two versions, except of course
- * where this tool provides additional servlet-related functions.</p>
- * 
  * <p>The LinkTool is somewhat special in that nearly all public methods return
  * a new instance of LinkTool. This facilitates greatly the repeated use
  * of the LinkTool in Velocity and leads to an elegant syntax.</p>
  * 
  * <p><pre>
  * Template example(s):
- *   #set( $base = $link.relative('MyPage.vm').anchor('view') )
+ *   #set( $base = $link.path('MyPage.vm').anchor('view') )
  *   &lt;a href="$base.param('select','this')"&gt;this&lt;/a&gt;
  *   &lt;a href="$base.param('select','that')"&gt;that&lt;/a&gt;
  *
@@ -65,7 +51,7 @@ import org.apache.velocity.tools.view.ServletUtils;
  * &lt;tools&gt;
  *   &lt;toolbox scope="request"&gt;
  *     &lt;tool class="org.apache.velocity.tools.view.LinkTool"
- *              selfAbsolute="true" selfIncludeParameters="true"/&gt;
+ *              forceRelative="true" includeRequestParams="true"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
  * </pre></p>
@@ -78,1007 +64,243 @@ import org.apache.velocity.tools.view.ServletUtils;
  * @since VelocityTools 2.0
  * @version $Id$
  */
-@DefaultKey("link")
-@ValidScope(Scope.REQUEST)
-public class LinkTool implements Cloneable
+public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
 {
-    /** Standard HTML delimiter for query data ('&') */
-    public static final String HTML_QUERY_DELIMITER = "&";
+    public static final String INCLUDE_REQUEST_PARAMS_KEY = "includeRequestParams";
 
-    /** XHTML delimiter for query data ('&amp;amp;') */
-    public static final String XHTML_QUERY_DELIMITER = "&amp;";
-
-
-    /** A reference to the ServletContext */
-    protected ServletContext application;
-
-    /** A reference to the HttpServletRequest. */
     protected HttpServletRequest request;
+    protected boolean includeRequestParams;
 
-    /** A reference to the HttpServletResponse. */
-    protected HttpServletResponse response;
-
-    /** A reference to the Velocity runtime's {@link Log}. */
-    protected Log LOG;
-
-
-    /** The URI reference set for this link. */
-    private String uri;
-
-    /** The anchor set for this link. */
-    private String anchor;
-
-    /** A list of query string parameters. */
-    private ArrayList queryData;
-
-    /** The current delimiter for query data */
-    private String queryDataDelim;
-
-    /** The selfAbsolute status */
-    private boolean selfAbsolute;
-
-    /** The selfIncludeParameters status */
-    private boolean selfParams;
-
-    /** The autoIgnoreParameters status */
-    private boolean autoIgnoreParams;
-
-    /**
-     * List of parameters that should be ignored when the current request's
-     * parameters are copied.
-     *
-     * @see #addIgnore(String)
-     * @see #addAllParameters()
-     */
-    private HashSet<String> parametersToIgnore;
-
-
-    /**
-     * Default constructor. Tool must be initialized before use.
-     */
     public LinkTool()
     {
-        uri = null;
-        anchor = null;
-        queryData = null;
-        queryDataDelim = XHTML_QUERY_DELIMITER;
-        selfAbsolute = false;
-        selfParams = false;
-        autoIgnoreParams = true;
+        super();
+        includeRequestParams = false;
     }
-
 
     // --------------------------------------- Setup Methods -------------
 
-    /**
-     * Sets the current {@link HttpServletRequest}. This is required
-     * for this tool to operate and will throw a NullPointerException
-     * if this is not set or is set to {@code null}.
-     */
-    public void setRequest(HttpServletRequest request)
+    @Override
+    protected void configure(ValueParser props)
     {
-        if (request == null)
+        // request values override configured defaults 
+        //NOTE: not sure this is the most intuitive way in all cases;
+        // it might make sense to provide the option of whether req/res
+        // values override configured ones or vice versa.
+        super.configure(props);
+
+        this.request = (HttpServletRequest)props.getValue(ViewContext.REQUEST);
+        Boolean incParams = props.getBoolean(INCLUDE_REQUEST_PARAMS_KEY);
+        if (incParams != null)
         {
-            throw new NullPointerException("request should not be null");
+            setIncludeRequestParams(incParams);
         }
-        this.request = request;
+        
+        // set default/start values from request & response
+        HttpServletResponse response =
+            (HttpServletResponse)props.getValue(ViewContext.RESPONSE);
+        setCharacterEncoding(response.getCharacterEncoding());
+        setFromRequest(this.request);
     }
 
-    /**
-     * Sets the current {@link HttpServletResponse}. This is required
-     * for this tool to operate and will throw a NullPointerException
-     * if this is not set or is set to {@code null}.
-     */
-    public void setResponse(HttpServletResponse response)
+    protected void setFromRequest(HttpServletRequest request)
     {
-        if (response == null)
+        setScheme(request.getScheme());
+        setPort(request.getServerPort());
+        setHost(request.getServerName());
+        // the path we get from ViewToolContext lacks the context path
+        String ctx = request.getContextPath();
+        String pth = ServletUtils.getPath(request);
+        setPath(combinePath(ctx, pth));
+        if (this.includeRequestParams)
         {
-            throw new NullPointerException("response should not be null");
-        }
-        this.response = response;
-    }
-
-    public void setServletContext(ServletContext application)
-    {
-        if (application == null)
-        {
-            throw new NullPointerException("servletContext should not be null");
-        }
-        this.application = application;
-    }
-
-    public void setLog(Log log)
-    {
-        if (log == null)
-        {
-            throw new NullPointerException("log should not be null");
-        }
-        this.LOG = log;
-    }
-
-    /**
-     * <p>Controls the delimiter used for separating query data pairs.
-     *    By default, the standard '&' character is used.</p>
-     * <p>This is not exposed to templates as this decision is best not
-     *    made at that level.</p>
-     * <p>Subclasses may easily override the init() method to set this
-     *    appropriately and then call super.init()</p>
-     *
-     * @param useXhtml if true, the XHTML query data delimiter ('&amp;amp;')
-     *        will be used.  if false, then '&' will be used.
-     * @see <a href="http://www.w3.org/TR/xhtml1/#C_12">Using Ampersands in Attribute Values (and Elsewhere)</a>
-     */
-    public void setXHTML(boolean useXhtml)
-    {
-        queryDataDelim =
-            (useXhtml) ? XHTML_QUERY_DELIMITER : HTML_QUERY_DELIMITER;
-    }
-    
-    /**
-     * <p>Controls whether or not the {@link #getSelf()} method will return
-     *    a duplicate with a URI in absolute or relative form.</p>
-     *
-     * @param selfAbsolute if true, the {@link #getSelf()} method will return
-     *        a duplicate of this tool with an absolute self-referencing URI;
-     *        if false, a duplicate with a relative self-referencing URI will
-     *        be returned
-     * @see #getSelf()
-     * @since VelocityTools 1.3
-     */
-    public void setSelfAbsolute(boolean selfAbsolute)
-    {
-        this.selfAbsolute = selfAbsolute;
-    }
-
-    /**
-     * <p>Controls whether or not the {@link #getSelf()} method will return
-     *    a duplicate that includes current request parameters.</p>
-     *
-     * @param selfParams if true, the {@link #getSelf()} method will return
-     *        a duplicate of this tool that includes current request parameters
-     * @see #getSelf()
-     * @since VelocityTools 1.3
-     */
-    public void setSelfIncludeParameters(boolean selfParams)
-    {
-        this.selfParams = selfParams;
-    }
-
-    /**
-     * <p>Controls whether or not the {@link #addQueryData(String,Object)}
-     * and {@link #addQueryData(Map)} methods will
-     * automatically add the specified parameter(s) to the ignore list
-     * for {@link #addAllParameters()}</p>
-     *
-     * <p>The default for this setting is <code>true</code>.</p>
-     *
-     * @param autoIgnore if true, the {@link #addQueryData(String,Object)}
-     *     and {@link #addQueryData(Map)} methods will
-     *     automatically add the specified parameter(s) to the ignore list
-     *     for {@link #addAllParameters()}; otherwise,
-     *     {@link #addIgnore(String)} must be called explicitly for each
-     *     parameter to ignore.</p>
-     *
-     * @see #addIgnore(String)
-     * @see #addAllParameters()
-     * @since VelocityTools 1.4
-     */
-    public void setAutoIgnoreParameters(boolean autoIgnore)
-    {
-        this.autoIgnoreParams = autoIgnore;
-    }
-
-
-    /**
-     * For internal use.
-     *
-     * Copies 'that' LinkTool into this one and adds the new query data.
-     *
-     * @param pair the query parameter to add
-     */
-    protected LinkTool copyWith(QueryPair pair)
-    {
-        LinkTool copy = duplicate();
-        if (copy.queryData != null)
-        {
-            // set the copy's query data to a shallow clone of
-            // the current query data array
-            copy.queryData = (ArrayList)this.queryData.clone();
-        }
-        else
-        {
-            copy.queryData = new ArrayList();
-        }
-        //add new pair to this LinkTool's query data
-        copy.queryData.add(pair);
-
-        // Respect autoIgnore setting
-        if(copy.autoIgnoreParams)
-        {
-            if(copy.parametersToIgnore != null)
-            {
-                // Only clone the ignore list if we're actually going
-                // to modify it.
-                if (!copy.parametersToIgnore.contains(pair.getKey()))
-                {
-                    copy.parametersToIgnore = (HashSet<String>)this.parametersToIgnore.clone();
-                    copy.parametersToIgnore.add(pair.getKey());
-                }
-            }
-            else
-            {
-                copy.parametersToIgnore = new HashSet<String>();
-                copy.parametersToIgnore.add(pair.getKey());
-            }
-        }
-
-        return copy;
-    }
-
-
-    /**
-     * For internal use.
-     *
-     * Copies 'that' LinkTool into this one and adds the new query data.
-     *
-     * @param newQueryData the query parameters to add
-     * @since VelocityTools 1.3
-     */
-    protected LinkTool copyWith(Map<Object,Object> newQueryData)
-    {
-        LinkTool copy = duplicate();
-        if (copy.queryData != null)
-        {
-            // set the copy's query data to a shallow clone of
-            // the current query data array
-            copy.queryData = (ArrayList)this.queryData.clone();
-        }
-        else
-        {
-            copy.queryData = new ArrayList();
-        }
-
-        boolean clonedIgnore = false;
-
-        for (Map.Entry<Object,Object> entry : newQueryData.entrySet())
-        {
-            String key = String.valueOf(entry.getKey());
-            Object value = entry.getValue();
-            copy.queryData.add(new QueryPair(key, value));
-
-            if(copy.autoIgnoreParams)
-            {
-                if(copy.parametersToIgnore != null)
-                {
-                    // Only clone the ignore list if we're actually going
-                    // to modify it.
-                    if(!copy.parametersToIgnore.contains(key))
-                    {
-                        if(!clonedIgnore)
-                        {
-                            copy.parametersToIgnore
-                                = (HashSet<String>)this.parametersToIgnore.clone();
-
-                            clonedIgnore = true;
-                        }
-                        copy.parametersToIgnore.add(key);
-                    }
-                }
-                else
-                {
-                    copy.parametersToIgnore = new HashSet<String>();
-                    copy.parametersToIgnore.add(key);
-                    clonedIgnore = true;
-                }
-            }
-        }
-        return copy;
-    }
-
-
-    /**
-     * For internal use.
-     *
-     * Copies 'that' LinkTool into this one and sets the new URI.
-     *
-     * @param uri uri string
-     */
-    protected LinkTool copyWith(String uri)
-    {
-        LinkTool copy = duplicate();
-        copy.uri = uri;
-        return copy;
-    }
-
-
-    /**
-     * For internal use.
-     *
-     * Copies 'that' LinkTool into this one and sets the new
-     * anchor for the link.
-     *
-     * @param anchor URI string
-     */
-    protected LinkTool copyWithAnchor(String anchor)
-    {
-        LinkTool copy = duplicate();
-        copy.anchor = anchor;
-        return copy;
-    }
-
-
-    /**
-     * For internal use.
-     *
-     * Copies this LinkTool and adds the specified parameter name to the
-     * ignore set in the copy.
-     *
-     * @param parameterName The name of the parameter to ignore when
-     *                      copying all parameters from the current request.
-     * @return A new LinkTool with the specified parameterName added to the
-     *         ignore set.
-     * @see #addAllParameters()
-     * @see #addIgnore
-     */
-    protected LinkTool copyWithIgnore(String parameterName)
-    {
-        LinkTool copy = duplicate();
-        if(copy.parametersToIgnore == null)
-        {
-            copy.parametersToIgnore = new HashSet<String>();
-        }
-        else
-        {
-            copy.parametersToIgnore =
-                (HashSet<String>)parametersToIgnore.clone();
-        }
-        copy.parametersToIgnore.add(parameterName);
-        return copy;
-    }
-
-
-    /**
-     * This is just to avoid duplicating this code for both copyWith() methods
-     */
-    protected LinkTool duplicate()
-    {
-        try
-        {
-            return (LinkTool)this.clone();
-        }
-        catch (CloneNotSupportedException e)
-        {
-            if (LOG != null)
-            {
-                LOG.warn("LinkTool : Could not properly clone " + getClass(), e);
-            }
-
-            // "clone" manually
-            LinkTool copy;
-            try
-            {
-                // one last try for a subclass instance...
-                copy = (LinkTool)getClass().newInstance();
-            }
-            catch (Exception ee)
-            {
-                // fine, we'll use the base class
-                copy = new LinkTool();
-            }
-            copy.application = this.application;
-            copy.request = this.request;
-            copy.response = this.response;
-            copy.uri = this.uri;
-            copy.anchor = this.anchor;
-            copy.queryData = this.queryData;
-            copy.queryDataDelim = this.queryDataDelim;
-            copy.selfAbsolute = this.selfAbsolute;
-            copy.selfParams = this.selfParams;
-            copy.autoIgnoreParams = this.autoIgnoreParams;
-            copy.parametersToIgnore = this.parametersToIgnore;
-            return copy;
-        }
-    }
-
-    // --------------------------------------------- Template Methods -----------
-
-    /**
-     * <p>Returns a copy of the link with the specified anchor to be
-     *    added to the end of the generated hyperlink.</p>
-     *
-     * Example:<br>
-     * <code>&lt;a href='$link.setAnchor("foo")'&gt;Foo&lt;/a&gt;</code><br>
-     * produces something like</br>
-     * <code>&lt;a href="#foo"&gt;Foo&lt;/a&gt;</code><br>
-     *
-     * @param anchor an internal document reference
-     *
-     * @return a new instance of LinkTool with the set anchor
-     */
-    public LinkTool setAnchor(String anchor)
-    {
-        return copyWithAnchor(anchor);
-    }
-
-    /**
-     * Convenience method equivalent to {@link #setAnchor}.
-     * @since VelocityTools 1.3
-     */
-    public LinkTool anchor(String anchor)
-    {
-        return setAnchor(anchor);
-    }
-
-    /**
-     * Returns the anchor (internal document reference) set for this link.
-     */
-    public String getAnchor()
-    {
-        return anchor;
-    }
-
-
-    /**
-     * <p>Returns a copy of the link with the specified context-relative
-     * URI reference converted to a server-relative URI reference. This
-     * method will overwrite any previous URI reference settings but will
-     * copy the query string.</p>
-     *
-     * Example:<br>
-     * <code>&lt;a href='$link.setRelative("/templates/login/index.vm")'&gt;Login Page&lt;/a&gt;</code><br>
-     * produces something like</br>
-     * <code>&lt;a href="/myapp/templates/login/index.vm"&gt;Login Page&lt;/a&gt;</code><br>
-     *
-     * @param uri A context-relative URI reference. A context-relative URI
-     * is a URI that is relative to the root of this web application.
-     *
-     * @return a new instance of LinkTool with the specified URI
-     */
-    public LinkTool setRelative(String uri)
-    {
-        String ctxPath = request.getContextPath();
-        /* if the context path is the webapp root */
-        if (ctxPath.equals("/"))
-        {
-            /* then don't append anything for it */
-            ctxPath = "";
-        }
-        if (uri.startsWith("/"))
-        {
-            return copyWith(ctxPath + uri);
-        }
-        else
-        {
-            return copyWith(ctxPath + '/' + uri);
+            setQuery(request.getParameterMap());
         }
     }
 
     /**
-     * Convenience method equivalent to {@link #setRelative}.
-     * @since VelocityTools 1.3
+     * <p>Controls whether or not this tool starts off with all parameters
+     * from the last request automatically.  Default is false.</p>
      */
-    public LinkTool relative(String uri)
+    public void setIncludeRequestParams(boolean includeRequestParams)
     {
-        return setRelative(uri);
+        this.includeRequestParams = includeRequestParams;
     }
 
-
     /**
-     * <p>Returns a copy of the link with the specified URI reference
-     * either used as or converted to an absolute (non-relative)
-     * URI reference. This method will overwrite any previous URI
-     * reference settings but will copy the query string.</p>
+     * Adds the specified parameters (if they exist) from the current
+     * request to the query data of a copy of this instance.
+     * If no parameters are specified,
+     * then all of the current request's parameters will be added.
      *
-     * Example:<br>
-     * <code>&lt;a href='$link.setAbsolute("/templates/login/index.vm")'&gt;Login Page&lt;/a&gt;</code><br>
-     * produces something like<br/>
-     * <code>&lt;a href="http://myserver.net/myapp/templates/login/index.vm"&gt;Login Page&lt;/a&gt;</code><br>
-     * and<br>
-     * <code>&lt;a href='$link.setAbsolute("http://theirserver.com/index.jsp")'&gt;Their, Inc.&lt;/a&gt;</code><br>
-     * produces something like<br/>
-     * <code>&lt;a href="http://theirserver.net/index.jsp"&gt;Their, Inc.&lt;/a&gt;</code><br>
-     *
-     * @param uri A context-relative URI reference or absolute URL.
-     * @return a new instance of LinkTool with the specified URI
-     * @since VelocityTools 1.3
+     * @return A LinkTool object with the specified parameters from
+     *         the current request added to it or all the params if none specified.
      */
-    public LinkTool setAbsolute(String uri)
+    public LinkTool addRequestParams(String... butOnlyThese)
     {
-        // if they're creating a url for a separate site
-        if (uri.startsWith("http"))
-        {
-            // just set the URI
-            return setURI(uri);
-        }
-        else
-        {
-            // otherwise, prepend this webapp's context url
-            String fullCtx = getContextURL();
-            if (uri.startsWith("/"))
-            {
-                return copyWith(fullCtx + uri);
-            }
-            else
-            {
-                return copyWith(fullCtx + '/' + uri);
-            }
-        }
-    }
-
-    /**
-     * Convenience method equivalent to {@link #setAbsolute}.
-     * @since VelocityTools 1.3
-     */
-    public LinkTool absolute(String uri)
-    {
-        return setAbsolute(uri);
-    }
-
-
-    /**
-     * <p>Returns a copy of the link with the given URI reference set.
-     * No conversions are applied to the given URI reference. The URI
-     * reference can be absolute, server-relative, relative and may
-     * contain query parameters. This method will overwrite any
-     * previous URI reference settings but will copy the query
-     * string.</p>
-     *
-     * @param uri URI reference to set
-     *
-     * @return a new instance of LinkTool
-     */
-    public LinkTool setURI(String uri)
-    {
-        return copyWith(uri);
-    }
-
-    /**
-     * Convenience method equivalent to {@link #setURI}.
-     * @since VelocityTools 1.3
-     */
-    public LinkTool uri(String uri)
-    {
-        return setURI(uri);
-    }
-
-    /**
-     * <p>Returns the current URI of this link as set by the setURI(String),
-     * setAbsolute(String) or setRelative(String) methods. Any conversions
-     * have been applied. The returned URI reference does not include query
-     * data that was added with method addQueryData().</p>
-     */
-    public String getURI()
-    {
-        return uri;
-    }
-
-    /**
-     * Convenience method equivalent to {@link #getURI} to enable
-     * all lowercase {@code $link.uri} syntax.
-     * @since VelocityTools 1.3
-     */
-    public String getUri()
-    {
-        return getURI();
-    }
-
-
-    /**
-     * <p>Adds a key=value pair to the query data. This returns a new LinkTool
-     * containing both a copy of this LinkTool's query data and the new data.
-     * Query data is URL encoded before it is appended.</p>
-     *
-     * @param key key of new query parameter
-     * @param value value of new query parameter
-     *
-     * @return a new instance of LinkTool
-     */
-    public LinkTool addQueryData(String key, Object value)
-    {
-        return copyWith(new QueryPair(key, value));
-    }
-
-    /**
-     * <p>Adds multiple key=value pairs to the query data.
-     * This returns a new LinkTool containing both a copy of
-     * this LinkTool's query data and the new data.
-     * Query data is URL encoded before it is appended.</p>
-     *
-     * @param parameters map of new query data keys to values
-     * @return a new instance of LinkTool
-     * @since VelocityTools 1.3
-     */
-    public LinkTool addQueryData(Map parameters)
-    {
-        // don't waste time with null/empty data
-        if (parameters == null || parameters.isEmpty())
-        {
-            return this;
-        }
-        return copyWith(parameters);
-    }
-
-    /**
-     * Convenience method equivalent to {@link #addQueryData}.
-     * @since VelocityTools 1.3
-     */
-    public LinkTool param(Object key, Object value)
-    {
-        return addQueryData(String.valueOf(key), value);
-    }
-
-    /**
-     * Convenience method equivalent to
-     * {@link #addQueryData(Map parameters)}.
-     * @since VelocityTools 1.3
-     */
-    public LinkTool params(Map parameters)
-    {
-        return addQueryData(parameters);
-    }
-
-    /**
-     * <p>Returns this link's query data as a url-encoded string e.g.
-     * <code>key=value&foo=this+is+encoded</code>.</p>
-     */
-    public String getQueryData()
-    {
-        if (queryData != null && !queryData.isEmpty())
-        {
-
-            StringBuilder out = new StringBuilder();
-            for(int i=0; i < queryData.size(); i++)
-            {
-                out.append(queryData.get(i));
-                if (i+1 < queryData.size())
-                {
-                    out.append(queryDataDelim);
-                }
-            }
-            return out.toString();
-        }
-        return null;
-    }
-
-    /**
-     * Convenience method equivalent to
-     * {@link #getQueryData()}.
-     * @since VelocityTools 1.3
-     */
-    public String getParams()
-    {
-        return getQueryData();
-    }
-
-    /**
-     * Convenience method equivalent to
-     * {@link #addIgnore(String parameterName)}.
-     * @since VelocityTools 2.0
-     */
-    public LinkTool ignore(String paramName)
-    {
-        return addIgnore(paramName);
-    }
-
-    /**
-     * Instructs this LinkTool to ignore the specified parameter when
-     * copying the current request's parameters.
-     *
-     * @param parameterName The name of the parameter to ignore.
-     * @see #addAllParameters()
-     */
-    public LinkTool addIgnore(String parameterName)
-    {
-        return copyWithIgnore(parameterName);
-    }
-
-    /**
-     * Convenience method equivalent to
-     * {@link #addAllParameters()}.
-     * @since VelocityTools 2.0
-     */
-    public LinkTool selfParams()
-    {
-        return addAllParameters();
+        return addRequestParams(false, butOnlyThese);
     }
 
     /**
      * Adds all of the current request's parameters to this link's
-     * "query data". Any parameters that have been set to be ignored
-     * will be ignored.
+     * "query data" except for those whose keys match any of the specified strings.
      *
      * @return A LinkTool object with all of the current request's parameters
-     *         added to it.
-     * @see #addIgnore(String)
+     *         added to it, except those specified.
      */
-    public LinkTool addAllParameters()
+    public LinkTool addRequestParamsExcept(String... ignoreThese)
     {
-        if (this.parametersToIgnore != null)
+        return addRequestParams(true, ignoreThese);
+    }
+
+    /**
+     * Adds all of the current request's parameters to this link's
+     * "query data" except for those whose keys match any of the specified strings
+     * or already have a value set for them in the current instance.
+     *
+     * @return A LinkTool object with all of the current request's parameters
+     *         added to it, except those specified or those that already have
+     *         values.
+     */
+    public LinkTool addMissingRequestParams(String... ignoreThese)
+    {
+        String[] these;
+        if (query != null && !query.isEmpty())
         {
-            Map params = new HashMap(request.getParameterMap());
-            for (String name : this.parametersToIgnore)
+            Set keys = query.keySet();
+            these = new String[keys.size() + ignoreThese.length];
+            int i = 0;
+            for (; i < ignoreThese.length; i++)
             {
-                params.remove(name);
+                these[i] = ignoreThese[i];
             }
-            return copyWith(params);
+            for (Iterator iter = keys.iterator(); iter.hasNext(); i++)
+            {
+                these[i] = String.valueOf(iter.next());
+            }
         }
         else
         {
-            return copyWith(request.getParameterMap());
+            these = ignoreThese;
         }
+        return addRequestParams(true, these);
     }
 
-
-    /**
-     * <p>Returns the URI that addresses this web application. E.g.
-     * <code>http://myserver.net/myapp</code>. This string does not end
-     * with a "/".  Note! This will not represent any URI reference or
-     * query data set for this LinkTool.</p>
-     */
-    public String getContextURL()
+    private LinkTool addRequestParams(boolean ignore, String... special)
     {
-        String scheme = request.getScheme();
-        int port = request.getServerPort();
-
-        StringBuilder out = new StringBuilder();
-        out.append(request.getScheme());
-        out.append("://");
-        out.append(request.getServerName());
-        if ((scheme.equals("http") && port != 80) ||
-            (scheme.equals("https") && port != 443))
+        LinkTool copy = (LinkTool)duplicate(true);
+        Map reqParams = request.getParameterMap();
+        boolean noSpecial = (special == null || special.length == 0);
+        for (Object e : reqParams.entrySet())
         {
-            out.append(':');
-            out.append(port);
+            Map.Entry entry = (Map.Entry)e;
+            String key = String.valueOf(entry.getKey());
+            boolean isSpecial = (!noSpecial && contains(special, key));
+            // we actually add the parameter only under three cases:
+            //  take all     not one being ignored     one of the privileged few
+            if (noSpecial || (ignore && !isSpecial) || (!ignore && isSpecial))
+            {
+                // this is not one being ignored
+                copy.setParam(key, entry.getValue(), this.appendParams);
+            }
         }
-        out.append(request.getContextPath());
-        return out.toString();
+        return copy;
     }
 
+    private boolean contains(String[] set, String name)
+    {
+        for (String i : set)
+        {
+            if (name.equals(i))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected boolean isPathChanged()
+    {
+        if (this.path == self.getPath())
+        {
+            return false;
+        }
+        if (this.path == null)
+        {
+            return true;
+        }
+        return (!this.path.equals(self.getPath()));
+    }
 
     /**
-     * <p>Returns the context path that addresses this web
+     * <p>Initially, this returns the context path that addresses this web
      * application, e.g. <code>/myapp</code>. This string starts
-     * with a "/" but does not end with a "/" Note! This will not
-     * represent any URI reference or query data set for this
-     * LinkTool.</p>
+     * with a "/" but does not end with a "/".  If the path has been
+     * changed (e.g. via a call to {@link #path(Object)}), then this will
+     * simply be the first "directory" in the path (i.e. everything from
+     * the start up to the second backslash).
+     * @see #relative(Object)
      */
+    @Override
     public String getContextPath()
     {
-        return request.getContextPath();
+        if (!isPathChanged())
+        {
+            return request.getContextPath();
+        }
+        if (this.path == null || this.opaque)
+        {
+            return null;
+        }
+        int firstInternalSlash = this.path.indexOf('/', 1);
+        if (firstInternalSlash <= 0)
+        {
+            return this.path;
+        }
+        return this.path.substring(0, firstInternalSlash);
     }
 
-
     /**
-     * <p>Retrieves the path for the current request regardless of
+     * <p>Initially, this retrieves the path for the current
+     * request regardless of
      * whether this is a direct request or an include by the
-     * RequestDispatcher. Note! This will not
-     * represent any URI reference or query data set for this
-     * LinkTool.</p>
-     *
-     * @since VelocityTools 1.3
+     * RequestDispatcher. This string should always start with
+     * a "/".  If the path has been changed (e.g. via a call to
+     * {@link #path(Object)}), then this will
+     * simply be everything in the path after the {@link #getContextPath()}
+     * (i.e. the second "/" in the path and everything after).
      */
     public String getRequestPath()
     {
-        return ServletUtils.getPath(request);
-    }
-
-
-    /**
-     * Returns the full URI of this template without any query data.
-     * e.g. <code>http://myserver.net/myapp/stuff/View.vm</code>
-     * Note! The returned String will not represent any URI reference
-     * or query data set for this LinkTool. A typical application of
-     * this method is with the HTML base tag. For example:
-     * <code>&lt;base href="$link.baseRef"&gt;</code>
-     */
-    public String getBaseRef()
-    {
-        StringBuilder out = new StringBuilder();
-        out.append(getContextURL());
-        out.append(getRequestPath());
-        return out.toString();
-    }
-
-
-    /**
-     * This method returns a new "self-referencing" LinkTool for the current
-     * request. By default, this is merely a shortcut for calling
-     * {@link #relative(String uri)} using the result of
-     * {@link #getRequestPath()}.  However, this tool can be configured
-     * to return an absolute URI and/or to include the parameters of the
-     * current request (in addition to any others set so far).
-     *
-     * @see #uri(String uri)
-     * @see #setSelfAbsolute(boolean selfAbsolute)
-     * @see #setSelfIncludeParameters(boolean selfParams)
-     * @see #addAllParameters()
-     * @since VelocityTools 1.3
-     */
-    public LinkTool getSelf()
-    {
-        // first set the uri per configuration
-        LinkTool dupe;
-        if (this.selfAbsolute)
+        if (this.path == null || this.opaque)
         {
-            dupe = uri(getBaseRef());
-        }
-        else
-        {
-            dupe = relative(getRequestPath());
-        }
-
-        // then add the params (if so configured)
-        if (this.selfParams)
-        {
-            dupe = dupe.addAllParameters();
-        }
-        return dupe;
-    }
-
-
-    /**
-     * Returns the full URI reference that's been built with this tool,
-     * including the query string and anchor, e.g.
-     * <code>http://myserver.net/myapp/stuff/View.vm?id=42&type=blue#foo</code>.
-     * Typically, it is not necessary to call this method explicitely.
-     * Velocity will call the toString() method automatically to obtain
-     * a representable version of an object.
-     */
-    public String toString()
-    {
-        StringBuilder out = new StringBuilder();
-
-        if (uri != null)
-        {
-            out.append(uri);
-        }
-
-        String query = getQueryData();
-        if (query != null)
-        {
-            // Check if URI already contains query data
-            if ( uri == null || uri.indexOf('?') < 0)
-            {
-                // no query data yet, start query data with '?'
-                out.append('?');
-            }
-            else
-            {
-                // there is already query data, use data delimiter
-                out.append(queryDataDelim);
-            }
-            out.append(query);
-        }
-
-        if (anchor != null)
-        {
-            out.append('#');
-            out.append(encodeURL(anchor));
-        }
-
-        String str = out.toString();
-        if (str.length() == 0)
-        {
-            // avoid a potential NPE from Tomcat's response.encodeURL impl
-            return str;
-        }
-        else
-        {
-            // encode session ID into URL if sessions are used but cookies are
-            // not supported
-            return response.encodeURL(str);
-        }
-    }
-
-
-    /**
-     * Delegates encoding of the specified url to
-     * {@link URLEncoder#encode} using the character encoding for the current
-     * {@link HttpServletResponse}.
-     *
-     * @return String - the encoded url.
-     */
-    public String encodeURL(String url)
-    {
-        try
-        {
-            return URLEncoder.encode(url, this.response.getCharacterEncoding());
-        }
-        catch(UnsupportedEncodingException uee)
-        {
-            if (LOG != null)
-            {
-                LOG.error("LinkTool : Response character encoding '" + 
-                          response.getCharacterEncoding() + "' is unsupported", uee);
-            }
             return null;
         }
+        if (!isPathChanged())
+        {
+            return ServletUtils.getPath(request);
+        }
+        int firstInternalSlash = this.path.indexOf('/', 1);
+        if (firstInternalSlash <= 0)
+        {
+            return this.path;
+        }
+        return this.path.substring(firstInternalSlash, this.path.length());
     }
-
-
-
-    // --------------------------------------------- Internal Class -----------
 
     /**
-     * Internal util class to handle representation and
-     * encoding of key/value pairs in the query string
+     * <p>Returns a URL that addresses the web application. (e.g.
+     * <code>http://myserver.net/myapp/</code>. 
+     * This essentially just replaces the full path with
+     * the {@link #getContextPath()} and removes the anchor and query
+     * data.
      */
-    protected final class QueryPair
+    public String getContextURL()
     {
-
-        private final String key;
-        private final Object value;
-
-
-        /**
-         * Construct a new query pair.
-         *
-         * @param key query pair
-         * @param value query value
-         */
-        public QueryPair(String key, Object value)
-        {
-            this.key = key;
-            this.value = value;
-        }
-
-        /**
-         * Gets the key for this QueryPair.
-         */
-        public String getKey()
-        {
-            return key;
-        }
-
-        /**
-         * Return the URL-encoded query string.
-         */
-        public String toString()
-        {
-            StringBuilder out = new StringBuilder();
-            if (value == null)
-            {
-                out.append(encodeURL(key));
-                out.append('=');
-                /* Interpret null as "no value" */
-            }
-            else if (value instanceof List)
-            {
-                appendAsArray(out, key, ((List)value).toArray());
-            }
-            else if (value instanceof Object[])
-            {
-                appendAsArray(out, key, (Object[])value);
-            }
-            else
-            {
-                out.append(encodeURL(key));
-                out.append('=');
-                out.append(encodeURL(String.valueOf(value)));
-            }
-            return out.toString();
-        }
-
-        /* Utility method to avoid logic duplication in toString() */
-        private void appendAsArray(StringBuilder out, String key, Object[] arr)
-        {
-            String encKey = encodeURL(key);
-            for (int i=0; i < arr.length; i++)
-            {
-                out.append(encKey);
-                out.append('=');
-                if (arr[i] != null)
-                {
-                    out.append(encodeURL(String.valueOf(arr[i])));
-                }
-                if (i+1 < arr.length)
-                {
-                    out.append(queryDataDelim);
-                }
-            }
-        }
-
+        LinkTool copy = (LinkTool)duplicate();
+        copy.setQuery(null);
+        copy.setFragment(null);
+        copy.setPath(getContextPath());
+        return copy.toString();
     }
-
 
 }
