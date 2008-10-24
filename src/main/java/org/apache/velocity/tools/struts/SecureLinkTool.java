@@ -108,6 +108,12 @@ public class SecureLinkTool extends LinkTool
     private static final String STD_HTTP_PORT = "80";
     private static final String STD_HTTPS_PORT = "443";
 
+    protected ServletContext application;
+
+    public void setServletContext(ServletContext app)
+    {
+        this.application = app;
+    }
 
     /**
      * <p>Returns a copy of the link with the given action name
@@ -123,7 +129,7 @@ public class SecureLinkTool extends LinkTool
     public SecureLinkTool setAction(String action)
     {
         String link = StrutsUtils.getActionMappingURL(application, request, action);
-        return (SecureLinkTool)copyWith(computeURL(request, application, link));
+        return (SecureLinkTool)absolute(computeURL(request, application, link));
     }
 
     /**
@@ -144,7 +150,7 @@ public class SecureLinkTool extends LinkTool
         {
             return null;
         }
-        return (SecureLinkTool)copyWith(url);
+        return (SecureLinkTool)absolute(url);
     }
 
     /**

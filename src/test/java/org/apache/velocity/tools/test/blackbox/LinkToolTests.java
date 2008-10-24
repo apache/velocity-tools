@@ -23,7 +23,7 @@ import java.lang.reflect.Proxy;
 import java.lang.reflect.InvocationHandler;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.velocity.tools.view.LinkTool;
+import org.apache.velocity.tools.view.tools.LinkTool;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -55,12 +55,22 @@ public class LinkToolTests
         return link;
     }
 
-    public @Test void testAddAllParameters()
+    private LinkTool newLinkTool(Map params)
+    {
+        return newLinkTool(new ServletAdaptor("/test","/link.vm", params));
+    }
+
+    private LinkTool newLinkTool(String key, Object value)
     {
         HashMap params = new HashMap();
-        params.put("a", "b");
-        InvocationHandler handler = new ServletAdaptor("/test", params);
-        LinkTool link = newLinkTool(handler);
+        params.put(key, value);
+        return newLinkTool(params);
+    }
+
+    public @Test void testAddAllParameters()
+    {
+        LinkTool link = newLinkTool("a", "b");
+        Assert.assertEquals("/test", link.getContextPath());
 
         String url = link.setRelative("/target")
             .addQueryData("foo", "bar")
@@ -73,10 +83,7 @@ public class LinkToolTests
 
     public @Test void testAddMultiValueParameters()
     {
-        HashMap params = new HashMap();
-        params.put("a", new String[] { "a", "b", "c" });
-        InvocationHandler handler = new ServletAdaptor("/test", params);
-        LinkTool link = newLinkTool(handler);
+        LinkTool link = newLinkTool("a", new String[] { "a", "b", "c" });
 
         String url = link.setRelative("/target")
             .addQueryData("foo", "bar")
@@ -92,8 +99,7 @@ public class LinkToolTests
         HashMap params = new HashMap();
         params.put("a", "b");
         params.put("b", "c");
-        InvocationHandler handler = new ServletAdaptor("/test", params);
-        LinkTool link = newLinkTool(handler);
+        LinkTool link = newLinkTool(params);
 
         String url = link.setRelative("/target")
             .addQueryData("foo", "bar")
@@ -107,10 +113,7 @@ public class LinkToolTests
 
     public @Test void testAddAllParametersFirst()
     {
-        HashMap params = new HashMap();
-        params.put("a", "b");
-        InvocationHandler handler = new ServletAdaptor("/test", params);
-        LinkTool link = newLinkTool(handler);
+        LinkTool link = newLinkTool("a", "b");
 
         String url = link.setRelative("/target")
             .addAllParameters()
@@ -123,10 +126,7 @@ public class LinkToolTests
 
     public @Test void testAddAdditionalValue()
     {
-        HashMap params = new HashMap();
-        params.put("a", "b");
-        InvocationHandler handler = new ServletAdaptor("/test", params);
-        LinkTool link = newLinkTool(handler);
+        LinkTool link = newLinkTool("a", "b");
         link.setAutoIgnoreParameters(false);
 
         String url = link.setRelative("/target")
@@ -139,10 +139,7 @@ public class LinkToolTests
 
     public @Test void testAddAdditionalValueAfter()
     {
-        HashMap params = new HashMap();
-        params.put("a", "b");
-        InvocationHandler handler = new ServletAdaptor("/test", params);
-        LinkTool link = newLinkTool(handler);
+        LinkTool link = newLinkTool("a", "b");
         link.setAutoIgnoreParameters(false);
 
         String url = link.setRelative("/target")
@@ -155,10 +152,7 @@ public class LinkToolTests
 
     public @Test void testAutoIgnore()
     {
-        HashMap params = new HashMap();
-        params.put("a", "b");
-        InvocationHandler handler = new ServletAdaptor("/test", params);
-        LinkTool link = newLinkTool(handler);
+        LinkTool link = newLinkTool("a", "b");
 
         String url = link.setRelative("/target")
             .addQueryData("a", "c")
@@ -169,10 +163,7 @@ public class LinkToolTests
 
     public @Test void testAutoIgnoreMultiple()
     {
-        HashMap params = new HashMap();
-        params.put("a", new String[] { "a", "b", "c" } );
-        InvocationHandler handler = new ServletAdaptor("/test", params);
-        LinkTool link = newLinkTool(handler);
+        LinkTool link = newLinkTool("a", new String[] { "a", "b", "c" });
 
         String url = link.setRelative("/target")
             .addQueryData("a", "d")
@@ -184,10 +175,7 @@ public class LinkToolTests
 
     public @Test void testNoIgnoreMultiple_WrongOrder()
     {
-        HashMap params = new HashMap();
-        params.put("a", new String[] { "a", "b", "c" } );
-        InvocationHandler handler = new ServletAdaptor("/test", params);
-        LinkTool link = newLinkTool(handler);
+        LinkTool link = newLinkTool("a", new String[] { "a", "b", "c" });
 
         String url = link.setRelative("/target")
             .addAllParameters()

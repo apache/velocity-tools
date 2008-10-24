@@ -165,22 +165,21 @@
                 <td>$link.forward.src &nbsp;</td>
             </tr>
             <tr>
+                <td>\$link.path('index.html').param('key1', 'val 1')</td>
+                <td>$link.path('index.html').param('key1', 'val 1')</td>
+            </tr>
+            <tr>
                 <td>\$link.relative('examples/index.html')</td>
                 <td>$link.relative('examples/index.html')</td>
             </tr>
             <tr>
-                <td>\$link.uri('index.html').param('key1', 'val 1')</td>
-                <td>$link.uri('index.html').param('key1', 'val 1')</td>
+                <td>\$link.absolute('index.html').param('key1', 'val 1')</td>
+                <td>$link.absolute('index.html').param('key1', 'val 1')</td>
             </tr>
             <tr>
-                <td>\$link.uri('index.html').param('key1', 'val 1').getURI()<br>
-                    \$link.uri('index.html').param('key1', 'val 1').URI</td>
-                <td>$link.uri('index.html').param('key1', 'val 1').getURI()</td>
-            </tr>
-            <tr>
-                <td>\$link.uri('/index.html').param('key1', 'val 1').getQueryData()<br>
-                    \$link.uri('/index.html').param('key1', 'val 1').queryData</td>
-                <td>$link.uri('/index.html').param('key1', 'val 1').getQueryData()</td>
+                <td>\$link.path('/index.html').param('key1', 'val 1').getQuery()<br>
+                    \$link.path('/index.html').param('key1', 'val 1').query</td>
+                <td>$link.path('/index.html').param('key1', 'val 1').query</td>
             </tr>
             <tr>
                 <td>\$link.getContextURL()<br>
@@ -198,8 +197,8 @@
                 <td>$link.getBaseRef()</td>
             </tr>
             <tr>
-                <td>\$link.setURI('index.vm').toString()</td>
-                <td>$link.setURI('index.vm').toString()</td>
+                <td>\$link.uri('https://foo.com/index.vm').toString()</td>
+                <td>$link.uri('https://foo.com/index.vm').toString()</td>
             </tr>
         </table>
 

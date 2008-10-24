@@ -220,18 +220,19 @@ public class ViewToolsTests {
 
     public @Test void testLinkTool() throws Exception {
         WebConversation conv = new WebConversation();
-        WebRequest req = new GetMethodWebRequest(ROOT_URL+"link.vm");
+        String page = ROOT_URL+"link.vm";
+        WebRequest req = new GetMethodWebRequest(page);
         WebResponse resp = conv.getResponse(req);
 
         /* check anchor(foo) and anchor */
         resp = submitWithParam(resp,"anchor","anchor","foo");
-        checkText(resp,"anchor","#foo");
-        checkText(resp,"altanchor","#foo");
+        checkText(resp,"anchor",page+"#foo");
+        checkText(resp,"altanchor",page+"#foo");
 
-        /* check uri(bar) and uri */
-        resp = submitWithParam(resp,"uri","uri","bar");
-        checkText(resp,"uri","bar");
-        checkText(resp,"alturi","bar");
+        /* check path(bar) and path */
+        resp = submitWithParam(resp,"path","path","bar");
+        checkText(resp,"path","http://localhost:8081/bar");
+        checkText(resp,"altpath","/link.vm");
 
         /* check relative(foo) */
         resp = submitWithParam(resp,"relative","relative","foo");
@@ -242,7 +243,7 @@ public class ViewToolsTests {
         checkText(resp,"absolute",ROOT_URL + "bar");
 
         /* check contextURL */
-        checkText(resp,"contextURL",ROOT_URL.substring(0,ROOT_URL.length()-1));
+        checkText(resp,"contextURL",ROOT_URL);
 
         /* check contextPath */
         checkText(resp,"contextPath","");
@@ -251,14 +252,14 @@ public class ViewToolsTests {
         checkText(resp,"requestPath","/link.vm");
 
         /* check baseRef */
-        checkText(resp,"baseRef",ROOT_URL+"link.vm");
+        checkText(resp,"baseRef",page);
 
         /* check self */
-        checkText(resp,"self","/link.vm");
+        checkText(resp,"self",page);
 
-        /* check encodeURL */
-        resp = submitWithParam(resp,"encodeURL","encodeURL",": /");
-        checkText(resp,"encodeURL","%3A+%2F");
+        /* check encode */
+        resp = submitWithParam(resp,"encode","encode",": /");
+        checkText(resp,"encode","%3A+%2F");
     }
 
     public @Test void testParameterParserTool() throws Exception {

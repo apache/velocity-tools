@@ -36,8 +36,8 @@ the additional change specified by the method call.
 #end
 #demoAlt( 'link' 'anchor' $result $desc )
 
-#set( $desc = "Returns a new ${esc.d}link with the addition of the specified URI value." )
-#demo1( 'link' 'uri' 6 $desc )
+#set( $desc = "Returns a new ${esc.d}link with the addition of the specified path value." )
+#demo1( 'link' 'path' 6 $desc )
 
 #set( $desc = "Returns a new ${esc.d}link with the addition of the specified relative value." )
 #demo1( 'link' 'relative' 6 $desc )
@@ -45,20 +45,11 @@ the additional change specified by the method call.
 #set( $desc = "Returns a new ${esc.d}link with the addition of the specified absolute value." )
 #demo1( 'link' 'absolute' 6 $desc )
 
-#set( $desc = "Returns the URI set for this ${esc.d}link via one of the absolute(), relative(), or uri() methods." )
-#if( $params.uri )
-  #set( $result = $link.uri($params.uri).uri )
-#elseif( $params.relative )
-  #set( $result = $link.relative($params.relative).uri )
-#elseif( $params.absolute )
-  #set( $result = $link.absolute($params.absolute).uri )
-#else
-  #set( $result = $!link.uri )
-#end
-#demoAlt( 'link' 'uri' $result $desc )
+#set( $desc = "Returns the path currently set for this ${esc.d}link." )
+#demoAlt( 'link' 'path' $link.path $desc )
 
 #set( $desc = "Returns a new ${esc.d}link with the addition of the specified parameter." )
-#demo1( 'link' 'param' 6 $desc )
+#demo2( 'link' 'param' 6 $desc )
 
 
 #set( $desc = "Returns the query data set for this ${esc.d}link" )
@@ -70,7 +61,7 @@ the additional change specified by the method call.
 #demoAlt( 'link' 'params' $desc )
 
 
-#set( $desc = "Returns the URI that addresses this web application. E.g. <code>http://myserver.net/myapp</code>. This string does not end with a ${esc.q}/${esc.q}." )
+#set( $desc = "Returns the URI that addresses this web application. E.g. <code>http://myserver.net/myapp</code>. This string may not end with a ${esc.q}/${esc.q}." )
 #demo( 'link' 'contextURL' $desc )
 
 #set( $desc = "Returns the context path that addresses this web application, e.g. <code>/myapp</code>. This string starts with a ${esc.q}/${esc.q} but does not end with a ${esc.q}/${esc.q}." )
@@ -86,7 +77,7 @@ the additional change specified by the method call.
 #demo( 'link' 'self' $desc )
 
 #set( $desc = "Performs URL encoding on the specified text." )
-#demo1( 'link' 'encodeURL' 6 $desc )
+#demo1( 'link' 'encode' 6 $desc )
 
 #demoCustom( 'link' )
 </table>
