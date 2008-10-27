@@ -19,7 +19,7 @@
  under the License.
 -->
 
-<project name="velocity-tools" default="all" basedir=".">
+<project name="velocity-tools" default="all" basedir="." xmlns:artifact="urn:maven-artifact-ant">
 
 <!-- ========== Properties ===================================== -->
 
@@ -305,6 +305,30 @@
 
 
 
+  <!-- Jar all source files (struts, view, generic) -->
+  <target name="jar.source" depends="prepare"
+          description="Builds a jar file of all the source classes">
+    <jar jarfile="${dist.dir}/${project.id}-src.jar">
+      <metainf dir="${basedir}">
+        <include name="LICENSE"/>
+        <include name="NOTICE"/>
+      </metainf>
+
+      <fileset dir="${source.home}"/>
+      <manifest>
+        <attribute name="Created-By" value="Apache Ant"/>
+        <attribute name="Specification-Title" value="${struts.name} is ${struts.description}" />
+        <attribute name="Specification-Vendor" value="Apache Software Foundation"/>
+        <attribute name="Implementation-Title" value="org.apache.velocity"/>
+        <attribute name="Implementation-Vendor-Id" value="org.apache"/>
+        <attribute name="Implementation-Vendor" value="Apache Software Foundation"/>
+        <attribute name="Implementation-Version" value="${project.version}"/>
+      </manifest>
+    </jar>
+    <checksum file="${dist.dir}/${project.id}-src.jar" algorithm="md5" fileext=".md5"/>
+    <checksum file="${dist.dir}/${project.id}-src.jar" algorithm="sha1" fileext=".sha1"/>
+  </target>
+
   <!-- Build Javadocs (struts, view, generic) -->
   <target name="javadoc" description="Builds Javadoc for the whole project.">
     <mkdir dir="${javadoc.dir}" />
@@ -322,6 +346,30 @@
         <pathelement path="${classes.src}" />
       </sourcepath>
     </javadoc>
+  </target>
+
+  <!-- Build Javadocs Jar (struts, view, generic) -->
+  <target name="jar.javadoc" depends="prepare,javadoc"
+          description="Builds a jar file with the javadoc for the whole project.">
+
+    <jar jarfile="${dist.dir}/${project.id}-javadoc.jar">
+      <metainf dir="${basedir}">
+        <include name="LICENSE"/>
+        <include name="NOTICE"/>
+      </metainf>
+      <fileset dir="${javadoc.dir}"/>
+      <manifest>
+        <attribute name="Created-By" value="Apache Ant"/>
+        <attribute name="Specification-Title" value="${struts.name} is ${struts.description}" />
+        <attribute name="Specification-Vendor" value="Apache Software Foundation"/>
+        <attribute name="Implementation-Title" value="org.apache.velocity"/>
+        <attribute name="Implementation-Vendor-Id" value="org.apache"/>
+        <attribute name="Implementation-Vendor" value="Apache Software Foundation"/>
+        <attribute name="Implementation-Version" value="${project.version}"/>
+      </manifest>
+    </jar>
+    <checksum file="${dist.dir}/${project.id}-javadoc.jar" algorithm="md5" fileext=".md5"/>
+    <checksum file="${dist.dir}/${project.id}-javadoc.jar" algorithm="sha1" fileext=".sha1"/>
   </target>
 
   <!-- Build JDocs (for jdocs.com) -->
@@ -505,7 +553,7 @@
 
   <!-- Create binary distribution files -->
   <target name="release.binaries"
-          depends="clean,prepare,jar.struts,jar.view,jar.generic,examples,javadoc,docs,test"
+          depends="clean,prepare,jar.struts,jar.view,jar.generic,jar.source,jar.javadoc,examples,javadoc,docs,test"
           description="Builds everything and creates the binary distribution files">
 
     <!-- Gather misc docs/files -->
@@ -517,10 +565,14 @@
     <copy todir="${release.dir}" file="${basedir}/README.txt"/>
     <copy todir="${release.dir}" file="${basedir}/WHY_THREE_JARS.txt"/>
 
-    <!-- Gather all project jars -->
+    <!-- Gather all project jars (exclude src and javadoc jars, as they're mostly for Maven) -->
     <mkdir dir="${release.dir}/lib"/>
     <copy todir="${release.dir}/lib">
-      <fileset dir="${dist.dir}" includes="*.jar" />
+      <fileset dir="${dist.dir}">
+        <include name="*.jar" />
+        <exclude name="*-src.jar"/>
+        <exclude name="*-javadoc.jar"/>
+      </fileset>
     </copy>
 
     <!-- Gather all project dependencies -->
@@ -581,6 +633,8 @@
             <available file="${dist.dir}/${project.id}-src.tar.gz.asc"/>
             <available file="${dist.dir}/${project.id}-src.zip.asc"/>
             <available file="${dist.dir}/${project.id}.jar.asc"/>
+            <available file="${dist.dir}/${project.id}-src.jar.asc"/>
+            <available file="${dist.dir}/${project.id}-javadoc.jar.asc"/>
             <available file="${dist.dir}/${view.id}.jar.asc"/>
             <available file="${dist.dir}/${generic.id}.jar.asc"/>
         </and>
@@ -710,6 +764,62 @@
         ${publish.docs.dir}devel/
       as appropriate.
     </echo>
+  </target>
+
+  <!-- Prepare to use Maven Ant Tasks -->
+  <target name="maven.prepare">
+    <ant antfile="${basedir}/download.xml" target="build-download" />
+
+    <path id="mvnantpath" path="${lib.dir}/maven-ant-tasks-${jar.maven.ant.version}.jar"/>
+    <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
+        uri="urn:maven-artifact-ant" classpathref="mvnantpath"/>
+
+    <artifact:install-provider artifactId="wagon-ssh" version="${wagon-ssh.version}"/>
+    <artifact:pom file="${maven.pom}" id="maven.project"/>
+  </target>
+
+  <!-- Install Maven Artifacts in local repo -->
+  <target name="install" depends="maven.prepare,release" 
+    description="Installs the Maven artifacts in local repository">
+
+    <artifact:install file="${dist.dir}/${project.id}.jar" >
+      <pom refid="maven.project"/>
+      <attach file="${dist.dir}/${generic.id}.jar" type="jar" classifier="generic"/>
+      <attach file="${dist.dir}/${view.id}.jar" type="jar" classifier="view"/>
+      <attach file="${dist.dir}/${project.id}-src.jar" type="jar" classifier="sources"/>
+      <attach file="${dist.dir}/${project.id}-javadoc.jar" type="jar" classifier="javadoc"/>
+    </artifact:install>
+  </target>
+
+  <!-- Deploy Maven artifacts to custom remote repository -->
+  <target name="deploy-custom" if="maven.remote.repository">
+    <echo>Deploying to ${maven.remote.repository}</echo>
+    <artifact:deploy file="${dist.dir}/${project.id}.jar" >
+      <remoteRepository id="velocity.custom.repository" url="${maven.remote.repository}"/>
+      <pom refid="maven.project"/>
+      <attach file="${dist.dir}/${generic.id}.jar" type="jar" classifier="generic"/>
+      <attach file="${dist.dir}/${view.id}.jar" type="jar" classifier="view"/>
+      <attach file="${dist.dir}/${project.id}-src.jar" type="jar" classifier="sources"/>
+      <attach file="${dist.dir}/${project.id}-javadoc.jar" type="jar" classifier="javadoc"/>
+    </artifact:deploy>
+  </target>
+
+  <!-- Deploy Maven artifacts to Apache remote repository -->
+  <target name="deploy-apache" unless="maven.remote.repository">
+    <echo>Deploying to Apache Maven repository</echo>
+    <artifact:deploy file="${dist.dir}/${project.id}.jar" >
+      <pom refid="maven.project"/>
+      <attach file="${dist.dir}/${generic.id}.jar" type="jar" classifier="generic"/>
+      <attach file="${dist.dir}/${view.id}.jar" type="jar" classifier="view"/>
+      <attach file="${dist.dir}/${project.id}-src.jar" type="jar" classifier="sources"/>
+      <attach file="${dist.dir}/${project.id}-javadoc.jar" type="jar" classifier="javadoc"/>
+    </artifact:deploy>
+  </target>
+
+  <!-- Deploy Maven artifacts to remote repository -->
+  <target name="deploy"
+    depends="maven.prepare,release,deploy-custom,deploy-apache" unless="maven.remote.repository"
+    description="Deploys the Maven artifacts to configured repository">
   </target>
 
 

@@ -32,7 +32,7 @@
   <!-- Download Control Tasks -->
 
   <target name="full-download"
-          depends="base-download,compile-download,docs-download,examples-download,whitebox-test-download,blackbox-test-download"
+          depends="base-download,compile-download,docs-download,examples-download,build-download,whitebox-test-download,blackbox-test-download"
           description="Download all dependencies needed for a full VelocityTools build from the central repository"/>
 
   <target name="base-download"
@@ -69,6 +69,12 @@
     <antcall target="commons-chain-download" />
   </target>
 
+  <target name="build-download"
+          description="Download dependencies needed for various build targets">
+    <antcall target="maven-ant-task-download"/>
+    <!-- TODO: download pmd and findbugs deps -->
+  </target>
+
   <!-- whitebox tests downloads -->
   <target name="whitebox-test-download" depends="base-download">
     <antcall target="junit-download"/>
@@ -95,44 +101,79 @@
         <istrue value="${skip.jar.loading}"/>
         <and>
           <isfalse value="${force.jar.loading}"/>
-          <available file="${lib.dir}/${download.name}-${download.version}.jar"/>
+          <available file="${lib.dir}/${download.groupId}-${download.version}.jar"/>
         </and>
       </or>
     </condition>
     <antcall target="do-http-download"/>
   </target>
 
-  <target name="do-http-download" unless="skip-download">
-    <!-- set download.path if not set previously -->
-    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
-    <setproxy proxyhost="${proxy.host}" proxyport="${proxy.port}"/>
-    <get src="${repo.url}/${download.path}/${download.name}-${download.version}.jar"
-         dest="${lib.dir}/${download.name}-${download.version}.jar"
-         usetimestamp="false"
-         verbose="false"
-         ignoreerrors="false" />
-  </target>
-
-  <target name="http-test-download">
+  <target name="http-m1-download">
     <condition property="skip-download">
       <or>
         <istrue value="${skip.jar.loading}"/>
         <and>
           <isfalse value="${force.jar.loading}"/>
-          <available file="${test.lib.dir}/${download.name}-${download.version}.jar"/>
+          <available file="${lib.dir}/${download.artifactId}-${download.version}.jar"/>
         </and>
       </or>
     </condition>
-    <antcall target="do-http-test-download"/>
+    <antcall target="do-http-m1-download"/>
   </target>
 
-  <target name="do-http-test-download" unless="skip-download">
+  <target name="do-http-m1-download" unless="skip-download">
     <!-- set download.path if not set previously -->
-    <property name="download.path" value="${download.name}/${download.name}/${download.version}" />
+    <property name="download.path" value="${download.groupId}/jars" />
     <setproxy proxyhost="${proxy.host}" proxyport="${proxy.port}"/>
-    <get src="${repo.url}/${download.path}/${download.name}-${download.version}.jar"
-         dest="${test.lib.dir}/${download.name}-${download.version}.jar"
-         usetimestamp="false"
+    <get src="${repo.m1.url}/${download.path}/${download.artifactId}-${download.version}.jar"
+         dest="${lib.dir}/${download.artifactId}-${download.version}.jar"
+         usetimestamp="true"
+         verbose="false"
+         ignoreerrors="false" />
+  </target>
+
+  <target name="http-test-m1-download">
+    <condition property="skip-download">
+      <or>
+        <istrue value="${skip.jar.loading}"/>
+        <and>
+          <isfalse value="${force.jar.loading}"/>
+          <available file="${build.test.lib}/${download.artifactId}-${download.version}.jar"/>
+        </and>
+      </or>
+    </condition>
+    <antcall target="do-http-test-m1-download"/>
+  </target>
+
+  <target name="do-http-test-m1-download" unless="skip-download">
+    <!-- set download.path if not set previously -->
+    <property name="download.path" value="${download.groupId}/jars" />
+    <setproxy proxyhost="${proxy.host}" proxyport="${proxy.port}"/>
+    <get src="${repo.m1.url}/${download.path}/${download.artifactId}-${download.version}.jar"
+         dest="${test.lib.dir}/${download.artifactId}-${download.version}.jar"
+         usetimestamp="true"
+         verbose="false"
+         ignoreerrors="false" />
+  </target>
+
+  <target name="http-m2-download">
+    <condition property="skip-download">
+      <or>
+        <istrue value="${skip.jar.loading}"/>
+        <and>
+          <isfalse value="${force.jar.loading}"/>
+          <available file="${lib.dir}/${download.artifactId}-${download.version}.jar"/>
+        </and>
+      </or>
+    </condition>
+    <antcall target="do-http-m2-download"/>
+  </target>
+
+  <target name="do-http-m2-download" unless="skip-download">
+    <setproxy proxyhost="${proxy.host}" proxyport="${proxy.port}"/>
+    <get src="${repo.m2.url}/${download.groupId}/${download.artifactId}/${download.version}/${download.artifactId}-${download.version}.jar"
+         dest="${lib.dir}/${download.artifactId}-${download.version}.jar"
+         usetimestamp="true"
          verbose="false"
          ignoreerrors="false" />
   </target>
@@ -141,186 +182,227 @@
   <!--  Dependency Download Tasks -->
 
   <target name="antlr-download">
-    <property name="download.name" value="antlr" />
+    <property name="download.groupId" value="antlr" />
+    <property name="download.artifactId" value="antlr" />
     <property name="download.version" value="${jar.antlr.version}" />
-    <antcall target="http-download"/>
+    <antcall target="http-m1-download"/>
   </target>
 
   <target name="commons-beanutils-download">
-    <property name="download.name" value="commons-beanutils" />
+    <property name="download.groupId" value="commons-beanutils" />
+    <property name="download.artifactId" value="commons-beanutils" />
     <property name="download.version" value="${jar.commons-beanutils.version}" />
-    <antcall target="http-download"/>
+    <antcall target="http-m1-download"/>
   </target>
 
   <target name="commons-chain-download">
-    <property name="download.name" value="commons-chain" />
+    <property name="download.groupId" value="commons-chain" />
+    <property name="download.artifactId" value="commons-chain" />
     <property name="download.version" value="${jar.commons-chain.version}" />
-    <antcall target="http-download"/>
+    <antcall target="http-m1-download"/>
   </target>
 
   <target name="commons-collections-download">
-    <property name="download.name" value="commons-collections" />
+    <property name="download.groupId" value="commons-collections" />
+    <property name="download.artifactId" value="commons-collections" />
     <property name="download.version" value="${jar.commons-collections.version}" />
-    <antcall target="http-download"/>
+    <antcall target="http-m1-download"/>
   </target>
 
   <target name="commons-digester-download">
-    <property name="download.name" value="commons-digester" />
+    <property name="download.groupId" value="commons-digester" />
+    <property name="download.artifactId" value="commons-digester" />
     <property name="download.version" value="${jar.commons-digester.version}" />
-    <antcall target="http-download"/>
+    <antcall target="http-m1-download"/>
   </target>
 
   <target name="commons-lang-download">
-    <property name="download.name" value="commons-lang" />
+    <property name="download.groupId" value="commons-lang" />
+    <property name="download.artifactId" value="commons-lang" />
     <property name="download.version" value="${jar.commons-lang.version}" />
-    <antcall target="http-download"/>
+    <antcall target="http-m1-download"/>
   </target>
 
   <target name="commons-logging-download">
-    <property name="download.name" value="commons-logging" />
+    <property name="download.groupId" value="commons-logging" />
+    <property name="download.artifactId" value="commons-logging" />
     <property name="download.version" value="${jar.commons-logging.version}" />
-    <antcall target="http-download"/>
+    <antcall target="http-m1-download"/>
   </target>
 
   <target name="commons-validator-download">
-    <property name="download.name" value="commons-validator" />
+    <property name="download.groupId" value="commons-validator" />
+    <property name="download.artifactId" value="commons-validator" />
     <property name="download.version" value="${jar.commons-validator.version}" />
-    <antcall target="http-download"/>
+    <antcall target="http-m1-download"/>
   </target>
 
   <target name="dom4j-download">
-    <property name="download.name" value="dom4j" />
+    <property name="download.groupId" value="dom4j" />
+    <property name="download.artifactId" value="dom4j" />
     <property name="download.version" value="${jar.dom4j.version}" />
-    <antcall target="http-download"/>
+    <antcall target="http-m1-download"/>
   </target>
 
   <target name="oro-download">
-    <property name="download.name" value="oro" />
+    <property name="download.groupId" value="oro" />
+    <property name="download.artifactId" value="oro" />
     <property name="download.version" value="${jar.oro.version}" />
-    <antcall target="http-download"/>
+    <antcall target="http-m1-download"/>
   </target>
 
   <target name="servletapi-download">
-    <property name="download.name" value="servletapi" />
+    <property name="download.groupId" value="servletapi" />
+    <property name="download.artifactId" value="servletapi" />
     <property name="download.version" value="${jar.servletapi.version}" />
-    <antcall target="http-download"/>
+    <antcall target="http-m1-download"/>
   </target>
 
   <target name="sslext-download">
-    <property name="download.name" value="sslext" />
+    <property name="download.groupId" value="sslext" />
+    <property name="download.artifactId" value="sslext" />
     <property name="download.version" value="${jar.sslext.version}" />
-    <antcall target="http-download"/>
+    <antcall target="http-m1-download"/>
   </target>
 
   <target name="struts-download">
-    <property name="download.name" value="struts" />
+    <property name="download.groupId" value="struts" />
+    <property name="download.artifactId" value="struts" />
     <property name="download.version" value="${jar.struts.version}" />
     <property name="download.path" value="org/apache/struts/struts-parent/${download.version}" />
-    <antcall target="http-download"/>
+    <antcall target="http-m1-download"/>
   </target>
 
   <target name="struts-core-download">
-    <property name="download.name" value="struts-core" />
+    <property name="download.groupId" value="struts-core" />
+    <property name="download.artifactId" value="struts-core" />
     <property name="download.version" value="${jar.struts-core.version}" />
-    <property name="download.path" value="org/apache/struts/${download.name}/${download.version}" />
-    <antcall target="http-download"/>
+    <property name="download.path" value="org/apache/struts/${download.groupId}/${download.version}" />
+    <antcall target="http-m1-download"/>
   </target>
 
   <target name="struts-taglib-download">
-    <property name="download.name" value="struts-taglib" />
+    <property name="download.groupId" value="struts-taglib" />
+    <property name="download.artifactId" value="struts-taglib" />
     <property name="download.version" value="${jar.struts-taglib.version}" />
-    <property name="download.path" value="org/apache/struts/${download.name}/${download.version}" />
-    <antcall target="http-download"/>
+    <property name="download.path" value="org/apache/struts/${download.groupId}/${download.version}" />
+    <antcall target="http-m1-download"/>
   </target>
 
   <target name="struts-tiles-download">
-    <property name="download.name" value="struts-tiles" />
+    <property name="download.groupId" value="struts-tiles" />
+    <property name="download.artifactId" value="struts-tiles" />
     <property name="download.version" value="${jar.struts-tiles.version}" />
-    <property name="download.path" value="org/apache/struts/${download.name}/${download.version}" />
-    <antcall target="http-download"/>
+    <property name="download.path" value="org/apache/struts/${download.groupId}/${download.version}" />
+    <antcall target="http-m1-download"/>
   </target>
 
   <target name="velocity-download">
-    <property name="download.name" value="velocity" />
+    <property name="download.groupId" value="velocity" />
+    <property name="download.artifactId" value="velocity" />
     <property name="download.version" value="${jar.velocity.version}" />
-    <antcall target="http-download"/>
+    <antcall target="http-m1-download"/>
   </target>
 
   <target name="velocity-dvsl-download">
-    <property name="download.name" value="dvsl" />
+    <property name="download.groupId" value="dvsl" />
+    <property name="download.artifactId" value="dvsl" />
     <property name="download.version" value="${jar.velocity-dvsl.version}" />
-    <property name="download.path" value="org/apache/dvsl/${download.name}/${download.version}" />
-    <antcall target="http-download"/>
+    <property name="download.path" value="org/apache/dvsl/${download.groupId}/${download.version}" />
+    <antcall target="http-m1-download"/>
   </target>
 
   <!-- Test Dependency Download Tasks -->
 
   <target name="httpunit-download">
-    <property name="download.name" value="httpunit" />
+    <property name="download.groupId" value="httpunit" />
+    <property name="download.artifactId" value="httpunit" />
     <property name="download.version" value="${jar.httpunit.version}" />
-    <antcall target="http-test-download"/>
+    <property name="download.path" value="${download.groupId}/${download.artifactId}/${download.version}" />
+    <antcall target="http-test-m1-download"/>
   </target>
 
   <target name="jetty-download">
-    <property name="download.name" value="jetty" />
+    <property name="download.groupId" value="jetty" />
+    <property name="download.artifactId" value="jetty" />
     <property name="download.version" value="${jar.jetty.version}" />
-    <antcall target="http-test-download"/>
+    <property name="download.path" value="${download.groupId}/${download.artifactId}/${download.version}" />
+    <antcall target="http-test-m1-download"/>
   </target>
 
   <target name="jetty-start-download">
-    <property name="download.name" value="start" />
+    <property name="download.groupId" value="start" />
+    <property name="download.artifactId" value="start" />
     <property name="download.version" value="${jar.jetty.version}" />
-    <property name="download.path" value="jetty/${download.name}/${download.version}"/>
-    <antcall target="http-test-download"/>
+    <property name="download.path" value="jetty/${download.groupId}/${download.version}"/>
+    <antcall target="http-test-m1-download"/>
   </target>
 
   <target name="jetty-util-download">
-    <property name="download.name" value="jetty-util" />
+    <property name="download.groupId" value="jetty-util" />
+    <property name="download.artifactId" value="jetty-util" />
     <property name="download.version" value="${jar.jetty.version}" />
-    <property name="download.path" value="jetty/${download.name}/${download.version}" />
-    <antcall target="http-test-download"/>
+    <property name="download.path" value="jetty/${download.groupId}/${download.version}" />
+    <antcall target="http-test-m1-download"/>
   </target>
 
   <target name="js-download">
-    <property name="download.name" value="js" />
+    <property name="download.groupId" value="js" />
+    <property name="download.artifactId" value="js" />
     <property name="download.version" value="${jar.js.version}" />
-    <property name="download.path" value="rhino/${download.name}/${download.version}" />
-    <antcall target="http-test-download"/>
+    <property name="download.path" value="rhino/${download.groupId}/${download.version}" />
+    <antcall target="http-test-m1-download"/>
     <!-- httpunit wants a file named 'js.jar' -->
-    <copy file="${test.lib.dir}/${download.name}-${download.version}.jar" tofile="${test.lib.dir}/js.jar"/>
+    <copy file="${test.lib.dir}/${download.groupId}-${download.version}.jar" tofile="${test.lib.dir}/js.jar"/>
   </target>
 
   <target name="junit-download">
-    <property name="download.name" value="junit" />
+    <property name="download.groupId" value="junit" />
+    <property name="download.artifactId" value="junit" />
     <property name="download.version" value="${jar.junit.version}" />
-    <antcall target="http-test-download"/>
+    <property name="download.path" value="${download.groupId}/${download.artifactId}/${download.version}" />
+    <antcall target="http-test-m1-download"/>
   </target>
 
   <target name="nekohtml-download">
-    <property name="download.name" value="nekohtml" />
+    <property name="download.groupId" value="nekohtml" />
+    <property name="download.artifactId" value="nekohtml" />
     <property name="download.version" value="${jar.nekohtml.version}" />
-    <antcall target="http-test-download"/>
+    <property name="download.path" value="${download.groupId}/${download.artifactId}/${download.version}" />
+    <antcall target="http-test-m1-download"/>
   </target>
 
   <target name="servlet-api-download">
-    <property name="download.name" value="servlet-api" />
+    <property name="download.groupId" value="servlet-api" />
+    <property name="download.artifactId" value="servlet-api" />
     <property name="download.version" value="2.5-${jar.jetty.version}" />
-    <property name="download.path" value="jetty/${download.name}/${download.version}" />
-    <antcall target="http-test-download"/>
+    <property name="download.path" value="jetty/${download.groupId}/${download.version}" />
+    <antcall target="http-test-m1-download"/>
   </target>
 
   <target name="xerces-download">
-    <property name="download.name" value="xercesImpl" />
+    <property name="download.groupId" value="xercesImpl" />
+    <property name="download.artifactId" value="xercesImpl" />
     <property name="download.version" value="${jar.xercesimpl.version}" />
-    <property name="download.path" value="xerces/${download.name}/${download.version}" />
-    <antcall target="http-test-download"/>
+    <property name="download.path" value="xerces/${download.groupId}/${download.version}" />
+    <antcall target="http-test-m1-download"/>
   </target>
 
   <target name="xmlparserapis-download">
-    <property name="download.name" value="xmlParserAPIs" />
+    <property name="download.groupId" value="xmlParserAPIs" />
+    <property name="download.artifactId" value="xmlParserAPIs" />
     <property name="download.version" value="${jar.xmlparserapis.version}" />
-    <property name="download.path" value="xerces/${download.name}/${download.version}" />
-    <antcall target="http-test-download"/>
+    <property name="download.path" value="xerces/${download.groupId}/${download.version}" />
+    <antcall target="http-test-m1-download"/>
+  </target>
+
+ <!-- Extra build task related dependencies -->
+
+  <target name="maven-ant-task-download">
+   <property name="download.groupId" value="org/apache/maven" />
+   <property name="download.artifactId" value="maven-ant-tasks" />
+   <property name="download.version" value="${jar.maven.ant.version}" />
+   <antcall target="http-m2-download"/>
   </target>
 
 </project>
