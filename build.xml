@@ -817,8 +817,7 @@
   </target>
 
   <!-- Deploy Maven artifacts to remote repository -->
-  <target name="deploy"
-    depends="maven.prepare,release,deploy-custom,deploy-apache" unless="maven.remote.repository"
+  <target name="deploy" depends="maven.prepare,release,deploy-custom,deploy-apache"
     description="Deploys the Maven artifacts to configured repository">
   </target>
 
