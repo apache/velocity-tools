@@ -27,6 +27,7 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import org.apache.velocity.Template;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
 import org.apache.velocity.tools.view.ServletUtils;
 import org.apache.velocity.tools.view.ViewToolContext;
 import org.apache.velocity.tools.view.VelocityView;
@@ -61,6 +62,8 @@ public class VelocityViewTag extends BodyTagSupport
     protected String scope;
     protected String template;
     protected String bodyContentKey = DEFAULT_BODY_CONTENT_KEY;
+    private boolean cacheable = true;
+    private boolean uncached = true;
 
     public VelocityViewTag()
     {
@@ -240,14 +243,27 @@ public class VelocityViewTag extends BodyTagSupport
 
     protected void renderBody(Writer out) throws Exception
     {
-        VelocityEngine engine = getVelocityView().getVelocityEngine();
+        // if it hasn't been cached, try that
+        if (uncached && cacheable)
+        {
+            cache(getId(), getBodyContent().getString());
+        }
+        // if it can't be cached, eval it
+        if (!cacheable)
+        {
+            evalBody(out);
+        }
+        else
+        {
+            // load template from cache
+            Template template = getVelocityView().getTemplate(getId());
+            template.merge(getViewToolContext(), out);
+        }
+    }
 
-        /*
-         * Eventually, it'd be nice to utilize some AST caching here.
-         * But that will likely need to wait until the StringResourceLoader
-         * is ready for general use (Velocity 1.6), unless we want to
-         * duplicate that minimally here in Tools 2.0
-         */
+    protected void evalBody(Writer out) throws Exception
+    {
+        VelocityEngine engine = getVelocityView().getVelocityEngine();
         engine.evaluate(getViewToolContext(), out, getId(),
                         getBodyContent().getReader());
     }
@@ -275,6 +291,19 @@ public class VelocityViewTag extends BodyTagSupport
             return PageContext.PAGE_SCOPE;
         }
         throw new IllegalArgumentException("Unknown scope: "+scope);
+    }
+
+    private void cache(String name, String template)
+    {
+        try
+        {
+            StringResourceLoader.getRepository().putStringResource(name, template);
+            uncached = false;
+        }
+        catch (Exception cnfe)
+        {
+            cacheable = false;
+        }
     }
 
 }
