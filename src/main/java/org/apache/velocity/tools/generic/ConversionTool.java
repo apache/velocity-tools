@@ -28,6 +28,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 import org.apache.velocity.tools.ConversionUtils;
 import org.apache.velocity.tools.config.DefaultKey;
+import org.apache.velocity.tools.config.SkipSetters;
 
 /**
  * <p>Utility class for easy conversion of String values to richer types.</p>
@@ -53,6 +54,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @since VelocityTools 2.0
  */
 @DefaultKey("convert")
+@SkipSetters
 public class ConversionTool extends LocaleConfig
 {
     public static final String STRINGS_DELIMITER_FORMAT_KEY = "stringsDelimiter";

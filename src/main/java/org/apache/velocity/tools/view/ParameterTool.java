@@ -78,6 +78,15 @@ public class ParameterTool extends ValueParser
         setRequest(request);
     }
 
+    @Override
+    protected void configure(ValueParser values)
+    {
+        super.configure(values);
+
+        ServletRequest req = (ServletRequest)values.get(ViewContext.REQUEST);
+        setRequest(req);
+    }
+
     /**
      * Sets the current {@link ServletRequest}
      *

@@ -107,7 +107,8 @@ public class ClassToolTests {
         classTool.setType(MyDeprecated.class);
         assertEquals(1, classTool.getAnnotations().size());
         classTool.setType(ValueParser.class);
-        Annotation defaultKey = classTool.getAnnotations().get(0);
+        assertEquals(2, classTool.getAnnotations().size());
+        Annotation defaultKey = classTool.getAnnotations().get(1);
         assertEquals(defaultKey.annotationType(), DefaultKey.class);
     }
 
