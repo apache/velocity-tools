@@ -298,10 +298,10 @@
   </target>
 
   <target name="velocity-download">
-    <property name="download.groupId" value="velocity" />
+    <property name="download.groupId" value="org/apache/velocity" />
     <property name="download.artifactId" value="velocity" />
     <property name="download.version" value="${jar.velocity.version}" />
-    <antcall target="http-m1-download"/>
+    <antcall target="http-m2-download"/>
   </target>
 
   <target name="velocity-dvsl-download">
