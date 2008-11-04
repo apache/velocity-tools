@@ -102,6 +102,7 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
      * at any time, while preventing templates from doing so when 
      * configure(Map) is locked.
      */
+    @Override
     protected void configure(ValueParser values)
     {
         super.configure(values);
@@ -534,19 +535,19 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
     }
 
     public Object put(String key, Object value) {
-        throw new UnsupportedOperationException("ValueParser is read-only");
+        throw new UnsupportedOperationException("Cannot put("+key+","+value+"); "+getClass().getName()+" is read-only");
     }
 
     public Object remove(Object key) {
-        throw new UnsupportedOperationException("ValueParser is read-only");
+        throw new UnsupportedOperationException("Cannot remove("+key+"); "+getClass().getName()+" is read-only");
     }
 
     public void putAll(Map<? extends String,? extends Object> m) {
-        throw new UnsupportedOperationException("ValueParser is read-only");
+        throw new UnsupportedOperationException("Cannot putAll("+m+"); "+getClass().getName()+" is read-only");
     }
 
     public void clear() {
-        throw new UnsupportedOperationException("ValueParser is read-only");
+        throw new UnsupportedOperationException("Cannot clear(); "+getClass().getName()+" is read-only");
     }
 
     public Set<String> keySet() {
