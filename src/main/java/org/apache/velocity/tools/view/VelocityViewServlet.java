@@ -225,16 +225,15 @@ public class VelocityViewServlet extends HttpServlet
 
 
     /**
-     * <p>This was a common extension point, but has been deprecated.
-     * It has no single replacement.  Instead, you should override 
-     * {@link #fillContext} to add custom things to the {@link Context}
-     * or override a {@link #getTemplate} method to change how
-     * {@link Template}s are retrieved</p>
+     * <p>This was a common extension point, but now it is usually
+     * simpler to override {@link #fillContext} to add custom things
+     * to the {@link Context} or override a {@link #getTemplate}
+     * method to change how {@link Template}s are retrieved.
+     * This is only recommended for more complicated use-cases.</p>
      *
      * @param request client request
      * @param response client response
      * @param ctx  VelocityContext to fill
-     * @deprecated This will be removed in VelocityTools 2.1.
      * @return Velocity Template object or null
      */
     protected Template handleRequest(HttpServletRequest request,
