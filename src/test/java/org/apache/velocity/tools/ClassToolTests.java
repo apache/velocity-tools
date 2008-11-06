@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.tools.config.DefaultKey;
+import org.apache.velocity.tools.config.SkipSetters;
 import org.apache.velocity.tools.generic.ValueParser;
 import org.apache.velocity.tools.view.AbstractSearchTool;
 
@@ -108,8 +109,11 @@ public class ClassToolTests {
         assertEquals(1, classTool.getAnnotations().size());
         classTool.setType(ValueParser.class);
         assertEquals(2, classTool.getAnnotations().size());
-        Annotation defaultKey = classTool.getAnnotations().get(1);
-        assertEquals(defaultKey.annotationType(), DefaultKey.class);
+        Class type0 = classTool.getAnnotations().get(0).annotationType();
+        Class type1 = classTool.getAnnotations().get(1).annotationType();
+        assertTrue(type0 != type1);
+        assertTrue(type0 == DefaultKey.class || type1 == DefaultKey.class);
+        assertTrue(type0 == SkipSetters.class || type1 == SkipSetters.class);
     }
 
     public @Test void methodGetConstructors() throws Exception
