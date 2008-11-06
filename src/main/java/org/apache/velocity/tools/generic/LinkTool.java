@@ -286,7 +286,7 @@ public class LinkTool extends SafeConfig implements Cloneable
     }
 
     /**
-     * Sets whether or not the {@link #setParam(Object,Object)} method
+     * Sets whether or not the {@link #setParam} method
      * will override existing query values for the same key or simply append
      * the new value to a list of existing values.
      */
@@ -1469,7 +1469,7 @@ public class LinkTool extends SafeConfig implements Cloneable
      * <p>Adds a key=value pair to the query data. Whether
      * this new query pair is appended to the current query
      * or overwrites any previous pair(s) with the same key
-     * is controlled by the {@link #getAppendsParam} value.
+     * is controlled by the {@link #getAppendParams} value.
      * The default behavior is to append.</p>
      *
      * @param key key of new query parameter
