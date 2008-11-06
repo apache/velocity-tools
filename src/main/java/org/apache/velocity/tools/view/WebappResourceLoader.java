@@ -58,6 +58,7 @@ public class WebappResourceLoader extends ResourceLoader
     protected HashMap templatePaths = null;
     protected ServletContext servletContext = null;
 
+
     /**
      *  This is abstract in the base class, so we need it.
      *  <br>
@@ -138,9 +139,10 @@ public class WebappResourceLoader extends ResourceLoader
         Exception exception = null;
         for (int i = 0; i < paths.length; i++)
         {
+            String path = paths[i] + name;
             try
             {
-                result = servletContext.getResourceAsStream(paths[i] + name);
+                result = servletContext.getResourceAsStream(path);
 
                 /* save the path and exit the loop if we found the template */
                 if (result != null)
@@ -149,11 +151,20 @@ public class WebappResourceLoader extends ResourceLoader
                     break;
                 }
             }
+            catch (NullPointerException npe)
+            {
+                /* no servletContext was set, whine about it! */
+                throw npe;
+            }
             catch (Exception e)
             {
                 /* only save the first one for later throwing */
                 if (exception == null)
                 {
+                    if (log.isDebugEnabled())
+                    {
+                        log.debug("WebappResourceLoader: Could not load "+path, e);
+                    }
                     exception = e;
                 }
             }
@@ -162,19 +173,19 @@ public class WebappResourceLoader extends ResourceLoader
         /* if we never found the template */
         if (result == null)
         {
-            String msg;
+            String msg = "WebappResourceLoader: Resource '" + name + "' not found.";
+
+            /* convert to a general Velocity ResourceNotFoundException */
             if (exception == null)
             {
-                msg = "WebappResourceLoader: Resource '" + name + "' not found.";
+                throw new ResourceNotFoundException(msg);
             }
             else
             {
-                msg = exception.getMessage();
+                msg += "  Due to: " + exception;
+                throw new ResourceNotFoundException(msg, exception);
             }
-            /* convert to a general Velocity ResourceNotFoundException */
-            throw new ResourceNotFoundException(msg);
         }
-
         return result;
     }
 
