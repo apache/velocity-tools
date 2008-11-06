@@ -141,7 +141,7 @@ public class LinkTool extends org.apache.velocity.tools.view.LinkTool
     // --------------------------------------------- Template Methods -----------
 
     /**
-     * @deprecated use {@link #anchor(String)} instead
+     * @deprecated use {@link #anchor(Object)} instead
      */
     @Deprecated
     public LinkTool setAnchor(String anchor)

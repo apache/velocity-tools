@@ -27,8 +27,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation specifying that {@link ToolInfo} should only
- * use the public void configure(Map) method for configuration of
+ * Annotation specifying that {@link org.apache.velocity.tools.ToolInfo}
+ * should only use the public void configure(Map) method for configuration of
  * a tool, and skip over the step of trying to find individual
  * property setters.
  *
