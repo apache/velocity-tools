@@ -76,6 +76,38 @@ public class DateTool extends FormatConfig
     @Deprecated
     public static final String DEFAULT_LOCALE_KEY = ToolContext.LOCALE_KEY;
 
+    /**
+     * The key used for specifying a default timezone via tool configuration.
+     */
+    public static final String TIMEZONE_KEY = "timezone";
+
+    private TimeZone timezone = TimeZone.getDefault(); 
+
+    /**
+     * Does the actual configuration. This is protected, so
+     * subclasses may share the same ValueParser and call configure
+     * at any time, while preventing templates from doing so when
+     * configure(Map) is locked.
+     */
+    protected void configure(ValueParser values)
+    {
+        super.configure(values);
+
+        String tzId = values.getString(TIMEZONE_KEY);
+        if (tzId != null)
+        {
+            setTimeZone(TimeZone.getTimeZone(tzId));
+        }
+    } 
+
+    protected void setTimeZone(TimeZone timezone)
+    {
+        if (timezone == null)
+        {
+            throw new NullPointerException("timezone may not be null");
+        }
+        this.timezone = timezone;
+    }
 
     // ------------------------- system date access ------------------
 
@@ -109,16 +141,14 @@ public class DateTool extends FormatConfig
     // ------------------------- default parameter access ----------------
 
     /**
-     * This implementation returns the default TimeZone. Subclasses
-     * may override this to return alternate timezones. Please note that
-     * doing so will affect all formatting methods where no timezone is
-     * specified in the parameters.
+     * Returns the configured {@link TimeZone}. Default value is
+     * from {@link TimeZone#getDefault()}.
      *
-     * @return the default {@link TimeZone}
+     * @return the configured {@link TimeZone}
      */
     public TimeZone getTimeZone()
     {
-        return TimeZone.getDefault();
+        return timezone;
     }
 
     /**
