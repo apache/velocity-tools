@@ -157,6 +157,19 @@ public class DisplayToolTests {
         assertEquals("foo 2 bar", display.message("foo {1} {0}", "bar", 2));
     }
 
+    public @Test void methodPrintf_StringObjectVarArgs() throws Exception
+    {
+        DisplayTool display = new DisplayTool();
+        assertNull(display.printf(null));
+        assertEquals("foo", display.printf("foo"));
+        assertEquals("foo", display.printf("foo", (Object[])null));
+        assertEquals("foo", display.printf("foo", new Object[] {}));
+        assertEquals("foo", display.printf("foo", new ArrayList()));
+        assertEquals("foo", display.printf("foo", 1));
+        assertEquals("foo bar", display.printf("foo %s", "bar"));
+        assertEquals("foo 2 bar", display.printf("foo %2$d %1$s", "bar", 2));
+    }
+
     public @Test void methodList_Object() throws Exception
     {
         DisplayTool display = new DisplayTool();

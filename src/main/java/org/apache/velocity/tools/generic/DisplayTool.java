@@ -68,7 +68,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Id: DisplayTool.java 463298 2006-10-12 16:10:32Z henning $
  */
 @DefaultKey("display")
-public class DisplayTool extends SafeConfig
+public class DisplayTool extends LocaleConfig
 {
     public static final String LIST_DELIM_KEY = "listDelim";
     public static final String LIST_FINAL_DELIM_KEY = "listFinalDelim";
@@ -295,57 +295,95 @@ public class DisplayTool extends SafeConfig
      * @deprecated Will be unnecessary with Velocity 1.6
      */
     @Deprecated 
-    public String message(String printf, Collection args)
+    public String message(String format, Collection args)
     {
-        return message(printf, new Object[] { args });
+        return message(format, new Object[] { args });
     }
 
     /**
      * @deprecated Will be unnecessary with Velocity 1.6
      */
     @Deprecated 
-    public String message(String printf, Object arg)
+    public String message(String format, Object arg)
     {
-        return message(printf, new Object[] { arg });
+        return message(format, new Object[] { arg });
     }
 
     /**
      * @deprecated Will be unnecessary with Velocity 1.6
      */
     @Deprecated 
-    public String message(String printf, Object arg1, Object arg2)
+    public String message(String format, Object arg1, Object arg2)
     {
-        return message(printf, new Object[] { arg1, arg2 });
+        return message(format, new Object[] { arg1, arg2 });
     }
 
     /**
      * Uses {@link MessageFormat} to format the specified String with
      * the specified arguments. If there are no arguments, then the String
-     * is returned directly.
+     * is returned directly.  Please note that the format
+     * required here is quite different from that of
+     * {@link #printf(String,Object...)}.
+     *
+     * @since VelocityTools 2.0
      */
-    public String message(String printf, Object... args)
+    public String message(String format, Object... args)
     {
-        if (printf == null)
+        if (format == null)
         {
             return null;
         }
         if (args == null || args.length == 0)
         {
-            return printf;
+            return format;
         }
         else if (args.length == 1 && args[0] instanceof Collection)
         {
             Collection list = (Collection)args[0];
             if (list.isEmpty())
             {
-                return printf;
+                return format;
             }
             else
             {
                 args = list.toArray();
             }
         }
-        return MessageFormat.format(printf, args);
+        return MessageFormat.format(format, args);
+    }
+
+    /**
+     * Uses {@link String#format(Locale,String,Object...} to format the specified String
+     * with the specified arguments.  Please note that the format
+     * required here is quite different from that of
+     * {@link #message(String,Object...)}.
+     *
+     * @see java.util.Formatter
+     * @since VelocityTools 2.0
+     */
+    public String printf(String format, Object... args)
+    {
+        if (format == null)
+        {
+            return null;
+        }
+        if (args == null || args.length == 0)
+        {
+            return format;
+        }
+        if (args.length == 1 && args[0] instanceof Collection)
+        {
+            Collection list = (Collection)args[0];
+            if (list.isEmpty())
+            {
+                return format;
+            }
+            else
+            {
+                args = list.toArray();
+            }
+        }
+        return String.format(getLocale(), format, args);
     }
 
     /**
