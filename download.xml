@@ -185,116 +185,116 @@
     <property name="download.groupId" value="antlr" />
     <property name="download.artifactId" value="antlr" />
     <property name="download.version" value="${jar.antlr.version}" />
-    <antcall target="http-m1-download"/>
+    <antcall target="http-m2-download"/>
   </target>
 
   <target name="commons-beanutils-download">
     <property name="download.groupId" value="commons-beanutils" />
     <property name="download.artifactId" value="commons-beanutils" />
     <property name="download.version" value="${jar.commons-beanutils.version}" />
-    <antcall target="http-m1-download"/>
+    <antcall target="http-m2-download"/>
   </target>
 
   <target name="commons-chain-download">
     <property name="download.groupId" value="commons-chain" />
     <property name="download.artifactId" value="commons-chain" />
     <property name="download.version" value="${jar.commons-chain.version}" />
-    <antcall target="http-m1-download"/>
+    <antcall target="http-m2-download"/>
   </target>
 
   <target name="commons-collections-download">
     <property name="download.groupId" value="commons-collections" />
     <property name="download.artifactId" value="commons-collections" />
     <property name="download.version" value="${jar.commons-collections.version}" />
-    <antcall target="http-m1-download"/>
+    <antcall target="http-m2-download"/>
   </target>
 
   <target name="commons-digester-download">
     <property name="download.groupId" value="commons-digester" />
     <property name="download.artifactId" value="commons-digester" />
     <property name="download.version" value="${jar.commons-digester.version}" />
-    <antcall target="http-m1-download"/>
+    <antcall target="http-m2-download"/>
   </target>
 
   <target name="commons-lang-download">
     <property name="download.groupId" value="commons-lang" />
     <property name="download.artifactId" value="commons-lang" />
     <property name="download.version" value="${jar.commons-lang.version}" />
-    <antcall target="http-m1-download"/>
+    <antcall target="http-m2-download"/>
   </target>
 
   <target name="commons-logging-download">
     <property name="download.groupId" value="commons-logging" />
     <property name="download.artifactId" value="commons-logging" />
     <property name="download.version" value="${jar.commons-logging.version}" />
-    <antcall target="http-m1-download"/>
+    <antcall target="http-m2-download"/>
   </target>
 
   <target name="commons-validator-download">
     <property name="download.groupId" value="commons-validator" />
     <property name="download.artifactId" value="commons-validator" />
     <property name="download.version" value="${jar.commons-validator.version}" />
-    <antcall target="http-m1-download"/>
+    <antcall target="http-m2-download"/>
   </target>
 
   <target name="dom4j-download">
     <property name="download.groupId" value="dom4j" />
     <property name="download.artifactId" value="dom4j" />
     <property name="download.version" value="${jar.dom4j.version}" />
-    <antcall target="http-m1-download"/>
+    <antcall target="http-m2-download"/>
   </target>
 
   <target name="oro-download">
     <property name="download.groupId" value="oro" />
     <property name="download.artifactId" value="oro" />
     <property name="download.version" value="${jar.oro.version}" />
-    <antcall target="http-m1-download"/>
+    <antcall target="http-m2-download"/>
   </target>
 
   <target name="servletapi-download">
     <property name="download.groupId" value="servletapi" />
     <property name="download.artifactId" value="servletapi" />
     <property name="download.version" value="${jar.servletapi.version}" />
-    <antcall target="http-m1-download"/>
+    <antcall target="http-m2-download"/>
   </target>
 
   <target name="sslext-download">
     <property name="download.groupId" value="sslext" />
     <property name="download.artifactId" value="sslext" />
     <property name="download.version" value="${jar.sslext.version}" />
-    <antcall target="http-m1-download"/>
+    <antcall target="http-m2-download"/>
   </target>
 
   <target name="struts-download">
-    <property name="download.groupId" value="struts" />
+    <property name="download.groupId" value="org/apache/struts" />
     <property name="download.artifactId" value="struts" />
     <property name="download.version" value="${jar.struts.version}" />
     <property name="download.path" value="org/apache/struts/struts-parent/${download.version}" />
-    <antcall target="http-m1-download"/>
+    <antcall target="http-m2-download"/>
   </target>
 
   <target name="struts-core-download">
-    <property name="download.groupId" value="struts-core" />
+    <property name="download.groupId" value="org/apache/struts" />
     <property name="download.artifactId" value="struts-core" />
     <property name="download.version" value="${jar.struts-core.version}" />
     <property name="download.path" value="org/apache/struts/${download.groupId}/${download.version}" />
-    <antcall target="http-m1-download"/>
+    <antcall target="http-m2-download"/>
   </target>
 
   <target name="struts-taglib-download">
-    <property name="download.groupId" value="struts-taglib" />
+    <property name="download.groupId" value="org/apache/struts" />
     <property name="download.artifactId" value="struts-taglib" />
     <property name="download.version" value="${jar.struts-taglib.version}" />
     <property name="download.path" value="org/apache/struts/${download.groupId}/${download.version}" />
-    <antcall target="http-m1-download"/>
+    <antcall target="http-m2-download"/>
   </target>
 
   <target name="struts-tiles-download">
-    <property name="download.groupId" value="struts-tiles" />
+    <property name="download.groupId" value="org/apache/struts" />
     <property name="download.artifactId" value="struts-tiles" />
     <property name="download.version" value="${jar.struts-tiles.version}" />
     <property name="download.path" value="org/apache/struts/${download.groupId}/${download.version}" />
-    <antcall target="http-m1-download"/>
+    <antcall target="http-m2-download"/>
   </target>
 
   <target name="velocity-download">
