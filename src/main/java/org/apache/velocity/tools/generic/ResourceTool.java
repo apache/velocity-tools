@@ -20,6 +20,8 @@ package org.apache.velocity.tools.generic;
  */
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -32,6 +34,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * Template example(s):
  *   $text.foo                      ->  bar
  *   $text.hello.world              ->  Hello World!
+ *   $text.keys                     ->  [foo, hello.world, world]
  *   #set( $otherText = $text.bundle('otherBundle') )
  *   $otherText.foo                 ->  woogie
  *   $otherText.bar                 ->  The args are {0} and {1}.
@@ -142,6 +145,11 @@ public class ResourceTool extends LocaleConfig
         return new Key(key, this.bundles, getLocale(), null);
     }
 
+    public List<String> getKeys()
+    {
+        return getKeys(null, this.bundles, getLocale());
+    }
+
     public Key bundle(String bundle)
     {
         return new Key(null, new String[] { bundle }, getLocale(), null);
@@ -174,49 +182,45 @@ public class ResourceTool extends LocaleConfig
 
 
     /**
+     * Retrieves the {@link ResourceBundle} for the specified baseName
+     * and locale, if such exists.  If the baseName or locale is null
+     * or if the locale argument cannot be converted to a {@link Locale},
+     * then this will return null.
+     */
+    protected ResourceBundle getBundle(String baseName, Object loc)
+    {
+        Locale locale = (loc == null) ? getLocale() : toLocale(loc);
+        if (baseName == null || locale == null)
+        {
+            return null;
+        }
+        return ResourceBundle.getBundle(baseName, locale);
+    }
+
+    /**
      * Returns the value for the specified key in the ResourceBundle for
      * the specified basename and locale.  If no such resource can be
      * found, no errors are thrown and {@code null} is returned.
      *
-     * @param k the key for the requested resource
+     * @param key the key for the requested resource
      * @param baseName the base name of the resource bundle to search
-     * @param l the locale to use
+     * @param loc the locale to use
      */
-    public Object get(Object k, String baseName, Object l)
+    public Object get(Object key, String baseName, Object loc)
     {
-        if (baseName == null || k == null)
+        ResourceBundle bundle = getBundle(baseName, loc);
+        if (key == null || bundle == null)
         {
             return null;
         }
-        String key = k == null ? null : String.valueOf(k);
-        Locale locale;
-        if (l == null)
+        try
         {
-            locale = getLocale();
+            return bundle.getObject(String.valueOf(key));
         }
-        else
+        catch (Exception e)
         {
-            locale = toLocale(l);
-            // if conversion fails, return null to indicate an error
-            if (locale == null)
-            {
-                return null;
-            }
+            return null;
         }
-
-        ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale);
-        if (bundle != null)
-        {
-            try
-            {
-                return bundle.getObject(key);
-            }
-            catch (Exception e)
-            {
-                // do nothing
-            }
-        }
-        return null;
     }
 
     /**
@@ -241,6 +245,84 @@ public class ResourceTool extends LocaleConfig
             }
         }
         return null;
+    }
+
+    /**
+     * Returns a {@link List} of the key strings in the ResourceBundle
+     * with the specified baseName and locale.  If the specified prefix
+     * is not null, then this will skip any keys that do not begin with
+     * that prefix and trim the prefix and any subsequent '.' off of the
+     * remaining ones.  If the prefix is null, then no filtering or trimming
+     * will be done.
+     *
+     * @param prefix the prefix for the requested keys
+     * @param bundles the resource bundles to search
+     * @param loc the locale to use
+     */
+    public List<String> getKeys(String prefix, String baseName, Object loc)
+    {
+        ResourceBundle bundle = getBundle(baseName, loc);
+        if (bundle == null)
+        {
+            return null;
+        }
+        Enumeration<String> keys = bundle.getKeys();
+        if (keys == null)
+        {
+            return null;
+        }
+        ArrayList<String> list = new ArrayList<String>();
+        while (keys.hasMoreElements())
+        {
+            String key = keys.nextElement();
+            if (prefix == null)
+            {
+                list.add(key);
+            }
+            else if (key.startsWith(prefix))
+            {
+                key = key.substring(prefix.length(), key.length());
+                if (key.charAt(0) == '.')
+                {
+                    key = key.substring(1, key.length());
+                }
+                list.add(key);
+            }
+        }
+        return list;
+    }
+
+    /**
+     * Returns a {@link List} of the key strings in the specified
+     * ResourceBundles.  If the specified prefix
+     * is not null, then this will skip any keys that do not begin with
+     * that prefix and trim the prefix and any subsequent '.' off of the
+     * remaining ones.  If the prefix is null, then no filtering or trimming
+     * will be done.
+     *
+     * @param prefix the prefix for the requested keys
+     * @param bundles the resource bundles to search
+     * @param loc the locale to use
+     * @see #getKeys(String,String,Object)
+     */
+    public List<String> getKeys(String prefix, String[] bundles, Object loc)
+    {
+        Locale locale = (loc == null) ? getLocale() : toLocale(loc);
+        if (locale == null || bundles == null || bundles.length == 0)
+        {
+            return null;
+        }
+
+        List<String> master = new ArrayList<String>();
+        for (String bundle : bundles)
+        {
+            List<String> sub = getKeys(prefix, bundle, locale);
+            if (sub != null)
+            {
+                master.addAll(sub);
+            }
+        }
+        return master;
     }
 
     private Locale toLocale(Object obj)
@@ -384,6 +466,11 @@ public class ResourceTool extends LocaleConfig
                 this.cached = true;
             }
             return this.rawValue;
+        }
+
+        public List<String> getKeys()
+        {
+            return ResourceTool.this.getKeys(this.key, this.bundles, this.locale);
         }
 
         public String toString()
