@@ -27,7 +27,7 @@ import org.apache.velocity.runtime.log.Log;
  *
  * <p>To use, specify this class in your commons-logging.properties:
  * <pre><code>
- * org.apache.commons.logging.Log=org.apache.velocity.tools.log.LogChuteCommonsLog
+ * org.apache.commons.logging.Log=org.apache.velocity.tools.generic.log.LogChuteCommonsLog
  * </code></pre>
  * </p>
  * @since VelocityTools 2.0
@@ -56,7 +56,19 @@ public class LogChuteCommonsLog implements org.apache.commons.logging.Log
 
 
     // ********************  begin non-static stuff *******************
-    
+
+    private String category;
+
+    public LogChuteCommonsLog()
+    {
+        this("");
+    }
+
+    public LogChuteCommonsLog(String category)
+    {
+        this.category = category + ": ";
+    }
+
     protected Log getTarget()
     {
         if (target == null)
@@ -78,7 +90,7 @@ public class LogChuteCommonsLog implements org.apache.commons.logging.Log
      */
     public void trace(Object message)
     {
-        getTarget().trace(message);
+        getTarget().trace(category+message);
     }
 
     /**
@@ -87,7 +99,7 @@ public class LogChuteCommonsLog implements org.apache.commons.logging.Log
      */
     public void trace(Object message, Throwable t)
     {
-        getTarget().trace(message, t);
+        getTarget().trace(category+message, t);
     }
 
     /**
@@ -95,7 +107,7 @@ public class LogChuteCommonsLog implements org.apache.commons.logging.Log
      */
     public void debug(Object message)
     {
-        getTarget().debug(message);
+        getTarget().debug(category+message);
     }
 
     /**
@@ -103,7 +115,7 @@ public class LogChuteCommonsLog implements org.apache.commons.logging.Log
      */
     public void debug(Object message, Throwable t)
     {
-        getTarget().debug(message, t);
+        getTarget().debug(category+message, t);
     }
 
     /**
@@ -111,7 +123,7 @@ public class LogChuteCommonsLog implements org.apache.commons.logging.Log
      */
     public void info(Object message)
     {
-        getTarget().info(message);
+        getTarget().info(category+message);
     }
 
     /**
@@ -119,7 +131,7 @@ public class LogChuteCommonsLog implements org.apache.commons.logging.Log
      */
     public void info(Object message, Throwable t)
     {
-        getTarget().info(message, t);
+        getTarget().info(category+message, t);
     }
 
     /**
@@ -127,7 +139,7 @@ public class LogChuteCommonsLog implements org.apache.commons.logging.Log
      */
     public void warn(Object message)
     {
-        getTarget().warn(message);
+        getTarget().warn(category+message);
     }
 
     /**
@@ -135,7 +147,7 @@ public class LogChuteCommonsLog implements org.apache.commons.logging.Log
      */
     public void warn(Object message, Throwable t)
     {
-        getTarget().warn(message, t);
+        getTarget().warn(category+message, t);
     }
 
     /**
@@ -143,7 +155,7 @@ public class LogChuteCommonsLog implements org.apache.commons.logging.Log
      */
     public void error(Object message)
     {
-        getTarget().error(message);
+        getTarget().error(category+message);
     }
 
     /**
@@ -151,7 +163,7 @@ public class LogChuteCommonsLog implements org.apache.commons.logging.Log
      */
     public void error(Object message, Throwable t)
     {
-        getTarget().error(message, t);
+        getTarget().error(category+message, t);
     }
 
     /**
@@ -160,7 +172,7 @@ public class LogChuteCommonsLog implements org.apache.commons.logging.Log
      */
     public void fatal(Object message)
     {
-        getTarget().error(message);
+        getTarget().error(category+message);
     }
 
     /**
@@ -169,7 +181,7 @@ public class LogChuteCommonsLog implements org.apache.commons.logging.Log
      */
     public void fatal(Object message, Throwable t)
     {
-        getTarget().error(message, t);
+        getTarget().error(category+message, t);
     }
 
     /** 
