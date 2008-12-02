@@ -722,7 +722,7 @@
         /www/people.apache.org/repo/m2-ibiblio-rsync-repository/org/apache/velocity/velocity-tools/${project.version}/
 
     * Remove older releases of the same grade as this one (alpha, beta, final) from
-        /www/www.apache.org/dist/velocity/engine
+        /www/www.apache.org/dist/velocity/tools
 
     * Tag the release in SVN with a command such as:
         svn copy -m "Release Tools ${project.version}" https://svn.apache.org/repos/asf/velocity/tools/trunk \
