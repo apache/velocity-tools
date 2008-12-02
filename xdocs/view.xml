@@ -193,37 +193,25 @@
         <p><b>http://&lt;your_server&gt;:&lt;port&gt;/showcase/</b></p>
     </section>
 
-<!--  TODO: revise this...
     <section name="Known Issues">
         <p>
           Since Tomcat 5.5 used commons-logging as a complete
-          logging facility, we were no longer able to direct commons-logging
-          output to the servlet log by default.  The result of this is that
-          our example apps can no longer contain a commons-logging.properties
-          on the classpath if we want them to work with all servlet engines.  
+          logging facility and the Struts example directs commons-logging
+          output to the servlet log via LogChuteCommonsLog, you will
+          get an infinite loop if you try to run the Struts example on
+          Tomcat 5.5.  To fix this, upgrade to Tomcat 6.x or delete
+          the commons-logging.properties file from the Struts example's
+          classpath root.
         </p>
         <p>
-          When using Tomcat 5.5, this means that log messages
-          from our tools and tool management code are by default sent to the Tomcat
-          console, rather than the servlet log.  Velocity Engine and
-          VelocityViewServlet messages will still be sent to the servlet
-          log by default. When using other servlet engines or earlier Tomcat versions
-          (e.g. Jetty or Tomcat 4.x), you must now add a commons-logging.properties
-          file at the root of the classpath that contains:
-          <code>
-          org.apache.commons.logging.Log=org.apache.velocity.tools.generic.log.LogSystemCommonsLog
-          </code>
-          if you wish to have tool and tool management log output sent to the
-          servlet log.  If you are using Tomcat 5.5, do NOT do that, as it will
-          cause an infinite loop.
-        </p>
-        <p>
-          We plan to resolve this in future versions by removing commons-logging
-          from our code in favor of the much improved log wrappers in Velocity Engine 1.5.
-          In the meantime, commons-logging remains the most flexible solution.
+          You may, of course, experience the same thing if you are running
+          your web application on Tomcat 5.5 and decide to
+          use LogChuteCommonsLog for commons-logging and
+          stick with the ServletLogChute (the default) for Velocity(Tools)
+          logging. You will have to change one of these two settings or
+          else upgrade your servlet engine.
         </p>
     </section>
--->
     </body>
 
 </document>
