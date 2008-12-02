@@ -19,6 +19,7 @@ package org.apache.velocity.tools.view.i18n;
  * under the License.
  */
 
+import java.util.Locale;
 import org.apache.velocity.tools.view.ViewToolContext;
 
 /**
@@ -34,5 +35,23 @@ public class MultiViewsTool extends org.apache.velocity.tools.view.MultiViewsToo
         {
             configure((ViewToolContext)obj);
         }
+    }
+
+    @Deprecated
+    public String findLocalizedResource(String name, Locale locale)
+    {
+        return find(name, locale);
+    }
+
+    @Deprecated
+    public String findLocalizedResource(String name)
+    {
+        return find(name);
+    }
+
+    @Deprecated
+    public String findLocalizedResource(String name, String language)
+    {
+        return find(name, language);
     }
 }
