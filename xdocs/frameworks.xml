@@ -89,10 +89,21 @@
                 If no file is found there, then
                 Velocity is initialized with the settings in the classpath at
                 <code>org.apache.velocity.tools.view.velocity.properties</code>.
-                </dd>
+              </dd>
+              <dt>org.apache.velocity.tools.deprecationSupportMode</dt>
+              <dd>Tells VelocityView whether or not it should
+                <ul>
+                    <li>support old tools that rely on init(Object) methods,</li>
+                    <li>look for and translate old toolbox.xml configurations, and</li>
+                    <li>use the deprecated ChainedContext class instead of ViewToolContext.</li>
+                </ul>
+                By default, this is true, so turn it to false if you want to fully
+                upgrade to the new systems.  Also, specific tools
+                may look for and respect the deprecationSupportMode
+                setting (e.g. ValueParser, ResourceTool) to provide old behavior
+                where it has otherwise changed.
+              </dd>
             </dl>
-            <todo>Describe what deprecationSupportMode provides for backwards
-            compatibility with Tools 1.x</todo>
             <p>
             The VelocityView instance is typically the heart of any
             VelocityTools-using application.  It encapsulates all necessary
