@@ -39,6 +39,9 @@ While the former is somewhat longer, it is much more understandable and flexible
 #set( $desc = 'Returns the resource with the specified name, if it exists.' )
 #demo1( 'text' 'get' 9 $desc )
 
+#set( $desc = 'Returns a list of the available keys.' )
+#demo( 'text' 'hello.keys' $desc )
+
 #set( $desc = 'Returns a new $text that will search only the specified bundle (if it exists) for the resource "foo".' )
 #demo1( 'text.foo' 'bundle' 9 $desc )
 

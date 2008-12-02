@@ -20,6 +20,7 @@ package org.apache.velocity.tools.test.whitebox;
  */
 
 import java.util.Locale;
+import java.util.List;
 import java.util.Map;
 import java.util.Calendar;
 import java.util.Date;
@@ -175,6 +176,15 @@ public class GenericToolsTests {
     public @Test void testResourceTool() {
         ResourceTool textTool = (ResourceTool)toolbox.get("text");
         assertNotNull(textTool);
+
+        List<String> keys = textTool.getKeys();
+        assertTrue(keys.contains("foo"));
+        assertTrue(keys.contains("hello.whoever"));
+        assertTrue(keys.contains("world"));
+
+        keys = textTool.get("hello").getKeys();
+        assertTrue(keys.contains("whoever"));
+        assertFalse(keys.contains("foo"));
 
         ResourceTool.Key foo = textTool.get("foo");
         assertStringEquals("bar", foo);
