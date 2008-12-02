@@ -33,10 +33,10 @@ import org.apache.velocity.tools.view.ViewToolContext;
  * Apache httpd's <a
  * href="http://httpd.apache.org/docs-2.0/content-negotiation.html">MultiViews</a>.
  *
- * <p>Reads the default language out of the ViewContext as
+ * <p>Reads the default language out of the ViewToolContext as
  * <code>org.apache.velocity.tools.view.i18n.defaultLanguage</code>.
- * See {@link #findLocalizedResource(String, String)} and {@link
- * #findLocalizedResource(String, Locale)} for usage.</p>
+ * See {@link #find(String, String)} and {@link
+ * #find(String, Locale)} for usage.</p>
  *
  * @version $Id$
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
@@ -58,7 +58,6 @@ public class MultiViewsTool
      * language.
      */
     protected String defaultLanguage;
-
     protected VelocityEngine engine;
 
     /**
@@ -95,25 +94,29 @@ public class MultiViewsTool
     }
 
     /**
-     * Calls {@link #findLocalizedResource(String, String)} using the
+     * Calls {@link #find(String, String)} using the
      * language extracted from <code>locale</code>.
      *
-     * @see #findLocalizedResource(String, String)
+     * @see #find(String, String)
      */
-    public String findLocalizedResource(String name, Locale locale)
+    public String find(String name, Locale locale)
     {
-        return findLocalizedResource(name, locale.getLanguage());
+        if (locale == null)
+        {
+            return null;
+        }
+        return find(name, locale.getLanguage());
     }
 
     /**
-     * Calls {@link #findLocalizedResource(String, String)} using the
+     * Calls {@link #find(String, String)} using the
      * default language.
      *
-     * @see #findLocalizedResource(String, String)
+     * @see #find(String, String)
      */
-    public String findLocalizedResource(String name)
+    public String find(String name)
     {
-        return findLocalizedResource(name, defaultLanguage);
+        return find(name, defaultLanguage);
     }
 
     /**
@@ -124,9 +127,9 @@ public class MultiViewsTool
      *
      * <p>Usage from a template would be something like the following:
      * <blockquote><code><pre>
-     * #parse ($multiviews.findLocalizedResource("header.vm", "en"))
-     * #include ($multiviews.findLocalizedResource("my_page.html", "en"))
-     * #parse ($multiviews.findLocalizedResource("footer.vm", "en"))
+     * #parse( $i18n.find('header.vm', 'en') )
+     * #include( $i18n.find('my_page.html', 'en') )
+     * #parse( $i18n.find('footer.vm', 'en') )
      * </pre></code></blockquote>
      *
      * You might also wrap this method using another pull/view tool
@@ -138,7 +141,7 @@ public class MultiViewsTool
      * @return The localized file name, or <code>name</code> if it is
      * not localizable.
      */
-    public String findLocalizedResource(String name, String language)
+    public String find(String name, String language)
     {
         String localizedName = name + '.' + language;
         // templateExists() checks for static content as well
