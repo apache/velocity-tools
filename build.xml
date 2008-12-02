@@ -721,6 +721,9 @@
       and the full jar, pom and their md5 and sha1 files should be copied into 
         /www/people.apache.org/repo/m2-ibiblio-rsync-repository/org/apache/velocity/velocity-tools/${project.version}/
 
+    * Remove older releases of the same grade as this one (alpha, beta, final) from
+        /www/www.apache.org/dist/velocity/engine
+
     * Tag the release in SVN with a command such as:
         svn copy -m "Release Tools ${project.version}" https://svn.apache.org/repos/asf/velocity/tools/trunk \
            https://svn.apache.org/repos/asf/velocity/tools/tags/${project.version}
