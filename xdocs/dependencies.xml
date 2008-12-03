@@ -74,7 +74,7 @@
               <td>commons-lang</td>
               <td>2.1</td>
               <td>Yes</td>
-              <td>Yes</td>
+              <td>No</td>
               <td>Required for
                 <a href="javadoc/org/apache/velocity/tools/generic/EscapeTool.html">EscapeTool</a>
               </td>
@@ -84,14 +84,14 @@
               <td>1.1</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for
-                <a href="javadoc/org/apache/velocity/tools/generic/LinkTool.html">LinkTool</a></td>
+              <td>Required for Digester and
+                <a href="javadoc/org/apache/velocity/tools/generic/log/LogChuteCommonsLog.html">LogChuteCommonsLog</a></td>
             </tr>
             <tr>
               <td>dom4j</td>
               <td>1.1+</td>
               <td>Yes</td>
-              <td>Yes</td>
+              <td>No</td>
               <td>Required only for
                 <a href="javadoc/org/apache/velocity/tools/generic/XmlTool.html">XmlTool</a></td>
             </tr>
@@ -107,9 +107,10 @@
               <td>1.5</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for
+              <td>Required for core infrastructure,
                 <a href="javadoc/org/apache/velocity/tools/generic/ClassTool.html">ClassTool</a>,
-                <a href="javadoc/org/apache/velocity/tools/generic/LoopTool.html">LoopTool</a>
+                <a href="javadoc/org/apache/velocity/tools/generic/LinkTool.html">LinkTool</a>,
+                <a href="javadoc/org/apache/velocity/tools/generic/LoopTool.html">LoopTool</a>,
                 <a href="javadoc/org/apache/velocity/tools/generic/RenderTool.html">RenderTool</a>
                 and
                 <a href="javadoc/org/apache/velocity/tools/generic/XmlTool.html">XmlTool</a>
@@ -158,23 +159,26 @@
               <td>commons-lang</td>
               <td>2.1</td>
               <td>Yes</td>
-              <td>Yes</td>
+              <td>No</td>
               <td>Required for
                 <a href="javadoc/org/apache/velocity/tools/generic/EscapeTool.html">EscapeTool</a>
+                and
+                <a href="javadoc/org/apache/velocity/tools/view/VelocityViewServlet.html">VelocityViewServlet</a>
               </td>
             </tr>
             <tr>
               <td>commons-logging</td>
               <td>1.1</td>
               <td>Yes</td>
-              <td>No</td>
-              <td></td>
+              <td>Yes</td>
+              <td>Required for Digester and
+                <a href="javadoc/org/apache/velocity/tools/generic/log/LogChuteCommonsLog.html">LogChuteCommonsLog</a></td>
             </tr>
             <tr>
               <td>dom4j</td>
               <td>1.1+</td>
               <td>Yes</td>
-              <td>Yes</td>
+              <td>No</td>
               <td>Required only for
                 <a href="javadoc/org/apache/velocity/tools/generic/XmlTool.html">XmlTool</a></td>
             </tr>
@@ -201,7 +205,7 @@
               <td>1.5</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for 
+              <td>Required for core infrastructure,
                 <a href="javadoc/org/apache/velocity/tools/generic/ClassTool.html">ClassTool</a>,
                 <a href="javadoc/org/apache/velocity/tools/generic/RenderTool.html">RenderTool</a>
                 <a href="javadoc/org/apache/velocity/tools/generic/XmlTool.html">XmlTool</a>
@@ -265,22 +269,24 @@
               <td>2.1</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for
+              <td>Required for Struts,
                 <a href="javadoc/org/apache/velocity/tools/generic/EscapeTool.html">EscapeTool</a>
+                and
+                <a href="javadoc/org/apache/velocity/tools/view/VelocityViewServlet.html">VelocityViewServlet</a>
               </td>
             </tr>
             <tr>
               <td>commons-logging</td>
               <td>1.1</td>
               <td>Yes</td>
-              <td>No</td>
-              <td></td>
+              <td>Yes</td>
+              <td>Required for Struts, Digester, and LogChuteCommonsLog</td>
             </tr>
             <tr>
               <td>dom4j</td>
               <td>1.1+</td>
               <td>Yes</td>
-              <td>Yes</td>
+              <td>No</td>
               <td>Required only for
                 <a href="javadoc/org/apache/velocity/tools/generic/XmlTool.html">XmlTool</a></td>
             </tr>
@@ -319,7 +325,7 @@
               <td>ssl-ext</td>
               <td>1.2</td>
               <td>Yes</td>
-              <td>Yes</td>
+              <td>No</td>
               <td>Required for
                 <a href="javadoc/org/apache/velocity/tools/struts/SecureLinkTool.html">SecureLinkTool</a>
               </td>
@@ -358,7 +364,7 @@
               <td>1.5</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for 
+              <td>Required for core infrastructure,
                 <a href="javadoc/org/apache/velocity/tools/generic/ClassTool.html">ClassTool</a>,
                 <a href="javadoc/org/apache/velocity/tools/generic/RenderTool.html">RenderTool</a>,
                 <a href="javadoc/org/apache/velocity/tools/generic/XmlTool.html">XmlTool</a>,
