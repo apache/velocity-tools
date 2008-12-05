@@ -151,10 +151,15 @@ public class VelocityViewServlet extends HttpServlet
     {
         if (this.view == null)
         {
-            this.view = ServletUtils.getVelocityView(getServletConfig());
-            assert (view != null);
+            setVelocityView(ServletUtils.getVelocityView(getServletConfig()));
+            assert (this.view != null);
         }
         return this.view;
+    }
+
+    protected void setVelocityView(VelocityView view)
+    {
+        this.view = view;
     }
 
     protected String getVelocityProperty(String name, String alternate)
