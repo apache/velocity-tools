@@ -937,6 +937,10 @@ public class BrowserTool implements java.io.Serializable
             if (v.find())
             {
                 version = v.group(1);
+                if(version.endsWith(";"))
+                {
+                    version = version.substring(0,version.length()-1);
+                }
                 try
                 {
                     majorVersion = Integer.parseInt(v.group(2));
