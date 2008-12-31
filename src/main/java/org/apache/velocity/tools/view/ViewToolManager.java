@@ -260,11 +260,13 @@ public class ViewToolManager extends ToolManager
             // and others can find them
             publishToolboxes(request);
             
+            // these would otherwise be done in super.prepareContext
             VelocityEngine engine = getVelocityEngine();
             if (engine != null)
             {
                 context.putVelocityEngine(engine);
             }
+            context.setUserCanOverwriteTools(getUserCanOverwriteTools());
         }
         else
         {

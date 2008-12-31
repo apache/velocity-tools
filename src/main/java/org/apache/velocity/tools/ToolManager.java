@@ -41,6 +41,7 @@ public class ToolManager
     protected VelocityEngine velocity;
     protected ToolboxFactory factory;
     private Toolbox application;
+    private boolean userOverwrite = true;
 
     /**
      * Constructs an instance already configured to use the 
@@ -152,6 +153,16 @@ public class ToolManager
         return this.velocity;
     }
 
+    public void setUserCanOverwriteTools(boolean overwrite)
+    {
+        this.userOverwrite = overwrite;
+    }
+
+    public boolean getUserCanOverwriteTools()
+    {
+        return this.userOverwrite;
+    }
+
     public Log getLog()
     {
         if (velocity == null)
@@ -184,6 +195,7 @@ public class ToolManager
 
     protected void prepareContext(ToolContext context)
     {
+        context.setUserCanOverwriteTools(this.userOverwrite);
         if (this.velocity != null)
         {
             context.putVelocityEngine(this.velocity);
