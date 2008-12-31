@@ -20,13 +20,14 @@ package org.apache.velocity.tools.view.i18n;
  */
 
 import java.util.Locale;
+import org.apache.velocity.tools.view.IncludeTool;
 import org.apache.velocity.tools.view.ViewToolContext;
 
 /**
- * Use {@link org.apache.velocity.tools.view.MultiViewsTool}.
+ * Use {@link org.apache.velocity.tools.view.IncludeTool}.
  */
 @Deprecated
-public class MultiViewsTool extends org.apache.velocity.tools.view.MultiViewsTool
+public class MultiViewsTool extends IncludeTool
 {
     @Deprecated
     public void init(Object obj)

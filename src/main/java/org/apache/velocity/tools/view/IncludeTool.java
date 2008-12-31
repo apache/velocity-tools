@@ -23,6 +23,7 @@ import java.util.Locale;
 import java.util.Map;
 import javax.servlet.ServletContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
@@ -35,16 +36,21 @@ import org.apache.velocity.tools.view.ViewToolContext;
  *
  * <p>Reads the default language out of the ViewToolContext as
  * <code>org.apache.velocity.tools.view.i18n.defaultLanguage</code>.
- * See {@link #find(String, String)} and {@link
- * #find(String, Locale)} for usage.</p>
+ * See {@link #find(String, String)}, {@link
+ * #find(String, Locale)} and {@link #exists(String)} for usage.</p>
+ *
+ * <p>This is the successor to the MultiViewsTool in VelocityTools 1.x.
+ * Please note that it does NOT do the actual #include or #parse for
+ * you, but is merely to aid in include content negotiation.</p>
  *
  * @version $Id$
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author Nathan Bubna
  * @since VelocityTools 2.0
  */
-@DefaultKey("i18n")
+@DefaultKey("include")
 @InvalidScope(Scope.APPLICATION)
-public class MultiViewsTool
+public class IncludeTool
 {
     /**
      * The key used to search initialization, context, and JVM
@@ -127,9 +133,9 @@ public class MultiViewsTool
      *
      * <p>Usage from a template would be something like the following:
      * <blockquote><code><pre>
-     * #parse( $i18n.find('header.vm', 'en') )
-     * #include( $i18n.find('my_page.html', 'en') )
-     * #parse( $i18n.find('footer.vm', 'en') )
+     * #parse( $include.find('header.vm', 'en') )
+     * #include( $include.find('my_page.html', 'en') )
+     * #parse( $include.find('footer.vm', 'en') )
      * </pre></code></blockquote>
      *
      * You might also wrap this method using another pull/view tool
@@ -144,8 +150,7 @@ public class MultiViewsTool
     public String find(String name, String language)
     {
         String localizedName = name + '.' + language;
-        // templateExists() checks for static content as well
-        if (!engine.resourceExists(localizedName))
+        if (!exists(localizedName))
         {
             // Fall back to the default lanaguage.
             String defaultLangSuffix = '.' + defaultLanguage;
@@ -157,13 +162,52 @@ public class MultiViewsTool
             else
             {
                 localizedName = name + defaultLangSuffix;
-                if (!engine.resourceExists(localizedName))
+                if (!exists(localizedName))
                 {
                     localizedName = name;
                 }
             }
         }
         return localizedName;
+    }
+
+    /**
+     * <p>Checks to see whether a #parse-able template or
+     * #include-able resource exists under the specified name/path.</p>
+     *
+     * <p>Usage from a template would be something like the following:
+     * <blockquote><code><pre>
+     * #if( $include.exists('header.vm') )
+     *   #parse( 'header.vm' )
+     * #end
+     * </pre></code></blockquote>
+     *
+     * @see VelocityEngine#resourceExists
+     */
+    public boolean exists(String name)
+    {
+        try
+        {
+            // checks for both templates and static content
+            return engine.resourceExists(name);
+        }
+        // make sure about this...
+        catch (ResourceNotFoundException rnfe)
+        {
+            return false;
+        }
+    }
+
+    /**
+     * Checks to see whether a localized version of the
+     * named template exists for the specified language.
+     *
+     * @see #exists(String)
+     */
+    public boolean exists(String name, String language)
+    {
+        String localizedName = name + '.' + language;
+        return exists(localizedName);
     }
 
 }
