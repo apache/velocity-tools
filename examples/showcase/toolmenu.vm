@@ -33,6 +33,7 @@
 #toolMenuItem( $llink 'esc' )
 #toolMenuItem( $llink 'field' )
 #toolMenuItem( $llink 'import' )
+#toolMenuItem( $llink 'include' )
 #toolMenuItem( $llink 'link' )
 #toolMenuItem( $llink 'lists' )
 #toolMenuItem( $llink 'loop' )
