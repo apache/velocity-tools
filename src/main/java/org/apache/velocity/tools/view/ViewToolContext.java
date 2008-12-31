@@ -155,34 +155,54 @@ public class ViewToolContext extends ToolContext implements ViewContext
      * <p>Looks up and returns the object with the specified key.</p>
      * <p>See the class documentation for more details.</p>
      *
+     * @see #setUserCanOverwriteTools
+     * @see #getUserVar
+     * @see #getToolVar
      * @param key the key of the object requested
      * @return the requested object or null if not found
      */
+    @Override
     public Object get(String key)
     {
-        /* search for a tool first, keeping them read-only */
+        boolean overwrite = getUserCanOverwriteTools();
+        Object o = overwrite ? getUserVar(key) : getToolVar(key);
+        if (o == null)
+        {
+            o = overwrite ? getToolVar(key) : getUserVar(key);
+        }
+        return o;
+    }
+
+    /**
+     * Finds "user" set values, either in the local context
+     * or in the scoped attributes if none is in the local context.
+     * @see #internalGet
+     * @see #getAttribute
+     */
+    protected Object getUserVar(String key)
+    {
+        Object o = internalGet(key);
+        if (o != null)
+        {
+            return o;
+        }
+        return getAttribute(key);
+    }
+
+    /**
+     * Finds the automatically provided values, either configured
+     * tools or servlet API objects (request, response, etc).
+     * @see #findTool
+     * @see #getServletApi
+     */
+    protected Object getToolVar(String key)
+    {
         Object o = findTool(key);
         if (o != null)
         {
             return o;
         }
-
-        /* put servlet API access here to keep it read-only */
-        o = getServletApi(key);
-        if (o != null)
-        {
-            return o;
-        }
-
-        /* try the local context */
-        o = internalGet(key);
-        if (o != null)
-        {
-            return o;
-        }
-
-        /* if not found, wander down the scopes... */
-        return getAttribute(key);
+        return getServletApi(key);
     }
 
     /**

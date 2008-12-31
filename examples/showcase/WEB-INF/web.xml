@@ -32,6 +32,10 @@
       <param-name>org.apache.velocity.tools.cleanConfiguration</param-name>
       <param-value>true</param-value>
     </init-param>
+    <init-param>
+      <param-name>org.apache.velocity.tools.userCanOverwriteTools</param-name>
+      <param-value>false</param-value>
+    </init-param>
   </servlet>
   <servlet-mapping>
     <servlet-name>velocity</servlet-name>

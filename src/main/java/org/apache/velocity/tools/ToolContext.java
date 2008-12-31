@@ -52,6 +52,7 @@ public class ToolContext implements Context
     private Map<String,Object> toolProps = new HashMap<String,Object>(12);
     // this is only for values added during use of this context
     private Map<String,Object> localContext = new HashMap<String,Object>();
+    private boolean userOverwrite = true;
 
     public ToolContext()
     {
@@ -81,6 +82,26 @@ public class ToolContext implements Context
         {
             this.toolProps.putAll(toolProps);
         }
+    }
+
+    /**
+     * Set whether or not tool references can be overwritten within a template.
+     * The default value is {@code true}.  Set this to false if you want to
+     * ensure that your tool references are never replaced within the course
+     * of a template.
+     */
+    public void setUserCanOverwriteTools(boolean overwrite)
+    {
+        this.userOverwrite = overwrite;
+    }
+
+    /**
+     * Default is {@code true}.
+     * @see #setUserCanOverwriteTools
+     */
+    public boolean getUserCanOverwriteTools()
+    {
+        return this.userOverwrite;
     }
 
     public void addToolbox(Toolbox toolbox)
@@ -178,10 +199,11 @@ public class ToolContext implements Context
 
     public Object get(String key)
     {
-        Object value = findTool(key);
+        // for user overwriting, it's all a matter of which we check first
+        Object value = userOverwrite ? internalGet(key) : findTool(key);
         if (value == null)
         {
-            return internalGet(key);
+            value = userOverwrite ? findTool(key) : internalGet(key);
         }
         return value;
     }

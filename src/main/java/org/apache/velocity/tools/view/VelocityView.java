@@ -169,6 +169,14 @@ public class VelocityView extends ViewToolManager
         "org.apache.velocity.tools.cleanConfiguration";
 
     /**
+     * Controls whether or not templates can overwrite tool and servlet API
+     * variables in the local context. The default is true; set to {@code false}
+     * to prevent overwriting of any tool variables.
+     */
+    public static final String USER_OVERWRITE_KEY =
+        "org.apache.velocity.tools.userCanOverwriteTools";
+
+    /**
      * Controls support for deprecated tools and configuration.
      * The default is {@code true}; set to {@code false} to turn off
      * support for deprecated tools and configuration.
@@ -285,12 +293,18 @@ public class VelocityView extends ViewToolManager
             this.velocity = new VelocityEngine();
         }
 
+        // default is true for these, so just watch for false
         String depMode = config.findInitParameter(DEPRECATION_SUPPORT_MODE_KEY);
         if (depMode != null && depMode.equalsIgnoreCase("false"))
         {
             setDeprecationSupportMode(false);
         }
-        
+        String allowOverwrite = config.findInitParameter(USER_OVERWRITE_KEY);
+        if (allowOverwrite != null && allowOverwrite.equalsIgnoreCase("false"))
+        {
+            setUserCanOverwriteTools(false);
+        }
+
         // configure and initialize the VelocityEngine
         init(config, velocity);
 
