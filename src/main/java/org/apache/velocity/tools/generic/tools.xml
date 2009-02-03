@@ -30,7 +30,6 @@
         <tool class="org.apache.velocity.tools.generic.DisplayTool"/>
         <tool class="org.apache.velocity.tools.generic.EscapeTool"/>
         <tool class="org.apache.velocity.tools.generic.FieldTool"/>
-        <tool class="org.apache.velocity.tools.generic.ListTool"/>
         <tool class="org.apache.velocity.tools.generic.MathTool"/>
         <tool class="org.apache.velocity.tools.generic.NumberTool"/>
         <tool class="org.apache.velocity.tools.generic.ResourceTool"/>
