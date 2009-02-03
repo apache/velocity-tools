@@ -36,6 +36,7 @@ $demo.thisPage.insert("#doclink( 'BrowserTool' false )").
 #demo( 'browser' 'Gecko' $desc )
 #demo( 'browser' 'Firefox' $desc )
 #demo( 'browser' 'Safari' $desc )
+#demo( 'browser' 'Chrome' $desc )
 #demo( 'browser' 'Netscape' $desc )
 #demo( 'browser' 'Nav2' $desc )
 #demo( 'browser' 'Nav3' $desc )
