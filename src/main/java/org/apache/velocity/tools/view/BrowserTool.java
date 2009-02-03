@@ -74,23 +74,45 @@ public class BrowserTool implements java.io.Serializable
     private int geckoMinorVersion = -1;
 
     /**
-     * Initializes this tool by setting the current {@link HttpServletRequest}.
-     * This is required for this tool to operate and will throw a
-     * NullPointerException if this is not set or is set to {@code null}.
+     * Retrieves the User-Agent header from the request (if any).
+     * @see #setUserAgent
      */
     public void setRequest(HttpServletRequest request)
     {
-        if (request == null)
+        if (request != null)
         {
-            throw new NullPointerException("request should not be null");
+            setUserAgent(request.getHeader("User-Agent"));
         }
-        userAgent = request.getHeader("User-Agent");
-        if (userAgent == null) {
-            userAgent = "";
-        } else {
-            userAgent = userAgent.toLowerCase();
+        else
+        {
+            setUserAgent(null);
         }
     }
+
+    /**
+     * Sets the User-Agent string to be parsed for info.  If null, the string
+     * will be empty and everything will return false or null.  Otherwise,
+     * it will set the whole string to lower case before storing to simplify
+     * parsing.
+     */
+    public void setUserAgent(String ua)
+    {
+        if (ua == null)
+        {
+            userAgent = "";
+        }
+        else
+        {
+            userAgent = ua.toLowerCase();
+        }
+    }
+
+    @Override
+    public String toString()
+    {
+        return this.getClass().getSimpleName()+"[ua="+userAgent+"]";
+    }
+
 
     /* Generic getter for unknown tests
      */
