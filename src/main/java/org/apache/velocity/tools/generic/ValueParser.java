@@ -47,7 +47,7 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
 {
     private Map<String,Object> source = null;
 
-    private boolean allowSubkeys = true; /* default to whatever, should be overridden by depreprecatedMode default value anyway */
+    private boolean allowSubkeys = true; /* default to whatever, should be overridden by deprecationSupportMode default value anyway */
 
     /* when using subkeys, cache at least the presence of any subkey,
     so that the rendering of templates not using subkeys will only
