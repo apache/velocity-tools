@@ -56,6 +56,16 @@ a:link {color:#09c;}
 a:visited {color:#07a;}
 a:hover {background-color:#eee;}
 
+td.method a {
+    font-weight: 400;
+}
+td.demo, td.demo input {
+    font-size: 10px;
+}
+td.desc {
+    font-size: 10px;
+}
+
 
 /* All the content boxes belong to the content class. */
 .content {
