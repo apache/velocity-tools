@@ -88,9 +88,9 @@ ${esc.d}class.class##
  *#
 #macro( demo $toolname $method $description )
 <tr>
-  <td valign="top">${esc.d}${toolname}.${method}</td>
-  <td valign="top" id="${method}">$render.eval("${esc.d}${toolname}.${method}")</td>
-  <td valign="top">$description</td>
+  <td class="method" valign="top">${esc.d}${toolname}.${method}</td>
+  <td class="demo" valign="top" id="${method}">$render.eval("${esc.d}${toolname}.${method}")</td>
+  <td class="desc" valign="top">$description</td>
 </tr>
 #end
 
@@ -99,9 +99,9 @@ ${esc.d}class.class##
  *#
 #macro( demoAlt $toolname $method $result $description )
 <tr>
-  <td valign="top">${esc.d}${toolname}.${method}</td>
-  <td valign="top" id="alt${method}">$!result</td>
-  <td valign="top">$description</td>
+  <td class="method" valign="top">${esc.d}${toolname}.${method}</td>
+  <td class="demo" valign="top" id="alt${method}">$!result</td>
+  <td class="desc" valign="top">$description</td>
 </tr>
 #end
 
@@ -114,12 +114,12 @@ ${esc.d}class.class##
 #end
 <tr>
   <form name="${method}" method="get" action="$link.self.anchor($method)"> ## HttpUnit doesn't like anchor-only links
-  <td valign="top">
+  <td class="method" valign="top">
     <a name="$method"><nobr>
       ${esc.d}${toolname}.$method(${quote}<input type="text" size="$size" name="$method" value="$!params.get($method)">${quote})
     </nobr></a>
   </td>
-  <td valign="top">
+  <td class="demo" valign="top">
     #if( $params.get($method) )
       ${esc.d}${toolname}.${method}(${quote}$params.get($method)${quote})
       =
@@ -136,7 +136,7 @@ ${esc.d}class.class##
       #end
     #end
   </td>
-  <td valign="top">$description</td>
+  <td class="desc" valign="top">$description</td>
   </form>
 </tr>
 #end
@@ -152,11 +152,11 @@ ${esc.d}class.class##
 #set( $method2 = "${method}2" )
 <tr>
   <form name="$method2" method="get" action="$link.self.anchor($method2)"> ## HttpUnit doesn't like anchor-only links
-  <td valign="top">
+  <td class="method" valign="top">
     <a name="$method2"><nobr>${esc.d}${toolname}.$method(${quote}<input type="text" size="$size" name="${method1}" value="$!params.get("${method1}")">${quote},
                                                         ${quote}<input type="text" size="$size" name="${method2}" value="$!params.get("${method2}")">${quote})</nobr></a>
   </td>
-  <td valign="top">
+  <td class="demo" valign="top">
     #if( $params.get(${method1}) )
       ${esc.d}${toolname}.${method}(${quote}$!params.get(${method1})${quote}, ${quote}$!params.get(${method2})${quote})
       =
@@ -173,7 +173,7 @@ ${esc.d}class.class##
       #end
     #end
   </td>
-  <td valign="top">$description</td>
+  <td class="desc" valign="top">$description</td>
   </form>
 </tr>
 #end
@@ -190,12 +190,12 @@ ${esc.d}class.class##
 #set( $method3 = "${method}C" )
 <tr>
   <form name="$method3" method="get" action="$link.self.anchor($method3)"> ## HttpUnit doesn't like anchor-only links
-  <td valign="top">
+  <td class="method" valign="top">
     <a name="$method3"><nobr>${esc.d}${toolname}.$method(${quote}<input type="text" size="$size" name="${method1}" value="$!params.get("${method1}")">${quote},
                                                         ${quote}<input type="text" size="$size" name="${method2}" value="$!params.get("${method2}")">${quote},
                                                         ${quote}<input type="text" size="$size" name="${method3}" value="$!params.get("${method3}")">${quote})</nobr></a>
   </td>
-  <td valign="top">
+  <td class="demo" valign="top">
     #if( $params.get(${method1}) )
       ${esc.d}${toolname}.${method}(${quote}$!params.get(${method1})${quote}, ${quote}$!params.get(${method2})${quote}, ${quote}$!params.get(${method3})${quote})
       =
@@ -212,7 +212,7 @@ ${esc.d}class.class##
       #end
     #end
   </td>
-  <td valign="top">$description</td>
+  <td class="desc" valign="top">$description</td>
   </form>
 </tr>
 #end
@@ -223,12 +223,12 @@ ${esc.d}class.class##
 #macro( demoCustom $toolname )
 <tr>
   <form method="get" action="$link.anchor('custom')">
-  <td valign="top">
+  <td class="method" valign="top">
     <a name="custom">
       <input type="text" size="30" name="custom" value="#if( $params.custom )$params.custom#else$esc.d$toolname#end">
     </a>
   </td>
-  <td valign="top">
+  <td class="demo" valign="top">
     #if( $params.custom )
       $params.custom
       =
@@ -245,7 +245,7 @@ ${esc.d}class.class##
       #end
     #end
   </td>
-  <td>$text.demo.tryAnything</td>
+  <td class="desc" >$text.demo.tryAnything</td>
   </form>
 </tr>
 #end
