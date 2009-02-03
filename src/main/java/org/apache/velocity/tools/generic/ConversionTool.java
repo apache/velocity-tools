@@ -157,43 +157,18 @@ public class ConversionTool extends LocaleConfig
     // ----------------- public parsing methods --------------------------
 
     /**
+     * Converts objects to String in a more Tools-ish way than
+     * String.valueOf(Object), especially with nulls, Arrays and Collections.
+     * Null returns null, Arrays and Collections return the toString(Object)
+     * of their first value, or null if they have no values.
+     *
      * @param value the object to be turned into a String
      * @return the string value of the object or null if the value is null
-     *         or it is an array whose first value is null
+     *         or it is an array or collection whose first value is null
      */
     public String toString(Object value)
     {
-        if (value instanceof String)
-        {
-            return (String)value;
-        }
-        if (value == null)
-        {
-            return null;
-        }
-        if (value.getClass().isArray())
-        {
-            if (Array.getLength(value) > 0)
-            {
-                // take the first value
-                value = Array.get(value, 0);
-            }
-        }
-        return String.valueOf(value);
-    }
-
-    /**
-     * @param values the Collection to be turned into a string
-     * @return the string value of the first object in the collection
-     *         or null if the collection is empty
-     */
-    public String toString(Collection values)
-    {
-        if (values != null && !values.isEmpty())
-        {
-            return String.valueOf(values.iterator().next());
-        }
-        return null;
+        return ConversionUtils.toString(value);
     }
 
     /**
