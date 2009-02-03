@@ -20,12 +20,14 @@ package org.apache.velocity.tools;
  */
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Calendar;
 import java.util.Locale;
@@ -33,6 +35,8 @@ import java.util.TimeZone;
 
 /**
  * Utility methods for parsing or otherwise converting between types.
+ * Current supported types are Number, Date, Calendar, 
+ * String, Boolean, Locale and URL
  *
  * @author Nathan Bubna
  */
@@ -562,14 +566,86 @@ public class ConversionUtils
         return cal;
     }
 
+
+    // ----------------- misc conversion methods ---------------
+
     /**
-     * Converts a string to  a {@link Locale}
+     * Converts objects to String in a more Tools-ish way than
+     * String.valueOf(Object), especially with nulls, Arrays and Collections.
+     * Null returns null, Arrays and Collections return their first value,
+     * or null if they have no values.
+     * 
+     * @param value the object to be turned into a String
+     * @return the string value of the object or null if the value is null
+     *         or it is an array whose first value is null
+     */
+    public static String toString(Object value)
+    {
+        if (value instanceof String)
+        {
+            return (String)value;
+        }
+        if (value == null)
+        {
+            return null;
+        }
+        if (value.getClass().isArray())
+        {
+            if (Array.getLength(value) > 0)
+            {
+                // recurse on the first value
+                return toString(Array.get(value, 0));
+            }
+            return null;
+        }
+        return String.valueOf(value);
+    }
+
+    /**
+     * Returns the first value as a String, if any; otherwise returns null.
+     *
+     * @param values the Collection to be turned into a string
+     * @return the string value of the first object in the collection
+     *         or null if the collection is empty
+     */
+    public static String toString(Collection values)
+    {
+        if (values != null && !values.isEmpty())
+        {
+            // recurse on the first value
+            return toString(values.iterator().next());
+        }
+        return null;
+    }
+
+    /**
+     * Converts any Object to a boolean using {@link #toString(Object)}
+     * and {@link Boolean#valueOf(String)}. 
+     *
+     * @param value the object to be converted
+     * @return a {@link Boolean} object for the specified value or
+     *         <code>null</code> if the value is null or the conversion failed
+     */
+    public static Boolean toBoolean(Object value)
+    {
+        if (value instanceof Boolean)
+        {
+            return (Boolean)value;
+        }
+
+        String s = toString(value);
+        return (s != null) ? Boolean.valueOf(s) : null;
+    }
+
+    /**
+     * Converts a string to a {@link Locale}
      *
      * @param value - the string to parse
      * @return the {@link Locale} or <code>null</code> if the
      *         parsing fails
      */
-    public static Locale toLocale(String value) {
+    public static Locale toLocale(String value)
+    {
         if (value.indexOf('_') < 0)
         {
             return new Locale(value);
