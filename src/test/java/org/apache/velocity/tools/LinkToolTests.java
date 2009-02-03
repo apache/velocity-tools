@@ -778,7 +778,7 @@ public class LinkToolTests {
         assertEquals(null, link.toString());
         link = newInstance("/foo#bar");
         link.setFragment("woo gie");
-        assertEquals("/foo#woo+gie", link.toString());
+        assertEquals("/foo#woo%20gie", link.toString());
     }
 
     public @Test void methodGetAnchor() throws Exception
@@ -807,7 +807,7 @@ public class LinkToolTests {
         assertEquals("a b", link.anchor(space).getAnchor());
         link = newInstance("http://go.com#foo");
         assertEquals("http://go.com#true", link.anchor(true).toString());
-        assertEquals("http://go.com#a+b", link.anchor(space).toString());
+        assertEquals("http://go.com#a%20b", link.anchor(space).toString());
     }
 
     public @Test void methodGetSelf() throws Exception
