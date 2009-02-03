@@ -912,15 +912,10 @@ public class LinkTool extends SafeConfig implements Cloneable
             // fail if there was an error in setting the port
             if (port > -2)
             {
-                String anchor = this.fragment;
-                if (anchor != null)
-                {
-                    anchor = encode(anchor);
-                }
                 if (opaque)
                 {
                     // path is used as scheme-specific part
-                    return new URI(scheme, path, anchor);
+                    return new URI(scheme, path, fragment);
                 }
                 else if (forceRelative)
                 {
@@ -928,7 +923,7 @@ public class LinkTool extends SafeConfig implements Cloneable
                     {
                         return null;
                     }
-                    return new URI(null, null, null, -1, path, toQuery(query), anchor);
+                    return new URI(null, null, null, -1, path, toQuery(query), fragment);
                 }
                 else
                 {
@@ -938,7 +933,7 @@ public class LinkTool extends SafeConfig implements Cloneable
                     {
                         return null;
                     }
-                    return new URI(scheme, user, host, port, path, toQuery(query), anchor);
+                    return new URI(scheme, user, host, port, path, toQuery(query), fragment);
                 }
             }
         }
