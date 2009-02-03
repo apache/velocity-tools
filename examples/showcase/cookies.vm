@@ -28,7 +28,6 @@ $text.cookies.intro
 "${esc.h}foreach( ${esc.d}cookie in ${esc.d}cookies.all )
   ${esc.d}cookie.name = ${esc.d}cookie.value
   Expiry ${esc.d}cookie.maxAge
-  Exp ${esc.d}cookie.exp
   Domain ${esc.d}cookie.domain
   Comment ${esc.d}cookie.comment
   Version ${esc.d}cookie.version
