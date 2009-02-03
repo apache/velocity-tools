@@ -202,7 +202,7 @@ public class ClassTool extends SafeConfig
      * then this will return {@code null}. All other
      * configuration settings will be copied to the new instance.
      */
-    public ClassTool inspectSuper()
+    public ClassTool getSuper()
     {
         Class sup = getType().getSuperclass();
         if (sup == null)

@@ -195,13 +195,13 @@ public class ClassToolTests {
         assertEquals(result, ClassTool.class);
     }
 
-    public @Test void methodInspectSuper() throws Exception
+    public @Test void methodGetSuper() throws Exception
     {
         ClassTool classTool = new ClassTool();
         // default type is java.lang.Object which has no super
-        assertNull(classTool.inspectSuper());
+        assertNull(classTool.getSuper());
         classTool.setType(ClassTool.class);
-        assertEquals(classTool.inspectSuper().getType(), SafeConfig.class);
+        assertEquals(classTool.getSuper().getType(), SafeConfig.class);
     }
 
     public @Test void methodInspect_Class() throws Exception
