@@ -26,7 +26,7 @@ import org.apache.velocity.tools.config.DefaultKey;
 /**
  * Tool for working with Lists and arrays in Velocity templates.
  * <p>
- * Once Velocity 1.6 is released, this class will be largely obsolete since
+ * With the release of Velocity 1.6, this class is largely obsolete since
  * Velocity 1.6 now allows all List methods to be called on arrays
  * within templates.
  * </p>
@@ -64,6 +64,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Id: $
  * @since VelocityTools 1.2
  */
+@Deprecated
 @DefaultKey("lists")
 public class ListTool
 {
