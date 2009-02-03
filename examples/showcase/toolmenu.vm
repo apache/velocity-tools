@@ -35,7 +35,6 @@
 #toolMenuItem( $llink 'import' )
 #toolMenuItem( $llink 'include' )
 #toolMenuItem( $llink 'link' )
-#toolMenuItem( $llink 'lists' )
 #toolMenuItem( $llink 'loop' )
 #toolMenuItem( $llink 'math' )
 #toolMenuItem( $llink 'number' )
