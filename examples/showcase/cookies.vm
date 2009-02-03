@@ -16,59 +16,25 @@
 ## under the License.
 #title( 'CookieTool' )
 <p>
-#set( $demo = $text.demo )
-$demo.thisPage.insert("#doclink( 'CookieTool' false )").  Remember,
-when adding a cookie, it is <b>not</b> added to the same request which does the
-adding.  This means to see a cookie you've added, you must add it, and then refresh
-the page again.
+$text.demo.thisPage.insert("#doclink( 'CookieTool' false )").
+$text.cookies.intro
 </p>
 
-#demoTableStart()
-
-#set( $desc = 'Expose array of Cookies for this request to the template. This is equivalent to <code>$request.cookies</code>.' )
-#demo( 'cookies' 'all' $desc )
-
-#set( $desc = 'Returns the Cookie with the specified name, if it exists.' )
-#demo1( 'cookies' 'get' 5 $desc )
-
-#set( $desc = 'Adds a new Cookie with the specified name and value to the HttpServletResponse.  This does <b>not</b> add a Cookie to the current request.' )
-#demo2( 'cookies' 'add' 5 $desc )
-
-#set( $desc = 'Convenience method to add a new Cookie to the response and set an expiry time for it.' )
-#demo3( 'cookies' 'add' 5 $desc )
-
-#set( $desc = 'Creates a new Cookie with the specified name and value. This does <b>not</b> add the Cookie to the response, so the created Cookie will not be set unless you do <code>$response.addCookie($myCookie)</code>' )
-#demo2( 'cookies' 'create' 5 $desc )
-
-#set( $desc = 'Convenience method to create a new Cookie and set an expiry time for it. The created cookie must be manually added to the response.' )
-#demo3( 'cookies' 'create' 5 $desc )
-
-#demoCustom( 'cookies' )
-</table>
-
-<div align="center">
-  <a name="fullDemo"><h3>$demo.mainExampleHeader</h3></a>
-<form method="post" action="$link.self.anchor('fullDemo')">
-<textarea name="demo" rows="3" cols="65">##
-#if( $params.demo )##
-$params.demo##
-#else##
-${esc.h}foreach( ${esc.d}cookie in ${esc.d}cookies.all )
+## The demo.vm template expects the following values to be set
+#set( $toollink = $doclink )
+#set( $toolname = 'cookies' )
+#set( $toolclass = $cookies.class )
+#set( $toolDemo = 
+"${esc.h}foreach( ${esc.d}cookie in ${esc.d}cookies.all )
   ${esc.d}cookie.name = ${esc.d}cookie.value
-${esc.h}end##
-#end##
-</textarea>
-  <br>
-  <input type="submit" value="$demo.try">
-  #if( $params.layout )
-  <input type="hidden" name="layout" value="$params.layout">
-  #end
-</form>
+  Expiry ${esc.d}cookie.maxAge
+  Exp ${esc.d}cookie.exp
+  Domain ${esc.d}cookie.domain
+  Comment ${esc.d}cookie.comment
+  Version ${esc.d}cookie.version
+  Secure ${esc.d}cookie.secure
+${esc.h}end" )
 
-#if( $params.demo )
-$demo.mainResultsIntro:
-<pre>
-  $render.eval($params.demo)
-</pre>
-#end
-</div>
+#set( $skipAll = [ 'setRequest', 'setResponse', 'setLog' ] )
+#parse( 'demo.vm' )
+

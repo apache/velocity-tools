@@ -19,18 +19,22 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
+import org.apache.velocity.tools.ConversionUtils;
 import org.apache.velocity.tools.Scope;
 
 /**
  * <p>View tool for convenient cookie access and creation.</p>
  * <p><pre>
  * Template example(s):
- *  $cookie.foo.value
+ *  $cookie.foo
  *  $cookie.add("bar",'woogie')
  *
  * tools.xml configuration:
@@ -52,9 +56,10 @@ import org.apache.velocity.tools.Scope;
 @ValidScope(Scope.REQUEST)
 public class CookieTool
 {
-
     protected HttpServletRequest request;
     protected HttpServletResponse response;
+    protected Log log;
+    private List<Cookie> jar;
 
     // --------------------------------------- Setup Methods -------------
 
@@ -86,19 +91,42 @@ public class CookieTool
         this.response = response;
     }
 
+    /**
+     * Sets the {@link Log} used for logging messages when Cookie
+     * creation fails due to an invalid name.
+     */
+    public void setLog(Log log)
+    {
+        this.log = log;
+    }
+
+    // --------------------------------------- Setup Methods -------------
 
     /**
      * Expose array of Cookies for this request to the template.
      *
      * <p>This is equivalent to <code>$request.cookies</code>.</p>
      *
-     * @return array of Cookie objects for this request
+     * @return list of Cookie objects for this request
      */
-    public Cookie[] getAll()
+    public List<Cookie> getAll()
     {
-        return request.getCookies();
-    }
+        if (jar == null) {
+            Cookie[] array = request.getCookies();
+            if (array == null)
+            {
+                return null;
+            }
 
+            jar = new ArrayList<Cookie>(array.length);
+            for (Cookie c : array)
+            {
+                Cookie sc = new SugarCookie(c);
+                jar.add(sc);
+            }
+        }
+        return jar;
+    }
 
     /**
      * Returns the Cookie with the specified name, if it exists.
@@ -109,23 +137,38 @@ public class CookieTool
      */
     public Cookie get(String name)
     {
-        Cookie[] all = getAll();
-        if (all == null)
+        List<Cookie> all = getAll();
+        if (all != null)
         {
-            return null;
-        }
-
-        for (int i = 0; i < all.length; i++)
-        {
-            Cookie cookie = all[i];
-            if (cookie.getName().equals(name))
+            for (Cookie c : all)
             {
-                return cookie;
+                if (c.getName().equals(name))
+                {
+                    return c;
+                }
             }
         }
         return null;
     }
 
+    /**
+     * Adds the specified Cookie to the HttpServletResponse.
+     * This does *not* add the Cookie to the current request.
+     *
+     * @param c is for cookie (that's good enough for me)
+     * @since VelocityTools 2.0
+     * @return an empty String to prevent the reference from rendering
+     *         unless the cookie passed in is null, then it returns null
+     */
+    public String add(Cookie c)
+    {
+        if (c == null)
+        {
+            return null;
+        }
+        response.addCookie(c);
+        return "";
+    }
 
     /**
      * Adds a new Cookie with the specified name and value
@@ -134,12 +177,12 @@ public class CookieTool
      *
      * @param name the name to give this cookie
      * @param value the value to be set for this cookie
+     * @return an empty String to prevent the reference from rendering
      */
-    public void add(String name, String value)
+    public String add(String name, String value)
     {
-        response.addCookie(create(name, value));
+        return add(create(name, value));
     }
-
 
     /**
      * Convenience method to add a new Cookie to the response
@@ -148,35 +191,39 @@ public class CookieTool
      * @param name the name to give this cookie
      * @param value the value to be set for this cookie
      * @param maxAge the expiry to be set for this cookie
+     * @return an empty String to prevent the reference from rendering
      */
-    public void add(String name, String value, Object maxAge)
+    public String add(String name, String value, Object maxAge)
     {
-        Cookie c = create(name, value, maxAge);
-        if (c == null)
-        {
-            /* TODO: something better? */
-            return;
-        }
-        response.addCookie(c);
+        return add(create(name, value, maxAge));
     }
-
 
     /**
      * Creates a new Cookie with the specified name and value.
      * This does *not* add the Cookie to the response, so the
      * created Cookie will not be set unless you do
-     * <code>$response.addCookie($myCookie)</code>.
+     * <code>$cookies.add($myCookie)</code>.
      *
      * @param name the name to give this cookie
      * @param value the value to be set for this cookie
-     * @return The new Cookie object.
+     * @return The new SugarCookie object.
      * @since VelocityTools 1.3
      */
     public Cookie create(String name, String value)
     {
-        return new Cookie(name, value);
+        try
+        {
+            return new SugarCookie(name, value);
+        }
+        catch (IllegalArgumentException iae)
+        {
+            if (log != null && log.isDebugEnabled())
+            {
+                log.debug("CookieTool: Could not create cookie with name \""+name+"\"", iae);
+            }
+            return null;
+        }
     }
-
 
     /**
      * Convenience method to create a new Cookie
@@ -185,31 +232,202 @@ public class CookieTool
      * @param name the name to give this cookie
      * @param value the value to be set for this cookie
      * @param maxAge the expiry to be set for this cookie
-     * @return The new Cookie object.
+     * @return The new SugarCookie object.
      * @since VelocityTools 1.3
      */
     public Cookie create(String name, String value, Object maxAge)
     {
-        int expiry;
-        if (maxAge instanceof Number)
+        SugarCookie sc = (SugarCookie)create(name, value);
+        if (sc == null)
         {
-            expiry = ((Number)maxAge).intValue();
+            return null;
         }
-        else
+        return sc.maxAge(maxAge);
+    }
+
+    /**
+     * Retrieves the specified cookie and sets the Max-Age to 0
+     * to tell the browser to delete the cookie.  Then this returns
+     * an empty string to make this render silently. If no such cookie
+     * exists, then it returns null to show the error.
+     *
+     * @param name the name of the cookie to be eaten
+     * @return empty string, or null if no such cookie exists
+     * @see Cookie#setMaxAge
+     * @see #add(Cookie)
+     * @see #get(String)
+     */
+    public String delete(String name)
+    {
+        Cookie c = get(name);
+        if (c == null)
         {
-            try
+            return null;
+        }
+        c.setMaxAge(0);
+        return add(c);
+    }
+
+    @Override
+    public String toString()
+    {
+        List<Cookie> all = getAll();
+        if (all == null)
+        {
+            return super.toString();
+        }
+        StringBuilder out = new StringBuilder();
+        out.append('[');
+        for (int i=0; i < all.size(); i++)
+        {
+            if (i != 0)
             {
-                expiry = Integer.parseInt(String.valueOf(maxAge));
+                out.append(", ");
             }
-            catch (NumberFormatException nfe)
+            Cookie c = all.get(i);
+            out.append(c.getName());
+            out.append('=');
+            out.append(c.getValue());
+        }
+        out.append(']');
+        return out.toString();
+    }
+
+
+    /**
+     * Extends {@link Cookie} to add some fluid API sugar and
+     * a toString() method that renders the Cookie's value
+     * instead of the usual Object.toString() shenanigans.
+     */
+    public static class SugarCookie extends Cookie
+    {
+        private Cookie plain;
+
+        /* c is for cookie. that's good enough for me. */
+        public SugarCookie(Cookie c)
+        {
+            this(c.getName(), c.getValue());
+            setMaxAge(c.getMaxAge());
+            setComment(c.getComment());
+            setPath(c.getPath());
+            setVersion(c.getVersion());
+            setSecure(c.getSecure());
+            // avoid setDomain NPE
+            if (c.getDomain() != null)
+            {
+                setDomain(c.getDomain());
+            }
+            this.plain = c;
+        }
+
+        public SugarCookie(String name, String value)
+        {
+            super(name, value);
+        }
+
+        public SugarCookie value(Object obj)
+        {
+            String value = ConversionUtils.toString(obj);
+            setValue(value);
+            if (plain != null)
+            {
+                plain.setValue(value);
+            }
+            return this;
+        }
+
+        public SugarCookie maxAge(Object obj)
+        {
+            Number maxAge = ConversionUtils.toNumber(obj);
+            if (maxAge == null)
             {
                 return null;
             }
+            setMaxAge(maxAge.intValue());
+            if (plain != null)
+            {
+                plain.setMaxAge(maxAge.intValue());
+            }
+            return this;
         }
-        
-        /* c is for cookie.  that's good enough for me. */
-        Cookie c = new Cookie(name, value);
-        c.setMaxAge(expiry);
-        return c;
+
+        public SugarCookie comment(Object obj)
+        {
+            String comment = ConversionUtils.toString(obj);
+            setComment(comment);
+            if (plain != null)
+            {
+                plain.setComment(comment);
+            }
+            return this;
+        }
+
+        public SugarCookie domain(Object obj)
+        {
+            String domain = ConversionUtils.toString(obj);
+            if (domain == null)
+            {
+                return null;
+            }
+            setDomain(domain);
+            if (plain != null)
+            {
+                plain.setDomain(domain);
+            }
+            return this;
+        }
+
+        public SugarCookie path(Object obj)
+        {
+            String path = ConversionUtils.toString(obj);
+            setPath(path);
+            if (plain != null)
+            {
+                plain.setPath(path);
+            }
+            return this;
+        }
+
+        public SugarCookie version(Object obj)
+        {
+            Number version = ConversionUtils.toNumber(obj);
+            if (version == null)
+            {
+                return null;
+            }
+            setVersion(version.intValue());
+            if (plain != null)
+            {
+                plain.setVersion(version.intValue());
+            }
+            return this;
+        }
+
+        public SugarCookie secure(Object obj)
+        {
+            Boolean secure = ConversionUtils.toBoolean(obj);
+            if (secure == null)
+            {
+                return null;
+            }
+            setSecure(secure.booleanValue());
+            if (plain != null)
+            {
+                plain.setSecure(secure.booleanValue());
+            }
+            return this;
+        }
+
+        public Cookie getPlain()
+        {
+            return plain;
+        }
+
+        @Override
+        public String toString()
+        {
+            return getValue();
+        }
     }
+
 }
