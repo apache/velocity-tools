@@ -22,9 +22,12 @@ package org.apache.velocity.tools.test.blackbox;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import org.apache.commons.collections.iterators.IteratorEnumeration;
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -36,9 +39,15 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ServletAdaptor implements InvocationHandler
 {
+    // the params now also serve as a cookie jar for CookieToolTests
     private Map _params;
     private String _contextPath;
     private String _pathInfo;
+
+    public ServletAdaptor(Map cookies)
+    {
+        this(null, null, cookies);
+    }
 
     public ServletAdaptor(String contextPath,
                           Map params)
@@ -63,7 +72,7 @@ public class ServletAdaptor implements InvocationHandler
 
         if(null == _params)
         {
-            _params = Collections.EMPTY_MAP;
+            _params = new HashMap();
         }
     }
 
@@ -103,6 +112,19 @@ public class ServletAdaptor implements InvocationHandler
         {
             // Don't worry about adding ";jsessionid" or anything.
             return args[0];
+        }
+        else if ("addCookie".equals(methodName))
+        {
+            Cookie c = (Cookie)args[0];
+            if (c.getMaxAge() == 0)
+            {
+                _params.remove(c.getName());
+            }
+            else
+            {
+                _params.put(c.getName(), c);
+            }
+            return null;
         }
         else
         {
@@ -201,6 +223,29 @@ public class ServletAdaptor implements InvocationHandler
         else if("getCharacterEncoding".equals(methodName))
         {
             return "UTF-8";
+        }
+        else if ("getCookies".equals(methodName))
+        {
+            // just let params double as the cookie store
+            Cookie[] jar = new Cookie[_params.size()];
+            int i = 0;
+            for (Iterator iter = _params.keySet().iterator(); iter.hasNext(); i++)
+            {
+                Object key = iter.next();
+                Object val = _params.get(key);
+                if (val instanceof Cookie)
+                {
+                    jar[i] = (Cookie)val;
+                }
+                else
+                {
+                    String name = String.valueOf(key);
+                    String value = String.valueOf(val);
+                    jar[i] = new Cookie(name, value);
+                    _params.put(name, jar[i]);
+                }
+            }
+            return jar;
         }
         else
         {
