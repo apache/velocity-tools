@@ -22,6 +22,7 @@ package org.apache.velocity.tools.generic;
 import org.junit.*;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -110,17 +111,24 @@ public class DisplayToolTests {
         conf.put(DisplayTool.LIST_FINAL_DELIM_KEY, " und ");
         conf.put(DisplayTool.TRUNCATE_LENGTH_KEY, "5");
         conf.put(DisplayTool.TRUNCATE_SUFFIX_KEY, ">");
+        conf.put(DisplayTool.TRUNCATE_AT_WORD_KEY, "true");
         conf.put(DisplayTool.CELL_LENGTH_KEY, "4");
         conf.put(DisplayTool.CELL_SUFFIX_KEY, "~");
         conf.put(DisplayTool.DEFAULT_ALTERNATE_KEY, "n/a");
+        conf.put(DisplayTool.ALLOWED_TAGS_KEY, "img,br");
         display.configure(conf);
         assertEquals(";", display.getListDelimiter());
         assertEquals(" und ", display.getListFinalDelimiter());
         assertEquals(5, display.getTruncateLength());
         assertEquals(">", display.getTruncateSuffix());
+        assertEquals(true, display.getTruncateAtWord());
         assertEquals("~", display.getCellSuffix());
         assertEquals(4, display.getCellLength());
         assertEquals("n/a", display.getDefaultAlternate());
+        String[] tags = display.getAllowedTags();
+        assertNotNull(tags);
+        assertEquals("img", tags[0]);
+        assertEquals("br", tags[1]);
 
         // ensure that configure is locked now
         conf.put(DisplayTool.LIST_DELIM_KEY, " & ");
@@ -204,6 +212,31 @@ public class DisplayToolTests {
         assertEquals("123", display.list(nums, "", ""));
         assertEquals("1; 2 und 3", display.list(nums, "; ", " und "));
     }
+    
+    public @Test void methodList_ObjectStringStringString() throws Exception
+    {
+        TestBean bean1 = new TestBean(1, "one");
+        TestBean bean2 = new TestBean(2, "two");
+        TestBean bean3 = new TestBean(3, "three");
+        TestBean[] beanArray = new TestBean[] { bean1, bean2, bean3 };
+        List<TestBean> beanList = new ArrayList<TestBean>();
+        beanList.addAll(Arrays.asList(beanArray));
+        
+        DisplayTool display = new DisplayTool();
+        assertEquals(null, display.list(null, null, null, null));
+        assertEquals("1null2null3", display.list(beanArray, null, null, "num"));
+        assertEquals("123", display.list(beanList, "", "", "num"));
+        assertEquals("one, two or three", display.list(beanList, ", ", " or ", "str"));
+    }
+
+    public @Test void methodSetAllowedTags_StringArray() throws Exception
+    {
+        DisplayTool display = new DisplayTool();
+        assertNull(display.getAllowedTags());
+        String[] tags = new String[] { "img" };
+        display.setAllowedTags(tags);
+        assertEquals(tags, display.getAllowedTags());
+    }
 
     public @Test void methodSetCellLength_int() throws Exception
     {
@@ -252,6 +285,14 @@ public class DisplayToolTests {
         DisplayTool display = new DisplayTool();
         display.setTruncateSuffix("foo");
         assertEquals("foo", display.getTruncateSuffix());
+    }
+
+    public @Test void methodSetTruncateAtWord_String() throws Exception
+    {
+        DisplayTool display = new DisplayTool();
+        assertEquals(false, display.getTruncateAtWord());
+        display.setTruncateAtWord(true);
+        assertEquals(true, display.getTruncateAtWord());
     }
 
     public @Test void methodSpace_int() throws Exception
@@ -308,6 +349,16 @@ public class DisplayToolTests {
         assertEquals("foob", display.truncate("foobar", 4, null));
         assertEquals("foo>", display.truncate("foobar", 4, ">"));
     }
+    
+    public @Test void methodTruncate_ObjectintStringboolean() throws Exception
+    {
+        DisplayTool display = new DisplayTool();
+        assertEquals(null, display.truncate(null, 0, null, true));
+        assertEquals(null, display.truncate("foo", 0, null, false));
+        assertEquals("f", display.truncate("foo", 1, null, true));
+        assertEquals("long stri>", display.truncate("long string", 10, ">", false));
+        assertEquals("long>", display.truncate("long string", 10, ">", true));
+    }
 
     public @Test void methodUncapitalize_Object() throws Exception
     {
@@ -318,7 +369,92 @@ public class DisplayToolTests {
         assertEquals("test", display.uncapitalize("Test"));
         assertEquals("tEST", display.uncapitalize("TEST"));
     }
+    
+    public @Test void methodBr_Object() throws Exception
+    {
+        DisplayTool display = new DisplayTool();
+        assertEquals(null, display.br(null));
+        assertEquals("", display.br(""));
+        assertEquals("<br />\n", display.br("\n"));
+        assertEquals("line1 <br />\n LINE2", display.br("line1 \n LINE2"));
+    }
+    
+    public @Test void methodStripTags_Object() throws Exception
+    {
+        DisplayTool display = new DisplayTool();
+        String html = "<p>paragraph <a href=\"url\" target='t'>link</a></p> "
+                      + "<h1>header1</h1> <h2>header2</h2> "
+                      + "<br><br/><br  /><b>bold</b>";
+        assertEquals(null, display.stripTags(null));
+        assertEquals("", display.stripTags(""));
+        assertEquals("paragraph link header1 header2 bold", display.stripTags(html));
+    }
+    
+    public @Test void methodStripTags_ObjectStringVarArgs() throws Exception
+    {
+        DisplayTool display = new DisplayTool();
+        String html = "<p>paragraph <a href=\"url\" target='t'>link</a></p> "
+                      + "<h1>header1</h1> <h2>header2</h2> "
+                      + "<br><br/><br  /><b>bold</b>";
+        assertEquals(null, display.stripTags(null, (String[])null));
+        assertEquals("", display.stripTags("","",""));
+        assertEquals("paragraph link <h1>header1</h1> <h2>header2</h2> bold", 
+                display.stripTags(html, "h1", "h2"));
+        assertEquals("paragraph <a href=\"url\" target='t'>link</a> header1 header2 bold", 
+                display.stripTags(html, "a"));
+        assertEquals("paragraph link header1 header2 <br><br/><br  /><b>bold</b>", 
+                display.stripTags(html, "b", "", null, "br"));
+    }
+    
+    public @Test void methodPlural_intString() throws Exception
+    {
+        DisplayTool display = new DisplayTool();
+        assertEquals(null, display.plural(1,null));
+        assertEquals("", display.plural(2,""));
+        assertEquals("items", display.plural(0,"item"));
+        assertEquals("item", display.plural(-1,"item"));
+        assertEquals("555s", display.plural(2,"555"));
+        assertEquals("TOYS", display.plural(2,"TOY"));
+        assertEquals("ladies", display.plural(2,"lady"));
+        assertEquals("foxes", display.plural(2,"fox"));
+        assertEquals("churches", display.plural(2,"church"));
+    }
+    
+    public @Test void methodPlural_intStringString() throws Exception
+    {
+        DisplayTool display = new DisplayTool();
+        assertEquals(null, display.plural(1,null,null));
+        assertEquals("", display.plural(2,"empty",""));
+        assertEquals("men", display.plural(0,"man","men"));
+        assertEquals("mouse", display.plural(-1,"mouse", "mice"));
+    }
 
+    public class TestBean {
+        private int num;
+        private String str;
+        
+        public TestBean(int num, String str)
+        {
+            this.num = num;
+            this.str = str;
+        }
+        
+        public int getNum()
+        {
+            return num;
+        }
+        public void setNum(int num)
+        {
+            this.num = num;
+        }
+        public String getStr()
+        {
+            return str;
+        }
+        public void setStr(String str)
+        {
+            this.str = str;
+        }
+    }
 
 }
-        
