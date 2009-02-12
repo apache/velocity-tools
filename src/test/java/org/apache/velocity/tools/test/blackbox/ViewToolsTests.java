@@ -176,7 +176,7 @@ public class ViewToolsTests {
         WebRequest req = new GetMethodWebRequest(ROOT_URL+"context.vm");
         WebResponse resp = conv.getResponse(req);
 
-        /* check that getThis() is a ChainedContext instance */
+        /* check that getThis() is a ViewToolContext instance */
         checkTextStart(resp,"getThis()","org.apache.velocity.tools.view.ViewToolContext");
 
         /* check contains('context') */
