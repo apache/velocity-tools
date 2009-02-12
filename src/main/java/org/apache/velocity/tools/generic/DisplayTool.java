@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.regex.Pattern;
+
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
@@ -49,7 +52,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * template...
  *   #set( $list = [1..5] )
  *   $display.list($list)
- *   $display.truncate(10, "This is a long string.")
+ *   $display.truncate("This is a long string.", 10)
  *   Not Null: $display.alt("not null", "--")
  *   Null: $display.alt($null, "--")
  *
@@ -74,17 +77,21 @@ public class DisplayTool extends LocaleConfig
     public static final String LIST_FINAL_DELIM_KEY = "listFinalDelim";
     public static final String TRUNCATE_LENGTH_KEY = "truncateLength";
     public static final String TRUNCATE_SUFFIX_KEY = "truncateSuffix";
+    public static final String TRUNCATE_AT_WORD_KEY = "truncateAtWord";
     public static final String CELL_LENGTH_KEY = "cellLength";
     public static final String CELL_SUFFIX_KEY = "cellSuffix";
     public static final String DEFAULT_ALTERNATE_KEY = "defaultAlternate";
+    public static final String ALLOWED_TAGS_KEY = "allowedTags";
 
     private String defaultDelim = ", ";
     private String defaultFinalDelim = " and ";
     private int defaultTruncateLength = 30;
     private String defaultTruncateSuffix = "...";
+    private boolean defaultTruncateAtWord = false;
     private int defaultCellLength = 30;
     private String defaultCellSuffix = "...";
     private String defaultAlternate = "null";
+    private String[] defaultAllowedTags = null;
 
     /**
      * Does the actual configuration. This is protected, so
@@ -118,6 +125,12 @@ public class DisplayTool extends LocaleConfig
             setTruncateSuffix(truncateSuffix);
         }
 
+        Boolean truncateAtWord = values.getBoolean(TRUNCATE_AT_WORD_KEY);
+        if (truncateAtWord != null)
+        {
+            setTruncateAtWord(truncateAtWord);
+        }
+
         Integer cellLength = values.getInteger(CELL_LENGTH_KEY);
         if (cellLength != null)
         {
@@ -134,6 +147,12 @@ public class DisplayTool extends LocaleConfig
         if (defaultAlternate != null)
         {
             setDefaultAlternate(defaultAlternate);
+        }
+
+        String[] allowedTags = values.getStrings(ALLOWED_TAGS_KEY);
+        if (allowedTags != null)
+        {
+            setAllowedTags(allowedTags);
         }
     }
 
@@ -177,6 +196,16 @@ public class DisplayTool extends LocaleConfig
         this.defaultTruncateSuffix = suffix;
     }
 
+    public boolean getTruncateAtWord()
+    {
+        return this.defaultTruncateAtWord;
+    }
+
+    protected void setTruncateAtWord(boolean atWord)
+    {
+        this.defaultTruncateAtWord = atWord;
+    }
+
     public String getCellSuffix()
     {
         return this.defaultCellSuffix;
@@ -207,6 +236,16 @@ public class DisplayTool extends LocaleConfig
         this.defaultAlternate = dflt;
     }
 
+    public String[] getAllowedTags()
+    {
+        return this.defaultAllowedTags;
+    }
+
+    protected void setAllowedTags(String[] tags)
+    {
+        this.defaultAllowedTags = tags;
+    }
+
 
     /**
      * Formats a collection or array into the form "A, B and C".
@@ -235,7 +274,7 @@ public class DisplayTool extends LocaleConfig
     /**
      * Formats a collection or array into the form
      * "A&lt;delim&gt;B&lt;finaldelim&gt;C".
-     *
+     * 
      * @param list A collection or array.
      * @param delim A String.
      * @param finaldelim A String.
@@ -243,20 +282,36 @@ public class DisplayTool extends LocaleConfig
      */
     public String list(Object list, String delim, String finaldelim)
     {
+        return list(list, delim, finaldelim, null);
+    }
+
+    /**
+     * Formats a specified property of collection or array of objects into the
+     * form "A&lt;delim&gt;B&lt;finaldelim&gt;C".
+     * 
+     * @param list A collection or array.
+     * @param delim A String.
+     * @param finaldelim A String.
+     * @param property An object property to format.
+     * @return A String.
+     */
+    public String list(Object list, String delim, String finaldelim,
+                       String property)
+    {
         if (list == null)
         {
             return null;
         }
         if (list instanceof Collection)
         {
-            return format((Collection)list, delim, finaldelim);
+            return format((Collection) list, delim, finaldelim, property);
         }
         Collection items;
         if (list.getClass().isArray())
         {
             int size = Array.getLength(list);
             items = new ArrayList(size);
-            for (int i=0; i < size; i++)
+            for (int i = 0; i < size; i++)
             {
                 items.add(Array.get(list, i));
             }
@@ -265,20 +320,28 @@ public class DisplayTool extends LocaleConfig
         {
             items = Collections.singletonList(list);
         }
-        return format(items, delim, finaldelim);
+        return format(items, delim, finaldelim, property);
     }
 
     /**
      * Does the actual formatting of the collection.
      */
-    protected String format(Collection list, String delim, String finaldelim)
+    protected String format(Collection list, String delim, String finaldelim,
+                            String property)
     {
         StringBuilder sb = new StringBuilder();
         int size = list.size();
         Iterator iterator = list.iterator();
         for (int i = 0; i < size; i++)
         {
-            sb.append(iterator.next());
+            if (property != null && property.length() > 0)
+            {
+                sb.append(getProperty(iterator.next(), property));
+            }
+            else
+            {
+                sb.append(iterator.next());
+            }
             if (i < size - 2)
             {
                 sb.append(delim);
@@ -430,16 +493,33 @@ public class DisplayTool extends LocaleConfig
     }
 
     /**
-     * Limits the string value of 'truncateMe' to the specified max length
-     * in characters. If the string gets curtailed, the specified suffix
-     * is used as the ending of the truncated string.
-     *
+     * Limits the string value of 'truncateMe' to the specified max length in
+     * characters. If the string gets curtailed, the specified suffix is used as
+     * the ending of the truncated string.
+     * 
      * @param truncateMe The value to be truncated.
      * @param maxLength An int with the maximum length.
      * @param suffix A String.
      * @return A String.
      */
     public String truncate(Object truncateMe, int maxLength, String suffix)
+    {
+        return truncate(truncateMe, maxLength, suffix, defaultTruncateAtWord);
+    }
+
+    /**
+     * Limits the string value of 'truncateMe' to the latest complete word
+     * within the specified maxLength. If the string gets curtailed, the
+     * specified suffix is used as the ending of the truncated string.
+     * 
+     * @param truncateMe The value to be truncated.
+     * @param maxLength An int with the maximum length.
+     * @param suffix A String.
+     * @param defaultTruncateAtWord Truncate at a word boundary if true.
+     * @return A String.
+     */
+    public String truncate(Object truncateMe, int maxLength, String suffix,
+                           boolean defaultTruncateAtWord)
     {
         if (truncateMe == null || maxLength <= 0)
         {
@@ -456,8 +536,19 @@ public class DisplayTool extends LocaleConfig
             // either no need or no room for suffix
             return string.substring(0, maxLength);
         }
-        // truncate early and append suffix
+        if (defaultTruncateAtWord)
+        {
+            // find the latest space within maxLength
+            int lastSpace = string.substring(0, maxLength - suffix.length() + 1)
+                            .lastIndexOf(" ");
+            if (lastSpace > suffix.length())
+            {
+                return string.substring(0, lastSpace) + suffix;
+            }
+        }
+        // truncate to exact character and append suffix
         return string.substring(0, maxLength - suffix.length()) + suffix;
+
     }
 
     /**
@@ -623,6 +714,154 @@ public class DisplayTool extends LocaleConfig
             return alternate;
         }
         return checkMe;
+    }
+
+    /**
+     * Inserts HTML line break tag (&lt;br /&gt;) in front of all newline
+     * characters of the string value of the specified object and returns the
+     * resulting string.
+     * @param obj
+     */
+    public String br(Object obj)
+    {
+        if (obj == null) 
+        {
+            return null;
+        }
+        else
+        {
+            return String.valueOf(obj).replaceAll("\n", "<br />\n");
+        }
+    }
+
+    /**
+     * Removes HTML tags from the string value of the specified object and
+     * returns the resulting string.
+     * @param obj
+     */
+    public String stripTags(Object obj)
+    {
+        return stripTags(obj, defaultAllowedTags);
+    }
+
+    /**
+     * Removes all not allowed HTML tags from the string value of the specified
+     * object and returns the resulting string.
+     * @param obj
+     * @param allowedTags An array of allowed tag names (i.e. "h1","br","img")
+     */
+    public String stripTags(Object obj, String... allowedTags)
+    {
+        if (obj == null)
+        {
+            return null;
+        }
+        
+        //build list of tags to be used in regex pattern
+        StringBuilder allowedTagList = new StringBuilder();
+        if (allowedTags != null)
+        {
+            for (String tag : allowedTags)
+            {
+                if (tag !=null && tag.matches("[a-zA-Z0-9]+"))
+                {
+                    if (allowedTagList.length() > 0)
+                    {
+                        allowedTagList.append("|");
+                    }
+                    allowedTagList.append(tag);
+                }
+            }
+        }
+        String tagRule = "<[^>]*?>";
+        if (allowedTagList.length() > 0)
+        {
+            tagRule = "<(?!/?(" + allowedTagList.toString() + ")[\\s>/])[^>]*?>";
+        }
+        return Pattern.compile(tagRule, Pattern.CASE_INSENSITIVE)
+                .matcher(String.valueOf(obj)).replaceAll("");
+    }
+
+    /**
+     * Builds plural form of a passed word if 'value' is plural, otherwise
+     * returns 'singular'. Plural form is built using some basic English
+     * language rules for nouns which does not guarantee correct syntax of a
+     * result in all cases.
+     * @param value
+     * @param singular Singular form of a word.
+     */
+    public String plural(int value, String singular)
+    {
+        return plural(value, singular, null);
+    }
+
+    /**
+     * Returns 'plural' parameter if passed 'value' is plural, otherwise
+     * 'singular' is returned.
+     * @param value
+     * @param singular Singular form of a word.
+     * @param plural Plural form of a word.
+     */
+    public String plural(int value, String singular, String plural)
+    {
+        if (value == 1 || value == -1)
+        {
+            return singular;
+        }
+        else if (plural != null)
+        {
+            return plural;
+        }
+        else if (singular == null || singular.length() == 0)
+        {
+            return singular;
+        }
+        else
+        {
+            //if the last letter is capital then we will append capital letters 
+            boolean isCapital = !singular.substring(singular.length() - 1)
+                                .toLowerCase().equals(singular
+                                .substring(singular.length() - 1));
+            
+            String word = singular.toLowerCase();
+            
+            if (word.endsWith("x") || word.endsWith("sh")
+                    || word.endsWith("ch") || word.endsWith("s"))
+            {
+                return singular.concat(isCapital ? "ES" : "es");
+            }
+            else if (word.length() > 1
+                    && word.endsWith("y")
+                    && !word.substring(word.length() - 2, word.length() - 1)
+                            .matches("[aeiou]"))
+            {
+                return singular.substring(0, singular.length() - 1)
+                        .concat(isCapital ? "IES" : "ies");
+            }
+            else
+            {
+                return singular.concat(isCapital ? "S" : "s");
+            }
+        }
+    }
+
+    /**
+     * Safely retrieves the specified property from the specified object.
+     * Subclasses that wish to perform more advanced, efficient, or just
+     * different property retrieval methods should override this method to do
+     * so.
+     */
+    protected Object getProperty(Object object, String property)
+    {
+        try
+        {
+            return PropertyUtils.getProperty(object, property);
+        }
+        catch (Exception e)
+        {
+            throw new IllegalArgumentException("Could not retrieve '"
+                    + property + "' from " + object + ": " + e);
+        }
     }
 
     /**
