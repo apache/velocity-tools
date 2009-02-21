@@ -121,6 +121,10 @@ public class BrowserTool implements java.io.Serializable
         return test(key);
     }
 
+    public String getUserAgent() {
+	return userAgent;
+    }
+
     /* Versioning */
 
     public String getVersion()
