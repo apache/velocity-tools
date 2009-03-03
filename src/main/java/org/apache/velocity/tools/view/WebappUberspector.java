@@ -19,7 +19,12 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
-import org.apache.velocity.util.introspection.*;
+import org.apache.velocity.util.introspection.AbstractChainableUberspector;
+import org.apache.velocity.util.introspection.Info;
+import org.apache.velocity.util.introspection.Introspector;
+import org.apache.velocity.util.introspection.VelMethod;
+import org.apache.velocity.util.introspection.VelPropertyGet;
+import org.apache.velocity.util.introspection.VelPropertySet;
 import org.apache.velocity.runtime.parser.node.AbstractExecutor;
 import org.apache.velocity.runtime.parser.node.SetExecutor;
 import org.apache.velocity.runtime.log.Log;
@@ -79,11 +84,23 @@ public class WebappUberspector extends AbstractChainableUberspector
 
     /**
      * init method
-     * @throws Exception
      */
-    public void init() throws Exception
+    @Override
+    public void init()
     {
-        super.init();
+        try
+        {
+            super.init();
+        }
+        catch (RuntimeException re)
+        {
+            throw re;
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
+
         // we need our own introspector since the inner one is hidden by the Uberspect interface
         introspector = new Introspector(log);
     }
