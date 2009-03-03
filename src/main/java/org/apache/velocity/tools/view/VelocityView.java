@@ -568,7 +568,7 @@ public class VelocityView extends ViewToolManager
         // if we didn't find one
         if (inputStream == null)
         {
-            String msg = "Could not find resource at: "+path;
+            String msg = "Did not find resource at: "+path;
             if (required)
             {
                 getLog().error(msg);
@@ -651,7 +651,7 @@ public class VelocityView extends ViewToolManager
                                                    this.deprecationSupportMode);
             if (config == null)
             {
-                String msg = "Could not find resource at: "+path;
+                String msg = "Did not find resource at: "+path;
                 if (required)
                 {
                     getLog().error(msg);
