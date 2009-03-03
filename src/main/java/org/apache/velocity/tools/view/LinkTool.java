@@ -69,6 +69,7 @@ public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
     public static final String INCLUDE_REQUEST_PARAMS_KEY = "includeRequestParams";
 
     protected HttpServletRequest request;
+    protected HttpServletResponse response;
     protected boolean includeRequestParams;
 
     public LinkTool()
@@ -96,7 +97,7 @@ public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
         }
         
         // set default/start values from request & response
-        HttpServletResponse response =
+        this.response =
             (HttpServletResponse)props.getValue(ViewContext.RESPONSE);
         setCharacterEncoding(response.getCharacterEncoding());
         setFromRequest(this.request);
@@ -301,6 +302,27 @@ public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
         copy.setFragment(null);
         copy.setPath(getContextPath());
         return copy.toString();
+    }
+
+    /**
+     * Overrides to use response.encodeURL to get session id into URL
+     * if sessions are used but cookies are not supported.
+     */
+    @Override
+    public String toString()
+    {
+        String str = super.toString();
+        if (str.length() == 0)
+        {
+            // avoid a potential NPE from Tomcat's response.encodeURL impl
+            return str;
+        }
+        else
+        {
+            // encode session ID into URL if sessions are used but cookies are
+            // not supported
+            return response.encodeURL(str);
+        }
     }
 
 }

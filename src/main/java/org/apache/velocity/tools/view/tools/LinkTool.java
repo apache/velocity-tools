@@ -41,8 +41,6 @@ public class LinkTool extends org.apache.velocity.tools.view.LinkTool
     public static final String AUTO_IGNORE_PARAMETERS_KEY = "auto-ignore-parameters";
 
     @Deprecated
-    protected HttpServletResponse response;
-    @Deprecated
     protected ServletContext application;
 
     private HashSet<String> parametersToIgnore;
