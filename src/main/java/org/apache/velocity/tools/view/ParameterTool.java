@@ -83,7 +83,7 @@ public class ParameterTool extends ValueParser
     {
         super.configure(values);
 
-        ServletRequest req = (ServletRequest)values.get(ViewContext.REQUEST);
+        ServletRequest req = (ServletRequest)values.getValue(ViewContext.REQUEST);
         setRequest(req);
     }
 
@@ -124,12 +124,7 @@ public class ParameterTool extends ValueParser
     @Override
     public Object getValue(String key)
     {
-        Object value = getRequest().getParameter(key);
-        if(value == null && getAllowSubkeys())
-        {
-            value = getSubkey(key);
-        }
-        return value;
+        return getRequest().getParameter(key);
     }
 
 
@@ -170,12 +165,19 @@ public class ParameterTool extends ValueParser
 
     /**
      * Overrides ValueParser.getSource() to return the result
-     * of getRequest().getParameterMap().
+     * of getRequest().getParameterMap() and expand singleton
+     * arrays within it first.
      */
     @Override
     protected Map getSource()
     {
-        return getRequest().getParameterMap();
+        Map source = super.getSource();
+        if (source == null)
+        {
+            source = expandSingletonArrays(getRequest().getParameterMap());
+            super.setSource(source);
+        }
+        return source;
     }
 
     /**
@@ -183,56 +185,7 @@ public class ParameterTool extends ValueParser
      */
     public Map getAll()
     {
-        return expandSingletonArrays(getSource());
-    }
-
-    /**
-     * subkey getter that returns a map <subkey#2> -> value
-     * for every "subkey.subkey2" found entry
-     *
-     * @param subkey subkey to search for
-     * @return the map of found values
-     */
-    @Override
-    protected ValueParser getSubkey(String subkey) {
-        ValueParser submap = super.getSubkey(subkey);
-        if (submap != null)
-        {
-            /* expand singleton arrays to reflect request.getParameter behaviour */
-            submap = new ValueParser(expandSingletonArrays(submap));
-        }
-        return submap;
-    }
-
-    /* some methods of java.util.Map need to be subclassed here
-       to expand singleton array values
-     */
-
-    @Override
-    public boolean containsValue(Object value) {
-        return values().contains(value);
-    }
-
-    @Override
-    public Collection values() {
-        Set result = new HashSet();
-        for (Object value : super.values())
-        {
-            if (isSingletonArray(value))
-            {
-                result.add(Array.get(value, 0));
-            }
-            else
-            {
-                result.add(value);
-            }
-        }
-        return result;
-    }
-
-    @Override
-    public Set<Entry<String,Object>> entrySet() {
-        return expandSingletonArrays(getSource()).entrySet();
+        return getSource();
     }
 
     private boolean isSingletonArray(Object value)
