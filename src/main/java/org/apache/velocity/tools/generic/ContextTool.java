@@ -69,7 +69,7 @@ public class ContextTool extends SafeConfig
      */
     protected void configure(ValueParser parser)
     {
-        this.context = (Context)parser.get(ToolContext.CONTEXT_KEY);
+        this.context = (Context)parser.getValue(ToolContext.CONTEXT_KEY);
     }
 
 
