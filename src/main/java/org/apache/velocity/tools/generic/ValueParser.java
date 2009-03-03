@@ -150,7 +150,12 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
      */
     public Object get(String key)
     {
-        return getValue(key);
+        Object value = getValue(key);
+        if (value == null && getSource() != null && getAllowSubkeys())
+        {
+            value = getSubkey(key);
+        }
+        return value;
     }
 
     /**
@@ -164,11 +169,7 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
         {
             return null;
         }
-        Object value = getSource().get(key);
-        if (value == null && getAllowSubkeys()) {
-            value = getSubkey(key);
-        }
-        return value;
+        return getSource().get(key);
     }
 
     /**
