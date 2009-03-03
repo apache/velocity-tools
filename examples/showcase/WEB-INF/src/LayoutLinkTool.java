@@ -32,8 +32,17 @@ import org.apache.velocity.tools.view.VelocityLayoutServlet;
 public class LayoutLinkTool extends LinkTool
 {
 
-	public LayoutLinkTool layout(String layout)
+	public LayoutLinkTool layout(Object obj)
 	{
+        if (obj == null)
+        {
+            return null;
+        }
+        return layout(obj.toString());
+    }
+
+    public LayoutLinkTool layout(String layout)
+    {
         if (layout != null && !layout.endsWith(".vm"))
         {
             layout += ".vm";
