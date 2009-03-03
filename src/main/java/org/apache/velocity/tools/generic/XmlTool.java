@@ -103,7 +103,7 @@ public class XmlTool extends SafeConfig
      */
     protected void configure(ValueParser parser)
     {
-        this.LOG = (Log)parser.get(ToolContext.LOG_KEY);
+        this.LOG = (Log)parser.getValue(ToolContext.LOG_KEY);
 
         String file = parser.getString(FILE_KEY);
         if (file != null)

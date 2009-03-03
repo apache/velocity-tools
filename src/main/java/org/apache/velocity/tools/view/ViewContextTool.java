@@ -65,9 +65,9 @@ public class ViewContextTool extends ContextTool
         // do ContextTool config first
         super.configure(parser);
 
-        this.request = (HttpServletRequest)parser.get(ViewContext.REQUEST);
+        this.request = (HttpServletRequest)parser.getValue(ViewContext.REQUEST);
         this.session = request.getSession(false);
-        this.application = (ServletContext)parser.get(ViewContext.SERVLET_CONTEXT_KEY);
+        this.application = (ServletContext)parser.getValue(ViewContext.SERVLET_CONTEXT_KEY);
     }
 
     @Override
