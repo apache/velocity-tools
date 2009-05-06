@@ -20,128 +20,65 @@ package org.apache.velocity.tools.view;
  */
 
 import java.util.Enumeration;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 
 /**
  * <p>Because sometimes you don't care about the difference between a
  * servlet and a filter.  Why isn't there a common interface for
  * {@link FilterConfig} and {@link ServletConfig} already? Sheesh.</p>
- * <p>Anyway, this also adds the ability to fake everything if you 
- * don't have either a FilterConfig or a ServletConfig handy. Just
- * subclass it and override the methods that return things you care
- * about.  Oh, and if you don't have any init-params at all, just use
- * the constructor that just takes a {@link ServletContext} as that's
- * the only really essential thing for creating a {@link VelocityView}.
+ * </p>
+ * <p>
+ * Anyway, this also adds the ability to fake everything if you don't have
+ * either a FilterConfig or a ServletConfig handy. Just implement it and
+ * override the methods that return things you care about. Oh, and if you don't
+ * have any init-params at all, just use {@link JeeContextConfig} as
+ * {@link ServletContext} is the only really essential thing for creating a
+ * {@link VelocityView}.</p>
  *
- * @version $Id: ServletUtils.java 471244 2006-11-04 18:34:38Z henning $
+ * @version $Id$
+ * @since 2.0
  */
-public class JeeConfig
+public interface JeeConfig
 {
-    protected FilterConfig filter;
-    protected ServletConfig servlet;
-    protected ServletContext context;
-
     /**
-     * If your subclass uses this, you better make sure
-     * that {@link #getServletContext()} doesn't return null!
+     * Returns an initialization parameter.
+     *
+     * @param name The name of the initialization parameter.
+     * @return The value of the parameter.
      */
-    protected JeeConfig(){}
-
-    public JeeConfig(FilterConfig filter)
-    {
-        if (filter == null)
-        {
-            throw new NullPointerException("FilterConfig should not be null; there must be a way to get a ServletContext");
-        }
-        this.filter = filter;
-    }
-
-    public JeeConfig(ServletConfig servlet)
-    {
-        if (servlet == null)
-        {
-            throw new NullPointerException("ServletConfig should not be null; there must be a way to get a ServletContext");
-        }
-        this.servlet = servlet;
-    }
-
-    public JeeConfig(ServletContext context)
-    {
-        if (context == null)
-        {
-            throw new NullPointerException("ServletContext must not be null");
-        }
-        this.context = context;
-    }
-
-    public String getInitParameter(String name)
-    {
-        if (filter != null)
-        {
-            return filter.getInitParameter(name);
-        }
-        if (servlet != null)
-        {
-            return servlet.getInitParameter(name);
-        }
-        return null;
-    }
+    String getInitParameter(String name);
 
     /**
      * Looks for the specified init-param in the servlet/filter config
      * (i.e. calls {@link #getInitParameter}). If no such init-param is
      * found there, it checks the {@link ServletContext}'s init-params
      * for the specified parameter.
+     *
+     * @param key The name of the initialization parameter.
+     * @return The value of the initialization parameter.
      */
-    public String findInitParameter(String key)
-    {
-        String param = getInitParameter(key);
-        if (param == null)
-        {
-            param = getServletContext().getInitParameter(key);
-        }
-        return param;
-    }
+    String findInitParameter(String key);
 
-    public Enumeration getInitParameterNames()
-    {
-        if (filter != null)
-        {
-            return filter.getInitParameterNames();
-        }
-        if (servlet != null)
-        {
-            return servlet.getInitParameterNames();
-        }
-        return null;
-    }
+    /**
+     * Returns all the parameter names.
+     *
+     * @return The enumeration containing the parameter names.
+     */
+    @SuppressWarnings("unchecked")
+    Enumeration getInitParameterNames();
 
-    public String getName()
-    {
-        if (filter != null)
-        {
-            return filter.getFilterName();
-        }
-        if (servlet != null)
-        {
-            return servlet.getServletName();
-        }
-        return null;
-    }
+    /**
+     * Returns the name of the servlet (or filter) being used.
+     *
+     * @return The name of the configuration.
+     */
+    String getName();
 
-    public ServletContext getServletContext()
-    {
-        if (filter != null)
-        {
-            return filter.getServletContext();
-        }
-        if (servlet != null)
-        {
-            return servlet.getServletContext();
-        }
-        return context;
-    }
+    /**
+     * Returns the servlet context.
+     *
+     * @return The servlet context.
+     */
+    ServletContext getServletContext();
 
 }
