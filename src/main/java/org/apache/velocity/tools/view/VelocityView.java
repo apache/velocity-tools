@@ -191,17 +191,17 @@ public class VelocityView extends ViewToolManager
 
     public VelocityView(ServletConfig config)
     {
-        this(new JeeConfig(config));
+        this(new JeeServletConfig(config));
     }
 
     public VelocityView(FilterConfig config)
     {
-        this(new JeeConfig(config));
+        this(new JeeFilterConfig(config));
     }
 
     public VelocityView(ServletContext context)
     {
-        this(new JeeConfig(context));
+        this(new JeeContextConfig(context));
     }
 
     public VelocityView(JeeConfig config)

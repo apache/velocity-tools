@@ -101,7 +101,7 @@ public class ServletUtils
      */
     public static VelocityView getVelocityView(ServletConfig config)
     {
-        return getVelocityView(new JeeConfig(config));
+        return getVelocityView(new JeeServletConfig(config));
     }
 
 
@@ -112,7 +112,7 @@ public class ServletUtils
      */
     public static VelocityView getVelocityView(FilterConfig config)
     {
-        return getVelocityView(new JeeConfig(config));
+        return getVelocityView(new JeeFilterConfig(config));
     }
 
     /**
@@ -193,7 +193,7 @@ public class ServletUtils
      */
     public static VelocityView getVelocityView(ServletContext application)
     {
-        return getVelocityView(new JeeConfig(application));
+        return getVelocityView(new JeeContextConfig(application));
     }
 
     /**
