@@ -1618,7 +1618,80 @@ public class LinkTool extends SafeConfig implements Cloneable
         {
             return null;
         }
-        return uri.toString();
+        return decodeQueryPercents(uri.toString());
+    }
+
+    /**
+     * This is an ugly (but fast) hack that's needed because URI encodes
+     * things that we don't need encoded while not encoding things
+     * that we do need encoded.  So, we have to encode query data
+     * before creating the URI to ensure they are properly encoded,
+     * but then URI encodes all the % from that encoding.  Here,
+     * we isolate the query data and manually decode the encoded
+     * %25 in that section back to %, without decoding anything else.
+     */
+    protected String decodeQueryPercents(String url)
+    {
+        StringBuilder out = new StringBuilder(url.length());
+        boolean inQuery = false, havePercent = false, haveTwo = false;
+        for (int i=0; i<url.length(); i++)
+        {
+            char c = url.charAt(i);
+            if (inQuery)
+            {
+                if (havePercent)
+                {
+                    if (haveTwo)
+                    {
+                        out.append('%');
+                        if (c != '5')
+                        {
+                            out.append('2').append(c);
+                        }
+                        havePercent = haveTwo = false;
+                    }
+                    else if (c == '2')
+                    {
+                        haveTwo = true;
+                    }
+                    else
+                    {
+                        out.append('%').append(c);
+                        havePercent = false;
+                    }
+                }
+                else if (c == '%')
+                {
+                    havePercent = true;
+                }
+                else
+                {
+                    out.append(c);
+                }
+                if (c == '#')
+                {
+                    inQuery = false;
+                }
+            }
+            else
+            {
+                out.append(c);
+                if (c == '?')
+                {
+                    inQuery = true;
+                }
+            }
+        }
+        // if things ended part way
+        if (havePercent)
+        {
+            out.append('%');
+            if (haveTwo)
+            {
+                out.append('2');
+            }
+        }
+        return out.toString();
     }
 
     /**
