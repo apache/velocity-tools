@@ -633,6 +633,8 @@ public class LinkToolTests {
         assertEquals("x=1", link.toQuery('x', 1));
         assertEquals("true=false", link.toQuery(true, false));
         assertEquals("path=%2Ffoo+bar%2Fnew", link.toQuery("path", "/foo bar/new"));
+        // try all URI reserved chars
+        assertEquals("x=%2C%3B%3A%24%26%2B%3D%3F%2F%5B%5D%40", link.toQuery('x', ",;:$&+=?/[]@"));
     }
 
     public @Test void methodSetParam_ObjectObjectboolean() throws Exception
@@ -828,6 +830,18 @@ public class LinkToolTests {
         assertEquals("/foo", link.path("foo").toString());
         assertEquals("?a=1", link.param('a',1).toString());
         assertEquals("#42", link.anchor(42).toString());
+    }
+
+    public @Test void methodNoDoubleEncode() throws Exception
+    {
+        LinkTool link = newInstance().relative("/foo");
+        assertEquals("/foo", link.toString());
+        link = link.param("q","a:b c");
+        assertEquals("/foo?q=a%3Ab+c", link.toString());
+        link = link.anchor("a(b, c)");
+        assertEquals("/foo?q=a%3Ab+c#a(b,%20c)", link.toString());
+        link = link.param("evil","%25%24%").anchor(null);
+        assertEquals("/foo?q=a%3Ab+c&amp;evil=%2525%2524%25", link.toString());
     }
 
 }
