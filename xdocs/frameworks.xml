@@ -103,6 +103,23 @@
                 setting (e.g. ValueParser, ResourceTool) to provide old behavior
                 where it has otherwise changed.
               </dd>
+              <dt>org.apache.velocity.tools.loadDefaults</dt>
+              <dd>Tells VelocityView whether or not it should include the default
+                  tools.xml configurations provided in the VelocityTools jar(s).
+                  This is true by default.
+              </dd>
+              <dt>org.apache.velocity.tools.cleanConfiguration</dt>
+              <dd>Tells VelocityView to test all the tool configurations
+                  and remove any invalid ones, rather than allow them to
+                  throw errors.  This is false by default.
+              </dd>
+              <dt>org.apache.velocity.tools.userCanOverwriteTools</dt>
+              <dd>Tells VelocityView to construct the context in such
+                  a way that any user-set variables with the same keys 
+                  as any of the configured tools are given primacy
+                  when resolving references.  This is true by default,
+                  unlike in Tools 1.x.
+              </dd>
             </dl>
             <p>
             The VelocityView instance is typically the heart of any
