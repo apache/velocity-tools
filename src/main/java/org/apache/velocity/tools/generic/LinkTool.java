@@ -1618,7 +1618,11 @@ public class LinkTool extends SafeConfig implements Cloneable
         {
             return null;
         }
-        return decodeQueryPercents(uri.toString());
+        if (query != null)
+        {
+            return decodeQueryPercents(uri.toString());
+        }
+        return uri.toString();
     }
 
     /**
