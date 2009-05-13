@@ -28,6 +28,7 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 import org.apache.velocity.Template;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
+import org.apache.velocity.runtime.resource.util.StringResourceRepository;
 import org.apache.velocity.tools.view.ServletUtils;
 import org.apache.velocity.tools.view.ViewToolContext;
 import org.apache.velocity.tools.view.VelocityView;
@@ -50,37 +51,53 @@ import org.apache.velocity.tools.view.VelocityView;
 public class VelocityViewTag extends BodyTagSupport
 {
     public static final String DEFAULT_BODY_CONTENT_KEY = "bodyContent";
-    public static final String DEFAULT_NAME =
-        VelocityViewTag.class.getSimpleName();
-
-    private static int count = 0;
     private static final long serialVersionUID = -3329444102562079189L;
 
     protected transient VelocityView view;
     protected transient ViewToolContext context;
+    protected transient StringResourceRepository repository;
+
     protected String var;
     protected String scope;
     protected String template;
     protected String bodyContentKey = DEFAULT_BODY_CONTENT_KEY;
-    private boolean cacheable = true;
-    private boolean uncached = true;
+    private boolean cache = false;
 
-    public VelocityViewTag()
+    /**
+     * Release any per-invocation resources, resetting any resources or state
+     * that should be cleared between successive invocations of
+     * {@link javax.servlet.jsp.tagext.Tag#doEndTag()} and
+     * {@link javax.servlet.jsp.tagext.Tag#doStartTag()}.
+     */
+    protected void reset()
     {
-        // always try to have some sort of unique id set, since
-        // this serves as a log tag and may serve as a cache name later
-        setId(DEFAULT_NAME + count++);
+        super.setId(null);
+        var = null;
+        scope = null;
+        template = null;
+        bodyContentKey = DEFAULT_BODY_CONTENT_KEY;
+        cache = false;
     }
 
     public void setId(String id)
     {
-        // always try to have some sort of id set because
-        // this is the log tag and cache name
         if (id == null)
         {
             throw new NullPointerException("id cannot be null");
         }
         super.setId(id);
+        // assume they want this cached
+        cache = true;
+    }
+
+    protected String getLogId()
+    {
+        String id = super.getId();
+        if (id == null)
+        {
+            id = getClass().getSimpleName();
+        }
+        return id;
     }
 
     public void setVar(String var)
@@ -123,6 +140,16 @@ public class VelocityViewTag extends BodyTagSupport
         return this.bodyContentKey;
     }
 
+    public void setCache(String s)
+    {
+        this.cache = "true".equalsIgnoreCase(s);
+    }
+
+    public String getCache()
+    {
+        return String.valueOf(this.cache);
+    }
+
     public VelocityView getVelocityView()
     {
         return this.view;
@@ -143,6 +170,19 @@ public class VelocityViewTag extends BodyTagSupport
         this.context = context;
     }
 
+    public StringResourceRepository getRepository()
+    {
+        if (this.repository == null)
+        {
+            setRepository(StringResourceLoader.getRepository());
+        }
+        return this.repository;
+    }
+
+    public void setRepository(StringResourceRepository repo)
+    {
+        this.repository = repo;
+    }
 
     public int doStartTag() throws JspException
     {
@@ -180,7 +220,7 @@ public class VelocityViewTag extends BodyTagSupport
             catch (Exception e)
             {
                 throw new JspException("Failed to render " + getClass() +
-                                       ": "+getId(), e);
+                                       ": "+getLogId(), e);
             }
         }
         return EVAL_PAGE;
@@ -241,22 +281,34 @@ public class VelocityViewTag extends BodyTagSupport
         return out.toString();
     }
 
+    protected boolean isCached()
+    {
+        return getRepository().getStringResource(getId()) != null;
+    }
+
     protected void renderBody(Writer out) throws Exception
     {
+        String name = getId();
         // if it hasn't been cached, try that
-        if (uncached && cacheable)
+        if (cache && !isCached())
         {
-            cache(getId(), getBodyContent().getString());
+            String template = getBodyContent().getString();
+            // if no id was set, use the template as the id
+            if (name == null)
+            {
+                name = template;
+            }
+            cache(name, template);
         }
         // if it can't be cached, eval it
-        if (!cacheable)
+        if (!cache)
         {
             evalBody(out);
         }
         else
         {
             // load template from cache
-            Template template = getVelocityView().getTemplate(getId());
+            Template template = getVelocityView().getTemplate(name);
             template.merge(getViewToolContext(), out);
         }
     }
@@ -264,7 +316,7 @@ public class VelocityViewTag extends BodyTagSupport
     protected void evalBody(Writer out) throws Exception
     {
         VelocityEngine engine = getVelocityView().getVelocityEngine();
-        engine.evaluate(getViewToolContext(), out, getId(),
+        engine.evaluate(getViewToolContext(), out, getLogId(),
                         getBodyContent().getReader());
     }
 
@@ -293,17 +345,31 @@ public class VelocityViewTag extends BodyTagSupport
         throw new IllegalArgumentException("Unknown scope: "+scope);
     }
 
-    private void cache(String name, String template)
+    protected void cache(String name, String template)
     {
         try
         {
-            StringResourceLoader.getRepository().putStringResource(name, template);
-            uncached = false;
+            getRepository().putStringResource(name, template);
         }
         catch (Exception cnfe)
         {
-            cacheable = false;
+            getVelocityView().getLog()
+                .error("Could not cache body in a StringResourceRepository", cnfe);
+            cache = false;
         }
+    }
+
+    /**
+     * Release any per-instance resources, releasing any resources or state
+     * before this tag instance is disposed.
+     *
+     * @see javax.servlet.jsp.tagext.Tag#release()
+     */
+    @Override
+    public void release()
+    {
+        super.release();
+        reset();
     }
 
 }
