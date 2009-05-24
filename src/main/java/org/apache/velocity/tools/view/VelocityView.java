@@ -22,6 +22,7 @@ package org.apache.velocity.tools.view;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -357,7 +358,18 @@ public class VelocityView extends ViewToolManager
     protected void configure(final JeeConfig config, final VelocityEngine velocity)
     {
         // first get the default properties, and bail if we don't find them
-        velocity.setExtendedProperties(getProperties(DEFAULT_PROPERTIES_PATH, true));
+	ExtendedProperties defaultProperties = getProperties(DEFAULT_PROPERTIES_PATH, true);
+	// if using Velocity engine prior to 1.6.x, remove WebappUberspector
+	// (this hack will disappear once tools require Velocity 1.6.x+)
+	try {
+	    Class.forName("org.apache.velocity.tools.view.WebappUberspector");
+	} catch(Throwable t) {
+	    // remove WebappUberspector from the list of introspectors
+	    List introspectors = defaultProperties.getList(VelocityEngine.UBERSPECT_CLASSNAME);
+	    introspectors.remove("org.apache.velocity.tools.view.WebappUberspector");
+	    defaultProperties.setProperty(VelocityEngine.UBERSPECT_CLASSNAME,introspectors);
+	}
+        velocity.setExtendedProperties(defaultProperties);
 
         // check for application-wide user props in the context init params
         String appPropsPath = servletContext.getInitParameter(PROPERTIES_KEY);
