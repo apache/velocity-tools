@@ -363,7 +363,7 @@ public class ServletUtils
 
         // then make sure it's a file type we recognize
         FileFactoryConfiguration config = null;
-        String source = "ServletUtils.getConfiguration("+path+",ServletContext[,depMode])";
+        String source = "ServletUtils.getConfiguration("+path+",ServletContext[,depMode="+deprecationSupportMode+"])";
         if (path.endsWith(".xml"))
         {
             config = new XmlFactoryConfiguration(deprecationSupportMode, source);
