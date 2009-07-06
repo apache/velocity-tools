@@ -865,7 +865,11 @@ public class VelocityView extends ViewToolManager
                 return velocity.getTemplate(name, encoding);
             }
         }
-        catch (Exception e)
+        catch (RuntimeException e)  // FIXME This is useless with Velocity 1.7
+        {
+            throw e;
+        }
+        catch (Exception e)  // FIXME This is useless with Velocity 1.7
         {
             throw new RuntimeException(e);
         }
@@ -896,6 +900,9 @@ public class VelocityView extends ViewToolManager
                 vw.recycle(writer);
             }
             performMerge(template, context, vw);
+
+            // flush writer but don't close to allow us to play nicely with others.
+            vw.flush();
         }
         finally
         {
@@ -903,10 +910,6 @@ public class VelocityView extends ViewToolManager
             {
                 try
                 {
-                    // flush and put back into the pool
-                    // don't close to allow us to play
-                    // nicely with others.
-                    vw.flush();
                     /* This hack sets the VelocityWriter's internal ref to the
                      * PrintWriter to null to keep memory free while
                      * the writer is pooled. See bug report #18951 */
