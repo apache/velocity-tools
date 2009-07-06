@@ -19,9 +19,9 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.io.IOException;
 import java.io.Writer;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -33,6 +33,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.exception.MethodInvocationException;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.log.Log;
 
 /**
@@ -199,6 +200,7 @@ public class VelocityViewServlet extends HttpServlet
      *  @param response HttpServletResponse object for the response
      */
     protected void doRequest(HttpServletRequest request, HttpServletResponse response)
+        throws IOException
     {
         Context context = null;
         try
@@ -216,17 +218,24 @@ public class VelocityViewServlet extends HttpServlet
 
             // merge the template and context into the response
             mergeTemplate(template, context, response);
+        } catch (IOException e) {
+            error(request, response, e);
+            throw e;
         }
-        catch (Throwable e)
+        catch (ResourceNotFoundException e)
+        {
+            manageResourceNotFound(request, response, e);
+        }
+        catch (RuntimeException e)
         {
             error(request, response, e);
+            throw e;
         }
         finally
         {
             requestCleanup(request, response, context);
         }
     }
-
 
 
     /**
@@ -243,7 +252,7 @@ public class VelocityViewServlet extends HttpServlet
      */
     protected Template handleRequest(HttpServletRequest request,
                                      HttpServletResponse response,
-                                     Context ctx) throws Exception
+                                     Context ctx)
     {
         return getTemplate(request, response);
     }
@@ -328,14 +337,21 @@ public class VelocityViewServlet extends HttpServlet
                          HttpServletResponse response,
                          Throwable e)
     {
+        if (!response.isCommitted())
+        {
+            return;
+        }
+        
         try
         {
+            String path = ServletUtils.getPath(request);
+            getLog().error("Error processing a template for path '" + path + "'", e);
             StringBuilder html = new StringBuilder();
             html.append("<html>\n");
             html.append("<head><title>Error</title></head>\n");
             html.append("<body>\n");
             html.append("<h2>VelocityView : Error processing a template for path '");
-            html.append(ServletUtils.getPath(request));
+            html.append(path);
             html.append("'</h2>\n");
 
             Throwable cause = e;
@@ -377,6 +393,36 @@ public class VelocityViewServlet extends HttpServlet
         }
     }
 
+    /**
+     * Manages the {@link ResourceNotFoundException} to send an HTTP 404 result
+     * when needed.
+     * 
+     * @param request The request object.
+     * @param response The response object.
+     * @param e The exception to check.
+     * @throws IOException If something goes wrong when sending the HTTP error.
+     */
+    protected void manageResourceNotFound(HttpServletRequest request,
+            HttpServletResponse response, ResourceNotFoundException e)
+            throws IOException
+    {
+        String path = ServletUtils.getPath(request);
+        if (getLog().isDebugEnabled())
+        {
+            getLog().debug("Resource not found for path '" + path + "'", e);
+        }
+        String message = e.getMessage();
+        if (!response.isCommitted() && path != null &&
+            message != null && message.contains("'" + path + "'"))
+        {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, path);
+        }
+        else
+        {
+            error(request, response, e);
+            throw e;
+        }
+    }
 
     /**
      * Cleanup routine called at the end of the request processing sequence
