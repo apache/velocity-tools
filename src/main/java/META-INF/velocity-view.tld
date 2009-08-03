@@ -16,12 +16,12 @@
  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  KIND, either express or implied.  See the License for the
  specific language governing permissions and limitations
- under the License.    
+ under the License.
 -->
 <taglib>
-  <tlibversion>1.0</tlibversion>
-  <jspversion>1.2</jspversion>
-  <shortname>velocity</shortname>
+  <tlib-version>1.0</tlib-version>
+  <jsp-version>1.2</jsp-version>
+  <short-name>velocity</short-name>
   <uri>http://velocity.apache.org/velocity-view</uri>
   <display-name>VelocityView Tag</display-name>
   <description><![CDATA[Support for using Velocity and VelocityTools within JSP files and tags.
@@ -32,7 +32,7 @@
                         VelocityTools.]]></description>
   <tag>
     <name>view</name>
-    <tagclass>org.apache.velocity.tools.view.jsp.VelocityViewTag</tagclass>
+    <tag-class>org.apache.velocity.tools.view.jsp.VelocityViewTag</tag-class>
     <bodycontent>tagdependent</bodycontent>
     <attribute>
       <name>id</name>
