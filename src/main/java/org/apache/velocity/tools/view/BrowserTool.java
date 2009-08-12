@@ -22,8 +22,12 @@ package org.apache.velocity.tools.view;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.tools.Scope;
+import org.apache.velocity.tools.ConversionUtils;
+import org.apache.velocity.tools.generic.FormatConfig;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
 
@@ -31,8 +35,8 @@ import org.apache.velocity.tools.config.InvalidScope;
  *  <p>browser-sniffing tool (session or request scope requested, session scope advised).</p>
  *  <p></p>
  * <p><b>Usage:</b></p>
- * <p>BrowserTool defines properties that are used to test the client browser, operating system, device...
- * Apart from properties related to versioning, all properties are booleans.</p>
+ * <p>BrowserTool defines properties that are used to test the client browser, operating system, device, language...
+ * Apart from properties related to browser version and language, all properties are booleans.</p>
  * <p>The following properties are available:</p>
  * <ul>
  * <li><i>Versioning:</i>version majorVersion minorVersion geckoVersion</li>
@@ -46,8 +50,13 @@ import org.apache.velocity.tools.config.InvalidScope;
  * <li><i>Devices:</i>palm audrey iopener wap blackberry</li>
  * <li><i>Features:</i>javascript css css1 css2 dom0 dom1 dom2</li>
  * <li><i>Special:</i>robot (true if the page is requested by a robot, i.e. when one of the following properties is true:
- * wget getright yahoo altavista lycos infoseek lwp webcrawler linkexchange slurp google java)
+ * wget getright yahoo altavista lycos infoseek lwp webcrawler linkexchange slurp google java)</li>
+ * <li>Language: preferredLanguageTag (a string like 'en', 'da', 'en-US', ...), preferredLocale (a java Locale)</li>
  * </ul>
+ *
+ * <p>Language properties are filtered by the languagesFilter tool param, if present. If no matching language is found, or if there is no
+ * matching language, the tools defaut locale (or the first value of languagesFilter) is returned.
+ * Their value is guarantied to belong to the set provided in languagesFilter, if any.</p>
  *
  * Thanks to Lee Semel (lee@semel.net), the author of the HTTP::BrowserDetect Perl module.
  * See also:
@@ -61,10 +70,13 @@ import org.apache.velocity.tools.config.InvalidScope;
  */
 @DefaultKey("browser")
 @InvalidScope(Scope.APPLICATION)
-public class BrowserTool implements java.io.Serializable
+public class BrowserTool extends FormatConfig implements java.io.Serializable
 {
     private static final long serialVersionUID = 1734529350532353339L;
 
+    protected Log LOG;
+
+    /* User-Agent header variables */
     private String userAgent = null;
     private String version = null;
     private int majorVersion = -1;
@@ -72,6 +84,89 @@ public class BrowserTool implements java.io.Serializable
     private String geckoVersion = null;
     private int geckoMajorVersion = -1;
     private int geckoMinorVersion = -1;
+
+    private static Pattern genericVersion = Pattern.compile(
+            "/"
+            /* Version starts with a slash */
+            +
+            "([A-Za-z]*"
+            /* Eat any letters before the major version */
+            +
+            "( [\\d]* )"
+            /* Major version number is every digit before the first dot */
+            + "\\." /* The first dot */
+            +
+            "( [\\d]* )"
+            /* Minor version number is every digit after the first dot */
+            + "[^\\s]*)" /* Throw away the remaining */
+            , Pattern.COMMENTS);
+    private static Pattern firefoxVersion = Pattern.compile(
+            "/"
+            +
+            "(( [\\d]* )"
+            /* Major version number is every digit before the first dot */
+            + "\\." /* The first dot */
+            +
+            "( [\\d]* )"
+            /* Minor version number is every digit after the first dot */
+            + "[^\\s]*)" /* Throw away the remaining */
+            , Pattern.COMMENTS);
+    private static Pattern ieVersion = Pattern.compile(
+            "compatible;"
+            + "\\s*"
+            + "\\w*" /* Browser name */
+            + "[\\s|/]"
+            +
+            "([A-Za-z]*"
+            /* Eat any letters before the major version */
+            +
+            "( [\\d]* )"
+            /* Major version number is every digit before first dot */
+            + "\\." /* The first dot */
+            +
+            "( [\\d]* )"
+            /* Minor version number is digits after first dot */
+            + "[^\\s]*)" /* Throw away remaining dots and digits */
+            , Pattern.COMMENTS);
+    private static Pattern safariVersion = Pattern.compile(
+            "safari/"
+            +
+            "(( [\\d]* )"
+            /* Major version number is every digit before first dot */
+            + "(?:"
+            + "\\." /* The first dot */
+            +
+            " [\\d]* )?)"
+            /* Minor version number is digits after first dot */
+            , Pattern.COMMENTS);
+    private static Pattern mozillaVersion = Pattern.compile(
+            "netscape/"
+            +
+            "(( [\\d]* )"
+            /* Major version number is every digit before the first dot */
+            + "\\." /* The first dot */
+            +
+            "( [\\d]* )"
+            /* Minor version number is every digit after the first dot */
+            + "[^\\s]*)" /* Throw away the remaining */
+            , Pattern.COMMENTS);
+    private static Pattern fallbackVersion = Pattern.compile(
+            "[\\w]+/"
+            +
+            "( [\\d]+ );"
+            /* Major version number is every digit before the first dot */
+            , Pattern.COMMENTS);
+
+
+    /* Accept-Language header variables */
+    private String acceptLanguage = null;
+    private SortedMap<Float,List<String>> languageRangesByQuality = null;
+    private String starLanguageRange = null;
+    // pametrizable filter of retained laguages
+    private List<String> languagesFilter = null;
+    private String preferredLanguage = null;
+
+    private static Pattern quality = Pattern.compile("^q\\s*=\\s*(\\d(?:0(?:.\\d{0,3})?|1(?:.0{0,3}))?)$");
 
     /**
      * Retrieves the User-Agent header from the request (if any).
@@ -82,12 +177,27 @@ public class BrowserTool implements java.io.Serializable
         if (request != null)
         {
             setUserAgent(request.getHeader("User-Agent"));
+            setAcceptLanguage(request.getHeader("Accept-Language"));
         }
         else
         {
             setUserAgent(null);
+            setAcceptLanguage(null);
         }
     }
+
+    /**
+     * Set log.
+     */
+    public void setLog(Log log)
+    {
+        if (log == null)
+        {
+            throw new NullPointerException("log should not be set to null");
+        }
+        this.LOG = log;
+    }
+
 
     /**
      * Sets the User-Agent string to be parsed for info.  If null, the string
@@ -107,6 +217,37 @@ public class BrowserTool implements java.io.Serializable
         }
     }
 
+    public void setAcceptLanguage(String al)
+    {
+        if(al == null)
+        {
+            acceptLanguage = "";
+        }
+        else
+        {
+            acceptLanguage = al.toLowerCase();
+        }
+    }
+
+    public void setLanguagesFilter(String filter)
+    {
+        if(filter == null || filter.length() == 0)
+        {
+            languagesFilter = null;
+        }
+        else
+        {
+            languagesFilter = Arrays.asList(filter.split(","));
+        }
+        // clear preferred language cache
+        preferredLanguage = null;
+    }
+
+    public String getLanguagesFilter()
+    {
+        return languagesFilter.toString();
+    }
+
     @Override
     public String toString()
     {
@@ -121,8 +262,14 @@ public class BrowserTool implements java.io.Serializable
         return test(key);
     }
 
-    public String getUserAgent() {
-	return userAgent;
+    public String getUserAgent()
+    {
+	    return userAgent;
+    }
+
+    public String getAcceptLanguage()
+    {
+        return acceptLanguage;
     }
 
     /* Versioning */
@@ -927,6 +1074,46 @@ public class BrowserTool implements java.io.Serializable
         return getDom0(); // good approximation
     }
 
+    /* Languages */
+
+    public String getPreferredLanguage()
+    {
+        if(preferredLanguage != null) return preferredLanguage;
+
+        parseAcceptLanguage();
+        if(languageRangesByQuality.size() == 0)
+        {
+            preferredLanguage = starLanguageRange; // may be null
+        }
+        else
+        {
+            List<List<String>> lists = new ArrayList<List<String>>(languageRangesByQuality.values());
+            Collections.reverse(lists);
+            for(List<String> lst : lists) // sorted by quality (treemap)
+            {
+                for(String l : lst)
+                {
+                    preferredLanguage = filterLanguageTag(l);
+                    if(preferredLanguage != null) break;
+                }
+                if(preferredLanguage != null) break;
+            }
+        }
+        // fallback
+        if(preferredLanguage == null)
+        {
+            preferredLanguage = filterLanguageTag(languagesFilter == null ? getLocale().getDisplayName() : languagesFilter.get(0));
+        }
+        // preferredLanguage should now never be null
+        assert(preferredLanguage != null);
+        return preferredLanguage;
+    }
+
+    public Locale getPreferredLocale()
+    {
+        return ConversionUtils.toLocale(getPreferredLanguage());
+    }
+
     /* Helpers */
 
     private boolean test(String key)
@@ -944,21 +1131,7 @@ public class BrowserTool implements java.io.Serializable
             }
 
             /* generic versionning */
-            Matcher v = Pattern.compile(
-                    "/"
-                    /* Version starts with a slash */
-                    +
-                    "([A-Za-z]*"
-                    /* Eat any letters before the major version */
-                    +
-                    "( [\\d]* )"
-                    /* Major version number is every digit before the first dot */
-                    + "\\." /* The first dot */
-                    +
-                    "( [\\d]* )"
-                    /* Minor version number is every digit after the first dot */
-                    + "[^\\s]*)" /* Throw away the remaining */
-                    , Pattern.COMMENTS).matcher(userAgent);
+            Matcher v = genericVersion.matcher(userAgent);
 
             if (v.find())
             {
@@ -969,7 +1142,7 @@ public class BrowserTool implements java.io.Serializable
                 }
                 try
                 {
-                    majorVersion = Integer.parseInt(v.group(2));
+                    majorVersion = Integer.valueOf(v.group(2));
                     String minor = v.group(3);
                     if (minor.startsWith("0"))
                     {
@@ -977,34 +1150,25 @@ public class BrowserTool implements java.io.Serializable
                     }
                     else
                     {
-                        minorVersion = Integer.parseInt(minor);
+                        minorVersion = Integer.valueOf(minor);
                     }
                 }
                 catch (NumberFormatException nfe)
-                {}
+                {
+                    LOG.error("BrowserTool: Could not parse browser version for User-Agent: "+userAgent,nfe);
+                }
             }
 
             /* Firefox versionning */
             if (test("firefox"))
             {
-                Matcher fx = Pattern.compile(
-                        "/"
-                        +
-                        "(( [\\d]* )"
-                        /* Major version number is every digit before the first dot */
-                        + "\\." /* The first dot */
-                        +
-                        "( [\\d]* )"
-                        /* Minor version number is every digit after the first dot */
-                        + "[^\\s]*)" /* Throw away the remaining */
-                        , Pattern.COMMENTS)
-                        .matcher(userAgent);
+                Matcher fx = firefoxVersion.matcher(userAgent);
                 if (fx.find())
                 {
                     version = fx.group(1);
                     try
                     {
-                        majorVersion = Integer.parseInt(fx.group(2));
+                        majorVersion = Integer.valueOf(fx.group(2));
                         String minor = fx.group(3);
                         if (minor.startsWith("0"))
                         {
@@ -1012,41 +1176,27 @@ public class BrowserTool implements java.io.Serializable
                         }
                         else
                         {
-                            minorVersion = Integer.parseInt(minor);
+                            minorVersion = Integer.valueOf(minor);
                         }
                     }
                     catch (NumberFormatException nfe)
-                    {}
+                    {
+                        LOG.error("BrowserTool: Could not parse browser version for User-Agent: "+userAgent,nfe);
+                    }
                 }
             }
 
             /* IE versionning */
-            if (test("compatible"))
+            else if (test("compatible"))
             {
-                Matcher ie = Pattern.compile(
-                        "compatible;"
-                        + "\\s*"
-                        + "\\w*" /* Browser name */
-                        + "[\\s|/]"
-                        +
-                        "([A-Za-z]*"
-                        /* Eat any letters before the major version */
-                        +
-                        "( [\\d]* )"
-                        /* Major version number is every digit before first dot */
-                        + "\\." /* The first dot */
-                        +
-                        "( [\\d]* )"
-                        /* Minor version number is digits after first dot */
-                        + "[^\\s]*)" /* Throw away remaining dots and digits */
-                        , Pattern.COMMENTS)
-                        .matcher(userAgent);
+                Matcher ie = ieVersion.matcher(userAgent);
+
                 if (ie.find())
                 {
                     version = ie.group(1);
                     try
                     {
-                        majorVersion = Integer.parseInt(ie.group(2));
+                        majorVersion = Integer.valueOf(ie.group(2));
                         String minor = ie.group(3);
                         if (minor.startsWith("0"))
                         {
@@ -1054,64 +1204,46 @@ public class BrowserTool implements java.io.Serializable
                         }
                         else
                         {
-                            minorVersion = Integer.parseInt(minor);
+                            minorVersion = Integer.valueOf(minor);
                         }
                     }
                     catch (NumberFormatException nfe)
-                    {}
+                    {
+                        LOG.error("BrowserTool: Could not parse browser version for User-Agent: "+userAgent,nfe);
+                    }
                 }
             }
 
             /* Safari versionning*/
-            if (getSafari())
+            else if (getSafari())
             {
-                Matcher safari = Pattern.compile(
-                        "safari/"
-                        +
-                        "(( [\\d]* )"
-                        /* Major version number is every digit before first dot */
-                        + "(?:"
-                        + "\\." /* The first dot */
-                        +
-                        " [\\d]* )?)"
-                        /* Minor version number is digits after first dot */
-                        , Pattern.COMMENTS)
-                        .matcher(userAgent);
+                Matcher safari = safariVersion.matcher(userAgent);
                 if (safari.find())
                 {
                     version = safari.group(1);
                     try
                     {
-                        int sv = Integer.parseInt(safari.group(2));
+                        int sv = Integer.valueOf(safari.group(2));
                         majorVersion = sv / 100;
                         minorVersion = sv % 100;
                     }
                     catch (NumberFormatException nfe)
-                    {}
+                    {
+                        LOG.error("BrowserTool: Could not parse browser version for User-Agent: "+userAgent,nfe);
+                    }
                 }
             }
 
             /* Gecko-powered Netscape (i.e. Mozilla) versions */
-            if (getGecko() && getNetscape() && test("netscape"))
+            else if (getGecko() && getNetscape() && test("netscape"))
             {
-                Matcher netscape = Pattern.compile(
-                        "netscape/"
-                        +
-                        "(( [\\d]* )"
-                        /* Major version number is every digit before the first dot */
-                        + "\\." /* The first dot */
-                        +
-                        "( [\\d]* )"
-                        /* Minor version number is every digit after the first dot */
-                        + "[^\\s]*)" /* Throw away the remaining */
-                        , Pattern.COMMENTS)
-                        .matcher(userAgent);
+                Matcher netscape = mozillaVersion.matcher(userAgent);
                 if (netscape.find())
                 {
                     version = netscape.group(1);
                     try
                     {
-                        majorVersion = Integer.parseInt(netscape.group(2));
+                        majorVersion = Integer.valueOf(netscape.group(2));
                         String minor = netscape.group(3);
                         if (minor.startsWith("0"))
                         {
@@ -1119,34 +1251,32 @@ public class BrowserTool implements java.io.Serializable
                         }
                         else
                         {
-                            minorVersion = Integer.parseInt(minor);
+                            minorVersion = Integer.valueOf(minor);
                         }
                     }
                     catch (NumberFormatException nfe)
-                    {}
+                    {
+                        LOG.error("BrowserTool: Could not parse browser version for User-Agent: "+userAgent,nfe);
+                    }
                 }
             }
 
             /* last try if version not found */
             if (version == null)
             {
-                Matcher mv = Pattern.compile(
-                        "[\\w]+/"
-                        +
-                        "( [\\d]+ );"
-                        /* Major version number is every digit before the first dot */
-                        , Pattern.COMMENTS)
-                        .matcher(userAgent);
+                Matcher mv = fallbackVersion.matcher(userAgent);
                 if (mv.find())
                 {
                     version = mv.group(1);
                     try
                     {
-                        majorVersion = Integer.parseInt(version);
+                        majorVersion = Integer.valueOf(version);
                         minorVersion = 0;
                     }
                     catch (NumberFormatException nfe)
-                    {}
+                    {
+                        LOG.error("BrowserTool: Could not parse browser version for User-Agent: "+userAgent,nfe);
+                    }
                 }
             }
 
@@ -1161,7 +1291,7 @@ public class BrowserTool implements java.io.Serializable
                     geckoVersion = g.group(1);
                     try
                     {
-                    	geckoMajorVersion = Integer.parseInt(g.group(2));
+                    	geckoMajorVersion = Integer.valueOf(g.group(2));
                     	String minor = g.group(3);
                         if (minor.startsWith("0"))
                         {
@@ -1169,19 +1299,88 @@ public class BrowserTool implements java.io.Serializable
                         }
                         else
                         {
-                            geckoMinorVersion = Integer.parseInt(minor);
+                            geckoMinorVersion = Integer.valueOf(minor);
                         }
                     }
                     catch (NumberFormatException nfe)
-                    {}
+                    {
+                        LOG.error("BrowserTool: Could not parse browser version for User-Agent: "+userAgent,nfe);
+                    }
                 }
             }
         }
-        catch (PatternSyntaxException nfe)
+        catch (PatternSyntaxException pse)
         {
-            // where should I log ?!
+            LOG.error("BrowserTool: Could not parse browser version for User-Agent: "+userAgent,pse);
         }
     }
 
+    private void parseAcceptLanguage()
+    {
+        if(languageRangesByQuality != null)
+        {
+            // already done
+            return;
+        }
 
+        languageRangesByQuality = new TreeMap<Float,List<String>>();
+        StringTokenizer languageTokenizer = new StringTokenizer(acceptLanguage, ",");
+        while (languageTokenizer.hasMoreTokens())
+        {
+            String language = languageTokenizer.nextToken().trim();
+            int qValueIndex = language.indexOf(';');
+            if(qValueIndex == -1)
+            {
+                language = language.replace('-','_');
+                List<String> l = languageRangesByQuality.get(1.0f);
+                if(l == null)
+                {
+                    l = new ArrayList<String>();
+                    languageRangesByQuality.put(1.0f,l);
+                }
+                l.add(language);
+            }
+            else
+            {
+                String code = language.substring(0,qValueIndex).trim().replace('-','_');
+                String qval = language.substring(qValueIndex + 1).trim();
+                if("*".equals(qval))
+                {
+                    starLanguageRange = code;
+                }
+                else
+                {
+                    Matcher m = quality.matcher(qval);
+                    if(m.matches())
+                    {
+                        Float q = Float.valueOf(m.group(1));
+                        List<String> al = languageRangesByQuality.get(q);
+                        if(al == null)
+                        {
+                            al = new ArrayList<String>();
+                            languageRangesByQuality.put(q,al);
+                        }
+                        al.add(code);
+                    }
+                    else
+                    {
+                        LOG.error("BrowserTool: could not parse language quality value: "+language);
+                    }
+                }
+            }
+        }
+    }
+
+    private String filterLanguageTag(String languageTag)
+    {
+        languageTag = languageTag.replace('-','_');
+        if(languagesFilter == null) return languageTag;
+        if(languagesFilter.contains(languageTag)) return languageTag;
+        if(languageTag.contains("_"))
+        {
+            String[] parts = languageTag.split("_");
+            if(languagesFilter.contains(parts[0])) return parts[0];
+        }
+        return null;
+    }
 }

@@ -163,12 +163,19 @@ public class ViewToolsTests {
     /******* Tests **********/
 
     public @Test void testBrowserSnifferTool() throws Exception {
+        /* check we are identified as a Java (HttpUnit) client */
         WebConversation conv = new WebConversation();
         WebRequest req = new GetMethodWebRequest(ROOT_URL+"browser.vm");
         WebResponse resp = conv.getResponse(req);
-
-        /* check we are identified as a Java (HttpUnit) client */
         checkText(resp,"Java","true");
+
+        /* check language */
+        req.setHeaderField("Accept-Language","en");
+        resp = conv.getResponse(req);
+        checkText(resp,"prefLang","en");
+        req.setHeaderField("Accept-Language","en-US,en;q=0.8");
+        resp = conv.getResponse(req);
+        checkText(resp,"preferredLanguage","en");
     }
 
     public @Test void testContextTool() throws Exception {
