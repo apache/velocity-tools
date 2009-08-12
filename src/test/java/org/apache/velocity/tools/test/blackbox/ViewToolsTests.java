@@ -172,7 +172,7 @@ public class ViewToolsTests {
         /* check language */
         req.setHeaderField("Accept-Language","en");
         resp = conv.getResponse(req);
-        checkText(resp,"prefLang","en");
+        checkText(resp,"preferredLanguage","en");
         req.setHeaderField("Accept-Language","en-US,en;q=0.8");
         resp = conv.getResponse(req);
         checkText(resp,"preferredLanguage","en");
