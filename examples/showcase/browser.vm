@@ -161,5 +161,9 @@ $demo.thisPage.insert("#doclink( 'BrowserTool' false )").
 #demo( 'browser' 'Dom1' $desc )
 #demo( 'browser' 'Dom2' $desc )
 #demo( 'browser' 'Javascript' $desc )
+#demo1('browser' 'setLanguagesFilter' 6 'setter for a coma-separated list of weapp languages filter')
+#demo( 'browser' 'languagesFilter' 'coma-separated list of weapp languages filter')
+#set( $desc = 'Returns the preferred language tag from Accept-Header, filtered by values given to the LanguageFilter param' )
+#demo( 'browser' 'preferredLanguage' $desc)
 #demoCustom( 'browser' )
 </table>

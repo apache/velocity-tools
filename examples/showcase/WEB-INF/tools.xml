@@ -28,6 +28,11 @@
     <tool key="text" bundles="resources,otherStuff"/>
     <tool key="params" locale="en_US"/>
   </toolbox>
+    
+  <toolbox scope="session" locale="en_US">
+    <tool class="org.apache.velocity.tools.view.BrowserTool" languagesFilter="en"/>
+  </toolbox>
+
   <toolbox scope="application">
     <tool key="date" format="yyyy-MM-dd" depth="2" skip="month"/>
     <tool key="convert" dateFormat="yyyy-MM-dd"/>
