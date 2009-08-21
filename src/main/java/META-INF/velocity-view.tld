@@ -33,7 +33,7 @@
   <tag>
     <name>view</name>
     <tag-class>org.apache.velocity.tools.view.jsp.VelocityViewTag</tag-class>
-    <bodycontent>tagdependent</bodycontent>
+    <body-content>tagdependent</body-content>
     <attribute>
       <name>id</name>
       <required>false</required>
