@@ -165,9 +165,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
      */
     protected void fillContext(Context ctx, HttpServletRequest request)
     {
-        // check if an alternate layout has been specified
-        // by way of the request parameters
-        String layout = request.getParameter(KEY_LAYOUT);
+        String layout = findLayout(request);
         if (layout != null)
         {
             // let the template know what its new layout is
@@ -175,6 +173,22 @@ public class VelocityLayoutServlet extends VelocityViewServlet
         }
     }
 
+    /**
+     * Searches for a non-default layout to be used for this request.
+     * This implementation checks the request parameters and attributes.
+     */
+    protected String findLayout(HttpServletRequest request)
+    {
+        // check if an alternate layout has been specified
+        // by way of the request parameters
+        String layout = request.getParameter(KEY_LAYOUT);
+        // also look in the request attributes 
+        if (layout == null) 
+        { 
+            layout = (String)request.getAttribute(KEY_LAYOUT); 
+        }
+        return layout;
+    }
 
     /**
      * Overrides VelocityViewServlet.mergeTemplate to do a two-pass
