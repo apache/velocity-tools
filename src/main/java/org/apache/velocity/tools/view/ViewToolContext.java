@@ -314,4 +314,20 @@ public class ViewToolContext extends ToolContext implements ViewContext
         return velocity;
     }
 
+     /**
+      * Indicates whether the specified key is in the context.
+      *
+      * @param key The key to look for.
+      * @return    Whether the key is in the context.
+      */
+     public boolean containsKey(String key)
+     {
+         return super.containsKey(key)
+           || getAttribute(key) != null
+           || key.equals(REQUEST) && request != null
+           || key.equals(RESPONSE) && response != null
+           || key.equals(SESSION) && getSession() != null
+           || key.equals(APPLICATION) && application != null;
+     }
+
 }

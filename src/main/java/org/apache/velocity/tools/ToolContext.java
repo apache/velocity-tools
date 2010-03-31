@@ -134,10 +134,10 @@ public class ToolContext implements Context
         Map<String,Class> toolClasses = new HashMap<String,Class>();
         // go thru toolboxes backwards so final map matches
         // what would be found in lookups
-        int n = toolboxes.size();
-        for (int i = toolboxes.size() - 1; i >= 0; i--)
+        int n = getToolboxes().size();
+        for (int i = n - 1; i >= 0; i--)
         {
-            Toolbox toolbox = toolboxes.get(i);
+            Toolbox toolbox = getToolboxes().get(i);
             toolClasses.putAll(toolbox.getToolClassMap());
         }
         return toolClasses;
@@ -231,7 +231,7 @@ public class ToolContext implements Context
     public Set<String> keySet()
     {
         Set<String> keys = new HashSet<String>();
-        for (Toolbox toolbox : toolboxes)
+        for (Toolbox toolbox : getToolboxes())
         {
             keys.addAll(toolbox.getKeys());
         }
