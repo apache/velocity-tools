@@ -49,13 +49,12 @@ import org.apache.velocity.tools.config.ValidScope;
  * on its first or last iteration, and so on.
  * </p>
  * <p>
- * Most usage, of course, will probably never go much beyond the 
- * simple {@link #watch(Object)}, {@link ManagedIterator#sync(Object)}, 
- * {@link ManagedIterator#stop(Object)}, {@link #isFirst},
- * {@link #isLast},and maybe {@link #getCount} or {@link #getIndex}
- * methods, if even that much.  However, it is with complicated nested
- * #foreach loops and varying "break" conditions,  that this tool can
- * probably do the most to simplify your templates.
+ * Most functions of this tool will be obsolete with the release of
+ * Velocity 1.7, which will provide $foreach.hasNext, $foreach.isFirst,
+ * $foreach.isLast, $foreach.index and $foreach.count automatically.
+ * However, this will still be useful for the more advanced sync
+ * and skip features.  Also, for very complicated nested loops, the
+ * loop naming feature may be easier than doing things like $foreach.parent.parent.
  * </p>
  * <p>
  * Example of use:
@@ -94,6 +93,7 @@ import org.apache.velocity.tools.config.ValidScope;
 public class LoopTool
 {
     private Stack<ManagedIterator> iterators = new Stack<ManagedIterator>();
+    private ManagedIterator last;
 
     /**
      * <p>Tells the LoopTool to watch the specified Array, Collection, Map,
@@ -117,6 +117,7 @@ public class LoopTool
 
         ManagedIterator managed = manage(iterator, null);
         iterators.push(managed);
+        this.last = managed;
         return managed;
     }
 
@@ -145,6 +146,7 @@ public class LoopTool
 
         ManagedIterator managed = manage(iterator, name);
         iterators.push(managed);
+        this.last = managed;
         return managed;
     }
 
@@ -306,11 +308,11 @@ public class LoopTool
      */
     public Boolean isFirst()
     {
-        if (iterators.empty())
+        if (last != null)
         {
-            return null;
+            return last.isFirst();
         }
-        return iterators.peek().isFirst();
+        return null;
     }
 
     /**
@@ -341,11 +343,11 @@ public class LoopTool
      */
     public Boolean isLast()
     {
-        if (iterators.empty())
+        if (last != null)
         {
-            return null;
+            return last.isLast();
         }
-        return iterators.peek().isLast();
+        return null;
     }
 
     /**
@@ -381,7 +383,7 @@ public class LoopTool
      * if any. If there is no sync'ed iterators or none with
      * that name, then this will check if the specified key
      * is requesting a "property" of an outer loop (e.g.
-     * {@code $loop.foo_count} or {@code $loop.foo_first}).
+     * {@code $loop.count_foo} or {@code $loop.first_foo}).
      * This syntax is shorter and clearer than {@code $loop.getCount('foo')}.
      * If the key starts with a property name and ends with an outer loop
      * name, then the value of that property for that loop is returned.
@@ -480,11 +482,11 @@ public class LoopTool
      */
     public Integer getCount()
     {
-        if (iterators.empty())
+        if (last != null)
         {
-            return null;
+            return last.getCount();
         }
-        return iterators.peek().getCount();
+        return null;
     }
 
     /**
@@ -505,8 +507,22 @@ public class LoopTool
     }
 
     /**
-     * Returns the number of loops currently on the stack to tell
-     * how deeply nested the current loop is.
+     * Returns the most recent {@link ManagedIterator} for this instance.
+     * This can be used to access properties like the count, index,
+     * isFirst, isLast, etc which would otherwise fail on the last item
+     * in a loop due to the necessity of popping iterators off the
+     * stack when the last item is retrieved. (See VELTOOLS-124)
+     */
+    public ManagedIterator getThis()
+    {
+        return last;
+    }
+
+    /**
+     * Returns the number of loops currently on the stack.
+     * This is only useful for debugging, as iterators are
+     * popped off the stack at the start of their final iteration,
+     * making this frequently "incorrect".
      */
     public int getDepth()
     {
@@ -535,9 +551,9 @@ public class LoopTool
      * Don't let templates call this, but allow subclasses
      * and ManagedIterator to have access.
      */
-    protected void pop()
+    protected ManagedIterator pop()
     {
-        iterators.pop();
+        return iterators.pop();
     }
 
 
@@ -632,6 +648,22 @@ public class LoopTool
         }
 
         /**
+         * Returns the result of {@link #isFirst}. Exists to allow $loop.this.first syntax.
+         */
+        public boolean getFirst()
+        {
+            return isFirst();
+        }
+
+        /**
+         * Returns the result of {@link #isLast}. Exists to allow $loop.this.last syntax.
+         */
+        public boolean getLast()
+        {
+            return isLast();
+        }
+
+        /**
          * Returns true if there are more elements in the iterator
          * being managed by this instance which satisfy all the
          * {@link ActionCondition}s set for this instance.  Returns
@@ -640,6 +672,14 @@ public class LoopTool
         public boolean hasNext()
         {
             return hasNext(true);
+        }
+
+        /**
+         * Returns the result of {@link #hasNext}. Exists to allow $loop.this.hasNext syntax.
+         */
+        public boolean getHasNext()
+        {
+            return hasNext(false);//no need to pop, #foreach will always call hasNext()
         }
 
         // version that lets isLast check w/o popping this from the stack
@@ -754,6 +794,14 @@ public class LoopTool
         public int getCount()
         {
             return count;
+        }
+
+        /**
+         * Returns the 0-based index of the current item.
+         */
+        public int getIndex()
+        {
+            return count - 1;
         }
 
         /**
