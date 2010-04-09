@@ -467,6 +467,16 @@ public class ConversionTool extends LocaleConfig
 
     /**
      * @param value the value to be converted
+     * @return an array of int values derived from the specified value,
+     *         or <code>null</code>.
+     */
+    public int[] toIntegers(Object value)
+    {
+      return toInts(value);
+    }
+
+    /**
+     * @param value the value to be converted
      * @return an array of double values derived from the specified value,
      *         or <code>null</code>.
      */
