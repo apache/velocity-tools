@@ -191,6 +191,8 @@
 
         <p><b>http://&lt;your_server&gt;:&lt;port&gt;/simple/</b></p>
         <p><b>http://&lt;your_server&gt;:&lt;port&gt;/showcase/</b></p>
+        
+        <p>You can also use the embedded servlet runner to start and stop the showcase webapp on localhost's 8081 port using the <b>start.showcase.webapp</b> and <b>stop.showcase.webapp</b> ant targets.</p>
     </section>
 
     <section name="Known Issues">
