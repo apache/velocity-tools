@@ -40,11 +40,18 @@
         </p>
         <ol>
         <li>
-            <a href="#Conventions">Conventions</a>
-            <ol>
-            <li><a href="#">Keys/Names</a></li>
-            <li><a href="#">Properties</a></li>
-            </ol>
+          <a href="#Conventions">Conventions</a>
+          <ol>
+            <li><a href="#Tool_Keys/Names"></a>Tool Keys/Names</li>
+            <li><a href="#Tool_Properties"></a>Tool Properties</li>
+          </ol>
+        </li>
+        <li>
+          <a href="#Standard_Tool_Properties">Standard Tool Properties</a>
+          <ol>
+            <li><a href="#Standard_Properties_in_a_Standalone_Environment"></a>Standard Properties in a Standalone Environment</li>
+            <li><a href="#Standard_Properties_in_a_Web_Environment"></a>Standard Properties in a Web Environment</li>
+          </ol>
         </li>
         <li><a href="#Annotations">Annotations</a></li>
         <li>
@@ -133,6 +140,30 @@ public class FooBar {
             (This is discussed more later.)
             </p>
         </subsection>
+    </section>
+    <section name="Standard Tool Properties">
+      <p>Apart from custom properties you may define for your custom tool, the following properties are always defined and accessible to it, via the <code>configure(Map)</code> method or the appropriate setter.</p>
+      <subsection name="Standard Properties in a Standalone Environment">
+        <ul>
+          <li><code>key</code>: the context key this tool was mapped to.</li>
+          <li><code>velocityContext</code>: the current Velocity context (an <code>org.apache.velocity.tools.ToolContext</code> object)</li>
+        </ul>
+      </subsection>
+      <subsection name="Standard Properties in a Web Environment">
+        <ul>
+          <li><code>key</code>: the context key this tool was mapped to.</li>
+          <li><code>velocityEngine</code>: the Velocity engine (an <code>org.apache.velocity.app.VelocityEngine</code> object).</li>
+          <li><code>log</code>: the Velocity log (an <code>org.apache.velocity.runtime.log.LogChute</code> object).</li>
+          <li><code>locale</code>: the tool's locale.</li>
+          <li><code>scope</code>: the tool's scope: <code>request</code>, <code>session</code> or <code>application</code>.</li>
+          <li><code>servletContext</code>: the current J2EE servlet context, used to store all application-scoped properties (a <code>javax.servlet.ServletContext</code> object).</li>
+          <li><code>session</code>: the current J2EE session, null if it hasn't been created (a <code>javax.servlet.http.HttpSession</code> object). Contains the current session at the time of the tool's initialization for application scoped tools, generally relevant only for session and request scoped tools.</li>
+          <li><code>request</code>: the current J2EE request (a <code>javax.servlet.http.HttpServletRequest</code> object). Contains the current request at the time of the tool's initialization for session and application scoped tools, so generally relevant only for request scoped tools.</li>
+          <li><code>response</code>: the current J2EE response (a <code>javax.servlet.http.HttpServletResponse</code> object). Contains the current response at the time of the tool's initialization for session and application scoped tools, so generally relevant only for request scoped tools.</li>
+          <li><code>requestPath</code>: the current request path portion of the URI. Generally relevant only for request scoped tools.</li>
+          <li><code>velocityContext</code>: the current Velocity context (an <code>org.apache.velocity.tools.view.context.ChainedContext</code> object). Generally relevant only for request scoped tools.</li>
+        </ul>
+      </subsection>
     </section>
     <section name="Annotations">
         <p>
