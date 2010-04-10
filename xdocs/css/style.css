@@ -43,7 +43,7 @@ td {
     display: block;
     font-size: 1.2em;
 }
-.subsection h3 a.nolink, .subsection h3 a.nolink:hover {
+.subsection h3 a.nolink, .subsection h3 a.nolink:hover, .subsection table a.nolink {
     text-decoration: none;
     color: black;
 }
