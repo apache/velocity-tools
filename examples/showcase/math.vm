@@ -59,7 +59,7 @@ $demo.thisPage.insert("#doclink( 'MathTool' true )").
 #demo1( 'math' 'floor' 3 $desc)
 
 #set( $desc = 'Returns the given number rounded to the nearest whole Integer or <code>null</code> if it is invalid.' )
-#demo1( 'math' 'found' 3 $desc)
+#demo1( 'math' 'round' 3 $desc)
 
 #set( $desc = "Rounds a number to the specified number of decimal places. This is particulary useful for simple display formatting. If you want to round an number to the nearest integer, it is better to use ${esc.d}math.round(), as that will return an Integer rather than a Double." )
 #demo2( 'math' 'roundTo' 2 $desc )
