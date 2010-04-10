@@ -58,7 +58,7 @@ the additional change specified by the method call.
 #else
   #set( $result = $link.params )
 #end
-#demoAlt( 'link' 'params' $desc )
+#demoAlt( 'link' 'params' $result $desc )
 
 
 #set( $desc = "Returns the URI that addresses this web application. E.g. <code>http://myserver.net/myapp</code>. This string may not end with a ${esc.q}/${esc.q}." )
