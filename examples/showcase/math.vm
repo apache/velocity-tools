@@ -50,7 +50,7 @@ $demo.thisPage.insert("#doclink( 'MathTool' true )").
 #demo2( 'math' 'min' 3 $desc)
 
 #set( $desc = 'Returns the absolute value of the number or <code>null</code> if it is invalid.' )
-#demo2( 'math' 'abs' 3 $desc)
+#demo1( 'math' 'abs' 3 $desc)
 
 #set( $desc = 'Returns the smallest integer that is not less than the given number or <code>null</code> if it is invalid.' )
 #demo1( 'math' 'ceil' 3 $desc)
