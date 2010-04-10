@@ -59,6 +59,7 @@
             <item name="Standalone Use"            href="standalone.html"/>
             <item name="Web Framework Integration" href="frameworks.html"/>
             <item name="Creating Tools"            href="creatingtools.html"/>
+            <item name="Tools Usage Summary" href="summary.html"/>
             <item name="Glossary"                  href="http://velocity.apache.org/engine/devel/glossary.html"/>
         </group>
 
