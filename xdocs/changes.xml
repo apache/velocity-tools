@@ -28,7 +28,7 @@
   <section name="VelocityTools Changes">
     <p>This document tracks the changes in VelocityTools between releases.</p>
 
-    <subsection name="2.0-dev">
+    <subsection name="2.0">
         <p>This section very briefly and generally describes changes after the 1.x series.</p>
         <ul>
         <li>More convention over configuration and smart defaults (ndb)</li>
@@ -41,7 +41,7 @@
         <li>Deprecated many outdated things (ndb)</li> -->
         <li>Legacy support for almost all Tools 1.4 configurations and extensions (ndb)</li>
         <li>Better integration of $application, $session and $request scope control objects (cbn)</li>
-	<li>and lots more...</li>
+	    <li>and lots more...</li>
         </ul>
     </subsection>
 
