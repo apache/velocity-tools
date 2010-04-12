@@ -40,6 +40,9 @@
         </p>
         <ol>
         <li>
+            <a href="#Basics">Basics</a>
+        </li>
+        <li>
           <a href="#Conventions">Conventions</a>
           <ol>
             <li><a href="#Tool_Keys/Names"></a>Tool Keys/Names</li>
@@ -71,6 +74,12 @@
             </ol>
         </li>
         </ol>
+    </section>
+    <section name="Basics">
+        <p>
+        Any class you wish to use as a tool must be declared public
+        and have a public, no-argument constructor.
+        </p>
     </section>
     <section name="Conventions">
         <subsection name="Tool Keys/Names">
