@@ -498,23 +498,17 @@
 
         * For a final release, the distributionManagement.site.url value
           in the pom.xml should be:
-            scpexe://people.apache.org/www/velocity.apache.org/engine/releases/velocity-${version}
+            scpexe://people.apache.org/www/velocity.apache.org/tools/releases/velocity-tools-${project.version}
           and for alpha or beta releases it should be:
             scpexe://people.apache.org/www/velocity.apache.org/engine/devel/
 
         * Do all new files have the Apache License? (use "ant rat" to double-check)
 
-        * Is ${build.src}/changes/changes.xml up to date?
+        * Is ${basedir}/xdocs/changes.xml up to date?
           Feel free to set an estimated release date for this version in that file;
           it can be corrected later if the release is delayed.
 
-        * Is ${build.src}/site/apt/upgrading.apt up to date for this release?
-
-        * Is the ${velocity.dir}/README.txt up to date for this release?
-
-        * If a final release, update the "Where do I get releases?" section of
-            ${build.dir}/xdocs/docs/index.xml
-          to show the latest stable version number.
+        * Is the ${basedir}/README.txt up to date for this release?
 
     * Check that you have no uncommitted changes with 'svn status'
 
