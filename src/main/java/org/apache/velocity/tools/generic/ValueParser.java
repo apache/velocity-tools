@@ -55,11 +55,18 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
      */
     private Boolean hasSubkeys = null;
 
+    /* whether the wrapped map should be read-only or not */
+    private boolean readOnly = true;
+
     /**
-     * The key used for specifying a whether to support subkeys
+     * The key used for specifying whether to support subkeys
      */
     public static final String ALLOWSUBKEYS_KEY = "allowSubkeys";
 
+    /**
+     * The key used for specifying whether to be read-only
+     */
+    public static final String READONLY_KEY = "readOnly";
 
     public ValueParser() {}
 
@@ -97,6 +104,24 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
     }
 
     /**
+     * Is the Map read-only?
+     * @return yes/no
+     */
+    protected boolean getReadOnly()
+    {
+        return readOnly;
+    }
+
+    /**
+     * Set or unset read-only behaviour
+     * @param ro
+     */
+    protected void setReadOnly(boolean ro)
+    {
+        readOnly = ro;
+    }
+
+    /**
      * Does the actual configuration. This is protected, so
      * subclasses may share the same ValueParser and call configure
      * at any time, while preventing templates from doing so when 
@@ -120,6 +145,12 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
         if(allow != null)
         {
             setAllowSubkeys(allow);
+        }
+
+        Boolean ro = values.getBoolean(READONLY_KEY);
+        if(ro != null)
+        {
+            setReadOnly(ro);
         }
     }
 
@@ -515,40 +546,73 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
         }
     }
 
-    public int size() {
+    public int size()
+    {
         return getSource().size();
     }
 
-    public boolean isEmpty() {
+    public boolean isEmpty()
+    {
         return getSource().isEmpty();
     }
 
-    public boolean containsKey(Object key) {
+    public boolean containsKey(Object key)
+    {
         return getSource().containsKey(key);
     }
 
-    public boolean containsValue(Object value) {
+    public boolean containsValue(Object value)
+    {
         return getSource().containsValue(value);
     }
 
-    public Object get(Object key) {
+    public Object get(Object key)
+    {
         return get(String.valueOf(key));
     }
 
-    public Object put(String key, Object value) {
-        throw new UnsupportedOperationException("Cannot put("+key+","+value+"); "+getClass().getName()+" is read-only");
+    public Object put(String key, Object value)
+    {
+        if(readOnly)
+        {
+            throw new UnsupportedOperationException("Cannot put("+key+","+value+"); "+getClass().getName()+" is read-only");
+        }
+        if(hasSubkeys != null && hasSubkeys.equals(Boolean.FALSE) && key.indexOf('.') != -1)
+        {
+            hasSubkeys = Boolean.TRUE;
+        }
+        return source.put(key,value); // TODO this tool should be made thread-safe (the request-scoped ParameterTool doesn't need it, but other uses could...)
     }
 
-    public Object remove(Object key) {
-        throw new UnsupportedOperationException("Cannot remove("+key+"); "+getClass().getName()+" is read-only");
+    public Object remove(Object key)
+    {
+        if(readOnly)
+        {
+            throw new UnsupportedOperationException("Cannot remove("+key+"); "+getClass().getName()+" is read-only");
+        }
+        if(hasSubkeys != null && hasSubkeys.equals(Boolean.TRUE) && ((String)key).indexOf('.') != -1)
+        {
+            hasSubkeys = null;
+        }
+        return source.remove(key);
     }
 
     public void putAll(Map<? extends String,? extends Object> m) {
-        throw new UnsupportedOperationException("Cannot putAll("+m+"); "+getClass().getName()+" is read-only");
+        if(readOnly)
+        {
+            throw new UnsupportedOperationException("Cannot putAll("+m+"); "+getClass().getName()+" is read-only");
+        }
+        hasSubkeys = null;
+        source.putAll(m);
     }
 
     public void clear() {
-        throw new UnsupportedOperationException("Cannot clear(); "+getClass().getName()+" is read-only");
+        if(readOnly)
+        {
+            throw new UnsupportedOperationException("Cannot clear(); "+getClass().getName()+" is read-only");
+        }
+        hasSubkeys = Boolean.FALSE;
+        source.clear();
     }
 
     public Set<String> keySet() {
