@@ -587,7 +587,7 @@
 
   <!-- Create binary distribution files -->
   <target name="release.binaries"
-          depends="clean,prepare,jar.struts,jar.view,jar.generic,jar.source,jar.javadoc,examples,javadoc,docs,test"
+          depends="clean,prepare,jar.struts,jar.view,jar.generic,jar.source,jar.javadoc,examples,javadoc,docs,test,showcase"
           description="Builds everything and creates the binary distribution files">
 
     <!-- Gather misc docs/files -->
