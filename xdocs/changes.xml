@@ -28,6 +28,13 @@
   <section name="VelocityTools Changes">
     <p>This document tracks the changes in VelocityTools between releases.</p>
 
+    <subsection name="2.1-SNAPSHOT">
+        <p>This section describes changes after the 2.0 release.</p>
+        <ul>
+        <li>Upgraded to Dom4j 1.6.1 and Velocity Engine 1.6.4.</li>
+        </ul>
+    </subsection>
+
     <subsection name="2.0">
         <p>This section very briefly and generally describes changes after the 1.x series.</p>
         <ul>
