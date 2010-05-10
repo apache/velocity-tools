@@ -70,6 +70,7 @@
   </target>
   <target name="showcase-dependencies" depends="simple-dependencies">
     <copy todir="${lib}" file="${dom4j.jar}"/>
+    <copy todir="${lib}" file="${jaxen.jar}"/>
     <copy todir="${lib}" file="${servlet.jar}"/>
   </target>
 
