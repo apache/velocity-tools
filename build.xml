@@ -32,7 +32,13 @@
   <!-- This file contains all the defaults for building VelocityTools -->
   <property file="build.properties"/>                <!-- Component local   -->
 
+  <condition property="use.velocity-1.x">
+    <contains string="velocity-${jar.velocity.version}" substring="velocity-1."/>
+  </condition>
 
+  <condition property="use.velocity-2.x">
+    <contains string="velocity-${jar.velocity.version}" substring="velocity-2."/>
+  </condition>
 
 <!-- ========== Targets ======================================== -->
 
@@ -92,6 +98,15 @@
     <echo message="-------- ${project.name} ${project.version} --------"/>
   </target>
 
+  <!-- declare Velocity 1.x/2.x tweaks -->
+  <target name="-prepare.compile.velocity-1.x" if="use.velocity-1.x">
+    <copy file="${classes.src}/org/apache/velocity/tools/view/WebappUberspector.java.velocity-1.x" tofile="${classes.src}/org/apache/velocity/tools/view/WebappUberspector.java" overwrite="true"/>
+  </target>
+
+  <target name="-prepare.compile.velocity-2.x" if="use.velocity-2.x">
+    <copy file="${classes.src}/org/apache/velocity/tools/view/WebappUberspector.java.velocity-2.x" tofile="${classes.src}/org/apache/velocity/tools/view/WebappUberspector.java" overwrite="true"/>
+  </target>
+
   <!-- Prepare Compilation Environment -->
   <target name="prepare.compile">
     <!-- make necessary directories -->
@@ -109,6 +124,18 @@
         <include name="**/*.jar"/>
       </fileset>
     </path>
+
+    <!-- prepare Velocity 1.x/2.x tweaks -->
+    <antcall target="-prepare.compile.velocity-1.x"/>
+    <antcall target="-prepare.compile.velocity-2.x"/>
+
+    <!-- construct patternset of source files -->
+    <patternset id="source.files">
+      <include name="org/**/*.java"/>
+      <exclude name="org/apache/velocity/tools/generic/log/CommonsLogLogSystem.java" unless="use.velocity-1.x"/>
+      <exclude name="org/apache/velocity/tools/view/servlet/ServletLogger.java" unless="use.velocity-1.x"/>
+    </patternset>
+
   </target>
 
   <!-- Prepare Documentation Environment -->
@@ -150,7 +177,7 @@
            encoding="${compile.encoding}"
            destdir="${classes.dir}">
       <classpath refid="compile.classpath" />
-      <include name="org/**"/>
+      <patternset refid="source.files"/>
     </javac>
 
     <copy todir="${classes.dir}" filtering="yes">
@@ -174,7 +201,7 @@
            encoding="${compile.encoding}"
            destdir="${classes.dir}">
       <classpath refid="compile.classpath" />
-      <include name="org/**"/>
+      <patternset refid="source.files"/>
       <exclude name="**/struts/**"/>
     </javac>
 
@@ -201,7 +228,7 @@
            encoding="${compile.encoding}"
            destdir="${classes.dir}">
       <classpath refid="compile.classpath" />
-      <include name="org/**"/>
+      <patternset refid="source.files"/>
       <exclude name="**/struts/**"/>
       <exclude name="**/view/**"/>
     </javac>
