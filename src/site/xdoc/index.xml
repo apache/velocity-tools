@@ -137,7 +137,7 @@
                 <a href="config.properties.html">properties file</a>, 
                 <a href="config.java.html">plain java</a>, or really 
                 whatever you want (though perhaps with a bit more work).  No 
-                <a href="config.xml.html">XML</a> required anymore; though,
+                <a href="config-xml.html">XML</a> required anymore; though,
                 if you do use it, it's now a lot better than it was.
             </li>
         </ul>
@@ -156,7 +156,7 @@
             of the new infrastructure without even updating their 
             configuration, though eventually even the old toolbox.xml format 
             may be retired.  Don't cry.  You'll like the 
-            <a href="config.xml.html">new one</a> better once 
+            <a href="config-xml.html">new one</a> better once 
             you get to know it!  It can do much more with much less typing.
         </p>
 

@@ -52,7 +52,7 @@
         <group name="Docs">
             <item name="Upgrading to 2.0"          href="upgrading.html"/>
             <subGroup name="Configuration" href="config.html">
-                <item name="Using XML"          href="config.xml.html"/>
+                <item name="Using XML"          href="config-xml.html"/>
                 <item name="Using Properties"   href="config.properties.html"/>
                 <item name="Using Java"         href="config.java.html"/>
             </subGroup>

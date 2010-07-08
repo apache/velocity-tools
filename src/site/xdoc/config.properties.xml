@@ -31,9 +31,9 @@
 
     <section name="Configuration using Properties">
         <p>
-            VelocityTools 2 can be configured using a properties file.  
-            Here's the same configuration as the 
-            <a href="config.xml.html">XML</a> and
+            VelocityTools 2 can be configured using a properties file.
+            Here's the same configuration as the
+            <a href="config-xml.html">XML</a> and
             <a href="config.java.html">Java</a> examples
             in the properties format:
         </p>
