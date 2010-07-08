@@ -212,7 +212,7 @@
             <p>
             If you do need a configuration, you should update your configuration to
             one of the new formats.  Easiest would be to go from the old xml format
-            to <a href="config.xml.html">the new xml format</a>.
+            to <a href="config-xml.html">the new xml format</a>.
             Remember, you can just leave out standard tools that you don't do any
             configuration of, as your configuration will just be added to the
             default one (again, unless the default behavior is turned off).

@@ -31,12 +31,12 @@
 
     <section name="Configuration using Java">
         <p>
-            As of VelocityTools 2, its no longer merely possible to configure 
+            As of VelocityTools 2, its no longer merely possible to configure
             things purely via Java, it is now much easier to do and can be done
-            in several different ways. 
+            in several different ways.
             Here again, is an example that is equivalent to those demonstrated
             in the <a href="config.properties.html">properties</a> and
-            <a href="config.xml.html">xml</a> configurations:
+            <a href="config-xml.html">xml</a> configurations:
         </p>
 
         <sourcecode>
@@ -60,10 +60,10 @@ config.data("switches", "list.boolean", "true,false,false,true");
         </sourcecode>
 
         <p>
-            This example uses the 
+            This example uses the
             <a href="javadoc/org/apache/velocity/tools/config/EasyFactoryConfiguration.html">EasyFactoryConfiguration</a>
-            API for brevity, 
-            but you can also directly use the 
+            API for brevity,
+            but you can also directly use the
             <a href="javadoc/org/apache/velocity/tools/config/FactoryConfiguration.html">FactoryConfiguration</a>/
             <a href="javadoc/org/apache/velocity/tools/config/ToolboxConfiguration.html">ToolboxConfiguration</a>/
             <a href="javadoc/org/apache/velocity/tools/config/ToolConfiguration.html">ToolConfiguration</a>/

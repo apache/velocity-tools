@@ -1,33 +1,24 @@
 <?xml version="1.0"?>
 
-<!--
- Licensed to the Apache Software Foundation (ASF) under one
- or more contributor license agreements.  See the NOTICE file
- distributed with this work for additional information
- regarding copyright ownership.  The ASF licenses this file
- to you under the Apache License, Version 2.0 (the
- "License"); you may not use this file except in compliance
- with the License.  You may obtain a copy of the License at
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor
+    license agreements. See the NOTICE file distributed with this work for additional
+    information regarding copyright ownership. The ASF licenses this file to
+    you under the Apache License, Version 2.0 (the "License"); you may not use
+    this file except in compliance with the License. You may obtain a copy of
+    the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required
+    by applicable law or agreed to in writing, software distributed under the
+    License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+    OF ANY KIND, either express or implied. See the License for the specific
+    language governing permissions and limitations under the License. -->
 
-   http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing,
- software distributed under the License is distributed on an
- "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- KIND, either express or implied.  See the License for the
- specific language governing permissions and limitations
- under the License.
--->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<parent>
-		<artifactId>velocity-master</artifactId>
-		<groupId>org.apache.velocity</groupId>
-		<version>1-SNAPSHOT</version>
-	</parent>
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <artifactId>velocity-master</artifactId>
+        <groupId>org.apache.velocity</groupId>
+        <version>1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.apache.velocity</groupId>
     <artifactId>velocity-tools-parent</artifactId>
@@ -45,112 +36,134 @@
     <inceptionYear>2002</inceptionYear>
 
     <build>
-      <defaultGoal>install</defaultGoal>
-      <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <source>1.5</source>
-              <target>1.5</target>
-            </configuration>
-          </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-site-plugin</artifactId>
-          <configuration>
-            <inputEncoding>UTF-8</inputEncoding>
-            <outputEncoding>UTF-8</outputEncoding>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <configuration>
-            <includes>
-              <include>**/Test*.java</include>
-              <include>**/*Test.java</include>
-              <include>**/*TestCase.java</include>
-              <include>**/*Tests.java</include>
-            </includes>
-          </configuration>
-        </plugin>
-      </plugins>
+        <defaultGoal>install</defaultGoal>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <inputEncoding>UTF-8</inputEncoding>
+                    <outputEncoding>UTF-8</outputEncoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/Test*.java</include>
+                        <include>**/*Test.java</include>
+                        <include>**/*TestCase.java</include>
+                        <include>**/*Tests.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <distributionManagement>
-      <site>
-        <id>velocity.apache.org</id>
-        <url>scpexe://people.apache.org/www/velocity.apache.org/tools/releases/velocity-tools-2.0/</url>
-      </site>
+        <site>
+            <id>velocity.apache.org</id>
+            <url>scpexe://people.apache.org/www/velocity.apache.org/tools/releases/velocity-tools-2.0/</url>
+        </site>
     </distributionManagement>
 
     <reporting>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-project-info-reports-plugin</artifactId>
-          <reportSets>
-            <reportSet>
-              <reports>
-                <report>dependencies</report>
-                <report>issue-tracking</report>
-                <report>license</report>
-                <report>summary</report>
-                <report>scm</report>
-              </reports>
-            </reportSet>
-          </reportSets>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-changes-plugin</artifactId>
-          <reportSets>
-            <reportSet>
-              <reports>
-                <report>changes-report</report>
-                <report>jira-report</report>
-              </reports>
-            </reportSet>
-          </reportSets>
-          <configuration>
-            <!-- no FixFor yet. -->
-            <filter>sorter/field=issuekey&amp;sorter/order=ASC</filter>
-            <maxEntries>100</maxEntries>
-            <teamlist>http://velocity.apache.org/who-we-are.html</teamlist>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>taglist-maven-plugin</artifactId>
-          <configuration>
-            <tag>TODO</tag>
-            <tag>FIXME</tag>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jxr-plugin</artifactId>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <configuration>
-            <links>
-              <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
-              <link>http://jakarta.apache.org/commons/lang/api-release</link>
-              <link>http://jakarta.apache.org/commons/logging/api-release</link>
-              <link>http://jakarta.apache.org/commons/collections/api-release</link>
-              <link>http://logging.apache.org/log4j/docs/api</link>
-              <link>http://velocity.apache.org/engine/releases/velocity-1.5/apidocs</link>
-            </links>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-changelog-plugin</artifactId>
-        </plugin>
-      </plugins>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>dependencies</report>
+                            <report>issue-tracking</report>
+                            <report>license</report>
+                            <report>summary</report>
+                            <report>scm</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-changes-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>changes-report</report>
+                            <report>jira-report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+                <configuration>
+                    <!-- no FixFor yet. -->
+                    <filter>sorter/field=issuekey&amp;sorter/order=ASC</filter>
+                    <maxEntries>100</maxEntries>
+                    <teamlist>http://velocity.apache.org/who-we-are.html</teamlist>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>taglist-maven-plugin</artifactId>
+                <configuration>
+                    <tag>TODO</tag>
+                    <tag>FIXME</tag>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <excludePackageNames>org.apache.velocity.example</excludePackageNames>
+                    <links>
+                        <link>http://java.sun.com/j2se/1.5.0/docs/api/
+                        </link>
+                        <link>http://jakarta.apache.org/oro/api</link>
+                        <link>http://commons.apache.org/lang/api-release/
+                        </link>
+                        <link>http://commons.apache.org/collections/api-release/
+                        </link>
+                        <link>http://logging.apache.org/log4j/1.2/apidocs/
+                        </link>
+                        <link>http://excalibur.apache.org/apidocs</link>
+                        <link>http://tomcat.apache.org/tomcat-4.1-doc/servletapi/
+                        </link>
+                    </links>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <id>non-aggregate</id>
+                        <reports>
+                            <report>javadoc</report>
+                        </reports>
+                    </reportSet>
+                    <reportSet>
+                        <id>aggregated</id>
+                        <reports>
+                            <report>aggregate</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-changelog-plugin</artifactId>
+            </plugin>
+        </plugins>
     </reporting>
 
     <issueManagement>
@@ -163,171 +176,11 @@
         <tag>HEAD</tag>
         <url>http://svn.apache.org/repos/asf/velocity/tools/trunk</url>
     </scm>
-
-    <!-- <dependencies>
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>1.7.0</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-digester</groupId>
-            <artifactId>commons-digester</artifactId>
-            <version>1.8</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-chain</groupId>
-            <artifactId>commons-chain</artifactId>
-            <version>1.1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.portlet</groupId>
-                    <artifactId>portlet-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>myfaces</groupId>
-                    <artifactId>myfaces-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>3.2</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.2</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>avalon-framework</groupId>
-                    <artifactId>avalon-framework</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>logkit</groupId>
-                    <artifactId>logkit</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>commons-validator</groupId>
-            <artifactId>commons-validator</artifactId>
-            <version>1.3.1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>xml-apis</groupId>
-                    <artifactId>xml-apis</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>dom4j</groupId>
-            <artifactId>dom4j</artifactId>
-            <version>1.1</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.3</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>oro</groupId>
-            <artifactId>oro</artifactId>
-            <version>2.0.8</version>
-        </dependency>
-        <dependency>
-            <groupId>sslext</groupId>
-            <artifactId>sslext</artifactId>
-            <version>1.2-0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>struts</groupId>
-                    <artifactId>struts</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.struts</groupId>
-            <artifactId>struts-core</artifactId>
-            <version>1.3.8</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.struts</groupId>
-            <artifactId>struts-taglib</artifactId>
-            <version>1.3.8</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.struts</groupId>
-            <artifactId>struts-tiles</artifactId>
-            <version>1.3.8</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity</artifactId>
-            <version>1.6.2</version>
-        </dependency>
-        <dependency>
-            <groupId>httpunit</groupId>
-            <artifactId>httpunit</artifactId>
-            <version>1.6.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mortbay.jetty</groupId>
-            <artifactId>jetty-embedded</artifactId>
-            <version>6.0.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>nekohtml</groupId>
-            <artifactId>nekohtml</artifactId>
-            <version>0.9.5</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>rhino</groupId>
-            <artifactId>js</artifactId>
-            <version>1.6R5</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-            <version>2.8.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xmlParserAPIs</artifactId>
-            <version>2.6.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.1</version>
-            <scope>test</scope>
-        </dependency>
-
-    </dependencies> -->
     <modules>
-    	<module>velocity-tools-generic</module>
-    	<module>velocity-tools-view</module>
-    	<module>velocity-tools-view-jsp</module>
-    	<module>velocity-tools-struts</module>
+        <module>velocity-tools-generic</module>
+        <module>velocity-tools-view</module>
+        <module>velocity-tools-view-jsp</module>
+        <module>velocity-tools-struts</module>
     </modules>
 
 </project>
