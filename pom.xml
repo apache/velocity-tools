@@ -327,6 +327,7 @@
     	<module>velocity-tools-generic</module>
     	<module>velocity-tools-view</module>
     	<module>velocity-tools-view-jsp</module>
+    	<module>velocity-tools-struts</module>
     </modules>
 
 </project>

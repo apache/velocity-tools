@@ -1,0 +1,13 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>velocity-tools-parent</artifactId>
+    <groupId>org.apache.velocity</groupId>
+    <version>2.1.0-SNAPSHOT</version>
+  </parent>
+  <groupId>org.apache.velocity</groupId>
+  <artifactId>velocity-tools-struts</artifactId>
+  <version>2.1.0-SNAPSHOT</version>
+  <name>Apache Velocity Tools - Struts tools</name>
+  <description>Tools for development under Apache Struts 1.x</description>
+</project>
