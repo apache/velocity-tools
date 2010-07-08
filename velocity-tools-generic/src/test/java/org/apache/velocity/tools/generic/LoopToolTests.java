@@ -323,40 +323,40 @@ public class LoopToolTests {
     {
         LoopTool loop = new LoopTool();
         Iterator i = loop.watch(ARRAY);
-        assertEquals(0, loop.getCount());
+        assertEquals(new Integer(0), loop.getCount());
         assertNull(loop.getIndex());
         i.next();
-        assertEquals(1, loop.getCount());
-        assertEquals(0, loop.getIndex());
+        assertEquals(new Integer(1), loop.getCount());
+        assertEquals(new Integer(0), loop.getIndex());
         i.next();
-        assertEquals(2, loop.getCount());
-        assertEquals(1, loop.getIndex());
+        assertEquals(new Integer(2), loop.getCount());
+        assertEquals(new Integer(1), loop.getIndex());
         i.next();
-        assertEquals(3, loop.getCount());
-        assertEquals(2, loop.getIndex());
+        assertEquals(new Integer(3), loop.getCount());
+        assertEquals(new Integer(2), loop.getIndex());
         loop.pop();
         // test that skipped iterations are still included
         i = loop.watch(ARRAY);
         loop.skip(2);
-        assertEquals(2, loop.getCount());
-        assertEquals(1, loop.getIndex());
+        assertEquals(new Integer(2), loop.getCount());
+        assertEquals(new Integer(1), loop.getIndex());
     }
 
     public @Test void methodGetCountOrGetIndex_String() throws Exception
     {
         LoopTool loop = new LoopTool();
         Iterator i = loop.watch(ARRAY, "i");
-        assertEquals(0, loop.getCount("i"));
+        assertEquals(new Integer(0), loop.getCount("i"));
         assertNull(loop.getIndex("i"));
         i.next();
-        assertEquals(1, loop.getCount("i"));
-        assertEquals(0, loop.getIndex("i"));
+        assertEquals(new Integer(1), loop.getCount("i"));
+        assertEquals(new Integer(0), loop.getIndex("i"));
         Iterator j = loop.watch(ARRAY, "j");
         loop.skip(2);
-        assertEquals(2, loop.getCount("j"));
-        assertEquals(1, loop.getIndex("j"));
-        assertEquals(1, loop.getCount("i"));
-        assertEquals(0, loop.getIndex("i"));
+        assertEquals(new Integer(2), loop.getCount("j"));
+        assertEquals(new Integer(1), loop.getIndex("j"));
+        assertEquals(new Integer(1), loop.getCount("i"));
+        assertEquals(new Integer(0), loop.getIndex("i"));
         // check short syntax too
         assertEquals(2, loop.get("count_j"));
         assertEquals(1, loop.get("index_j"));
