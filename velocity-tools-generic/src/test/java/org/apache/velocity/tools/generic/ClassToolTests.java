@@ -19,18 +19,21 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
-import org.junit.*;
-import static org.junit.Assert.*;
-import java.lang.annotation.Annotation;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.apache.velocity.runtime.log.Log;
+
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.SkipSetters;
-import org.apache.velocity.tools.generic.ValueParser;
-import org.apache.velocity.tools.view.AbstractSearchTool;
+import org.junit.Test;
 
 /**
  * <p>Tests for {@link ClassTool}</p>
@@ -232,8 +235,13 @@ public class ClassToolTests {
         ClassTool classTool = new ClassTool();
         // default type is java.lang.Object
         assertFalse(classTool.isAbstract());
-        classTool.setType(AbstractSearchTool.class);
+        classTool.setType(MyAbstract.class);
         assertTrue(classTool.isAbstract());
+    }
+    
+    protected static abstract class MyAbstract 
+    {
+        // do nothing
     }
 
     public @Test void methodIsDeprecated() throws Exception

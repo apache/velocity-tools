@@ -19,15 +19,20 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
-import org.junit.*;
-import static org.junit.Assert.*;
-import java.net.URL;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import org.apache.velocity.tools.generic.ValueParser;
+
 import org.dom4j.Node;
+import org.junit.Test;
 
 /**
  * <p>Tests for XmlTool</p>
@@ -38,7 +43,7 @@ import org.dom4j.Node;
  */
 public class XmlToolTests {
 
-    private static final String XML_FILE = "@test.file.dir@/file.xml";
+    private static final String XML_FILE = "file.xml";
 
     private static final String XML_STRING =
 "<foo>\n  <bar name=\"a\"/>\n  <baz>woogie</baz>\n  <baz>wiggie</baz>\n</foo>";
