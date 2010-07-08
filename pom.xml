@@ -325,6 +325,7 @@
     </dependencies>
     <modules>
     	<module>velocity-tools-generic</module>
+    	<module>velocity-tools-view</module>
     </modules>
 
 </project>
