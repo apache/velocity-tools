@@ -19,14 +19,20 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.net.URI;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.apache.velocity.runtime.log.Log;
-import org.apache.velocity.tools.generic.ValueParser;
+
+import org.junit.Test;
 
 /**
  * <p>Tests for generic version of LinkTool</p>
@@ -248,7 +254,7 @@ public class LinkToolTests {
         LinkTool link = newInstance();
         assertNull(link.getPort());
         link = newInstance(LinkTool.PORT_KEY, 42);
-        assertEquals(42, link.getPort());
+        assertEquals(new Integer(42), link.getPort());
     }
 
     public @Test void methodPort_Object() throws Exception
@@ -256,15 +262,15 @@ public class LinkToolTests {
         LinkTool link = newInstance();
         assertNull(link.port(null).getPort());
         assertNull(link.port(":asd").getPort());
-        assertEquals(1, link.port(1).getPort());
-        assertEquals(42, link.port("42").getPort());
+        assertEquals(new Integer(1), link.port(1).getPort());
+        assertEquals(new Integer(42), link.port("42").getPort());
     }
 
     public @Test void methodSetPort_Object() throws Exception
     {
         LinkTool link = newInstance();
         link.setPort(42);
-        assertEquals(42, link.getPort());
+        assertEquals(new Integer(42), link.getPort());
     }
 
     public @Test void methodGetPath() throws Exception

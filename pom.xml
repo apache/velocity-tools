@@ -164,7 +164,7 @@
         <url>http://svn.apache.org/repos/asf/velocity/tools/trunk</url>
     </scm>
 
-    <dependencies>
+    <!-- <dependencies>
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
@@ -322,7 +322,7 @@
             <scope>test</scope>
         </dependency>
 
-    </dependencies>
+    </dependencies> -->
     <modules>
     	<module>velocity-tools-generic</module>
     	<module>velocity-tools-view</module>
