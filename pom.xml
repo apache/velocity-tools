@@ -326,6 +326,7 @@
     <modules>
     	<module>velocity-tools-generic</module>
     	<module>velocity-tools-view</module>
+    	<module>velocity-tools-view-jsp</module>
     </modules>
 
 </project>
