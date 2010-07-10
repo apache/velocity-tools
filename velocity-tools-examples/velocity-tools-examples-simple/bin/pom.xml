@@ -11,9 +11,6 @@
   <packaging>war</packaging>
   <name>Apache Velocity Tools Examples - Simple</name>
   <description>Simple webapp based on Velocity Tools</description>
-  <build>
-  	<finalName>velocity-tools-examples-simple</finalName>
-  </build>
   <dependencies>
   	<dependency>
   		<groupId>org.apache.velocity</groupId>
