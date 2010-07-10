@@ -1,4 +1,4 @@
-package org.apache.velocity.tools.view;
+package org.apache.velocity.tools.view.engine2;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
