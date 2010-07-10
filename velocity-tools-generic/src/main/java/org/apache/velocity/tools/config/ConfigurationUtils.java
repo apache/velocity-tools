@@ -42,6 +42,8 @@ public class ConfigurationUtils
 {
     public static final String GENERIC_DEFAULTS_PATH =
         "/org/apache/velocity/tools/generic/tools.xml";
+    public static final String XML_DEFAULTS_PATH =
+        "/org/apache/velocity/tools/xml/tools.xml";
     public static final String VIEW_DEFAULTS_PATH =
         "/org/apache/velocity/tools/view/tools.xml";
     public static final String STRUTS_DEFAULTS_PATH =
@@ -78,7 +80,8 @@ public class ConfigurationUtils
             new XmlFactoryConfiguration("ConfigurationUtils.getDefaultTools()");
         config.read(GENERIC_DEFAULTS_PATH);
 
-        // view tools and struts tools may not be available
+        // xml tools, view tools and struts tools may not be available
+        config.read(XML_DEFAULTS_PATH, false);
         config.read(VIEW_DEFAULTS_PATH, false);
         config.read(STRUTS_DEFAULTS_PATH, false);
 
@@ -141,7 +144,7 @@ public class ConfigurationUtils
     }
 
     /**
-     * Returns a {@link FactoryConfiguration} including all 
+     * Returns a {@link FactoryConfiguration} including all
      * {@link #getDefaultTools()} as well as any tools that can be
      * automatically loaded from "tools.xml" or "tools.properties" found
      * at the root of the classpath or in the current directory.

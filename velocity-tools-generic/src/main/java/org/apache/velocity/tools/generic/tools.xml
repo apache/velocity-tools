@@ -16,10 +16,10 @@
  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  KIND, either express or implied.  See the License for the
  specific language governing permissions and limitations
- under the License.    
+ under the License.
 -->
 
-<tools> 
+<tools>
     <data type="number" key="TOOLS_VERSION" value="2.0"/>
     <data type="boolean" key="GENERIC_TOOLS_AVAILABLE" value="true"/>
     <toolbox scope="application">
@@ -34,14 +34,13 @@
         <tool class="org.apache.velocity.tools.generic.NumberTool"/>
         <tool class="org.apache.velocity.tools.generic.ResourceTool"/>
         <tool class="org.apache.velocity.tools.generic.SortTool"/>
-        <tool class="org.apache.velocity.tools.generic.XmlTool"/>
     </toolbox>
     <toolbox scope="request">
         <tool class="org.apache.velocity.tools.generic.ContextTool"/>
         <tool class="org.apache.velocity.tools.generic.LinkTool"/>
         <tool class="org.apache.velocity.tools.generic.LoopTool"/>
         <tool class="org.apache.velocity.tools.generic.RenderTool"/>
-        <!-- 
+        <!--
         This is not useful in its default form.
         But, if it were, it'd be request-scoped.
         <tool class="org.apache.velocity.tools.generic.ValueParser"/>
