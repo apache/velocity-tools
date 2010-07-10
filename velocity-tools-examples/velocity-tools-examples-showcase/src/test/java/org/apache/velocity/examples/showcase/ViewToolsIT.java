@@ -1,4 +1,4 @@
-package org.apache.velocity.tools.test.blackbox;
+package org.apache.velocity.examples.showcase;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,22 +19,25 @@ package org.apache.velocity.tools.test.blackbox;
  * under the License.
  */
 
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-import java.io.PrintWriter;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.junit.*;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import static org.junit.Assert.*;
-
-import com.meterware.httpunit.HTMLElement;
-import com.meterware.httpunit.WebResponse;
-import com.meterware.httpunit.WebConversation;
-import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.GetMethodWebRequest;
+import com.meterware.httpunit.HTMLElement;
+import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebForm;
-import com.meterware.httpunit.HttpUnitOptions;
+import com.meterware.httpunit.WebRequest;
+import com.meterware.httpunit.WebResponse;
 
 
 /**
@@ -46,9 +49,9 @@ import com.meterware.httpunit.HttpUnitOptions;
  */
 
 
-public class ViewToolsTests {
+public class ViewToolsIT {
 
-    private static final String ROOT_URL = "http://localhost:@test.webcontainer.port@/";
+    private static final String ROOT_URL = "http://localhost:8080/velocity-tools-examples-showcase/";
 
     public static @BeforeClass void initViewToolsTests() throws Exception {
     }
@@ -217,22 +220,22 @@ public class ViewToolsTests {
 
         /* check path(bar) and path */
         resp = submitWithParam(resp,"path","path","bar");
-        checkText(resp,"path","http://localhost:8081/bar");
-        checkText(resp,"altpath","/link.vm");
+        checkText(resp,"path","http://localhost:8080/bar");
+        checkText(resp,"altpath","/velocity-tools-examples-showcase/link.vm");
 
         /* check relative(foo) */
         resp = submitWithParam(resp,"relative","relative","foo");
-        checkText(resp,"relative","/foo");
+        checkText(resp,"relative","/velocity-tools-examples-showcase/foo");
 
         /* check absolute(bar) */
         resp = submitWithParam(resp,"absolute","absolute","bar");
         checkText(resp,"absolute",ROOT_URL + "bar");
 
         /* check contextURL */
-        checkText(resp,"contextURL",ROOT_URL);
+        checkText(resp,"contextURL",ROOT_URL.substring(0, ROOT_URL.length() - 1));
 
         /* check contextPath */
-        checkText(resp,"contextPath","");
+        checkText(resp,"contextPath","/velocity-tools-examples-showcase");
 
         /* check requestPath */
         checkText(resp,"requestPath","/link.vm");
