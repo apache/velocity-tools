@@ -178,6 +178,7 @@
     </scm>
     <modules>
         <module>velocity-tools-generic</module>
+        <module>velocity-tools-xml</module>
         <module>velocity-tools-view</module>
         <module>velocity-tools-view-jsp</module>
         <module>velocity-tools-view-engine2</module>
