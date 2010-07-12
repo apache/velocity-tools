@@ -36,6 +36,12 @@
   		<groupId>sslext</groupId>
   		<artifactId>sslext</artifactId>
   		<version>1.2-0</version>
+  		<exclusions>
+  			<exclusion>
+  				<artifactId>struts</artifactId>
+  				<groupId>struts</groupId>
+  			</exclusion>
+  		</exclusions>
   	</dependency>
   	<dependency>
   		<groupId>org.apache.struts</groupId>
