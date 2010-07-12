@@ -11,17 +11,26 @@
   <packaging>war</packaging>
   <name>Apache Velocity Tools Examples - Struts</name>
   <description>Webapp based on Velocity Tools - Struts support.</description>
+  <build>
+  	<finalName>velocity-tools-examples-struts</finalName>
+  </build>
   <dependencies>
+  	<dependency>
+  		<groupId>javax.servlet</groupId>
+  		<artifactId>servlet-api</artifactId>
+  		<version>2.3</version>
+  		<scope>provided</scope>
+  	</dependency>
   	<dependency>
   		<groupId>org.apache.velocity</groupId>
   		<artifactId>velocity-tools-struts</artifactId>
   		<version>2.1.0-SNAPSHOT</version>
   	</dependency>
   	<dependency>
-  		<groupId>javax.servlet</groupId>
-  		<artifactId>servlet-api</artifactId>
-  		<version>2.3</version>
-  		<scope>provided</scope>
+  		<groupId>org.apache.velocity</groupId>
+  		<artifactId>velocity-tools-view-jsp</artifactId>
+  		<version>2.1.0-SNAPSHOT</version>
+  		<scope>runtime</scope>
   	</dependency>
   </dependencies>
 </project>
