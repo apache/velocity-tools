@@ -185,6 +185,7 @@
         <module>velocity-tools-struts</module>
         <module>velocity-tools-uberjar</module>
         <module>velocity-tools-examples</module>
+        <module>velocity-tools-assembly</module>
     </modules>
 
 </project>
