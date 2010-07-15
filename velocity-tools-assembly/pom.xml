@@ -20,7 +20,7 @@
                 <version>2.2-beta-5</version>
                 <configuration>
                     <descriptors>
-                        <descriptor>src/main/assembly/bin.xml</descriptor>
+                        <descriptor>src/main/assembly/all.xml</descriptor>
                     </descriptors>
                     <finalName>velocity-tools-${version}</finalName>
                     <tarLongFileMode>gnu</tarLongFileMode>
@@ -114,7 +114,7 @@
                         </executions>
                         <configuration>
                             <descriptors>
-                                <descriptor>src/main/assembly/bin.xml</descriptor>
+                                <descriptor>src/main/assembly/all.xml</descriptor>
                             </descriptors>
                             <tarLongFileMode>gnu</tarLongFileMode>
                         </configuration>
@@ -145,9 +145,9 @@
                                             <fileset
                                                 dir="${settings.localRepository}/org/apache/velocity/${project.artifactId}/${project.version}">
                                                 <include
-                                                    name="${project.artifactId}-${project.version}-bin.zip*" />
+                                                    name="${project.artifactId}-${project.version}-all.zip*" />
                                                 <include
-                                                    name="${project.artifactId}-${project.version}-bin.tar.gz*" />
+                                                    name="${project.artifactId}-${project.version}-all.tar.gz*" />
                                             </fileset>
                                             <mapper type="glob"
                                                 from="${project.artifactId}-*"
@@ -158,7 +158,7 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <plugin>
+                    <!-- <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>wagon-maven-plugin</artifactId>
                         <executions>
@@ -176,7 +176,7 @@
                                 </configuration>
                             </execution>
                         </executions>
-                    </plugin>
+                    </plugin> -->
                 </plugins>
             </build>
         </profile>
