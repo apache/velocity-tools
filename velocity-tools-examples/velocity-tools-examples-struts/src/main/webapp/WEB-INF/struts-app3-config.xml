@@ -22,7 +22,7 @@
 
 <struts-config>
   <form-beans>
-    <form-bean name="logonForm" type="examples.app3.LogonForm" />
+    <form-bean name="logonForm" type="org.apache.velocity.tools.examples.struts.app3.LogonForm" />
   </form-beans>
   <global-forwards>
     <forward name="welcome_jsp" path="/welcome_jsp.do" />
@@ -39,20 +39,20 @@
   <action-mappings>
     <action forward="/index.jsp" path="/welcome_jsp" />
     <action name="logonForm" forward="/logon.jsp" path="/logon_jsp" scope="request" validate="false" />
-    <action input="/logon.jsp" name="logonForm" path="/logonSubmit_jsp" scope="request" type="examples.app3.LogonAction" validate="true">
+    <action input="/logon.jsp" name="logonForm" path="/logonSubmit_jsp" scope="request" type="org.apache.velocity.tools.examples.struts.app3.LogonAction" validate="true">
       <forward name="continue" path="/index.jsp" />
     </action>
-    <action path="/logoff_jsp" type="examples.app3.LogoffAction">
+    <action path="/logoff_jsp" type="org.apache.velocity.tools.examples.struts.app3.LogoffAction">
       <forward name="continue" path="/index.jsp" />
     </action>
     <action forward="/index.vm" path="/welcome_vm" />
     <action name="logonForm" forward="/logon.vm" path="/logon_vm" scope="request" validate="false" />
-    <action input="/logon.vm" name="logonForm" path="/logonSubmit_vm" scope="request" type="examples.app3.LogonAction" validate="true">
+    <action input="/logon.vm" name="logonForm" path="/logonSubmit_vm" scope="request" type="org.apache.velocity.tools.examples.struts.app3.LogonAction" validate="true">
       <forward name="continue" path="/index.vm" />
     </action>
-    <action path="/logoff_vm" type="examples.app3.LogoffAction">
+    <action path="/logoff_vm" type="org.apache.velocity.tools.examples.struts.app3.LogoffAction">
       <forward name="continue" path="/index.vm" />
     </action>
   </action-mappings>
-  <message-resources parameter="examples.app3.ApplicationResources" />
+  <message-resources parameter="org.apache.velocity.tools.examples.struts.app3.ApplicationResources" />
 </struts-config>

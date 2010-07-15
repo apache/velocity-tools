@@ -22,13 +22,13 @@
 <tools>
   <data key="author">Nathan Bubna</data>
   <toolbox scope="request">
-    <tool class="LayoutLinkTool"/>
-    <tool class="MySearchTool"/>
+    <tool class="org.apache.velocity.tools.examples.showcase.tool.LayoutLinkTool"/>
+    <tool class="org.apache.velocity.tools.examples.showcase.tool.MySearchTool"/>
     <tool key="pager" createSession="true"/>
     <tool key="text" bundles="resources,otherStuff"/>
     <tool key="params" locale="en_US"/>
   </toolbox>
-    
+
   <toolbox scope="session" locale="en_US">
     <tool class="org.apache.velocity.tools.view.BrowserTool" languagesFilter="en"/>
   </toolbox>

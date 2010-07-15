@@ -199,10 +199,6 @@
             <outputDirectory>docs/velocity-tools-struts</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>../velocity-tools-generic/target/site</directory>
-            <outputDirectory>docs/velocity-tools-generic</outputDirectory>
-        </fileSet>
-        <fileSet>
             <directory>../velocity-tools-uberjar/target/site</directory>
             <outputDirectory>docs/velocity-tools-uberjar</outputDirectory>
         </fileSet>
@@ -223,8 +219,8 @@
             <outputDirectory>docs/velocity-tools-examples/velocity-tools-examples-showcase</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>../velocity-tools-examples/velocity-tools-examples-showcase/target/site</directory>
-            <outputDirectory>docs/velocity-tools-examples/velocity-tools-examples-showcase</outputDirectory>
+            <directory>../velocity-tools-examples/velocity-tools-examples-struts/target/site</directory>
+            <outputDirectory>docs/velocity-tools-examples/velocity-tools-examples-struts</outputDirectory>
         </fileSet>
     </fileSets>
 </assembly>
