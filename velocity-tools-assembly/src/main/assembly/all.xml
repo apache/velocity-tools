@@ -25,7 +25,7 @@
         <dependencySet>
             <outputDirectory>/lib</outputDirectory>
             <excludes>
-                <exclude>org.apache.velocity:*</exclude>
+                <exclude>org.apache.velocity:velocity-tools*</exclude>
             </excludes>
         </dependencySet>
         <dependencySet>
