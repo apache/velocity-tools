@@ -33,7 +33,7 @@
     <action name="emailForm" forward="/validator-demo.jsp" path="/index_jsp" validate="false" />
     <action input="/index_jsp.do" name="emailForm" forward="/success.jsp" path="/do_submit_jsp" validate="true" />
   </action-mappings>
-  <message-resources parameter="examples.app5.ApplicationResources" />
+  <message-resources parameter="org.apache.velocity.tools.examples.struts.app5.ApplicationResources" />
   <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
     <set-property property="pathnames" value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml" />
   </plug-in>

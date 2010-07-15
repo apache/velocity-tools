@@ -30,7 +30,7 @@
 
         <p><b><bean:message key="edit"/> (JSP <bean:message key="version"/>)</b></p>
 
-        <html:form name="address" method="POST" scope="session" type="examples.app1.AddressBean" action="address1.do">
+        <html:form name="address" method="POST" scope="session" type="org.apache.velocity.tools.examples.struts.app1.AddressBean" action="address1.do">
         <input type="hidden" name="action" value="list">
 
         <table width="300" border="1" cellspacing="" cellpadding="5">

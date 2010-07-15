@@ -26,7 +26,7 @@
     <data key="foo">this is foo</data>
     <data key="bar">this is bar.</data>
     <toolbox scope="request">
-        <tool key="toytool" class="ToyTool" restrictTo="index*"/>
+        <tool key="toytool" class="org.apache.velocity.tools.examples.simple.tool.ToyTool" restrictTo="index*"/>
     </toolbox>
     <toolbox scope="session">
         <tool key="map" class="java.util.HashMap"/>

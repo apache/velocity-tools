@@ -36,7 +36,7 @@
       <item link="http://www.link2.com" value="Link 2" />
     </putList>
   </definition>
-  <definition controllerClass="examples.app4.MyTileController" name=".frontpage.body" path="/app4/layout/bodyLayout.vm">
+  <definition controllerClass="org.apache.velocity.tools.examples.struts.app4.MyTileController" name=".frontpage.body" path="/app4/layout/bodyLayout.vm">
     <put name="header" value="/app4/header_frontpage.vm" />
     <put name="body" value="/app4/body_frontpage.vm" />
   </definition>
@@ -55,7 +55,7 @@
       <item link="http://www.link2.com" value="Link 2" />
     </putList>
   </definition>
-  <definition controllerClass="examples.app4.MyTileController" name=".frontpage.body.jsp" path="/app4/layout/bodyLayout.jsp">
+  <definition controllerClass="org.apache.velocity.tools.examples.struts.app4.MyTileController" name=".frontpage.body.jsp" path="/app4/layout/bodyLayout.jsp">
     <put name="header" value="/app4/header_frontpage.jsp" />
     <put name="body" value="/app4/body_frontpage.jsp" />
   </definition>

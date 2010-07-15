@@ -22,7 +22,7 @@
 
 <struts-config>
   <form-beans>
-    <form-bean name="addressForm" type="examples.app1.AddressForm" />
+    <form-bean name="addressForm" type="org.apache.velocity.tools.examples.struts.app1.AddressForm" />
   </form-beans>
   <global-forwards>
     <forward name="editAddressSrcJsp" path="/edit-addressjsp.txt" />
@@ -31,14 +31,14 @@
     <forward name="showAddressSrc" path="/show-address.txt" />
   </global-forwards>
   <action-mappings>
-    <action name="addressForm" path="/address1" scope="request" type="examples.app1.AddressAction">
+    <action name="addressForm" path="/address1" scope="request" type="org.apache.velocity.tools.examples.struts.app1.AddressAction">
       <forward name="showAddress" path="/show-address.jsp" />
       <forward name="editAddress" path="/edit-address.jsp" />
     </action>
-    <action name="addressForm" path="/address2" scope="request" type="examples.app1.AddressAction">
+    <action name="addressForm" path="/address2" scope="request" type="org.apache.velocity.tools.examples.struts.app1.AddressAction">
       <forward name="showAddress" path="/show-address.vm" />
       <forward name="editAddress" path="/edit-address.vm" />
     </action>
   </action-mappings>
-  <message-resources parameter="examples.app1.ApplicationResources" />
+  <message-resources parameter="org.apache.velocity.tools.examples.struts.app1.ApplicationResources" />
 </struts-config>

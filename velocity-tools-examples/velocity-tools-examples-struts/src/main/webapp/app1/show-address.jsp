@@ -28,7 +28,7 @@
 
     <body>
 
-        <jsp:useBean id="address" scope="session" class="examples.app1.AddressBean" />
+        <jsp:useBean id="address" scope="session" class="org.apache.velocity.tools.examples.struts.app1.AddressBean" />
 
         <p><b><bean:message key="title"/> (JSP <bean:message key="version"/>)</b></p>
 

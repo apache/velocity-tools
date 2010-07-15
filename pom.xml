@@ -37,6 +37,19 @@
 
     <build>
         <defaultGoal>install</defaultGoal>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.0</version>
+                    <configuration>
+                        <useReleaseProfile>false</useReleaseProfile>
+                        <goals>deploy site-deploy</goals>
+                        <arguments>-Papache-release</arguments>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -81,17 +94,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>dependencies</report>
-                            <report>issue-tracking</report>
-                            <report>license</report>
-                            <report>summary</report>
-                            <report>scm</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
+                <version>2.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -100,7 +103,7 @@
                     <reportSet>
                         <reports>
                             <report>changes-report</report>
-                            <report>jira-report</report>
+                            <!-- <report>jira-report</report> -->
                         </reports>
                     </reportSet>
                 </reportSets>
@@ -128,7 +131,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.7</version>
                 <configuration>
-                    <excludePackageNames>org.apache.velocity.example</excludePackageNames>
+                    <excludePackageNames>org.apache.velocity.tools.examples</excludePackageNames>
                     <links>
                         <link>http://java.sun.com/j2se/1.5.0/docs/api/
                         </link>
@@ -171,10 +174,10 @@
         <url>http://issues.apache.org/jira/browse/VELTOOLS</url>
     </issueManagement>
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/velocity/tools/trunk</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/velocity/tools/trunk</developerConnection>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/velocity/sandbox/maven-reorg/tools/trunk</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/velocity/sandbox/maven-reorg/tools/trunk</developerConnection>
         <tag>HEAD</tag>
-        <url>http://svn.apache.org/repos/asf/velocity/tools/trunk</url>
+        <url>http://svn.apache.org/repos/asf/velocity/sandbox/maven-reorg/tools/trunk</url>
     </scm>
     <modules>
         <module>velocity-tools-generic</module>

@@ -26,7 +26,7 @@
     <action forward=".frontpage.jsp" path="/index_jsp" />
     <action forward=".frontpage.mixed" path="/index_mixed" />
   </action-mappings>
-  <message-resources parameter="examples.app4.ApplicationResources" />
+  <message-resources parameter="org.apache.velocity.tools.examples.struts.app4.ApplicationResources" />
   <plug-in className="org.apache.struts.tiles.TilesPlugin">
     <set-property property="definitions-config" value="/WEB-INF/tiles-app4-defs.xml" />
     <set-property property="definitions-debug" value="1" />
