@@ -156,12 +156,16 @@
     <junit fork="false"
            printSummary="yes"
            haltonerror="${test.haltonerror}"
-           haltonfailure="${test.haltonfailure}">
+           haltonfailure="${test.haltonfailure}"
+           showoutput="true"
+           >
       <classpath>
         <path refid="test.classpath"/>
         <pathelement location="${test.classes.dir}"/>
       </classpath>
-      <batchtest todir="${test.rst.dir}">
+      <test name="${testcase}" if="testcase" todir="${test.rst.dir}"/>
+      <sysproperty key="testcase" value="${testcase}"/>
+      <batchtest todir="${test.rst.dir}" unless="testcase">
         <fileset dir="${test.classes.dir}">
           <include name="org/apache/velocity/tools/**/*Tests.class"/>
           <exclude name="org/apache/velocity/tools/test/blackbox/**/*"/>
