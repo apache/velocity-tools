@@ -32,6 +32,8 @@ import java.util.Date;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Utility methods for parsing or otherwise converting between types.
@@ -49,6 +51,9 @@ public class ConversionUtils
     private static final int STYLE_PERCENT      = 2;
     //NOTE: '3' belongs to a non-public "scientific" style
     private static final int STYLE_INTEGER      = 4;
+
+    // cache custom formats
+    private static ConcurrentMap<String,NumberFormat> customFormatsCache = new ConcurrentHashMap<String,NumberFormat>();
 
     private ConversionUtils() {}
 
@@ -83,7 +88,13 @@ public class ConversionUtils
         if (style < 0)
         {
             // we have a custom format
-            nf = new DecimalFormat(format, new DecimalFormatSymbols(locale));
+            String cacheKey = format + "%" + locale.toString();
+            nf = customFormatsCache.get(cacheKey);
+            if( nf == null )
+            {
+                nf = new DecimalFormat(format, new DecimalFormatSymbols(locale));
+                customFormatsCache.put(cacheKey,nf);
+            }
         }
         else
         {
