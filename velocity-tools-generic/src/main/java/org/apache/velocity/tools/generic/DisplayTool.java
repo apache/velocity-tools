@@ -101,6 +101,8 @@ public class DisplayTool extends LocaleConfig
      */
     protected void configure(ValueParser values)
     {
+        super.configure(values);
+        
         String listDelim = values.getString(LIST_DELIM_KEY);
         if (listDelim != null)
         {
