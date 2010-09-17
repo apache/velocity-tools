@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<project name="VelocityTools" href="index.html"
+    logo="images/velocitytools.png">
+
+    <style href="css/maven-theme.css"/>
+    <style href="css/maven-base.css"/>
+    <style href="css/style.css"/>
+    <breadcrumb href="http://velocity.apache.org">Velocity</breadcrumb>
+    <breadcrumb href="index.html">VelocityTools</breadcrumb>
+    <sibling href="http://velocity.apache.org/engine/devel/">Engine</sibling>
+    <sibling href="http://velocity.apache.org/tools/devel/">Tools</sibling>
+    <sibling href="http://velocity.apache.org/anakia/devel/">Anakia</sibling>
+    <sibling href="http://velocity.apache.org/texen/devel/">Texen</sibling>
+    <sibling href="http://velocity.apache.org/docbook/">Docbook</sibling>
+    <sibling href="http://velocity.apache.org/dvsl/devel/">DVSL</sibling>
+
+    <menu>
+        <group name="VelocityTools">
+            <item name="Overview"   href="index.html"/>
+            <item name="Download"   href="http://velocity.apache.org/download.cgi#Tools"/>
+            <item name="Javadoc"    href="javadoc/index.html"/>
+            <item name="FAQ"        href="http://wiki.apache.org/velocity/VelocityFAQ"/>
+            <item name="Wiki"       href="http://wiki.apache.org/velocity/VelocityTools"/>
+        </group>
+
+        <group name="Subprojects">
+            <item name="GenericTools"   href="generic.html"/>
+            <item name="VelocityView"   href="view.html"/>
+            <item name="VelocityStruts" href="struts.html"/>
+        </group>
+
+        <group name="Docs">
+            <item name="Upgrading to 2.0"          href="upgrading.html"/>
+            <subGroup name="Configuration" href="config.html">
+                <item name="Using XML"          href="config-xml.html"/>
+                <item name="Using Properties"   href="config.properties.html"/>
+                <item name="Using Java"         href="config.java.html"/>
+            </subGroup>
+            <item name="Standalone Use"            href="standalone.html"/>
+            <item name="Web Framework Integration" href="frameworks.html"/>
+            <item name="Creating Tools"            href="creatingtools.html"/>
+            <item name="Tools Usage Summary" href="summary.html"/>
+            <item name="Glossary"                  href="http://velocity.apache.org/engine/devel/glossary.html"/>
+        </group>
+
+        <group name="Development">
+            <item name="ChangeLog"      href="changes.html"/>
+            <item name="Participating"  href="index.html#Helping_Out"/>
+            <item name="Dependencies"   href="dependencies.html"/>
+            <item name="Source Code"    href="index.html#Subversion_Repository"/>
+            <item name="Report Issue"   href="http://issues.apache.org/jira/browse/VELTOOLS"/>
+        </group>
+        
+        <printerversion/>
+    </menu>
+</project>
