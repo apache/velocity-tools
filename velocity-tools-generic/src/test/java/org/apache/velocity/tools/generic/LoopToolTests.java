@@ -306,16 +306,18 @@ public class LoopToolTests {
         // is, of course, impossible in a template, but it
         // makes writing a reasonable test for this method a lot
         // easier.
-        //NOTE: this reliese on the default name for synced iterators
+        //NOTE: this relies on the default name for synced iterators
         //      being "synced", for i being "loop0", and for j being "loop1"
         Iterator i = loop.watch(ARRAY).sync(other);
         Iterator j = loop.watch(other).sync(ARRAY);
         while (i.hasNext() && j.hasNext())
         {
+            Object ival = i.next();
+            Object jval = j.next();
             // i and loop.synced (aka loop.get("loop1","synced")) should match
-            assertEquals(i.next(), loop.get("synced"));
+            assertEquals(ival, loop.get("synced"));
             // j and loop.get("loop0","synced") should match
-            assertEquals(j.next(), loop.get("loop0", "synced"));
+            assertEquals(jval, loop.get("loop0", "synced"));
         }
     }
 
