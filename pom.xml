@@ -174,10 +174,10 @@
         <url>http://issues.apache.org/jira/browse/VELTOOLS</url>
     </issueManagement>
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/velocity/sandbox/maven-reorg/tools/trunk</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/velocity/sandbox/maven-reorg/tools/trunk</developerConnection>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/velocity/tools/trunk</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/velocity/tools/trunk</developerConnection>
         <tag>HEAD</tag>
-        <url>http://svn.apache.org/repos/asf/velocity/sandbox/maven-reorg/tools/trunk</url>
+        <url>http://svn.apache.org/repos/asf/velocity/tools/trunk</url>
     </scm>
     <modules>
         <module>velocity-tools-generic</module>
