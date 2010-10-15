@@ -80,11 +80,15 @@ public class ViewToolManager extends ToolManager
     public ViewToolManager(ServletContext app,
                            boolean autoConfig, boolean includeDefaults)
     {
-        super(autoConfig, includeDefaults);
+        super(false, includeDefaults);
 
         if (app == null)
         {
             throw new NullPointerException("ServletContext is required");
+        }
+        if (autoConfig)
+        {
+            autoConfigure(includeDefaults);
         }
         this.servletContext = app;
     }
