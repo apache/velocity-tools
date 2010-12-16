@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/j2ee/dtds/web-app_2_3.dtd">
 
 <!--
  Licensed to the Apache Software Foundation (ASF) under one
@@ -20,7 +19,10 @@
  under the License.
 -->
 
-<web-app>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5">
   <servlet>
     <servlet-name>velocity</servlet-name>
     <servlet-class>org.apache.velocity.tools.view.VelocityLayoutServlet</servlet-class>
@@ -44,4 +46,7 @@
   <welcome-file-list>
     <welcome-file>index.vm</welcome-file>
   </welcome-file-list>
+  <listener>
+    <listener-class>org.apache.velocity.tools.examples.showcase.sample.SampleListInitializer</listener-class>
+  </listener>
 </web-app>
