@@ -1,0 +1,74 @@
+package ${packageName};
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Map;
+
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.tagext.JspTag;
+
+import org.apache.velocity.context.InternalContextAdapter;
+import org.apache.velocity.exception.MethodInvocationException;
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.ResourceNotFoundException;
+import org.apache.velocity.runtime.directive.Directive;
+import org.apache.velocity.runtime.parser.node.ASTMap;
+import org.apache.velocity.runtime.parser.node.Node;
+import org.apache.velocity.tools.view.ViewContext;
+import org.apache.velocity.tools.view.jsp.taglib.jspimpl.JspUtils;
+import org.apache.velocity.tools.view.jsp.taglib.jspimpl.VelocityPageContext;
+
+public class ${tag.reflectedTagClass.simpleName}Directive extends Directive
+{
+
+    @Override
+    public String getName()
+    {
+        return "${prefix}_${tag.name}";
+    }
+
+    @Override
+    public int getType()
+    {
+        return #if(${tag.hasBody()})BLOCK#{else}LINE#end;
+    }
+
+    @Override
+    public boolean render(InternalContextAdapter context, Writer writer, Node node)
+            throws IOException, ResourceNotFoundException, ParseErrorException,
+            MethodInvocationException
+    {
+        ViewContext viewContext = (ViewContext) context
+                .getInternalUserContext();
+        ASTMap astMap = (ASTMap) node.jjtGetChild(0);
+        Map<String, Object> params = (Map<String, Object>) astMap
+                .value(context);
+        PageContext pageContext = new VelocityPageContext(context, writer,
+                viewContext);
+        ${tag.reflectedTagClass.name} tag = new ${tag.reflectedTagClass.name}();
+        JspTag oldParentTag = JspUtils.getLatestJspTag(context);
+        JspUtils.setLatestTag(context, tag);
+        try
+        {
+            tag.setPageContext(pageContext);
+            tag.setParent(JspUtils.wrapTag(oldParentTag));
+            Object obj;
+#foreach($attribute in $tag.attributes)
+            obj = params.get("${attribute.name}");
+            if (obj != null) {
+                tag.${attribute.setterName}((${attribute.wrappedType}) obj);
+            }
+#end
+            JspUtils.executeTag(context, node, pageContext, tag);
+        } catch (JspException e)
+        {
+            throw new IOException("Cannot execute ${tag.name} tag", e);
+        } finally
+        {
+            JspUtils.setLatestTag(context, oldParentTag);
+        }
+        return true;
+    }
+
+}

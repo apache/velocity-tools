@@ -14,39 +14,16 @@
 ## KIND, either express or implied.  See the License for the
 ## specific language governing permissions and limitations
 ## under the License.
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-"http://www.w3.org/TR/html4/strict.dtd">
-
-#set( $stylesheet = '/layout/layout.css' )
-#set( $displayTagStylesheet = '/displaytag/css/displaytag.css' )
-#set( $css = $text.css )
-#parse( 'header.vm' )
-
-<div class="content">
-	<h1>$text.appname: $css.name</h1>
-	<p>$screen_content</p>
-</div>
-
-<div id="navAlpha">
-  <p>
-    <div class="menu">
-      #parse( 'toolmenu.vm' )
-    </div>
-  </p>
-  <p>
-  </p>
-</div>
-
-<div id="navBeta">
-  <div class="menu">
-    #parse( 'layoutmenu.vm' )
-  </div>
-
-	<h2>$css.niftyHeader</h2>
-	<p>$css.nifty</p>
-</div>
-
-<!-- BlueRobot was here. -->
-
-#parse( 'footer.vm' )
+#title( 'Maven Taglib2Directive example' )
+<p>
+#set( $demo = $text.demo )
+This is not a 'real' tool, but a Maven plugin that
+generates Velocity directives from a JSP Tag library. Here you can see an example
+that shows DisplayTag included using Velocity directives.
+</p>
+$request.setAttribute("list", $people)
+#display_table({"name": "list", "pagesize": 5, "sort": "list"})
+  #display_column({"property": "name", "title": "Name", "sortable": true})#end
+  #display_column({"property": "surname", "title": "Surname", "sortable": true})#end
+  #display_column({"property": "role", "title": "Role", "sortable": true})#end
+#end

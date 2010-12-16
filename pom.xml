@@ -189,6 +189,7 @@
         <module>velocity-tools-uberjar</module>
         <module>velocity-tools-examples</module>
         <module>velocity-tools-assembly</module>
+        <module>maven-velocity-tools-plugin</module>
     </modules>
 
 </project>

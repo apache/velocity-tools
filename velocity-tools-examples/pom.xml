@@ -15,5 +15,6 @@
   	<module>velocity-tools-examples-showcase</module>
   	<module>velocity-tools-examples-simple</module>
   	<module>velocity-tools-examples-struts</module>
+  	<module>displaytag-directive</module>
   </modules>
 </project>

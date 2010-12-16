@@ -20,5 +20,8 @@
 #if( $stylesheet )
   <style type="text/css" media="screen">@import "$link.relative($stylesheet)";</style>
 #end
+#if( $displayTagStylesheet )
+  <style type="text/css" media="screen">@import "$link.relative($displayTagStylesheet)";</style>
+#end
 </head>
 <body#if( $onload ) onload="$onload"#end>
