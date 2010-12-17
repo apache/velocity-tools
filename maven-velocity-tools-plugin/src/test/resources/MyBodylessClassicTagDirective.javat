@@ -1,4 +1,4 @@
-package ${packageName};
+package org.apache.velocity.tools.test;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -19,19 +19,19 @@ import org.apache.velocity.tools.view.ViewContext;
 import org.apache.velocity.tools.view.jsp.taglib.jspimpl.JspUtils;
 import org.apache.velocity.tools.view.jsp.taglib.jspimpl.VelocityPageContext;
 
-public class ${tag.reflectedTagClass.simpleName}Directive extends Directive
+public class MyBodylessClassicTagDirective extends Directive
 {
 
     @Override
     public String getName()
     {
-        return "${prefix}_${tag.name}";
+        return "sample_myBodylessClassicTag";
     }
 
     @Override
     public int getType()
     {
-        return #if(${tag.hasBody()})BLOCK#{else}LINE#end;
+        return LINE;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class ${tag.reflectedTagClass.simpleName}Directive extends Directive
                 .value(context);
         PageContext pageContext = new VelocityPageContext(context, writer,
                 viewContext);
-        ${tag.reflectedTagClass.name} tag = new ${tag.reflectedTagClass.name}();
+        org.apache.velocity.tools.plugin.taglib.example.MyBodylessClassicTag tag = new org.apache.velocity.tools.plugin.taglib.example.MyBodylessClassicTag();
         JspTag oldParentTag = JspUtils.getLatestJspTag(context);
         JspUtils.setLatestTag(context, tag);
         try
@@ -54,20 +54,18 @@ public class ${tag.reflectedTagClass.simpleName}Directive extends Directive
             tag.setPageContext(pageContext);
             tag.setParent(JspUtils.wrapTag(oldParentTag));
             Object obj;
-#foreach($attribute in $tag.attributes)
-            obj = params.get("${attribute.name}");
+            obj = params.get("stringProperty");
             if (obj != null) {
-                tag.${attribute.setterName}((${attribute.wrappedType}) obj);
+                tag.setStringProperty((java.lang.String) obj);
             }
-#end
-#if($tag.simpleTag)
-            JspUtils.executeSimpleTag(context, node, pageContext, tag);
-#else
+            obj = params.get("intProperty");
+            if (obj != null) {
+                tag.setIntProperty((java.lang.Integer) obj);
+            }
             JspUtils.executeTag(context, node, pageContext, tag);
-#end
         } catch (JspException e)
         {
-            throw new IOException("Cannot execute ${tag.name} tag", e);
+            throw new IOException("Cannot execute myBodylessClassicTag tag", e);
         } finally
         {
             JspUtils.setLatestTag(context, oldParentTag);
