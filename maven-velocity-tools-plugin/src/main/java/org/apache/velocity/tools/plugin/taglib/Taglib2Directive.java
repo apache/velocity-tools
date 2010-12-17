@@ -110,12 +110,6 @@ public class Taglib2Directive extends AbstractMojo
             digester.register(
                     "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN",
                     getClass().getResource("/web-jsptaglibrary_1_2.dtd"));
-            digester.register(
-                    "http://java.sun.com/xml/ns/j2ee",
-                    getClass().getResource("/web-jsptaglibrary_2_0.xsd"));
-            digester.register(
-                    "http://java.sun.com/xml/ns/javaee",
-                    getClass().getResource("/web-jsptaglibrary_2_1.xsd"));
             Taglib taglib = (Taglib) digester.parse(tldStream);
             Properties props = new Properties();
             InputStream propsStream = getClass().getResourceAsStream(
