@@ -16,8 +16,8 @@ import org.apache.velocity.runtime.directive.Directive;
 import org.apache.velocity.runtime.parser.node.ASTMap;
 import org.apache.velocity.runtime.parser.node.Node;
 import org.apache.velocity.tools.view.ViewContext;
-import org.apache.velocity.tools.view.jsp.taglib.jspimpl.JspUtils;
-import org.apache.velocity.tools.view.jsp.taglib.jspimpl.VelocityPageContext;
+import org.apache.velocity.tools.view.jsp.jspimpl.JspUtils;
+import org.apache.velocity.tools.view.jsp.jspimpl.VelocityPageContext;
 
 public class ${tag.reflectedTagClass.simpleName}Directive extends Directive
 {
@@ -52,7 +52,11 @@ public class ${tag.reflectedTagClass.simpleName}Directive extends Directive
         try
         {
             tag.setPageContext(pageContext);
+#if($tag.simpleTag)
+            tag.setParent(oldParentTag);
+#else
             tag.setParent(JspUtils.wrapTag(oldParentTag));
+#end
             Object obj;
 #foreach($attribute in $tag.attributes)
             obj = params.get("${attribute.name}");

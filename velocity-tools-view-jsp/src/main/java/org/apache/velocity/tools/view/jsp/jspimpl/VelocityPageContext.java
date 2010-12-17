@@ -1,4 +1,23 @@
-package org.apache.velocity.tools.view.jsp.taglib.jspimpl;
+package org.apache.velocity.tools.view.jsp.jspimpl;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,23 +42,51 @@ import javax.servlet.jsp.PageContext;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.view.ViewContext;
 
+/**
+ * Exposes a Velocity {@link Context}, a request and a response as a {@link PageContext}.
+ *
+ */
 public class VelocityPageContext extends PageContext {
 
+    /**
+     * The Velocity context.
+     */
     private Context velocityContext;
 
+    /**
+     * The writer to use when writing content.
+     */
     private Writer velocityWriter;
 
+    /**
+     * The view context.
+     */
     private ViewContext viewContext;
 
+    /**
+     * The JSP writer, simulated.
+     */
     private JspWriter jspWriter;
 
+    /**
+     * The HTTP request.
+     */
     private HttpServletRequest request;
 
+    /**
+     * The HTTP response.
+     */
     private HttpServletResponse response;
 
+    /**
+     * Constructor.
+     *
+     * @param velocityContext The Velocity context.
+     * @param velocityWriter The writer to be used when writing content.
+     * @param viewContext The View context.
+     */
     public VelocityPageContext(Context velocityContext, Writer velocityWriter, ViewContext viewContext)
     {
-	    super();
 	    this.velocityContext = velocityContext;
 	    this.velocityWriter = velocityWriter;
 	    this.viewContext = viewContext;

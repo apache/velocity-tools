@@ -27,7 +27,7 @@ import javax.servlet.jsp.tagext.SimpleTag;
 import org.apache.commons.digester.annotations.rules.BeanPropertySetter;
 import org.apache.commons.digester.annotations.rules.ObjectCreate;
 import org.apache.commons.digester.annotations.rules.SetNext;
-import org.apache.velocity.tools.view.jsp.taglib.jspimpl.VelocityToolsJspException;
+import org.apache.velocity.tools.view.jsp.jspimpl.VelocityToolsJspException;
 
 /**
  * It represents a tag in a tag library descriptor.

@@ -52,7 +52,7 @@ public class MySimpleTagDirective extends Directive
         try
         {
             tag.setPageContext(pageContext);
-            tag.setParent(JspUtils.wrapTag(oldParentTag));
+            tag.setParent(oldParentTag);
             Object obj;
             obj = params.get("stringProperty");
             if (obj != null) {

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.velocity.tools.view.jsp.taglib.jspimpl;
+package org.apache.velocity.tools.view.jsp.jspimpl;
 
 import java.io.IOException;
 import java.io.Writer;
