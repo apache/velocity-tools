@@ -428,7 +428,7 @@ public class VelocityView extends ViewToolManager
      * Remember that as these configurations are added on top of each other,
      * the newer values will always override the older ones.  Also, once they
      * are all loaded, this method can "clean" your configuration of all invalid
-     * tool, toolbox or data configurations if you set the 
+     * tool, toolbox or data configurations if you set the
      * {@code org.apache.velocity.tools.cleanConfiguration} init-param to true in
      * either your servlet or servletContext init-params.
      */
@@ -732,7 +732,7 @@ public class VelocityView extends ViewToolManager
     /******************* REQUEST PROCESSING ****************************/
 
     /**
-     * 
+     *
      *
      * @param request  HttpServletRequest object containing client request
      * @param response HttpServletResponse object for the response
@@ -746,7 +746,7 @@ public class VelocityView extends ViewToolManager
         Context context = createContext(request, response);
 
         // get the template
-        Template template = getTemplate(request, response);
+        Template template = getTemplate(request);
 
         // merge the template and context into the response
         merge(template, context, response.getWriter());
@@ -805,9 +805,18 @@ public class VelocityView extends ViewToolManager
      */
     public Template getTemplate(HttpServletRequest request)
     {
-        return getTemplate(request, null);
+        String path = ServletUtils.getPath(request);
+        return getTemplate(path);
     }
 
+    /**
+     * <p>Gets the requested template.</p>
+     *
+     * @param request client request
+     * @param response client response.
+     * @return Velocity Template object or null
+     * @deprecated Use {@link #getTemplate(HttpServletRequest)}.
+     */
     public Template getTemplate(HttpServletRequest request,
                                    HttpServletResponse response)
     {
@@ -918,7 +927,7 @@ public class VelocityView extends ViewToolManager
                 }
                 catch (Exception e)
                 {
-                    getLog().error("Trouble releasing VelocityWriter: " + 
+                    getLog().error("Trouble releasing VelocityWriter: " +
                                    e.getMessage(), e);
                 }
             }
