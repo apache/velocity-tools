@@ -8,8 +8,10 @@
     </parent>
     <groupId>org.apache.velocity</groupId>
     <artifactId>maven-velocity-tools-plugin</artifactId>
+    <name>Apache Velocity Tools - Maven plugin</name>
     <version>2.1.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
+    <description>Maven plugin to work with Velocity Tools</description>
     <profiles>
         <profile>
             <id>maven3</id>
