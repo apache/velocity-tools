@@ -32,6 +32,14 @@
 #set( $demo = $text.demo )
 #set( $tool = $class.inspect($toolclass) )
 
+#macro(count)##
+#if($velocityCount)$velocityCount#else$foreach.count#end##
+#end
+
+#macro(setCount)##
+#if($velocityCount)#set($ccount = $velocityCount)#else#set($count = $foreach.count)#end##
+#end
+
 <table border="1" cellspacing="0" cellpadding="3">
 <tr>
   <th>$demo.function</th>
@@ -68,9 +76,9 @@
       ## whose size is inversely proportional to the number of fields
       #set( $fieldsize = $math.sub($math.idiv(24, $method.parameterCount), $method.parameterCount) )
       #foreach( $param in $method.parameters )
-        #set( $fieldname = "$method.uniqueName$velocityCount" )
+        #set( $fieldname = "$method.uniqueName#count" )
         ## look for a default value
-        #set( $fielddefault = $text.get("${toolname}.${method.uniqueName}.param$velocityCount") )
+        #set( $fielddefault = $text.get("${toolname}.${method.uniqueName}.param#count") )
         #if( !$fielddefault.exists )
           ## look for a default for this type for this method
           #set( $fielddefault = $text.get("${toolname}.${method.name}.$param.simpleName") )
@@ -85,7 +93,8 @@
         #end
         ## look for a value in the params, use the default if none is found
         #set( $fieldvalue = $display.alt($params.get($fieldname), $fielddefault) )
-        #if( $velocityCount > 1 ),#end
+        #setCount
+        #if( $count > 1 ),#end
         <input type="text" name="$fieldname" value="$fieldvalue" size="$fieldsize"/>
       #end
       <input type="submit" value="$text.demo.try">
@@ -93,7 +102,7 @@
     ## if we have at least one param value
     #if( $params.get("${method.uniqueName}1") )
       ## do the actual call using the provided param values
-      #set( $call = "${esc.d}${toolname}.${method.name}(#foreach( $param in $method.parameters )#if( $velocityCount > 1 ), #end$!params.get($render.eval('$method.uniqueName$velocityCount'))#end)" )
+      #set( $call = "${esc.d}${toolname}.${method.name}(#foreach( $param in $method.parameters )#setCount#if( $count > 1 ), #end$!params.get($render.eval('$method.uniqueName#count'))#end)" )
       #set( $result = $call )
       #set( $result = $render.eval($call) )
       <br>

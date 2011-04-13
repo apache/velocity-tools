@@ -184,7 +184,6 @@
         <module>velocity-tools-xml</module>
         <module>velocity-tools-view</module>
         <module>velocity-tools-view-jsp</module>
-        <module>velocity-tools-view-engine2</module>
         <module>velocity-tools-struts</module>
         <module>velocity-tools-uberjar</module>
         <module>velocity-tools-examples</module>
