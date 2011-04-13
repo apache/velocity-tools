@@ -99,14 +99,6 @@
             </includes>
         </fileSet>
         <fileSet>
-            <directory>../velocity-tools-view-engine2</directory>
-            <outputDirectory>src/velocity-tools-view-engine2</outputDirectory>
-            <includes>
-                <include>pom.xml</include>
-                <include>src/</include>
-            </includes>
-        </fileSet>
-        <fileSet>
             <directory>../velocity-tools-view-jsp</directory>
             <outputDirectory>src/velocity-tools-view-jsp</outputDirectory>
             <includes>
@@ -189,10 +181,6 @@
         <fileSet>
             <directory>../velocity-tools-view-jsp/target/site</directory>
             <outputDirectory>docs/velocity-tools-view-jsp</outputDirectory>
-        </fileSet>
-        <fileSet>
-            <directory>../velocity-tools-view-engine2/target/site</directory>
-            <outputDirectory>docs/velocity-tools-view-engine2</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>../velocity-tools-struts/target/site</directory>

@@ -57,10 +57,16 @@ public class MockLogChute extends SystemLogChute
     }
     
     public void init(RuntimeServices rs)
-        throws Exception
     {
-        super.init(rs);
-
+        // this try-catch is here to allow compilation under velocity-engine-1.x & velocity-engine-2.x
+        try
+        {
+            super.init(rs);
+        }
+        catch(Exception e)
+        {
+            throw new RuntimeException(e);
+        }
         String level = rs.getString(TEST_LOGGER_LEVEL);
         if (level != null)
         {
