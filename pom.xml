@@ -85,7 +85,7 @@
     <distributionManagement>
         <site>
             <id>velocity.apache.org</id>
-            <url>scpexe://people.apache.org/www/velocity.apache.org/tools/releases/velocity-tools-2.0/</url>
+            <url>scpexe://people.apache.org/www/velocity.apache.org/tools/devel/</url>
         </site>
     </distributionManagement>
 
