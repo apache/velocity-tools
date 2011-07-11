@@ -30,7 +30,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.commons.collections.ExtendedProperties;
 import org.apache.velocity.Template;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
@@ -38,6 +37,7 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.io.VelocityWriter;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.log.Log;
+import org.apache.velocity.shaded.commons.collections.ExtendedProperties;
 import org.apache.velocity.tools.generic.log.LogChuteCommonsLog;
 import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.Scope;
@@ -319,7 +319,7 @@ public class VelocityView extends ViewToolManager
     /**
      * Initializes the Velocity runtime, first calling
      * loadConfiguration(JeeConfig) to get a
-     * org.apache.commons.collections.ExtendedProperties
+     * org.apache.velocity.shaded.commons.collections.ExtendedProperties
      * of configuration information
      * and then calling velocityEngine.init().  Override this
      * to do anything to the environment before the

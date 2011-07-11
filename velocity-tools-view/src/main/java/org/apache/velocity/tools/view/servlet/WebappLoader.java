@@ -19,8 +19,8 @@ package org.apache.velocity.tools.view.servlet;
  * under the License.
  */
 
+import org.apache.velocity.shaded.commons.collections.ExtendedProperties;
 import org.apache.velocity.tools.view.WebappResourceLoader;
-import org.apache.commons.collections.ExtendedProperties;
 
 /**
  * <p>This is basically an empty subclass of {@link WebappResourceLoader} that exists
