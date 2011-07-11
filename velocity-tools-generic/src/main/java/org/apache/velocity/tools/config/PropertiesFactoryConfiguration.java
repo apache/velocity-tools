@@ -23,7 +23,7 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.collections.ExtendedProperties;
+import org.apache.velocity.shaded.commons.collections.ExtendedProperties;
 
 /**
  * <p> This reads in configuration info formatted as a property

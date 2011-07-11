@@ -23,10 +23,10 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.HashMap;
 import javax.servlet.ServletContext;
-import org.apache.commons.collections.ExtendedProperties;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.loader.ResourceLoader;
+import org.apache.velocity.shaded.commons.collections.ExtendedProperties;
 
 /**
  * Resource loader that uses the ServletContext of a webapp to
