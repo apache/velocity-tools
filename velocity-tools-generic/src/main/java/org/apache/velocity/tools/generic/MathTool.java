@@ -323,7 +323,7 @@ public class MathTool extends FormatConfig
      */
     public Number bitwiseAnd(Object... nums)
     {
-        long value = Long.MIN_VALUE;
+        long value = -1;
         Number[] ns = new Number[nums.length];
         for (int i=0; i<nums.length; i++)
         {
