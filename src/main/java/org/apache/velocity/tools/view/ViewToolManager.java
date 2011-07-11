@@ -195,6 +195,15 @@ public class ViewToolManager extends ToolManager
     }
 
     /**
+     * Publish {@link Scope#APPLICATION} Toolbox.
+     */
+    protected void publishApplicationTools()
+    {
+        servletContext.setAttribute(this.toolboxKey, getApplicationToolbox());
+        appToolsPublished = true;
+    }
+
+    /**
      * Removes any published {@link Scope#APPLICATION} Toolbox.
      */
     protected void unpublishApplicationTools()
@@ -334,7 +343,7 @@ public class ViewToolManager extends ToolManager
         }
         if (!appToolsPublished && hasApplicationTools())
         {
-            servletContext.setAttribute(this.toolboxKey, getApplicationToolbox());
+            publishApplicationTools();
         }
     }
 

@@ -41,6 +41,12 @@ public class ConfigurationException extends RuntimeException
         this.source = data;
     }
 
+    public ConfigurationException(Data data, String message, Throwable cause)
+    {
+        super(message, cause);
+        this.source = data;
+    }
+
     public ConfigurationException(Configuration config, Throwable cause)
     {
         super(cause);
@@ -50,6 +56,12 @@ public class ConfigurationException extends RuntimeException
     public ConfigurationException(Configuration config, String message)
     {
         super(message);
+        this.source = config;
+    }
+
+    public ConfigurationException(Configuration config, String message, Throwable cause)
+    {
+        super(message, cause);
         this.source = config;
     }
 
