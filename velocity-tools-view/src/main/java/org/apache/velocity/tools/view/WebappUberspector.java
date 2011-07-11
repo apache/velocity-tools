@@ -66,16 +66,8 @@ public class WebappUberspector extends AbstractChainableUberspector
      */
     public VelPropertyGet getPropertyGet(Object obj, String identifier, Info i)
     {
-        // this try-catch is here to allow compilation under velocity-engine-1.x & velocity-engine-2.x
-        VelPropertyGet ret;
-        try
-        {
-            ret = super.getPropertyGet(obj,identifier,i);
-        }
-        catch(Exception e)
-        {
-            throw new RuntimeException(e);
-        }
+        VelPropertyGet ret = super.getPropertyGet(obj,identifier,i);
+
         if(ret == null)
         {
             Class claz = obj.getClass();
@@ -96,18 +88,7 @@ public class WebappUberspector extends AbstractChainableUberspector
     @Override
     public void init()
     {
-        try
-        {
-            super.init();
-        }
-        catch (RuntimeException re)
-        {
-            throw re;
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException(e);
-        }
+        super.init();
 
         // we need our own introspector since the inner one is hidden by the Uberspect interface
         introspector = new Introspector(log);
@@ -125,16 +106,8 @@ public class WebappUberspector extends AbstractChainableUberspector
     public VelPropertySet getPropertySet(Object obj, String identifier,
                                          Object arg, Info i)
     {
-        // this try-catch is here to allow compilation under velocity-engine-1.x & velocity-engine-2.x
-        VelPropertySet ret;
-        try
-        {
-           ret = super.getPropertySet(obj,identifier,arg,i);
-        }
-        catch(Exception e)
-        {
-            throw new RuntimeException(e);
-        }
+        VelPropertySet ret = super.getPropertySet(obj,identifier,arg,i);
+
         if(ret == null) {
             Class claz = obj.getClass();
             if(obj instanceof HttpServletRequest
