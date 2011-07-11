@@ -89,6 +89,21 @@ public class MathTool extends FormatConfig
         return min(new Object[] { num1, num2 });
     }
 
+    public Number bitwiseOr(Object num1, Object num2)
+    {
+        return bitwiseOr(new Object[] { num1, num2 });
+    }
+
+    public Number bitwiseAnd(Object num1, Object num2)
+    {
+        return bitwiseAnd(new Object[] { num1, num2 });
+    }
+
+    public Number bitwiseXOr(Object num1, Object num2)
+    {
+        return bitwiseXOr(new Object[] { num1, num2 });
+    }
+
     /**
      * @param nums the numbers to be added
      * @return the sum of the numbers or
@@ -99,14 +114,15 @@ public class MathTool extends FormatConfig
     {
         double value = 0;
         Number[] ns = new Number[nums.length];
-        for (Object num : nums)
+        for (int i=0; i<nums.length; i++)
         {
-            Number n = toNumber(num);
+            Number n = toNumber(nums[i]);
             if (n == null)
             {
                 return null;
             }
             value += n.doubleValue();
+            ns[i] = n;
         }
         return matchType(value, ns);
     }
@@ -137,6 +153,7 @@ public class MathTool extends FormatConfig
             {
                 value -= n.doubleValue();
             }
+            ns[i] = n;
         }
         return matchType(value, ns);
     }
@@ -152,14 +169,15 @@ public class MathTool extends FormatConfig
     {
         double value = 1;
         Number[] ns = new Number[nums.length];
-        for (Object num : nums)
+        for (int i=0; i<nums.length; i++)
         {
-            Number n = toNumber(num);
+            Number n = toNumber(nums[i]);
             if (n == null)
             {
                 return null;
             }
             value *= n.doubleValue();
+            ns[i] = n;
         }
         return matchType(value, ns);
     }
@@ -196,6 +214,7 @@ public class MathTool extends FormatConfig
                 }
                 value /= denominator;
             }
+            ns[i] = n;
         }
         return matchType(value, ns);
     }
@@ -272,6 +291,79 @@ public class MathTool extends FormatConfig
 
 
     /**
+     * Bitwise Or
+     * @param nums the numbers to be Or'ed
+     * @return the bitwise Or of the numbers or
+     *         <code>null</code> if they're invalid
+     * @see #toInteger
+     */
+    public Number bitwiseOr(Object... nums)
+    {
+        long value = 0;
+        Number[] ns = new Number[nums.length];
+        for (int i=0; i<nums.length; i++)
+        {
+            Long n = toLong(nums[i]);
+            if (n == null)
+            {
+                return null;
+            }
+            value |= n.longValue();
+            ns[i] = n;
+        }
+        return matchType(value, ns);
+    }
+
+    /**
+     * Bitwise And
+     * @param nums the numbers to be And'ed
+     * @return the bitwise And of the numbers or
+     *         <code>null</code> if they're invalid
+     * @see #toInteger
+     */
+    public Number bitwiseAnd(Object... nums)
+    {
+        long value = Long.MIN_VALUE;
+        Number[] ns = new Number[nums.length];
+        for (int i=0; i<nums.length; i++)
+        {
+            Long n = toLong(nums[i]);
+            if (n == null)
+            {
+                return null;
+            }
+            value &= n.longValue();
+            ns[i] = n;
+        }
+        return matchType(value, ns);
+    }
+
+    /**
+     * Bitwise XOr
+     * @param nums the numbers to be XOr'ed
+     * @return the bitwise XOr of the numbers or
+     *         <code>null</code> if they're invalid
+     * @see #toInteger
+     */
+    public Number bitwiseXOr(Object... nums)
+    {
+        long value = 0;
+        Number[] ns = new Number[nums.length];
+        for (int i=0; i<nums.length; i++)
+        {
+            Long n = toLong(nums[i]);
+            if (n == null)
+            {
+                return null;
+            }
+            value ^= n.longValue();
+            ns[i] = n;
+        }
+        return matchType(value, ns);
+    }
+
+
+    /**
      * @param nums the numbers to be searched
      * @return the largest of the numbers or
      *         <code>null</code> if they're invalid
@@ -281,14 +373,15 @@ public class MathTool extends FormatConfig
     {
         double value = Double.MIN_VALUE;
         Number[] ns = new Number[nums.length];
-        for (Object num : nums)
+        for (int i=0; i<nums.length; i++)
         {
-            Number n = toNumber(num);
+            Number n = toNumber(nums[i]);
             if (n == null)
             {
                 return null;
             }
             value = Math.max(value, n.doubleValue());
+            ns[i] = n;
         }
         return matchType(value, ns);
     }
@@ -304,14 +397,15 @@ public class MathTool extends FormatConfig
     {
         double value = Double.MAX_VALUE;
         Number[] ns = new Number[nums.length];
-        for (Object num : nums)
+        for (int i=0; i<nums.length; i++)
         {
-            Number n = toNumber(num);
+            Number n = toNumber(nums[i]);
             if (n == null)
             {
                 return null;
             }
             value = Math.min(value, n.doubleValue());
+            ns[i] = n;
         }
         return matchType(value, ns);
     }
@@ -493,6 +587,24 @@ public class MathTool extends FormatConfig
         return Integer.valueOf(n.intValue());
     }
 
+    /**
+     * Converts an object with a numeric value into a Long integer
+     * Valid formats are {@link Number} or a {@link String}
+     * representation of a number
+     *
+     * @param num the number to be converted
+     * @return a {@link Long} integer representation of the number
+     *         or <code>null</code> if it's invalid
+     */
+    public Long toLong(Object num)
+    {
+        Number n = toNumber(num);
+        if (n == null)
+        {
+            return null;
+        }
+        return Long.valueOf(n.longValue());
+    }
 
     /**
      * Converts an object with a numeric value into a Double
