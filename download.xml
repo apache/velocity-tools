@@ -61,6 +61,7 @@
   <target name="docs-download"
           depends="base-download"
           description="Download dependencies needed to render VelocityTools documentation from the central repository">
+    <antcall target="dom4j-download" />
     <antcall target="velocity-dvsl-download" />
   </target>
 
@@ -78,6 +79,7 @@
   <!-- whitebox tests downloads -->
   <target name="whitebox-test-download" depends="base-download">
     <antcall target="junit-download"/>
+    <antcall target="jaxen-download" />
   </target>
 
   <!-- blackbox tests downloads -->
@@ -241,6 +243,13 @@
     <property name="download.groupId" value="dom4j" />
     <property name="download.artifactId" value="dom4j" />
     <property name="download.version" value="${jar.dom4j.version}" />
+    <antcall target="http-m2-download"/>
+  </target>
+
+  <target name="jaxen-download">
+    <property name="download.groupId" value="jaxen" />
+    <property name="download.artifactId" value="jaxen" />
+    <property name="download.version" value="${jar.jaxen.version}" />
     <antcall target="http-m2-download"/>
   </target>
 

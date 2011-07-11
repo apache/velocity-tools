@@ -94,6 +94,7 @@ public class LoopTool
 {
     private Stack<ManagedIterator> iterators = new Stack<ManagedIterator>();
     private ManagedIterator last;
+    private Map<String,Object> lastSyncedValues;
 
     /**
      * <p>Tells the LoopTool to watch the specified Array, Collection, Map,
@@ -401,6 +402,14 @@ public class LoopTool
                 return iterator.get(key);
             }
         }
+        if (lastSyncedValues != null)
+        {
+            Object syncedValue = lastSyncedValues.get(key);
+            if (syncedValue != null)
+            {
+                return syncedValue;
+            }
+        }
         // shortest key would be "last_X" where X is the loop name
         if (key == null || key.length() < 6)
         {
@@ -553,7 +562,9 @@ public class LoopTool
      */
     protected ManagedIterator pop()
     {
-        return iterators.pop();
+        ManagedIterator i = iterators.pop();
+        this.lastSyncedValues = i.getLastSyncedValues();
+        return i;
     }
 
 
@@ -739,9 +750,6 @@ public class LoopTool
                     }
                 }
             }
-
-            // ok, looks like we have a next that met all the conditions
-            shiftSynced();
             return true;
         }
 
@@ -839,6 +847,8 @@ public class LoopTool
             Object value = this.next;
             // clear the cache
             this.next = null;
+            // call next on synced ones
+            shiftSynced();
             // return the no-longer-cached value
             return value;
         }
@@ -905,7 +915,7 @@ public class LoopTool
          * <p>Adds another iterator to be kept in sync with the one
          * being managed by this instance.  The values of the parallel
          * iterator can be retrieved from the LoopTool under the
-         * name s"synced" (e.g. $loop.synched or $loop.get('synced'))
+         * name s"synced" (e.g. $loop.synced or $loop.get('synced'))
          * and are automatically updated for each iteration by this instance.
          * </p><p><b>NOTE</b>: if you are sync'ing multiple iterators
          * with the same managed iterator, you must use 
@@ -946,6 +956,20 @@ public class LoopTool
             }
             synced.put(name, new SyncedIterator(parallel));
             return this;
+        }
+
+        public Map<String,Object> getLastSyncedValues()
+        {
+            if (synced == null)
+            {
+                return null;
+            }
+            Map<String,Object> syncs = new HashMap<String,Object>();
+            for (String key : synced.keySet())
+            {
+                syncs.put(key, synced.get(key).get());
+            }
+            return syncs;
         }
 
         @Override

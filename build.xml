@@ -109,6 +109,14 @@
         <include name="**/*.jar"/>
       </fileset>
     </path>
+
+    <!-- construct patternset of source files -->
+    <patternset id="source.files">
+      <include name="org/**/*.java"/>
+      <exclude name="org/apache/velocity/tools/generic/log/CommonsLogLogSystem.java" unless="use.velocity-1.x"/>
+      <exclude name="org/apache/velocity/tools/view/servlet/ServletLogger.java" unless="use.velocity-1.x"/>
+    </patternset>
+
   </target>
 
   <!-- Prepare Documentation Environment -->
@@ -150,7 +158,7 @@
            encoding="${compile.encoding}"
            destdir="${classes.dir}">
       <classpath refid="compile.classpath" />
-      <include name="org/**"/>
+      <patternset refid="source.files"/>
     </javac>
 
     <copy todir="${classes.dir}" filtering="yes">
@@ -174,7 +182,7 @@
            encoding="${compile.encoding}"
            destdir="${classes.dir}">
       <classpath refid="compile.classpath" />
-      <include name="org/**"/>
+      <patternset refid="source.files"/>
       <exclude name="**/struts/**"/>
     </javac>
 
@@ -201,7 +209,7 @@
            encoding="${compile.encoding}"
            destdir="${classes.dir}">
       <classpath refid="compile.classpath" />
-      <include name="org/**"/>
+      <patternset refid="source.files"/>
       <exclude name="**/struts/**"/>
       <exclude name="**/view/**"/>
     </javac>
