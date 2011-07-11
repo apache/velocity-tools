@@ -22,10 +22,10 @@ package org.apache.velocity.tools.test.blackbox;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import org.apache.commons.collections.iterators.IteratorEnumeration;
 import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +39,15 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ServletAdaptor implements InvocationHandler
 {
+    // helper class
+    public class IteratorEnumeration implements Enumeration
+    {
+        private Iterator iterator;
+        public IteratorEnumeration( Iterator iterator ) { this.iterator = iterator; }
+        public boolean hasMoreElements() { return iterator.hasNext(); }
+        public Object nextElement() { return iterator.next(); }
+    }
+
     // the params now also serve as a cookie jar for CookieToolTests
     private Map _params;
     private String _contextPath;
