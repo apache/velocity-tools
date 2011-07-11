@@ -306,8 +306,8 @@ public class ViewToolsIT {
 
         /* check getString(bar,foo) */
         WebForm form = resp.getFormWithName("getString2");
-        form.setParameter("getString1","'bar'");
-        form.setParameter("getString2","'foo'");
+        form.setParameter("getString1","bar");
+        form.setParameter("getString2","foo");
         resp = form.submit();
         checkText(resp,"getString2","foo");
 
