@@ -280,7 +280,9 @@ public class ToolConfiguration extends Configuration
                 info = new OldToolInfo(getKey(), getToolClass());
                 break;
             default:
-                throw new ConfigurationException(this, getError(status));
+                throw problem == null ?
+                    new ConfigurationException(this, getError(status)) : 
+                    new ConfigurationException(this, getError(status), problem);
         }
 
         info.restrictTo(getRestrictTo());
