@@ -261,7 +261,7 @@
     <echo>Analyzing ${dist.dir}/${project.id}.jar built from ${source.home}</echo>
     <findbugs home="${findbugs.home}"
               output="html"
-              outputFile="${test.build.dir}\findbugs-report.html"
+              outputFile="${test.build.dir}/findbugs-report.html"
               failOnError="true">
       <auxClasspath>
         <fileset dir="${lib.dir}">
@@ -298,11 +298,11 @@
       <ruleset>codesize</ruleset>
 -->
       <formatter type="html"
-                 toFile="${test.build.dir}\pmd_report.html"/>
+                 toFile="${test.build.dir}/pmd_report.html"/>
       <fileset dir="${source.home}/main/java">
         <include name="**/*.java"/>
       </fileset>
     </pmd>
-    <echo>Generated report is at ${test.build.dir}\pmd_report.html</echo>
+    <echo>Generated report is at ${test.build.dir}/pmd_report.html</echo>
   </target>
 </project>
