@@ -37,6 +37,7 @@
         <li>correct handling and better reporting of commited responses in error() (cb)</li>
         <li>Added a custom number formats cache in ConversionUtils (cb)</li>
         <li>fixed VELTOOLS-144 added localization of DateFormat format strings (schultz)</li>
+        <li>fixed VELTOOLS-145 changed StrutsLinkTool's parent class to restore API backward-compatibility</li>
         </ul>
     </subsection>
 
