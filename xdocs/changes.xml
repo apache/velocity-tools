@@ -36,6 +36,7 @@
         <li>fixed VELTOOLS-128 fix sync problems (ndb)</li>
         <li>correct handling and better reporting of commited responses in error() (cb)</li>
         <li>Added a custom number formats cache in ConversionUtils (cb)</li>
+        <li>fixed VELTOOLS-144 added localization of DateFormat format strings (schultz)</li>
         </ul>
     </subsection>
 
