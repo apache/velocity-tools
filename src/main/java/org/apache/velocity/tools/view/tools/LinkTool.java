@@ -299,4 +299,14 @@ public class LinkTool extends org.apache.velocity.tools.view.LinkTool
         }
     }
 
+    @Override
+    protected LinkTool duplicate(boolean deep)
+    {
+        LinkTool that = (LinkTool)super.duplicate(deep);
+
+        if(parametersToIgnore != null)
+            that.parametersToIgnore = new HashSet<String>(parametersToIgnore);
+
+        return that;
+    }
 }

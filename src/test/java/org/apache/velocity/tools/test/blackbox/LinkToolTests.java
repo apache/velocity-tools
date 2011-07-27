@@ -185,4 +185,17 @@ public class LinkToolTests
         Assert.assertEquals("/test/target?a=a&amp;a=b&amp;a=c&amp;a=d", url);
     }
 
+    public @Test void test_VELTOOLS_148()
+    {
+        LinkTool link = newLinkTool("a", new String[] { "a", "b", "c" });
+
+        LinkTool forward = link.setRelative("/foo")
+            .addQueryData("bar", "baz");
+
+        Assert.assertEquals("/test/foo?bar=baz&amp;a=a&amp;a=b&amp;a=c",
+                            forward.addAllParameters().toString());
+
+        Assert.assertEquals("/test/foo?bar=baz&amp;a=a&amp;a=b&amp;a=c",
+                            forward.addAllParameters().toString());
+    }
 }
