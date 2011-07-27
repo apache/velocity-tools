@@ -249,7 +249,7 @@ public class LinkTool extends org.apache.velocity.tools.view.LinkTool
     {
         if (this.parametersToIgnore != null)
         {
-            String[] ignoreThese = new String[parametersToIgnore.size()];
+            Object[] ignoreThese = new String[parametersToIgnore.size()];
             return (LinkTool)addRequestParamsExcept(parametersToIgnore.toArray(ignoreThese));
         }
         else if (autoIgnore)
