@@ -743,6 +743,34 @@ public class DateTool extends FormatConfig
         return ConversionUtils.toCalendar(date, locale);
     }
 
+    /**
+     * Returns a localized date format pattern for the given format.
+     *
+     * SimpleDateFormat uses patterns that are based upon English
+     * words (such as Month = M, Day = d, and Year = y). When displaying
+     * a format pattern to readers of other languages, it is appropriate
+     * to display these patterns using their localized expectations.
+     * For instance, the date pattern yyyy-MM-dd should, for French speakers
+     * appear as "aaaa-MM-jj". {@link SimpleDateFormat#toLocalizedPattern}
+     * provides this functionality, and this method merely calls
+     * that on an appropriately-constructed SimpleDateFormat object.
+     *
+     * @param format the custom or standard pattern to convert
+     * @param locale the {@link Locale} to format for pattern for
+     * @return a format string appropriate for the specified Locale
+     * @since VelocityTools 2.0
+     */
+    public String toLocalizedPattern(String format,
+                                     Locale locale)
+    {
+        DateFormat df = getDateFormat(format, locale, getTimeZone());
+
+        // Just in case DateFormat.getInstance doesn't return SimpleDateFormat
+        if(df instanceof SimpleDateFormat)
+            return ((SimpleDateFormat)df).toLocalizedPattern();
+        else
+            return null; // Got a better idea?
+    }
 
     // ------------------------- default toString() implementation ------------
 

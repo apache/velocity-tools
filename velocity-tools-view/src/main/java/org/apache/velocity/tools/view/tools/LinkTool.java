@@ -249,7 +249,7 @@ public class LinkTool extends org.apache.velocity.tools.view.LinkTool
     {
         if (this.parametersToIgnore != null)
         {
-            String[] ignoreThese = new String[parametersToIgnore.size()];
+            Object[] ignoreThese = new String[parametersToIgnore.size()];
             return (LinkTool)addRequestParamsExcept(parametersToIgnore.toArray(ignoreThese));
         }
         else if (autoIgnore)
@@ -299,4 +299,14 @@ public class LinkTool extends org.apache.velocity.tools.view.LinkTool
         }
     }
 
+    @Override
+    protected LinkTool duplicate(boolean deep)
+    {
+        LinkTool copy = (LinkTool)super.duplicate(deep);
+        if (this.parametersToIgnore != null)
+        {
+            copy.parametersToIgnore = new HashSet<String>(this.parametersToIgnore);
+        }
+        return copy;
+    }
 }

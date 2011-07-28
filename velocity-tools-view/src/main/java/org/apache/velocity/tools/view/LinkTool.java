@@ -136,7 +136,7 @@ public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
      * @return A LinkTool object with the specified parameters from
      *         the current request added to it or all the params if none specified.
      */
-    public LinkTool addRequestParams(String... butOnlyThese)
+    public LinkTool addRequestParams(Object... butOnlyThese)
     {
         return addRequestParams(false, butOnlyThese);
     }
@@ -148,7 +148,7 @@ public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
      * @return A LinkTool object with all of the current request's parameters
      *         added to it, except those specified.
      */
-    public LinkTool addRequestParamsExcept(String... ignoreThese)
+    public LinkTool addRequestParamsExcept(Object... ignoreThese)
     {
         return addRequestParams(true, ignoreThese);
     }
@@ -162,13 +162,13 @@ public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
      *         added to it, except those specified or those that already have
      *         values.
      */
-    public LinkTool addMissingRequestParams(String... ignoreThese)
+    public LinkTool addMissingRequestParams(Object... ignoreThese)
     {
-        String[] these;
+        Object[] these;
         if (query != null && !query.isEmpty())
         {
             Set keys = query.keySet();
-            these = new String[keys.size() + ignoreThese.length];
+            these = new Object[keys.size() + ignoreThese.length];
             int i = 0;
             for (; i < ignoreThese.length; i++)
             {
@@ -186,7 +186,7 @@ public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
         return addRequestParams(true, these);
     }
 
-    private LinkTool addRequestParams(boolean ignore, String... special)
+    private LinkTool addRequestParams(boolean ignore, Object... special)
     {
         LinkTool copy = (LinkTool)duplicate(true);
         Map reqParams = request.getParameterMap();
@@ -207,9 +207,9 @@ public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
         return copy;
     }
 
-    private boolean contains(String[] set, String name)
+    private boolean contains(Object[] set, String name)
     {
-        for (String i : set)
+        for (Object i : set)
         {
             if (name.equals(i))
             {

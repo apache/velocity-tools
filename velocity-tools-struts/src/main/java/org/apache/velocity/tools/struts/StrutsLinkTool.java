@@ -21,7 +21,7 @@ package org.apache.velocity.tools.struts;
 
 import javax.servlet.ServletContext;
 import org.apache.velocity.tools.generic.ValueParser;
-import org.apache.velocity.tools.view.LinkTool;
+import org.apache.velocity.tools.view.tools.LinkTool;
 import org.apache.velocity.tools.view.ViewContext;
 
 /**
@@ -80,11 +80,11 @@ public class StrutsLinkTool extends LinkTool
         StrutsLinkTool sub = null;
         if ("action".equalsIgnoreCase(this.get))
         {
-            sub = setAction(getme);
+            sub = action(getme);
         }
         else if ("forward".equalsIgnoreCase(this.get))
         {
-            sub = setForward(getme);
+            sub = forward(getme);
         }
         else
         {
@@ -110,7 +110,7 @@ public class StrutsLinkTool extends LinkTool
      *
      * @return a new instance of StrutsLinkTool
      */
-    public StrutsLinkTool setAction(String action)
+    public StrutsLinkTool action(String action)
     {
         String url =
             StrutsUtils.getActionMappingURL(application, request, action);
@@ -123,6 +123,46 @@ public class StrutsLinkTool extends LinkTool
         return (StrutsLinkTool)absolute(url);
     }
 
+    /**
+     * <p>Returns a copy of the link with the given action name
+     * converted into a server-relative URI reference. This method
+     * does not check if the specified action really is defined.
+     * This method will overwrite any previous URI reference settings
+     * but will copy the query string.</p>
+     *
+     * @param action an action path as defined in struts-config.xml
+     *
+     * @return a new instance of StrutsLinkTool
+     */
+    public StrutsLinkTool setAction(String action)
+    {
+        return action(action);
+    }
+
+    /**
+     * <p>Returns a copy of the link with the given global or local forward
+     * name converted into a server-relative URI reference. If the parameter
+     * does not map to an existing global forward name, <code>null</code>
+     * is returned. This method will overwrite any previous URI reference
+     * settings but will copy the query string.</p>
+     *
+     * @param forward a forward name as defined in struts-config.xml
+     *                in either global-forwards or in the currently executing
+     *                action mapping.
+     *
+     * @return a new instance of StrutsLinkTool
+     */
+    public StrutsLinkTool forward(String forward)
+    {
+        String url = StrutsUtils.getForwardURL(request, application, forward);
+        if (url == null)
+        {
+            debug("StrutsLinkTool : In method setForward(" + forward +
+                  "): Parameter does not map to a valid forward.");
+            return null;
+        }
+        return (StrutsLinkTool)absolute(url);
+    }
 
     /**
      * <p>Returns a copy of the link with the given global or local forward
@@ -139,14 +179,6 @@ public class StrutsLinkTool extends LinkTool
      */
     public StrutsLinkTool setForward(String forward)
     {
-        String url = StrutsUtils.getForwardURL(request, application, forward);
-        if (url == null)
-        {
-            debug("StrutsLinkTool : In method setForward(" + forward +
-                  "): Parameter does not map to a valid forward.");
-            return null;
-        }
-        return (StrutsLinkTool)absolute(url);
+        return forward(forward);
     }
-
 }
