@@ -365,7 +365,7 @@ public class LinkTool extends SafeConfig implements Cloneable
             }
             catch (NumberFormatException nfe)
             {
-                debug("Could convert '%s' to int", nfe, obj);
+                debug("Could not convert '%s' to int", nfe, obj);
                 this.port = -2; // use this to mean error
             }
         }
@@ -831,7 +831,9 @@ public class LinkTool extends SafeConfig implements Cloneable
      * host, port, path, query, and fragment all to their null-equivalent
      * values.  Otherwise, this will
      * convert the specified object into a {@link URI}, then those same
-     * values from the URI object to this instance.
+     * values from the URI object to this instance, when not null or empty.
+     * In other words, when given a URI this will only set values present
+     * in the URI.
      */
     protected boolean setFromURI(Object obj)
     {
@@ -853,27 +855,51 @@ public class LinkTool extends SafeConfig implements Cloneable
         {
             return false;
         }
-        setScheme(uri.getScheme());
+        if (uri.getScheme() != null)
+        {
+            setScheme(uri.getScheme());
+        }
         if (uri.isOpaque())
         {
             this.opaque = true;
-            // path is used as scheme-specific part
-            setPath(uri.getSchemeSpecificPart());
+            if (uri.getSchemeSpecificPart() != null)
+            {
+                // path is used as scheme-specific part
+                setPath(uri.getSchemeSpecificPart());
+            }
         }
         else
         {
-            setUserInfo(uri.getUserInfo());
-            setHost(uri.getHost());
-            setPort(uri.getPort());
-            String pth = uri.getPath();
-            if (pth.equals("/") || pth.length() == 0)
+            if (uri.getUserInfo() != null)
             {
-                pth = null;
+                setUserInfo(uri.getUserInfo());
             }
-            setPath(pth);
+            if (uri.getHost() != null)
+            {
+                setHost(uri.getHost());
+            }
+            if (uri.getPort() > -1)
+            {
+                setPort(uri.getPort());
+            }
+            String pth = uri.getPath();
+            if (pth != null)
+            {
+                if (pth.equals("/") || pth.length() == 0)
+                {
+                    pth = null;
+                }
+                setPath(pth);
+            }
+        }
+        if (uri.getQuery() != null)
+        {
             setQuery(uri.getQuery());
         }
-        setFragment(uri.getFragment());
+        if (uri.getFragment() != null)
+        {
+            setFragment(uri.getFragment());
+        }
         return true;
     }
 
@@ -894,7 +920,7 @@ public class LinkTool extends SafeConfig implements Cloneable
             }
             catch (Exception e)
             {
-                debug("Could convert '%s' to URI", e, obj);
+                debug("Could not convert '%s' to URI", e, obj);
                 return null;
             }
         }
@@ -1272,8 +1298,11 @@ public class LinkTool extends SafeConfig implements Cloneable
         {
             pth = combinePath(getContextPath(), String.valueOf(obj));
         }
-        copy.setPath(pth);
-        return copy;
+        if (copy.setFromURI(pth))
+        {
+            return copy;
+        }
+        return null;
     }
 
     /**
@@ -1340,52 +1369,25 @@ public class LinkTool extends SafeConfig implements Cloneable
     {
         // assume it's just a path value to go with current scheme/host/port
         LinkTool copy = absolute();
-        String pth;
         if (obj == null)
         {
             // just use the current directory path, if any
-            pth = getDirectory();
+            copy.setPath(getDirectory());
         }
         else
         {
-            pth = String.valueOf(obj);
-            if (pth.startsWith(DEFAULT_SCHEME))
+            String pth = String.valueOf(obj);
+            // paths that don't start with '/'
+            // are considered relative to the current directory
+            if (!pth.startsWith(DEFAULT_SCHEME) && !pth.startsWith("/"))
             {
-                // looks absolute already
-                URI uri = toURI(pth);
-                if (uri == null)
-                {
-                    return null;
-                }
-                copy.setScheme(uri.getScheme());
-                copy.setUserInfo(uri.getUserInfo());
-                copy.setHost(uri.getHost());
-                copy.setPort(uri.getPort());
-                // handle path, query and fragment with care
-                pth = uri.getPath();
-                if (pth.equals("/") || pth.length() == 0)
-                {
-                    pth = null;
-                }
-                copy.setPath(pth);
-                if (uri.getQuery() != null)
-                {
-                    copy.setQuery(uri.getQuery());
-                }
-                if (uri.getFragment() != null)
-                {
-                    copy.setFragment(uri.getFragment());
-                }
-                return copy;
-            }
-            else if (!pth.startsWith("/"))
-            {
-                // paths that don't start with '/'
-                // are considered relative to the current directory
                 pth = combinePath(getDirectory(), pth);
             }
+            if (!copy.setFromURI(pth))
+            {
+                return null;
+            }
         }
-        copy.setPath(pth);
         return copy;
     }
 

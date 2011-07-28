@@ -41,6 +41,7 @@
         <li>fixed VELTOOLS-148 - fixed a LinkTool bug with parametersToIgnore management (schultz)</li>
         <li>fixed VELTOOLS-149 - changed LinkTool.addRequestParams to accept Object[] (schultz)</li>
         <li>Added StrutsLinkTool.action and StrutsLinkTool.forward methods as replacements for StrutsLinkTool.setAction ant StrutsLinkTool.setForward to match other new LinkTool methods like LinkTool.relative and LinkTool.absolute (schultz)
+        <li>fixed VELTOOLS-146 $link.absolute($uri) should not encode query strings in the argument</li>
         </ul>
     </subsection>
 
