@@ -168,11 +168,19 @@ public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
         if (query != null && !query.isEmpty())
         {
             Set keys = query.keySet();
-            these = new Object[keys.size() + ignoreThese.length];
+
+            int size = keys.size();
+            if(null != ignoreThese)
+                size += ignoreThese.length;
+
+            these = new Object[size];
             int i = 0;
-            for (; i < ignoreThese.length; i++)
+            if(null != ignoreThese)
             {
-                these[i] = ignoreThese[i];
+                for (; i < ignoreThese.length; i++)
+                {
+                    these[i] = ignoreThese[i];
+                }
             }
             for (Iterator iter = keys.iterator(); iter.hasNext(); i++)
             {
