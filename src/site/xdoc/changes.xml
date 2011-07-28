@@ -31,15 +31,27 @@
     <subsection name="2.1-SNAPSHOT">
         <p>This section describes changes after the 2.0 release.</p>
         <ul>
+        <li>Switched engine dependency to 2.0 (cb)</li>
+        <li>Reflect Velocity Engine dependency shading of commons-lang and commons-collections (cb)</li>
+        <li>Removed deprecated class org.apache.velocity.tools.generic.log.LogSystemCommonsLog (cb)</li>
+        <li>MathTool: fixed result type calculations and added bitwise operations (cb)</li>
+        </ul>
+    </subsection>
+
+    <subsection name="2.0.1-SNAPSHOT">
+        <p>This section describes changes after the 2.0 release.</p>
+        <ul>
         <li>Upgraded to Dom4j 1.6.1 and Velocity Engine 1.6.4. (ndb)</li>
         <li>fixed VELTOOLS-129 (thanks to Michael Osipov) (ndb)</li>
         <li>fixed VELTOOLS-128 fix sync problems (ndb)</li>
         <li>correct handling and better reporting of commited responses in error() (cb)</li>
         <li>Added a custom number formats cache in ConversionUtils (cb)</li>
-        <li>Switched engine dependency to 2.0 (cb)</li>
-        <li>Reflect Velocity Engine dependency shading of commons-lang and commons-collections (cb)</li>
-        <li>Removed deprecated class org.apache.velocity.tools.generic.log.LogSystemCommonsLog (cb)</li>
-        <li>MathTool: fixed result type calculations and added bitwise operations (cb)</li>
+        <li>fixed VELTOOLS-144 added localization of DateFormat format strings (schultz)</li>
+        <li>fixed VELTOOLS-145 changed StrutsLinkTool's parent class to restore API backward-compatibility (schultz)</li>
+        <li>fixed VELTOOLS-148 - fixed a LinkTool bug with parametersToIgnore management (schultz)</li>
+        <li>fixed VELTOOLS-149 - changed LinkTool.addRequestParams to accept Object[] (schultz)</li>
+        <li>Added StrutsLinkTool.action and StrutsLinkTool.forward methods as replacements for StrutsLinkTool.setAction ant StrutsLinkTool.setForward to match other new LinkTool methods like LinkTool.relative and LinkTool.absolute (schultz)
+        <li>fixed VELTOOLS-146 $link.absolute($uri) should not encode query strings in the argument</li>
         </ul>
     </subsection>
 
