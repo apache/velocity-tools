@@ -26,9 +26,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.validator.Field;
 import org.apache.commons.validator.Form;
 import org.apache.commons.validator.ValidatorAction;
@@ -432,8 +434,6 @@ public class ValidatorTool
         return results.toString();
     }
 
-
-
     /**
      * Generates the dynamic JavaScript for the form.
      *
@@ -518,7 +518,14 @@ public class ValidatorTool
                 results.append(" = new Array(\"");
                 results.append(field.getKey()); // TODO: escape?
                 results.append("\", \"");
-                results.append(escapeJavascript(message));
+
+                message = escapeJavascript(message);
+
+                // Escape required XML entities if we are in XHTML mode without CDATA
+                if(this.xhtml && !this.cdata)
+                    message = StringEscapeUtils.escapeXml(message);
+
+                results.append(message);
                 results.append("\", new Function (\"varName\", \"");
 
                 Map<String,Var> vars = (Map<String,Var>)field.getVars();
@@ -542,6 +549,10 @@ public class ValidatorTool
                     results.append(varName);
 
                     String escapedVarValue = escapeJavascript(varValue);
+
+                    // Escape required XML entities if we are in XHTML mode without CDATA
+                    if(this.xhtml && !this.cdata)
+                        escapedVarValue = StringEscapeUtils.escapeXml(escapedVarValue);
 
                     if (Var.JSTYPE_INT.equalsIgnoreCase(jsType))
                     {
@@ -636,7 +647,12 @@ public class ValidatorTool
      */
     protected String createMethods(List actions)
     {
-        String methodOperator = " && ";
+        String methodOperator;
+        // Escape required XML entities if we are in XHTML mode without CDATA
+        if(this.xhtml && !this.cdata)
+            methodOperator = " &amp;&amp; ";
+        else
+            methodOperator = " && ";
 
         StringBuilder methods = null;
         for (Iterator i = actions.iterator(); i.hasNext();)
@@ -765,7 +781,6 @@ public class ValidatorTool
             sb.append(" var formValidationResult;\n");
             sb.append("       formValidationResult = " + methods + "; \n");
             sb.append("     return (formValidationResult == 1);\n");
-
         }
         sb.append("   } \n\n");
 
