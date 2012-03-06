@@ -50,8 +50,9 @@
         <li>fixed VELTOOLS-145 changed StrutsLinkTool's parent class to restore API backward-compatibility (schultz)</li>
         <li>fixed VELTOOLS-148 - fixed a LinkTool bug with parametersToIgnore management (schultz)</li>
         <li>fixed VELTOOLS-149 - changed LinkTool.addRequestParams to accept Object[] (schultz)</li>
-        <li>Added StrutsLinkTool.action and StrutsLinkTool.forward methods as replacements for StrutsLinkTool.setAction ant StrutsLinkTool.setForward to match other new LinkTool methods like LinkTool.relative and LinkTool.absolute (schultz)
+        <li>Added StrutsLinkTool.action and StrutsLinkTool.forward methods as replacements for StrutsLinkTool.setAction and StrutsLinkTool.setForward to match other new LinkTool methods like LinkTool.relative and LinkTool.absolute (schultz)
         <li>fixed VELTOOLS-146 $link.absolute($uri) should not encode query strings in the argument</li>
+        <li>fixed VELTOOLS-152 ValidatorTool generates invalid XHTML even when in XHTML mode (schultz)</li>
         </ul>
     </subsection>
 
