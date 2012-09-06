@@ -20,6 +20,7 @@ package org.apache.velocity.tools.struts;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -123,12 +124,8 @@ public class ValidatorTool
     /**
      * A Comparator to use when sorting ValidatorAction objects.
      */
-    private static final Comparator actionComparator = new Comparator() {
-        public int compare(Object o1, Object o2) {
-
-            ValidatorAction va1 = (ValidatorAction) o1;
-            ValidatorAction va2 = (ValidatorAction) o2;
-
+    private static final Comparator<ValidatorAction> actionComparator = new Comparator<ValidatorAction>() {
+        public int compare(ValidatorAction va1, ValidatorAction va2) {
             if ((va1.getDepends() == null || va1.getDepends().length() == 0)
                 && (va2.getDepends() == null || va2.getDepends().length() == 0)) {
                 return 0;
@@ -168,7 +165,7 @@ public class ValidatorTool
      * @param params the Map of configuration parameters
      * @throws IllegalArgumentException if the param is not a ViewContext
      */
-    public void configure(Map params)
+    public void configure(Map<String,Object> params)
     {
         this.context = (ViewContext)params.get(ViewToolContext.CONTEXT_KEY);
         this.request = (HttpServletRequest)params.get(ViewContext.REQUEST);
@@ -451,7 +448,7 @@ public class ValidatorTool
         MessageResources messages =
             StrutsUtils.getMessageResources(request, app);
 
-        List actions = createActionList(resources, form);
+        List<ValidatorAction> actions = createActionList(resources, form);
 
         final String methods = createMethods(actions);
 
@@ -471,9 +468,8 @@ public class ValidatorTool
 
         results.append(getJavascriptBegin(methods));
 
-        for (Iterator i = actions.iterator(); i.hasNext();)
+        for (ValidatorAction va : actions)
         {
-            ValidatorAction va = (ValidatorAction)i.next();
             int jscriptVar = 0;
             String functionName = null;
 
@@ -492,9 +488,9 @@ public class ValidatorTool
             results.append(functionName);
             results.append(" () { \n");
 
-            for (Iterator x = form.getFields().iterator(); x.hasNext();)
+            for (Iterator<Field> x = form.getFields().iterator(); x.hasNext();)
             {
-                Field field = (Field)x.next();
+                Field field = x.next();
 
                 // Skip indexed fields for now until there is
                 // a good way to handle error messages (and the length
@@ -645,7 +641,7 @@ public class ValidatorTool
      * @param actions A List of ValidatorAction objects.
      * @return JavaScript methods.
      */
-    protected String createMethods(List actions)
+    protected String createMethods(List<ValidatorAction> actions)
     {
         String methodOperator;
         // Escape required XML entities if we are in XHTML mode without CDATA
@@ -655,9 +651,8 @@ public class ValidatorTool
             methodOperator = " && ";
 
         StringBuilder methods = null;
-        for (Iterator i = actions.iterator(); i.hasNext();)
+        for (ValidatorAction va : actions)
         {
-            ValidatorAction va = (ValidatorAction)i.next();
             if (methods == null)
             {
                 methods = new StringBuilder(va.getMethod());
@@ -680,29 +675,29 @@ public class ValidatorTool
      * @param form the form for which the actions are requested
      * @return A sorted List of ValidatorAction objects.
      */
-    protected List createActionList(ValidatorResources resources, Form form)
+    protected List<ValidatorAction> createActionList(ValidatorResources resources, Form form)
     {
-        List actionMethods = new ArrayList();
+        ArrayList<String> actionMethods = new ArrayList<String>();
         // Get List of actions for this Form
-        for (Iterator i = form.getFields().iterator(); i.hasNext();)
+        for (Iterator<Field> i = form.getFields().iterator(); i.hasNext();)
         {
-            Field field = (Field)i.next();
-            for (Iterator x = field.getDependencyList().iterator(); x.hasNext();)
+            Field field = i.next();
+            for (Iterator<String> x = field.getDependencyList().iterator(); x.hasNext();)
             {
-                Object o = x.next();
-                if (o != null && !actionMethods.contains(o))
+                String dep = x.next();
+                if (dep != null && !actionMethods.contains(dep))
                 {
-                    actionMethods.add(o);
+                    actionMethods.add(dep);
                 }
             }
         }
 
-        List actions = new ArrayList();
+        ArrayList<ValidatorAction> actions = new ArrayList<ValidatorAction>();
 
         // Create list of ValidatorActions based on actionMethods
-        for (Iterator i = actionMethods.iterator(); i.hasNext();)
+        for (Iterator<String> i = actionMethods.iterator(); i.hasNext(); )
         {
-            String depends = (String) i.next();
+            String depends = i.next();
             ValidatorAction va = resources.getValidatorAction(depends);
 
             // throw nicer NPE for easier debugging
@@ -725,6 +720,7 @@ public class ValidatorTool
         }
 
         Collections.sort(actions, actionComparator);
+
         return actions;
     }
 
@@ -796,10 +792,8 @@ public class ValidatorTool
     {
         StringBuilder sb = new StringBuilder("\n\n");
 
-        Iterator actions = resources.getValidatorActions().values().iterator();
-        while (actions.hasNext())
+        for(ValidatorAction va : ((Collection<ValidatorAction>)resources.getValidatorActions().values()))
         {
-            ValidatorAction va = (ValidatorAction) actions.next();
             if (va != null)
             {
                 String javascript = va.getJavascript();
