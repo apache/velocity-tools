@@ -102,6 +102,11 @@ public class ValidatorTool
 
     private boolean xhtml = false;
 
+    /**
+     * Whether this ValidatorTool should generate strict XHTML in XML mode.
+     */
+    private boolean xmlMode = false;
+
     private boolean htmlComment = true;
     private boolean cdata = true;
     private String formName = null;
@@ -177,9 +182,11 @@ public class ValidatorTool
 
         Boolean b = (Boolean)params.get("XHTML");
         if (b != null)
-        {
             this.xhtml = b.booleanValue();
-        }
+
+        b = (Boolean)params.get("XMLMode");
+        if (b != null)
+            this.xmlMode = b.booleanValue();
 
         /* Is there a mapping associated with this request? */
         ActionConfig config =
@@ -317,6 +324,51 @@ public class ValidatorTool
         this.cdata = cdata;
     }
 
+    /**
+     * Returns the XHTML setting.
+     *
+     * @return boolean - "true" if JavaScript will use &amp;amp; operators
+     * and suppress HTML comment wrappers.
+     */
+    public boolean getXhtml()
+    {
+        return this.xhtml;
+    }
+
+    /**
+     * Sets the XML mode status.
+     * @param xhtml The XHTML mode to set
+     */
+    public void setXhtml(boolean xhtml)
+    {
+        this.xhtml = xhtml;
+    }
+
+    /**
+     * Returns the XMLMode setting.
+     *
+     * @return boolean - "true" if JavaScript will use &amp;amp; operators
+     * and suppress HTML comment wrappers.
+     */
+    public boolean getXMLMode()
+    {
+        return this.xmlMode;
+    }
+
+    /**
+     * Sets the XML mode status. If <code>true</code>, also sets
+     * XHTML to <code>true</code>. Setting this to <code>true</code>
+     * will force the use of &amp;amp; for logical AND operations
+     * and will alwasy suppress the use of HTML comments around
+     * Javascript code.
+     * @param xmlMode The XML mode to set
+     */
+    public void setXMLMode(boolean xmlMode)
+    {
+        if(xmlMode)
+            setXhtml(true);
+        this.xmlMode = xmlMode;
+    }
 
     /****************** methods that aren't just accessors ***************/
 
@@ -388,7 +440,7 @@ public class ValidatorTool
     /**
      * Render just the dynamic JavaScript to perform validations based
      * on the supplied form name. Useful i.e. if the static
-     * parts are located in a seperate .js file.
+     * parts are located in a separate .js file.
      *
      * @param formName the key (form name)
      * @return the dynamic Javascript for the specified form
@@ -521,8 +573,8 @@ public class ValidatorTool
 
                 message = escapeJavascript(message);
 
-                // Escape required XML entities if we are in XHTML mode without CDATA
-                if(this.xhtml && !this.cdata)
+                // Escape required XML entities if we are in XML mode without CDATA
+                if(this.xmlMode && !this.cdata)
                     message = StringEscapeUtils.escapeXml(message);
 
                 results.append(message);
@@ -550,8 +602,8 @@ public class ValidatorTool
 
                     String escapedVarValue = escapeJavascript(varValue);
 
-                    // Escape required XML entities if we are in XHTML mode without CDATA
-                    if(this.xhtml && !this.cdata)
+                    // Escape required XML entities if we are in XML mode without CDATA
+                    if(this.xmlMode && !this.cdata)
                         escapedVarValue = StringEscapeUtils.escapeXml(escapedVarValue);
 
                     if (Var.JSTYPE_INT.equalsIgnoreCase(jsType))
@@ -749,11 +801,13 @@ public class ValidatorTool
             sb.append("<![CDATA[\r\n");
         }
 
-        if (!this.xhtml && this.htmlComment)
+        // Do not use HTML comments when in XML mode: the browser will
+        // ignore the contents
+        if (!this.xmlMode && !this.xhtml && this.htmlComment)
         {
             sb.append(HTML_BEGIN_COMMENT);
         }
-        sb.append("\n     var bCancel = false; \n\n");
+        sb.append("\n    var bCancel = false;\n\n");
 
         if (methodName == null || methodName.length() == 0)
         {
@@ -766,23 +820,23 @@ public class ValidatorTool
             sb.append(methodName);
         }
         sb.append("(form) {\n");
-        sb.append("      if (bCancel) \n");
-        sb.append("          return true; \n");
-        sb.append("      else \n");
+        sb.append("      if (bCancel)\n");
+        sb.append("          return true;\n");
+        sb.append("      else\n");
 
         // Always return true if there aren't any Javascript validation methods
         if (methods == null || methods.length() == 0)
         {
-            sb.append("       return true; \n");
+            sb.append("       return true;\n");
         }
         else
         {
-            //Making Sure that Bitwise operator works:
-            sb.append(" var formValidationResult;\n");
-            sb.append("       formValidationResult = " + methods + "; \n");
-            sb.append("     return (formValidationResult == 1);\n");
+            // Making Sure that Bitwise operator works:
+            sb.append("      {\n        var formValidationResult;\n        formValidationResult = ");
+            sb.append(methods);
+            sb.append(";\n        return (formValidationResult == 1);\n      }\n");
         }
-        sb.append("   } \n\n");
+        sb.append("    }\n");
 
         return sb.toString();
     }
@@ -824,7 +878,7 @@ public class ValidatorTool
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
 
-        if (!this.xhtml && this.htmlComment)
+        if (!this.xmlMode && !this.xhtml && this.htmlComment)
         {
             sb.append(HTML_END_COMMENT);
         }
@@ -859,8 +913,7 @@ public class ValidatorTool
             start.append(" src=\"" + src + "\"");
         }
 
-        start.append("> \n");
+        start.append(">\n");
         return start.toString();
     }
-
 }
