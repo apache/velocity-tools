@@ -488,7 +488,8 @@ public class ValidatorTool
             results.append(functionName);
             results.append(" () { \n");
 
-            for (Iterator<Field> x = form.getFields().iterator(); x.hasNext();)
+            for (@SuppressWarnings("unchecked")
+            Iterator<Field> x = form.getFields().iterator(); x.hasNext();)
             {
                 Field field = x.next();
 
@@ -524,6 +525,7 @@ public class ValidatorTool
                 results.append(message);
                 results.append("\", new Function (\"varName\", \"");
 
+                @SuppressWarnings("unchecked")
                 Map<String,Var> vars = (Map<String,Var>)field.getVars();
                 // Loop through the field's variables.
                 for (Map.Entry<String,Var> entry : vars.entrySet())
@@ -679,10 +681,12 @@ public class ValidatorTool
     {
         ArrayList<String> actionMethods = new ArrayList<String>();
         // Get List of actions for this Form
-        for (Iterator<Field> i = form.getFields().iterator(); i.hasNext();)
+        for (@SuppressWarnings("unchecked")
+        Iterator<Field> i = form.getFields().iterator(); i.hasNext();)
         {
             Field field = i.next();
-            for (Iterator<String> x = field.getDependencyList().iterator(); x.hasNext();)
+            for (@SuppressWarnings("unchecked")
+            Iterator<String> x = field.getDependencyList().iterator(); x.hasNext();)
             {
                 String dep = x.next();
                 if (dep != null && !actionMethods.contains(dep))
@@ -792,7 +796,9 @@ public class ValidatorTool
     {
         StringBuilder sb = new StringBuilder("\n\n");
 
-        for(ValidatorAction va : ((Collection<ValidatorAction>)resources.getValidatorActions().values()))
+        @SuppressWarnings("unchecked")
+        Collection<ValidatorAction> actions = (Collection<ValidatorAction>)resources.getValidatorActions().values();
+        for(ValidatorAction va : actions)
         {
             if (va != null)
             {
