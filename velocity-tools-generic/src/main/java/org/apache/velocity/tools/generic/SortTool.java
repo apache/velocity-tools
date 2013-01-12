@@ -115,6 +115,94 @@ import org.apache.velocity.tools.config.DefaultKey;
 @DefaultKey("sorter")
 public class SortTool
 {
+    /**
+     * Sorts a Collection using a Comparator. A defensive copy is made
+     * of the Collection beforehand, so the original Collection is left
+     * untouched.
+     *
+     * @param c The Collection to sort.
+     * @param comparator The comparator to use for sorting.
+     * @return A copy of the original Collection,
+     *         sorted using the supplied Comparator.
+     * @since VelocityTools 2.0.1
+     */
+    public <T> Collection<T> sort(final Collection<T> c,
+                                  final Comparator<T> comparator)
+    {
+        final ArrayList<T> list = new ArrayList<T>(c);
+        Collections.sort(list, comparator);
+        return list;
+    }
+
+    /**
+     * Sorts an array using a Comparator. A defensive copy is made
+     * of the array beforehand, so the original array is left
+     * untouched.
+     *
+     * @param a The array to sort.
+     * @param comparator The comparator to use for sorting.
+     * @return A copy of the original array,
+     *         sorted using the supplied Comparator.
+     * @since VelocityTools 2.0.1
+     */
+    public <T> T[] sort(final T[] a, final Comparator<T> comparator)
+    {
+        final T[] copy = a.clone();
+        Arrays.sort(copy, comparator);
+        return copy;
+    }
+
+    /**
+     * Sorts a Map's values using a Comparator. A defensive copy is made
+     * of the values beforehand, so the original Map is left
+     * untouched.
+     *
+     * @param map The Map whose values should be sorted.
+     * @param comparator The comparator to use for sorting.
+     * @return A copy of the original Map's values,
+     *         sorted using the supplied Comparator.
+     * @since VelocityTools 2.0.1
+     */
+    public <T> Collection<T> sort(final Map<?,T> map,
+                                  final Comparator<T> comparator)
+    {
+        return sort(map.values(), comparator);
+    }
+
+    /**
+     * Sorts a Collection (or array, or Map's values)
+     * using a Comparator. A defensive copy is made
+     * of the original beforehand, so the original is left
+     * untouched. Unsupported collection objects result in
+     * a <code>null</code> return value.
+     *
+     * @param o The Collection to sort.
+     * @param comparator The comparator to use for sorting.
+     * @return A copy of the original Collection,
+     *         sorted using the supplied Comparator.
+     * @since VelocityTools 2.0.1
+     */
+    public Collection<?> sort(final Object o,
+                              final Comparator<?> comparator)
+    {
+        if (o instanceof Collection)
+        {
+            return sort((Collection<?>)o, comparator);
+        }
+        else if (o instanceof Object[])
+        {
+            return sort((Object[])o, comparator);
+        }
+        else if (o instanceof Map)
+        {
+            return sort((Map<?,?>)o, comparator);
+        }
+        else
+        {
+            // the object type is not supported
+            return null;
+        }
+    }
 
     public Collection sort(Collection collection)
     {
