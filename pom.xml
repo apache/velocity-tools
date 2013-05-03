@@ -191,4 +191,60 @@
         <module>maven-velocity-tools-plugin</module>
     </modules>
 
+    <!-- This project is an effort by many people. If you feel that your name
+         should be in here and has been omitted in error, please open an issue with
+         the Velocity Tools Issue tracker. -->
+    <contributors>
+        <contributor>
+            <name>Chris Townsen</name>
+        </contributor>
+        <contributor>
+            <name>Craig R. McClanahan</name>
+        </contributor>
+        <contributor>
+            <name>Dave Bryson</name>
+        </contributor>
+        <contributor>
+            <name>David Graham</name>
+        </contributor>
+        <contributor>
+            <name>David Winterfeldt</name>
+        </contributor>
+        <contributor>
+            <name>Denis Bredelet</name>
+        </contributor>
+        <contributor>
+            <name>Dmitri Colebatch</name>
+        </contributor>
+        <contributor>
+            <name>Gabriel Sidler</name>
+        </contributor>
+        <contributor>
+            <name>Kent Johnson</name>
+        </contributor>
+        <contributor>
+            <name>Leon Messerschmidt</name>
+        </contributor>
+        <contributor>
+            <name>Mike Kienenberger</name>
+        </contributor>
+        <contributor>
+            <name>Oliver O'Halloran</name>
+        </contributor>
+        <contributor>
+            <name>S. Brett Sutton</name>
+        </contributor>
+        <contributor>
+            <name>Shinobu Kawai</name>
+        </contributor>
+        <contributor>
+            <name>Spencer Davis</name>
+        </contributor>
+        <contributor>
+            <name>Ted Husted</name>
+        </contributor>
+        <contributor>
+            <name>Tim Colson</name>
+        </contributor>
+    </contributors>
 </project>
