@@ -581,7 +581,7 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
         {
             hasSubkeys = Boolean.TRUE;
         }
-        return source.put(key,value); // TODO this tool should be made thread-safe (the request-scoped ParameterTool doesn't need it, but other uses could...)
+        return getSource().put(key,value); // TODO this tool should be made thread-safe (the request-scoped ParameterTool doesn't need it, but other uses could...)
     }
 
     public Object remove(Object key)
@@ -594,7 +594,7 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
         {
             hasSubkeys = null;
         }
-        return source.remove(key);
+        return getSource().remove(key);
     }
 
     public void putAll(Map<? extends String,? extends Object> m) {
@@ -603,7 +603,7 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
             throw new UnsupportedOperationException("Cannot putAll("+m+"); "+getClass().getName()+" is read-only");
         }
         hasSubkeys = null;
-        source.putAll(m);
+        getSource().putAll(m);
     }
 
     public void clear() {
@@ -612,7 +612,7 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
             throw new UnsupportedOperationException("Cannot clear(); "+getClass().getName()+" is read-only");
         }
         hasSubkeys = Boolean.FALSE;
-        source.clear();
+        getSource().clear();
     }
 
     public Set<String> keySet() {
