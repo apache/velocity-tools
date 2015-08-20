@@ -21,7 +21,7 @@ package org.apache.velocity.tools.generic;
 
 import java.net.URLEncoder;
 import java.io.UnsupportedEncodingException;
-import org.apache.velocity.shaded.commons.lang.StringEscapeUtils;
+import org.apache.velocity.shaded.commons.lang3.StringEscapeUtils;
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
@@ -285,7 +285,7 @@ public class EscapeTool extends SafeConfig
         {
             return null;
         }
-        return StringEscapeUtils.escapeJavaScript(String.valueOf(string));
+        return StringEscapeUtils.escapeEcmaScript(String.valueOf(string));
     }
 
     /**
@@ -296,7 +296,7 @@ public class EscapeTool extends SafeConfig
      * @param string the string to escape, may be null
      * @return a new escaped <code>String</code>, <code>null</code> if null string input
      *
-     * @see StringEscapeUtils#escapeHtml(String)
+     * @see StringEscapeUtils#escapeHtml4(String)
      */
     public String html(Object string)
     {
@@ -304,7 +304,7 @@ public class EscapeTool extends SafeConfig
         {
             return null;
         }
-        return StringEscapeUtils.escapeHtml(String.valueOf(string));
+        return StringEscapeUtils.escapeHtml4(String.valueOf(string));
     }
 
     /**
@@ -363,7 +363,7 @@ public class EscapeTool extends SafeConfig
         {
             return null;
         }
-        return StringEscapeUtils.escapeSql(String.valueOf(string));
+        return String.valueOf(string).replace("'", "''");
     }
 
     /**
