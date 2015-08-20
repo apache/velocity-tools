@@ -22,7 +22,8 @@ package org.apache.velocity.tools.view;
 import java.util.Collections;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.velocity.runtime.log.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
@@ -129,18 +130,10 @@ public abstract class AbstractSearchTool extends PagerTool
     protected static final String STORED_RESULTS_KEY =
         StoredResults.class.getName();
 
-    protected Log LOG;
+    protected static final Log LOG = LogFactory.getLog(AbstractSearchTool.class);
+
     private String criteriaKey = DEFAULT_CRITERIA_KEY;
     private Object criteria;
-
-    public void setLog(Log log)
-    {
-        if (log == null)
-        {
-            throw new NullPointerException("log should not be set to null");
-        }
-        this.LOG = log;
-    }
 
     /**
      * Sets the criteria *if* it is set in the request parameters.

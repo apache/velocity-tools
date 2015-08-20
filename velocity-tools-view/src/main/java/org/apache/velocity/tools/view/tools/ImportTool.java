@@ -36,7 +36,6 @@ public class ImportTool extends org.apache.velocity.tools.view.ImportTool
             setRequest(ctx.getRequest());
             setResponse(ctx.getResponse());
             setServletContext(ctx.getServletContext());
-            setLog(ctx.getVelocityEngine().getLog());
         }
     }
 }

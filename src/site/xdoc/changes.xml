@@ -35,6 +35,7 @@
         <li>Reflect Velocity Engine dependency shading of commons-lang and commons-collections (cb)</li>
         <li>Removed deprecated class org.apache.velocity.tools.generic.log.LogSystemCommonsLog (cb)</li>
         <li>MathTool: fixed result type calculations and added bitwise operations (cb)</li>
+        <li>have session scoped tools use a static logger to fix J2EE containers session serialization (cb)</li>
         </ul>
     </subsection>
 

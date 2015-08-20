@@ -101,7 +101,6 @@ public class TilesTool extends ImportSupport
             setRequest(ctx.getRequest());
             setResponse(ctx.getResponse());
             setServletContext(ctx.getServletContext());
-            setLog(ctx.getVelocityEngine().getLog());
         }
     }
 
