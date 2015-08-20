@@ -34,7 +34,7 @@ import org.apache.velocity.context.Context;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.log.Log;
-import org.apache.velocity.shaded.commons.lang.StringEscapeUtils;
+import org.apache.velocity.shaded.commons.lang3.StringEscapeUtils;
 
 /**
  * <p>A servlet to process Velocity templates. This is comparable to the
@@ -361,7 +361,7 @@ public class VelocityViewServlet extends HttpServlet
             String why = cause.getMessage();
             if (why != null && why.length() > 0)
             {
-                html.append(StringEscapeUtils.escapeHtml(why));
+                html.append(StringEscapeUtils.escapeHtml4(why));
                 html.append("\n<br>\n");
             }
 
@@ -378,7 +378,7 @@ public class VelocityViewServlet extends HttpServlet
             cause.printStackTrace(new PrintWriter(sw));
 
             html.append("<pre>\n");
-            html.append(StringEscapeUtils.escapeHtml(sw.toString()));
+            html.append(StringEscapeUtils.escapeHtml4(sw.toString()));
             html.append("</pre>\n");
             html.append("</body>\n");
             html.append("</html>");
