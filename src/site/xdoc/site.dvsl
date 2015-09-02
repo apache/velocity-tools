@@ -1,0 +1,374 @@
+## Licensed to the Apache Software Foundation (ASF) under one
+## or more contributor license agreements.  See the NOTICE file
+## distributed with this work for additional information
+## regarding copyright ownership.  The ASF licenses this file
+## to you under the Apache License, Version 2.0 (the
+## "License"); you may not use this file except in compliance
+## with the License.  You may obtain a copy of the License at
+##
+##   http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing,
+## software distributed under the License is distributed on an
+## "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+## KIND, either express or implied.  See the License for the
+## specific language governing permissions and limitations
+## under the License.
+
+## DVSL style sheet for velocity-tools project
+##
+##
+## The style sheet looks for the following configuration parameters:
+##
+## $context.toolbox.basedir
+##     Its value is expected to be the path to the base directory of 
+##     this documentation set. It can be used to reference other files,
+##     for example a menu file that is to be loaded.
+##
+## $context.toolbox.PrinterFriendlyVersion
+##     If its value is "yes", the generated page has no left-hand menu.
+##     This facilitates the printing of documentation.
+##
+## Shown below is a configuration example of an ant task:
+##     <!-- create printer version of documentation -->
+##     <dvsl
+##          basedir="${docs.src}"
+##          destdir="${docs.dest}/"
+##   	    toolboxfile="${basedir}/../xdocs/toolbox.props"
+##          extension="-printer.html"
+##          style="${basedir}/../xdocs/site.dvsl"
+##          excludes="*menu.xml"
+##          includes="**/*.xml">
+##        <tool name="toolbox.string.PrinterFriendlyVersion" value="yes" />
+##        <tool name="toolbox.string.basedir" value="${basedir}" />
+##     </dvsl>
+##
+
+#match( "document" )
+    ## identify if this is to be a printer-friendly version
+    #set( $printerFriendly = $context.toolbox.PrinterFriendlyVersion.equals('yes') )
+    ## alias the current node
+    #set( $document = $node )
+    ## get path to the project file
+    #if ($context.toolbox.basedir)
+      #set( $projectfile = "$context.toolbox.basedir/$node.properties.projectfile" )
+    #else
+      #set( $projectfile = $node.properties.projectfile )
+    #end    
+    ## get actual project node
+    #set( $project = $node.selectSingleNode("document('$projectfile')/project" ) )
+    ## check for a subproject file
+    #if( $node.properties.subprojectfile )
+      #set( $subprojectfile = $node.properties.subprojectfile )
+      #set( $subproject = $node.selectSingleNode("document('$subprojectfile')/project") )
+      #set( $subtitle = $subproject.attribute('name') )
+    #end
+    #set( $pagetitle = $document.properties.title )
+    ## build up crumbs if they'll be needed
+    #if( !$printerFriendly )
+        #set( $crumbs = $project.selectNodes('breadcrumb') )
+        #set( $subcrumbs = $subproject.selectNodes('breadcrumb') )
+        #if( $subcrumbs && !$subcrumbs.empty )
+          #set( $foo = $crumbs.addAll($subcrumbs) )
+        #end
+    #end
+
+    <html>
+    <head>
+      <title>$project.attribute('name')#if( $subtitle ) - $subtitle#end#if( $pagetitle ) - $pagetitle#end</title>
+       #foreach( $n in $node.properties.selectNodes("author") )
+        <meta name="author" value="$n"/>
+        #if( $n.attribute('email') )
+            <meta name="email" value="$n.attribute('email')" />
+        #end
+       #end
+      <style type="text/css" media="all">
+       #foreach( $style in $project.selectNodes('style') )
+        @import url("$style.attribute('href')");
+       #end
+       #foreach( $style in $subproject.selectNodes('style') )
+        @import url("$style.attribute('href')");
+       #end
+       #foreach( $style in $document.properties.selectNodes('style') )
+        @import url("$style.attribute('href')");
+       #end
+       #if( $printerFriendly )
+        @import url("css/print.css");
+       #end
+      </style>        
+    </head>
+
+    <body class="composite">
+
+      ## PAGE HEADER (LOGOS)
+      <div id="banner">
+        <a href="http://velocity.apache.org/" id="bannerLeft">
+          <img src="http://velocity.apache.org/images/velocity_project_wide.png"
+             #if( $printerFriendly )width="400" height="40"#end
+             align="left" alt="The Velocity Project" border="0"/>
+        </a>
+        #if( $subproject.attribute('logo') )
+          #set( $logo = $subproject.attribute('logo') )
+          #set( $name = $subproject.attribute('name') )
+          #set( $home = $subproject.attribute('href') )
+        #else
+          #set( $logo = $project.attribute('logo') )
+          #set( $name = $project.attribute('name') )
+          #set( $home = $project.attribute('href') )
+        #end
+        #if( $logo )
+          ## PROJECT LOGO
+          <span id="bannerRight">
+            <a href="$home">
+              <img src="$logo" align="right" alt="$name" border="0"/>
+            </a>
+          </span>
+        #end
+        <div class="clear">
+          <hr/>
+        </div>
+      </div>
+
+      ## PRINTER FRIENDLY TITLE
+      #if( $printerFriendly )
+      <div id="title">
+        <h1>#if( $subtitle )$subtitle - #end#if( $pagetitle )$pagetitle#end</h1>
+        <div class="clear">
+          <hr/>
+        </div>
+      </div>
+      #end
+
+      ## BREADCRUMB LINKS
+      #if( !$printerFriendly )
+      <div id="breadcrumbs">
+        <div class="xleft">
+          #foreach( $crumb in $crumbs )
+            <a href="$crumb.attribute('href')" class="crumb">$crumb</a> &gt;
+          #end
+          $!pagetitle
+        </div>
+        <div class="xright">
+          #foreach( $sibling in $project.selectNodes('sibling') )
+            #if( $velocityCount > 1 )|#end
+            <a href="$sibling.attribute('href')" class="sibling">$sibling</a>
+          #end
+        </div>
+        <div class="clear">
+          <hr/>
+        </div>
+      </div>
+      #end
+
+
+        <!-- LEFT SIDE NAVIGATION -->
+        #if( !$printerFriendly )            
+        <div id="leftColumn">
+          <div id="navcolumn">
+            $context.applyTemplates( $project, "menu/group" )
+            #if( $subproject )
+                $context.applyTemplates( $subproject, "menu/group" )
+            #end
+            $context.applyTemplates( $project, "menu/printerversion" )
+            <a class="poweredBy" href="http://velocity.apache.org/" title="Apache Velocity" >
+              <img class="poweredBy" alt="Apache Velocity" src="http://velocity.apache.org/images/pbv90x30.png"/>
+            </a>
+          </div>
+        </div>
+        #end
+
+        <!-- RIGHT SIDE MAIN BODY -->
+        <div id="bodyColumn">
+          <div id="contentBox">
+            $context.applyTemplates("body/section")
+          </div>
+        </div>
+        <div class="clear">
+          <hr/>
+        </div>
+
+        <!-- PAGE FOOTER -->
+        <div id="footer">
+          <div class="xright">
+            Copyright &#169; 1999-2007, Apache Software Foundation
+          </div>
+        </div>
+        <div class="clear">
+          <hr/>
+        </div>
+      </body>
+    </html>
+#end
+
+
+#*
+ *   Process a menu for the navigation bar
+ *#
+#match( "group" )
+#if ($attrib.href)
+    <h5><a href="$attrib.href">$attrib.name</a></h5>
+#else
+    <h5>$attrib.name</h5>
+#end    
+<ul>
+    $context.applyTemplates()
+</ul>
+#end
+
+
+#*
+ *   Process a submenu for the navigation bar
+ *#
+#match( "subGroup" )
+#if ($attrib.href)
+    <li class="none"><a href="$attrib.href">$attrib.name</a>
+#else
+    <li class="none">$attrib.name
+#end    
+    <ul>
+        $context.applyTemplates("item")
+    </ul>
+</li>
+#end
+
+
+#*
+ *   Process a menu item for the navigation bar
+ *#
+#match( "item" )
+#if ($attrib.href)
+    <li class="none"><a href="$attrib.href">$attrib.name</a></li>
+#else
+    <li class="none">$attrib.name</li>
+#end
+#end
+
+
+#*
+ *   Insert a link to a printerfriendly version of the document
+ *#
+#match( "printerversion" )
+#set( $filename = $context.getAppValue('infilename') )
+#set( $filename = $filename.substring(0, $filename.lastIndexOf('.')) )
+<h5 id="printLink"><a href="${filename}-printer.html">Print-Friendly Version</a></h5>
+#end
+
+
+#*
+ *  process a documentation section
+ *#
+#match( "section" )
+<div class="section">##
+<a name="$!attrib.name.replace(' ','_')"#*
+  *##if( $attrib.href ) href="$attrib.href"#end><h2>$attrib.name</h2></a>
+  $context.applyTemplates("*")
+</div>
+#end
+
+
+#*
+ *  process a documentation subsection
+ *#
+#match( "subsection" )
+<div class="subsection">##
+<h3><a name="$!attrib.name.replace(' ','_')"#*
+   *##if( $attrib.href ) href="$attrib.href"#*
+   *##else class="nolink"#end>$attrib.name</a></h3>
+    $context.applyTemplates("*")
+</div>
+#end
+
+#*
+ *  process a TODO note
+ *#
+#match( "todo" )
+<p class="note">
+    This is unfinished.
+    <a href="index.html#Contribution">You can help fix that!</a><br>
+#set( $todo = "$!node.copy()" )
+#if( $todo != '<todo/>' )
+    TODO: $todo
+#end
+</p>
+#end
+
+#*
+ *  process a 'sourcecode' block.
+ *#
+#match( "sourcecode" )
+<div class="source">
+  <pre>$node.copy()</pre>
+</div>
+#end
+
+#match("table")
+<table>
+$context.applyTemplates("*")
+</table>
+#end
+
+#match("tr")
+<tr>
+$context.applyTemplates("*")
+</tr>
+#end
+
+#match( "td" )
+<td colspan="$!attrib.colspan" rowspan="$!attrib.rowspan">
+  $node.copy( $node.children() )
+</td>
+#end
+
+#match( "th" )
+<th colspan="$!attrib.colspan" rowspan="$!attrib.rowspan">
+  $node.copy( $node.children() )
+</th>
+#end
+
+#*
+ *  process a javadoc element
+ *#
+#match( 'javadoc' )##
+#if( $attrib.package )
+#set( $package = $attrib.package )
+#if( !$package.startsWith('org.apache.velocity.tools') )
+#set( $package = "org.apache.velocity.tools.$package" )
+#end
+#else
+#set( $package = 'org.apache.velocity.tools' )
+#end
+#set( $href = "javadoc/$package.replace('.','/')/${attrib.name}.html" )
+#set( $content = "$!node.value()" )
+#if( $content == '' )
+#if( $attrib.full )
+#set( $content = $package + '.' + $attrib.name )
+#else
+#set( $content = $attrib.name )
+#end
+#end##
+<a href="$href">$content</a>##
+#end
+
+#*
+ *  macro to navigate document and replace <javadoc> tags
+ *#
+#macro( digFor $name $tag )
+#set( $kids = $tag.children() )
+#if( "$!tag.name()" == $name )
+    $context.applyTemplates($tag)
+#elseif( $kids.isEmpty() )
+    $tag.copy()
+#elseif( $tag.selectNodes("$name|*//$name").isEmpty() )
+    $tag.copy()
+#else
+    <$tag.name()#foreach( $key in $attrib.keySet() ) $key="$!attrib.get($key)"#end>
+    #foreach( $kid in $kids )
+        #digFor( $name $kid )
+    #end
+    </$tag.name()>
+#end
+#end
+
+#match("*")
+#digFor( 'javadoc' $node )
+#end

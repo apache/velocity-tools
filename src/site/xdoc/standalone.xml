@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+
+    <properties>
+        <title>Standalone Use</title>
+        <projectfile>xdocs/project.xml</projectfile>
+    </properties>
+
+    <body>
+
+    <section name="Just Use Them!">
+        <p>
+            There's nothing particularly special about the tools in VelocityTools 2.  No 
+            special interfaces, most don't ''need'' any configuration or API access, 
+            and those that do are now relatively easy to handle (compared to 
+            VelocityTools 1.x).  So, if you need a tool, just create an instance, do 
+            any configuration you want or need and go.  Nothing else to it.
+        </p>
+    </section>
+
+    <section name="ToolManager">
+        <p>
+            However, if you want to externalize your configuration or have your tools
+             created and configured for you on demand and you are not working in a 
+            servlet environment, then we have created a simple ToolManager that you 
+            can use.  It's relatively simple.  Just create a ToolManager (can be 
+            created with or without default tools available), configure it (if you 
+            want to), ask it to create a context for you, and use the context as you 
+            would any other.  Of course, there's more to it, but this should get you 
+            started:
+        </p>
+    
+        <sourcecode>
+ToolManager manager = new ToolManager();
+manager.configure("/path/to/my/configuration.xml");
+Context context = manager.createContext();
+myVelocityEngine.evaluate(context, myOutputWriter, "This is a $text.test", "Test template");
+        </sourcecode>
+    
+        <p>
+            Of course, if you are going to be working in a servlet environment and don't
+            want to create and configure tools yourself, then you should being using
+            <a href="view.html">VelocityView</a> either
+            <a href="frameworks.html#Integration_Via_VelocityView">directly</a>
+            or through the
+            <a href="view.servlet.html">servlets</a> or
+            <a href="view.tag.html">JSP tag</a> provided for you.
+        </p>
+    </section>
+
+    </body>
+
+</document>

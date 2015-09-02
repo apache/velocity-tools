@@ -1,0 +1,1500 @@
+<?xml version="1.0"?>
+
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<document>
+
+    <properties>
+        <title>Summary</title>
+        <projectfile>xdocs/project.xml</projectfile>
+    </properties>
+
+    <body>
+
+    <section name="Tools Usage Summary">
+        <p>You will find here a summary of all the available standard tools, sufficient for a basic
+            integration and usage of each of them. Please refer to the javadoc for a complete reference of all their methods and properties, since only an excerpt is show here. </p>
+
+        <subsection name="Index">
+          <h3>Generic Tools</h3>
+          <p>
+            <a href="#AlternatorTool">AlternatorTool</a>,
+            <a href="#ClassTool">ClassTool</a>,
+            <a href="#ComparisonDateDool">ComparisonDateTool</a>,
+            <a href="#ContextTool">ContextTool</a>,
+            <a href="#ConversionTool">ConversionTool</a>,
+            <a href="#DisplayTool">DisplayTool</a>,
+            <a href="#EscapeTool">EscapeTool</a>,
+            <a href="#FieldTool">FieldTool</a>,
+            <a href="#LinkTool">LinkTool</a>,
+            <a href="#MathTool">MathTool</a>,
+            <a href="#NumberTool">NumberTool</a>,
+            <a href="#RenderTool">RenderTool</a>,
+            <a href="#ResourceTool">ResourceTool</a>,
+            <a href="#SortTool">SortTool</a>,
+            <a href="#XmlTool">XmlTool</a>
+          </p>
+          <h3>View Tools</h3>
+          <p>
+            <a href="#AbstractSearchTool">AbstractSearchTool</a>,
+            <a href="#BrowserTool">BrowserTool</a>,
+            <a href="#CookieTool">CookieTool</a>,
+            <a href="#ImportTool">ImportTool</a>,
+            <a href="#IncludeTool">IncludeTool</a>,
+            <a href="#LinkTool2">LinkTool</a>,
+            <a href="#PagerTool">PagerTool</a>,
+            <a href="#ParameterTool">ParameterTool</a>,
+            <a href="#ViewContextTool">ViewContextTool</a>
+         </p>
+          <h3>Struts Tools</h3>
+          <p>
+            <a href="javadoc/org/apache/velocity/tools/struts/ActionMessagesTool.html">ActionMessagesTool</a>,
+            <a href="javadoc/org/apache/velocity/tools/struts/ErrorsTool.html">ErrorsTool</a>,
+            <a href="javadoc/org/apache/velocity/tools/struts/FormTool.html">FormTool</a>,
+            <a href="javadoc/org/apache/velocity/tools/struts/MessageResourcesTool.html">MessageResourcesTool</a>,
+            <a href="javadoc/org/apache/velocity/tools/struts/SecureLinkTool.html">SecureLinkTool</a>,
+            <a href="javadoc/org/apache/velocity/tools/struts/StrutsLinkTool.html">StrutsLinkTool</a>,
+            <a href="javadoc/org/apache/velocity/tools/struts/TilesTool.html">TilesTool</a>,
+            <a href="javadoc/org/apache/velocity/tools/struts/ValidatorTool.html">ValidatorTool</a>
+          </p>
+        </subsection>
+        
+        <subsection name="Generic Tools">
+          <p>
+            <table class="summary">
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/generic/AlternatorTool.html" name="AlternatorTool">AlternatorTool</a></th>
+                <td colspan="2">tool to create <a href="javadoc/org/apache/velocity/tools/generic/Alternator.java">alternators</a> (variables that cycle through an array)</td>
+              </tr>
+              <tr>
+                <td>default key</td><td colspan="2"><code>$alternator</code></td>
+              </tr>
+              <tr>
+                <td>configuration properties</td>
+                <td>autoAlternate</td>
+                <td>boolean, states whether the alternator will automatically switch values at each rendering (defaults to <code>true</code>)</td>
+              </tr>
+              <tr>
+                <td rowspan="4">methods and properties</td>
+                <td><code>$autoAlternateDefault</code></td>
+                <td>returns <code>true</code> if alternators created by this tool will auto-alternate by default, or set the property to a new boolean value</td>
+              </tr>
+              <tr>
+                <td><code>#set( $alt = $alternator.auto(value1,value2,...) )</code></td>
+                <td>creates an automatic alternator</td>
+              </tr>
+              <tr>
+                <td><code>#set( $alt = $alternator.make(value1,value2,...) )</code></td>
+                <td>creates an alternator with default auto behaviour</td>
+              </tr>
+              <tr>
+                <td><code>#set( $alt = $alternator.manual(value1,value2,...) )</code></td>
+                <td>creates a manual alternator</td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/generic/Alternator.html">Alternator</a></th>
+                <td colspan="2">alternator object created by means of an <a href="javadoc/org/apache/velocity/tools/generic/AlternatorTool.java">AlternatorTool</a></td>
+              </tr>
+              <tr>
+                <td rowspan="5">methods and properties</td>
+                <td><code>$alt</code></td>
+                <td>displays current value (and shift for automatic alternators)</td>
+              </tr>
+              <tr>
+                <td><code>$alt.current</code></td>
+                <td>displays current value</td>
+              </tr>
+              <tr>
+                <td><code>$alt.next</code></td>
+                <td>displays current value and shift</td>
+              </tr>
+              <tr>
+                <td><code>$alt.shift</code></td>
+                <td>shifts to next value</td>
+              </tr>
+              <tr>
+                <td><code>$alt.auto</code></td>
+                <td>read/write property stating if this is an automatic alternator</td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/generic/ClassTool.html" name="ClassTool">ClassTool</a></th>
+                <td colspan="2">tool meant to use Java reflection in templates</td>
+              </tr>
+              <tr>
+                <td>default key</td><td colspan="2"><code>$class</code></td>
+              </tr>
+              <tr>
+                <td rowspan="3">configuration properties</td>
+                <td>inspect</td>
+                <td>string, class name of the class which is to be inspected (defaults to <code>java.lang.Object</code>)</td>
+              </tr>
+              <tr>
+                <td>safeMode</td>
+                <td>boolean, indicates whether to only show public members, fields and constructors (defaults to <code>true</code>)</td>
+              </tr>
+              <tr>
+                <td>showDeprecated</td>
+                <td>boolean, states whether deprecated members, fields and constructors are to be shown (defaults to <code>false</code>)</td>
+              </tr>
+              <tr>
+                <td rowspan="16">methods and properties</td>
+                <td><code>$class.annotations</code></td>
+                <td>returns a list of the <code><a href="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/annotation/Annotation.html">Annotations</a></code> of the class being inspected</td>
+              </tr>
+              <tr>
+                <td><code>$class.constructors</code></td>
+                <td>returns a list of <code><a href="javadoc/org/apache/velocity/tools/generic/ClassTool.ConstructorSub.html">ConstructorSub</a></code>s for each constructor declared in the inspected class, with the following methods and read-only properties: <code>$ctor.name</code>, <code>$ctor.parameters</code> (array of <code>Class</code>), <code>$ctor.isVarArgs()</code>, <code>$ctor.modifiers</code> (some were omitted)</td>
+              </tr>
+              <tr>
+                <td><code>$class.field</code></td>
+                <td>returns a list of <code><a href="org/apache/velocity/tools/generic/ClassTool.FieldSub.html">FieldSub</a></code>s for each field declared in the inspected class, with the following read-only properties: <code>$field.name</code>, <code>$field.modifiers</code>, <code>$field.staticValue</code>, <code>$field.type</code> (some were omitted)</td>
+              </tr>
+              <tr>
+                <td><code>$class.fullName</code></td>
+                <td>full name of the inspected cass</td>
+              </tr>
+              <tr>
+                <td><code>$class.methods</code></td>
+                <td>returns a list of <code><a href="org/apache/velocity/tools/generic/ClassTool.MethodSub.html">MethodSub</a></code>s for each method declared in the inspected class, with the following methods and read-only properties: <code>$method.name</code>, <code>$method.parameters</code> (array of <code>Class</code>), <code>$method.returns</code>, <code>$method.isVarArgs()</code>, <code>$method.modifiers</code>, <code>$method.propertyName</code> (If this method can be treated as a bean property in Velocity, then it will return the "bean property" equivalent of the method name), <code>$method.isVoid()</code> (some were omitted)</td>
+              </tr>
+              <tr>
+                <td><code>$class.name</code></td>
+                <td>returns the simple name of the class being inspected</td>
+              </tr>
+              <tr>
+                <td><code>$class.package</code></td>
+                <td>returns the package name of the class being inspected</td>
+              </tr>
+              <tr>
+                <td><code>$class.showDeprecated</code></td>
+                <td>returns or sets the current showDeprecated setting</td>
+              </tr>
+              <tr>
+                <td><code>$class.super</code></td>
+                <td>returns a new ClassTool instance that inspects the immediate superclass of the class being inspected</td>
+              </tr>
+              <tr>
+                <td><code>$class.type</code></td>
+                <td>returns the actual Class being inspected</td>
+              </tr>
+              <tr>
+                <td><code>$class.inspect(<i>class/object/string</i>)</code></td>
+                <td>returns a new ClassTool instance that inspects the specified class or object</td>
+              </tr>
+              <tr>
+                <td><code>$class.abstract</code></td>
+                <td>returns true if the class being inspected is abstract</td>
+              </tr>
+              <tr>
+                <td><code>$class.deprecated</code></td>
+                <td>returns true if the class being inspected is deprecated</td>
+              </tr>
+              <tr>
+                <td><code>$class.final</code></td>
+                <td>returns true if the class being inspected is final</td>
+              </tr>
+              <tr>
+                <td><code>$class.interface</code></td>
+                <td>returns true if the class being inspected is an interface</td>
+              </tr>
+              <tr>
+                <td><code>$class.supportsNewInstance()</code></td>
+                <td>returns true if a new instance of the class being inspected can be created via <code>$class.type.newInstance()</code></td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/generic/ComparisonDateTool.html" name="ComparisonDateTool">ComparisonDateTool</a></th>
+                <td colspan="2">tool used to format, parse and compare dates</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$date</code></td>
+              </tr>
+              <tr>
+                <td rowspan="3">configuration properties</td>
+                <td>format</td>
+                <td>default format (see <a href="javadoc/org/apache/velocity/tools/generic/DateTool.html#format(java.lang.String, java.lang.Object, java.util.Locale, java.util.TimeZone)">formatting pattens</a>)</td>
+              </tr>
+              <tr>
+                <td>locale</td>
+                <td>default locale</td>
+              </tr>
+              <tr>
+                
+                <td>timezone</td>
+                <td>time zone</td>
+              </tr>
+              <tr>
+                <td rowspan="18">methods and properties</td>
+                <td><code>$date</code></td>
+                <td>returns the current date and time formatted with the default format</td>
+              </tr>
+              <tr>
+                <td><code>$date.format( [ <i>format</i>, ] <i>object</i> [ , <i>locale</i> [ , <i>timezone</i> ] ] )</code></td>
+                <td>formats the specified object</td>
+              </tr>
+              <tr>
+                <td><code>$date.get( <i>format</i> )</code></td>
+                <td>returns the current date and time formatted using hte given format</td>
+              </tr>
+              <tr>
+                <td><code>$date.get( <i>date style</i>, <i>time style</i> )</code></td>
+                <td>returns the current date and time formatted using given styles, where each style is one of <code>full</code>, <code>long</code>, <code>medium</code>, <code>short</code>, <code>default</code></td>
+              </tr>
+              <tr>
+                <td><code>$date.day</code></td>
+                <td>current day in month</td>
+              </tr>
+              <tr>
+                <td><code>$date.month</code></td>
+                <td>current month (warning: zero-based!)</td>
+              </tr>
+              <tr>
+                <td><code>$date.year</code></td>
+                <td>current year</td>
+              </tr>
+              <tr>
+                <td><code>$date.getDay( <i>object</i> )</code></td>
+                <td>day of month of given date</td>
+              </tr>
+              <tr>
+                <td><code>$date.getMonth( <i>object</i> )</code></td>
+                <td>month of given date (warning: zero-based!)</td>
+              </tr>
+              <tr>
+                <td><code>$date.getYear( <i>object</i> )</code></td>
+                <td>year of given date</td>
+              </tr>
+              <tr>
+                <td><code>$date.format</code></td>
+                <td>returns or sets the pattern or style to be used for formatting dates when none is specified</td>
+              </tr>
+              <tr>
+                <td><code>$date.locale</code></td>
+                <td>returns or sets the default Locale configured for this instance</td>
+              </tr>
+              <tr>
+                <td><code>$date.timeZone</code></td>
+                <td>returns or sets the default TimeZone configured for this instance - <code>$date.timeZone.ID</code> displays the ID of the currently active TimeZone</td>
+              </tr>
+              <tr>
+                <td><code>$date.systemDate</code></td>
+                <td>gets the Date at the time this page was rendered for the system running this application</td>
+              </tr>
+              <tr>
+                <td><code>$date.toCalendar( <i>object</i> )</code></td>
+                <td>converts the given object to a java.util.Calendar</td>
+              </tr>
+              <tr>
+                <td><code>$date.toDate( <i>object</i> )</code></td>
+                <td>convers the given object to a java.util.Date</td>
+              </tr>
+              <tr>
+                <td><code>$date.whenIs( <i>object</i> )</code></td>
+                <td>returns a <code><a href="javadoc/org/apache/velocity/tools/generic/ComparisonDateTool.Comparison.html">ComparisonDateTool.Comparison</a></code> between current and specified date ; returned comparison will have properties like: <code>$comp.years</code>, <code>$comp.months</code>, <code>$comp.weeks</code>, <code>$comp.days</code>, <code>$comp.hours</code>, <code>$comp.minutes</code>, <code>$comp.seconds</code>, <code>$comp.milliseconds</code>, along with several other formatting methods</td>
+              </tr>
+              <tr>
+                <td><code>$date.whenIs( <i>object</i>, <i>object</i> )</code></td>
+                <td>returns a <code><a href="javadoc/org/apache/velocity/tools/generic/ComparisonDateTool.Comparison.html">ComparisonDateTool.Comparison</a></code> between the two specified dates ; returned comparison will have properties like: <code>$comp.years</code>, <code>$comp.months</code>, <code>$comp.weeks</code>, <code>$comp.days</code>, <code>$comp.hours</code>, <code>$comp.minutes</code>, <code>$comp.seconds</code>, <code>$comp.milliseconds</code>, along with several other formatting methods</td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/generic/ContextTool.html" name="ContextTool">ContextTool</a></th>
+                <td colspan="2">tool allowing Velocity context introspection</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$context</code></td>
+              </tr>
+              <tr>
+                <td rowspan="6">methods and properties</td>
+                <td><code>$context.contains( <i>key</i> )</code></td>
+                <td>returns true if the context contains a non-null value for the specified key</td>
+              </tr>
+              <tr>
+                <td><code>$context.keys</code></td>
+                <td>returns a <code>java.util.Set</code> of the keys available in the current request context</td>
+              </tr>
+              <tr>
+                <td><code>$context.this</code></td>
+                <td>returns the ViewContext currently being analyzed by this tool</td>
+              </tr>
+              <tr>
+                <td><code>$context.toolbox</code></td>
+                <td>returns a <code>java.util.Map</code> of all the tools available in the current request context and their context keys</td>
+              </tr>
+              <tr>
+                <td><code>$context.values</code></td>
+                <td>returns a <code>java.util.Set</code> of the values available in the current request context</td>
+              </tr>
+              <tr>
+                <td><code>$context.get( <i>key</i> )</code></td>
+                <td>returns the value for the specified key in the current request context</td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/generic/ConversionTool.html" name="ConversionTool">ConversionTool</a></th>
+                <td colspan="2">tool allowing conversions between datatypes</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$convert</code></td>
+              </tr>
+              <tr>
+                <td rowspan="4">configuration properties</td>
+                <td>stringsDelimiter</td>
+                <td>delimiter used when parsing concatenated strings arrays (defaults to ',')</td>
+              </tr>
+              <tr>
+                <td>trimStrings</td>
+                <td>boolean, states whether or not trim strings when parsing concatenated strings arrays (defaults to <code>true</code>)</td>
+              </tr>
+              <tr>
+                <td>numberFormat</td>
+                <td>number format to use when parsing numbers</td>
+              </tr>
+              <tr>
+                <td>dateFormat</td>
+                <td>date format to use when parsing dates</td>
+              </tr>
+              <tr>
+                <td rowspan="8">methods and properties</td>
+                <td><code>$convert.stringsDelimiter</code></td>
+                <td>delimiter used when parsing concatenated strings arrays</td>
+              </tr>
+              <tr>
+                <td><code>$convert.stringsTrim</code></td>
+                <td>whether or not strings are trimmed when parsing concatenated strings arrays</td>
+              </tr>
+              <tr>
+                <td><code>$convert.dateFormat</code></td>
+                <td>current date format used when parsing dates</td>
+              </tr>
+              <tr>
+                <td><code>$convert.numberFormat</code></td>
+                <td>current number format used when parsing numbers</td>
+              </tr>
+              <tr>
+                <td><code>$convert.parseDate( <i>string</i> [ , <i>format</i> [ , <i>locale</i> [ , <i>timezone</i> ] ] ] )</code></td>
+                <td>parses a date</td>
+              </tr>
+              <tr>
+                <td><code>$convert.parseNumber( <i>string</i> [ , <i>format</i> [ , <i>locale</i> ] ] )</code></td>
+                <td>parses a number</td>
+              </tr>
+              <tr>
+                <td><code>$convert.to<i>Type</i>( <i>object</i> )</code></td>
+                <td>converts an object to an instance of <code><i>Type</i></code>, where <code><i>Type</i></code> can be one of <code>Boolean</code>, <code>Calendar</code>, <code>Date</code>, <code>Double</code>, <code>Integer</code>, <code>Locale</code>, <code>Number</code>, <code>String</code></td>
+              </tr>
+              <tr>
+                <td><code>$convert.to<i>Type</i>s( <i>object</i> )</code></td>
+                <td>converts an array, Collection, delimited String, or object to an array of <code><i>Type</i></code>s, where <code><i>Type</i></code> can be one of <code>Boolean</code>, <code>Calendar</code>, <code>Date</code>, <code>Double</code>, <code>Integer</code>, <code>Locale</code>, <code>Number</code>, <code>String</code></td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/generic/DisplayTool.html" name="DisplayTool">DisplayTool</a></th>
+                <td colspan="2">tool providing a variety of methods for controlling the output displayed by various references in your templates</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$display</code></td>
+              </tr>
+              <tr>
+                <td rowspan="10">configuration properties</td>
+                <td>listDelim</td>
+                <td>default delimiter used between items by the list formatting methods (defaults to ',')</td>
+              </tr>
+              <tr>
+                <td>listFinalDelim</td>
+                <td>default delimiter used between the last two items by the list formatting methods (defaults to ' and ')</td>
+              </tr>
+              <tr>
+                <td>truncateLength</td>
+                <td>default length used by truncate(Object) (defaults to 30)</td>
+              </tr>
+              <tr>
+                <td>truncateSuffix></td>
+                <td>default suffix used by the truncate methods (defaults to '...')</td>
+              </tr>
+              <tr>
+                <td>truncateAtWord</td>
+                <td>boolean, whether to truncate at a precise character or the last fitting word (defaults to <code>false</code></td>
+              </tr>
+              <tr>
+                <td>cellLength</td>
+                <td>cell size</td>
+              </tr>
+              <tr>
+                <td>cellSuffix</td>
+                <td>suffix used when cell contents need truncating</td>
+              </tr>
+              <tr>
+                <td>defaultAlternate</td>
+                <td>alternate used by alt(Object) (defaults to 'null')</td>
+              </tr>
+              <tr>
+                <td>allowedTags</td>
+                <td>tags allowed to remain by stripTags(Object) (none by defaults)</td>
+              </tr>
+              <tr>
+                <td>locale</td>
+                <td>used locale</td>
+              </tr>
+              <tr>
+                <td rowspan="22">methods and properties</td>
+                <td><code>$display.listDelimiter</code></td>
+                <td>returns or sets the configured default delimiter used between items by the list formatting methods</td>
+              </tr>
+              <tr>
+                <td><code>$display.listFinalDelimiter</code></td>
+                <td>returns or sets the configured default delimiter used between the last two items by the list formatting methods</td>
+              </tr>
+              <tr>
+                <td><code>$display.truncateLength</code></td>
+                <td>returns or sets the configured default length used by truncate(Object)</td>
+              </tr>
+              <tr>
+                <td><code>$display.truncateSuffix</code></td>
+                <td>returns or sets the default suffix used by the truncate methods</td>
+              </tr>
+              <tr>
+                <td><code>$display.truncateAtWord</code></td>
+                <td>returns or sets whether or not to truncate at a precise character or the last fitting word</td>
+              </tr>
+              <tr>
+                <td><code>$display.cellLength</code></td>
+                <td>returns or sets configured cell length</td>
+              </tr>
+              <tr>
+                <td><code>$display.cellSuffix</code></td>
+                <td>returns or sets the suffix used when cell contents need truncating</td>
+              </tr>
+              <tr>
+                <td><code>$display.defaultAlternate</code></td>
+                <td>returns or sets the configured default alternate used by alt(Object)</td>
+              </tr>
+              <tr>
+                <td><code>$display.allowedTags</code></td>
+                <td>returns or sets the configured tags allowed to remain by stripTags(Object)</td>
+              </tr>
+              <tr>
+                <td><code>$display.alt( <i>object</i> [ , <i>object</i> ] )</code></td>
+                <td>returns the configured default value (or the second argument if specified) if the specified first value is null</td>
+              </tr>
+              <tr>
+                <td><code>$display.br( <i>object</i> )</code></td>
+                <td>inserts HTML line break tag (<br />) in front of all newline characters of the string value of the specified object and returns the resulting string</td>
+              </tr>
+              <tr>
+                <td><code>$display.capitalize( <i>object</i> )</code></td>
+                <td>changes the first character of the string value of the specified object to upper case and returns the resulting string</td>
+              </tr>
+              <tr>
+                <td><code>$display( <i>object</i> [ , <i>suffix</i> ] [ , <i>length</i> ]</code></td>
+                <td>truncates or pads the string value of the specified object as necessary to ensure that the returned string's length equals the default or specified cell size, using the default suffix or the specified one when truncation is needed</td>
+              </tr>
+              <tr>
+                <td><code>$display.list( <i>object</i> [ , <i>delim</i> [ , <i>finalDelim</i> ] ] )</code></td>
+                <td>Formats a collection or array into a string, using the default or provided delimiter and final delimiter</td>
+              </tr>
+              <tr>
+                <td><code>$display.measure( <i>object</i> )</code></td>
+                <td>returns the measurements of the string value of the specified object</td>
+              </tr>
+              <tr>
+                <td><code>$display.message( <i>string</i>, <i>object</i>...)</code></td>
+                <td>uses <code>java.text.MessageFormat</code> to format the specified string with the specified arguments. If there are no arguments, then the string is returned directly</td>
+              </tr>
+              <tr>
+                <td><code>$display.plural( <i>count</i>, <i>singular</i> [ , <i>plural</i> ] )</code></td>
+                <td>based on <i>count</i>, returns singular or build/specified plural</td>
+              </tr>
+              <tr>
+                <td><code>$display.printf( <i>format</i>, <i>object</i>... )</code></td>
+                <td>uses <code>String.format(Locale,String,Object...)</code> to format the specified String with the specified arguments. Please note that the format required here is quite different from that of message(String,Object...)</td>
+              </tr>
+              <tr>
+                <td><code>$display.space( <i>int</i> )</code></td>
+                <td>returns a string of spaces of the specified length</td>
+              </tr>
+              <tr>
+                <td><code>$display.stripTags( <i>object</i> [ , <i>allowedTags</i> ] )</code></td>
+                <td>removes all not allowed HTML tags from the string value of the specified object and returns the resulting string</td>
+              </tr>
+              <tr>
+                <td><code>$display.truncate( <i>object</i> [ , <i>size</i> ] [ , <i>suffix</i> ] )</code></td>
+                <td>limits the string output of the first argument to the specified or default number of characters. If the string gets curtailed, the specified or default suffix is used as the ending of the truncated string</td>
+              </tr>
+              <tr>
+                <td><code>$display.uncapitalize( <i>object</i> )</code></td>
+                <td>changes the first character of the string value of the specified object to lower case and returns the resulting string</td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/generic/EscapeTool.html" name="EscapeTool">EscapeTool</a></th>
+                <td colspan="2">tool providing some escaping facilities</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$esc</code></td>
+              </tr>
+              <tr>
+                <td rowspan="14">methods and properties</td>
+                <td><code>$esc.b</code> , <code>$esc.backslash</code></td>
+                <td>renders a backslash (\)</td>
+              </tr>
+              <tr>
+                <td><code>$esc.d</code> , <code>$esc.dollar</code></td>
+                <td>renders a dollar sign ($)</td>
+              </tr>
+              <tr>
+                <td><code>$esc.e</code> , <code>$esc.exclamation</code></td>
+                <td>renders an exclamation mark (!)</td>
+              </tr>
+              <tr>
+                <td><code>$esc.h</code> , <code>$esc.hash</code></td>
+                <td>renders a hash (#)</td>
+              </tr>
+              <tr>
+                <td><code>$esc.q</code> , <code>$esc.quote</code></td>
+                <td>renders a double quotation mark (")</td>
+              </tr>
+              <tr>
+                <td><code>$esc.s</code> , <code>$esc.singleQuote</code></td>
+                <td>renders a single quotation mark (')</td>
+              </tr>
+              <tr>
+                <td><code>$esc.html( <i>string</i> )</code></td>
+                <td>escapes the characters in a string using HTML entities</td>
+              </tr>
+              <tr>
+                <td><code>$esc.url( <i>string</i> )</code></td>
+                <td>escapes the characters in a string using UTF-8 URL character encoding</td>
+              </tr>
+              <tr>
+                <td><code>$esc.java( <i>string</i> )</code></td>
+                <td>escapes the characters in a String using Java String rules</td>
+              </tr>
+              <tr>
+                <td><code>$esc.javascript( <i>string</i> )</code></td>
+                <td>escapes the characters in a String using JavaScript String rules</td>
+              </tr>
+              <tr>
+                <td><code>$esc.sql( <i>string</i> )</code></td>
+                <td>escapes the characters in a String to be suitable to pass to an SQL query</td>
+              </tr>
+              <tr>
+                <td><code>$esc.xml( <i>string</i> )</code></td>
+                <td>escapes the characters in a String using XML entities</td>
+              </tr>
+              <tr>
+                <td><code>$esc.propertyKey( <i>string</i> )</code></td>
+                <td>escapes the characters in a String using java.util.Properties rules for escaping keys</td>
+              </tr>
+              <tr>
+                <td><code>$esc.propertyValue( <i>string</i> )</code></td>
+                <td>escapes the characters in a String using java.util.Properties rules for escaping values</td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/generic/FieldTool.html" name="FieldTool">FieldTool</a></th>
+                <td colspan="2">tool allowing easy access to public static fields in classes, such as string constants</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$field</code></td>
+              </tr>
+              <tr>
+                <td rowspan="2">methods and properties</td>
+                <td><code>$field.get( <i>string</i> )</code></td>
+                <td>returns the value of the field with the specified name, if found</td>
+              </tr>
+              <tr>
+                <td><code>$fields.in( <i>class/object/string</i> )</code></td>
+                <td>loads all public static fields in the specified class or object</td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/generic/LinkTool.html" name="LinkTool">LinkTool</a></th>
+                <td colspan="2">tool used to format hyperlinks ; this tool is somewhat unusual in that every method that takes parameters will return a new instance of the tool that is a copy of the one the method was called upon, with the additional change specified by the method call, allowing for chained calls like <code>href="$link.relative('foobar.html').param('id','25').anchor('section4')"</code> (which would produce <code>href="foobar.html?id=25#section4"</code>)</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$link</code></td>
+              </tr>
+              <tr>
+                <td rowspan="12">configuration properties</td>
+                <td>uri</td>
+                <td>sets the default scheme, user info, host, port, path, query, and anchor elements all at once</td>
+              </tr>
+              <tr>
+                <td>scheme</td>
+                <td>sets the default scheme (<code>http</code>, <code>https</code>, <code>mailto</code>, ...)</td>
+              </tr>
+              <tr>
+                <td>info</td>
+                <td>sets the default user info</td>
+              </tr>
+              <tr>
+                <td>host</td>
+                <td>sets the default host</td>
+              </tr>
+              <tr>
+                <td>port</td>
+                <td>sets the default port</td>
+              </tr>
+              <tr>
+                <td>requestPath</td>
+                <td>sets the default path</td>
+              </tr>
+              <tr>
+                <td>params</td>
+                <td>sets the defaut query parameters</td>
+              </tr>
+              <tr>
+                <td>anchor</td>
+                <td>sets the defaut anchor</td>
+              </tr>
+              <tr>
+                <td>charset</td>
+                <td>sets the defaut charset</td>
+              </tr>
+              <tr>
+                <td>xhtml</td>
+                <td>if <code>true</code>, uses <code>&amp;amp;</code> as query delimiter (this is the default), otherwise uses <code>&amp;</code></td>
+              </tr>
+              <tr>
+                <td>appendParameters</td>
+                <td>sets whether or not the <code>#setParam()</code> method will override existing query values for the same key or simply append the new value to a list of existing values (this is the default)</td>
+              </tr>
+              <tr>
+                <td>forceRelative</td>
+                <td>sets whether or not the <code>#createURI()</code> method should ignore the scheme, user, port and host values for non-opaque URIs,
+                  thus making <code>#toString</code> print the link as a relative one, not an absolute one ;  NOTE: using <code>#absolute()</code> or <code>#relative()</code>
+                  will alter this setting accordingly on the new instances they return</td>
+              </tr>
+              <tr>
+                <td rowspan="14">methods and properties</td>
+                <td><code>$link.anchor</code></td>
+                <td>returns the anchor set for the <code>$link</code></td>
+              </tr>
+              <tr>
+                <td><code>$link.path</code></td>
+                <td>returns the path currently set for this $link</td>
+              </tr>
+              <tr>
+                <td><code>$link.params</code></td>
+                <td>returns the query data set for this <code>$link</code></td>
+              </tr>
+              <tr>
+                <td><code>$link.contextURI</code></td>
+                <td>returns the URI that addresses this web application, e.g. http://myserver.net/myapp ; this string may not end with a "/"</td>
+              </tr>
+              <tr>
+                <td><code>$link.contextPath</code></td>
+                <td>returns the context path that addresses this web application, e.g. /myapp ; this string starts with a "/" but does not end with a "/"</td>
+              </tr>
+              <tr>
+                <td><code>$link.requestPath</code></td>
+                <td>retrieves the path for the current request regardless of whether this is a direct request or an include by the <code>RequestDispatcher</code></td>
+              </tr>
+              <tr>
+                <td><code>$link.baseRef</code></td>
+                <td>returns the full URI of this template without any query data. e.g. <code>http://myserver.net/myapp/stuff/View.vm</code></td>
+              </tr>
+              <tr>
+                <td><code>$link.self</code></td>
+                <td>this method returns a new self-referencing <code>$link</code> for the current request (e.g. <code>/myapp/stuff/View.vm</code>) ; however, the behavior can be changed via toolbox configuration to use absolute URIs and/or add the current request parameters</td>
+              </tr>
+              <tr>
+                <td><code>$link.anchor( <i>string</i> )</code></td>
+                <td>returns a new <code>$link</code> with the addition of the specified anchor value</td>
+              </tr>
+              <tr>
+                <td><code>$link.path( <i>string</i> )</code></td>
+                <td>returns a new <code>$link</code> with the addition of the specified path value</td>
+              </tr>
+              <tr>
+                <td><code>$link.relative( <i>string</i> )</code></td>
+                <td>returns a new <code>$link</code> with the addition of the specified relative value</td>
+              </tr>
+              <tr>
+                <td><code>$link.absolute( <i>string</i> )</code></td>
+                <td>returns a new <code>$link</code> with the addition of the specified absolute value</td>
+              </tr>
+              <tr>
+                <td><code>$link.params( <i>key</i>, <i>value</i> )</code></td>
+                <td>returns a new $link with the addition of the specified parameter</td>
+              </tr>
+              <tr>
+                <td><code>$link.encode( <i>string</i> )</code></td>
+                <td>performs URL encoding on the specified text</td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/generic/MathTool.html" name="MathTool">MathTool</a></th>
+                <td colspan="2">tool providing math functions</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$math</code></td>
+              </tr>
+              <tr>
+                <td rowspan="19">methods and properties</td>
+                <td><code>$math.add( <i>object</i>, <i>object</i> )</code></td>
+                <td>returns the sum of the numbers or <code>null</code> if they are invalid</td>
+              </tr>
+              <tr>
+                <td><code>$math.sub( <i>object</i>, <i>object</i> )</code></td>
+                <td>returns the difference of the numbers or <code>null</code> if they are invalid</td>
+              </tr>
+              <tr>
+                <td><code>$math.mul( <i>object</i>, <i>object</i> )</code></td>
+                <td>returns the product of the numbers or <code>null</code> if they are invalid</td>
+              </tr>
+              <tr>
+                <td><code>$math.div( <i>object</i>, <i>object</i> )</code></td>
+                <td>returns the quotient of the numbers or <code>null</code> if they are invalid</td>
+              </tr>
+              <tr>
+                <td><code>$math.pow( <i>object</i>, <i>object</i> )</code></td>
+                <td>returns the first number raised to the power of the second or <code>null</code> if they are invalid</td>
+              </tr>
+              <tr>
+                <td><code>$math.idiv( <i>object</i>, <i>object</i> )</code></td>
+                <td>returns the integer division of the numbers or <code>null</code> if they are invalid</td>
+              </tr>
+              <tr>
+                <td><code>$math.mod( <i>object</i>, <i>object</i> )</code></td>
+                <td>returns the integer molulus operation on the numbers or <code>null</code> if they are invalid</td>
+              </tr>
+              <tr>
+                <td><code>$math.max( <i>object</i>, <i>object</i> )</code></td>
+                <td>returns the largest of the numbers or <code>null</code> if they are invalid</td>
+              </tr>
+              <tr>
+                <td><code>$math.min( <i>object</i>, <i>object</i> )</code></td>
+                <td>returns the smallest of the numbers or <code>null</code> if they are invalid</td>
+              </tr>
+              <tr>
+                <td><code>$math.abs( <i>object</i> )</code></td>
+                <td>returns the absolute value of the number or <code>null</code> if it is invalid</td>
+              </tr>
+              <tr>
+                <td><code>$math.ceil( <i>object</i> )</code></td>
+                <td>returns the smallest integer that is not less than the given number or <code>null</code> if it is invalid</td>
+              </tr>
+              <tr>
+                <td><code>$math.floor( <i>object</i> )</code></td>
+                <td>returns the integer portion of the given number or <code>null</code> if it is invalid</td>
+              </tr>
+              <tr>
+                <td><code>$math.round( <i>object</i> )</code></td>
+                <td>returns the given number rounded to the nearest whole Integer or null if it is invalid</td>
+              </tr>
+              <tr>
+                <td><code>$math.roundTo( <i>object</i>, <i>decimals</i> )</code></td>
+                <td>rounds a number to the specified number of decimal places</td>
+              </tr>
+              <tr>
+                <td><code>$math.random</code></td>
+                <td>returns a pseudo-random Double greater than or equal to 0.0 and less than 1.0</td>
+              </tr>
+              <tr>
+                <td><code>$math.random( <i>lower</i>, <i>upper</i> )</code></td>
+                <td>this returns a random Number within the specified range - the returned value will be greater than or equal to the first number and less than the second number - if both arguments are whole numbers then the returned number will also be, otherwise a double will be returned</td>
+              </tr>
+              <tr>
+                <td><code>$math.toInteger( <i>object</i> )</code></td>
+                <td>converts an object with a numeric value into an <code>Integer</code> ; valid formats are <code>Number</code> or a string representation of a number</td>
+              </tr>
+              <tr>
+                <td><code>$math.toDouble( <i>object</i> )</code></td>
+                <td>converts an object with a numeric value into a <code>Double</code> ; valid formats are <code>Number</code> or a string representation of a number</td>
+              </tr>
+              <tr>
+                <td><code>$math.toNumber( <i>object</i> )</code></td>
+                <td>converts an object with a numeric value into a <code>Number</code> ; valid formats are <code>Number</code> or a string representation of a number</td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/generic/NumberTool.html" name="NumberTool">NumberTool</a></th>
+                <td colspan="2">tool used to format numbers</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$number</code></td>
+              </tr>
+              <tr>
+                <td rowspan="2">configuration properties</td>
+                <td>format</td>
+                <td>default number format (depends upon the default locale, '#0.0' for en_US locale)</td>
+              </tr>
+              <tr>
+                <td>locale</td>
+                <td>default locale</td>
+              </tr>
+              <tr>
+                <td rowspan="7">methods and properties</td>
+                <td><code>$number.format</code></td>
+                <td>returns or sets the pattern or style to be used for formatting numbers when none is specified</td>
+              </tr>
+              <tr>
+                <td><code>$number.locale</code></td>
+                <td>returns or sets the default locale</td>
+              </tr>
+              <tr>
+                <td><code>$number.format( [ <i>format/style</i>, ] <i>object</i> [ , <i>locale</i>  ] )</code></td>
+                <td>formats the given number using the default or specified format or style, and the default or provided locale ; <code><i>style</i></code> is one of <code>currency</code>, <code>integer</code>, <code>number</code>, <code>percent</code></td>
+              </tr>
+              <tr>
+                <td><code>$number.currency( <i>object</i> )</code></td>
+                <td>convenience method equivalent to <code>$number.format("currency", $foo)</code></td>
+              </tr>
+              <tr>
+                <td><code>$number.integer( <i>object</i> )</code></td>
+                <td>convenience method equivalent to <code>$number.format("integer", $foo)</code></td>
+              </tr>
+              <tr>
+                <td><code>$number.number( <i>object</i> )</code></td>
+                <td>convenience method equivalent to <code>$number.format("number", $foo)</code></td>
+              </tr>
+              <tr>
+                <td><code>$number.percent( <i>object</i> )</code></td>
+                <td>convenience method equivalent to <code>$number.format("percent", $foo)</code></td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/generic/RenderTool.html" name="RenderTool">RenderTool</a></th>
+                <td colspan="2">tool that exposes methods to evaluate the given strings as VTL (Velocity Template Language) using either a pre-configured context or one you provide directly</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$render</code></td>
+              </tr>
+              <tr>
+                <td rowspan="3">configuration properties</td>
+                <td>parse.depth</td>
+                <td>default depth for recursive evaluation (default: 20)</td>
+              </tr>
+              <tr>
+                <td>catch.exceptions</td>
+                <td>whether to catch exceptions during rendering (defaults to <code>true</code></td>
+              </tr>
+              <tr>
+                <td>forceThreadSafe</td>
+                <td>whether to force a thread-safe evaluation (defaults to <code>true</code>)</td>
+              </tr>
+              <tr>
+                <td rowspan="2">methods and properties</td>
+                <td><code>$render.eval( <i>string</i> )</code></td>
+                <td>evaluates a String containing VTL using the current context, and returns the result as a String</td>
+              </tr>
+              <tr>
+                <td><code>$reder.recurse( <i>string</i> )</code></td>
+                <td>recursively evaluates a String containing VTL using the current context, and returns the result as a String</td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/generic/ResourceTool.html" name="ResourceTool">ResourceTool</a></th>
+                <td colspan="2">tool for accessing ResourceBundles and formatting messages therein ;  most methods return a new object that has mostly the same methods as the original, allowing you to build up parameters elegantly and simply, rather than try to remember how to use methods with many parameters that must be in a specific order: so, you can access a resource with the key <code>'hello.whoever'</code> in the <code>'otherStuff'</code> bundle with one message argument like this: <code>$text.hello.whoever.bundle('otherStuff').insert('World')</code> instead of like this: <code>$text.get('hello.whoever','otherStuff', $null, 'World')</code>
+                </td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$text</code></td>
+              </tr>
+              <tr>
+                <td rowspan="4">configuration properties</td>
+                <td>defaultBundle</td>
+                <td>default bundle</td>
+              </tr>
+              <tr>
+                <td>bundles</td>
+                <td>coma-separated list of bundles (the first one being used as the default)</td>
+              </tr>
+              <tr>
+                <td>locale</td>
+                <td>current locale</td>
+              </tr>
+              <tr>
+                <td>defaultLocale</td>
+                <td>default locale</td>
+              </tr>
+              <tr>
+                <td rowspan="6">methods and properties</td>
+                <td><code>$text.<i>key</i></code></td>
+                <td>returns the resource with the specified name, if it exists</td>
+              </tr>
+              <tr>
+                <td><code>$text.<i>prefix</i>.keys</code></td>
+                <td>returns a list of the available keys starting with the given prefix</td>
+              </tr>
+              <tr>
+                <td><code>$text.<i>key</i>.bundle( <i>bundle</i> )</code></td>
+                <td>returns the resource with the specified name in the specified bundle, if it exists</td>
+              </tr>
+              <tr>
+                <td><code>$text.<i>key</i>.locale( <i>locale</i> )</code></td>
+                <td>returns a new $text that will try to find the resource with the specified name for the specified locale</td>
+              </tr>
+              <tr>
+                <td><code>$text.<i>key</i>.insert( <i>value</i> [ , <i>value</i> ... ] )</code></td>
+                <td> Returns the named resource with the specified values inserted</td>
+              </tr>
+              <tr>
+                <td><code>$text.locale</code></td>
+                <td>returns or sets the current locale</td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/generic/SortTool.html" name="SortTool">SortTool</a></th>
+                <td colspan="2">tool used to sort collections</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$sorter</code></td>
+              </tr>
+              <tr>
+                <td>methods and properties</td>
+                <td><code>$sorter.sort( <i>collection</i> [ , <i>property  / property list</i> ] )</code></td>
+                <td>sorts the values of the specified <code>Collection</code>, <code>Map</code>, or array of <code>Objects</code>, either by their natural order or  according to the values returned by the specified property or list of properties</td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/generic/XmlTool.html" name="XmlTool">XmlTool</a></th>
+                <td colspan="2">tool used for reading/navigating XML files; this uses dom4j under the covers to provide complete XPath support for traversing XML files</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$xml</code></td>
+              </tr>
+              <tr>
+                <td>configuration properties</td>
+                <td>file</td>
+                <td>target XML file</td>
+              </tr>
+              <tr>
+                <td rowspan="21">methods and properties</td>
+                <td><code>$xml.attr( <i>string</i> )</code></td>
+                <td>returns the value of the specified attribute for the first/sole Node in the internal Node list for this instance, if that Node is an Element; if it is a non-Element node type or there is no value for that attribute in this element, then this will return <code>null</code></td>
+              </tr>
+              <tr>
+                <td><code>$xml.attributes()</code></td>
+                <td>returns a Map of all attributes for the first/sole Node held internally by this instance; if that Node is not an Element, this will return <code>null</code></td>
+              </tr>
+              <tr>
+                <td><code>$xml.children()</code></td>
+                <td>returns a new XmlTool instance that wraps all the child Elements of all the current internally held nodes that are Elements themselves</td>
+              </tr>
+              <tr>
+                <td><code>$xml.find( <i>xpath</i> )</code></td>
+                <td>performs an XPath selection on the current set of Nodes held by this instance and returns a new instance that wraps those results; if the specified value is <code>null</code> or this instance does not currently hold any nodes, then this will return <code>null</code>; if the specified value, when converted to a string, does not contain a '/' character, then it has "//" prepended to it; this means that a call to <code>$xml.find("a")</code> is equivalent to calling <code>$xml.find("//a")</code>; the full range of XPath selectors is supported here</td>
+              </tr>
+              <tr>
+                <td><code>$xml.first</code></td>
+                <td>returns a new instance that wraps only the first Node from this instance's internal Node list</td>
+              </tr>
+              <tr>
+                <td><code>$xml.last</code></td>
+                <td>returns a new instance that wraps only the last Node from this instance's internal Node list</td>
+              </tr>
+              <tr>
+                <td><code>$xml.name</code></td>
+                <td>asks <code>get(Object)</code> for "name"; if none, this will return the result of <code>getNodeName()</code></td>
+              </tr>
+              <tr>
+                <td><code>$xml.nodeName</code></td>
+                <td>returns the name of the root node; if the internal Node list has more than one Node, it will only return the name of the first node in the list</td>
+              </tr>
+              <tr>
+                <td><code>$xml.parent</code></td>
+                <td>returns a new XmlTool instance that wraps the parent Element of the first/sole Node being wrapped by this instance</td>
+              </tr>
+              <tr>
+                <td><code>$xml.path</code></td>
+                <td>returns the XPath that identifies the first/sole Node represented by this instance</td>
+              </tr>
+              <tr>
+                <td><code>$xml.text</code></td>
+                <td>returns the concatenated text content of all the internally held nodes; obviously, this is most useful when only one node is held</td>
+              </tr>
+              <tr>
+                <td><code>$xml.get( <i>number</i> )</code></td>
+                <td>returns a new instance that wraps the specified Node from this instance's internal Node list</td>
+              </tr>
+              <tr>
+                <td><code>$xml.<i>name</i></code>, <code>$xml.get( <i>string</i> )</code></td>
+                <td>this will first attempt to find an attribute with the specified name and return its value; if no such attribute exists or its value is <code>null</code>, this will attempt to convert the given value to a Number and get the result of <code>get(Number)</code>; if the number conversion fails, then this will convert the object to a string; if that string does not start contain a '/', it appends the result of <code>getPath()</code> and a '/' to the front of it; finally, it delegates the string to the <code>find(String)</code> method and returns the result of that</td>
+              </tr>
+              <tr>
+                <td><code>$xml.empty</code></td>
+                <td>returns <code>true</code> if there are no Nodes internally held by this instance</td>
+              </tr>
+              <tr>
+                <td><code>$xml.iterator()</code></td>
+                <td>returns an Iterator that returns new XmlTool instances for each Node held internally by this instance; this allows VTL like <code>#foreach($node in $xml)...#end</code></td>
+              </tr>
+              <tr>
+                <td><code>$xml.node()</code></td>
+                <td>returns the first/sole Node from this instance's internal Node list, if any</td>
+              </tr>
+              <tr>
+                <td><code>$xml.parents()</code></td>
+                <td>returns a new XmlTool instance that wraps the parent Elements of each of the Nodes being wrapped by this instance; this does not return all ancestors, just the immediate parents</td>
+              </tr>
+              <tr>
+                <td><code>$xml.parse( <i>string</i> )</code></td>
+                <td>accepts XML strings. If the XML is valid, it will return a new XmlTool instance with the XML's root as its internal node</td>
+              </tr>
+              <tr>
+                <td><code>$xml.read( <i>filename/URL</i> )</code></td>
+                <td>returns <code>null</code> if safe mode is on; otherwise this will accept url pointing to an XML document; it will then parse that document and return a new instance with that document's root element as its node</td>
+              </tr>
+              <tr>
+                <td><code>$xml.size()</code></td>
+                <td>returns the number of Nodes internally held by this instance</td>
+              </tr>
+              <tr>
+                <td><code>$xml.toString()</code></td>
+                <td>if this instance has no XML Nodes, then this returns the result of super.toString(); otherwise, it returns the XML (as a string) of all the internally held nodes that are not Attributes; for attributes, only the value is used</td>
+              </tr>
+            </table>
+          </p>
+        </subsection>
+
+        <subsection name="View Tools">
+          <p>
+            <table class="summary">
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/generic/AbstractSearchTool.html" name="AbstractSearchTool">AbstractSearchTool</a></th>
+                <td colspan="2">this tool is meant to be extended by a class defining the <code>protected List executeQuery(Object crit)</code> Java method; it allows doing "searching" and robust
+                  pagination of search results; the goal here is to provide a simple and uniform API for "search tools" that can be used in velocity templates (or even a standard Search.vm template);
+                  in particular, this class provides good support for result pagination and some very simple result caching</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code><i>$search</i></code></td>
+              </tr>
+              <tr>
+                <td>scope</td>
+                <td colspan="2">request scope</td>
+              </tr>
+              <tr>
+                <td rowspan="2">methods and properties</td>
+                <td colspan="2">all methods and properties from the <a href="#PagerTool"><code>PagerTool</code></a> are inherited</td>
+              </tr>
+              <tr>
+                <td><code>$search.criteria</code></td>
+                <td>returns or sets the current search criteria</td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/view/BrowserTool.html" name="BrowserTool">BrowserTool</a></th>
+                <td colspan="2">browser-sniffing tool; it defines properties that are used to test the client browser, operating system, device, language... apart from properties related to browser version and language, all properties are booleans.</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$browser</code></td>
+              </tr>
+              <tr>
+                <td>scope</td>
+                <td colspan="2">request or session scope, session scope advised (and enabled by default)</td>
+              </tr>
+              <tr>
+                <td>configuration properties</td>
+                <td>languagesFilter</td>
+                <td>an optional coma-separated list of admissible languages in the webapp</td>
+              </tr>
+              <tr>
+                <td rowspan="13">methods and properties</td>
+                <td><code>$browser.languageFilter</code></td>
+                <td>returns or sets the current languages filter</td>
+              </tr>
+              <tr>
+                <td><code>$browser.version</code></td>
+                <td>returns browser version</td>
+              </tr>
+              <tr>
+                <td><code>$browser.majorVersion</code></td>
+                <td>returns browser major version</td>
+              </tr>
+              <tr>
+                <td><code>$browser.minorVersion</code></td>
+                <td>returns browser minor version</td>
+              </tr>
+              <tr>
+                <td><code>$browser.geckoVersion</code></td>
+                <td>version of te Gecko rendering engine for browsers belonging to the Mozilla family</td>
+              </tr>
+              <tr>
+                <td><code>$browser.<i>browser</i></code></td>
+                <td>tests for the specified browser, among: <code>mosaic netscape nav2 nav3 nav4 nav4up nav45 nav45up nav6 nav6up navgold firefox safari ie ie3 ie4 ie4up ie5 ie5up ie55 ie55up ie6 ie6up ie7 ie7up ie8 ie8up opera opera3 opera4 opera5 opera6 opera7 opera8 opera9 lynx links w3m aol aol3 aol4 aol5 aol6 neoplanet neoplanet2 amaya icab avantgo emacs mozilla gecko webtv staroffice java hotjava httpclient lobo lotusnotes konqueror galeon kmeleon chrome</code></td>
+              </tr>
+              <tr>
+                <td><code>$browser.<i>OS</i></code></td>
+                <td>tests for the specified operating system, among: <code>win16 win3x win31 win95 win98 winnt windows win32 winme win2k winxp vista dotnet mac macosx mac68k macppc os2 unix sun sun4 sun5 suni86 irix irix5 irix6 hpux hpux9 hpux10 aix aix1 aix2 aix3 aix4 linux sco unixware mpras reliant dec sinix freebsd bsd vms x11 amiga</code></td>
+              </tr>
+              <tr>
+                <td><code>$browser.<i>device</i></code></td>
+                <td>tests for the specified handled device, among: <code>palm audrey iopener wap blackberry</code></td>
+              </tr>
+              <tr>
+                <td><code>$browser.<i>feature</i></code></td>
+                <td>tests for the given feature, among: <code>javascript css css1 css2 dom0 dom1 dom2</code></td>
+              </tr>
+              <tr>
+                <td><code>$browser.robot</code></td>
+                <td>tests for special request is issued by a known robot</td>
+              </tr>
+              <tr>
+                <td><code>$browser.<i>robot</i></code></td>
+                <td>tests for known robots: <code>wget getright yahoo altavista lycos infoseek lwp webcrawler linkexchange slurp google java</code></td>
+              </tr>
+              <tr>
+                <td><code>$browser.preferredLanguageTag</code></td>
+                <td>returns the browser's preferred langage tag (a string like 'en', 'da', 'en-US', ...), optionnaly affected by the languagesFilter configuration property</td>
+              </tr>
+              <tr>
+                <td><code>$browser.preferredLocale</code></td>
+                <td>returns the browser's preferred locale</td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/view/CookieTool.html" name="CookieTool">CookieTool</a></th>
+                <td colspan="2">tool used to read and set cookies</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$cookies</code></td>
+              </tr>
+              <tr>
+                <td>scope</td>
+                <td colspan="2">request</td>
+              </tr>
+              <tr>
+                <td rowspan="7">methods and properties</td>
+                <td><code>$cookies.add( <i>Cookie</i> )</code></td>
+                <td>Adds the cookie to the current servlet response; this does NOT add it to the current request</td>
+              </tr>
+              <tr>
+                <td><code>$cookies.add( <i>name</i>, <i>value</i> [ , <i>expiry time</i> ] )</code></td>
+                <td>adds a new Cookie with the specified name and value to the current servlet response; this does not add a Cookie to the current request</td>
+              </tr>
+              <tr>
+                <td><code>$cookies.create( <i>name</i>, <i>value</i> [ , <i>expiry time</i> ] )</code></td>
+                <td>creates a new Cookie with the specified name and value; this does not add the Cookie to the response, so the created Cookie will not be set unless you do <code>$cookies.add($myCookie)</code></td>
+              </tr>
+              <tr>
+                <td><code>$cookies.delete( <i>name</i> )</code></td>
+                <td>instructs the browser to remove the specified cookie by setting it with a Max-Age of 0</td>
+              </tr>
+              <tr>
+                <td><code>$cookies.all</code></td>
+                <td>returns a list of Cookies for this request</td>
+              </tr>
+              <tr>
+                <td><code>$cookies.<i>name</i></code>, <code>$cookies.get( <i>name</i> )</code></td>
+                <td>returns the Cookie with the specified name, if it exists</td>
+              </tr>
+              <tr>
+                <td><code>$cookies.toString()</code></td>
+                <td>if there are no Cookies in the request, this returns the standard Object.toString output; otherwise, it returns a pretty printed list of cookie names and values</td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/view/ImportTool.html" name="ImportTool">ImportTool</a></th>
+                <td colspan="2">general-purpose text-importing view tool for templates</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$import</code></td>
+              </tr>
+              <tr>
+                <td>scope</td>
+                <td colspan="2">request</td>
+              </tr>
+              <tr>
+                <td>methods and properties</td>
+                <td><code>$import.read( <i>url</i> )</code></td>
+                <td>returns the content read from the specified URL</td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/view/IncludeTool.html" name="IncludeTool">IncludeTool</a></th>
+                <td colspan="2">tool allowing for transparent content negotiation in a manner mimicking Apache httpd's MultiViews; reads the default language out of the ViewToolContext as <code>org.apache.velocity.tools.view.i18n.defaultLanguage</code>; please note that it does NOT do the actual <code>#include</code> or <code>#parse</code> for you, but is merely to aid in include content negotiation</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$include</code></td>
+              </tr>
+              <tr>
+                <td>scope</td>
+                <td colspan="2">request or session scope</td>
+              </tr>
+              <tr>
+                <td>configuration properties</td>
+                <td>org.apache.velocity.tools.view.i18n.defaultLanguage</td>
+                <td>this property is not searched directly in the provided tool's properties, but looked first at the Velocity context, then the servlet context, then lastly at the JVM default;
+                  this "narrow scope to wide scope" pattern makes it easy to setup language overrides at different levels within your application</td>
+              </tr>
+              <tr>
+                <td rowspan="2">methods and properties</td>
+                <td><code>$include.exists( <i>name</i> [ , <i>locale</i> ] )</code></td>
+                <td>checks whether or not a resource is available with the specified name and, if provided, specified language suffix</td>
+              </tr>
+              <tr>
+                <td><code>$include.find( <i>name</i> [ , <i>locale / language code</i> ] )</code></td>
+                <td>returns the localized name for the specified resource, with the specified Locales language suffix if specified; if one for that language is unavailable, then it will "widen" the language until one is found; if none is found at all, the name parameter is returned</td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/view/LinkTool.html" name="LinkTool2">LinkTool</a></th>
+                <td colspan="2">tool used to format hyperlinks ; this tool is somewhat unusual in that every method that takes parameters will return a new instance of the tool that is a copy of the one the method was called upon, with the additional change specified by the method call, allowing for chained calls like <code>href="$link.relative('foobar.html').param('id','25').anchor('section4')"</code> (which would produce <code>href="foobar.html?id=25#section4"</code>)</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$link</code></td>
+              </tr>
+              <tr>
+                <td>scope</td>
+                <td colspan="2">request</td>
+              </tr>
+              <tr>
+                <td>configuration properties</td>
+                <td>includeRequestParams</td>
+                <td>controls whether or not this tool starts off with all parameters from the last request automatically; default is <code>false</code></td>
+              </tr>
+              <tr>
+                <td rowspan="6">methods and properties</td>
+                <td colspan="2">all methods and properties from the generic <a href="#LinkTool"><code>LinkTool</code></a> are inherited</td>
+              </tr>
+              <tr>
+                <td><code>$link.includeRequestParams</code></td>
+                <td>returns or sets the includeRequestParams flag</td>
+              </tr>
+              <tr>
+                <td><code>$link.requestPath</code></td>
+                <td>returns the path for the current request, regardless of whether this is a direct request or an include by the RequestDispatcher</td>
+              </tr>
+              <tr>
+                <td><code>$link.addRequestParams( [ <i>amongThisOne</i> [ , <i>andThisOne</i> ... ] ] )</code></td>
+                <td>Adds the specified parameters (if they exist) from the current request to the query data of a copy of this instance; if no parameters are specified, then all of the current request's parameters will be added</td>
+              </tr>
+              <tr>
+                <td><code>$link.addRequestParamsExcept( [ <i>exceptThisOne</i> [ , <i>andThisOne</i> ... ] ] )</code></td>
+                <td>Adds all of the current request's parameters to this link's query data except for those whose keys match any of the specified strings</td>
+              </tr>
+              <tr>
+                <td><code>$link.addMissingRequestParams( [ <i>exceptThisOne</i> [ , <i>andThisOne</i> ... ] ] )</code></td>
+                <td>adds all of the current request's parameters to this link's query data except for those whose keys match any of the specified strings or already have a value set for them in the current instance</td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/view/PagerTool.html" name="PagerTool">PagerTool</a></th>
+                <td colspan="2">tool for doing request-based pagination of items in an a list</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$pager</code></td>
+              </tr>
+              <tr>
+                <td>scope</td>
+                <td colspan="2">request</td>
+              </tr>
+              <tr>
+                <td rowspan="6">configuration properties</td>
+                <td>newItemsKey</td>
+                <td>key name used to search for items in request attributes</td>
+              </tr>
+              <tr>
+                <td>indexKey</td>
+                <td>key name used to search for current page index in request attributes</td>
+              </tr>
+              <tr>
+                <td>itemsPerPageKey</td>
+                <td>key name used to search for the number of items to be shown per page in request attributes</td>
+              </tr>
+              <tr>
+                <td>slipSizeKey</td>
+                <td>key name used to search for the max number of page indices to show in request attributes</td>
+              </tr>
+              <tr>
+                <td>itemsPerPage</td>
+                <td>number of items per page (defaults to 10)</td>
+              </tr>
+              <tr>
+                <td>slipsize</td>
+                <td>maximum number of page indices to show (defaults to 20)</td>
+              </tr>
+              <tr>
+                <td rowspan="20">methods and properties</td>
+                <td><code>$pager.newItemsKey</code></td>
+                <td>returns or sets the key name used to search for items in request attributes</td>
+              </tr>
+              <tr>
+                <td><code>$pager.indexKey</code></td>
+                <td>returns or sets the key name used to search for the first index in the current page in request attributes</td>
+              </tr>
+              <tr>
+                <td><code>$pager.itemsPerPageKey</code></td>
+                <td>returns or sets the key name used to search for the number of items to be shown per page in request attributes</td>
+              </tr>
+              <tr>
+                <td><code>$pager.slipSizeKey</code></td>
+                <td>returns or sets the key name used to search for the max number of page indices to show in request attributes</td>
+              </tr>
+              <tr>
+                <td><code>$pager.items</code></td>
+                <td>returns or sets the current list of items</td>
+              </tr>
+              <tr>
+                <td><code>$pager.index</code></td>
+                <td>returns or sets the first index in the current page (differs from <code>$index.firstIndex</code> in that it is not adjusted to fit the reality of the items available)</td>
+              </tr>
+              <tr>
+                <td><code>$pager.itemsPerPage</code></td>
+                <td>returns or sets the number of items to show per page (defaults to 10)</td>
+              </tr>
+              <tr>
+                <td><code>$pager.slipSize</code></td>
+                <td>returns or sets the maximum number of page indices to show (defaults to 20)</td>
+              </tr>
+              <tr>
+                <td><code>$pager.hasItems()</code></td>
+                <td>checks whether or not the result list is empty</td>
+              </tr>
+              <tr>
+                <td><code>$pager.firstIndex</code></td>
+                <td>returns the first index in the current page (as determined by the current index, items per page, and the number of items; differs from <code>$index.index</code> in that it is adjusted to fit the reality of the items available)</td>
+              </tr>
+              <tr>
+                <td><code>$pager.lastIndex</code></td>
+                <td>returns the index of the last item on the current page of results (as determined by the current index, items per page, and the number of items)</td>
+              </tr>
+              <tr>
+                <td><code>$pager.prevIndex</code></td>
+                <td>return the index for the previous page of items (as determined by the current index, items per page, and the number of items)</td>
+              </tr>
+              <tr>
+                <td><code>$pager.nextIndex</code></td>
+                <td>returns the index for the next page of items (as determined by the current index, items per page, and the number of items)</td>
+              </tr>
+              <tr>
+                <td><code>$pager.page</code></td>
+                <td>returns the current page of search items</td>
+              </tr>
+              <tr>
+                <td><code>$pager.pageDescription</code></td>
+                <td>returns a description of the current page ("1 of <i>n</i>")</td>
+              </tr>
+              <tr>
+                <td><code>$pager.pageNumber</code></td>
+                <td>returns the page number for the current index</td>
+              </tr>
+              <tr>
+                <td><code>$pager.pageNumber( <i>integer</i> )</code></td>
+                <td>returns the page number for the specified index</td>
+              </tr>
+              <tr>
+                <td><code>$pager.pagesAvailable</code></td>
+                <td>returns the number of pages that can be made from this list given the set number of items per page</td>
+              </tr>
+              <tr>
+                <td><code>$pager.total</code></td>
+                <td>returns the total number of items available</td>
+              </tr>
+              <tr>
+                <td><code>$pager.slip</code></td>
+                <td>returns a Sliding List of Indices for Pages of items</td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/view/ParameterTool.html" name="ParameterTool">ParameterTool</a></th>
+                <td colspan="2">tool used to parse request parameters</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$params</code></td>
+              </tr>
+              <tr>
+                <td>scope</td>
+                <td colspan="2">request</td>
+              </tr>
+              <tr>
+                <td rowspan="13">methods and properties</td>
+                <td><code>$params.exists( <i>name</i> )</code></td>
+                <td>checks whether given request parameter exists</td>
+              </tr>
+              <tr>
+                <td><code>$params.<i>name</i></code>, <code>$params.get( <i>name</i> )</code>, <code>$params.getString( <i>name</i> [ , <i>alternate</i> ] )</code></td>
+                <td>returns the parameter with the specified key as a string, if it exists; otherwise, returns the specified alternate value if specified</td>
+              </tr>
+              <tr>
+                <td><code>$params.getBoolean( <i>name</i> [ , <i>alternate</i> ] )</code></td>
+                <td>returns the parameter with the specified key as a java.lang.Boolean, if it exists; otherwise, returns the specified alternate Boolean if specified</td>
+              </tr>
+              <tr>
+                <td><code>$params.getNumber( <i>name</i> [ , <i>alternate</i> ] )</code></td>
+                <td>returns the parameter with the specified key as a java.lang.Number, if it exists; otherwise, returns the specified alternate Number if specified</td>
+              </tr>
+              <tr>
+                <td><code>$params.getDouble( <i>name</i> [ , <i>alternate</i> ] )</code></td>
+                <td>returns the parameter with the specified key as a java.lang.Double, if it exists; otherwise, returns the specified alternate Double if specified</td>
+              </tr>
+              <tr>
+                <td><code>$params.getInteger( <i>name</i> [ , <i>alternate</i> ] )</code></td>
+                <td>returns the parameter with the specified key as a java.lang.Integer, if it exists; otherwise, returns the specified alternate Integer if specified</td>
+              </tr>
+              <tr>
+                <td><code>$params.getLocale( <i>name</i> [ , <i>alternate</i> ] )</code></td>
+                <td>returns the parameter with the specified key as a java.util.Locale, if it exists; otherwise, returns the specified alternate Locale if specified</td>
+              </tr>
+              <tr>
+                <td><code>$params.getStrings( <i>name</i> )</code></td>
+                <td>returns the parameter(s) with the specified key in an array of strings, if any exist; otherwise, returns <code>null</code></td>
+              </tr>
+              <tr>
+                <td><code>$params.getBooleans( <i>name</i> )</code></td>
+                <td>returns the parameter(s) with the specified key in an array of java.lang.Boolean, if any exist; otherwise, returns <code>null</code></td>
+              </tr>
+              <tr>
+                <td><code>$params.getNumbers( <i>name</i> )</code></td>
+                <td>returns the parameter(s) with the specified key in an array of java.lang.Number, if any exist; otherwise, returns <code>null</code></td>
+              </tr>
+              <tr>
+                <td><code>$params.getDoubles( <i>name</i> )</code></td>
+                <td>returns the parameter(s) with the specified key in an array of java.lang.Doubles, if any exist; otherwise, returns <code>null</code></td>
+              </tr>
+              <tr>
+                <td><code>$params.getIntegers( <i>name</i> )</code></td>
+                <td>returns the parameter(s) with the specified key in an array of java.lang.Integers, if any exist; otherwise, returns <code>null</code></td>
+              </tr>
+              <tr>
+                <td><code>$params.all</code></td>
+                <td>returns the map of all parameters available for the current request</td>
+              </tr>
+              <tr>
+                <th><a class="nolink" href="javadoc/org/apache/velocity/tools/view/ViewContextTool.html" name="ViewContextTool">ViewContextTool</a></th>
+                <td colspan="2">extension of the generic ContextTool that includes keys and values from the HttpServletRequest, HttpSession and ServletContext attributes</td>
+              </tr>
+              <tr>
+                <td>default key</td>
+                <td colspan="2"><code>$context</code></td>
+              </tr>
+              <tr>
+                <td>scope</td>
+                <td colspan="2">request</td>
+              </tr>
+              <tr>
+                <td>methods and properties</td>
+                <td colspan="2">all methods and properties from the generic <a href="#ContextTool"><code>ContextTool</code></a> are inherited</td>
+              </tr>
+            </table>
+          </p>
+        </subsection>
+        <subsection name="Struts Tools">
+          <todo>This page only covers the Generic and View subprojects, leaving aside the Struts subproject for now.</todo>
+        </subsection>
+    </section>
+
+    </body>
+                                                                               
+</document>

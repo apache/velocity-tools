@@ -1,0 +1,68 @@
+## Licensed to the Apache Software Foundation (ASF) under one
+## or more contributor license agreements.  See the NOTICE file
+## distributed with this work for additional information
+## regarding copyright ownership.  The ASF licenses this file
+## to you under the Apache License, Version 2.0 (the
+## "License"); you may not use this file except in compliance
+## with the License.  You may obtain a copy of the License at
+##
+##   http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing,
+## software distributed under the License is distributed on an
+## "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+## KIND, either express or implied.  See the License for the
+## specific language governing permissions and limitations
+## under the License.
+#title( 'ViewRenderTool' )
+<p>
+#set( $demo = $text.demo )
+$demo.thisPage.insert("#doclink( 'RenderTool' true )").
+</p>
+
+#demoTableStart()
+
+#set( $quote = "'" )
+#set( $desc = 'Evaluates a String containing VTL using the current context, and returns the result as a String.' )
+#demo1( 'render' 'eval' 15 $desc)
+
+#set( $desc = 'Recursively evaluates a String containing VTL using the current context, and returns the result as a String.' )
+#demo1( 'render' 'recurse' 15 $desc )
+
+#demoCustom( 'render' )
+</table>
+
+<div align="center">
+  <a name="fullDemo"><h3>$demo.mainExampleHeader</h3></a>
+<form method="post" action="$link.self.anchor('fullDemo')">
+<textarea name="demo" rows="7" cols="65">##
+#if( $params.demo )##
+$params.demo##
+#else##
+${esc.h}${esc.h}Example of eval():
+${esc.h}set( ${esc.d}list = [1,2,3] )
+${esc.h}set( ${esc.d}object = '${esc.d}list' )
+${esc.h}set( ${esc.d}method = 'size()' )
+${esc.d}render.eval("${esc.d}{object}.${esc.d}method")
+
+${esc.h}${esc.h}Example of recurse():
+${esc.h}macro( say_hi )hello world!${esc.h}end
+${esc.h}set( ${esc.d}foo = '${esc.h}say_hi()' )
+${esc.h}set( ${esc.d}bar = '${esc.d}foo' )
+${esc.d}render.recurse('${esc.d}bar')##
+#end##
+</textarea>
+  <br>
+  <input type="submit" value="$demo.try">
+  #if( $params.layout )
+  <input type="hidden" name="layout" value="$params.layout">
+  #end
+</form>
+
+#if( $params.demo )
+$demo.mainResultsIntro:
+<pre>
+  $render.eval($params.demo)
+</pre>
+#end
+</div>

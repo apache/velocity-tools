@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+<taglib>
+  <tlib-version>1.0</tlib-version>
+  <jsp-version>1.2</jsp-version>
+  <short-name>velocity</short-name>
+  <uri>http://velocity.apache.org/velocity-view</uri>
+  <display-name>VelocityView Tag</display-name>
+  <description><![CDATA[Support for using Velocity and VelocityTools within JSP files and tags.
+                        This makes it trivial to render VTL (Velocity Template Language)
+                        or process a Velocity template from within JSP using the current
+                        context.  This also provides the typical VelocityView support
+                        for accessing and configuring both custom and provided
+                        VelocityTools.]]></description>
+  <tag>
+    <name>view</name>
+    <tag-class>org.apache.velocity.tools.view.jsp.VelocityViewTag</tag-class>
+    <body-content>tagdependent</body-content>
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description><![CDATA[An id unique to this particular usage of the VelocityViewTag in the application.  This id will then be used to cache the body in a StringResourceLoader repository and will also identify it in log messages.  Setting this automatically sets the cache attribute to "true".]]></description>
+    </attribute>
+    <attribute>
+      <name>cache</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description><![CDATA[Either "true" or "false" to indicate whether the body content template should be cached by the StringResourceLoader.  This is automatically set to true if an id is set.  If set to true without an id value, then the template will be used as its own id.  It is false by default.]]></description>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description><![CDATA[A variable name whose value should be set to the rendered result of this tag.]]></description>
+    </attribute>
+    <attribute>
+      <name>scope</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description><![CDATA[This property is meaningless unless a 'var' attribute is also set.  When it is, this determines the scope into which the resulting variable is set.]]></description>
+    </attribute>
+    <attribute>
+      <name>template</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description><![CDATA[The name of a template to be requested from the configured Velocity resource loaders and rendered into the page (or variable if the 'var' attribute is set) using the current context.  If this tag also has body content, then the body will be rendered first and placed into the context used to render the template as '$bodyContent'; this approximates the "two-pass render" used by the VelocityLayoutServlet.]]></description>
+    </attribute>
+    <attribute>
+      <name>bodyContentKey</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description><![CDATA[This property is meaningless unless a 'template' attribute is set and the tag has body content in it.  When it is, this changes the key under which the rendered result of the body content is placed into the context for use by the specified template.  The default value is "bodyContent" and should be sufficient for nearly all users.]]></description>
+    </attribute>
+  </tag>
+</taglib>

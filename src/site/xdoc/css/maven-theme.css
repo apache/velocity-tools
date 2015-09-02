@@ -1,0 +1,185 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.    
+ */
+
+body {
+  background-color: white;
+  padding: 0px 0px 10px 0px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 12pt;
+}
+code, pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 10pt;
+  line-height: normal;
+}
+a {
+  text-decoration: none;
+}
+
+a:link, a:visited,  a:active, a:hover {
+    color: #525D76;
+}
+#breadcrumbs a:link, #breadcrumbs a:visited, #breadcrumbs a:active, #breadcrumbs a:hover {
+    color: white;
+    text-decoration: none;
+}
+h1,h2 {
+  padding: 4px 4px 4px 6px;
+  border: none;
+  background-color: #525D76;
+  color: white;
+  font-size: 14pt;
+  font-weight: normal;
+}
+h3 {
+  padding: 4px 4px 4px 6px;
+  border: solid 1px #525D76;
+  background-color: white;
+  color: #525D76;
+  font-size: 12pt;
+  font-weight: bold;
+}
+h4 {
+  padding: 4px 4px 4px 6px;
+  border: 1px solid #bbb;
+  color: #900;
+  background-color: white;
+  font-weight: normal;
+  font-size: large;
+}
+h5 {
+  padding: 4px 4px 4px 6px;
+  color: #900;
+  font-size: medium;
+}
+p, table, ul, dl, div, span {
+  line-height: 1.3em;
+}
+tt {
+  font-family: Courier New, Courier, monospace;
+}
+#breadcrumbs {
+  font-family: Arial, Verdana, Helvetica, sans-serif;
+  border: none;
+  background-color: #525D76;
+  color: white;
+}
+#leftColumn {
+  border: 1px solid #999;
+  font-family: Arial, Verdana, Helvetica, sans-serif;
+  margin: 10px 0 0 5px;
+  background-color: white;
+}
+#leftColumn a {
+  text-decoration: none;
+}
+#leftColumn li {
+  font-family: Arial, Verdana, Helvetica, sans-serif;
+}
+
+img.poweredBy {
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+a.poweredBy {
+  padding: 0px;
+  margin: 0px;
+}
+
+#navcolumn {
+  padding: 8px 4px 10px 8px;
+}
+#navcolumn h5 {
+  padding: 8px 4px 4px 6px;
+  font-size: small;
+  border-bottom: 1px solid #aaaaaa;
+  color: #525D76;
+}
+
+table.bodyTable th {
+  background-color: #039acc;
+  color: #000000;
+  vertical-align: top;
+  text-align:left;
+  border:1px white solid;
+  padding: 2px; 
+}
+
+table.bodyTable tr.a {
+  background-color: #a0ddf0;
+  color: #000000;
+  vertical-align: top;
+  text-align:left;
+  border:1px white solid;
+  padding: 2px; 
+}
+
+table.bodyTable tr.b {
+  background-color: #88c5d8;
+  color: #000000;
+  vertical-align: top;
+  text-align:left;
+  border:1px white solid;
+  padding: 2px; 
+}
+
+table.bodyTable th, table.bodyTable td {
+  font-size: 10pt;
+}
+
+.source {
+  border: 1px solid #999;
+  background-color: #f8fff8;
+}
+
+dt.question {
+  color: #900;
+  background-color: #eee;
+}
+
+dl {
+  padding: 4px 4px 4px 6px;
+  border: 1px solid #aaa;
+  background-color: white;
+}
+dt {
+  color: #900;
+}
+#organizationLogo img, #projectLogo img, #projectLogo span{
+  margin: 8px;
+}
+#banner {
+  border-bottom: 1px solid white;
+}
+
+#bannerRight p {
+  float: right;
+  font-family: Arial, Verdana, Helvetica, sans-serif;
+  color: #525D76;
+  padding: 4px;
+  border: solid black 1px;
+  margin: 4px 4px;
+  background-color: #f8fff8;
+}
+
+#bannerLeft img, #bannerRight img {
+  padding: 4px 4px;
+}

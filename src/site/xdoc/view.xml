@@ -1,0 +1,219 @@
+<?xml version="1.0"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+
+    <properties>
+        <title>Overview</title>
+        <projectfile>xdocs/project.xml</projectfile>
+        <subprojectfile>xdocs/view.project.xml</subprojectfile>
+    </properties>
+
+    <body>
+
+
+    <section name="Overview">
+        <p>
+            VelocityView includes all of the <a href="generic.html">
+            GenericTools</a> and adds infrastructure and 
+            specialized tools for using Velocity in the view layer 
+            of web applications (Java EE projects). This includes 
+            the VelocityViewServlet or VelocityLayoutServlet for 
+            processing Velocity template requests and the 
+            VelocityViewTag for embedding Velocity in JSP.
+        </p>
+        <p>Key features:</p>
+        <ul>
+          <li><b><a href="view.servlet.html">VelocityViewServlet</a></b>
+              - standalone servlet that renders Velocity
+              templates. Invoked directly from web clients requests, or via servlet
+              forwarding similar to how JSP files are rendered by JSPServlet.</li>
+          <li>The HttpServletRequest, HttpSession, ServletContext,
+              and their attributes are automatically available in your templates.</li>
+          <li>Tools can also be made available to your templates, through a
+              <strong>tools</strong> <a href="config.html">configuration</a> file.</li>
+          <li>A number of useful, extendable tools for developing web applications are
+              already provided for your convenience.</li>
+          <li>Logging can be directed to the log infrastructure of the Web application.
+              (default is the logging facility provided by the Servlet API).</li>
+        </ul>
+    </section>
+
+    <section name="Default Configuration">
+        <p>
+            The default configuration provided for VelocityView is 
+            <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/tools.xml?view=markup">
+            here</a> and 
+            <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/tools.xml">
+            here</a>.
+        </p>
+    </section>
+
+    <section name="Dependencies">
+        <p>
+        The dependencies required for VelocityView can be found on our
+        <a href="dependencies.html#VelocityStruts">dependencies chart</a>.
+        </p>
+    </section>
+
+    <section name="VelocityView Object">
+        <p>
+        The <javadoc package="view" name="VelocityView"/>
+        object forms the core of the VelocityView infrastructure.  In particular,
+        it serves as the base class for the following:
+        </p>
+
+        <subsection name="VelocityViewServlet" href="view.servlet.html">
+            <p>
+            The 
+            <javadoc package="view" name="VelocityViewServlet"/>
+            class is a standalone servlet that renders Velocity
+            templates. It can be invoked directly from web client's 
+            requests, or via servlet forwarding similar to how JSP files
+            are rendered by JSPServlet.
+            </p>
+            <p>Detailed documentation is
+            <a href="view.servlet.html">here</a>.
+            </p>
+        </subsection>
+
+        <subsection name="VelocityLayoutServlet" href="view.layoutservlet.html">
+            <p>One derivative of the VelocityViewServlet is the
+            <a href="view.layoutservlet.html"><strong>VelocityLayoutServlet</strong></a>.
+            This servlet performs a simplified 'two-pass render' in order to apply a
+            shared, common layout to all of the web pages in an application.</p>
+
+            <p>The Struts &quot;template&quot; tag library does something similar,
+            but requires a separate file to define which 'layout' file to use and
+            which .jsp files to render into that layout. The VelocityLayoutServlet
+            takes a simpler approach. It first renders the primary template being
+            called (example: showDetails.vm) into a content holder variable
+            (ex. $screen_content). Next, the servlet loads a 'layout' file. It
+            uses the existing data, including any additional variables set or
+            changed by the first template, to render a the layout template.</p>
+
+            <p>The VelocityLayoutServlet also allows you to specify an 'error'
+            template to be displayed when an exception is thrown during the
+            processing of a requested template.  This allows you to provide
+            a customized error screen for a more user-friendly application.</p>
+
+            <p>Detailed documentation is
+            <a href="view.layoutservlet.html">here</a>.
+            </p>
+        </subsection>
+
+        <subsection name="VelocityViewTag" href="view.tag.html">
+            <p>
+            This is a JSP tag that allows you to use Velocity and VelocityTools
+            from within your JSP tags and files. This tag can both process
+            templates in separate files, VTL in the tag body, or combine the two.
+            </p>
+            <p>Detailed documentation is
+            <a href="view.tag.html">here</a>.
+            </p>
+        </subsection>
+    </section>
+
+    <section name="Tools">
+        <p>
+        These are in addition to those provided by
+        <a href="generic.html#Tools">GenericTools</a>
+        </p>
+        <ul>
+        <li>
+          <javadoc package="view" name="AbstractSearchTool"/>
+          - For doing "searching" and robust pagination of search
+          results. Requires you to create a subclass.
+        </li>
+        <li>
+          <javadoc package="view" name="BrowserTool"/>
+          - For identifying the browser and features thereof requesting
+          the template.
+        </li>
+        <li>
+          <javadoc package="view" name="CookieTool"/>
+          - For convenient cookie access and creation.
+        </li>
+        <li>
+          <javadoc package="view" name="ImportTool"/>
+          - For pulling down textual content from a URL.
+        </li>
+        <li>
+          <javadoc package="view" name="LinkTool"/>
+          - For easy building of URLs (both relative or absolute).
+        </li>
+        <li>
+          <javadoc package="view" name="PagerTool"/>
+          - For doing request-based pagination of items in an
+          arbitrary list.
+        </li>
+        <li>
+          <javadoc package="view" name="ParameterTool"/>
+          - For easy retrieval and parsing of ServletRequest parameters.
+        </li>
+        <li>
+          <javadoc package="view" name="ViewContextTool"/>
+          - For convenient access to ViewContext data and meta-data.
+        </li>
+        </ul>
+    </section>
+
+    <section name="Examples">
+        <p>A simple application example has been included to demonstrate the use
+        of the VelocityViewServlet with automatically loaded view tools.</p>
+
+        <p>To run the examples you need Tomcat 4+ or a compatible servlet runner.</p>
+
+        <p>The 'ant examples' target of the build process automatically generates
+        ready-to-deploy <b>simple.war</b> and <b>showcase.war</b>
+        archive files located in the examples subdirectory of the distribution. 
+        Deploy (i.e. copy) one or both of these war files to the webapps directory
+        of your servlet runner and restart.
+        Now point a web browser at the following urls:</p>
+
+        <p><b>http://&lt;your_server&gt;:&lt;port&gt;/simple/</b></p>
+        <p><b>http://&lt;your_server&gt;:&lt;port&gt;/showcase/</b></p>
+        
+        <p>You can also use the embedded servlet runner to start and stop the showcase webapp on localhost's 8081 port using the <b>start.showcase.webapp</b> and <b>stop.showcase.webapp</b> ant targets.</p>
+    </section>
+
+    <section name="Known Issues">
+        <p>
+          Since Tomcat 5.5 used commons-logging as a complete
+          logging facility and the Struts example directs commons-logging
+          output to the servlet log via LogChuteCommonsLog, you will
+          get an infinite loop if you try to run the Struts example on
+          Tomcat 5.5.  To fix this, upgrade to Tomcat 6.x or delete
+          the commons-logging.properties file from the Struts example's
+          classpath root.
+        </p>
+        <p>
+          You may, of course, experience the same thing if you are running
+          your web application on Tomcat 5.5 and decide to
+          use LogChuteCommonsLog for commons-logging and
+          stick with the ServletLogChute (the default) for Velocity(Tools)
+          logging. You will have to change one of these two settings or
+          else upgrade your servlet engine.
+        </p>
+    </section>
+    </body>
+
+</document>

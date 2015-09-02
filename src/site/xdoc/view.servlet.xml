@@ -1,0 +1,313 @@
+<?xml version="1.0"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+    <properties>
+        <title>VelocityViewServlet</title>
+        <projectfile>xdocs/project.xml</projectfile>
+        <subprojectfile>xdocs/view.project.xml</subprojectfile>
+    </properties>
+    <body>
+    <section name="Overview">
+        <p class="note">
+        This page is still unfinished.
+        Much of this needs to be moved or at least
+        copied to a VelocityView page, as it
+        applies to anything using a
+        <a href="javadoc/org/apache/velocity/tools/view/VelocityView.html">VelocityView</a>
+        instance under the covers (including the
+        <a href="view.tag.html">VelocityViewTag</a>).
+        <a href="index.html#Contribution">Help is welcome!</a>
+        </p>
+        <p>
+        <a href="javadoc/org/apache/velocity/tools/view/VelocityViewServlet.html">Javadoc is here</a>.
+        </p>
+        <p>
+        A typical application use-case for the VelocityViewServlet
+        is to provide the view rendering layer for
+        a servlet-based web application framework. The
+        <a href="struts.html">VelocityStruts</a> subproject
+        uses the approach to bring Velocity templates to the Struts 1
+        application framework.
+        </p>
+    </section>
+
+    <section name="Installation">
+        <p>The VelocityViewServlet needs to be installed into your servlet container
+        so it can handle all request for *.vm (velocity template) files. There are
+        only two additional configuration files, and they are shown in
+        detail below.</p>
+
+        <subsection name="Servlet Setup">
+            <p>
+            The servlet configuration (<strong>web.xml</strong>) must be
+            modified to include a reference to the VelocityViewServlet
+            (or subclass thereof) which will perform the rendering. All *.vm files are
+            mapped to this servlet which will populate the 'context' with
+            Request, Session, and Application scopes plus any additional tools
+            specified by your configuration (or provided as defaults). The servlet
+            will use this contextual information and the Velocity Engine to
+            render the template file.
+            </p>
+            <p>
+            <strong>Note:</strong> Additional functionality can be achieved
+            through subclassing the VelocityViewServlet, and will be discussed further in
+            the <a href="view.layoutservlet.html">VelocityLayoutServlet page</a>.
+            </p>
+            <p><b>web.xml</b></p>
+            <sourcecode>
+&lt;!-- Define Velocity template handler --&gt;
+&lt;servlet&gt;
+  &lt;servlet-name&gt;velocity&lt;/servlet-name&gt;
+  &lt;servlet-class&gt;
+    org.apache.velocity.tools.view.VelocityViewServlet
+  &lt;/servlet-class&gt;
+
+  &lt;!-- 
+    Unless you plan to put your tools.xml and velocity.properties
+    under different folders or give them different names, then these
+    two init-params are unnecessary.  The
+    VelocityViewServlet will automatically look for these files in
+    the following locations.
+  --&gt;
+  &lt;init-param&gt;
+    &lt;param-name&gt;org.apache.velocity.toolbox&lt;/param-name&gt;
+    &lt;param-value&gt;/WEB-INF/tools.xml&lt;/param-value&gt;
+  &lt;/init-param&gt;
+
+  &lt;init-param&gt;
+    &lt;param-name&gt;org.apache.velocity.properties&lt;/param-name&gt;
+    &lt;param-value&gt;/WEB-INF/velocity.properties&lt;/param-value&gt;
+  &lt;/init-param&gt;
+&lt;/servlet&gt;
+
+&lt;!-- Map *.vm files to Velocity --&gt;
+&lt;servlet-mapping&gt;
+  &lt;servlet-name&gt;velocity&lt;/servlet-name&gt;
+  &lt;url-pattern&gt;*.vm&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;
+            </sourcecode>
+        </subsection>
+
+        <subsection name="Velocity Configuration">
+            <p>
+            Velocity configuration is <strong>optional</strong>, and for
+            most applications the defaults will work fine. The
+            <strong>velocity.properties</strong> file contains settings that
+            affect logging, encoding, and macro settings.</p>
+            <p>The default configuration specifies the location of a 'global'
+            Velocimacro template. This file can contain macros which will be
+            made available to all templates.
+            </p>
+            <p>
+            The location of the configuration file may be specified in web.xml,
+            but it is recommended the file be placed inside the hidden WEB-INF
+            directory of the web application and named 'velocity.properties' which
+            is where the VelocityViewServlet will look for it in the absence of
+            any location specified in the web.xml.
+            An example configuration file is included with the distribution.
+            </p>
+            <p>
+            Please see the
+            <a href="http://velocity.apache.org/engine/devel/user-guide.html">Velocity User's Guide</a>
+            for more information on Velocity configuration.
+            </p>
+
+            <sourcecode>
+velocimacro.library = /WEB-INF/VM_global_library.vm
+velocimacro.permissions.allow.inline = true
+velocimacro.permissions.allow.inline.to.replace.global = false
+velocimacro.permissions.allow.inline.local.scope = false
+velocimacro.context.localscope = false
+            </sourcecode>
+        </subsection>
+
+        <subsection name="Toolbox Configuration">
+            <p>
+            The toolbox file (located at <strong>/WEB-INF/tools.xml</strong> by
+            convention), maps out the "tools" and data we want available for
+            our templates to use. It's easier than that sounds.
+            </p>
+            <p>
+            Think about asking our friend Jon to grab us a 'wrench' from a
+            real toolbox. Jon just needs to know which wrench we want (metric,
+            pipe, crescent etc,). He doesn't need to know what the wrench does
+            nor what we are planning to do with it.
+            </p>
+            <p>
+            The Velocity Toolbox works the same way, we must only specify
+            which tool we want, and then the Velocity engine takes
+            care of the rest by making any public method available to the
+            template. For example, from the definitions below, the template
+            could call <code>$wrench.size</code>.
+            </p>
+            <p><b>PipeWrench.java</b></p>
+            <sourcecode>
+public class PipeWrench {
+    public String getSize() {
+        return "Large Pipe Wrench!";
+    }
+}
+            </sourcecode>
+
+            <p><b>tools.xml</b></p>
+            <sourcecode>
+&lt;?xml version="1.0"?&gt;
+&lt;tools&gt;
+&lt;toolbox scope="application"&gt;
+ &lt;tool key="wrench" class="PipeWrench"/&gt;
+&lt;/toolbox&gt;
+&lt;/tools&gt;
+            </sourcecode>
+
+            <p class="subsubSection">Toolbox Scopes</p>
+
+            <p>
+            You may have noticed that toolbox support built into VelocityView
+            also provides support for specifying the scope of your toolbox with
+            regards to the servlet environment.
+            Toolboxes may be placed within the <i>request</i>,
+            <i>session</i>, or <i>application</i> scopes of your web app.</p>
+            <p>The scope that you set for your toolbox will determine the
+            lifecycle of the tools within it:
+            </p>
+            <ul>
+                <li>
+                <i>application</i> scoped tools will be instantiated only once when
+                first used by a template and then reused by all templates for each
+                subsequent request.  Due to this, it is <em>strongly</em> encouraged
+                that your application scoped tools be completely threadsafe.  The 
+                <a href="javadoc/org/apache/velocity/tools/generic/MathTool.html">MathTool</a>
+                (one of the <a href="generic.html">GenericTools</a>) is a good example
+                of tool meant to be application scoped.
+                </li>
+
+                <li>
+                <i>session</i> scoped tools are instantiated at most once
+                per unique session (if they are used by a template processed
+                for that session) and are then reused for every request
+                associated with that particular session.
+                </li>
+
+                <li>
+                <i>request</i> is the most common scope.
+                Tools with this scope are instantiated at most once per
+                servlet request fed to that VelocityView (if they are used by
+                a template processed during that request).
+                </li>
+            </ul>
+
+            <p class="subsubSection">Tool Path Restrictions</p>
+
+            <p>You can specify a restriction on the request URIs for which the tool
+            will be available in the context using the "restrictTo" attribute of
+            your tool configuration.
+            It can be an exact request path (matching one page) or end with the
+            <code>*</code> wildcard, meaning that incoming request paths need only
+            start with the provided value for the tool to be available.
+            For instance:</p>
+
+            <sourcecode>
+&lt;tool restrictTo="/catalog/*"
+      class="com.mycompany.tools.CatalogTool"/&gt;
+            </sourcecode>
+
+            <p>
+            You may have noticed that this example tool configuration doesn't
+            have a "key" attribute.  This is because VelocityTools 2 honors the
+            [Key]Tool naming convention.  So a tool with the simple name of
+            "CatalogTool" will automatically be given the key "catalog" unless
+            another key is specified in the tool configuration or using the
+            <a href="javadoc/org/apache/velocity/tools/config/DefaultKey.html">DefaultKey</a>
+            annotation on the class.
+            </p>
+
+            <p class="subsubSection">Tool Properties</p>
+            <p>
+            The toolbox support built into VelocityTools also provides
+            support for passing configuration properties to tools.
+            If a tool has a
+            <code>public void configure(java.util.Map params)</code> method,
+            then VelocityTools will pass that method a map of all properties
+            set on the tool configuration, the toolbox to which it belongs and
+            properties set for the whole configuration.
+            </p>
+            <p>
+            VelocityTools will also use Commmons-BeanUtils to set any or all
+            of those same properties directly on the tool if their keys and types
+            have a matching public set[Key](Type) method on that tool.
+            
+            </p>
+            <p>
+            These things happen immediately
+            after a tool instance is instantiated and before it is available to
+            your templates.  This gives much flexibility in designing and configuring
+            your tools.</p>
+            <p>
+            You can specify properties for your tools, toolboxes or all tools
+            either as &lt;property&gt; tags or as attributes:
+            </p>
+            <sourcecode>
+&lt;tools foo="true"&gt;
+&lt;toolbox scope="application" someProperty="whatever"&gt;
+    &lt;property key="bar"&gt;woogie&lt;/property&gt;
+    &lt;tool key="myTool" class="com.foo.tools.MyTool"&gt;
+        &lt;property name="my.parameter.name" value="my.parameter.value"/&gt;
+    &lt;/tool&gt;
+&lt;/toolbox&gt;
+&lt;/tools&gt;
+            </sourcecode>
+
+            <p class="subsubSection">Static Data</p>
+            <p>
+            In addition to specifiying arbitrary Java classes as <b>tools</b>
+            to be automatically available to your templates, the toolbox support
+            also includes the ability to specify arbitrary strings, booleans,
+            numbers, lists of those, and even BeanUtils-convertable types to be
+            automatically available in your templates.  The format
+            is as follows:
+            </p>
+            <sourcecode>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;tools&gt;
+    &lt;data type="number" key="version" value="1.1"/&gt;
+    &lt;data key="startdate" value="Mon Sep 17 10:08:03 PDT 2007" class="java.util.Date" 
+             converter="org.apache.commons.beanutils.locale.converters.DateLocaleConverter"/&gt;
+    &lt;data type="boolean" key="isSimple" value="true"/&gt;
+    &lt;data key="foo" value="this is foo."/&gt;
+    &lt;data key="bar"&gt;this is bar.&lt;/data&gt;
+    &lt;data type="list" key="dataKeys"
+             value="version,date,isSimple,foo,bar,dataKeys,switches"/&gt;
+    &lt;data type="list.boolean" key="switches" value="true,false,false,true"/&gt;
+&lt;/tools&gt;
+            </sourcecode>
+
+            <p>
+            As with your tools, your data will be exposed to your templates
+            under the specified key (e.g. $version, $startdate, $isSimple,
+            $foo, $bar, $dataKeys and $switches). Unlike
+            tools, data does not go in a toolbox and is not scoped (as it is
+            necessarily static).
+            </p>
+        </subsection>
+    </section>
+    </body>
+</document>

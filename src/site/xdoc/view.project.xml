@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<project name="VelocityView" href="index.html">
+
+  <breadcrumb href="view.html">VelocityView</breadcrumb>
+  <menu>
+    <group name="VelocityView" href="view.html">
+      <item name="VelocityViewServlet"      href="view.servlet.html"/>
+      <item name="VelocityLayoutServlet"    href="view.layoutservlet.html"/>
+      <item name="VelocityViewTag"          href="view.tag.html"/>
+      <item name="Examples"                 href="view.html#Examples"/>
+      <subGroup name="Tools" href="javadoc/org/apache/velocity/tools/view/package-summary.html">
+        <item name="AbstractSearchTool" href="javadoc/org/apache/velocity/tools/view/AbstractSearchTool.html"/>
+        <item name="BrowserTool"        href="javadoc/org/apache/velocity/tools/view/BrowserTool.html"/>
+        <item name="CookieTool"         href="javadoc/org/apache/velocity/tools/view/CookieTool.html"/>
+        <item name="ImportTool"         href="javadoc/org/apache/velocity/tools/view/ImportTool.html"/>
+        <item name="LinkTool"           href="javadoc/org/apache/velocity/tools/view/LinkTool.html"/>
+        <item name="PagerTool"          href="javadoc/org/apache/velocity/tools/view/PagerTool.html"/>
+        <item name="ParameterTool"      href="javadoc/org/apache/velocity/tools/view/ParameterTool.html"/>
+        <item name="ViewContextTool"    href="javadoc/org/apache/velocity/tools/view/ViewContextTool.html"/>
+        <item name="ViewRenderTool"     href="javadoc/org/apache/velocity/tools/view/ViewRenderTool.html"/>
+        <item name="ViewResourceTool"   href="javadoc/org/apache/velocity/tools/view/ViewResourceTool.html"/>
+      </subGroup>
+    </group>
+  </menu>
+</project>

@@ -1,0 +1,249 @@
+<?xml version="1.0"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+
+    <properties>
+        <title>Overview</title>
+        <projectfile>xdocs/project.xml</projectfile>
+        <subprojectfile>xdocs/struts.project.xml</subprojectfile>
+    </properties>
+
+    <body>
+
+    <section name="Overview">
+        <p>The VelocityStruts sub-project integrates Velocity with the
+        <a href="http://struts.apache.org/">Apache Struts</a>
+        web application framework and enables the use of Velocity templates
+        interchangeably with JSP pages for the view layer.</p>
+
+        <p>Various other
+        <a href="http://wiki.apache.org/velocity/PoweredByVelocity">web application frameworks</a>
+        offer built-in support for Velocity templates. This project
+        provides the minimal glue necessary to give Struts developers
+        an alternative to JSP. </p>
+
+        <p><img src="images/velstruts_diag1.png" border="0"/></p>
+        <p><strong>Diagram 1.</strong> Comparison of JSP and Velocity for
+        the view layer in a Struts application.</p>
+
+        <p>As we follow the typical Struts process flow in Diagram 1,
+        notice how there is relatively little change except for the addition
+        of Velocity. The velocity-struts.jar leverages a standalone Velocity
+        servlet to process template files (specifically, the jar file is
+        velocity-tools-x.x.jar) and uses some drop-in tools to provide
+        transparent access to Struts specific objects (ex. message resources,
+        form beans, errors, links). The action mapping file will simply contain
+        ActionForwards that send control to a Velocity-based View layer instead
+        of sending to a JSP. </p>
+
+        <p>Also notable is that Velocity and JSP are <strong>not</strong>
+        mutually exclusive. Both technologies can be used in the same
+        application without any problems. This allows developers the option
+        of trying Velocity without heavy modification to existing applications.</p>
+
+        <p>We're convinced that once you give Velocity a try, you'll really like it.</p>
+    </section>
+
+    <section name="Default Configuration">
+        <p>
+            VelocityStruts includes both the <a href="generic.html">
+            GenericTools</a> and <a href="view.html">VelocityView</a> and 
+            adds tools for use in Struts 1.x applications. These tools match 
+            the functions of the key Struts taglibs and provide access to 
+            Struts resources, messages, tiles, validation functions and more.
+        </p>
+        <p>
+            The default configuration provided for 
+            <a href="struts.html">VelocityStruts</a> is 
+            <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/tools.xml?view=markup">
+            here</a> and 
+            <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/view/tools.xml?view=markup">
+            here</a> and 
+            <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/struts/tools.xml?view=markup">
+            here</a>.
+        </p>
+    </section>
+
+    <section name="Dependencies">
+        <p>
+        The dependencies required for VelocityStruts can be found on our
+        <a href="dependencies.html#VelocityStruts">dependencies chart</a>.
+        </p>
+    </section>
+
+    <section name="Tools">
+        <p>
+        These are in addition to tools provided by
+        <a href="generic.html#Tools">GenericTools</a>
+        and
+        <a href="view.html#Tools">VelocityView</a>.
+        </p>
+        <ul>
+        <li>
+          <javadoc package="struts" name="ActionMessagesTool"/>
+          - For accessing/displaying Struts action messages.
+        </li>
+        <li>
+          <a href="javadoc/org/apache/velocity/tools/struts/ErrorsTool.java ">ErrorsTool</a>
+          - For accessing/displaying Struts error messages.
+        </li>
+        <li>
+          <javadoc package="struts" name="FormTool"/>
+          - For working with HTML forms in Struts apps.
+        </li>
+        <li>
+          <javadoc package="struts" name="MessageResourcesTool"/>
+          - Abstract view tool that provides access to Struts
+          message resources.
+        </li>
+        <li>
+          <javadoc package="struts" name="MessageTool"/>
+          - Provides methods to render Struts application resources
+          (for i18n and other textual content access).
+        </li>
+        <li>
+          <javadoc package="struts" name="SecureLinkTool"/>
+          - For using Struts SSL Extensions. It has the same
+          interface as
+          <javadoc package="struts" name="StrutsLinkTool"/>
+          and can function as a substitute if Struts 1.x
+          and SSL Ext are installed.
+        </li>
+        <li>
+          <javadoc package="struts" name="StrutsLinkTool"/>
+          - Subclass of 
+          <javadoc package="view" name="LinkTool"/>
+          for creating URI links in Struts by adding support
+          for Struts actions and forwards.
+        </li>
+        <li>
+          <javadoc package="struts" name="TilesTool"/>
+          - For using Struts-Tiles (not for Tiles 2!)
+          in Velocity.
+        </li>
+        <li>
+          <javadoc package="struts" name="ValidatorTool"/>
+          - Uses Struts-Validator to produce client side
+          javascript validation for your forms.
+        </li>
+        </ul>
+    </section>
+
+    <section name="Examples">
+        <p>A Struts application example has been included to demonstrate the use
+        of the VelocityViewServlet with the automatically loaded VelocityStruts tools.</p>
+
+        <p>To run the examples you need Tomcat 4+ or a compatible servlet runner.</p>
+
+        <p>The 'ant examples' target of the build process automatically generates
+        a ready-to-deploy <b>struts.war</b>
+        archive file located in the examples subdirectory of the distribution. 
+        Deploy (i.e. copy) one or both of these war files to the webapps directory
+        of your servlet runner and restart.
+        Now point a web browser at the following url:</p>
+
+        <p><b>http://&lt;your_server&gt;:&lt;port&gt;/struts/</b></p>
+
+        <p>VelocityStruts is also distributed with
+        <a href="view.html#Examples">a couple other examples</a> that use
+        VelocityTools without the Struts 1 tools.</p>
+    </section>
+
+    <section name="Benefits">
+        <p>There are many different reasons why people are choosing Velocity
+        technology for the view layer. Here are some:</p>
+        <p>
+        <ul>
+            <li>Velocity helps enforce a clean separation between the view
+            layer and the model/control layers. This leads to clean application
+            design and a clear separation of concerns between View Designers
+            and back-end Developers.</li>
+
+            <li><a href="http://velocity.apache.org/engine/devel/vtl-reference-guide.html">Velocity Template Language (VTL)</a>
+            has few directives and is simple and easy to learn. Most
+            people report being productive within a day.</li>
+
+            <li>Velocity is easy to extend with <i>Tools</i> which are simply
+            any class which has public methods. These are typically much cleaner
+            and easier to develop than JSP custom tag libraries.</li>
+
+            <li>Using the TilesTool it is easy
+            to mix Velocity and JSP tiles in the same page/layout. For those
+            using Tiles, this makes gradual migration between or integration of
+            the two view technologies trivially easy!</li>
+
+            <li>Velocity 'macros' are a powerful tool for the View Designer.
+            They enable the creation of reusable snippets of markup, often
+            eliminating what would have been a need to develop a custom tag
+            library or other server-side tool.</li>
+
+            <li>Velocity templates are <strong>not</strong> limited to HTML
+            and can be used to produce any type of text output including XML,
+            SQL, ASCII, PostScript, etc.</li>
+
+            <li>Velocity enables easy access to dynamic data
+            that Web Designers can understand.</li>
+
+            <li>Velocity being interpreted, enables a simple development cycle
+            where template errors can quickly be localized and debugged.</li>
+
+            <li>Velocity, which caches templates for speed, has been reported
+            to have performance comparable or better than JSP.</li>
+
+            <li>Velocity is <strong>supported</strong> by an active and helpful
+            community of users and developers.</li>
+        </ul>
+        </p>
+    </section>
+
+    <section name="Success Stories">
+        <p>Comments from folks who are using Struts and Velocity:</p>
+        <p>
+        <blockquote>
+          <p>&quot;<i>We've been using Struts/Velocity for some time now and we find it to be
+          an extremely well matched combination.  One of the main advantages of
+          Velocity is that the syntax is incredibly easy.  I can explain it to a
+          designer who has never seen it before and expect them to be useful
+          within an hour.</i>&quot; </p>
+          <p>&quot;<i>One of the nicest things it enforces is the separation of presentation
+          layer and business logic.  It removes the desire to 'fix' problems by
+          just putting a small change into the JSP via scriptlets.  It also makes
+          the code a <strong>lot</strong> more readable which also reduces the
+          development time.</i>&quot;</p>
+          <p>&quot;<i>Struts is a solid framework and Velocity makes it
+          even better.</i>&quot;</p>
+          <p>&quot;<i>I find that the VelocityTools for Struts works as well, or better, with
+          Struts than another other presentation technology, bar none. In fact,
+          most of the tools work just as well with any other framework you might
+          care to name.</i>&quot;
+          --<a href="http://marc.theaimsgroup.com/?l=velocity-user&amp;m=106520662105461&amp;w=25">Ted Husted</a>
+          (author of <a href="http://husted.com/struts/book.html">Struts in Action</a>)</p>
+        </blockquote>
+        </p>
+    </section>
+
+    <section name="License">
+        <p>This software is licensed under the
+        <a href="http://velocity.apache.org/engine/devel/license.html">Apache Software License 2.0</a></p>
+    </section>
+  </body>
+</document>
