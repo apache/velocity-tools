@@ -19,6 +19,13 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.servlet.ServletContext;
+import java.lang.reflect.InvocationTargetException;
+
+import org.slf4j.Logger;
+
 import org.apache.velocity.util.introspection.AbstractChainableUberspector;
 import org.apache.velocity.util.introspection.Info;
 import org.apache.velocity.util.introspection.Introspector;
@@ -27,12 +34,6 @@ import org.apache.velocity.util.introspection.VelPropertyGet;
 import org.apache.velocity.util.introspection.VelPropertySet;
 import org.apache.velocity.runtime.parser.node.AbstractExecutor;
 import org.apache.velocity.runtime.parser.node.SetExecutor;
-import org.apache.velocity.runtime.log.Log;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.servlet.ServletContext;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * <p>This custom uberspector allows getAttribute() and setAttribute() as standard
@@ -138,7 +139,7 @@ public class WebappUberspector extends AbstractChainableUberspector
          * @param clazz
          * @param property
          */
-        public GetAttributeExecutor(final Log log, final Introspector introspector,
+        public GetAttributeExecutor(final Logger log, final Introspector introspector,
                 final Class clazz, final String property)
         {
             this.log = log;
@@ -192,7 +193,7 @@ public class WebappUberspector extends AbstractChainableUberspector
          * @param arg
          * @param property
          */
-        public SetAttributeExecutor(final Log log, final Introspector introspector,
+        public SetAttributeExecutor(final Logger log, final Introspector introspector,
                 final Class clazz, final Object arg, final String property)
         {
             this.log = log;

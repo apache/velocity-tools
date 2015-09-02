@@ -22,7 +22,7 @@ package org.apache.velocity.tools.generic;
 import java.util.Map;
 import java.util.Locale;
 import java.util.Set;
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.Collection;
 
 import org.apache.velocity.tools.config.DefaultKey;
@@ -68,7 +68,10 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
      */
     public static final String READONLY_KEY = "readOnly";
 
-    public ValueParser() {}
+    public ValueParser()
+    {
+        source = new TreeMap<String,Object>();
+    }
 
     public ValueParser(Map<String,Object> source)
     {
@@ -528,11 +531,6 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
             if (entry.getKey().startsWith(subkey) &&
                 entry.getKey().length() > subkey.length())
             {
-                if(values == null)
-                {
-                    values = new HashMap<String,Object>();
-                }
-
                 values.put(entry.getKey().substring(subkey.length()),entry.getValue());
             }
         }

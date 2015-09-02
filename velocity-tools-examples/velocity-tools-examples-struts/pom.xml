@@ -3,11 +3,11 @@
   <parent>
     <artifactId>velocity-tools-examples</artifactId>
     <groupId>org.apache.velocity</groupId>
-    <version>2.1.0-SNAPSHOT</version>
+    <version>3.0-SNAPSHOT</version>
   </parent>
   <groupId>org.apache.velocity</groupId>
   <artifactId>velocity-tools-examples-struts</artifactId>
-  <version>2.1.0-SNAPSHOT</version>
+  <version>3.0-SNAPSHOT</version>
   <packaging>war</packaging>
   <name>Apache Velocity Tools Examples - Struts</name>
   <description>Webapp based on Velocity Tools - Struts support.</description>
@@ -24,12 +24,12 @@
   	<dependency>
   		<groupId>org.apache.velocity</groupId>
   		<artifactId>velocity-tools-struts</artifactId>
-  		<version>2.1.0-SNAPSHOT</version>
+  		<version>3.0-SNAPSHOT</version>
   	</dependency>
   	<dependency>
   		<groupId>org.apache.velocity</groupId>
   		<artifactId>velocity-tools-view-jsp</artifactId>
-  		<version>2.1.0-SNAPSHOT</version>
+  		<version>3.0-SNAPSHOT</version>
   		<scope>runtime</scope>
   	</dependency>
   </dependencies>

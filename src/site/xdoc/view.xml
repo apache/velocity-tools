@@ -194,26 +194,6 @@
         
         <p>You can also use the embedded servlet runner to start and stop the showcase webapp on localhost's 8081 port using the <b>start.showcase.webapp</b> and <b>stop.showcase.webapp</b> ant targets.</p>
     </section>
-
-    <section name="Known Issues">
-        <p>
-          Since Tomcat 5.5 used commons-logging as a complete
-          logging facility and the Struts example directs commons-logging
-          output to the servlet log via LogChuteCommonsLog, you will
-          get an infinite loop if you try to run the Struts example on
-          Tomcat 5.5.  To fix this, upgrade to Tomcat 6.x or delete
-          the commons-logging.properties file from the Struts example's
-          classpath root.
-        </p>
-        <p>
-          You may, of course, experience the same thing if you are running
-          your web application on Tomcat 5.5 and decide to
-          use LogChuteCommonsLog for commons-logging and
-          stick with the ServletLogChute (the default) for Velocity(Tools)
-          logging. You will have to change one of these two settings or
-          else upgrade your servlet engine.
-        </p>
-    </section>
     </body>
 
 </document>

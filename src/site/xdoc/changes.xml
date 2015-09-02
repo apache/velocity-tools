@@ -28,14 +28,14 @@
   <section name="VelocityTools Changes">
     <p>This document tracks the changes in VelocityTools between releases.</p>
 
-    <subsection name="2.1-SNAPSHOT">
-        <p>This section describes changes after the 2.0 release.</p>
+    <subsection name="3.0-SNAPSHOT">
+        <p>This section describes changes after the 2.x series.</p>
         <ul>
         <li>Switched engine dependency to 2.0 (cb)</li>
         <li>Reflect Velocity Engine dependency shading of commons-lang and commons-collections (cb)</li>
         <li>Removed deprecated class org.apache.velocity.tools.generic.log.LogSystemCommonsLog (cb)</li>
         <li>MathTool: fixed result type calculations and added bitwise operations (cb)</li>
-        <li>have session scoped tools use a static logger to fix J2EE containers session serialization (cb)</li>
+        <li>Switched log system facade to SLF4j (cb)</li>
         </ul>
     </subsection>
 

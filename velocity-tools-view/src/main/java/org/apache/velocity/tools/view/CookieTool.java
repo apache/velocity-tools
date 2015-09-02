@@ -24,7 +24,9 @@ import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.velocity.runtime.log.Log;
+
+import org.slf4j.Logger;
+
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
 import org.apache.velocity.tools.ConversionUtils;
@@ -58,7 +60,7 @@ public class CookieTool
 {
     protected HttpServletRequest request;
     protected HttpServletResponse response;
-    protected Log log;
+    protected Logger log;
     private List<Cookie> jar;
 
     // --------------------------------------- Setup Methods -------------
@@ -95,7 +97,7 @@ public class CookieTool
      * Sets the {@link Log} used for logging messages when Cookie
      * creation fails due to an invalid name.
      */
-    public void setLog(Log log)
+    public void setLog(Logger log)
     {
         this.log = log;
     }

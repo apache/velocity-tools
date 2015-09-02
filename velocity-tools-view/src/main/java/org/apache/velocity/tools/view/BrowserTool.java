@@ -24,8 +24,9 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import org.slf4j.Logger;
+
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.ConversionUtils;
 import org.apache.velocity.tools.generic.FormatConfig;
@@ -74,8 +75,8 @@ import org.apache.velocity.tools.config.InvalidScope;
 public class BrowserTool extends FormatConfig implements java.io.Serializable
 {
     private static final long serialVersionUID = 1734529350532353339L;
- 
-    protected static final Log LOG = LogFactory.getLog(BrowserTool.class);
+
+    protected Logger LOG;
 
     /* User-Agent header variables */
     private String userAgent = null;
@@ -186,6 +187,19 @@ public class BrowserTool extends FormatConfig implements java.io.Serializable
             setAcceptLanguage(null);
         }
     }
+
+    /**
+     * Set log.
+     */
+    public void setLog(Logger log)
+    {
+        if (log == null)
+        {
+            throw new NullPointerException("log should not be set to null");
+        }
+        this.LOG = log;
+    }
+
 
     /**
      * Sets the User-Agent string to be parsed for info.  If null, the string

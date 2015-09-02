@@ -64,12 +64,18 @@
               </td>
             </tr>
             <tr>
-              <td>commons-logging</td>
-              <td>1.1</td>
+              <td>slf4j-api</td>
+              <td>1.7.2+</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for Digester and
-                <a href="javadoc/org/apache/velocity/tools/generic/log/LogChuteCommonsLog.html">LogChuteCommonsLog</a></td>
+              <td>Required for Velocity Engine
+            </tr>
+            <tr>
+              <td>jcl-over-slf4j.jar</td>
+              <td>1.7.12</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for Digester</td>
             </tr>
             <tr>
               <td>dom4j</td>
@@ -80,15 +86,8 @@
                 <a href="javadoc/org/apache/velocity/tools/generic/XmlTool.html">XmlTool</a></td>
             </tr>
             <tr>
-              <td>oro</td>
-              <td>2.0+</td>
-              <td>No</td>
-              <td>No</td>
-              <td>A Velocity dependency (only used by certain EventHandlers)</td>
-            </tr>
-            <tr>
               <td>velocity</td>
-              <td>1.5</td>
+              <td>2.0+</td>
               <td>Yes</td>
               <td>Yes</td>
               <td>Required for core infrastructure,
@@ -133,12 +132,18 @@
               </td>
             </tr>
             <tr>
-              <td>commons-logging</td>
-              <td>1.1</td>
+              <td>slf4j-api</td>
+              <td>1.7.2+</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for Digester and
-                <a href="javadoc/org/apache/velocity/tools/generic/log/LogChuteCommonsLog.html">LogChuteCommonsLog</a></td>
+              <td>Required for Velocity Engine
+            </tr>
+            <tr>
+              <td>jcl-over-slf4j.jar</td>
+              <td>1.7.12</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for Digester</td>
             </tr>
             <tr>
               <td>dom4j</td>
@@ -147,13 +152,6 @@
               <td>No</td>
               <td>Required only for
                 <a href="javadoc/org/apache/velocity/tools/generic/XmlTool.html">XmlTool</a></td>
-            </tr>
-            <tr>
-              <td>oro</td>
-              <td>2.0+</td>
-              <td>No</td>
-              <td>No</td>
-              <td>A Velocity dependency (only used by certain EventHandlers)</td>
             </tr>
             <tr>
               <td>servletapi</td>
@@ -168,7 +166,7 @@
             </tr>
             <tr>
               <td>velocity</td>
-              <td>1.5</td>
+              <td>2.0+</td>
               <td>Yes</td>
               <td>Yes</td>
               <td>Required for core infrastructure,
@@ -224,11 +222,18 @@
               </td>
             </tr>
             <tr>
-              <td>commons-logging</td>
-              <td>1.1</td>
+              <td>slf4j-api</td>
+              <td>1.7.2+</td>
               <td>Yes</td>
               <td>Yes</td>
-              <td>Required for Struts, Digester, and LogChuteCommonsLog</td>
+              <td>Required for Velocity Engine
+            </tr>
+            <tr>
+              <td>jcl-over-slf4j.jar</td>
+              <td>1.7.12</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Required for Digester</td>
             </tr>
             <tr>
               <td>dom4j</td>
@@ -288,13 +293,6 @@
               </td>
             </tr>
             <tr>
-              <td>oro</td>
-              <td>2.0+</td>
-              <td>No</td>
-              <td>No</td>
-              <td>A Velocity dependency (only used by certain EventHandlers)</td>
-            </tr>
-            <tr>
               <td>servletapi</td>
               <td>2.3</td>
               <td>Yes</td>
@@ -309,7 +307,7 @@
             </tr>
             <tr>
               <td>velocity</td>
-              <td>1.5</td>
+              <td>2.0+</td>
               <td>Yes</td>
               <td>Yes</td>
               <td>Required for core infrastructure,

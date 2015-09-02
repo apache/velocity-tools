@@ -30,15 +30,16 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+
 import org.apache.velocity.Template;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.io.VelocityWriter;
 import org.apache.velocity.runtime.RuntimeConstants;
-import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.shaded.commons.collections.ExtendedProperties;
-import org.apache.velocity.tools.generic.log.LogChuteCommonsLog;
 import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.Toolbox;
@@ -330,10 +331,6 @@ public class VelocityView extends ViewToolManager
      */
     protected void init(JeeConfig config, final VelocityEngine velocity)
     {
-        // register this engine to be the default handler of log messages
-        // if the user points commons-logging to the LogSystemCommonsLog
-        LogChuteCommonsLog.setVelocityLog(getLog());
-
         // put the servlet context into Velocity's application attributes,
         // where the WebappResourceLoader can find them
         velocity.setApplicationAttribute(SERVLET_CONTEXT_KEY, this.servletContext);

@@ -19,7 +19,6 @@
 "http://www.w3.org/TR/html4/strict.dtd">
 
 #set( $stylesheet = '/layout/layout.css' )
-#set( $displayTagStylesheet = '/displaytag/css/displaytag.css' )
 #set( $css = $text.css )
 #parse( 'header.vm' )
 

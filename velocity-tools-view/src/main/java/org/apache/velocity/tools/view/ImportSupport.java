@@ -39,16 +39,12 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
+import org.slf4j.Logger;
 
 /**
  * <p>Provides methods to import arbitrary local or remote resources as strings.</p>
  * <p>Based on ImportSupport from the JSTL taglib by Shawn Bayern</p>
- *
- * <p>If you wish to take profit of your J2EE container session serialization,
- *    inheriting tools should always be in the request scope.</p>
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 2.0
@@ -62,14 +58,22 @@ public abstract class ImportSupport
     /** Default character encoding for response. */
     protected static final String DEFAULT_ENCODING = "ISO-8859-1";
 
-    protected static final Log LOG = LogFactory.getLog(ImportSupport.class);
-
+    protected Logger LOG;
     protected ServletContext application;
     protected HttpServletRequest request;
     protected HttpServletResponse response;
 
 
     // --------------------------------------- Setup Methods -------------
+
+    public void setLog(Logger log)
+    {
+        if (log == null)
+        {
+            throw new NullPointerException("log should not be set to null");
+        }
+        this.LOG = log;
+    }
 
     /**
      * Sets the current {@link HttpServletRequest}. This is required

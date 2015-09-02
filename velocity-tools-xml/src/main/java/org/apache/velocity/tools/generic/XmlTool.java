@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import org.dom4j.Attribute;
 import org.dom4j.Node;
 import org.dom4j.Element;
@@ -34,7 +35,8 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.io.XMLWriter;
 import org.dom4j.io.SAXReader;
-import org.apache.velocity.runtime.log.Log;
+import org.slf4j.Logger;
+
 import org.apache.velocity.tools.ConversionUtils;
 import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.config.DefaultKey;
@@ -78,7 +80,7 @@ public class XmlTool extends SafeConfig
 {
     public static final String FILE_KEY = "file";
 
-    protected Log LOG;
+    protected Logger LOG;
 
     private List<Node> nodes;
 
@@ -103,7 +105,7 @@ public class XmlTool extends SafeConfig
      */
     protected void configure(ValueParser parser)
     {
-        this.LOG = (Log)parser.getValue(ToolContext.LOG_KEY);
+        this.LOG = (Logger)parser.getValue(ToolContext.LOG_KEY);
 
         String file = parser.getString(FILE_KEY);
         if (file != null)
