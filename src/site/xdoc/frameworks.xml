@@ -1,0 +1,191 @@
+<?xml version="1.0"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+
+    <properties>
+        <title>Web Framework Integration</title>
+        <projectfile>xdocs/project.xml</projectfile>
+    </properties>
+
+    <body>
+    <section name="Web Framework Integration">
+        <p>
+            <ul>
+            <li><a href="#Introduction">Introduction</a></li>
+            <li>
+                <a href="#Integration_Via_VelocityView">VelocityView Integration</a>
+                <ul>
+                <li><a href="#Configuring">Configuration</a></li>
+                <li><a href="#Retrieving">Access</a></li>
+                <li><a href="#Sharing">Shared Instances</a></li>
+                <li><a href="#Using">Usage</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="Other_Ways_to_Integrate_VelocityTools">Other Ways to Integrate VelocityTools</a>
+                <ul>
+                <li><a href="#ToolboxFactory">ToolboxFactory</a></li>
+                <li><a href="#Standalone_Use">Standalone Use</a></li>
+                </ul>
+            </li>
+            </ul>
+        </p>
+    </section>
+    <section name="Overview">
+        <p>
+        VelocityTools is not meant to be a framework in itself,
+        but rather should ideally be integrated with other frameworks
+        for applications of much size.  The simplest means of integration
+        is to have your framework handle requests, placing contextual data
+        into the request, session or servlet context attributes where
+        templates and/or tools can find them, then forward those requests
+        to a VelocityViewServlet or VelocityLayoutServlet, letting those
+        servlets manage your VelocityView support for you and render
+        your templates into the response.  If, however,
+        your framework is one like Spring MVC and you either cannot or
+        do not wish to forward requests to one of the provided servlets,
+        then the instructions, tips and code below should make it easy
+        for you to integrate VelocityTools support into your framework
+        of choice.
+        </p>
+    </section>
+    <section name="Integration Via VelocityView">
+        <subsection name="Configuring">
+            <p>
+            <a href="javadoc/org/apache/velocity/tools/view/VelocityView.html">VelocityView</a>
+            supports the following configuration parameters as
+            &lt;init-param&gt;s in web.xml:
+            </p>
+            <dl>
+              <dt>org.apache.velocity.toolbox</dt>
+              <dd>Path and name of the toolbox configuration file. The path must be
+                relative to the web application root directory. If this parameter is
+                not found, the servlet will check for a toolbox file at
+                <code>/WEB-INF/tools.xml</code>.</dd>
+              <dt>org.apache.velocity.properties</dt>
+              <dd>Path and name of the Velocity configuration file. The path must be
+                relative to the web application root directory. If this parameter
+                is not present, Velocity will check for a properties file at
+                <code>/WEB-INF/velocity.properties</code>.
+                If no file is found there, then
+                Velocity is initialized with the settings in the classpath at
+                <code>org.apache.velocity.tools.view.velocity.properties</code>.
+              </dd>
+              <dt>org.apache.velocity.tools.deprecationSupportMode</dt>
+              <dd>Tells VelocityView whether or not it should
+                <ul>
+                    <li>support old tools that rely on init(Object) methods,</li>
+                    <li>look for and translate old toolbox.xml configurations, and</li>
+                    <li>use the deprecated ChainedContext class instead of ViewToolContext.</li>
+                </ul>
+                By default, this is true, so turn it to false if you want to fully
+                upgrade to the new systems.  Also, specific tools
+                may look for and respect the deprecationSupportMode
+                setting (e.g. ValueParser, ResourceTool) to provide old behavior
+                where it has otherwise changed.
+              </dd>
+              <dt>org.apache.velocity.tools.loadDefaults</dt>
+              <dd>Tells VelocityView whether or not it should include the default
+                  tools.xml configurations provided in the VelocityTools jar(s).
+                  This is true by default.
+              </dd>
+              <dt>org.apache.velocity.tools.cleanConfiguration</dt>
+              <dd>Tells VelocityView to test all the tool configurations
+                  and remove any invalid ones, rather than allow them to
+                  throw errors.  This is false by default.
+              </dd>
+              <dt>org.apache.velocity.tools.userCanOverwriteTools</dt>
+              <dd>Tells VelocityView to construct the context in such
+                  a way that any user-set variables with the same keys 
+                  as any of the configured tools are given primacy
+                  when resolving references.  This is true by default,
+                  unlike in Tools 1.x.
+              </dd>
+            </dl>
+            <p>
+            The VelocityView instance is typically the heart of any
+            VelocityTools-using application.  It encapsulates all necessary
+            VelocityEngine and ToolboxFactory configuration and provides
+            a simple API for processing templates or other VTL (e.g. VelocityViewTag
+            body content).
+            </p>
+        </subsection>
+        <subsection name="Retrieving and Sharing">
+            <p>You can, of course, simply create a VelocityView instance
+            for your framework to use, but if you are supporting multiple
+            ways of using Velocity (e.g. VelocityViewTag and separate templates)
+            or if you suspect your users might want access to the VelocityView
+            facilities, it is better to get your VelocityView instance using
+            the getVelocityView(...) methods of the
+            <code>org.apache.velocity.tools.view.ServletUtils</code> class.
+            These methods will automatically create an instance, store it for
+            you, return it, and then retrieve it again on subsequent calls to
+            any of those methods.  This allows the VelocityView (which is a
+            rather heavy object) to be shared across multiple
+            servlets, tags, and filters in the same application.  Of course,
+            if you do not wish to share your VelocityEngine configuration
+            (template cache, global macros) or Toolbox configuration(s),
+            then you should explicitly avoid using these methods and
+            construct and manage your own VelocityView instance.</p>
+            <p>
+            If you are using VelocityViewServlet, VelocityLayoutServlet,
+            and/or VelocityViewTag in the same application and do not want
+            them to share a VelocityView instance for some reason, you
+            can tell them to keep their VelocityViews private by setting
+            <code>org.apache.velocity.tools.shared.config</code> to
+            <code>false</code> in the <code>init-param</code>s of the
+            servlet config.
+            </p>
+        </subsection>
+        <subsection name="Using">
+            <todo>discuss basic functions, config options, etc</todo>
+        </subsection>
+    </section>
+    <section name="Other Ways to Integrate VelocityTools">
+        <subsection name="ToolboxFactory">
+            <todo>Discuss lifecycle, configuration, and use.<br/>
+            See <a href="http://velocity.markmail.org/search/?q=subject%3A%22upgrading%22#query:subject%3Aupgrading%20order%3Adate-forward+page:3+mid:pw56jxgsudhwwnnd+state:results">this
+            email thread</a> for more on this, including code samples.
+            </todo>
+        </subsection>
+        <subsection name="Standalone Use" href="standalone.html">
+            <p>
+            The so-called "standalone" methods of tool use
+            developed from a desire to
+            <a href="standalone.html#Just_Use_Them!">use tools directly</a>,
+            particularly the GenericTools which had no servlet
+            dependencies.  However, now many VelocityView tools
+            can also be used "standalone" with varying degrees
+            of effort and no need to create any VelocityView instances.
+            Most of the time, you just treat them like any other
+            POJO--create an instance, provide any need values/objects
+            and use it.
+            </p>
+            <p>
+            If you want a little more help with things, consider using a
+            <a href="standalone.html#ToolManager">ToolManager</a>.
+            </p>
+        </subsection>
+    </section>
+    </body>
+
+</document>

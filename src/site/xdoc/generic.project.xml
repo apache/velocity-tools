@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<project name="GenericTools" href="index.html">
+
+  <breadcrumb href="generic.html">GenericTools</breadcrumb>
+  <menu>
+    <group name="GenericTools" href="generic.html">
+        <item name="Overview"         href="generic.html"/>
+        <subGroup name="Tools" href="javadoc/org/apache/velocity/tools/generic/package-summary.html">
+          <item name="AlternatorTool"       href="javadoc/org/apache/velocity/tools/generic/AlternatorTool.html"/> />
+          <item name="ClassTool"            href="javadoc/org/apache/velocity/tools/generic/ClassTool.html"/>
+          <item name="ComparisonDateTool"   href="javadoc/org/apache/velocity/tools/generic/ComparisonDateTool.html"/>
+          <item name="ContextTool"          href="javadoc/org/apache/velocity/tools/generic/ContextTool.html"/>
+          <item name="ConversionTool"       href="javadoc/org/apache/velocity/tools/generic/ConversionTool.html"/>
+          <item name="DateTool"             href="javadoc/org/apache/velocity/tools/generic/DateTool.html"/>
+          <item name="DisplayTool"          href="javadoc/org/apache/velocity/tools/generic/DisplayTool.html"/>
+          <item name="EscapeTool"           href="javadoc/org/apache/velocity/tools/generic/EscapeTool.html"/>
+          <item name="FieldTool"            href="javadoc/org/apache/velocity/tools/generic/FieldTool.html"/>
+          <item name="LinkTool"             href="javadoc/org/apache/velocity/tools/generic/LinkTool.html"/>
+          <item name="ListTool"             href="javadoc/org/apache/velocity/tools/generic/ListTool.html"/>
+          <item name="LoopTool"             href="javadoc/org/apache/velocity/tools/generic/LoopTool.html"/> />
+          <item name="MathTool"             href="javadoc/org/apache/velocity/tools/generic/MathTool.html"/>
+          <item name="NumberTool"           href="javadoc/org/apache/velocity/tools/generic/NumberTool.html"/>
+          <item name="RenderTool"           href="javadoc/org/apache/velocity/tools/generic/RenderTool.html"/>
+          <item name="ResourceTool"         href="javadoc/org/apache/velocity/tools/generic/ResourceTool.html"/> />
+          <item name="SortTool"             href="javadoc/org/apache/velocity/tools/generic/SortTool.html"/>
+          <item name="ValueParser"          href="javadoc/org/apache/velocity/tools/generic/ValueParser.html"/>
+          <item name="XmlTool"              href="javadoc/org/apache/velocity/tools/generic/XmlTool.html"/>
+        </subGroup>
+    </group>
+  </menu>
+</project>

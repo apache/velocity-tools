@@ -1,0 +1,76 @@
+package org.apache.velocity.tools.test;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Map;
+
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.tagext.JspTag;
+
+import org.apache.velocity.context.InternalContextAdapter;
+import org.apache.velocity.exception.MethodInvocationException;
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.ResourceNotFoundException;
+import org.apache.velocity.runtime.directive.Directive;
+import org.apache.velocity.runtime.parser.node.ASTMap;
+import org.apache.velocity.runtime.parser.node.Node;
+import org.apache.velocity.tools.view.ViewContext;
+import org.apache.velocity.tools.view.jsp.taglib.jspimpl.JspUtils;
+import org.apache.velocity.tools.view.jsp.taglib.jspimpl.VelocityPageContext;
+
+public class MySimpleTagDirective extends Directive
+{
+
+    @Override
+    public String getName()
+    {
+        return "sample_mySimpleTag";
+    }
+
+    @Override
+    public int getType()
+    {
+        return BLOCK;
+    }
+
+    @Override
+    public boolean render(InternalContextAdapter context, Writer writer, Node node)
+            throws IOException, ResourceNotFoundException, ParseErrorException,
+            MethodInvocationException
+    {
+        ViewContext viewContext = (ViewContext) context
+                .getInternalUserContext();
+        ASTMap astMap = (ASTMap) node.jjtGetChild(0);
+        Map<String, Object> params = (Map<String, Object>) astMap
+                .value(context);
+        PageContext pageContext = new VelocityPageContext(context, writer,
+                viewContext);
+        org.apache.velocity.tools.plugin.taglib.example.MySimpleTag tag = new org.apache.velocity.tools.plugin.taglib.example.MySimpleTag();
+        JspTag oldParentTag = JspUtils.getLatestJspTag(context);
+        JspUtils.setLatestTag(context, tag);
+        try
+        {
+            tag.setPageContext(pageContext);
+            tag.setParent(oldParentTag);
+            Object obj;
+            obj = params.get("stringProperty");
+            if (obj != null) {
+                tag.setStringProperty((java.lang.String) obj);
+            }
+            obj = params.get("intProperty");
+            if (obj != null) {
+                tag.setIntProperty((java.lang.Integer) obj);
+            }
+            JspUtils.executeSimpleTag(context, node, pageContext, tag);
+        } catch (JspException e)
+        {
+            throw new IOException("Cannot execute mySimpleTag tag", e);
+        } finally
+        {
+            JspUtils.setLatestTag(context, oldParentTag);
+        }
+        return true;
+    }
+
+}

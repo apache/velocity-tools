@@ -1,0 +1,536 @@
+<?xml version="1.0"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+
+    <properties>
+        <title>User Guide</title>
+        <author email="sidler@apache.org">Gabriel Sidler</author>
+        <projectfile>xdocs/project.xml</projectfile>
+        <subprojectfile>xdocs/struts.project.xml</subprojectfile>
+    </properties>
+
+    <body>
+
+    <section name="VelocityStruts User Guide">
+
+        <p>This guide explains how to setup and configure a VelocityViewServlet
+        which can render the views of a Struts-based web application. The servlet
+        will create a VelocityEngine to render *.vm (velocity template) files using
+        contextual information provided by a Struts Controller action.</p>
+
+        <p>A set of built-in tools have been created which provide the same
+        functions as the Struts JSP Tag libraries for Tiles, Validator, forms, links,
+        messages, and errors.</p>
+
+        <p>The distribution contains examples which demonstrate the use of the
+        built-in Struts tools. The examples are packaged into a web archive file
+        (velstruts.war). </p>
+
+        <p>
+        This document is <strong>not</strong> a general introduction to the Velocity
+        template language and its syntax. If you are new to Velocity, please consult
+        <a href="http://velocity.apache.org/engine/devel/getting-started.html">Getting
+        Started with Velocity</a>.
+        </p>
+
+        <p><strong>Table of Contents</strong></p>
+        <ol>
+          <li><a href="#Background">Background</a></li>
+          <li><a href="#Model_2_Architecture">Model 2 Architecture</a></li>
+          <li><a href="#Installation">Installation</a></li>
+          <li><a href="#Rendering_the_View">Rendering the View</a>
+            <ol>
+                <li><a href="#Velocity_Template_Language">Velocity Template Language</a></li>
+                <li><a href="#Exposing_Data">Exposing Data</a></li>
+                <li><a href="#Access_to_Servlet_Resources">Access to Servlet Resources</a></li>
+                <li><a href="#Access_to_Struts_Framework_Resources">Access to Struts Framework Resources</a></li>
+            </ol>
+          </li>
+        </ol>
+
+        <br clear="all"/>
+    </section>
+
+    <section name="Background">
+        <p>The documentation will explain the steps necessary to
+        integrate <a href="http://velocity.apache.org/">Velocity</a>
+        with <a href="http://struts.apache.org/1.x/index.html">Struts 1.x</a> applications.
+        It is expected that the reader already has a basic understanding of those
+        projects.</p>
+
+        <p>To start working with Velocity and Struts we recommend reading the
+        user guide, installing and browsing the example applications and reference
+        documentation, then installing the VelocityStruts view layer into your own
+        application.</p>
+
+        <p>If this documentation does not answer all your questions, please post
+        questions to the
+        <a href="http://velocity.apache.org/contact.html">Velocity-User mailing list</a>
+        and we'll be happy to help! (And we'll update this doc!)</p>
+
+        <br clear="all"/>
+    </section>
+
+    <section name="Model 2 Architecture">
+         <p>In the JSP world, the terms <i>Model 1</i> architectures and
+         <i>Model 2</i> architectures were coined to refer to particular ways of
+         designing and building web applications. It is important that you understand
+         the fundamental difference between these two architectural approaches. JSP
+         can be used in applications designed after Model 1 architectures as well as
+         Model 2 architectures. Velocity cannot. It has been designed very consciouly
+         as a view technology for web application architectures based on Model 2.</p>
+
+         <p><strong>Model 1 Architectures</strong></p>
+         <p>In a Model 1 architecture, the JSP page alone is responsible for
+         processing the incoming request and replying back to the client. Using
+         MVC speak, the controller and the view  are implemented within the same
+         JSP page. Model 1 architecture are suitable only for very simple application
+         scenarios. In medium size to large projects, the lack of a separation between
+         business logic and view oftentimes leads to difficulties in separating the
+         web designer's works from the server developer's work and causes project
+         management headaches.</p>
+
+         <p><strong>Model 2 Architectures</strong></p>
+         <p>In a Model 2 architecture, the control component, including business logic,
+         data access and request handling, are strictly separated from the view component.
+         The view does not contain any processing logic. It is simply responsible for
+         displaying the data that resulted from processing the request. This may be a
+         static page or more often a dynamic page. Such an approach typically facilitates
+         are clear delineation of the roles and responsibilities of the developers and
+         the web designers. The more complex an application, the greater the benefits of
+         using a Model 2 architecture will be.</p>
+
+         <p>The paper
+         <a href="http://www.javaworld.com/javaworld/jw-12-1999/jw-12-ssj-jspmvc.html">Understanding JavaServer Pages Model 2 Architecture</a>
+         provides a more in-depth discussion of Model 1 and Model 2 architectures.</p>
+
+         <p><strong>What does this mean?</strong></p>
+         <p>The Struts framework can support both architectures, but all the
+         facilities it provides are really aimed at making the construction of
+         Model 2 applications easy. Velocity on the other hand cannot be used
+         to build Model 1 architectures. It lacks the libraries to support such
+         a design. I am emphasizing this here because I want to make sure that
+         you have all the relevant facts before you decide on Velocity for your
+         projects. This is especially important for people considering to port
+         existing application built on the Model 1 approach or a mixed Model 1
+         / Model 2 approach. The good news is, that today for any serious application
+         Model 2 is state of the art and Velocity will support you very well on
+         that route.</p>
+
+         <br clear="all"/>
+    </section>
+
+    <section name="Installation">
+
+        <p>This section explains the basic setup to configure the VelocityViewServlet
+        to render the web application views in Struts applications.</p>
+
+        <p>Setup is almost identical to the standard
+        <a href="view.html#Installation">VelocityViewServlet installation</a>,
+        please review that for more details. The extended VelocityLayoutServlet, or any
+        custom extension, can also be used with Struts. (That particular servlet adds
+        the ability to reuse shared html layout across multiple pages.)</p>
+
+        <p>Steps by step:</p>
+        <ol>
+          <li><strong>velocity-tools-x.x.jar</strong> which contains the VelocityStruts
+          and VelocityView classes must be added to the WEB-INF/lib directory.</li>
+          <li>VelocityViewServlet needs to be installed into the servlet container
+          (web.xml) so it can handle all request for *.vm files.</li>
+          <li>velocity.properties configuration file must be added </li>
+          <li>toolbox.xml file must be added, and mappings must be setup for the
+          standard tools which expose the Struts objects to the template. (sample
+          toolbox.xml file below)</li>
+        </ol>
+        <p>And that's all there is to it!</p>
+        <p>At this point, it should be possible to change a Struts ActionMapping
+        to 'forward' to a *.vm file placed in the webapp root directory and have
+        it be displayed!</p>
+
+             <p><b>toolbox.xml</b></p>
+<sourcecode>
+&lt;?xml version="1.0"?&gt;
+
+&lt;toolbox&gt;
+  &lt;tool&gt;
+     &lt;key&gt;link&lt;/key&gt;
+     &lt;scope&gt;request&lt;/scope&gt;
+     &lt;class&gt;org.apache.velocity.tools.struts.StrutsLinkTool&lt;/class&gt;
+  &lt;/tool&gt;
+  &lt;tool&gt;
+     &lt;key&gt;msg&lt;/key&gt;
+     &lt;scope&gt;request&lt;/scope&gt;
+     &lt;class&gt;org.apache.velocity.tools.struts.MessageTool&lt;/class&gt;
+  &lt;/tool&gt;
+  &lt;tool&gt;
+     &lt;key&gt;errors&lt;/key&gt;
+     &lt;scope&gt;request&lt;/scope&gt;
+     &lt;class&gt;org.apache.velocity.tools.struts.ErrorsTool&lt;/class&gt;
+  &lt;/tool&gt;
+  &lt;tool&gt;
+     &lt;key&gt;form&lt;/key&gt;
+     &lt;scope&gt;request&lt;/scope&gt;
+     &lt;class&gt;org.apache.velocity.tools.struts.FormTool&lt;/class&gt;
+  &lt;/tool&gt;
+  &lt;tool&gt;
+     &lt;key&gt;tiles&lt;/key&gt;
+     &lt;scope&gt;request&lt;/scope&gt;
+     &lt;class&gt;org.apache.velocity.tools.struts.TilesTool&lt;/class&gt;
+  &lt;/tool&gt;
+  &lt;tool&gt;
+     &lt;key&gt;validator&lt;/key&gt;
+     &lt;scope&gt;request&lt;/scope&gt;
+     &lt;class&gt;org.apache.velocity.tools.struts.ValidatorTool&lt;/class&gt;
+  &lt;/tool&gt;
+&lt;/toolbox&gt;
+</sourcecode>
+
+        <br clear="all"/>
+    </section>
+
+    <section name="Rendering the View">
+
+        <p>This section introduces you to the key concepts of rendering
+        the view with Velocity in a Struts application.</p>
+
+        <subsection name="Velocity Template Language">
+
+            <p>Velocity is a template engine implemented in Java. Velocity
+            templates typically are HTML pages with embedded scripts (although
+            Velocity has been used for many other application scenarios). Scripts
+            are written in the Velocity Template Language (VTL). Following is a
+            simple example of a HTML view with embedded VTL statements:</p>
+
+<sourcecode>
+&lt;HTML&gt;
+&lt;BODY&gt;
+    &lt;h2>Order Confirmation&lt;/h2&gt;
+
+    &lt;h3&gt;Delivery Adress:&lt;/h3&gt;&lt;br&gt;
+    Name: $customer.name&lt;br&gt;
+    Street: $customer.street&lt;br&gt;
+    City: $customer.zip $customer.city
+
+    &lt;h3&gt;Ordered Items&lt;/h3&gt;&lt;br&gt;
+    &lt;table&gt;
+    #foreach( $item in $order.items )
+        &lt;tr&gt;
+            &lt;td&gt;$item.quantity&lt;/td&gt;
+            &lt;td&gt;$item.description&lt;/td&gt;
+        &lt;/tr&gt;
+    #end
+    &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</sourcecode>
+
+            <p>When processed this will produce output similar to the following.</p>
+
+<sourcecode>
+&lt;HTML&gt;
+&lt;BODY&gt;
+    &lt;h2>Order Confirmation&lt;/h2&gt;
+
+    &lt;h3&gt;Delivery Address:&lt;/h3&gt;&lt;br&gt;
+    Name: Peter Pan&lt;br&gt;
+    Street: Crain St. 10&lt;br&gt;
+    City: 60201 Evanston IL
+
+    &lt;h3&gt;Ordered Items&lt;/h3&gt;&lt;br&gt;
+    &lt;table&gt;
+        &lt;tr&gt;
+            &lt;td&gt;1&lt;/td&gt;
+            &lt;td&gt;Hair Dryer, Philips, 1000W, white&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;1&lt;/td&gt;
+            &lt;td&gt;Kitchen Mixer, Betty Bossy, 240W, black&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</sourcecode>
+
+            <p>VTL has been designed from the ground up as a simple template
+            language for view designers. With less than ten supported directives
+            it is easy to learn. In fact, most people are up and productive within
+            less than a day.</p>
+
+            <p>Velocity does not allow Java scriptlets, which helps enforce a
+            strict MVC separation.</p>
+
+            <p>Please consult the following two documents for an in-depth coverage
+            of VTL:</p>
+
+            <ul>
+              <li><a href="http://velocity.apache.org/engine/devel/user-guide.html">Velocity User's Guide</a></li>
+              <li><a href="http://velocity.apache.org/engine/devel/vtl-reference-guide.html">VTL Reference Guide</a></li>
+            </ul>
+
+            <br clear="all"/>
+
+        </subsection>
+
+        <subsection name="Exposing Data">
+
+            <p>The main purpose of Velocity in a web application is typically to
+            merge HTML templates with dynamic application data to generate
+            dynamic views. An essential aspect of Velocity is therefore the
+            mechanism that allows the application controller (in MVC speak) to
+            expose data to the template.</p>
+
+            <p>It is important to understand the relationship between a
+            Struts-based application and the Velocity template servlet. Both
+            are simply Java Servlets which perform a specific task.</p>
+
+            <p> Requests to the Struts application are processed, application data
+            is manipulated and eventually all data and control is forwarded to a
+            View layer.</p>
+
+            <p>The Velocity servlet in this case is responsible for merging the
+            provided application data with a template to produce HTML output.</p>
+
+            <p>We should note that the Velocity servlet is not exclusively tied
+            to the Struts application. It can serve requests from web clients
+            directly or any other servlet application as well. Technically, the
+            Struts application hands over a request to Velocity through the
+            <code>forward</code> method of <code>javax.servlet.RequestDispatcher</code>.
+            </p>
+
+            <p>Application data is passed from the Struts servlet to the Velocity
+            servlet as attributes of either the servlet request, session or context.</p>
+
+            <p>Therefore a developer simply needs to set an attribute to pass data
+            to the View layer and make that data available for the template. For example:
+            </p>
+            <p>
+            <sourcecode>request.setAttribute("Customer", CustomerObj);</sourcecode>
+            Whatever public methods are available on the CustomerObj instance will be
+            made available to the template designer. Assuming there is a public
+            getName() method, they may for example write: $Customer.name or
+            $Customer.getName().
+            </p>
+
+            <p>There is a heirarchy to the objects exposed to the template designer.
+            For instance, if you have set an attribute "foo" in both the session and
+            the request,</p>
+<sourcecode>request.setAttribute("foo", "request foo");
+session.setAttribute("foo", "session foo");</sourcecode>
+            <p>then the request attribute will take priority, and using </p>
+            <sourcecode>$foo</sourcecode>
+            <p>in the template will give you</p>
+<sourcecode>request foo</sourcecode>
+            <p>Priority is given in the following order:
+            <ol>
+              <li>Tools specified in the toolbox.xml (e.g. $link, $tiles, etc.)</li>
+              <li>The servlet classes (e.g. $request, $response, $session, $application)</li>
+              <li>References set locally within the template</li>
+              <li>Request attributes</li>
+              <li>Session attributes</li>
+              <li>Servlet context (application) attributes</li>
+            </ol>
+            </p>
+            <p>This heirarchy allows the developer to reserve control of key references
+            (for tools and servlet resources) from the template designer and allows for
+            values to be set at various servlet scopes in a manner similar to working
+            with JSP and Struts.</p>
+
+            <br clear="all"/>
+        </subsection>
+
+        <subsection name="Access to Servlet Resources">
+
+            <p>VelocityStruts automatically populates the context with the following
+            objects of the Servlet API on each template processing request:</p>
+
+            <table>
+              <tr>
+                <th>Context Key</th>
+                <th>Class</th>
+                <th>Remarks</th>
+              </tr>
+              <tr>
+                <td>$request</td>
+                <td>javax.servlet.http.HttpServletRequest</td>
+                <td>the current servlet request</td>
+              </tr>
+              <tr>
+                <td>$session</td>
+                <td>javax.servlet.http.HttpSession</td>
+                <td>the current session, if one exists</td>
+              </tr>
+              <tr>
+                <td>$application</td>
+                <td>javax.servlet.ServletContext</td>
+                <td>the servlet context</td>
+              </tr>
+              <tr>
+                <td>$response</td>
+                <td>javax.servlet.http.HttpServletResponse</td>
+                <td>the current servlet response</td>
+              </tr>
+            </table>
+
+            <br clear="all"/>
+
+            <p>The following examples illustrates how servlet resources are
+            accessed from within Velocity template. The example renders
+            the list of HTTP header fields of the current servlet request.
+            In the same way, any public method of the above listed objects can
+            be called from within templates:</p>
+
+<sourcecode>#foreach( $header in $request.HeaderNames )
+  &lt;b&gt;$header:&lt;/b&gt; $request.getHeader($header)&lt;br&gt;
+#end</sourcecode>
+
+            <p>The resulting output is something like this:</p>
+
+<sourcecode><b>Referer:</b> http://localhost:8080/struts/doc/examples.html
+<b>Connection:</b> Keep-Alive
+<b>User-Agent:</b> Mozilla/4.79 [en] (Windows NT 5.0; U)
+<b>Pragma:</b> no-cache
+<b>Host:</b> localhost:8080
+<b>Accept:</b> image/gif, image/jpeg, image/pjpeg, image/png, */*
+<b>Accept-Encoding:</b> gzip
+<b>Accept-Language:</b> en
+<b>Accept-Charset:</b> iso-8859-1,*,utf-8
+<b>Cookie:</b> JSESSIONID=aaaecXd7bnLPAr
+</sourcecode>
+
+            <br clear="all"/>
+
+        </subsection>
+
+        <subsection name="Access to Struts Framework Resources">
+
+            <p>The Struts framework provides resources that
+            are useful to template designers. These include logical names for
+            physical resources, internationalized messages, error handling,
+            form handling, etc. The interesting question is now how template
+            designers can gain access these framework resources. In the JSP world, a set
+            of custom tag libraries provide template
+            designers access to the Struts framework resources. In the Velocity
+            world, the equivalent of the JSP custom tag libraries are <b>view
+            tools</b>. View tools are a very simple concept. They are Java objects
+            with public methods that are put into the Velocity context. Tools are
+            accessed by key and allows template designers to call on their public methods.</p>
+
+            <p>A set of seven view tools is included with VelocityStruts
+            that provide template designers access to Struts framework resources.
+            These seven view tools essentially achieve the integration between
+            Struts and Velocity and they can be considered the core of this
+            project.</p>
+
+            <table>
+              <tr>
+                <th>Context Key</th>
+                <th>Class</th>
+                <th>Remarks</th>
+              </tr>
+              <tr>
+                <td>$text</td>
+                <td><a href="MessageTool.html">MessageTool</a></td>
+                <td>Provides access to the Struts application resources for internationalized text.</td>
+              </tr>
+              <tr>
+                <td>$errors</td>
+                <td><a href="ErrorsTool.html">ErrorsTool</a></td>
+                <td>Provides methods to check for and output Struts error messages.</td>
+              </tr>
+              <tr>
+                <td>$messages</td>
+                <td><a href="ActionMessagesTool.html">ActionMessagesTool</a></td>
+                <td>Provides methods to work with Struts action messages.</td>
+              </tr>
+              <tr>
+                <td>$link</td>
+                <td><a href="StrutsLinkTool.html">StrutsLinkTool</a></td>
+                <td>Provides methods to work with URIs.</td>
+              </tr>
+              <tr>
+                <td>$form</td>
+                <td><a href="FormTool.html">FormTool</a></td>
+                <td>Provides miscellaneous methods to work with forms and form
+                beans in the context of Struts applications.</td>
+              </tr>
+              <tr>
+                <td>$tiles</td>
+                <td><a href="TilesTool.html">TilesTool</a></td>
+                <td>Provides miscellaneous methods to work with Tiles in the
+                context of Struts applications.</td>
+              </tr>
+              <tr>
+                <td>$validator</td>
+                <td><a href="ValidatorTool.html">ValidatorTool</a></td>
+                <td>Provides methods to dynamically generate javascript validation
+                in the context of Struts applications.</td>
+              </tr>
+              <tr>
+                <td colspan="3">Note: The shown keys are the recommended values.
+                They can be changed in the configuration.</td>
+              </tr>
+            </table>
+
+            <p>The following example illustrates some of the features of the MessageTool
+            for working with internationalized messages. For the example we assume that
+            the Struts message resources contain the following two key=value pairs:</p>
+
+<sourcecode>
+title=Struts Example Application
+test=This string has 4 replacement parameters: {1}, {2}, {3}, {4}
+foo.bar=whatever
+</sourcecode>
+
+<p>Then, the following script...</p>
+
+<sourcecode>
+$text.title
+$text.get('test', ['bear', 'dog', 'cat'])
+$text.exists('tutle')
+$text.foo.bar
+</sourcecode>
+
+<p>..will produce this output:</p>
+
+<sourcecode>
+Struts Example Application
+This string has 4 replacement parameters: bear, dog, cat, {4}
+false
+whatever
+</sourcecode>
+
+            <p>Please see the <a href="StrutsTools.html">Tool Reference Documentation</a>
+            for more details about the view tools. Furthermore, the Velocity/Struts
+            <a href="index.html#Download">example application</a> comes with several
+            working examples that show how these tools are used.</p>
+
+            <br clear="all"/>
+
+        </subsection>
+
+        <br clear="all"/>
+
+    </section>
+
+ </body>
+</document>
+

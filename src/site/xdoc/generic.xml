@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+
+    <properties>
+        <title>Overview</title>
+        <projectfile>xdocs/project.xml</projectfile>
+        <subprojectfile>xdocs/generic.project.xml</subprojectfile>
+    </properties>
+
+    <body>
+
+    <section name="Overview">
+        <p>
+            GenericTools is the set of classes that provide basic 
+            infrastructure for using tools in standard Java SE Velocity 
+            projects, as well as a set of tools for use in generic Velocity 
+            templates. These tools have no Java EE dependencies and are often 
+            safe to use as "singletons".  Some of them are not thread-safe to 
+            allow both a no-arg constructor and configurability, but the 
+            state-changing methods are declared protected with the exception 
+            of configure(Map) which is--by default--rendered useless after 
+            being used just once.  If you require strict thread-safety, 
+            be cautious in using any configurable tools and consider
+            <a href="http://wiki.apache.org/velocity/BuildingSecureWebApplications">restricting
+            the abilities of template authors</a> to prevent circumvention
+            of the lockdown placed on configuration methods.
+        </p>
+    </section>
+
+    <section name="Default Configuration">
+        <p>
+            The default configuration provided for GenericTools is 
+            <a href="http://svn.apache.org/viewvc/velocity/tools/trunk/src/main/java/org/apache/velocity/tools/generic/tools.xml?view=markup">
+            here</a>.  It includes all of the tools listed
+            <a href="generic.html#Tools">below</a>.
+        </p>
+    </section>
+
+    <section name="Dependencies">
+        <p>
+        The dependencies required for GenericTools vary somewhat depending on which
+        tools you use, whether you will rely on core tool management infrastructure,
+        and if so, how you choose to configure your toolbox.  More details can be found
+        on the
+        <a href="dependencies.html#GenericTools">dependencies chart</a>.
+        </p>
+    </section>
+    <section name="Tools">
+        <ul>
+        <li><javadoc package="generic" name="AlternatorTool"/>
+            - For creating <javadoc package="generic" name="Alternator"/>s
+            to easily alternate over a set of values.</li>
+        <li><javadoc package="generic" name="ClassTool"/>
+            - For simplifying reflective lookup of information about
+            Classes and their fields, methods and constructors.</li>
+        <li><javadoc package="generic" name="ContextTool"/>
+             - For convenient access to Context data and meta-data.</li>
+        <li><javadoc package="generic" name="ConversionTool"/>
+            - For converting String values to richer object types.</li>
+        <li><javadoc package="generic" name="DateTool"/>
+            &amp;
+            <javadoc package="generic" name="ComparisonDateTool"/>
+            - For manipulating, formatting, and comparing dates.</li>
+        <li><javadoc package="generic" name="DisplayTool"/>
+            - For controlling display of references (e.g. truncating values,
+            "pretty printing" lists, and displaying alternates when a reference is null).</li>
+        <li><javadoc package="generic" name="EscapeTool"/>
+            - For common escaping needs in Velocity templates (e.g. escaping
+            html, xml, javascript etc.)</li>
+        <li><javadoc package="generic" name="FieldTool"/>
+            - For (easy) access to static fields in a class, such as string
+            constants.</li>
+        <li><javadoc package="generic" name="LoopTool"/>
+            - A convenience tool to use with #foreach loops. It wraps a list
+            with a custom iterator to provide greater control, allowing loops
+            to end early, skip ahead and more.</li>
+        <li><javadoc package="generic" name="LinkTool"/>
+            - For creating and manipulating URIs and URLs. The API for this tool is
+            designed to closely resemble that of the VelocityView tool of the same name.</li>
+        <li><javadoc package="generic" name="ListTool"/>
+            - For working with arrays and lists, treats both transparently
+            the same.</li>
+        <li><javadoc package="generic" name="MathTool"/>
+            - For performing math functions.</li>
+        <li><javadoc package="generic" name="NumberTool"/>
+            - For formatting and converting numbers.</li>
+        <li><javadoc package="generic" name="RenderTool"/>
+            - To evaluate and render arbitrary strings of VTL, including
+            recursive rendering.</li>
+        <li><javadoc package="generic" name="ResourceTool"/>
+            - For simplified access to ResourceBundles for
+            internationalization or other dynamic content needs.</li>
+        <li><javadoc package="generic" name="SortTool"/>
+            - Used to sort collections (or arrays, iterators, etc) on
+            any arbitary set of properties exposed by the objects contained
+            within the collection.</li>
+        <li><javadoc package="generic" name="XmlTool"/>
+            - For reading/navigating XML files.  This uses dom4j under the
+            covers and provides complete XPath support.</li>
+        </ul>
+    </section>
+
+    </body>
+
+</document>

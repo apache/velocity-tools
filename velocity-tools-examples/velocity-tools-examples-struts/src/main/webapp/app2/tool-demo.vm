@@ -1,0 +1,275 @@
+## Licensed to the Apache Software Foundation (ASF) under one
+## or more contributor license agreements.  See the NOTICE file
+## distributed with this work for additional information
+## regarding copyright ownership.  The ASF licenses this file
+## to you under the Apache License, Version 2.0 (the
+## "License"); you may not use this file except in compliance
+## with the License.  You may obtain a copy of the License at
+##
+##   http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing,
+## software distributed under the License is distributed on an
+## "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+## KIND, either express or implied.  See the License for the
+## specific language governing permissions and limitations
+## under the License.
+
+<html>
+    <head>
+	    <title>Struts App2: Struts View Tools Demo</title>
+	    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	    <base href="$link.baseRef">
+    </head>
+
+    <body>
+        <h2>Struts App2: Struts View Tools Demo</h2>
+        <p>A demonstration of the Velocity view tools provided for Struts support.
+        Where available, the Velocity shorthand notation to method calls is shown
+        as well.</p>
+
+
+        <h3>MessageTool</h3>
+        <table border="1" cellspacing="0" cellpadding="4">
+            <tr>
+                <td>\$text.title<br>
+                    \$text.title</td>
+                <td>$text.title</td>
+            </tr>
+            <tr>
+                <td>\$text.test.insert('bear','dog','cat')</td>
+                <td>$text.test.insert('bear','dog','cat')</td>
+            </tr>
+            <tr>
+                <td>\$text.tutle.exists</td>
+                <td>$text.tutle.exists</td>
+            </tr>
+            <tr>
+        </table>
+
+
+        <h3>ErrorsTool</h3>
+        <table border="1" cellspacing="0" cellpadding="4">
+            <tr>
+                <td>\$errors.exist()</td>
+                <td>$errors.exist()</td>
+            </tr>
+            <tr>
+                <td>\$errors.exist('language')</td>
+                <td>$errors.exist('language')</td>
+            </tr>
+            <tr>
+                <td>\$errors.getSize()<br>
+                    \$errors.size</td>
+                <td>$errors.getSize()</td>
+            </tr>
+            <tr>
+                <td>\$errors.getSize('language')</td>
+                <td>$errors.getSize('language')</td>
+            </tr>
+            <tr>
+                <td>\$errors.getAll()<br>
+                    \$errors.all</td>
+                <td>[This is a String representation of the ArrayList that is returned]<br>
+                    $errors.getAll()</td>
+            </tr>
+            <tr>
+                <td>\$errors.get('language')<br>
+                    \$errors.language</td>
+                <td>[This is a String representation of the ArrayList that is returned]<br>
+                    $errors.language</td>
+            </tr>
+            <tr>
+                <td>\$errors.getMsgs()<br>
+                    \$errors.msgs</td>
+                <td>$errors.msgs</td>
+            </tr>
+            <tr>
+                <td>\$errors.getMsgs('language')</td>
+                <td>$errors.getMsgs('language')</td>
+            </tr>
+            <tr>
+                <td>A Velocity macro to render all error messages:<br>
+<pre><code>&#35;macro (errorMarkup)
+  &#35;if (&#36;errors.exist() )
+    &lt;ul&gt;
+    &#35;foreach (&#36;e in &#36;errors.all )
+      &#36;e
+    &#35;end
+    &lt;/ul&gt;
+  &#35;end
+&#35;end</code></pre>
+                </td>
+                <td>
+                    #errorMarkup()
+                </td>
+            </tr>
+            <tr>
+                <td>A Velocity macro to render error messages specific<br>
+                    to a property:<br>
+<pre><code>&#35;macro (errorMarkup &#36;property)
+  &#35;if (&#36;errors.exist(&#36;property))
+    &lt;ul&gt;
+    &#35;foreach (&#36;er in &#36;errors.get(&#36;property))
+      &#36;er
+    &#35;end
+    &lt;/ul&gt;
+  &#35;end
+&#35;end</code></pre>
+                </td>
+                <td>
+                    #errorMarkupForProperty('language')
+                </td>
+            </tr>
+
+        </table>
+
+
+        <h3>FormTool</h3>
+        <table border="1" cellspacing="0" cellpadding="4">
+            <tr>
+                <td>\$form.getBean()<br>
+                    \$form.bean</td>
+                <td>$form.getBean()</td>
+            </tr>
+            <tr>
+                <td>\$form.getCancelName()<br>
+                    \$form.cancelName</td>
+                <td>$form.getCancelName()</td>
+            </tr>
+            <tr>
+                <td>\$form.getTokenName()<br>
+                    \$form.tokenName</td>
+                <td>$form.getTokenName()</td>
+            </tr>
+            <tr>
+                <td>\$form.getToken()<br>
+                    \$form.token</td>
+                <td>$form.getToken()</td>
+            </tr>
+        </table>
+
+
+        <h3>StrutsLinkTool</h3>
+        <table border="1" cellspacing="0" cellpadding="4">
+            <tr>
+                <td>\$link.uri('template/login.vm')</td>
+                <td>$link.uri('template/login.vm')</td>
+            </tr>
+            <tr>
+                <td>\$link.action.demo</td>
+                <td>$link.action.demo &nbsp;</td>
+            </tr>
+            <tr>
+                <td>\$link.forward.src</td>
+                <td>$link.forward.src &nbsp;</td>
+            </tr>
+            <tr>
+                <td>\$link.path('index.html').param('key1', 'val 1')</td>
+                <td>$link.path('index.html').param('key1', 'val 1')</td>
+            </tr>
+            <tr>
+                <td>\$link.relative('examples/index.html')</td>
+                <td>$link.relative('examples/index.html')</td>
+            </tr>
+            <tr>
+                <td>\$link.absolute('index.html').param('key1', 'val 1')</td>
+                <td>$link.absolute('index.html').param('key1', 'val 1')</td>
+            </tr>
+            <tr>
+                <td>\$link.path('/index.html').param('key1', 'val 1').getQuery()<br>
+                    \$link.path('/index.html').param('key1', 'val 1').query</td>
+                <td>$link.path('/index.html').param('key1', 'val 1').query</td>
+            </tr>
+            <tr>
+                <td>\$link.getContextURL()<br>
+                    \$link.contextURL</td>
+                <td>$link.getContextURL()</td>
+            </tr>
+            <tr>
+                <td>\$link.getContextPath()<br>
+                    \$link.contextPath</td>
+                <td>$link.getContextPath()</td>
+            </tr>
+            <tr>
+                <td>\$link.getBaseRef()<br>
+                    \$link.baseRef</td>
+                <td>$link.getBaseRef()</td>
+            </tr>
+            <tr>
+                <td>\$link.uri('https://foo.com/index.vm').toString()</td>
+                <td>$link.uri('https://foo.com/index.vm').toString()</td>
+            </tr>
+        </table>
+
+
+        <h3>ActionMessagesTool</h3>
+        <table border="1" cellspacing="0" cellpadding="4">
+            <tr>
+                <td>\$messages.exist()</td>
+                <td>$messages.exist()</td>
+            </tr>
+            <tr>
+                <td>\$messages.exist('foobar')</td>
+                <td>$messages.exist('foobar')</td>
+            </tr>
+            <tr>
+                <td>\$messages.getSize()<br>
+                    \$messages.size</td>
+                <td>$messages.getSize()</td>
+            </tr>
+            <tr>
+                <td>\$messages.getSize('foobar')</td>
+                <td>$messages.getSize('foobar')</td>
+            </tr>
+            <tr>
+                <td>\$messages.getAll()<br>
+                    \$messages.all</td>
+                <td>[This is a String representation of the ArrayList that is returned]<br>
+                    $messages.getAll()</td>
+            </tr>
+            <tr>
+                <td>\$messages.get('foobar')<br>
+                    \$messages.foobar</td>
+                <td>[This is a String representation of the ArrayList that is returned]<br>
+                    $messages.get('foobar')</td>
+            </tr>
+            <tr>
+                <td>A Velocity macro to render all actiontext messages:<br>
+<pre><code>&#35;macro (messageMarkup)
+  &#35;if (&#36;messages.exist() )
+    &lt;ul&gt;
+    &#35;foreach (&#36;m in &#36;messages.all )
+      &#36;m
+    &#35;end
+    &lt;/ul&gt;
+  &#35;end
+&#35;end</code></pre>
+                </td>
+                <td>
+                    #messageMarkup()
+                </td>
+            </tr>
+            <tr>
+                <td>A Velocity macro to render actiontext messages specific<br>
+                    to a property:<br>
+<pre><code>&#35;macro (messageMarkup &#36;property)
+  &#35;if (&#36;messages.exist(&#36;property))
+    &lt;ul&gt;
+    &#35;foreach (&#36;m in &#36;messages.get(&#36;property))
+      &#36;m
+    &#35;end
+    &lt;/ul&gt;
+  &#35;end
+&#35;end</code></pre>
+                </td>
+                <td>
+                    #messageMarkupForProperty('foobar')
+                </td>
+            </tr>
+        </table>
+
+
+
+    </body>
+</html>

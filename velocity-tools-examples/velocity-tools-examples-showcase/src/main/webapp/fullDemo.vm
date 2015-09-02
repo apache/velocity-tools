@@ -1,0 +1,64 @@
+## Licensed to the Apache Software Foundation (ASF) under one
+## or more contributor license agreements.  See the NOTICE file
+## distributed with this work for additional information
+## regarding copyright ownership.  The ASF licenses this file
+## to you under the Apache License, Version 2.0 (the
+## "License"); you may not use this file except in compliance
+## with the License.  You may obtain a copy of the License at
+##
+##   http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing,
+## software distributed under the License is distributed on an
+## "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+## KIND, either express or implied.  See the License for the
+## specific language governing permissions and limitations
+## under the License.
+
+## make sure we have access to demo resources
+#if( !$demo )
+  #set( $demo = $text.demo )
+#end
+
+## look for a full demo in the params
+#set( $fullDemo = $params.fullDemo )
+#if( !$fullDemo )
+  ## see if one was set in the parent template
+  #if( $toolDemo )
+    #set( $fullDemo = $toolDemo )
+  #else
+    ## ok, try looking for one in the resources
+    #set( $fullDemo = $text.get("${toolname}.fullDemo") )
+    #if( !$fullDemo.exists )
+      ## give up and hide the full demo
+      #set( $fullDemo = false )
+    #end
+  #end
+#end
+
+#if( $fullDemo )
+  #set( $dims = $display.measure($fullDemo) )
+  <div align="center">
+    <a name="fullDemo"><h3>$demo.mainExampleHeader</h3></a>
+    <form method="post" action="$link.self.anchor('fullDemo')">
+      <textarea name="fullDemo" rows="$dims.height" cols="$dims.width">$!fullDemo</textarea>
+      <br>
+      <input type="submit" value="$demo.try">
+      ## maintain params for all the other demos
+      #foreach( $param in $params.all.keySet() )
+        #if( $param != 'fullDemo' )
+          #foreach( $value in $params.getStrings($param) )
+            <input type="hidden" name="$param" value="$esc.html($value)">
+          #end
+        #end
+      #end
+    </form>
+    ## evaluate and display results if they hit submit
+    #if( $params.fullDemo )
+      $demo.mainResultsIntro:
+      <pre>
+        $render.eval($params.fullDemo)
+      </pre>
+    #end
+  </div>
+#end

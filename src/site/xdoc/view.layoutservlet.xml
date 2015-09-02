@@ -1,0 +1,245 @@
+<?xml version="1.0"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+
+    <properties>
+        <title>VelocityViewServlet</title>
+        <projectfile>xdocs/project.xml</projectfile>
+        <subprojectfile>xdocs/view.project.xml</subprojectfile>
+    </properties>
+
+    <body>
+
+    <section name="VelocityLayoutServlet (VLS) Overview">
+        <p>
+        This is an extension to the basic VelocityViewServlet.  It provides
+        a simple layout control and customizable error screens for Velocity
+        Tools based projects.  VelocityTools is distributed with an example
+        app demonstrating the use of this servlet.
+        </p>
+    </section>
+
+    <section name="Installation">
+        <p>
+        Since this class is an extension of the VelocityViewServlet (VVS),
+        to use it simply change the servlet-class value of the web.xml entry
+        to the following class:</p>
+
+        <p>
+        <a href="javadoc/org/apache/velocity/tools/view/servlet/VelocityLayoutServlet.html">org.apache.velocity.tools.view.servlet.VelocityLayoutServlet</a>
+        </p>
+
+        <subsection name="Configuration Settings" >
+          <p>Three settings can be added to velocity.properties to control
+          the VLS, or the following default values will be used:</p>
+
+<sourcecode># Filepath for error template,
+#  relative to web application root directory
+tools.view.servlet.error.template = Error.vm
+
+# Directory for layout templates,
+#  relative to web application root directory
+tools.view.servlet.layout.directory = layout/
+
+# Filepath of the default layout template
+#  relative to the layout directory
+#  NOT relative to the root directory of the webapp!
+tools.view.servlet.layout.default.template =  Default.vm</sourcecode>
+
+        </subsection>
+
+    </section>
+
+    <section name="Layouts">
+        <p>
+        Now, in your layout templates, the only thing you really need is the
+        screen content reference.  So an acceptable layout template could be:</p>
+        <p>
+<sourcecode>
+$screen_content
+</sourcecode>
+        </p>
+        <p>
+        ...but that would make this whole thing an idiotic waste of time.
+        At the least, you'll probably want to do something along these lines:
+        </p>
+<sourcecode>&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;$!page_title&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  $screen_content
+&lt;/body&gt;
+&lt;/html&gt;
+</sourcecode>
+        <p>
+        This saves you the trouble of doing the basic &lt;html&gt;,&lt;head&gt;, and &lt;body&gt;
+        tags in every single screen.  That's the point of layouts: to save effort
+        and eliminate redundancy.  Note that this still lets the inner screen
+        control the title of the page.  This works because the layout template
+        is blessed by the VLS with access to the same context as the screen *after*
+        the screen is done with it. Just do a #set( $page_title = "Hello" ) in the
+        screen.
+        </p>
+        <br clear="all" />
+    </section>
+
+    <section name="Alternative Layouts">
+        <p>VLS provides two ways to specify an alternate
+        template for a requested page:</p>
+
+        <p><b>1. Specify the layout in the request parameters</b></p>
+        <p>
+          Just add the query string "layout=MyOtherLayout.vm" to any request params
+          and the VLS will find it and render your screen within that layout instead
+          of the default layout.  It don't matter how you get the layout param into
+          the query data, only that it's there.  If you're using the struts tools, the
+          most common will likely be:
+        </p>
+        <p>
+          &lt;a href="$link.setRelative('MyScreen.vm').addQueryData('layout','MyOtherLayout.vm')"&gt;
+        </p>
+        <p>
+          but form post data will work just as well.
+        </p>
+
+        <p><b>2. Specify the layout in the requested screen.</b></p>
+        <p>
+          In the requested screen, put a line like this:
+          <br clear="all" />
+          #set( $layout = "MyOtherLayout.vm" )
+        </p>
+        <p>
+          This will direct the VLS to use "MyOtherLayout.vm" instead of
+          "Default.vm". <i>Setting the layout in this fashion will
+          override any layout set by the request parameters.</i>
+        </p>
+        <br clear="all" />
+    </section>
+
+    <section name="'Navigations', 'Tiles', and How">
+        <p>Those of you who are (or were) Turbine or Struts users will probably want to
+        do more than just set the layout and screen content.  You want to include
+        arbitrary "tiles" or "navigations", right?  Well, thanks to Velocity's built-in
+        <code>#parse</code> directive, this is easy.</p>
+
+        <p>First, create your "tile" as a separate template file like:</p>
+
+<sourcecode>&lt;div id="footer"&gt;I made this!&lt;/div&gt;</sourcecode>
+
+        <p>For creativity's sake, we'll pretend this code is in a file named "Footer.vm"
+        that is located in the root of my webapp like my other non-layout templates.</p>
+
+<sourcecode>
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;$!page_title&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+$screen_content
+
+#parse('Footer.vm')
+
+&lt;/body&gt;
+&lt;/html&gt;
+</sourcecode>
+
+        <p>Easy, eh?</p>
+
+        <p>Now, what if you have a lot of different "footer" files and you want your screen
+        to decide which one will be used?  No problem!  Do something like this:</p>
+
+<sourcecode>
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;$!page_title&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+$screen_content
+
+#parse( $screen_footer )
+
+&lt;/body&gt;
+&lt;/html&gt;
+</sourcecode>
+
+        <p>and in your screen, just do
+        <code>#set( $screen_footer = 'FooFooter.vm' ).</code></p>
+
+        <p>Remember, your #parsed footer template will have access to the same
+        velocity context as your layout, which gets the screen's context
+        once the screen is done with it.  This lets you set variables for
+        the layout and footer to use from your screens.</p>
+        <br clear="all" />
+    </section>
+
+    <section name="Error Screen">
+      <p>Ok, the idea here is pretty simple.  If an uncaught exception or error is thrown
+      at some point during the processing of your screen and layout, the error() method
+      of the VLS is called.  This overrides the default error() method of the VelocityViewServlet
+      to render a template instead of hardcoded html.
+      </p>
+
+      <p>This error screen will be rendered within a layout under the same rules as any other
+      screen, and will have the following values placed in its context to help you debug
+      the error:
+      </p>
+
+      <br clear="all" />
+
+      <table>
+        <tr>
+          <th>Key available to Template</th>
+          <th>Value</th>
+        </tr>
+        <tr>
+          <td>$error_cause</td>
+          <td>java.lang.Throwable that was thrown</td>
+        </tr>
+        <tr>
+          <td>$stack_trace</td>
+          <td>captured output of $error_cause.printStackTrace()</td>
+        </tr>
+      </table>
+
+      <p>In the event that a MethodInvocationException is behind the calling of error(),
+      the root cause is extracted from it and dealt with as described above.  But, since
+      template reference behavior is partly at fault here, the VLS will also add the
+      MethodInvocationException itself to the context as $invocation_exception.  This
+      allows you to discover the reference and method call that triggered the root cause.
+      To get those, do something like this in your error template:
+      </p>
+<sourcecode>
+#if( $invocation_exception )
+    oh joy! it's a MethodInvocationException!
+
+    Message: $invocation_exception.message
+    Reference name: $invocation_exception.referenceName
+    Method name: $invocation_exception.methodName
+#end</sourcecode>
+      <br clear="all" />
+    </section>
+
+  </body>
+</document>

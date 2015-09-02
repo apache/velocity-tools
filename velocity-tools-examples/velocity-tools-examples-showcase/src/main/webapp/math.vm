@@ -1,0 +1,83 @@
+## Licensed to the Apache Software Foundation (ASF) under one
+## or more contributor license agreements.  See the NOTICE file
+## distributed with this work for additional information
+## regarding copyright ownership.  The ASF licenses this file
+## to you under the Apache License, Version 2.0 (the
+## "License"); you may not use this file except in compliance
+## with the License.  You may obtain a copy of the License at
+##
+##   http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing,
+## software distributed under the License is distributed on an
+## "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+## KIND, either express or implied.  See the License for the
+## specific language governing permissions and limitations
+## under the License.
+#title( 'MathTool' )
+<p>
+#set( $demo = $text.demo )
+$demo.thisPage.insert("#doclink( 'MathTool' true )").
+</p>
+
+#demoTableStart()
+
+#set( $desc = 'Returns the sum of the numbers or <code>null</code> if they are invalid.' )
+#demo2( 'math' 'add' 3 $desc)
+
+#set( $desc = 'Returns the difference of the numbers or <code>null</code> if they are invalid.' )
+#demo2( 'math' 'sub' 3 $desc)
+
+#set( $desc = 'Returns the product of the numbers or <code>null</code> if they are invalid.' )
+#demo2( 'math' 'mul' 3 $desc)
+
+#set( $desc = 'Returns the quotient of the numbers or <code>null</code> if they are invalid.' )
+#demo2( 'math' 'div' 3 $desc)
+
+#set( $desc = 'Returns the first number raised to the power of the second or <code>null</code> if they are invalid.' )
+#demo2( 'math' 'pow' 3 $desc)
+
+#set( $desc = 'Returns the result of performing integer division on the operands or <code>null</code> if they are invalid.' )
+#demo2( 'math' 'idiv' 3 $desc)
+
+#set( $desc = 'Returns the result of performing integer modulus on the operands or <code>null</code> if they are invalid.' )
+#demo2( 'math' 'mod' 3 $desc)
+
+#set( $desc = 'Returns the largest of the numbers or <code>null</code> if they are invalid.' )
+#demo2( 'math' 'max' 3 $desc)
+
+#set( $desc = 'Returns the smallest of the numbers or <code>null</code> if they are invalid.' )
+#demo2( 'math' 'min' 3 $desc)
+
+#set( $desc = 'Returns the absolute value of the number or <code>null</code> if it is invalid.' )
+#demo1( 'math' 'abs' 3 $desc)
+
+#set( $desc = 'Returns the smallest integer that is not less than the given number or <code>null</code> if it is invalid.' )
+#demo1( 'math' 'ceil' 3 $desc)
+
+#set( $desc = 'Returns the integer portion of the given number or <code>null</code> if it is invalid.' )
+#demo1( 'math' 'floor' 3 $desc)
+
+#set( $desc = 'Returns the given number rounded to the nearest whole Integer or <code>null</code> if it is invalid.' )
+#demo1( 'math' 'round' 3 $desc)
+
+#set( $desc = "Rounds a number to the specified number of decimal places. This is particulary useful for simple display formatting. If you want to round an number to the nearest integer, it is better to use ${esc.d}math.round(), as that will return an Integer rather than a Double." )
+#demo2( 'math' 'roundTo' 2 $desc )
+
+#set( $desc = 'Returns a pseudo-random Double greater than or equal to 0.0 and less than 1.0' )
+#demo( 'math' 'random' $desc )
+
+#set( $desc = 'This returns a random Number within the specified range.  The returned value will be greater than or equal to the first number and less than the second number.  If both arguments are whole numbers then the returned number will also be, otherwise a Double will be returned.' )
+#demo2( 'math' 'random' 3 $desc )
+
+#set( $desc = 'Converts an object with a numeric value into an Integer. Valid formats are Number or a string representation of a number.' )
+#demo1( 'math' 'toInteger' 3 $desc )
+
+#set( $desc = 'Converts an object with a numeric value into a Double. Valid formats are Number or a string representation of a number.' )
+#demo1( 'math' 'toDouble' 3 $desc )
+
+#set( $desc = 'Converts an object with a numeric value into a Number. Valid formats are Number or a string representation of a number.' )
+#demo1( 'math' 'toNumber' 3 $desc )
+
+#demoCustom( 'math' )
+</table>

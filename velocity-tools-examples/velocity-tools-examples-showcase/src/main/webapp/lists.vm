@@ -1,0 +1,85 @@
+## Licensed to the Apache Software Foundation (ASF) under one
+## or more contributor license agreements.  See the NOTICE file
+## distributed with this work for additional information
+## regarding copyright ownership.  The ASF licenses this file
+## to you under the Apache License, Version 2.0 (the
+## "License"); you may not use this file except in compliance
+## with the License.  You may obtain a copy of the License at
+##
+##   http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing,
+## software distributed under the License is distributed on an
+## "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+## KIND, either express or implied.  See the License for the
+## specific language governing permissions and limitations
+## under the License.
+#title( 'ListTool' )
+<p>
+#set( $demo = $text.demo )
+$demo.thisPage.insert("#doclink( 'ListTool' true )").
+Once Velocity 1.6 is released, this tool will be obsolete since
+Velocity 1.6 now allows all List methods to be called directly on arrays
+within templates.
+</p>
+
+#demoTableStart()
+
+## set quote character to empty string so values are not treated as strings
+#set( $quote = '' )
+
+#set( $desc = 'Checks if a List/array contains a certain element.' )
+#demo2( 'lists' 'contains' 5 $desc )
+
+#set( $desc = 'Gets the specified element of a List/array.' )
+#demo2( 'lists' 'get' 5 $desc )
+
+#set( $desc = 'Checks if an object is an array.' )
+#demo1( 'lists' 'isArray' 3 $desc)
+
+#set( $desc = 'Checks if a List/array is empty.' )
+#demo1( 'lists' 'isEmpty' 3 $desc)
+
+#set( $desc = 'Checks if an object is a List.' )
+#demo1( 'lists' 'isList' 3 $desc)
+
+#set( $desc = 'Sets the specified element of a List/array.' )
+#demo3( 'lists' 'set' 5 $desc )
+
+#set( $desc = 'Gets the size of a List/array.' )
+#demo1( 'lists' 'size' 3 $desc)
+
+#demoCustom( 'lists' )
+</table>
+
+#set( $primes = [1, 2, 3, 5, 7, 11] )
+<div align="center">
+  <a name="fullDemo"><h3>$demo.mainExampleHeader</h3></a>
+<form method="post" action="$link.self.anchor('fullDemo')">
+<textarea name="demo" rows="7" cols="65">##
+#if( $params.demo )##
+$params.demo##
+#else##
+${esc.d}primes
+${esc.d}lists.size(${esc.d}primes)
+${esc.d}lists.get(${esc.d}primes, 2)
+${esc.d}lists.set(${esc.d}primes, 2, 1)
+${esc.d}lists.get(${esc.d}primes, 2)
+${esc.d}lists.isEmpty(${esc.d}primes)
+${esc.d}lists.contains(${esc.d}primes, 7)##
+#end##
+</textarea>
+  <br>
+  <input type="submit" value="$demo.try">
+  #if( $params.layout )
+  <input type="hidden" name="layout" value="$params.layout">
+  #end
+</form>
+
+#if( $params.demo )
+$demo.mainResultsIntro:
+<pre>
+  $render.eval($params.demo)
+</pre>
+#end
+</div>

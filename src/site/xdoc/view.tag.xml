@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+    <properties>
+        <title>VelocityViewTag</title>
+        <projectfile>xdocs/project.xml</projectfile>
+        <subprojectfile>xdocs/view.project.xml</subprojectfile>
+    </properties>
+    <body>
+        <section name="Overview">
+            <p class="note">
+            This page is still unfinished. For details on configuring
+            the VelocityViewTag, you can follow most of the instructions
+            for the <a href="view.servlet.html">VelocityViewServlet</a>
+            and of course on the <a href="config.html">configuration pages</a>.
+            <a href="index.html#Contribution">Help finishing this is welcome!</a>
+            </p>
+            <p>
+            This is a JSP tag that allows you to use Velocity and VelocityTools
+            from within a JSP page or tag.  There are many ways to use this tag.
+            This simplest is to have it process an external template using the
+            current page context.  Assuming you have a template called "foo.vm"
+            that can be found by your resource loader(s) that looks like this:
+            </p>
+        <sourcecode>
+Hello $!bodyContent World!
+        </sourcecode>
+            <p>
+            This tag can process that template by doing:
+            </p>
+        <sourcecode>
+&lt;%@taglib prefix="velocity" uri="http://velocity.apache.org/velocity-view" %&gt;
+
+&lt;velocity:view template="foo.vm"/&gt;
+        </sourcecode>
+            <p>
+             VTL in the body of the tag:
+            </p>
+        <sourcecode>
+&lt;%@taglib prefix="velocity" uri="http://velocity.apache.org/velocity-view" %&gt;
+
+&lt;velocity:view&gt;
+#if( $date.E eq 'Friday' )
+ Happy
+#else
+ Sad
+#end
+&lt;/velocity:view&gt;
+        </sourcecode>
+            <p>
+            or combine both by first processing the body of the tag, then
+            inserting the results of that into the context for the separate
+            template as $bodyContent:
+            </p>
+        <sourcecode>
+&lt;%@taglib prefix="velocity" uri="http://velocity.apache.org/velocity-view" %&gt;
+
+&lt;velocity:view template="foo.vm"&gt;
+#if( $date.E eq 'Friday' )
+ Happy
+#else
+ Sad
+#end
+&lt;/velocity:view&gt;
+        </sourcecode>
+            <p>
+            You can also store the results of any of the options above into
+            a variable of any name and scope (default scope is "page"):
+            </p>
+        <sourcecode>
+&lt;%@taglib prefix="velocity" uri="http://velocity.apache.org/velocity-view" %&gt;
+
+&lt;velocity:view var="foo" scope="request" template="foo.vm"&gt;
+#if( $date.E eq 'Friday' )
+ Happy
+#else
+ Sad
+#end
+&lt;/velocity:view&gt;
+        </sourcecode>
+            <p>
+            For more details, see the
+            <a href="javadoc/org/apache/velocity/tools/view/jsp/VelocityViewTag.html">Javadoc</a>
+            or the
+            <a href="http://svn.apache.org/repos/asf/velocity/tools/trunk/src/main/java/META-INF/velocity-view.tld">TLD</a>.
+            </p>
+        </section>
+    </body>
+</document>
