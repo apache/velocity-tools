@@ -29,13 +29,15 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.Rule;
 import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.view.ViewContext;
-import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.config.DefaultKey;
@@ -131,7 +133,7 @@ public class UiDependencyTool {
     private Map<String,Group> groups = null;
     private List<Type> types = DEFAULT_TYPES;
     private Map<String,List<String>> dependencies;
-    private Log LOG;
+    private Logger LOG;
     private String context = "";
 
     private void debug(String msg, Object... args) {
@@ -140,7 +142,7 @@ public class UiDependencyTool {
         }
     }
 
-    protected static final void trace(Log log, String msg, Object... args) {
+    protected static final void trace(Logger log, String msg, Object... args) {
         if (log.isTraceEnabled()) {
             log.trace(String.format("UiDependencyTool: "+msg, args));
         }
@@ -148,7 +150,7 @@ public class UiDependencyTool {
 
     public void configure(Map params) {
         ServletContext app = (ServletContext)params.get(ViewContext.SERVLET_CONTEXT_KEY);
-        LOG = (Log)params.get(ToolContext.LOG_KEY);
+        LOG = (Logger)params.get(ToolContext.LOG_KEY);
 
         HttpServletRequest request = (HttpServletRequest)params.get(ViewContext.REQUEST);
         context = request.getContextPath();
@@ -541,9 +543,9 @@ public class UiDependencyTool {
         private Map<String,Integer> typeCounts = new LinkedHashMap<String,Integer>();
         private Map<String,List<String>> dependencies = new LinkedHashMap<String,List<String>>();
         private List<String> groups;
-        private Log LOG;
+        private Logger LOG;
 
-        public Group(String name, Log log) {
+        public Group(String name, Logger log) {
             this.name = name;
             this.LOG = log;
         }

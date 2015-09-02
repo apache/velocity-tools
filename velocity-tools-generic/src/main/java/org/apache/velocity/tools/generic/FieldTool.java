@@ -23,7 +23,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.velocity.runtime.log.Log;
+
+import org.slf4j.Logger;
+
 import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.config.DefaultKey;
 
@@ -90,14 +92,14 @@ public class FieldTool extends SafeConfig
      */
     public static final String STORE_DYNAMIC_KEY = "storeDynamicLookups";
 
-    protected Log log;
+    protected Logger log;
     protected HashMap storage = new HashMap();
     protected boolean storeDynamicLookups = true;
 
     protected void configure(ValueParser values)
     {
         // see if there's a log in there
-        this.log = (Log)values.getValue("log");
+        this.log = (Logger)values.getValue("log");
 
         // retrieve any classnames to be inspected and inspect them
         // *before* setting the storeDynamicLookups property!
@@ -255,11 +257,11 @@ public class FieldTool extends SafeConfig
 
     /**
      * Retrieves and returns the value of the specified {@link Field}
-     * in the specified {@link Class}.  If {@link Log} is provided, then
+     * in the specified {@link Class}.  If Logger is provided, then
      * access errors will be logged, otherwise this will fail silently
      * and return {@code null}.
      */
-    protected static Object retrieve(Field field, Class clazz, Log log)
+    protected static Object retrieve(Field field, Class clazz, Logger log)
     {
         try
         {
@@ -325,16 +327,16 @@ public class FieldTool extends SafeConfig
     /**
      * Holds a {@link Field} and {@link Class} reference for later
      * retrieval of the value of a field that is not final and may
-     * change at different lookups.  If a {@link Log} is passed in,
+     * change at different lookups.  If a Logger is passed in,
      * then this will log errors, otherwise it will fail silently.
      */
     public static class MutableField
     {
         private final Class clazz;
         private final Field field;
-        private final Log log;
+        private final Logger log;
 
-        public MutableField(Field f, Class c, Log l)
+        public MutableField(Field f, Class c, Logger l)
         {
             if (f == null || c == null)
             {

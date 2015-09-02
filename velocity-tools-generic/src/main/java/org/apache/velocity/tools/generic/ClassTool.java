@@ -31,7 +31,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
-import org.apache.velocity.runtime.log.Log;
+
+import org.slf4j.Logger;
+
 import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.config.DefaultKey;
 
@@ -70,7 +72,7 @@ public class ClassTool extends SafeConfig
     public static final String INSPECT_KEY = "inspect";
     public static final String SHOW_DEPRECATED_KEY = "showDeprecated";
 
-    protected Log log;
+    protected Logger log;
     protected Class type;
     protected List<MethodSub> methods;
     protected List<ConstructorSub> constructors;
@@ -108,7 +110,7 @@ public class ClassTool extends SafeConfig
 
     protected void configure(ValueParser values)
     {
-        this.log = (Log)values.getValue("log");
+        this.log = (Logger)values.getValue("log");
         this.showDeprecated =
             values.getBoolean(SHOW_DEPRECATED_KEY, showDeprecated);
 

@@ -27,7 +27,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.velocity.runtime.log.Log;
+
+import org.slf4j.Logger;
+
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.config.DefaultKey;
@@ -104,7 +106,7 @@ public class LinkTool extends SafeConfig implements Cloneable
     public static final String CHARSET_KEY = "charset";
     public static final String XHTML_MODE_KEY = "xhtml";
 
-    protected Log LOG;
+    protected Logger LOG;
     protected String scheme;
     protected String user;
     protected String host;
@@ -158,7 +160,7 @@ public class LinkTool extends SafeConfig implements Cloneable
 
     protected void configure(ValueParser props)
     {
-        this.LOG = (Log)props.getValue(ToolContext.LOG_KEY);
+        this.LOG = (Logger)props.getValue(ToolContext.LOG_KEY);
 
         String link = props.getString(URI_KEY);
         if (link != null)

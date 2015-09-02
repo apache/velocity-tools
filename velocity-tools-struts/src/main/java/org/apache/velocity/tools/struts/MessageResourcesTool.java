@@ -23,8 +23,10 @@ import java.util.Locale;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletContext;
+
+import org.slf4j.Logger;
+
 import org.apache.struts.util.MessageResources;
-import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.tools.view.ViewContext;
 
 /**
@@ -36,7 +38,7 @@ import org.apache.velocity.tools.view.ViewContext;
  */
 public abstract class MessageResourcesTool
 {
-    protected Log LOG;
+    protected Logger LOG;
     protected ServletContext application;
     protected HttpServletRequest request;
     private Locale locale;
@@ -64,7 +66,7 @@ public abstract class MessageResourcesTool
     {
         this.request = (HttpServletRequest)params.get(ViewContext.REQUEST);
         this.application = (ServletContext)params.get(ViewContext.SERVLET_CONTEXT_KEY);
-        this.LOG = (Log)params.get("log");
+        this.LOG = (Logger)params.get("log");
     }
 
 

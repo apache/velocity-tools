@@ -40,7 +40,7 @@ public abstract class BaseTestCase extends TestCase
     protected VelocityEngine engine;
     protected VelocityContext context;
     protected boolean DEBUG = false;
-    protected MockLogChute log;
+    protected MockLogger log;
     protected String stringRepoName = "string.repo";
 
     public BaseTestCase(String name)
@@ -61,10 +61,9 @@ public abstract class BaseTestCase extends TestCase
         engine = new VelocityEngine();
 
         //by default, make the engine's log output go to the test-report
-        log = new MockLogChute(false, false);
-        log.setEnabledLevel(MockLogChute.INFO_ID);
-        log.setSystemErrLevel(MockLogChute.WARN_ID);
-        engine.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, log);
+        log = new MockLogger(false, false);
+        log.setEnabledLevel(MockLogger.LOG_LEVEL_INFO);
+        engine.setProperty(RuntimeConstants.RUNTIME_LOG_INSTANCE, log);
 
         // use string resource loader by default, instead of file
         engine.setProperty(RuntimeConstants.RESOURCE_LOADER, "file,string");

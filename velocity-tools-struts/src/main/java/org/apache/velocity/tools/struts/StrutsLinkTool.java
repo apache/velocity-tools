@@ -21,7 +21,7 @@ package org.apache.velocity.tools.struts;
 
 import javax.servlet.ServletContext;
 import org.apache.velocity.tools.generic.ValueParser;
-import org.apache.velocity.tools.view.tools.LinkTool;
+import org.apache.velocity.tools.view.LinkTool;
 import org.apache.velocity.tools.view.ViewContext;
 
 /**

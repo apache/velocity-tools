@@ -20,8 +20,10 @@ package org.apache.velocity.tools;
  */
 
 import java.util.Map;
+
+import org.slf4j.Logger;
+
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.ConfigurationUtils;
 import org.apache.velocity.tools.config.FactoryConfiguration;
@@ -163,7 +165,7 @@ public class ToolManager
         return this.userOverwrite;
     }
 
-    public Log getLog()
+    public Logger getLog()
     {
         if (velocity == null)
         {
@@ -174,7 +176,7 @@ public class ToolManager
 
     protected final void debug(String msg, Object... args)
     {
-        Log log = getLog();
+        Logger log = getLog();
         if (log != null && log.isDebugEnabled())
         {
             log.debug(String.format(msg, args));

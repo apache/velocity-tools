@@ -19,10 +19,10 @@ package org.apache.velocity.tools.config;
  * under the License.
  */
 
-import org.apache.velocity.runtime.log.Log;
+import org.slf4j.Logger;
 
 /**
- * This allows for a {@link Log} to optionally be attached to
+ * This allows for a Logger to optionally be attached to
  * a subclass in order to output logging messages. This is simpler
  * than constantly checking whether we have a Log or not in each
  * usage throughout the classes which could use logging.  Methods should
@@ -36,7 +36,7 @@ import org.apache.velocity.runtime.log.Log;
 public abstract class LogSupport
 {
     private static final String DEFAULT_PREFIX = "";
-    private Log log;
+    private Logger log;
 
     /**
      * Override this to set a class-specific prefix
@@ -46,12 +46,12 @@ public abstract class LogSupport
         return DEFAULT_PREFIX;
     }
 
-    public void setLog(Log log)
+    public void setLog(Logger log)
     {
         this.log = log;
     }
 
-    protected Log getLog()
+    protected Logger getLog()
     {
         return this.log;
     }

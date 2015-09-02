@@ -22,8 +22,10 @@ package org.apache.velocity.tools.config;
 import java.io.InputStream;
 import java.io.IOException;
 import java.net.URL;
+
+import org.slf4j.Logger;
+
 import org.apache.velocity.exception.ResourceNotFoundException;
-import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.tools.ConversionUtils;
 
 /**
@@ -74,7 +76,7 @@ public abstract class FileFactoryConfiguration extends FactoryConfiguration
         read(url, required, null);
     }
 
-    public void read(String path, boolean required, Log log)
+    public void read(String path, boolean required, Logger log)
     {
         if (path == null)
         {
@@ -109,7 +111,7 @@ public abstract class FileFactoryConfiguration extends FactoryConfiguration
         return ConversionUtils.toURL(path, this);
     }
 
-    protected void read(URL url, boolean required, Log log)
+    protected void read(URL url, boolean required, Logger log)
     {
         try
         {
@@ -133,7 +135,7 @@ public abstract class FileFactoryConfiguration extends FactoryConfiguration
 
 
     protected void read(Object source, InputStream inputStream,
-                        boolean required, Log log)
+                        boolean required, Logger log)
     {
         try
         {

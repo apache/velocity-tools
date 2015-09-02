@@ -4,11 +4,11 @@
     <parent>
         <artifactId>velocity-tools-parent</artifactId>
         <groupId>org.apache.velocity</groupId>
-        <version>2.1.0-SNAPSHOT</version>
+        <version>3.0-SNAPSHOT</version>
     </parent>
     <groupId>org.apache.velocity</groupId>
     <artifactId>velocity-tools-assembly</artifactId>
-    <version>2.1.0-SNAPSHOT</version>
+    <version>3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Apache Velocity Tools - Assembly</name>
     <description>Assembly building for Velocity Tools.</description>
@@ -22,7 +22,7 @@
                     <descriptors>
                         <descriptor>src/main/assembly/all.xml</descriptor>
                     </descriptors>
-                    <finalName>velocity-tools-${version}</finalName>
+                    <finalName>velocity-tools-${project.version}</finalName>
                     <tarLongFileMode>gnu</tarLongFileMode>
                 </configuration>
             </plugin>
@@ -40,49 +40,49 @@
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-tools-uberjar</artifactId>
-            <version>2.1.0-SNAPSHOT</version>
+            <version>3.0-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-tools-view-jsp</artifactId>
-            <version>2.1.0-SNAPSHOT</version>
+            <version>3.0-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-tools-xml</artifactId>
-            <version>2.1.0-SNAPSHOT</version>
+            <version>3.0-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-tools-struts</artifactId>
-            <version>2.1.0-SNAPSHOT</version>
+            <version>3.0-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-tools-examples-simple</artifactId>
-            <version>2.1.0-SNAPSHOT</version>
+            <version>3.0-SNAPSHOT</version>
             <type>war</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-tools-examples-showcase</artifactId>
-            <version>2.1.0-SNAPSHOT</version>
+            <version>3.0-SNAPSHOT</version>
             <type>war</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-tools-examples-struts</artifactId>
-            <version>2.1.0-SNAPSHOT</version>
+            <version>3.0-SNAPSHOT</version>
             <type>war</type>
             <scope>compile</scope>
         </dependency>
@@ -163,7 +163,7 @@
                                 <configuration>
                                     <fromDir>${project.build.directory}/assemblies</fromDir>
                                     <includes>**</includes>
-                                    <toDir>${pom.version}</toDir>
+                                    <toDir>${project.version}</toDir>
                                     <serverId>apache.build</serverId>
                                     <url>scp://people.apache.org/www/people.apache.org/builds/velocity</url>
                                 </configuration>

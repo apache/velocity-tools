@@ -23,7 +23,9 @@ import java.lang.reflect.Proxy;
 import java.lang.reflect.InvocationHandler;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.velocity.tools.view.tools.LinkTool;
+import org.apache.velocity.tools.generic.ValueParser;
+import org.apache.velocity.tools.view.LinkTool;
+import org.apache.velocity.tools.view.ViewContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -38,6 +40,12 @@ import org.junit.Test;
  */
 public class LinkToolTests
 {
+
+    static class ConfigValues extends ValueParser
+    {
+        ConfigValues() { setReadOnly(false); }
+    }
+
     private LinkTool newLinkTool(InvocationHandler handler)
     {
         Object proxy
@@ -50,8 +58,10 @@ public class LinkToolTests
         HttpServletResponse response = (HttpServletResponse)proxy;
 
         LinkTool link = new LinkTool();
-        link.setRequest(request);
-        link.setResponse(response);
+        ValueParser properties = new ConfigValues();
+        properties.put(ViewContext.REQUEST, request);
+        properties.put(ViewContext.RESPONSE, response);
+        link.configure(properties);
         return link;
     }
 
@@ -72,10 +82,10 @@ public class LinkToolTests
         LinkTool link = newLinkTool("a", "b");
         Assert.assertEquals("/test", link.getContextPath());
 
-        String url = link.setRelative("/target")
-            .addQueryData("foo", "bar")
-            .addQueryData("bar", "baz")
-            .addAllParameters()
+        String url = ((LinkTool)(link.relative("/target")
+            .append("foo", "bar")
+            .append("bar", "baz")))
+            .addRequestParams()
             .toString();
 
         Assert.assertEquals("/test/target?foo=bar&amp;bar=baz&amp;a=b", url);
@@ -85,10 +95,10 @@ public class LinkToolTests
     {
         LinkTool link = newLinkTool("a", new String[] { "a", "b", "c" });
 
-        String url = link.setRelative("/target")
-            .addQueryData("foo", "bar")
-            .addQueryData("bar", "baz")
-            .addAllParameters()
+        String url = ((LinkTool)(link.relative("/target")
+            .append("foo", "bar")
+            .append("bar", "baz")))
+            .addRequestParams()
             .toString();
 
         Assert.assertEquals("/test/target?foo=bar&amp;bar=baz&amp;a=a&amp;a=b&amp;a=c", url);
@@ -101,11 +111,10 @@ public class LinkToolTests
         params.put("b", "c");
         LinkTool link = newLinkTool(params);
 
-        String url = link.setRelative("/target")
-            .addQueryData("foo", "bar")
-            .addQueryData("bar", "baz")
-            .addIgnore("b")
-            .addAllParameters()
+        String url = ((LinkTool)(link.relative("/target")
+            .append("foo", "bar")
+            .append("bar", "baz")))
+            .addRequestParamsExcept("b")
             .toString();
 
         Assert.assertEquals("/test/target?foo=bar&amp;bar=baz&amp;a=b", url);
@@ -115,10 +124,10 @@ public class LinkToolTests
     {
         LinkTool link = newLinkTool("a", "b");
 
-        String url = link.setRelative("/target")
-            .addAllParameters()
-            .addQueryData("foo", "bar")
-            .addQueryData("bar", "baz")
+        String url = ((LinkTool)(link.relative("/target")))
+            .addRequestParams()
+            .append("foo", "bar")
+            .append("bar", "baz")
             .toString();
 
         Assert.assertEquals("/test/target?a=b&amp;foo=bar&amp;bar=baz", url);
@@ -127,11 +136,10 @@ public class LinkToolTests
     public @Test void testAddAdditionalValue()
     {
         LinkTool link = newLinkTool("a", "b");
-        link.setAutoIgnoreParameters(false);
 
-        String url = link.setRelative("/target")
-            .addQueryData("a", "c")
-            .addAllParameters()
+        String url = ((LinkTool)(link.relative("/target")
+            .append("a", "c")))
+            .addRequestParams()
             .toString();
 
         Assert.assertEquals("/test/target?a=c&amp;a=b", url);
@@ -140,11 +148,10 @@ public class LinkToolTests
     public @Test void testAddAdditionalValueAfter()
     {
         LinkTool link = newLinkTool("a", "b");
-        link.setAutoIgnoreParameters(false);
 
-        String url = link.setRelative("/target")
-            .addAllParameters()
-            .addQueryData("a", "c")
+        String url = ((LinkTool)(link.relative("/target")))
+            .addRequestParams()
+            .append("a", "c")
             .toString();
 
         Assert.assertEquals("/test/target?a=b&amp;a=c", url);
@@ -154,8 +161,8 @@ public class LinkToolTests
     {
         LinkTool link = newLinkTool("a", "b");
 
-        String url = link.setRelative("/target")
-            .addQueryData("a", "c")
+        String url = link.relative("/target")
+            .append("a", "c")
             .toString();
 
         Assert.assertEquals("/test/target?a=c", url);
@@ -165,9 +172,9 @@ public class LinkToolTests
     {
         LinkTool link = newLinkTool("a", new String[] { "a", "b", "c" });
 
-        String url = link.setRelative("/target")
-            .addQueryData("a", "d")
-            .addAllParameters()
+        String url = ((LinkTool)(link.relative("/target")
+            .append("a", "d")))
+            .addMissingRequestParams("a")
             .toString();
 
         Assert.assertEquals("/test/target?a=d", url);
@@ -177,9 +184,9 @@ public class LinkToolTests
     {
         LinkTool link = newLinkTool("a", new String[] { "a", "b", "c" });
 
-        String url = link.setRelative("/target")
-            .addAllParameters()
-            .addQueryData("a", "d")
+        String url = ((LinkTool)(link.relative("/target")))
+            .addRequestParams()
+            .append("a", "d")
             .toString();
 
         Assert.assertEquals("/test/target?a=a&amp;a=b&amp;a=c&amp;a=d", url);
@@ -189,13 +196,13 @@ public class LinkToolTests
     {
         LinkTool link = newLinkTool("a", new String[] { "a", "b", "c" });
 
-        LinkTool forward = link.setRelative("/foo")
-            .addQueryData("bar", "baz");
+        LinkTool forward = (LinkTool)link.relative("/foo")
+            .append("bar", "baz");
 
         Assert.assertEquals("/test/foo?bar=baz&amp;a=a&amp;a=b&amp;a=c",
-                            forward.addAllParameters().toString());
+                            forward.addRequestParams().toString());
 
         Assert.assertEquals("/test/foo?bar=baz&amp;a=a&amp;a=b&amp;a=c",
-                            forward.addAllParameters().toString());
+                            forward.addRequestParams().toString());
     }
 }
