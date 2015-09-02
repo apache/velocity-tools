@@ -23,7 +23,7 @@
     <groupId>org.apache.velocity</groupId>
     <artifactId>velocity-tools-parent</artifactId>
     <name>VelocityTools</name>
-    <version>2.1.0-SNAPSHOT</version>
+    <version>3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <url>http://velocity.apache.org/tools/devel/</url>
@@ -188,7 +188,6 @@
         <module>velocity-tools-uberjar</module>
         <module>velocity-tools-examples</module>
         <module>velocity-tools-assembly</module>
-        <module>maven-velocity-tools-plugin</module>
     </modules>
 
     <!-- This project is an effort by many people. If you feel that your name
