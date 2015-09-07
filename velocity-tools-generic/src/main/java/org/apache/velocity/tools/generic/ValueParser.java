@@ -19,6 +19,7 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Locale;
 import java.util.Set;
@@ -70,7 +71,6 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
 
     public ValueParser()
     {
-        source = new TreeMap<String,Object>();
     }
 
     public ValueParser(Map<String,Object> source)
@@ -85,6 +85,11 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
 
     protected Map<String,Object> getSource()
     {
+        // If this method has not been overrided, make sure source is not null
+        if (source == null)
+        {
+            source = new HashMap<String, Object>();
+        }
         return this.source;
     }
 
@@ -531,6 +536,10 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
             if (entry.getKey().startsWith(subkey) &&
                 entry.getKey().length() > subkey.length())
             {
+                if (values == null)
+                {
+                    values = new HashMap<String, Object>();
+                }
                 values.put(entry.getKey().substring(subkey.length()),entry.getValue());
             }
         }
