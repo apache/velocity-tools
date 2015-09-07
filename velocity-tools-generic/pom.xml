@@ -7,7 +7,6 @@
   </parent>
   <groupId>org.apache.velocity</groupId>
   <artifactId>velocity-tools-generic</artifactId>
-  <version>3.0-SNAPSHOT</version>
   <name>Apache Velocity Tools - Generic tools</name>
   <description>Generic tools that can be used in any context.</description>
   <dependencies>

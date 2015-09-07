@@ -7,14 +7,13 @@
   </parent>
   <groupId>org.apache.velocity</groupId>
   <artifactId>velocity-tools-xml</artifactId>
-  <version>3.0-SNAPSHOT</version>
   <name>Apache Velocity Tools - XML tools</name>
   <description>Tools for XML manipulation in Velocity templates.</description>
   <dependencies>
   	<dependency>
   		<groupId>org.apache.velocity</groupId>
   		<artifactId>velocity-tools-generic</artifactId>
-  		<version>3.0-SNAPSHOT</version>
+  		<version>${project.version}</version>
   	</dependency>
   	<dependency>
   		<groupId>dom4j</groupId>

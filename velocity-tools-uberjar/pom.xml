@@ -8,7 +8,6 @@
     </parent>
     <groupId>org.apache.velocity</groupId>
     <artifactId>velocity-tools-uberjar</artifactId>
-    <version>3.0-SNAPSHOT</version>
     <name>Apache Velocity Tools - Uberjar</name>
     <description>Aggregation of all Velocity Tools JARs</description>
     <build>
@@ -43,17 +42,17 @@
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-tools-view-jsp</artifactId>
-            <version>3.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-tools-struts</artifactId>
-            <version>3.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-tools-xml</artifactId>
-            <version>3.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
