@@ -7,14 +7,13 @@
   </parent>
   <groupId>org.apache.velocity</groupId>
   <artifactId>velocity-tools-view-jsp</artifactId>
-  <version>3.0-SNAPSHOT</version>
   <name>Apache Velocity Tools - JSP support</name>
   <description>Enables the use of Velocity under a JSP environment.</description>
   <dependencies>
   	<dependency>
   	    <groupId>org.apache.velocity</groupId>
   		<artifactId>velocity-tools-view</artifactId>
-  		<version>3.0-SNAPSHOT</version>
+  		<version>${project.version}</version>
   	</dependency>
   	<dependency>
   		<groupId>javax.servlet</groupId>

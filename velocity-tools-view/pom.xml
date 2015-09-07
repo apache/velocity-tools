@@ -8,7 +8,6 @@
 	</parent>
 	<groupId>org.apache.velocity</groupId>
 	<artifactId>velocity-tools-view</artifactId>
-	<version>3.0-SNAPSHOT</version>
 	<name>Apache Velocity Tools - View tools</name>
 	<description>Tools to be used in a servlet context.</description>
 	<build>
@@ -31,7 +30,7 @@
 		<dependency>
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity-tools-generic</artifactId>
-			<version>3.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
