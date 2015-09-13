@@ -171,7 +171,7 @@ public class ParameterTool extends ValueParser
     @Override
     protected Map getSource()
     {
-        Map source = super.getSource();
+        Map source = super.getSource(false);
         if (source == null)
         {
             source = expandSingletonArrays(getRequest().getParameterMap());
