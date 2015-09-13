@@ -83,14 +83,19 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
         this.source = source;
     }
 
-    protected Map<String,Object> getSource()
+    protected Map<String,Object> getSource(boolean create)
     {
         // If this method has not been overrided, make sure source is not null
-        if (source == null)
+        if (source == null && create)
         {
             source = new HashMap<String, Object>();
         }
-        return this.source;
+        return this.source;        
+    }
+
+    protected Map<String,Object> getSource()
+    {
+        return getSource(true);
     }
 
     /**
