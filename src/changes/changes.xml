@@ -1,0 +1,546 @@
+<?xml version="1.0"?>
+
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+  
+  http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+
+<document>
+  <properties>
+    <title>Changelog</title>
+  </properties>
+  <body>
+
+    <release version="3.0-SNAPSHOT" date="In Subversion">
+      <action type="add" dev="cbrisson">
+        Switched engine dependency to 2.0
+      </action>      
+      <action type="add" dev="cbrisson">
+        Reflect Velocity Engine dependency shading of commons-lang and commons-collections
+      </action>
+      <action type="add" dev="cbrisson">
+        Removed deprecated class org.apache.velocity.tools.generic.log.LogSystemCommonsLog
+      </action>
+      <action type="add" dev="cbrisson">
+        MathTool: added bitwise operations
+      </action>
+      <action type="fix" dev="cbrisson">
+        fixed result type calculations 
+      </action>
+      <action type="add" dev="cbrisson">
+        Switched log system facade to SLF4j
+      </action>
+    </release>
+    
+    <release version="2.0.1-SNAPSHOT" date="In Subversion">
+      <action type="add" dev="nbubna">
+        Upgraded to Dom4j 1.6.1 and Velocity Engine 1.6.4
+      </action>
+      <action type="fix" dev="nbubna" issue="VELTOOLS-129" due-to="Michael Osipov">
+      </action>
+      <action type="fix" dev="nbubna" issue="VELTOOLS-128">
+        fix sync problems
+      </action>
+      <action type="fix" dev="cbrisson">
+        correct handling and better reporting of commited responses in error()
+      </action>
+      <action type="add" dev="cbrisson">
+        Added a custom number formats cache in ConversionUtils
+      </action>
+      <action type="fix" dev="schultz" issue="VELTOOLS-144">
+        added localization of DateFormat format strings
+      </action>
+      <action type="fix" dev="schultz" issue="VELTOOLS-145">
+        changed StrutsLinkTool's parent class to restore API backward-compatibility
+      </action>
+      <action type="fix" dev="schultz" issue="VELTOOLS-148">
+        fixed a LinkTool bug with parametersToIgnore management
+      </action>
+      <action type="fix" dev="schultz" issue="VELTOOLS-149">
+        changed LinkTool.addRequestParams to accept Object[]
+      </action>
+      <action type="add" dev="schultz">
+        Added StrutsLinkTool.action and StrutsLinkTool.forward methods as replacements for StrutsLinkTool.setAction and StrutsLinkTool.setForward to match other new LinkTool methods like LinkTool.relative and LinkTool.absolute
+      </action>
+      <action type="fix" dev="schultz" issue="VELTOOLS-146">
+        $link.absolute($uri) should not encode query strings in the argument
+      </action>
+      <action type="fix" dev="schultz" issue="VELTOOLS-152">
+        ValidatorTool generates invalid XHTML even when in XHTML mode
+      </action>
+    </release>
+    
+    <release version="2.0" date="In Subversion">  
+      <action type="add" dev="nbubna">
+        More convention over configuration and smart defaults
+      </action>
+      <action type="add" dev="nbubna">
+        New configuration formats (more concise/flexible/powerful xml, properties, java)
+      </action>
+      <action type="add" dev="nbubna">
+        Entirely new core infrastructure (lazy-loading tools, easier access, standalone support etc)
+      </action>
+      <action type="add" dev="nbubna">
+        Added VelocityViewTag for JSP integration
+      </action>
+      <action type="add" dev="nbubna">
+        Added DisplayTool, ConversionTool, ClassTool, LoopTool, FieldTool, a generic version of LinkTool and more
+      </action>
+      <action type="add" dev="nbubna">
+        Refactored and enhanced a number of existing tools
+      </action>
+      <action type="add" dev="nbubna">
+        Improved documentation
+      </action>
+      <action type="add" dev="nbubna">
+        Deprecated many outdated things
+      </action>
+      <action type="add" dev="nbubna">
+        Legacy support for almost all Tools 1.4 configurations and extensions
+      </action>
+      <action type="add" dev="cbrisson">
+        Better integration of $application, $session and $request scope control objects
+      </action>
+    </release>
+    
+    <release version="1.4" date="In Subversion">
+      <action type="add" dev="nbubna" due-to="Christopher Schultz">
+        Added ability to add current request parameters to LinkTool, including controls for automatically and/or manually ignoring some of those
+      </action>
+      <action type="fix" dev="nbubna" issue="VELTOOLS-87" due-to="Andrea Bernardo Ciddio">
+        fixed infinite recursion in RenderTool
+      </action>
+      <action type="add" dev="nbubna">
+        Upgraded DVSL version used for documentation to v1.0
+      </action>
+      <action type="fix" dev="nbubna" issue="VELTOOLS-85" due-to="Tatyana">
+        Fix order preservation problem in SortTool
+      </action>
+      <action type="fix" dev="cbrisson">
+        Protect BrowserSniffer from requests without user-agent
+      </action>
+      <action type="add" dev="marino">
+        Added support for a MethodExceptionHandler - the TilesTool.get() method now only returns null if one isn't present
+      </action>
+      <action type="add" dev="nbubna" due-to="Christopher Schultz">
+        Changed StrutsLinkTool.setForward() to look for forwards local to the action mapping, before looking up global forwards
+      </action>
+      <action type="add" dev="nbubna">
+        Rearrange/refactor/deprecate some internal methods in VelocityViewServlet in preparation for VelocityTools 2.0 upgrades
+      </action>
+      <action type="add" dev="nbubna">
+        Upgraded Velocity Engine dependency to build and test against v1.5 (NOTE: Velocity Engine 1.5 will be required for VelocityTools 2.0.)
+      </action>
+      <action type="add" dev="nbubna" issue="VELTOOLS-81" due-to="Phil Cornelius">
+        Added propertyKey() and propertyValue() escaping support to EscapeTool
+      </action>
+      <action type="fix" dev="nbubna">
+        Fixed bug in request-path restriction when using wildcards
+      </action>
+      <action type="add" dev="nbubna">
+        Make default locale and format for NumberTool configurable, just as they are in DateTool
+      </action>
+      <action type="add" dev="nbubna" due-to="Chris Townsen">
+        Add ComparisonDateTool (with some tests and showcase demos) for comparing dates and displaying the comparisons textually
+      </action>
+      <action type="add" dev="nbubna">
+        Add ability to configure default Locale for DateTool and to lock down configure() so it is safe to use in application scope
+      </action>
+      <action type="add" dev="nbubna" due-to="Christopher Schultz">
+        Add better support for dynamic locales in MessageTool
+      </action>
+      <action type="add" dev="nbubna">
+        Use ResourceTool for common text throughout the Showcase example
+      </action>
+    </release>
+
+    <release version="1.3" date="In Subversion">
+      <action type="add" dev="nbubna">
+        Added ResourceTool and ViewResourceTool for access to and use of ResourceBundles
+      </action>
+      <action type="add" dev="nbubna">
+        Upgraded to latest versions of Commons-Digester (1.8) and Commons-Validator (1.3.1)
+      </action>
+      <action type="add" dev="nbubna" issue="VELTOOLS-58" due-to="Christopher Schultz and Niall Pemberton">
+        Updated ValidatorTool to mirror key changes/features in Struts 1.3.x's JavascriptValidatorTag
+      </action>
+      <action type="add" dev="cbrisson" issue="VELTOOLS-73" due-to="Marc Novakowski">
+        Added url(String) method to EscapeTool for URL encoding
+      </action>
+      <action type="add" dev="cbrisson">
+        Added start.showcase.webapp and stop.showcase.webapp ant targets to manually launch the showcase webapp using the embedded Jetty servlet container
+      </action>
+      <action type="add" dev="cbrisson">
+        Added a testcases framework for generic and view tools
+      </action>
+      <action type="add" dev="nbubna">
+        Changed VelocityViewServlet to look for toolbox config at "/WEB-INF/toolbox.xml" and velocity init properties at "/WEB-INF/velocity.properties" when no other locations are specified (i.e. change the standard location into a convention to reduce configuration needs)
+      </action>
+      <action type="add" dev="nbubna">
+        Upgraded VelocityStruts dependencies to those for Struts 1.3.x series and updated "struts" example app according to <a href="http://wiki.apache.org/struts/StrutsUpgradeNotes12to13">provided directions</a>
+      </action>
+      <action type="add" dev="nbubna">
+        Replaced "layout" example with new "showcase" example to interactively demonstrate all tools and the VelocityLayoutServlet
+      </action>
+      <action type="add" dev="nbubna">
+        Added auto() and manual() methods to AlternatorTool and deprecated the make() methods that took a boolean parameter
+      </action>
+      <action type="add" dev="nbubna">
+        Added getAll() method to ParameterParser to retrieve map of all params via <code>$params.all</code>
+      </action>
+      <action type="add" dev="nbubna">
+        Added configurable getSelf() function to LinkTool to make self-referencing links easier
+      </action>
+      <action type="add" dev="nbubna">
+        Added create() methods to CookieTool to support more complex Cookie creation
+      </action>
+      <action type="add" dev="nbubna">
+        Added ContextTool for convenient access to context data and meta-data
+      </action>
+      <action type="add" dev="nbubna" issue=""VELTOOLS-71">
+        Overhauled ant build process: dependencies are now automatically download, jars have manifests, checksums are auto-generated, and more. Also, building with JDK 1.3 is no longer supported
+      </action>
+      <action type="fix" dev="henning">
+        Updated license headers and notices to comply with new ASF policy
+      </action>
+      <action type="add" dev="nbubna">
+        Made auto-alternate default of AlternatorTool configurable via toolbox config
+      </action>
+      <action type="add" dev="nbubna" due-to="Mark Brunkhart">
+        Add addQueryData(Map) and params(Map) method to LinkTool
+      </action>
+      <action type="fix" dev="nbubna" issue="VELTOOLS-56" due-to="Christopher Schultz">
+        Fixed a number of problems with ImportSupport
+      </action>
+      <action type="add" dev="nbubna" issue="VELTOOLS-67" due-to="Claude Brisson">
+        Add ability to restrict availability of request-scoped tools according to a request path value set in the tool configuration
+      </action>
+      <action type="fix" dev="henning" issue="VELTOOLS-68">
+        Change VelocityViewServlet to read logger and resource loader config from velocity.properties file instead of hard-coding it
+      </action>
+      <action type="add" dev="nbubna">
+        Added setAbsolute() and absolute() methods to LinkTool
+      </action>
+      <action type="add" dev="nbubna">
+        Made default format of DateTool configurable via toolbox definition
+      </action>
+      <action type="add" dev="nbubna">
+        Deprecated ViewTool and Configurable interfaces ; ViewToolInfo has been enhanced to automatically recognize such tools by checking for init(Object) and/or configure(Map) methods
+      </action>
+      <action type="add" dev="nbubna">
+        Enhanced TextKey trick in MessageTool to make using args and bundles easier
+      </action>
+      <action type="add" dev="nbubna">
+        Add getInteger() and getDouble() convenience methods to ValueParser
+      </action>
+      <action type="add" dev="nbubna">
+        Added get() method to StrutsLinkTool to allow syntax like <code>$link.action.saveFoo</code>
+      </action>
+      <action type="add" dev="nbubna">
+        Added param(), relative(), anchor(), and uri() convenience methods to LinkTool
+      </action>
+      <action type="add" dev="nbubna">
+        Added currency(), number(), integer(), and percent() convenience methods to NumberTool
+      </action>
+      <action type="add" dev="nbubna">
+        Changed auto-alternate default in AlternatorTool to match Alternator default
+      </action>
+    </release>
+
+    <release version="1.2" date="In Subversion">  
+      <action type="add" dev="nbubna">
+        Updated documentation to cover new features and sync to many infrastructure changes
+      </action>
+      <action type="fix" dev="nbubna" issue="VELTOOLS-52" due-to="Christopher Schultz">
+        Fixed incomplete escaping in ValidatorTool
+      </action>
+      <action type="fix" dev="nbubna">
+        Fixed infinite loop logging problem with Tomcat 5.5 in the "simple" example webapp
+      </action>
+      <action type="add" dev="nbubna">
+        Upgraded jars to Struts 1.2.7, Commons-Logging 1.0.4, Commons-Validator 1.1.4, Digester 1.7, Commons-Collections 3.1, Beanutils 1.7.0, Struts SSL Extension for 1.2, and Commons-Lang 2.1
+      </action>
+      <action type="add" dev="nbubna" issue="VELTOOLS-51" due-to="Niall Pemberton">
+        Added VelocityStruts support for non-resource and session-scoped action messages
+      </action>
+      <action type="add" dev="nbubna">
+        Factored generic parsing code out of ParameterParser into new ValueParser for parsing strings pulled from any Map
+      </action>
+      <action type="add" dev="henning">
+        Improved error handling/recovery in toolbox xml parsing by adding validation of tool info
+      </action>
+      <action type="add" dev="nbubna" dus-to="Claude Brisson">
+        Added BrowserSnifferTool for identifying browsers and their features ; this depends on Java 1.4's regexp support for use
+      </action>
+      <action type="add" dev="nbubna" due-to="Shinobu Kawai">
+        Added EscapeTool for commons escaping needs ; this requires commons-lang for use
+      </action>
+      <action type="add" dev="nbubna" due-to="Shinobu Kawai">
+        Added ListTool as utility for using arrays like Lists in templates
+      </action>
+      <action type="add" dev="nbubna">
+        Added DateTool methods to provide easy access to date values (e.g. month, year, day)
+      </action>
+      <action type="add" dev="nbubna">
+        Converted VelocityView and VelocityStruts to use a VelocityEngine instead of the Velocity singleton.
+        This means only the servlets log directly to the VelocityEngine instance; the tools and other
+        classes now use commons-logging (which can still be redirected to the VVS's VelocityEngine). Also, both
+        the RenderTool and LogSystemCommonsLog now support either the singleton or non-singleton approach
+      </action>
+      <action type="add" dev="nbubna" due-to="Laurent Dauvilaire">
+        Fixed bad relative URIs in LinkTool when webapp is installed as root
+      </action>
+      <action type="add" dev="nbubna">
+        Factored basic pagination code out of AbstractSearchTool into new AbstractPagerTool
+      </action>
+      <action type="add" dev="nbubna" due-to="Shinobu Kawai">
+        Make StrutsUtils.errorMarkup() support errors.prefix/suffix
+      </action>
+      <action type="add" dev="nbubna" due-to="Shinobu Kawai">
+        Fixed ImportSupport bug with multiple calls to ImportResponseWrapper.getWriter() or getOutputStream()
+      </action>
+      <action type="fix" dev="nbubna">
+        Made DateTool.toDate(Object) accept Number in place of Long
+      </action>
+      <action type="fix" dev="nbubna" due-to="Tim Colson">
+        Fixed RenderTool NPE when passed null VTL string
+      </action>
+      <action type="add" dev="marino">
+        Enable template cache refreshing and global macro autoreloading in WebappLoader
+      </action>
+      <action type="add" dev="marino">
+        Stopped using Velocity's dependency jar
+      </action>
+      <action type="add" dev="marino">
+        Upgraded Struts, commons-collections, commons-logging, and commons-validator to Struts 1.2.4 versions
+      </action>
+      <action type="add" dev="nbubna" due-to="Brett Sutton">
+        Added new SortTool
+      </action>
+      <action type="add" dev="nbubna" due-to="Leon Messerschmidt">
+        Added MathTool methods for totalling or averaging lists or arrays of values
+      </action>
+      <action type="fix" dev="nbubna">
+        Prevent NPE in RenderTool.recurse() when an evaluation fails
+      </action>
+      <action type="add" dev="nbubna">
+        Upgraded jars from Velocity 1.3.1 to Velocity 1.4
+      </action>
+      <action type="add" dev="nbubna">
+        Simplified MessageTool interface to support $text.this.that syntax instead of just $text.get('this.that')
+      </action>
+      <action type="add" dev="nbubna" due-to="Daniel Rall">
+        Added Alternator and AlternatorTool to improve on the old VelocityFormatter.makeAutoAlternator()
+      </action>
+      <action type="add" dev="nbubna">
+        Added new Configurable interface and support for configuring tools in the toolbox definition
+      </action>
+      <action type="add" dev="nbubna">
+        Added methods for integer division and modulus to MathTool
+      </action>
+      <action type="add" dev="nbubna">
+        Remove members, methods, and classes deprecated in 1.1
+      </action>
+      <action type="add" dev="marino">
+        Bring example Struts apps up to speed with latest Struts version
+      </action>
+      <action type="add" dev="marino">
+        Upgrade jars to Struts 1.2.0 and Validator 1.1.2
+      </action>
+    </release>
+
+    <release version="1.1" date="In Subversion">
+      <action type="add" dev="nbubna">
+        Deprecated StrutsUtils' getActionErrors() and getActionMessages() in favor of getErrors() and getMessages()
+      </action>
+      <action type="add" dev="nbubna" due-to="Nathan Green">
+        Fixed javadoc warnings during build
+      </action>
+      <action type="add" dev="marino">
+        Some sort of improvements to Struts example apps
+      </action>
+    </release>
+    
+    <release version="1.1-rc1" date="In Subversion">
+      <action type="add" dev="nbubna">
+        Changed recommended keys for MessageTool and ActionMessagesTool to $text and $messages
+      </action>
+      <action type="add" dev="nbubna">
+        Changed XMLToolboxManager to use thread context classloader when digesting toolbox
+      </action>
+      <action type="add" dev="nbubna">
+        Fixed session tool initialization/synchronization issue
+      </action>
+      <action type="add" dev="marino">
+        Added TilesTool methods to import attributes to specific scopes (page/request/session/application)
+      </action>
+      <action type="add" dev="marino">
+        Added new demos for using ValidatorTool, TilesTool, and SecureLinkTool to VelocityStruts example app
+      </action>
+      <action type="add" dev="nbubna">
+        Upgraded/refactored MathTool to add floor() and ceil(), make type-handling more intuitive and flexible, and improve number parsing
+      </action>
+      <action type="add" dev="nbubna">
+        Improved resource bundle support in ActionMessagesTool
+      </action>
+      <action type="add" dev="nbubna">
+        ErrorsTool now extends ActionMessagesTool
+      </action>
+      <action type="add" dev="nbubna">
+        LinkTool now encodes URLs using the response's character encoding
+      </action>
+      <action type="fix" dev="nbubna">
+        Removed inadvertant JDK 1.4 dependencies from ImportSupport
+      </action>
+      <action type="add" dev="nbubna">
+        Made XMLToolboxManager not abstract
+      </action>
+      <action type="add" dev="nbubna">
+        De-staticized non-private methods in RenderTool and LinkTool
+      </action>
+      <action type="add" dev="nbubna" due-to="Mike Kienenberger">
+        Added NumberTool for formatting numbers
+      </action>
+      <action type="add" dev="nbubna">
+        Filled out and cleaned up DateTool's toDate(...) methods
+      </action>
+      <action type="add" dev="nbubna">
+        Changed VelocityViewServlet's error method to print the stack trace of the root cause when it encounters a MethodInvocationException
+      </action>
+      <action type="add" dev="marino">
+        Added importAttributes() method to TilesTool to automatically put all attributes of the current Tiles context into the Velocity context
+      </action>
+      <action type="add" dev="marino">
+        Replaced TilesTool's getString(String) method with getAttribute(String) in order to support "put lists."
+      </action>
+    </release>
+
+    <release version="1.1-beta1" date="In Subversion">
+      <action type="add" dev="nbubna" due-to="Daniel Rall">
+        Made VelocityViewServlet use response.getOutputStream() if response.getWriter() fails.  This is functionality is deprecated and provided as a migration path from 1.0 behavior
+      </action>
+      <action type="add" dev="nbubna">
+        De-staticized MathTool to make it extendable
+      </action>
+      <action type="add" dev="nbubna">
+        Factored common functionality of ErrorsTool, MessageTool, and ActionMessagesTool into abstract MessageResourcesTool
+      </action>
+      <action type="add" dev="marino">
+        Added ImportTool as a simple ImportSupport-based tool
+      </action>
+      <action type="add" dev="marino" due-to="Matthew Payne">
+        Converted TilesTool to extend ImportSupport. This allows easy mixing of view technologies (JSP, Velocity, etc.) in VelocityStruts applications
+      </action>
+      <action type="add" dev="marino">
+        Added ImportSupport class for building tools that can import resources from local or remote URLS
+      </action>
+      <action type="add" dev="nbubna">
+        Overhauled DateTool to make it more extendable, user-friendly, and add support for standard, localized date-time styles (see DateTool javadoc for more)
+      </action>
+      <action type="add" dev="nbubna" due-to="Marinó A. Jónsson">
+        Added support for specifying message resource bundles to StrutsUtils, ErrorsTool, ActionMessagesTool, and MessageTool
+      </action>
+      <action type="add" dev="marino">
+        Added commons-validator (1.0.2) and sslext jars to library
+      </action>
+      <action type="add" dev="marino">
+        Added SecureLinkTool for using Struts SSL Extension with VelocityStruts
+      </action>
+      <action type="add" dev="marino">
+        Added ValidatorTool to provide Struts 1.1 javascript validation for VelocityStruts
+      </action>
+      <action type="add" dev="nbubna">
+        output.encoding property (if non-default) is appended to default content-type as the charset
+      </action>
+      <action type="fix" dev="nbubna" due-to="Matthew Payne">
+        VelocityViewServlet now uses response.getWriter() instead of response.getOutputStream()
+      </action>
+      <action type="add" dev="nbubna">
+        Improved VelocityViewServlet error handling (exceptions are logged and error() is now more robust)
+      </action>
+      <action type="add" dev="nbubna">
+        Put VelocityViewServlet's requestCleanup() call in a 'finally' clause to allow clean after errors during a request
+      </action>
+      <action type="fix" dev="nbubna" due-to="Takayoshi Kimura">
+        Fixed miscellaneous javadoc and doc typos
+      </action>
+      <action type="fix" dev="nbubna">
+        Allow system to reclaim objects held by pooled writers in VelocityViewServlet
+      </action>
+      <action type="add" dev="nbubna">
+        Changed LinkTool to automatically check for XHTML setting
+      </action>
+      <action type="add" dev="nbubna">
+        Added support for standard XHTML mode setting via toolbox config
+      </action>
+      <action type="add" dev="nbubna">
+        Moved request/response/session/application keys to ViewContext and add getAttribute() method
+      </action>
+      <action type="add" dev="marino">
+        Added selectModule() and getForwardURL() to StrutsUtils
+      </action>
+      <action type="add" dev="marino">
+        Convert VelocityStruts tools to use new StrutsUtils methods and be module aware
+      </action>
+      <action type="fix" dev="nbubna">
+        Removed unused imports from StrutsLinkTool
+      </action>
+      <action type="add" dev="marino">
+        Refactor StrutsUtils to use Struts 1.1 classes and support modules
+      </action>
+      <action type="add" dev="marino">
+        Added TilesTool
+      </action>
+      <action type="add" dev="nbubna">
+        Allow subclasses of VelocityViewServlet to use different ToolboxManager implementations
+      </action>
+      <action type="add" dev="nbubna" due-to="Dmitri Colebatch">
+        Added CookieTool
+      </action>
+      <action type="add" dev="nbubna">
+        Added demo of &lt;data&gt; elements to simple VelocityView example
+      </action>
+      <action type="add" dev="nbubna">
+        Made simple VelocityStruts example catch Commons-Logging output with LogSystemCommonsLog
+      </action>
+      <action type="add" dev="nbubna">
+        Convert toolbox setup to use Digester instead of dom4j
+      </action>
+      <action type="add" dev="nbubna">
+        Added LogSystemCommonsLog and CommonsLogLogSystem to provide bridges between Commons-Logging and Velocity's LogSystem
+      </action>
+      <action type="add" dev="nbubna">
+        Added Commons Logging 1.0.3 jar
+      </action>
+      <action type="add" dev="nbubna">
+        Added ActionMessagesTool
+      </action>
+      <action type="add" dev="nbubna">
+        Upgrade deprecated Struts 1.0 uses in examples
+      </action>
+      <action type="add" dev="nbubna">
+        Updated jars to Struts 1.1, BeanUtils 1.6.1, Digester 1.5, Collections 2.1
+      </action>
+    </release>
+
+    <release version="1.0" date="In Subversion">
+      <action type="add" dev="nbubna">
+        Initial release.
+      </action>
+    </release>
+  </body>
+</document>
