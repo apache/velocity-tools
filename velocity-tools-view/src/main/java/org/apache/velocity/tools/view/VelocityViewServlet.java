@@ -275,8 +275,7 @@ public class VelocityViewServlet extends HttpServlet
      * Sets the content type of the response.  This is available to be overriden
      * by a derived class.
      *
-     * <p>The default implementation is to detect content type based on the
-     * requested path extension, if any, or otherwise to rely on:
+     * <p>The default implementation is :
      * <code>
      *    response.setContentType(getVelocityView().getDefaultContentType());
      * </code>
@@ -290,24 +289,7 @@ public class VelocityViewServlet extends HttpServlet
     protected void setContentType(HttpServletRequest request,
                                   HttpServletResponse response)
     {
-        String contentType = null;
-        String uri = request.getRequestURI();
-        int dot = uri.lastIndexOf('.');
-        if (dot != -1)
-        {
-            String extension = uri.substring(dot + 1);
-            contentType = ServletUtils.getMimeTypeFromExtension(extension);
-        }
-        if (contentType == null)
-        {
-            contentType = getVelocityView().getDefaultContentType();
-        }
-        else
-        {
-            // append charset
-            contentType += ";charset=" + getVelocityView().getEncoding();
-        }
-        response.setContentType(contentType);
+        response.setContentType(getVelocityView().getDefaultContentType());
     }
 
     protected Template getTemplate(HttpServletRequest request,
