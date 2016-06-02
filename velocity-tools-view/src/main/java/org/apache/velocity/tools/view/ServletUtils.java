@@ -25,6 +25,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -347,13 +349,6 @@ public class ServletUtils
     public static FactoryConfiguration getConfiguration(String path,
                                                         ServletContext application)
     {
-        return getConfiguration(path, application, path.endsWith("toolbox.xml"));
-    }
-
-    public static FactoryConfiguration getConfiguration(String path,
-                                                        ServletContext application,
-                                                        boolean deprecationSupportMode)
-    {
         // first make sure we can even get such a file
         InputStream inputStream = getInputStream(path, application);
         if (inputStream == null)
@@ -363,10 +358,10 @@ public class ServletUtils
 
         // then make sure it's a file type we recognize
         FileFactoryConfiguration config = null;
-        String source = "ServletUtils.getConfiguration("+path+",ServletContext[,depMode="+deprecationSupportMode+"])";
+        String source = "ServletUtils.getConfiguration("+path+")";
         if (path.endsWith(".xml"))
         {
-            config = new XmlFactoryConfiguration(deprecationSupportMode, source);
+            config = new XmlFactoryConfiguration(source);
         }
         else if (path.endsWith(".properties"))
         {
@@ -436,6 +431,42 @@ public class ServletUtils
 
     private static class SessionMutex implements java.io.Serializable
     {
+    }
+
+    private static Map<String,String> mimeTypesMap = null;
+
+    static
+    {
+        // limit ourselves to text mime types, with "vtl" and "vhtml" extensions
+        mimeTypesMap = new HashMap<String,String>();
+        mimeTypesMap.put("cal", "text/calendar");
+        mimeTypesMap.put("css", "text/css");
+        mimeTypesMap.put("csv", "text/csv");
+        mimeTypesMap.put("html", "text/html");
+        mimeTypesMap.put("html4", "text/html");
+        mimeTypesMap.put("html5", "text/html");
+        mimeTypesMap.put("json", "application/json");
+        mimeTypesMap.put("js", "text/javascript");
+        mimeTypesMap.put("jsp", "text/html");
+        mimeTypesMap.put("md", "text/markdown");
+        mimeTypesMap.put("php", "text/html");
+        mimeTypesMap.put("ps", "application/postscript");
+        mimeTypesMap.put("rss", "application/rss+xml");
+        mimeTypesMap.put("rtf", "text/rtf");
+        mimeTypesMap.put("sgml", "text/sgml");
+        mimeTypesMap.put("svg", "image/svg+xml");
+        mimeTypesMap.put("tsv", "text/tab-separated-values");
+        mimeTypesMap.put("txt", "text/plain");
+        mimeTypesMap.put("vhtml", "text/html");
+        mimeTypesMap.put("vtl", "text/html");
+        mimeTypesMap.put("xhtml", "text/html");
+        mimeTypesMap.put("xml", "text/xml");
+        mimeTypesMap.put("xslt", "application/xstl+xml");
+    }
+
+    public static String getMimeTypeFromExtension(String extension)
+    {
+        return mimeTypesMap.get(extension);
     }
 
 }
