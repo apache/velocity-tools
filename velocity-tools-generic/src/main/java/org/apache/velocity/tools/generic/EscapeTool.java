@@ -19,14 +19,15 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.io.UnsupportedEncodingException;
 import org.apache.velocity.shaded.commons.lang3.StringEscapeUtils;
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
- * Tool for working with escaping in Velocity templates.
- * It provides methods to escape outputs for Velocity, Java, JavaScript, HTML, HTTP, XML and SQL.
+ * Tool for working with escaping and unescaping in Velocity templates.
+ * It provides methods to escape or unescape outputs for Velocity, Java, JavaScript, HTML, HTTP, XML and SQL.
  * Also provides methods to render VTL characters that otherwise needs escaping.
  *
  * <p><pre>
@@ -36,21 +37,27 @@ import org.apache.velocity.tools.config.DefaultKey;
  *
  *  $java                        -> He didn't say, "Stop!"
  *  $esc.java($java)             -> He didn't say, \"Stop!\"
+ *  $esc.unjava($esc($java))     -> He didn't say, "Stop!"
  *
  *  $javascript                  -> He didn't say, "Stop!"
  *  $esc.javascript($javascript) -> He didn\'t say, \"Stop!\"
+ *  $esc.unjavascript($esc.javascript($javascript)) -> He didn't say, "Stop!"
  *
  *  $html                        -> "bread" & "butter"
  *  $esc.html($html)             -> &amp;quot;bread&amp;quot; &amp;amp; &amp;quot;butter&amp;quot;
+ *  $esc.unhtml($esc.html($html))  -> "bread" & "butter"
  *
  *  $xml                         -> "bread" & "butter"
  *  $esc.xml($xml)               -> &amp;quot;bread&amp;quot; &amp;amp; &amp;quot;butter&amp;quot;
+ *  $esc.unxml($esc.xml($xml))   -> "bread" & "butter"
  *
  *  $sql                         -> McHale's Navy
  *  $esc.sql($sql)               -> McHale''s Navy
+ *  $esc.sql($esc.unsql($sqlà))  -> McHale''s Navy
  *
  *  $url                         -> hello here & there
- *  $esc.url                     -> hello+here+%26+there
+ *  $esc.url($url)               -> hello+here+%26+there
+ *  $esc.unurl($esc.url($url))   -> hello+here+%26+there
  *
  *  $esc.dollar                  -> $
  *  $esc.d                       -> $
@@ -190,6 +197,27 @@ public class EscapeTool extends SafeConfig
         }
         return StringEscapeUtils.escapeJava(String.valueOf(string));
     }
+
+    /**
+     * Unescapes the characters in a <code>String</code> using Java String rules.
+     * <br />
+     * Delegates the process to {@link StringEscapeUtils#unescapeJava(String)}.
+     *
+     * @param string the string to unescape values, may be null
+     * @return String with unescaped values, <code>null</code> if null string input
+     *
+     * @see StringEscapeUtils#unescapeJava(String)
+     * @since VelocityTools 3.0
+     */
+    public String unjava(Object string)
+    {
+        if (string == null)
+        {
+            return null;
+        }
+        return StringEscapeUtils.unescapeJava(String.valueOf(string));
+    }
+    
     
     /**
      * Escapes the characters in a <code>String</code> using java.util.Properties rules for escaping property keys.
@@ -272,12 +300,12 @@ public class EscapeTool extends SafeConfig
     /**
      * Escapes the characters in a <code>String</code> using JavaScript String rules.
      * <br />
-     * Delegates the process to {@link StringEscapeUtils#escapeJavaScript(String)}.
+     * Delegates the process to {@link StringEscapeUtils#escapeEcmaScript(String)}.
      *
      * @param string the string to escape values, may be null
      * @return String with escaped values, <code>null</code> if null string input
      *
-     * @see StringEscapeUtils#escapeJavaScript(String)
+     * @see StringEscapeUtils#escapeEcmaScript(String)
      */
     public String javascript(Object string)
     {
@@ -289,9 +317,29 @@ public class EscapeTool extends SafeConfig
     }
 
     /**
+     * Unescapes the characters in a <code>String</code> using JavaScript String rules.
+     * <br />
+     * Delegates the process to {@link StringEscapeUtils#unescapeEcmaScript(String)}.
+     *
+     * @param string the string to unescape, may be null
+     * @return unescaped String, <code>null</code> if null string input
+     *
+     * @see StringEscapeUtils#unescapeEcmaScript(String)
+     * @since VelocityTools 3.0
+     */
+    public String unjavascript(Object string)
+    {
+        if (string == null)
+        {
+            return null;
+        }
+        return StringEscapeUtils.unescapeEcmaScript(String.valueOf(string));
+    }
+
+    /**
      * Escapes the characters in a <code>String</code> using HTML entities.
      * <br />
-     * Delegates the process to {@link StringEscapeUtils#escapeHtml(String)}.
+     * Delegates the process to {@link StringEscapeUtils#escapeHtml4(String)}.
      *
      * @param string the string to escape, may be null
      * @return a new escaped <code>String</code>, <code>null</code> if null string input
@@ -305,6 +353,26 @@ public class EscapeTool extends SafeConfig
             return null;
         }
         return StringEscapeUtils.escapeHtml4(String.valueOf(string));
+    }
+
+    /**
+     * Unescapes the characters in a <code>String</code> encoded with HTML entities.
+     * <br />
+     * Delegates the process to {@link StringEscapeUtils#unescapeHtml4(String)}.
+     *
+     * @param string the string to unescape, may be null
+     * @return a new unescaped <code>String</code>, <code>null</code> if null string input
+     *
+     * @see StringEscapeUtils#unescapeHtml4(String)
+     * @since VelocityTools 3.0
+     */
+    public String unhtml(Object string)
+    {
+        if (string == null)
+        {
+            return null;
+        }
+        return StringEscapeUtils.unescapeHtml4(String.valueOf(string));
     }
 
     /**
@@ -323,6 +391,27 @@ public class EscapeTool extends SafeConfig
         }
         try {
             return URLEncoder.encode(String.valueOf(string),"UTF-8");
+        } catch(UnsupportedEncodingException uee) {
+            return null;
+        }
+    }
+
+    /**
+     * Unscape the characters in a <code>String</code> encoded as an HTTP parameter value.
+     * <br/>
+     * Uses UTF-8 as default character encoding.
+     * @param string the string to unescape, may be null
+     * @return a new unescaped <code>String</code>, <code>null</code> if null string input
+     *
+     * @see java.net.URLDecoder#decode(String,String).
+     * @since VelocityTools 3.0
+     */
+    public String unurl(Object string) {
+        if (string == null) {
+            return null;
+        }
+        try {
+            return URLDecoder.decode(String.valueOf(string),"UTF-8");
         } catch(UnsupportedEncodingException uee) {
             return null;
         }
@@ -348,16 +437,53 @@ public class EscapeTool extends SafeConfig
     }
 
     /**
+     * Unescapes the characters in a <code>String</code> encoded with XML entities.
+     * <br />
+     * Delegates the process to {@link StringEscapeUtils#escapeXml(String)}.
+     *
+     * @param string the string to unescape, may be null
+     * @return a new unescaped <code>String</code>, <code>null</code> if null string input
+     *
+     * @see StringEscapeUtils#unescapeXml(String)
+     * @since VelocityTools 3.0
+     */
+    public String unxml(Object string)
+    {
+        if (string == null)
+        {
+            return null;
+        }
+        return StringEscapeUtils.unescapeXml(String.valueOf(string));
+    }
+
+    /**
      * Escapes the characters in a <code>String</code> to be suitable to pass to an SQL query.
      * <br />
-     * Delegates the process to {@link StringEscapeUtils#escapeSql(String)}.
      *
      * @param string the string to escape, may be null
      * @return a new String, escaped for SQL, <code>null</code> if null string input
      *
-     * @see StringEscapeUtils#escapeSql(String)
      */
     public String sql(Object string)
+    {
+        if (string == null)
+        {
+            return null;
+        }
+        return String.valueOf(string).replace("'", "''");
+    }
+
+    /**
+     * Unescapes the characters in a <code>String</code> already encoded for use in a SQL query.
+     * <br />
+     * Delegates the process to {@link StringEscapeUtils#escapeSql(String)}.
+     *
+     * @param string the string to escape, may be null
+     * @return a new unescaped String, <code>null</code> if null string input
+     * @since VelocityTools 3.0
+     *
+     */
+    public String unsql(Object string)
     {
         if (string == null)
         {
