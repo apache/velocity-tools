@@ -28,9 +28,10 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.apache.commons.digester.RuleSet;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.tools.view.ToolInfo;
 import org.apache.velocity.tools.view.XMLToolboxManager;
 import org.apache.velocity.tools.view.context.ViewContext;
@@ -101,7 +102,7 @@ public class ServletToolboxManager extends XMLToolboxManager
     public static final String SESSION_TOOLS_KEY =
         ServletToolboxManager.class.getName() + ":session-tools";
 
-    protected static final Log LOG = LogFactory.getLog(ServletToolboxManager.class);
+    protected static final Logger LOG = LoggerFactory.getLogger(ServletToolboxManager.class);
 
     private ServletContext servletContext;
     private Map appTools;
@@ -167,7 +168,7 @@ public class ServletToolboxManager extends XMLToolboxManager
 
                 if (is != null)
                 {
-                    LOG.info("Using config file '" + toolboxFile + "'");
+                    LOG.info("Using config file '{}'", toolboxFile);
 
                     toolboxManager = new ServletToolboxManager(servletContext);
                     toolboxManager.load(is);
@@ -179,12 +180,12 @@ public class ServletToolboxManager extends XMLToolboxManager
                 }
                 else
                 {
-                    LOG.debug("No toolbox was found at '" + toolboxFile + "'");
+                    LOG.debug("No toolbox was found at '{}'", toolboxFile);
                 }
             }
             catch(Exception e)
             {
-                LOG.error("Problem loading toolbox '" + toolboxFile + "'", e);
+                LOG.error("Problem loading toolbox '{}'", toolboxFile, e);
             }
             finally
             {
@@ -222,7 +223,7 @@ public class ServletToolboxManager extends XMLToolboxManager
     public void setCreateSession(boolean b)
     {
         createSession = b;
-        LOG.debug("create-session is set to " + b);
+        LOG.debug("create-session is set to {} ", b);
     }
 
 
@@ -236,7 +237,7 @@ public class ServletToolboxManager extends XMLToolboxManager
     public void setXhtml(Boolean value)
     {
         servletContext.setAttribute(ViewContext.XHTML, value);
-        LOG.info(ViewContext.XHTML + " is set to " + value);
+        LOG.info("{} is set to {}", ViewContext.XHTML, value);
     }
 
 
@@ -291,7 +292,7 @@ public class ServletToolboxManager extends XMLToolboxManager
             if (sti.getRequestPath() != null &&
                 !ViewContext.REQUEST.equalsIgnoreCase(sti.getScope()))
             {
-                LOG.error(sti.getKey() + " must be a request-scoped tool to have a request path restriction!");
+                LOG.error("{} must be a request-scoped tool to have a request path restriction!", sti.getKey());
                 return false;
             }
         }
@@ -330,8 +331,7 @@ public class ServletToolboxManager extends XMLToolboxManager
                 }
                 else
                 {
-                    LOG.warn("Unknown scope '" + sti.getScope() + "' - " +
-                            sti.getKey() + " will be request scoped.");
+                    LOG.warn("Unknown scope '{}' - {} will be request scoped.", sti.getScope(), sti.getKey());
 
                     //default is request scope
                     requestToolInfo.add(info);

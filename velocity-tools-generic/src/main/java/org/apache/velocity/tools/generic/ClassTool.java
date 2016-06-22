@@ -131,7 +131,7 @@ public class ClassTool extends SafeConfig
         {
             if (this.log != null)
             {
-                this.log.error("Could not load Class for "+name);
+                this.log.error("Could not load Class for {}", name);
             }
             return null;
         }

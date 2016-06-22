@@ -40,13 +40,13 @@ import org.apache.velocity.tools.config.DefaultKey;
  * </p>
  * <p><pre>
  * Example uses:
- *  $primes                    -> new int[] {2, 3, 5, 7}
- *  $lists.size($primes)        -> 4
- *  $lists.get($primes, 2)      -> 5
- *  $lists.set($primes, 2, 1)   -> (primes[2] becomes 1)
- *  $lists.get($primes, 2)      -> 1
- *  $lists.isEmpty($primes)     -> false
- *  $lists.contains($primes, 7) -> true
+ *  $primes                     -&gt; new int[] {2, 3, 5, 7}
+ *  $lists.size($primes)        -&gt; 4
+ *  $lists.get($primes, 2)      -&gt; 5
+ *  $lists.set($primes, 2, 1)   -&gt; (primes[2] becomes 1)
+ *  $lists.get($primes, 2)      -&gt; 1
+ *  $lists.isEmpty($primes)     -&gt; false
+ *  $lists.contains($primes, 7) -&gt; true
  *
  * Example tools.xml config (if you want to use this with VelocityView):
  * &lt;tools&gt;

@@ -154,7 +154,7 @@ public class TilesTool extends ImportSupport
         }
         catch (Exception e)
         {
-            LOG.error("TilesTool : Exeption while rendering Tile " + obj, e);
+            LOG.error("TilesTool : Exeption while rendering Tile {}", obj, e);
 
             /* delegate exception handling to an EventHandler if present. */
             if (!this.catchExceptions) {
@@ -179,7 +179,7 @@ public class TilesTool extends ImportSupport
         Object value = getCurrentContext().getAttribute(name);
         if (value == null)
         {
-            LOG.warn("TilesTool : Tile attribute '" + name + "' wasn't found in context.");
+            LOG.warn("TilesTool : Tile attribute '{}' wasn't found in context.", name);
         }
         return value;
     }
@@ -213,7 +213,7 @@ public class TilesTool extends ImportSupport
         Object value = getCurrentContext().getAttribute(name);
         if (value == null)
         {
-            LOG.warn("TilesTool : Tile attribute '" + name + "' wasn't found in context.");
+            LOG.warn("TilesTool : Tile attribute '{}' wasn't found in context.", name);
         }
 
         if (scope.equals(PAGE_SCOPE))

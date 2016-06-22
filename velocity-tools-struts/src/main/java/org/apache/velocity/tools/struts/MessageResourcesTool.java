@@ -110,7 +110,7 @@ public abstract class MessageResourcesTool
             StrutsUtils.getMessageResources(request, application, bundle);
         if (res == null)
         {
-            LOG.error("MessageResourcesTool : MessageResources bundle '" + bundle + "' is not available.");
+            LOG.error("MessageResourcesTool : MessageResources bundle '{}' is not available.", bundle);
         }
         return res;
     }

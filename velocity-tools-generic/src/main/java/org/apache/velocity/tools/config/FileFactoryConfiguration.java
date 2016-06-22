@@ -84,7 +84,7 @@ public abstract class FileFactoryConfiguration extends FactoryConfiguration
         }
         if (log != null && log.isTraceEnabled())
         {
-            log.trace("Attempting to read configuration file at: "+path);
+            log.trace("Attempting to read configuration file at: {}", path);
         }
 
         URL url = findURL(path);
@@ -166,7 +166,7 @@ public abstract class FileFactoryConfiguration extends FactoryConfiguration
             {
                 if (log != null)
                 {
-                    log.error("Failed to close input stream for "+source, ioe);
+                    log.error("Failed to close input stream for {}", source, ioe);
                 }
             }
         }

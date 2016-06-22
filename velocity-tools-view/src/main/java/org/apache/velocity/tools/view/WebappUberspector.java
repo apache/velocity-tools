@@ -164,7 +164,7 @@ public class WebappUberspector extends AbstractChainableUberspector
             }
             catch(Exception e)
             {
-                log.error("While looking for getAttribute('" + params[0] + "') method:", e);
+                log.error("While looking for getAttribute('{}') method:", params[0], e);
             }
         }
 
@@ -224,7 +224,7 @@ public class WebappUberspector extends AbstractChainableUberspector
             }
             catch(Exception e)
             {
-                log.error("While looking for put('" + params[0] + "') method:", e);
+                log.error("While looking for put('{}') method:", params[0], e);
             }
         }
 

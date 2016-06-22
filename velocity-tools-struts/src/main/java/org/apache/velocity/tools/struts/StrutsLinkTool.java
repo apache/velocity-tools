@@ -116,8 +116,9 @@ public class StrutsLinkTool extends LinkTool
             StrutsUtils.getActionMappingURL(application, request, action);
         if (url == null)
         {
-            debug("StrutsLinkTool : In method setAction("+action+
-                  "): Parameter does not map to a valid action.");
+            LOG.debug("StrutsLinkTool : In method setAction({}): " +
+                      "Parameter does not map to a valid action."
+                      , action);
             return null;
         }
         return (StrutsLinkTool)absolute(url);
@@ -157,8 +158,8 @@ public class StrutsLinkTool extends LinkTool
         String url = StrutsUtils.getForwardURL(request, application, forward);
         if (url == null)
         {
-            debug("StrutsLinkTool : In method setForward(" + forward +
-                  "): Parameter does not map to a valid forward.");
+            LOG.debug("StrutsLinkTool : In method setForward({}): " +
+                      "): Parameter does not map to a valid forward.", forward);
             return null;
         }
         return (StrutsLinkTool)absolute(url);

@@ -121,7 +121,7 @@ public class ViewToolManager extends ToolManager
     {
         if (publish != this.publishToolboxes)
         {
-            debug("Publish toolboxes setting was changed to %s", publish);
+            getLog().debug("Publish toolboxes setting was changed to {}", publish);
             this.publishToolboxes = publish;
         }
     }
@@ -146,7 +146,7 @@ public class ViewToolManager extends ToolManager
         {
             this.toolboxKey = key;
             unpublishApplicationTools();
-            debug("Toolbox key was changed to %s", key);
+            getLog().debug("Toolbox key was changed to {}", key);
         }
     }
 
@@ -165,7 +165,7 @@ public class ViewToolManager extends ToolManager
     {
         if (create != this.createSession)
         {
-            debug("Create session setting was changed to %s", create);
+            getLog().debug("Create session setting was changed to {}", create);
             this.createSession = create;
         }
     }
@@ -251,7 +251,7 @@ public class ViewToolManager extends ToolManager
     {
         ToolContext context = super.createContext(toolProps);
         context.putToolProperty(ViewContext.SERVLET_CONTEXT_KEY, servletContext);
-        debug("Non-ViewToolContext was requested from ViewToolManager.");
+        getLog().debug("Non-ViewToolContext was requested from ViewToolManager.");
         return context;
     }
 

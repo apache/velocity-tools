@@ -30,8 +30,8 @@ import java.util.Map;
 
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RuleSet;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -81,7 +81,7 @@ import org.apache.commons.logging.LogFactory;
 @Deprecated
 public class XMLToolboxManager implements ToolboxManager
 {
-    protected static final Log LOG = LogFactory.getLog(XMLToolboxManager.class);
+    protected static final Logger LOG = LoggerFactory.getLogger(XMLToolboxManager.class);
 
     private List toolinfo;
     private Map data;
@@ -110,10 +110,7 @@ public class XMLToolboxManager implements ToolboxManager
         if (validateToolInfo(info))
         {
             toolinfo.add(info);
-            if (LOG.isDebugEnabled())
-            {
-                LOG.debug("Added "+info.getClassname()+" to the toolbox as "+info.getKey());
-            }
+            LOG.debug("Added {} to the toolbox as {}", info.getClassname(), info.getKey());
         }
     }
 
@@ -122,10 +119,7 @@ public class XMLToolboxManager implements ToolboxManager
         if (validateToolInfo(info))
         {
             data.put(info.getKey(), info.getInstance(null));
-            if (LOG.isDebugEnabled())
-            {
-                LOG.debug("Added '"+info.getInstance(null)+"' to the toolbox as "+info.getKey());
-            }
+            LOG.debug("Added '{}' to the toolbox as {}", info.getInstance(null), info.getKey());
         }
     }
 
@@ -151,7 +145,7 @@ public class XMLToolboxManager implements ToolboxManager
         }
         if (info.getClassname() == null)
         {
-            LOG.error("Tool " + info.getKey() + " has no Class definition!");
+            LOG.error("Tool {} has no Class definition!", info.getKey());
             return false;
         }
         return true;

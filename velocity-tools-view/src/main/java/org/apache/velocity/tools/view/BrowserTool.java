@@ -1157,7 +1157,7 @@ public class BrowserTool extends FormatConfig implements java.io.Serializable
                 }
                 catch (NumberFormatException nfe)
                 {
-                    LOG.error("BrowserTool: Could not parse browser version for User-Agent: "+userAgent,nfe);
+                    LOG.error("BrowserTool: Could not parse browser version for User-Agent: {}", userAgent, nfe);
                 }
             }
 
@@ -1183,7 +1183,7 @@ public class BrowserTool extends FormatConfig implements java.io.Serializable
                     }
                     catch (NumberFormatException nfe)
                     {
-                        LOG.error("BrowserTool: Could not parse browser version for User-Agent: "+userAgent,nfe);
+                        LOG.error("BrowserTool: Could not parse browser version for User-Agent: {}", userAgent, nfe);
                     }
                 }
             }
@@ -1211,7 +1211,7 @@ public class BrowserTool extends FormatConfig implements java.io.Serializable
                     }
                     catch (NumberFormatException nfe)
                     {
-                        LOG.error("BrowserTool: Could not parse browser version for User-Agent: "+userAgent,nfe);
+                        LOG.error("BrowserTool: Could not parse browser version for User-Agent: {}", userAgent, nfe);
                     }
                 }
             }
@@ -1231,7 +1231,7 @@ public class BrowserTool extends FormatConfig implements java.io.Serializable
                     }
                     catch (NumberFormatException nfe)
                     {
-                        LOG.error("BrowserTool: Could not parse browser version for User-Agent: "+userAgent,nfe);
+                        LOG.error("BrowserTool: Could not parse browser version for User-Agent: {}", userAgent, nfe);
                     }
                 }
             }
@@ -1258,7 +1258,7 @@ public class BrowserTool extends FormatConfig implements java.io.Serializable
                     }
                     catch (NumberFormatException nfe)
                     {
-                        LOG.error("BrowserTool: Could not parse browser version for User-Agent: "+userAgent,nfe);
+                        LOG.error("BrowserTool: Could not parse browser version for User-Agent: {}", userAgent, nfe);
                     }
                 }
             }
@@ -1277,7 +1277,7 @@ public class BrowserTool extends FormatConfig implements java.io.Serializable
                     }
                     catch (NumberFormatException nfe)
                     {
-                        LOG.error("BrowserTool: Could not parse browser version for User-Agent: "+userAgent,nfe);
+                        LOG.error("BrowserTool: Could not parse browser version for User-Agent: {}", userAgent, nfe);
                     }
                 }
             }
@@ -1306,14 +1306,14 @@ public class BrowserTool extends FormatConfig implements java.io.Serializable
                     }
                     catch (NumberFormatException nfe)
                     {
-                        LOG.error("BrowserTool: Could not parse browser version for User-Agent: "+userAgent,nfe);
+                        LOG.error("BrowserTool: Could not parse browser version for User-Agent: {}", userAgent, nfe);
                     }
                 }
             }
         }
         catch (PatternSyntaxException pse)
         {
-            LOG.error("BrowserTool: Could not parse browser version for User-Agent: "+userAgent,pse);
+            LOG.error("BrowserTool: Could not parse browser version for User-Agent: {}", userAgent, pse);
         }
     }
 
@@ -1366,7 +1366,7 @@ public class BrowserTool extends FormatConfig implements java.io.Serializable
                     }
                     else
                     {
-                        LOG.error("BrowserTool: could not parse language quality value: "+language);
+                        LOG.error("BrowserTool: could not parse language quality value: {}", language);
                     }
                 }
             }

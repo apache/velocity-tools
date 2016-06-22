@@ -1,5 +1,7 @@
 package org.apache.velocity.tools.config;
 
+import org.slf4j.Logger;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -27,21 +29,24 @@ import java.util.Iterator;
  * @author Nathan Bubna
  * @version $Id: Configuration.java 511959 2007-02-26 19:24:39Z nbubna $
  */
-public class ConfigurationCleaner extends LogSupport
+public class ConfigurationCleaner
 {
-    private static final String LOG_PREFIX = "ConfigurationCleaner : ";
+    private Logger LOG = null;
 
-    @Override
-    protected String logPrefix()
+    public void setLog(Logger log)
     {
-        return LOG_PREFIX;
+        if (log == null)
+        {
+            throw new NullPointerException("log should not be set to null");
+        }
+        LOG = log;
     }
 
     public void clean(FactoryConfiguration factory)
     {
-        if (isTraceEnabled())
+        if (LOG != null)
         {
-            trace("Cleaning factory: "+factory);
+            LOG.trace("ConfigurationCleaner : Cleaning factory: {}", factory);
         }
 
         cleanProperties(factory);
@@ -57,13 +62,10 @@ public class ConfigurationCleaner extends LogSupport
             }
             catch (ConfigurationException ce)
             {
-                if (isDebugEnabled())
+                if (LOG != null)
                 {
-                    debug(ce.getMessage());
-                }
-                if (isWarnEnabled())
-                {
-                    warn("Removing "+datum);
+                    LOG.debug("ConfigurationCleaner : ", ce);
+                    LOG.warn("ConfigurationCleaner : Removing {}", datum);
                 }
                 i.remove();
             }
@@ -92,13 +94,10 @@ public class ConfigurationCleaner extends LogSupport
             }
             catch (ConfigurationException ce)
             {
-                if (isDebugEnabled())
+                if (LOG != null)
                 {
-                    debug(ce.getMessage());
-                }
-                if (isWarnEnabled())
-                {
-                    warn("Removing "+tool);
+                    LOG.debug("ConfigurationCleaner : ", ce);
+                    LOG.warn("ConfigurationCleaner : Removing {}", tool);
                 }
                 i.remove();
             }
@@ -137,13 +136,10 @@ public class ConfigurationCleaner extends LogSupport
             }
             catch (ConfigurationException ce)
             {
-                if (isDebugEnabled())
+                if (LOG != null)
                 {
-                    debug(ce.getMessage());
-                }
-                if (isWarnEnabled())
-                {
-                    warn("Removing "+prop);
+                    LOG.debug("ConfigurationCleaner : ", ce);
+                    LOG.warn("ConfigurationCleaner : Removing {}", prop);
                 }
                 i.remove();
             }

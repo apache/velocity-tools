@@ -241,8 +241,7 @@ public abstract class AbstractSearchTool extends PagerTool
             {
                 if (LOG != null)
                 {
-                    LOG.error("AbstractSearchTool: executeQuery(" + findMe +
-                              ") failed", t);
+                    LOG.error("AbstractSearchTool: executeQuery({}) failed", findMe, t);
                 }
             }
 
