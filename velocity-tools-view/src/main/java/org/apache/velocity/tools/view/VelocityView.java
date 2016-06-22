@@ -220,7 +220,7 @@ public class VelocityView extends ViewToolManager
         if (deprecationSupportMode != support)
         {
             this.deprecationSupportMode = support;
-            debug("deprecationSupportMode is now %s", (support ? "on" : "off"));
+            getLog().debug("deprecationSupportMode is now {}", (support ? "on" : "off"));
         }
     }
 
@@ -253,7 +253,7 @@ public class VelocityView extends ViewToolManager
         if (!defaultContentType.equals(type))
         {
             this.defaultContentType = type;
-            debug("Default Content-Type was changed to %s", type);
+            getLog().debug("Default Content-Type was changed to {}", type);
         }
     }
 
@@ -398,7 +398,7 @@ public class VelocityView extends ViewToolManager
             return false;
         }
 
-        debug("Configuring Velocity with properties at: %s", path);
+        getLog().debug("Configuring Velocity with properties at: {}", path);
 
         // these props will override those already set
         velocity.setExtendedProperties(props);
@@ -457,7 +457,7 @@ public class VelocityView extends ViewToolManager
         else
         {
             // let the user know that the defaults were suppressed
-            debug("Default tools configuration has been suppressed%s",
+            getLog().debug("Default tools configuration has been suppressed{}",
                   (hasOldToolbox ?
                    " to avoid conflicts with older application's context and toolbox definition." :
                    "."));
@@ -486,7 +486,7 @@ public class VelocityView extends ViewToolManager
         FactoryConfiguration injected = ServletUtils.getConfiguration(servletContext);
         if (injected != null)
         {
-            debug("Adding configuration instance in servletContext attributes as '%s'", TOOLS_KEY);
+            getLog().debug("Adding configuration instance in servletContext attributes as '{}'", TOOLS_KEY);
             factoryConfig.addConfiguration(injected);
         }
 
@@ -501,7 +501,7 @@ public class VelocityView extends ViewToolManager
         }
 
         // apply this configuration to the specified factory
-        debug("Configuring factory with: %s", factoryConfig);
+        getLog().debug("Configuring factory with: {}", factoryConfig);
         configure(factoryConfig);
     }
 
@@ -536,7 +536,7 @@ public class VelocityView extends ViewToolManager
 
         if (toolbox != null)
         {
-            debug("Loaded deprecated configuration from: %s", oldPath);
+            getLog().debug("Loaded deprecated configuration from: {}", oldPath);
             getLog().warn("Please upgrade to new \"/WEB-INF/tools.xml\" format and conventional location."+
                           " Support for \"/WEB-INF/toolbox.xml\" format and conventional file name will "+
                           "be removed in a future version.");
@@ -561,7 +561,7 @@ public class VelocityView extends ViewToolManager
             return false;
         }
 
-        debug("Loaded configuration from: %s", path);
+        getLog().debug("Loaded configuration from: {}", path);
         factory.addConfiguration(config);
 
         // notify that new config was added
@@ -583,7 +583,10 @@ public class VelocityView extends ViewToolManager
                 getLog().error(msg);
                 throw new ResourceNotFoundException(msg);
             }
-            debug(msg);
+            else
+            {
+                getLog().debug(msg);
+            }
             return null;
         }
         return inputStream;
@@ -599,7 +602,7 @@ public class VelocityView extends ViewToolManager
     {
         if (getLog().isTraceEnabled())
         {
-            getLog().trace("Searching for properties at: "+path);
+            getLog().trace("Searching for properties at {} ", path);
         }
 
         InputStream inputStream = getInputStream(path, required);
@@ -633,7 +636,7 @@ public class VelocityView extends ViewToolManager
             }
             catch (IOException ioe)
             {
-                getLog().error("Failed to close input stream for "+path, ioe);
+                getLog().error("Failed to close input stream for {}", path, ioe);
             }
         }
         return properties;
@@ -649,7 +652,7 @@ public class VelocityView extends ViewToolManager
     {
         if (getLog().isTraceEnabled())
         {
-            getLog().trace("Searching for configuration at: "+path);
+            getLog().trace("Searching for configuration at: {}", path);
         }
 
         FactoryConfiguration config = null;
@@ -668,7 +671,7 @@ public class VelocityView extends ViewToolManager
                 }
                 else
                 {
-                    debug(msg);
+                    getLog().debug(msg);
                 }
             }
         }
@@ -684,7 +687,10 @@ public class VelocityView extends ViewToolManager
                 getLog().error(re.getMessage(), re);
                 throw re;
             }
-            getLog().debug(re.getMessage(), re);
+            else
+            {
+                getLog().debug(re.getMessage(), re);
+            }
         }
         return config;
     }
@@ -719,7 +725,7 @@ public class VelocityView extends ViewToolManager
             }
         }
 
-        debug("Default Content-Type is: %s", defaultContentType);
+        getLog().debug("Default Content-Type is: {}", defaultContentType);
     }
 
 
@@ -924,8 +930,7 @@ public class VelocityView extends ViewToolManager
                 }
                 catch (Exception e)
                 {
-                    getLog().error("Trouble releasing VelocityWriter: " +
-                                   e.getMessage(), e);
+                    getLog().error("Trouble releasing VelocityWriter: ", e);
                 }
             }
         }

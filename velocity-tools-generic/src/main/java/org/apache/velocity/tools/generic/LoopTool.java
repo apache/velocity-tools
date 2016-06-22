@@ -95,7 +95,7 @@ public class LoopTool
     private Stack<ManagedIterator> iterators = new Stack<ManagedIterator>();
     private ManagedIterator last;
     private Map<String,Object> lastSyncedValues;
-
+    
     /**
      * <p>Tells the LoopTool to watch the specified Array, Collection, Map,
      * Iterator, Iterable, Enumeration or POJO with an iterator() method

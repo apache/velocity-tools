@@ -262,8 +262,7 @@ public class ActionMessagesTool extends MessageResourcesTool
 
                 if (message == null)
                 {
-                    LOG.warn("ActionMessagesTool : Message for key " + msg.getKey() +
-                             " could not be found in message resources.");
+                    LOG.warn("ActionMessagesTool : Message for key {} could not be found in message resources.", msg.getKey());
                 }
             }
 

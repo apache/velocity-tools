@@ -147,9 +147,9 @@ public class VelocityLayoutServlet extends VelocityViewServlet
         }
 
         // log the current settings
-        getLog().info("VelocityLayoutServlet: Error screen is '"+errorTemplate+"'");
-        getLog().info("VelocityLayoutServlet: Layout directory is '"+layoutDir+"'");
-        getLog().info("VelocityLayoutServlet: Default layout template is '"+defaultLayout+"'");
+        getLog().info("VelocityLayoutServlet: Error screen is '{}'", errorTemplate);
+        getLog().info("VelocityLayoutServlet: Layout directory is '{}'", layoutDir);
+        getLog().info("VelocityLayoutServlet: Default layout template is '{}'", defaultLayout);
 
         // for efficiency's sake, make defaultLayout a full path now
         defaultLayout = layoutDir + defaultLayout;
@@ -232,7 +232,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
         }
         catch (Exception e)
         {
-            getLog().error("Can't load layout \"" + layout + "\"", e);
+            getLog().error("Can't load layout \"{}\"", layout, e);
 
             // if it was an alternate layout we couldn't get...
             if (!layout.equals(defaultLayout))

@@ -22,6 +22,7 @@ package org.apache.velocity.tools;
 import java.util.Map;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.tools.Scope;
@@ -131,7 +132,7 @@ public class ToolManager
             {
                 throw new NullPointerException("ToolboxFactory cannot be null");
             }
-            debug("ToolboxFactory instance was changed to %s", factory);
+            getLog().debug("ToolboxFactory instance was changed to {}", factory);
             this.factory = factory;
         }
     }
@@ -145,7 +146,7 @@ public class ToolManager
     {
         if (velocity != engine)
         {
-            debug("VelocityEngine instance was changed to %s", engine);
+            getLog().debug("VelocityEngine instance was changed to {}", engine);
             this.velocity = engine;
         }
     }
@@ -169,17 +170,11 @@ public class ToolManager
     {
         if (velocity == null)
         {
-            return null;
+            return LoggerFactory.getLogger(ToolManager.class);
         }
-        return velocity.getLog();
-    }
-
-    protected final void debug(String msg, Object... args)
-    {
-        Logger log = getLog();
-        if (log != null && log.isDebugEnabled())
+        else
         {
-            log.debug(String.format(msg, args));
+            return velocity.getLog();
         }
     }
 

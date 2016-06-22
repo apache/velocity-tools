@@ -343,13 +343,13 @@ public class VelocityViewServlet extends HttpServlet
         if (response.isCommitted())
         {
             getLog().error("An error occured but the response headers have already been sent.");
-            getLog().error("Error processing a template for path '" + path + "'", e);
+            getLog().error("Error processing a template for path '{}'", path, e);
             return;
         }
 
         try
         {
-            getLog().error("Error processing a template for path '" + path + "'", e);
+            getLog().error("Error processing a template for path '{}'", path, e);
             StringBuilder html = new StringBuilder();
             html.append("<html>\n");
             html.append("<head><title>Error</title></head>\n");
@@ -411,10 +411,7 @@ public class VelocityViewServlet extends HttpServlet
             throws IOException
     {
         String path = ServletUtils.getPath(request);
-        if (getLog().isDebugEnabled())
-        {
-            getLog().debug("Resource not found for path '" + path + "'", e);
-        }
+        getLog().debug("Resource not found for path '{}'", path, e);
         String message = e.getMessage();
         if (!response.isCommitted() && path != null &&
             message != null && message.contains("'" + path + "'"))

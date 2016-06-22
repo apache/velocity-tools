@@ -80,7 +80,7 @@ public class XmlTool extends SafeConfig
 {
     public static final String FILE_KEY = "file";
 
-    protected Logger LOG;
+    protected Logger LOG = null;
 
     private List<Node> nodes;
 
@@ -136,14 +136,6 @@ public class XmlTool extends SafeConfig
         }
         this.nodes = new ArrayList<Node>(1);
         this.nodes.add(node);
-    }
-
-    private void log(Object o, Throwable t)
-    {
-        if (LOG != null)
-        {
-            LOG.debug("XmlTool - "+o, t);
-        }
     }
 
     /**
@@ -209,7 +201,10 @@ public class XmlTool extends SafeConfig
         }
         catch (Exception e)
         {
-            log("Failed to read XML from : "+o, e);
+            if (LOG != null)
+            {
+                LOG.debug("XmlTool - Failed to read XML from : {}", o, e);
+            }
             return null;
         }
     }
@@ -235,7 +230,10 @@ public class XmlTool extends SafeConfig
         }
         catch (Exception e)
         {
-            log("Failed to parse XML from : "+o, e);
+            if (LOG != null)
+            {
+                LOG.debug("XmlTool - Failed to parse XML from : {}", o, e);
+            }
             return null;
         }
     }

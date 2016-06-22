@@ -106,7 +106,7 @@ public class LinkTool extends SafeConfig implements Cloneable
     public static final String CHARSET_KEY = "charset";
     public static final String XHTML_MODE_KEY = "xhtml";
 
-    protected Logger LOG;
+    protected Logger LOG = null;
     protected String scheme;
     protected String user;
     protected String host;
@@ -142,22 +142,11 @@ public class LinkTool extends SafeConfig implements Cloneable
         self = this;
     }
 
-    protected final void debug(String msg, Object... args)
-    {
-        debug(msg, null, args);
-    }
-
-    protected final void debug(String msg, Throwable t, Object... args)
-    {
-        if (LOG != null && LOG.isDebugEnabled())
-        {
-            LOG.debug("LinkTool: "+String.format(msg, args), t);
-        }
-    }
-
-
     // --------------------------------------- Setup Methods -------------
 
+    /**
+     * Configuration
+     */
     protected void configure(ValueParser props)
     {
         this.LOG = (Logger)props.getValue(ToolContext.LOG_KEY);
@@ -367,7 +356,10 @@ public class LinkTool extends SafeConfig implements Cloneable
             }
             catch (NumberFormatException nfe)
             {
-                debug("Could not convert '%s' to int", nfe, obj);
+                if (LOG != null)
+                {
+                    LOG.debug("Could not convert '{}' to int", obj, nfe);
+                }
                 this.port = -2; // use this to mean error
             }
         }
@@ -922,7 +914,10 @@ public class LinkTool extends SafeConfig implements Cloneable
             }
             catch (Exception e)
             {
-                debug("Could not convert '%s' to URI", e, obj);
+                if (LOG != null)
+                {
+                    LOG.debug("Could not convert '{}' to URI", obj, e);
+                }
                 return null;
             }
         }
@@ -967,7 +962,10 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
         catch (Exception e)
         {
-            debug("Could not create URI", e);
+            if (LOG != null)
+            {
+                LOG.debug("Could not create URI", e);
+            }
         }
         return null;
     }
@@ -1759,7 +1757,10 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
         catch (UnsupportedEncodingException uee)
         {
-            debug("Character encoding '%s' is unsupported", uee, charset);
+            if (LOG != null)
+            {
+                LOG.debug("Character encoding '{}' is unsupported", charset, uee);
+            }
             return null;
         }
     }
@@ -1782,7 +1783,10 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
         catch (UnsupportedEncodingException uee)
         {
-            debug("Character encoding '%s' is unsupported", uee, charset);
+            if (LOG != null)
+            {
+                LOG.debug("Character encoding '{}' is unsupported", charset, uee);
+            }
             return null;
         }
     }

@@ -23,8 +23,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * ToolInfo implementation for view tools. New instances
@@ -42,7 +43,7 @@ import org.apache.commons.logging.LogFactory;
 @Deprecated
 public class ViewToolInfo implements ToolInfo
 {
-    protected static final Log LOG = LogFactory.getLog(ViewToolInfo.class);
+    protected static final Logger LOG = LoggerFactory.getLogger(ViewToolInfo.class);
 
     private String key;
     private Class clazz;
@@ -179,7 +180,7 @@ public class ViewToolInfo implements ToolInfo
     {
         if (clazz == null)
         {
-            LOG.error("Tool "+this.key+" has no Class definition!");
+            LOG.error("Tool {} has no Class definition!", key);
             return null;
         }
 
@@ -195,13 +196,11 @@ public class ViewToolInfo implements ToolInfo
          * notice of them, and let other exceptions slip by. */
         catch (IllegalAccessException e)
         {
-            LOG.error("Exception while instantiating instance of \"" +
-                    getClassname() + "\"", e);
+            LOG.error("Exception while instantiating instance of \"{}\"", getClassname(), e);
         }
         catch (InstantiationException e)
         {
-            LOG.error("Exception while instantiating instance of \"" +
-                    getClassname() + "\"", e);
+            LOG.error("Exception while instantiating instance of \"{}\"", getClassname(), e);
         }
 
         /* if the tool is configurable and we have parameters... */
@@ -214,11 +213,11 @@ public class ViewToolInfo implements ToolInfo
             }
             catch (IllegalAccessException iae)
             {
-                LOG.error("Exception when calling configure(Map) on "+tool, iae);
+                LOG.error("Exception when calling configure(Map) on {}", tool, iae);
             }
             catch (InvocationTargetException ite)
             {
-                LOG.error("Exception when calling configure(Map) on "+tool, ite);
+                LOG.error("Exception when calling configure(Map) on {}", tool, ite);
             }
         }
 
@@ -232,11 +231,11 @@ public class ViewToolInfo implements ToolInfo
             }
             catch (IllegalAccessException iae)
             {
-                LOG.error("Exception when calling init(Object) on "+tool, iae);
+                LOG.error("Exception when calling init(Object) on {}", tool, iae);
             }
             catch (InvocationTargetException ite)
             {
-                LOG.error("Exception when calling init(Object) on "+tool, ite);
+                LOG.error("Exception when calling init(Object) on {}", tool, ite);
             }
         }
         return tool;

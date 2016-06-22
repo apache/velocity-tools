@@ -71,7 +71,7 @@ public class ImportTool extends ImportSupport
         }
         catch (Exception ex)
         {
-            LOG.error("ImportTool.read(): Exception while aquiring '"+url+"'", ex);
+            LOG.error("ImportTool.read(): Exception while aquiring '{}'", url, ex);
             return null;
         }
     }

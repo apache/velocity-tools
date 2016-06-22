@@ -219,10 +219,7 @@ public class CookieTool
         }
         catch (IllegalArgumentException iae)
         {
-            if (log != null && log.isDebugEnabled())
-            {
-                log.debug("CookieTool: Could not create cookie with name \""+name+"\"", iae);
-            }
+            log.debug("CookieTool: Could not create cookie with name \"{}\"", name, iae);
             return null;
         }
     }

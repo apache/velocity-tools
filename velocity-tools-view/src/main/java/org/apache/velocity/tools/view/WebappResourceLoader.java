@@ -89,7 +89,7 @@ public class WebappResourceLoader extends ResourceLoader
                 {
                     paths[i] += '/';
                 }
-                log.info("WebappResourceLoader: added template path - '" + paths[i] + "'");
+                log.info("WebappResourceLoader: added template path - '{}'", paths[i]);
             }
         }
 
@@ -161,10 +161,7 @@ public class WebappResourceLoader extends ResourceLoader
                 /* only save the first one for later throwing */
                 if (exception == null)
                 {
-                    if (log.isDebugEnabled())
-                    {
-                        log.debug("WebappResourceLoader: Could not load "+path, e);
-                    }
+                    log.debug("WebappResourceLoader: Could not load {}", path, e);
                     exception = e;
                 }
             }

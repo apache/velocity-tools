@@ -23,6 +23,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.slf4j.Logger;
+
+import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.generic.SafeConfig;
 
@@ -69,12 +73,21 @@ public class MarkupTool extends SafeConfig
 
     private String tab = DEFAULT_TAB;
     private String delim = DEFAULT_DELIMITER;
+    private Logger LOG = null;
 
+    /**
+     * Configuration
+     */
+    protected void configure(ValueParser props)
+    {
+        this.LOG = (Logger)props.getValue(ToolContext.LOG_KEY);
+    }
+    
     public void setTab(String tab)
     {
         if (isConfigLocked())
         {
-            //TODO: log setTab failure
+            LOG.error("MarkupTool: setTab() failure: configuration is locked");
         }
         else
         {

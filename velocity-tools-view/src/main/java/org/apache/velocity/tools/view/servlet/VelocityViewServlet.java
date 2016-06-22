@@ -49,10 +49,7 @@ public class VelocityViewServlet
     public void init(ServletConfig config) throws ServletException
     {
         super.init(config);
-
-        getLog().debug(this.getClass().getName() +
-                       " has been deprecated. Use " +
-                       super.getClass().getName() + " instead.");
+        getLog().debug("{} has been deprecated. Use {} instead.", this.getClass().getName(), super.getClass().getName());
     }
 
     /**

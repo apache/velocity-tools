@@ -20,11 +20,15 @@ package org.apache.velocity.tools.generic;
  */
 
 import java.io.StringWriter;
+
+import org.slf4j.Logger;
+
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.Scope;
+import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
@@ -113,8 +117,7 @@ public class RenderTool extends SafeConfig
 
     public static final String KEY_FORCE_THREAD_SAFE = "forceThreadSafe";
 
-    private static final String LOG_TAG = "RenderTool.eval()";
-
+    protected Logger LOG = null;
     private VelocityEngine engine = null;
     private Context context;
     private int parseDepth = DEFAULT_PARSE_DEPTH;
@@ -149,6 +152,8 @@ public class RenderTool extends SafeConfig
         {
             this.forceThreadSafe = false;
         }
+        
+        this.LOG = (Logger)parser.getValue(ToolContext.LOG_KEY);
     }
 
     /**
@@ -158,6 +163,7 @@ public class RenderTool extends SafeConfig
     public void setVelocityEngine(VelocityEngine ve)
     {
         this.engine = ve;
+        this.LOG = ve.getLog();
     }
 
     /**
@@ -173,7 +179,10 @@ public class RenderTool extends SafeConfig
         }
         else if (this.parseDepth != depth)
         {
-            debug("RenderTool: Attempt was made to alter parse depth while config was locked.");
+            if (LOG != null)
+            {
+                LOG.debug("RenderTool: Attempt was made to alter parse depth while config was locked.");
+            }
         }
     }
 
@@ -193,7 +202,10 @@ public class RenderTool extends SafeConfig
         }
         else if (this.context != context)
         {
-            debug("RenderTool: Attempt was made to set a new context while config was locked.");
+            if (LOG != null)
+            {
+                LOG.debug("RenderTool: Attempt was made to set a new context while config was locked.");
+            }
         }
     }
 
@@ -220,7 +232,10 @@ public class RenderTool extends SafeConfig
         }
         else if (this.catchExceptions != catchExceptions)
         {
-            debug("RenderTool: Attempt was made to alter catchE while config was locked.");
+            if (LOG != null)
+            {
+                LOG.debug("RenderTool: Attempt was made to alter catchE while config was locked.");
+            }
         }
     }
 
@@ -292,7 +307,10 @@ public class RenderTool extends SafeConfig
             }
             catch (Exception e)
             {
-                debug(LOG_TAG+" failed due to "+e, e);
+                if (LOG != null)
+                {
+                    LOG.debug("RenderTool.eval(): failed due to ", e);
+                }
                 return null;
             }
         }
@@ -314,11 +332,11 @@ public class RenderTool extends SafeConfig
         boolean success;
         if (engine == null)
         {
-            success = Velocity.evaluate(ctx, sw, LOG_TAG, vtl);
+            success = Velocity.evaluate(ctx, sw, "RenderTool.eval()", vtl);
         }
         else
         {
-            success = engine.evaluate(ctx, sw, LOG_TAG, vtl);
+            success = engine.evaluate(ctx, sw, "RenderTool.eval()", vtl);
         }
         if (success)
         {
@@ -363,36 +381,14 @@ public class RenderTool extends SafeConfig
             else
             {
                 // abort, log and return what we have so far
-                debug("RenderTool.recurse() exceeded the maximum parse depth of "
-                      + parseDepth + "on the following template: "+vtl);
+                if (LOG != null)
+                {
+                    LOG.debug("RenderTool.recurse() exceeded the maximum parse depth" +
+                              " of {} on the following template: {}",
+                              parseDepth, vtl);
+                }
                 return result;
             }
         }
     }
-
-    // internal convenience methods
-    private void debug(String message)
-    {
-        if (engine == null)
-        {
-            Velocity.getLog().debug(message);
-        }
-        else
-        {
-            engine.getLog().debug(message);
-        }
-    }
-
-    private void debug(String message, Throwable t)
-    {
-        if (engine == null)
-        {
-            Velocity.getLog().debug(message, t);
-        }
-        else
-        {
-            engine.getLog().debug(message, t);
-        }
-    }
-
 }

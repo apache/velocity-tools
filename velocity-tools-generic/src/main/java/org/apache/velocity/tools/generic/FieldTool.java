@@ -150,7 +150,7 @@ public class FieldTool extends SafeConfig
             {
                 if (log != null)
                 {
-                    log.debug("Unable to retrieve value of field at "+name, e);
+                    log.debug("Unable to retrieve value of field at {}", name, e);
                 }
             }
         }
@@ -235,8 +235,7 @@ public class FieldTool extends SafeConfig
                 if (log != null && log.isDebugEnabled() &&
                     results.containsKey(field.getName()))
                 {
-                    log.debug("FieldTool: "+field.getName()+
-                              " is being overridden by "+clazz.getName());
+                    log.debug("FieldTool: {} is being overridden by {}", field.getName(), clazz.getName());
                 }
                 // if the field is final
                 if (Modifier.isFinal(mod))
@@ -271,7 +270,7 @@ public class FieldTool extends SafeConfig
         {
             if (log != null)
             {
-                log.warn("IllegalAccessException while trying to access " + field.getName(), iae);
+                log.warn("IllegalAccessException while trying to access {}", field.getName(), iae);
             }
             return null;
         }

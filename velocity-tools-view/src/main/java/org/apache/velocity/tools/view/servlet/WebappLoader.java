@@ -36,8 +36,7 @@ public class WebappLoader extends WebappResourceLoader
 {
     public void init(ExtendedProperties configuration)
     {
-        log.warn("WebappLoader is deprecated. Use "+
-                 WebappResourceLoader.class.getName()+" instead.");
+        log.warn("WebappLoader is deprecated. Use {} instead.", WebappResourceLoader.class.getName());
         super.init(configuration);
     }
 }

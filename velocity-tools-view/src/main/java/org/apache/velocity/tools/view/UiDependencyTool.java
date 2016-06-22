@@ -136,18 +136,6 @@ public class UiDependencyTool {
     private Logger LOG;
     private String context = "";
 
-    private void debug(String msg, Object... args) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug(String.format("UiDependencyTool: "+msg, args));
-        }
-    }
-
-    protected static final void trace(Logger log, String msg, Object... args) {
-        if (log.isTraceEnabled()) {
-            log.trace(String.format("UiDependencyTool: "+msg, args));
-        }
-    }
-
     public void configure(Map params) {
         ServletContext app = (ServletContext)params.get(ViewContext.SERVLET_CONTEXT_KEY);
         LOG = (Logger)params.get(ToolContext.LOG_KEY);
@@ -159,7 +147,7 @@ public class UiDependencyTool {
         if (file == null) {
             file = DEFAULT_SOURCE_FILE;
         } else {
-            debug("Loading file: %s", file);
+            LOG.debug("UiDependencyTool: Loading file: {}", file);
         }
 
         synchronized (app) {
@@ -380,7 +368,7 @@ public class UiDependencyTool {
      * wrapped as {@link RuntimeException}s.
      */
     protected void read(String file, boolean required) {
-        debug("UiDependencyTool: Reading file from %s", file);
+        LOG.debug("UiDependencyTool: Reading file from {}", file);
         URL url = toURL(file);
         if (url == null) {
             String msg = "UiDependencyTool: Could not read file from '"+file+"'";
@@ -398,12 +386,12 @@ public class UiDependencyTool {
             }
             catch (SAXException saxe)
             {
-                LOG.error("UiDependencyTool: Failed to parse '"+file+"'", saxe);
+                LOG.error("UiDependencyTool: Failed to parse '{}'", file, saxe);
                 throw new RuntimeException("While parsing the InputStream", saxe);
             }
             catch (IOException ioe)
             {
-                LOG.error("UiDependencyTool: Failed to read '"+file+"'", ioe);
+                LOG.error("UiDependencyTool: Failed to read '{}'", file, ioe);
                 throw new RuntimeException("While handling the InputStream", ioe);
             }
         }
@@ -453,7 +441,7 @@ public class UiDependencyTool {
      * on it unless you're willing to update your code whenever this changes.
      */
     protected Group makeGroup(String name) {
-        trace(LOG, "Creating group '%s'", name);
+        LOG.trace("UiDependencyTool: Creating group '{}'", name);
         Group group = new Group(name, LOG);
         groups.put(name, group);
         return group;
@@ -470,7 +458,7 @@ public class UiDependencyTool {
         for (Map.Entry<String,List<String>> entry : fbt.entrySet()) {
             String type = entry.getKey();
             if (getType(type) == null) {
-                LOG.error("UiDependencyTool: Type '"+type+"' is unknown and will not be printed unless defined.");
+                LOG.error("UiDependencyTool: Type '{}' is unknown and will not be printed unless defined.", type);
             }
             List<String> existing = dependencies.get(type);
             if (existing == null) {
@@ -479,7 +467,7 @@ public class UiDependencyTool {
             }
             for (String file : entry.getValue()) {
                 if (!existing.contains(file)) {
-                    trace(LOG, "Adding %s: %s", type, file);
+                    LOG.trace("UiDependencyTool: Adding {}: {}", type, file);
                     existing.add(file);
                 }
             }
@@ -501,7 +489,7 @@ public class UiDependencyTool {
             dependencies.put(type, files);
         }
         if (!files.contains(file)) {
-            trace(LOG, "Adding %s: %s", type, file);
+            LOG.trace("UiDependencyTool: Adding {}: {}", type, file);
             files.add(file);
         }
     }
@@ -550,12 +538,6 @@ public class UiDependencyTool {
             this.LOG = log;
         }
 
-        private void trace(String msg, Object... args) {
-            if (LOG.isTraceEnabled()) {
-                UiDependencyTool.trace(LOG, "Group "+name+": "+msg, args);
-            }
-        }
-
         public void addFile(String type, String value) {
             List<String> files = dependencies.get(type);
             if (files == null) {
@@ -563,7 +545,7 @@ public class UiDependencyTool {
                 dependencies.put(type, files);
             }
             if (!files.contains(value)) {
-                trace("Adding %s: %s", type, value);
+                LOG.trace("Group {}: Adding {}: {}", name, type, value);
                 files.add(value);
             }
         }
@@ -574,7 +556,7 @@ public class UiDependencyTool {
                 this.groups = new ArrayList<String>();
             }
             if (!this.groups.contains(group)) {
-                trace("Adding group %s", group, name);
+                LOG.trace("Group {}: Adding group {}", name, group);
                 this.groups.add(group);
             }
         }
@@ -588,7 +570,7 @@ public class UiDependencyTool {
             if (!resolved)  {
                 // mark first to keep circular from becoming infinite
                 resolved = true;
-                trace("resolving...");
+                LOG.trace("Group {}: resolving...", name);
                 for (String name : groups) {
                     Group group = parent.getGroup(name);
                     if (group == null) {
@@ -601,7 +583,7 @@ public class UiDependencyTool {
                         }
                     }
                 }
-                trace(" is resolved.");
+                LOG.trace("Group {}: is resolved.", name);
             }
         }
 
@@ -610,7 +592,7 @@ public class UiDependencyTool {
             if (files == null) {
                 files = new ArrayList<String>();
                 files.add(value);
-                trace("adding %s '%s' first", type, value);
+                LOG.trace("Group {}: adding {} '{}' first", name, type, value);
                 dependencies.put(type, files);
                 typeCounts.put(type, 1);
             } else if (!files.contains(value)) {
@@ -619,7 +601,7 @@ public class UiDependencyTool {
                     count = 0;
                 }
                 files.add(count, value);
-                trace("adding %s '%s' at %s", type, value, count);
+                LOG.trace("Group {}: adding {} '{}' at {}", name, type, value, count);
                 typeCounts.put(type, ++count);
             }
         }
