@@ -239,17 +239,18 @@ public class ToolContext implements Context
         return keys;
     }
 
-    public boolean containsKey(Object key)
+    public boolean containsKey(String key)
     {
         return keySet().contains(key);
     }
 
-    public Object[] getKeys()
+    public String[] getKeys()
     {
-        return keySet().toArray();
+        Set<String> keys = keySet();
+        return keys.toArray(new String[keys.size()]);
     }
 
-    public Object remove(Object key)
+    public Object remove(String key)
     {
         //tools and their props cannot be removed
         return localContext.remove(key);
