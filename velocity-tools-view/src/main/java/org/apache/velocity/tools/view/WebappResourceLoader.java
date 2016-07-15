@@ -21,6 +21,7 @@ package org.apache.velocity.tools.view;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.HashMap;
 import javax.servlet.ServletContext;
 import org.apache.velocity.exception.ResourceNotFoundException;
@@ -118,8 +119,9 @@ public class WebappResourceLoader extends ResourceLoader
      * @return InputStream containing the template
      * @throws ResourceNotFoundException if template not found
      *         in  classpath.
+     * @deprecated use {@link #getResourceReader(String, String)}
      */
-    public synchronized InputStream getResourceStream(String name)
+    public synchronized @Deprecated InputStream getResourceStream(String name)
         throws ResourceNotFoundException
     {
         InputStream result = null;
@@ -158,6 +160,94 @@ public class WebappResourceLoader extends ResourceLoader
             }
             catch (Exception e)
             {
+                /* only save the first one for later throwing */
+                if (exception == null)
+                {
+                    log.debug("WebappResourceLoader: Could not load {}", path, e);
+                    exception = e;
+                }
+            }
+        }
+
+        /* if we never found the template */
+        if (result == null)
+        {
+            String msg = "WebappResourceLoader: Resource '" + name + "' not found.";
+
+            /* convert to a general Velocity ResourceNotFoundException */
+            if (exception == null)
+            {
+                throw new ResourceNotFoundException(msg);
+            }
+            else
+            {
+                msg += "  Due to: " + exception;
+                throw new ResourceNotFoundException(msg, exception);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Get an InputStream so that the Runtime can build a
+     * template with it.
+     *
+     * @param name name of template to get
+     * @param encoding asked encoding
+     * @return InputStream containing the template
+     * @throws ResourceNotFoundException if template not found
+     *         in  classpath.
+     * @since 2.0
+     */
+    public synchronized Reader getResourceReader(String name, String encoding)
+            throws ResourceNotFoundException
+    {
+        Reader result = null;
+
+        if (name == null || name.length() == 0)
+        {
+            throw new ResourceNotFoundException("WebappResourceLoader: No template name provided");
+        }
+
+        /* since the paths always ends in '/',
+         * make sure the name never starts with one */
+        while (name.startsWith("/"))
+        {
+            name = name.substring(1);
+        }
+
+        Exception exception = null;
+        for (int i = 0; i < paths.length; i++)
+        {
+            String path = paths[i] + name;
+            InputStream rawStream = null;
+            try
+            {
+                rawStream = servletContext.getResourceAsStream(path);
+                result = buildReader(rawStream, encoding);
+
+                /* save the path and exit the loop if we found the template */
+                if (result != null)
+                {
+                    templatePaths.put(name, paths[i]);
+                    break;
+                }
+            }
+            catch (NullPointerException npe)
+            {
+                /* no servletContext was set, whine about it! */
+                throw npe;
+            }
+            catch (Exception e)
+            {
+                if (rawStream != null)
+                {
+                    try
+                    {
+                        rawStream.close();
+                    }
+                    catch(Exception ee) {}
+                }
                 /* only save the first one for later throwing */
                 if (exception == null)
                 {
@@ -234,7 +324,7 @@ public class WebappResourceLoader extends ResourceLoader
             if (currentFile.canRead())
             {
                 /* stop at the first resource found
-                 * (just like in getResourceStream()) */
+                 * (just like in getResourceReader()) */
                 break;
             }
         }
