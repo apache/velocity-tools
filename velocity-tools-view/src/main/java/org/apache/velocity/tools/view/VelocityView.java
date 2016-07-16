@@ -94,6 +94,9 @@ public class VelocityView extends ViewToolManager
     /** The HTTP content type context key. */
     public static final String CONTENT_TYPE_KEY = "default.contentType";
 
+    /** The HTTP output encoding. */
+    public static final String OUTPUT_ENCODING_KEY = "output.encoding";
+    
     /**
      * Key used to access the ServletContext in
      * the Velocity application attributes.
@@ -105,7 +108,7 @@ public class VelocityView extends ViewToolManager
     public static final String DEFAULT_CONTENT_TYPE = "text/html";
 
     /** Default encoding for the output stream */
-    public static final String DEFAULT_OUTPUT_ENCODING = "ISO-8859-1";
+    public static final String DEFAULT_OUTPUT_ENCODING = "UTF-8";
 
     /**
      * Key used to access the toolbox configuration file path from the
@@ -702,7 +705,7 @@ public class VelocityView extends ViewToolManager
         this.defaultContentType =
             getProperty(CONTENT_TYPE_KEY, DEFAULT_CONTENT_TYPE);
 
-        String encoding = getProperty(RuntimeConstants.OUTPUT_ENCODING,
+        String encoding = getProperty(OUTPUT_ENCODING_KEY,
                                       DEFAULT_OUTPUT_ENCODING);
 
         // For non Latin-1 encodings, ensure that the charset is
