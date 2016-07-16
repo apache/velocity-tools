@@ -56,7 +56,7 @@ public abstract class ImportSupport
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+.-";
 
     /** Default character encoding for response. */
-    protected static final String DEFAULT_ENCODING = "ISO-8859-1";
+    protected static final String DEFAULT_ENCODING = "UTF-8";
 
     protected Logger LOG;
     protected ServletContext application;
