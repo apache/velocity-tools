@@ -26,7 +26,7 @@ import java.util.HashMap;
 import javax.servlet.ServletContext;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.Resource;
-import org.apache.velocity.runtime.resource.loader.ResourceLoader;
+import org.apache.velocity.runtime.resource.loader.ResourceLoader2;
 import org.apache.velocity.shaded.commons.collections.ExtendedProperties;
 
 /**
@@ -52,7 +52,7 @@ import org.apache.velocity.shaded.commons.collections.ExtendedProperties;
  * @author <a href="mailto:claude@savoirweb.com">Claude Brisson</a>
  * @version $Id$  */
 
-public class WebappResourceLoader extends ResourceLoader
+public class WebappResourceLoader extends ResourceLoader2
 {
     /** The root paths for templates (relative to webapp's root). */
     protected String[] paths = null;
@@ -112,84 +112,7 @@ public class WebappResourceLoader extends ResourceLoader
     }
 
     /**
-     * Get an InputStream so that the Runtime can build a
-     * template with it.
-     *
-     * @param name name of template to get
-     * @return InputStream containing the template
-     * @throws ResourceNotFoundException if template not found
-     *         in  classpath.
-     * @deprecated use {@link #getResourceReader(String, String)}
-     */
-    public synchronized @Deprecated InputStream getResourceStream(String name)
-        throws ResourceNotFoundException
-    {
-        InputStream result = null;
-
-        if (name == null || name.length() == 0)
-        {
-            throw new ResourceNotFoundException("WebappResourceLoader: No template name provided");
-        }
-
-        /* since the paths always ends in '/',
-         * make sure the name never starts with one */
-        while (name.startsWith("/"))
-        {
-            name = name.substring(1);
-        }
-
-        Exception exception = null;
-        for (int i = 0; i < paths.length; i++)
-        {
-            String path = paths[i] + name;
-            try
-            {
-                result = servletContext.getResourceAsStream(path);
-
-                /* save the path and exit the loop if we found the template */
-                if (result != null)
-                {
-                    templatePaths.put(name, paths[i]);
-                    break;
-                }
-            }
-            catch (NullPointerException npe)
-            {
-                /* no servletContext was set, whine about it! */
-                throw npe;
-            }
-            catch (Exception e)
-            {
-                /* only save the first one for later throwing */
-                if (exception == null)
-                {
-                    log.debug("WebappResourceLoader: Could not load {}", path, e);
-                    exception = e;
-                }
-            }
-        }
-
-        /* if we never found the template */
-        if (result == null)
-        {
-            String msg = "WebappResourceLoader: Resource '" + name + "' not found.";
-
-            /* convert to a general Velocity ResourceNotFoundException */
-            if (exception == null)
-            {
-                throw new ResourceNotFoundException(msg);
-            }
-            else
-            {
-                msg += "  Due to: " + exception;
-                throw new ResourceNotFoundException(msg, exception);
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Get an InputStream so that the Runtime can build a
+     * Get Reader so that the Runtime can build a
      * template with it.
      *
      * @param name name of template to get
