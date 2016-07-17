@@ -20,6 +20,7 @@ package org.apache.velocity.tools.view.servlet;
  */
 
 import org.apache.velocity.shaded.commons.collections.ExtendedProperties;
+import org.apache.velocity.util.ExtProperties;
 import org.apache.velocity.tools.view.WebappResourceLoader;
 
 /**
@@ -37,6 +38,6 @@ public class WebappLoader extends WebappResourceLoader
     public void init(ExtendedProperties configuration)
     {
         log.warn("WebappLoader is deprecated. Use {} instead.", WebappResourceLoader.class.getName());
-        super.init(configuration);
+        super.init(ExtProperties.convertProperties(configuration));
     }
 }
