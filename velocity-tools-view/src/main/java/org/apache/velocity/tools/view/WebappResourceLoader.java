@@ -27,7 +27,7 @@ import javax.servlet.ServletContext;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.loader.ResourceLoader2;
-import org.apache.velocity.shaded.commons.collections.ExtendedProperties;
+import org.apache.velocity.util.ExtProperties;
 
 /**
  * Resource loader that uses the ServletContext of a webapp to
@@ -67,10 +67,10 @@ public class WebappResourceLoader extends ResourceLoader2
      *        been placed in the runtime's application attributes
      *        under its full class name (i.e. "javax.servlet.ServletContext").
      *
-     * @param configuration the {@link ExtendedProperties} associated with
+     * @param configuration the {@link ExtProperties} associated with
      *        this resource loader.
      */
-    public void init(ExtendedProperties configuration)
+    public void init(ExtProperties configuration)
     {
         log.trace("WebappResourceLoader: initialization starting.");
 
