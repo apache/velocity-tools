@@ -554,7 +554,10 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
         }
         else
         {
-            return new ValueParser(values);
+            ValueParser ret = new ValueParser(values);
+            /* honnor readOnly option on submaps */
+            ret.setReadOnly(getReadOnly());
+            return ret;
         }
     }
 
