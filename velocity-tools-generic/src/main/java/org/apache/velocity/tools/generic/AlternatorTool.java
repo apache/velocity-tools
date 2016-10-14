@@ -58,9 +58,6 @@ import org.apache.velocity.tools.config.DefaultKey;
 @DefaultKey("alternator")
 public class AlternatorTool extends SafeConfig
 {
-    @Deprecated
-    public static final String OLD_AUTO_ALTERNATE_DEFAULT_KEY = "auto-alternate";
-
     public static final String AUTO_ALTERNATE_DEFAULT_KEY = "autoAlternate";
 
     // it's true by default in Alternator
@@ -72,13 +69,7 @@ public class AlternatorTool extends SafeConfig
      */
     protected void configure(ValueParser parser)
     {
-        Boolean auto = parser.getBoolean(AUTO_ALTERNATE_DEFAULT_KEY);
-        if (auto == null)
-        {
-            // check for old key, use true as default (just like Alternator)
-            auto = parser.getBoolean(OLD_AUTO_ALTERNATE_DEFAULT_KEY,
-                                     Boolean.TRUE);
-        }
+        Boolean auto = parser.getBoolean(AUTO_ALTERNATE_DEFAULT_KEY, Boolean.TRUE);
         this.autoAlternateDefault = auto.booleanValue();
     }
 
@@ -109,15 +100,6 @@ public class AlternatorTool extends SafeConfig
     }
 
     /**
-     * @deprecated Will be unnecessary with Velocity 1.6
-     */
-    @Deprecated 
-    public Alternator make(Collection list)
-    {
-        return make(autoAlternateDefault, list);
-    }
-
-    /**
      * Returns a new Alternator for the specified list with the specified
      * automatic shifting preference.
      *
@@ -140,37 +122,6 @@ public class AlternatorTool extends SafeConfig
     }
 
     /**
-     * @deprecated Will be unnecessary with Velocity 1.6
-     */
-    @Deprecated 
-    public Alternator make(boolean auto, Collection list)
-    {
-        return make(auto, new Object[] { list });
-    }
-
-    /**
-     * @deprecated Will be unnecessary with Velocity 1.6
-     */
-    @Deprecated
-    public Alternator make(Object o1, Object o2)
-    {
-        return make(autoAlternateDefault, o1, o2);
-    }
-
-    /**
-     * @deprecated Will be unnecessary with Velocity 1.6
-     */
-    @Deprecated
-    public Alternator make(boolean auto, Object o1, Object o2)
-    {
-        if (o1 == null || o2 == null)
-        {
-            return null;
-        }
-        return new Alternator(auto, new Object[] { o1, o2 });
-    }
-
-    /**
      * Make an automatic {@link Alternator} from the specified objects.
      *
      * @return a new, automatic Alternator with the specified values or 
@@ -180,24 +131,6 @@ public class AlternatorTool extends SafeConfig
     public Alternator auto(Object... list)
     {
         return make(true, list);
-    }
-
-    /**
-     * @deprecated Will be unnecessary with Velocity 1.6
-     */
-    @Deprecated
-    public Alternator auto(Collection list)
-    {
-        return make(true, list);
-    }
-
-    /**
-     * @deprecated Will be unnecessary with Velocity 1.6
-     */
-    @Deprecated
-    public Alternator auto(Object o1, Object o2)
-    {
-        return make(true, o1, o2);
     }
 
     /**
@@ -211,23 +144,4 @@ public class AlternatorTool extends SafeConfig
     {
         return make(false, list);
     }
-
-    /**
-     * @deprecated Will be unnecessary with Velocity 1.6
-     */
-    @Deprecated
-    public Alternator manual(Collection list)
-    {
-        return make(false, list);
-    }
-
-    /**
-     * @deprecated Will be unnecessary with Velocity 1.6
-     */
-    @Deprecated
-    public Alternator manual(Object o1, Object o2)
-    {
-        return make(false, o1, o2);
-    }
-
 }

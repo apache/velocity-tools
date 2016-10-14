@@ -19,9 +19,9 @@ package org.apache.velocity.tools.config;
  * under the License.
  */
 
-import org.apache.commons.digester.Digester;
-import org.apache.commons.digester.Rule;
-import org.apache.commons.digester.RuleSetBase;
+import org.apache.commons.digester3.Digester;
+import org.apache.commons.digester3.Rule;
+import org.apache.commons.digester3.RuleSetBase;
 import org.xml.sax.Attributes;
 
 /**
@@ -137,7 +137,7 @@ public class XmlFactoryConfigurationRuleSet extends RuleSetBase
         public void body(String namespace, String element, String value)
             throws Exception
         {
-            Data data = (Data)digester.peek();
+            Data data = (Data)getDigester().peek();
             if (data.getValue() == null)
             {
                 data.setValue(value);
@@ -150,7 +150,7 @@ public class XmlFactoryConfigurationRuleSet extends RuleSetBase
         public void begin(String namespace, String element, Attributes attributes)
             throws Exception
         {
-            Configuration config = (Configuration)digester.peek();
+            Configuration config = (Configuration)getDigester().peek();
 
             for (int i=0; i < attributes.getLength(); i++)
             {

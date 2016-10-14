@@ -107,7 +107,7 @@ import org.apache.velocity.tools.config.InvalidScope;
  *   <b>1</b> <a href="">2</a> <a href="">Next</a>
  * </p>
  * <p>
- * <b>Example toolbox.xml configuration:</b>
+ * <b>Example tools.xml configuration:</b>
  * <pre>
  * &lt;tools&gt;
  *   &lt;toolbox scope="request"&gt;

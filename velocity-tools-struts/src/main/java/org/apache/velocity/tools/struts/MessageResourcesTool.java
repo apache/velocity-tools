@@ -44,18 +44,6 @@ public abstract class MessageResourcesTool
     private Locale locale;
     private MessageResources resources;
 
-    @Deprecated
-    public void init(Object obj)
-    {
-        if (obj instanceof ViewContext)
-        {
-            ViewContext ctx = (ViewContext)obj;
-            this.request = ctx.getRequest();
-            this.application = ctx.getServletContext();
-            this.LOG = ctx.getVelocityEngine().getLog();
-        }
-    }
-
     /**
      * Initializes this tool.
      *

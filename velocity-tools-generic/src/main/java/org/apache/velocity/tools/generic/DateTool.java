@@ -70,12 +70,6 @@ import org.apache.velocity.tools.config.DefaultKey;
 @DefaultKey("date")
 public class DateTool extends FormatConfig
 {
-    @Deprecated
-    public static final String DEFAULT_FORMAT_KEY = FORMAT_KEY;
-
-    @Deprecated
-    public static final String DEFAULT_LOCALE_KEY = ToolContext.LOCALE_KEY;
-
     /**
      * The key used for specifying a default timezone via tool configuration.
      */
@@ -579,46 +573,6 @@ public class DateTool extends FormatConfig
     {
         return ConversionUtils.getDateFormat(dateStyle, timeStyle, locale, timezone);
     }
-
-    /**
-     * Returns a {@link DateFormat} instance for the specified
-     * time style, date style, {@link Locale}, and {@link TimeZone}.
-     *
-     * @param dateStyle the date style (date will be ignored if this is
-     *        less than zero and the date style is not)
-     * @param timeStyle the time style (time will be ignored if this is
-     *        less than zero and the date style is not)
-     * @param locale the {@link Locale} to be used
-     * @param timezone the {@link TimeZone} to be used
-     * @return an instance of {@link DateFormat} or <code>null</code>
-     *         if an instance cannot be constructed with the given
-     *         parameters
-     * @since VelocityTools 1.1
-     */
-    @Deprecated
-    protected DateFormat getDateFormat(int dateStyle, int timeStyle,
-                                       Locale locale, TimeZone timezone)
-    {
-        return ConversionUtils.getDateFormat(dateStyle, timeStyle, locale, timezone);
-    }
-
-    /**
-     * Checks a string to see if it matches one of the standard DateFormat
-     * style patterns: FULL, LONG, MEDIUM, SHORT, or DEFAULT.  If it does,
-     * it will return the integer constant for that pattern.  If not, it
-     * will return -1.
-     *
-     * @see DateFormat
-     * @param style the string to be checked
-     * @return the int identifying the style pattern
-     * @since VelocityTools 1.1
-     */
-    @Deprecated
-    protected int getStyleAsInt(String style)
-    {
-        return ConversionUtils.getDateStyleAsInt(style);
-    }
-
 
     // ------------------------- date conversion methods ---------------
 

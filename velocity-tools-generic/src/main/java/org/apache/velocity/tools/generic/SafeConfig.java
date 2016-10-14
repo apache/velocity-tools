@@ -51,8 +51,6 @@ public class SafeConfig
      * from reconfiguring this tool.  The default is true.
      */
     public static final String LOCK_CONFIG_KEY = "lockConfig";
-    @Deprecated
-    public static final String OLD_LOCK_CONFIG_KEY = "lock-config";
 
     /**
      * Many tools interested in locking configure() also have other
@@ -115,14 +113,7 @@ public class SafeConfig
             setSafeMode(values.getBoolean(SAFE_MODE_KEY, true));
 
             // check under the new key
-            Boolean lock = values.getBoolean(LOCK_CONFIG_KEY);
-            if (lock == null)
-            {
-                // now check the old key (for now)
-                // by default, lock down this method after use
-                // to prevent templates from re-configuring this instance
-                lock = values.getBoolean(OLD_LOCK_CONFIG_KEY, Boolean.TRUE);
-            }
+            Boolean lock = values.getBoolean(LOCK_CONFIG_KEY, Boolean.TRUE);
             setLockConfig(lock.booleanValue());
         }
     }

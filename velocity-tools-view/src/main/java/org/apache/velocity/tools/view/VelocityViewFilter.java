@@ -57,9 +57,7 @@ import org.apache.velocity.tools.view.ViewToolContext;
  *   <dt>org.apache.velocity.tools.loadDefaults</dt>
  *   <dd>By default, this is {@code true}. If set to {@code false}, then
  *     the default toolbox configuration will not be added to your (if any)
- *     custom configuration.  NOTE: The default configuration will also be
- *     suppressed if you are using a deprecated toolbox.xml format and do not
- *     explicitly set this to {@code true}.</dd>
+ *     custom configuration.</dd>
  *   <dt>org.apache.velocity.tools.cleanConfiguration</dt>
  *   <dd>By default, this is {@code false}. If set to {@code true}, then
  *     then the final toolbox configuration (the combination of any custom

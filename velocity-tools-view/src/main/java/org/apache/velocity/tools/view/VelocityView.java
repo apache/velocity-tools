@@ -39,7 +39,6 @@ import org.apache.velocity.context.Context;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.io.VelocityWriter;
 import org.apache.velocity.runtime.RuntimeConstants;
-import org.apache.velocity.shaded.commons.collections.ExtendedProperties;
 import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.Toolbox;
@@ -48,7 +47,7 @@ import org.apache.velocity.tools.config.ConfigurationCleaner;
 import org.apache.velocity.tools.config.ConfigurationUtils;
 import org.apache.velocity.tools.config.FactoryConfiguration;
 import org.apache.velocity.tools.view.ViewToolContext;
-import org.apache.velocity.tools.view.context.ChainedContext;
+import org.apache.velocity.util.ExtProperties;
 import org.apache.velocity.util.SimplePool;
 
 /**
@@ -117,9 +116,6 @@ public class VelocityView extends ViewToolManager
      * placed in the ServletContext attributes.
      */
     public static final String TOOLS_KEY = ServletUtils.CONFIGURATION_KEY;
-    @Deprecated
-    public static final String DEPRECATED_TOOLS_KEY =
-        "org.apache.velocity.toolbox";
 
     /**
      * Default toolbox configuration file path. If no alternate value for
@@ -127,9 +123,6 @@ public class VelocityView extends ViewToolManager
      */
     public static final String USER_TOOLS_PATH =
         "/WEB-INF/tools.xml";
-    @Deprecated
-    public static final String DEPRECATED_USER_TOOLS_PATH =
-        "/WEB-INF/toolbox.xml";
 
     /**
      * Default Runtime properties.
@@ -153,14 +146,7 @@ public class VelocityView extends ViewToolManager
 
     /**
      * Controls loading of available default tool configurations
-     * provided by VelocityTools.  The default behavior is conditional;
-     * if {@link #DEPRECATION_SUPPORT_MODE_KEY} has not been set to
-     * {@code false} and there is an old {@code toolbox.xml} configuration
-     * present, then the defaults will not be loaded unless you explicitly
-     * set this property to {@code true} in your init params.  If there
-     * is no {@code toolbox.xml} and/or the deprecation support is turned off,
-     * then the default tools will be loaded automatically unless you
-     * explicitly set this property to {@code false} in your init params.
+     * provided by VelocityTools. The default is true.
      */
     public static final String LOAD_DEFAULTS_KEY =
         "org.apache.velocity.tools.loadDefaults";
@@ -181,18 +167,8 @@ public class VelocityView extends ViewToolManager
     public static final String USER_OVERWRITE_KEY =
         "org.apache.velocity.tools.userCanOverwriteTools";
 
-    /**
-     * Controls support for deprecated tools and configuration.
-     * The default is {@code true}; set to {@code false} to turn off
-     * support for deprecated tools and configuration.
-     */
-    public static final String DEPRECATION_SUPPORT_MODE_KEY =
-        "org.apache.velocity.tools.deprecationSupportMode";
-
-
     private static SimplePool writerPool = new SimplePool(40);
     private String defaultContentType = DEFAULT_CONTENT_TYPE;
-    private boolean deprecationSupportMode = true;
 
     public VelocityView(ServletConfig config)
     {
@@ -215,16 +191,6 @@ public class VelocityView extends ViewToolManager
         super(config.getServletContext(), false, false);
 
         init(config);
-    }
-
-    @Deprecated
-    protected final void setDeprecationSupportMode(boolean support)
-    {
-        if (deprecationSupportMode != support)
-        {
-            this.deprecationSupportMode = support;
-            getLog().debug("deprecationSupportMode is now {}", (support ? "on" : "off"));
-        }
     }
 
     /**
@@ -298,12 +264,6 @@ public class VelocityView extends ViewToolManager
             this.velocity = new VelocityEngine();
         }
 
-        // default is true for these, so just watch for false
-        String depMode = config.findInitParameter(DEPRECATION_SUPPORT_MODE_KEY);
-        if (depMode != null && depMode.equalsIgnoreCase("false"))
-        {
-            setDeprecationSupportMode(false);
-        }
         String allowOverwrite = config.findInitParameter(USER_OVERWRITE_KEY);
         if (allowOverwrite != null && allowOverwrite.equalsIgnoreCase("false"))
         {
@@ -323,7 +283,7 @@ public class VelocityView extends ViewToolManager
     /**
      * Initializes the Velocity runtime, first calling
      * loadConfiguration(JeeConfig) to get a
-     * org.apache.velocity.shaded.commons.collections.ExtendedProperties
+     * org.apache.velocity.util.ExtProperties
      * of configuration information
      * and then calling velocityEngine.init().  Override this
      * to do anything to the environment before the
@@ -358,17 +318,7 @@ public class VelocityView extends ViewToolManager
     protected void configure(final JeeConfig config, final VelocityEngine velocity)
     {
         // first get the default properties, and bail if we don't find them
-	ExtendedProperties defaultProperties = getProperties(DEFAULT_PROPERTIES_PATH, true);
-	// if using Velocity engine prior to 1.6.x, remove WebappUberspector
-	// (this hack will disappear once tools require Velocity 1.6.x+)
-	try {
-	    Class.forName("org.apache.velocity.tools.view.WebappUberspector");
-	} catch(Throwable t) {
-	    // remove WebappUberspector from the list of introspectors
-	    List introspectors = defaultProperties.getList(VelocityEngine.UBERSPECT_CLASSNAME);
-	    introspectors.remove("org.apache.velocity.tools.view.WebappUberspector");
-	    defaultProperties.setProperty(VelocityEngine.UBERSPECT_CLASSNAME,introspectors);
-	}
+	ExtProperties defaultProperties = getProperties(DEFAULT_PROPERTIES_PATH, true);
         velocity.setExtendedProperties(defaultProperties);
 
         // check for application-wide user props in the context init params
@@ -395,7 +345,7 @@ public class VelocityView extends ViewToolManager
         // this will throw an exception if require is true and there
         // are no properties at the path.  if require is false, this
         // will return null when there's no properties at the path
-        ExtendedProperties props = getProperties(path, require);
+        ExtProperties props = getProperties(path, require);
         if (props == null)
         {
             return false;
@@ -413,16 +363,10 @@ public class VelocityView extends ViewToolManager
     /**
      * Here's the configuration lookup/loading order:
      * <ol>
-     * <li>If deprecationSupportMode is true:
-     *   <ol>
-     *   <li>Config file optionally specified by {@code org.apache.velocity.toolbox} init-param (servlet or servletContext)</li>
-     *   <li>If none, config file optionally at {@code /WEB-INF/toolbox.xml} (deprecated conventional location)</li>
-     *   </ol>
-     * </li>
-     * <li>If no old toolbox or loadDefaults is true, {@link ConfigurationUtils#getDefaultTools()}</li>
+     * <li>If loadDefaults is true, {@link ConfigurationUtils#getDefaultTools()}</li>
      * <li>{@link ConfigurationUtils#getAutoLoaded}(false)</li>
      * <li>Config file optionally specified by servletContext {@code org.apache.velocity.tools} init-param</li>
-     * <li>Config file optionally at {@code /WEB-INF/tools.xml} (new conventional location)</li>
+     * <li>Config file optionally at {@code /WEB-INF/tools.xml} (conventional location)</li>
      * <li>Config file optionally specified by servlet {@code org.apache.velocity.tools} init-param</li>
      * </ol>
      * Remember that as these configurations are added on top of each other,
@@ -436,22 +380,8 @@ public class VelocityView extends ViewToolManager
     {
         FactoryConfiguration factoryConfig = new FactoryConfiguration("VelocityView.configure(config,factory)");
 
-        boolean hasOldToolbox = false;
-        if (this.deprecationSupportMode)
-        {
-            FactoryConfiguration oldToolbox = getDeprecatedConfig(config);
-            if (oldToolbox != null)
-            {
-                hasOldToolbox = true;
-                factoryConfig.addConfiguration(oldToolbox);
-            }
-        }
-
-        // only load the default tools if they have explicitly said to
-        // or if they are not using an old toolbox and have said nothing
         String loadDefaults = config.findInitParameter(LOAD_DEFAULTS_KEY);
-        if ((!hasOldToolbox && loadDefaults == null) ||
-            "true".equalsIgnoreCase(loadDefaults))
+        if (loadDefaults == null || "true".equalsIgnoreCase(loadDefaults))
         {
             // add all available default tools
             getLog().trace("Loading default tools configuration...");
@@ -460,10 +390,7 @@ public class VelocityView extends ViewToolManager
         else
         {
             // let the user know that the defaults were suppressed
-            getLog().debug("Default tools configuration has been suppressed{}",
-                  (hasOldToolbox ?
-                   " to avoid conflicts with older application's context and toolbox definition." :
-                   "."));
+            getLog().debug("Default tools configuration has been suppressed.");
         }
 
         // this gets the auto loaded config from the classpath
@@ -506,45 +433,6 @@ public class VelocityView extends ViewToolManager
         // apply this configuration to the specified factory
         getLog().debug("Configuring factory with: {}", factoryConfig);
         configure(factoryConfig);
-    }
-
-    /**
-     * First tries to find a path to a toolbox under the deprecated
-     * {@code org.apache.velocity.toolbox} key.
-     * If found, it tries to load the configuration there and will blow up
-     * if there is no config file there.
-     * If not found, it looks for a config file at /WEB-INF/toolbox.xml
-     * (the deprecated default location) and tries to load it if found.
-     */
-    @Deprecated
-    protected FactoryConfiguration getDeprecatedConfig(JeeConfig config)
-    {
-        FactoryConfiguration toolbox = null;
-
-        // look for specified path under the deprecated toolbox key
-        String oldPath = config.findInitParameter(DEPRECATED_TOOLS_KEY);
-        if (oldPath != null)
-        {
-            // ok, they said the toolbox.xml should be there
-            // so this should blow up if it is not
-            toolbox = getConfiguration(oldPath, true);
-        }
-        else
-        {
-            // check for deprecated user configuration at the old conventional
-            // location.  be silent if missing, log deprecation warning otherwise
-            oldPath = DEPRECATED_USER_TOOLS_PATH;
-            toolbox = getConfiguration(oldPath);
-        }
-
-        if (toolbox != null)
-        {
-            getLog().debug("Loaded deprecated configuration from: {}", oldPath);
-            getLog().warn("Please upgrade to new \"/WEB-INF/tools.xml\" format and conventional location."+
-                          " Support for \"/WEB-INF/toolbox.xml\" format and conventional file name will "+
-                          "be removed in a future version.");
-        }
-        return toolbox;
     }
 
     private boolean setConfig(FactoryConfiguration factory, String path, boolean require)
@@ -596,12 +484,12 @@ public class VelocityView extends ViewToolManager
     }
 
 
-    protected ExtendedProperties getProperties(String path)
+    protected ExtProperties getProperties(String path)
     {
         return getProperties(path, false);
     }
 
-    protected ExtendedProperties getProperties(String path, boolean required)
+    protected ExtProperties getProperties(String path, boolean required)
     {
         if (getLog().isTraceEnabled())
         {
@@ -614,7 +502,7 @@ public class VelocityView extends ViewToolManager
             return null;
         }
 
-        ExtendedProperties properties = new ExtendedProperties();
+        ExtProperties properties = new ExtProperties();
         try
         {
             properties.load(inputStream);
@@ -661,9 +549,7 @@ public class VelocityView extends ViewToolManager
         FactoryConfiguration config = null;
         try
         {
-            config = ServletUtils.getConfiguration(path,
-                                                   this.servletContext,
-                                                   this.deprecationSupportMode);
+            config = ServletUtils.getConfiguration(path, this.servletContext);
             if (config == null)
             {
                 String msg = "Did not find resource at: "+path;
@@ -790,14 +676,7 @@ public class VelocityView extends ViewToolManager
                                          HttpServletResponse response)
     {
         ViewToolContext ctx;
-        if (this.deprecationSupportMode)
-        {
-            ctx = new ChainedContext(velocity, request, response, servletContext);
-        }
-        else
-        {
-            ctx = new ViewToolContext(velocity, request, response, servletContext);
-        }
+        ctx = new ViewToolContext(velocity, request, response, servletContext);
         prepareContext(ctx, request);
         return ctx;
     }
@@ -814,29 +693,6 @@ public class VelocityView extends ViewToolManager
         String path = ServletUtils.getPath(request);
         return getTemplate(path);
     }
-
-    /**
-     * <p>Gets the requested template.</p>
-     *
-     * @param request client request
-     * @param response client response.
-     * @return Velocity Template object or null
-     * @deprecated Use {@link #getTemplate(HttpServletRequest)}.
-     */
-    public Template getTemplate(HttpServletRequest request,
-                                   HttpServletResponse response)
-    {
-        String path = ServletUtils.getPath(request);
-        if (response == null)
-        {
-            return getTemplate(path);
-        }
-        else
-        {
-            return getTemplate(path, response.getCharacterEncoding());
-        }
-    }
-
 
     /**
      * Retrieves the requested template.

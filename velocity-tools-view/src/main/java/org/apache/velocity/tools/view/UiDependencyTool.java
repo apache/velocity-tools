@@ -34,8 +34,8 @@ import org.slf4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import org.apache.commons.digester.Digester;
-import org.apache.commons.digester.Rule;
+import org.apache.commons.digester3.Digester;
+import org.apache.commons.digester3.Rule;
 import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.view.ViewContext;
 import org.apache.velocity.tools.Scope;
@@ -616,7 +616,7 @@ public class UiDependencyTool {
         private UiDependencyTool parent;
 
         public void begin(String ns, String el, Attributes attributes) throws Exception {
-            parent = (UiDependencyTool)digester.peek();
+            parent = (UiDependencyTool)getDigester().peek();
 
             for (int i=0; i < attributes.getLength(); i++) {
                 String name = attributes.getLocalName(i);
@@ -624,13 +624,13 @@ public class UiDependencyTool {
                     name = attributes.getQName(i);
                 }
                 if ("name".equals(name)) {
-                    digester.push(attributes.getValue(i));
+                    getDigester().push(attributes.getValue(i));
                 }
             }
         }
 
         public void body(String ns, String el, String typeFormat) throws Exception {
-            String typeName = (String)digester.pop();
+            String typeName = (String)getDigester().pop();
             parent.setFormat(typeName, typeFormat);
         }
     }
@@ -644,7 +644,7 @@ public class UiDependencyTool {
         private UiDependencyTool parent;
 
         public void begin(String ns, String el, Attributes attributes) throws Exception {
-            parent = (UiDependencyTool)digester.peek();
+            parent = (UiDependencyTool)getDigester().peek();
 
             for (int i=0; i < attributes.getLength(); i++) {
                 String name = attributes.getLocalName(i);
@@ -652,13 +652,13 @@ public class UiDependencyTool {
                     name = attributes.getQName(i);
                 }
                 if ("name".equals(name)) {
-                    digester.push(parent.makeGroup(attributes.getValue(i)));
+                    getDigester().push(parent.makeGroup(attributes.getValue(i)));
                 }
             }
         }
 
         public void end(String ns, String el) throws Exception {
-            digester.pop();
+            getDigester().pop();
         }
     }
 
@@ -675,14 +675,14 @@ public class UiDependencyTool {
                     name = attributes.getQName(i);
                 }
                 if ("type".equals(name)) {
-                    digester.push(attributes.getValue(i));
+                    getDigester().push(attributes.getValue(i));
                 }
             }
         }
 
         public void body(String ns, String el, String value) throws Exception {
-            String type = (String)digester.pop();
-            Group group = (Group)digester.peek();
+            String type = (String)getDigester().pop();
+            Group group = (Group)getDigester().peek();
             group.addFile(type, value);
         }
     }
@@ -694,7 +694,7 @@ public class UiDependencyTool {
     protected static class NeedsRule extends Rule {
 
         public void body(String ns, String el, String otherGroup) throws Exception {
-            Group group = (Group)digester.peek();
+            Group group = (Group)getDigester().peek();
             group.addGroup(otherGroup);
         }
     }

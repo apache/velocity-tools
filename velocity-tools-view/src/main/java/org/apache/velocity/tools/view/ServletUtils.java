@@ -344,15 +344,7 @@ public class ServletUtils
         return null;
     }
 
-    public static FactoryConfiguration getConfiguration(String path,
-                                                        ServletContext application)
-    {
-        return getConfiguration(path, application, path.endsWith("toolbox.xml"));
-    }
-
-    public static FactoryConfiguration getConfiguration(String path,
-                                                        ServletContext application,
-                                                        boolean deprecationSupportMode)
+    public static FactoryConfiguration getConfiguration(String path, ServletContext application)
     {
         // first make sure we can even get such a file
         InputStream inputStream = getInputStream(path, application);
@@ -363,10 +355,10 @@ public class ServletUtils
 
         // then make sure it's a file type we recognize
         FileFactoryConfiguration config = null;
-        String source = "ServletUtils.getConfiguration("+path+",ServletContext[,depMode="+deprecationSupportMode+"])";
+        String source = "ServletUtils.getConfiguration("+path+",ServletContext)";
         if (path.endsWith(".xml"))
         {
-            config = new XmlFactoryConfiguration(deprecationSupportMode, source);
+            config = new XmlFactoryConfiguration(source);
         }
         else if (path.endsWith(".properties"))
         {

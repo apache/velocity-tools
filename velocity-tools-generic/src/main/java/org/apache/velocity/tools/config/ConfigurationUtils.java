@@ -328,7 +328,7 @@ public class ConfigurationUtils
         {
             try
             {
-                return read(file.toURL());
+                return read(file.toURI().toURL());
             }
             catch (MalformedURLException mue)
             {

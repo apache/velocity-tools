@@ -60,13 +60,6 @@ import org.apache.velocity.tools.config.DefaultKey;
 @DefaultKey("number")
 public class NumberTool extends FormatConfig
 {
-    @Deprecated
-    public static final String DEFAULT_FORMAT_KEY = FORMAT_KEY;
-
-    @Deprecated
-    public static final String DEFAULT_LOCALE_KEY = ToolContext.LOCALE_KEY;
-
-
     // ------------------------- formatting methods ---------------------------
 
     /**
@@ -175,41 +168,6 @@ public class NumberTool extends FormatConfig
     {
         return ConversionUtils.getNumberFormat(format, locale);
     }
-
-    /**
-     * Returns a {@link NumberFormat} instance for the specified
-     * number style and {@link Locale}.
-     *
-     * @param numberStyle the number style (number will be ignored if this is
-     *        less than zero or the number style is not recognized)
-     * @param locale the {@link Locale} to be used
-     * @return an instance of {@link NumberFormat} or <code>null</code>
-     *         if an instance cannot be constructed with the given
-     *         parameters
-     */
-    @Deprecated
-    protected NumberFormat getNumberFormat(int numberStyle, Locale locale)
-    {
-        return ConversionUtils.getNumberFormat(numberStyle, locale);
-    }
-
-    /**
-     * Checks a string to see if it matches one of the standard
-     * NumberFormat style patterns:
-     *      NUMBER, CURRENCY, PERCENT, INTEGER, or DEFAULT.
-     * if it does it will return the integer constant for that pattern.
-     * if not, it will return -1.
-     *
-     * @see NumberFormat
-     * @param style the string to be checked
-     * @return the int identifying the style pattern
-     */
-    @Deprecated
-    protected int getStyleAsInt(String style)
-    {
-        return ConversionUtils.getNumberStyleAsInt(style);
-    }
-
 
     // ------------------------- number conversion methods ---------------
 

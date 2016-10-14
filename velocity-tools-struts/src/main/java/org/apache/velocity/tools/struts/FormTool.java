@@ -80,15 +80,6 @@ public class FormTool
 
     // --------------------------------------------- Constructors -------------
 
-    @Deprecated
-    public void init(Object obj)
-    {
-        if (obj instanceof ViewContext)
-        {
-            setRequest(((ViewContext)obj).getRequest());
-        }
-    }
-
     /**
      * Initializes this tool.
      *

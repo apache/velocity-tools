@@ -357,33 +357,6 @@ public class DisplayTool extends LocaleConfig
     }
 
     /**
-     * @deprecated Will be unnecessary with Velocity 1.6
-     */
-    @Deprecated 
-    public String message(String format, Collection args)
-    {
-        return message(format, new Object[] { args });
-    }
-
-    /**
-     * @deprecated Will be unnecessary with Velocity 1.6
-     */
-    @Deprecated 
-    public String message(String format, Object arg)
-    {
-        return message(format, new Object[] { arg });
-    }
-
-    /**
-     * @deprecated Will be unnecessary with Velocity 1.6
-     */
-    @Deprecated 
-    public String message(String format, Object arg1, Object arg2)
-    {
-        return message(format, new Object[] { arg1, arg2 });
-    }
-
-    /**
      * Uses {@link MessageFormat} to format the specified String with
      * the specified arguments. If there are no arguments, then the String
      * is returned directly.  Please note that the format
