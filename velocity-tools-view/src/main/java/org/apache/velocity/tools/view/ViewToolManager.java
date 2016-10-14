@@ -233,7 +233,7 @@ public class ViewToolManager extends ToolManager
     @Override
     protected FactoryConfiguration findConfig(String path)
     {
-        return ServletUtils.getConfiguration(path, servletContext, false);
+        return ServletUtils.getConfiguration(path, servletContext);
     }
 
     @Override

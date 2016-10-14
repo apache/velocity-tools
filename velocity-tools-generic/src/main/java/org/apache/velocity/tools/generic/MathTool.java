@@ -714,31 +714,6 @@ public class MathTool extends FormatConfig
         return value.indexOf('.') >= 0;
     }
 
-    @Deprecated
-    protected Number parseNumber(String value)
-    {
-        // check for the floating point
-        if (!hasFloatingPoint(value))
-        {
-            // check for large numbers
-            long i = Long.valueOf(value).longValue();
-            if (i > Integer.MAX_VALUE || i < Integer.MIN_VALUE)
-            {
-                return Long.valueOf(i);
-            }
-            else
-            {
-                return Integer.valueOf((int)i);
-            }
-        }
-        else
-        {
-            return new Double(value);
-        }
-    }
-
-
-
     // ------------------------- Aggregation methods ------------------
 
     /**

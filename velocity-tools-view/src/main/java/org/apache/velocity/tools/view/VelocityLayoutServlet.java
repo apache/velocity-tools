@@ -268,7 +268,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
                 // put the invocation exception in the context
                 ctx.put(KEY_ERROR_INVOCATION_EXCEPTION, e);
                 // get the real cause
-                cause = ((MethodInvocationException)e).getWrappedThrowable();
+                cause = cause.getCause();
             }
 
             // add the cause to the context

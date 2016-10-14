@@ -45,7 +45,6 @@ import org.apache.velocity.tools.generic.ResourceTool;
 public class ConfigTests {
 
     private static final String XML_PATH = "tools.test.xml";
-    private static final String OLD_XML_PATH = "toolbox.test.xml";
     private static final String PROPS_PATH = "tools.test.properties";
 
     protected FactoryConfiguration getBaseConfig()
@@ -95,23 +94,6 @@ public class ConfigTests {
 
         assertValid(xml);
         assertConfigEquals(getBaseConfig(), xml);
-    }
-
-    public @Test void testOldConfig()
-    {
-        FileFactoryConfiguration old = new XmlFactoryConfiguration(true);
-        old.read(OLD_XML_PATH);
-
-        FactoryConfiguration base = getBaseConfig();
-        // remove the request toolbox property locale=en_US manually,
-        // because the old format provide no means to set properties
-        // on a whole toolbox
-        base.getToolbox("request").removeProperty("locale");
-        // add the expected deprecationSupportMode property
-        base.setProperty("deprecationSupportMode", "true");
-
-        assertValid(old);
-        assertConfigEquals(base, old);
     }
 
     public @Test void testPropsConfig()
@@ -358,16 +340,6 @@ public class ConfigTests {
         ToolConfiguration tool = new ToolConfiguration();
 
         // set a real class, confirm it is valid
-        tool.setClass(OldTool.class);
-        assertValid(tool);
-        // and confirm the default key
-        assertEquals("old", tool.getKey());
-
-        // the toString() should describe this as old, due
-        // to the non-deprecated init() method
-        assertTrue((tool.toString().indexOf("Old") >= 0));
-
-        // change to a more modern class, confirm it's valid
         tool.setClassname(FakeTool.class.getName());
         assertValid(tool);
         // and confirm the default key annotation works
@@ -397,18 +369,6 @@ public class ConfigTests {
 
 
     /************* Support classes and methods ******************/
-
-
-    public static class OldTool
-    {
-        public void init(Object foo)
-        {
-            // does nothing
-        }
-
-        // exists only to keep the testrunner happy
-        public @Test @Ignore void foo() {}
-    }
 
     @DefaultKey("test")
     public static class FakeTool

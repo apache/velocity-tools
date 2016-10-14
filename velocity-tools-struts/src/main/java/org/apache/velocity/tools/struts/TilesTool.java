@@ -91,20 +91,6 @@ public class TilesTool extends ImportSupport
 
     /******************************* Constructors ****************************/
 
-    @Deprecated
-    public void init(Object obj)
-    {
-        if (obj instanceof ViewContext)
-        {
-            ViewContext ctx = (ViewContext)obj;
-            setVelocityContext(ctx.getVelocityContext());
-            setRequest(ctx.getRequest());
-            setResponse(ctx.getResponse());
-            setServletContext(ctx.getServletContext());
-            setLog(ctx.getVelocityEngine().getLog());
-        }
-    }
-
     /**
      * Initializes this tool.
      *

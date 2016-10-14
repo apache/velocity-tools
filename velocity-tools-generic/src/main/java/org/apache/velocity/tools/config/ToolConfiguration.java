@@ -20,16 +20,14 @@ package org.apache.velocity.tools.config;
  */
 
 import java.lang.reflect.Method;
-import org.apache.velocity.tools.OldToolInfo;
 import org.apache.velocity.tools.ToolInfo;
 import org.apache.velocity.tools.ClassUtils;
 
 /**
  * <p>This class handles configuration info for tools, including their key,
  * classname, path restriction, and properties.  It also does fairly
- * aggresive validation and is able to identify if the tool is "old"
- * (i.e. designed for VelocityTools 1.x).  Once configuration is
- * complete, a {@link ToolInfo} instance can be created by calling
+ * aggresive validation.
+ * Once configuration is complete, a {@link ToolInfo} instance can be created by calling
  * {@link #createInfo}.</p>
  * <p>
  * Most users will not find themselves directly using the API of this class.
@@ -41,7 +39,7 @@ import org.apache.velocity.tools.ClassUtils;
 public class ToolConfiguration extends Configuration
 {
     private enum Status {
-        VALID, OLD, NONE, MISSING, UNSUPPORTED, UNINSTANTIABLE;
+        VALID, NONE, MISSING, UNSUPPORTED, UNINSTANTIABLE;
     }
 
     private String key;
@@ -189,7 +187,6 @@ public class ToolConfiguration extends Configuration
                 this.status = Status.NONE;
             }
 
-            // check for mere presence of init() or configure()
             try
             {
                 // make sure the classname resolves to a class we have
@@ -201,27 +198,6 @@ public class ToolConfiguration extends Configuration
                 // create an instance to make sure we can do that
                 clazz.newInstance();
 
-                // check for an init method
-                Method init =
-                    clazz.getMethod("init", new Class[]{ Object.class });
-
-                // if init is deprecated, then we'll consider it a
-                // new tool with BC support, not an old tool
-                Deprecated bc = init.getAnnotation(Deprecated.class);
-                if (bc == null)
-                {
-                    this.status = Status.OLD;
-                    this.problem = null;
-                }
-                else
-                {
-                    this.status = Status.VALID;
-                    this.problem = null;
-                }
-            }
-            catch (NoSuchMethodException nsme)
-            {
-                // ignore this
                 this.status = Status.VALID;
                 this.problem = null;
             }
@@ -275,9 +251,6 @@ public class ToolConfiguration extends Configuration
         {
             case VALID:
                 info = new ToolInfo(getKey(), getToolClass());
-                break;
-            case OLD:
-                info = new OldToolInfo(getKey(), getToolClass());
                 break;
             default:
                 throw problem == null ?
@@ -352,7 +325,6 @@ public class ToolConfiguration extends Configuration
         switch (status)
         {
             case VALID:
-            case OLD:
                 break;
             default:
                 throw new ConfigurationException(this, getError(status));
@@ -420,9 +392,6 @@ public class ToolConfiguration extends Configuration
             switch (getStatus())
             {
                 case VALID:
-                    break;
-                case OLD:
-                    out.append("Old ");
                     break;
                 case NONE:
                 case MISSING:

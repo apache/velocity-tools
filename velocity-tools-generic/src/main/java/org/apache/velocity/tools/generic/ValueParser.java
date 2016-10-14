@@ -48,7 +48,7 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
 {
     private Map<String,Object> source = null;
 
-    private boolean allowSubkeys = true; /* default to whatever, should be overridden by deprecationSupportMode default value anyway */
+    private boolean allowSubkeys = true;
 
     /* when using subkeys, cache at least the presence of any subkey,
     so that the rendering of templates not using subkeys will only
@@ -145,15 +145,6 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
     {
         super.configure(values);
 
-        // if we're supporting 1.x behavior
-        Boolean depMode = values.getBoolean("deprecationSupportMode");
-        if (depMode != null && depMode.booleanValue())
-        {
-            // then don't allow subkeys
-            setAllowSubkeys(false);
-        }
-
-        // except if explicitely asked for
         Boolean allow = values.getBoolean(ALLOWSUBKEYS_KEY);
         if(allow != null)
         {

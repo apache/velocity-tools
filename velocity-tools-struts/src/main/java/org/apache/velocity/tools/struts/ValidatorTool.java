@@ -154,19 +154,6 @@ public class ValidatorTool
         }
     };
 
-
-    @Deprecated
-    public void init(Object obj)
-    {
-        if (obj instanceof ViewContext)
-        {
-            this.context = (ViewContext)obj;
-            this.request = context.getRequest();
-            this.session = request.getSession(false);
-            this.app = context.getServletContext();
-        }
-    }
-
     /**
      * Initializes this tool.
      *

@@ -22,8 +22,8 @@ package org.apache.velocity.tools.config;
 import java.io.InputStream;
 import java.io.IOException;
 import org.xml.sax.SAXException;
-import org.apache.commons.digester.Digester;
-import org.apache.commons.digester.RuleSet;
+import org.apache.commons.digester3.Digester;
+import org.apache.commons.digester3.RuleSet;
 
 /**
  * <p>This reads in configuration info formatted as an XML file
@@ -46,16 +46,10 @@ import org.apache.commons.digester.RuleSet;
 public class XmlFactoryConfiguration extends FileFactoryConfiguration
 {
     private RuleSet ruleSet;
-    private boolean supportOldXml;
 
     public XmlFactoryConfiguration()
     {
-        this(false, "");
-    }
-
-    public XmlFactoryConfiguration(boolean supportOldConfig)
-    {
-        this(supportOldConfig, String.valueOf(supportOldConfig));
+        this("");
     }
 
     /**
@@ -67,24 +61,8 @@ public class XmlFactoryConfiguration extends FileFactoryConfiguration
      */
     public XmlFactoryConfiguration(String id)
     {
-        this(false, id);
-    }
-
-    /**
-     * Creates an instance using the specified string
-     * as an identifier to distinguish this instance when debugging
-     * and using the specified setting for supporting the old toolbox.xml
-     * format from VelocityTools 1.x.
-     *
-     * @param supportOldConfig whether the old toolbox.xml format should be supported
-     * @param id the name of the "source" of this instance
-     * @see FactoryConfiguration#setSource(String)
-     */
-    public XmlFactoryConfiguration(boolean supportOldConfig, String id)
-    {
         super(XmlFactoryConfiguration.class, id);
         setRuleSet(new XmlFactoryConfigurationRuleSet());
-        this.supportOldXml = supportOldConfig;
     }
 
     /**
@@ -119,10 +97,6 @@ public class XmlFactoryConfiguration extends FileFactoryConfiguration
         digester.setUseContextClassLoader(true);
         digester.push(this);
         digester.addRuleSet(getRuleSet());
-        if (supportOldXml)
-        {
-            digester.addRuleSet(new OldXmlFactoryConfigurationRuleSet());
-        }
         try
         {
             digester.parse(input);

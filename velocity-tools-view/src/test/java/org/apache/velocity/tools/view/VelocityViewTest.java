@@ -61,7 +61,6 @@ public class VelocityViewTest
         Context context = createMock(Context.class);
 
         expect(config.getServletContext()).andReturn(servletContext);
-        expect(config.findInitParameter(VelocityView.DEPRECATION_SUPPORT_MODE_KEY)).andReturn("false");
         expect(config.findInitParameter(VelocityView.USER_OVERWRITE_KEY)).andReturn(null);
         expect(config.findInitParameter(VelocityView.LOAD_DEFAULTS_KEY)).andReturn("false");
         expect(servletContext.getInitParameter(VelocityView.PROPERTIES_KEY)).andReturn(null);
