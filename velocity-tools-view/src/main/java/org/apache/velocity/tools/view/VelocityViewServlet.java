@@ -22,6 +22,7 @@ package org.apache.velocity.tools.view;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -205,6 +206,9 @@ public class VelocityViewServlet extends HttpServlet
         Context context = null;
         try
         {
+            // prepare needed request and response attributes and properties
+            initRequest(request, response);
+        
             // then get a context
             context = createContext(request, response);
 
@@ -237,6 +241,34 @@ public class VelocityViewServlet extends HttpServlet
         }
     }
 
+    /**
+     *  <p>
+     *    Request and response initialization. Default version does
+     *    only one thing: set request POST parameters encoding to
+     *    Velocity input encoding.
+     *  </p>
+     *
+     *  @param request  HttpServletRequest object containing client request
+     *  @param response HttpServletResponse object for the response
+     */
+    protected void initRequest(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        // adjust HTTP encoding: use value provided for input.encoding
+        // (this affects POST parameters only;
+        // to adjust GET URI and parameters encoding, please refer to your
+        // J2EE container documentation (for instance, under tomcat,
+        // use <Connector ... URIEncoding="UTF-8">)
+        try
+        {
+            request.setCharacterEncoding(getVelocityProperty("input.encoding", "UTF-8"));
+        }
+        catch (UnsupportedEncodingException uee)
+        {
+            error(request, response, uee);
+            throw uee;
+        }
+    }
+        
 
     /**
      * <p>This was a common extension point, but now it is usually
