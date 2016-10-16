@@ -46,16 +46,20 @@ public class LinkToolTests
         ConfigValues() { setReadOnly(false); }
     }
 
-    private LinkTool newLinkTool(InvocationHandler handler)
+    private LinkTool newLinkTool(InvocationHandler requestHandler, InvocationHandler responseHandler)
     {
-        Object proxy
+        Object requestProxy
             = Proxy.newProxyInstance(this.getClass().getClassLoader(),
-                                     new Class[] { HttpServletRequest.class,
-                                                   HttpServletResponse.class },
-                                     handler);
+                                     new Class[] { HttpServletRequest.class },
+                                     requestHandler);
 
-        HttpServletRequest request = (HttpServletRequest)proxy;
-        HttpServletResponse response = (HttpServletResponse)proxy;
+        Object responseProxy
+                = Proxy.newProxyInstance(this.getClass().getClassLoader(),
+                new Class[] { HttpServletResponse.class },
+                responseHandler);
+
+        HttpServletRequest request = (HttpServletRequest)requestProxy;
+        HttpServletResponse response = (HttpServletResponse)responseProxy;
 
         LinkTool link = new LinkTool();
         ValueParser properties = new ConfigValues();
@@ -67,7 +71,7 @@ public class LinkToolTests
 
     private LinkTool newLinkTool(Map params)
     {
-        return newLinkTool(new ServletAdaptor("/test","/link.vm", params));
+        return newLinkTool(new RequestAdaptor("/test","/link.vm", params), new ResponseAdaptor(params));
     }
 
     private LinkTool newLinkTool(String key, Object value)
