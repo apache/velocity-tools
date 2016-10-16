@@ -195,7 +195,7 @@ public class ParameterTool extends ValueParser
                 Array.getLength(value) == 1);
     }
 
-    private Map<String,Object> expandSingletonArrays(Map<String,Object> original)
+    private Map<String,Object> expandSingletonArrays(Map<String,String[]> original)
     {
         Map<String,Object> expanded = new HashMap<String,Object>(original);
         for (Map.Entry<String,Object> entry : expanded.entrySet())

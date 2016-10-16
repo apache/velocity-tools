@@ -40,16 +40,20 @@ import org.junit.Test;
  */
 public class CookieToolTests
 {
-    private CookieTool newCookieTool(InvocationHandler handler)
+    private CookieTool newCookieTool(InvocationHandler requestHandler, InvocationHandler responseHandler)
     {
-        Object proxy
+        Object requestProxy
             = Proxy.newProxyInstance(this.getClass().getClassLoader(),
-                                     new Class[] { HttpServletRequest.class,
-                                                   HttpServletResponse.class },
-                                     handler);
+                                     new Class[] { HttpServletRequest.class },
+                                     requestHandler);
 
-        HttpServletRequest request = (HttpServletRequest)proxy;
-        HttpServletResponse response = (HttpServletResponse)proxy;
+        Object responseProxy
+                = Proxy.newProxyInstance(this.getClass().getClassLoader(),
+                new Class[] { HttpServletResponse.class },
+                responseHandler);
+
+        HttpServletRequest request = (HttpServletRequest)requestProxy;
+        HttpServletResponse response = (HttpServletResponse)responseProxy;
 
         CookieTool cookies = new CookieTool();
         cookies.setRequest(request);
@@ -59,7 +63,7 @@ public class CookieToolTests
 
     private CookieTool newCookieTool(Map cookies)
     {
-        return newCookieTool(new ServletAdaptor(cookies));
+        return newCookieTool(new RequestAdaptor(cookies), new ResponseAdaptor(cookies));
     }
 
     private CookieTool newCookieTool(String name, Object value)
@@ -132,11 +136,12 @@ public class CookieToolTests
     {
         Map jar = new LinkedHashMap();
         jar.put("a", "b");
-        ServletAdaptor proxy = new ServletAdaptor(jar);
-        CookieTool cookies = newCookieTool(proxy);
+        RequestAdaptor requestProxy = new RequestAdaptor(jar);
+        ResponseAdaptor responseProxy = new ResponseAdaptor(jar);
+        CookieTool cookies = newCookieTool(requestProxy, responseProxy);
         assertEquals("", cookies.add("a","b"));
 
-        cookies = newCookieTool(proxy);
+        cookies = newCookieTool(requestProxy, responseProxy);
         assertNotNull(cookies.get("a"));
         assertEquals("b", cookies.get("a").getValue());
     }
@@ -145,11 +150,12 @@ public class CookieToolTests
     {
         Map jar = new LinkedHashMap();
         jar.put("a", "b");
-        ServletAdaptor proxy = new ServletAdaptor(jar);
-        CookieTool cookies = newCookieTool(proxy);
+        RequestAdaptor requestProxy = new RequestAdaptor(jar);
+        ResponseAdaptor responseProxy = new ResponseAdaptor(jar);
+        CookieTool cookies = newCookieTool(requestProxy, responseProxy);
         assertEquals("", cookies.add("a","b", 10));
 
-        cookies = newCookieTool(proxy);
+        cookies = newCookieTool(requestProxy, responseProxy);
         Cookie c = cookies.get("a");
         assertNotNull(c);
         assertEquals("b", c.getValue());
@@ -160,12 +166,13 @@ public class CookieToolTests
     {
         Map jar = new LinkedHashMap();
         jar.put("a", "b");
-        ServletAdaptor proxy = new ServletAdaptor(jar);
-        CookieTool cookies = newCookieTool(proxy);
+        RequestAdaptor requestProxy = new RequestAdaptor(jar);
+        ResponseAdaptor responseProxy = new ResponseAdaptor(jar);
+        CookieTool cookies = newCookieTool(requestProxy, responseProxy);
         assertEquals("b", cookies.get("a").toString());
         cookies.delete("a");
 
-        cookies = newCookieTool(proxy);
+        cookies = newCookieTool(requestProxy, responseProxy);
         assertNull(cookies.get("a"));
     }
 }
