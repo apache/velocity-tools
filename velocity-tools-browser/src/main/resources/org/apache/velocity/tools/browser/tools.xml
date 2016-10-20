@@ -20,20 +20,8 @@
 -->
 
 <tools> 
-    <data type="boolean" key="VIEW_TOOLS_AVAILABLE" value="true"/>
-    <toolbox scope="request">
-        <tool class="org.apache.velocity.tools.view.CookieTool"/>
-        <tool class="org.apache.velocity.tools.view.ImportTool"/>
-        <tool class="org.apache.velocity.tools.view.IncludeTool"/>
-        <tool class="org.apache.velocity.tools.view.LinkTool"/>
-        <tool class="org.apache.velocity.tools.view.PagerTool"/>
-        <tool class="org.apache.velocity.tools.view.ParameterTool"/>
-        <tool class="org.apache.velocity.tools.view.ViewContextTool"/>
-        <!-- 
-        This is not directly useable.
-        <tool class="org.apache.velocity.tools.view.AbstractSearchTool"/>
-        -->
-        <!-- move this to request scope -->
-        <tool class="org.apache.velocity.tools.generic.ResourceTool"/>
+    <data type="boolean" key="BROWSER_TOOL_AVAILABLE" value="true"/>
+    <toolbox scope="session" createSession="false">
+        <tool class="org.apache.velocity.tools.view.BrowserTool"/>
     </toolbox>
 </tools>
