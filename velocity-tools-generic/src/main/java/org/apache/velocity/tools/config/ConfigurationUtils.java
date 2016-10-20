@@ -46,6 +46,8 @@ public class ConfigurationUtils
         "/org/apache/velocity/tools/xml/tools.xml";
     public static final String VIEW_DEFAULTS_PATH =
         "/org/apache/velocity/tools/view/tools.xml";
+    public static final String BROWSER_DEFAULTS_PATH =
+        "/org/apache/velocity/tools/browser/tools.xml";
     public static final String STRUTS_DEFAULTS_PATH =
         "/org/apache/velocity/tools/struts/tools.xml";
 
@@ -83,6 +85,7 @@ public class ConfigurationUtils
         // xml tools, view tools and struts tools may not be available
         config.read(XML_DEFAULTS_PATH, false);
         config.read(VIEW_DEFAULTS_PATH, false);
+        config.read(BROWSER_DEFAULTS_PATH, false);
         config.read(STRUTS_DEFAULTS_PATH, false);
 
         // defaults should *always* be clean!

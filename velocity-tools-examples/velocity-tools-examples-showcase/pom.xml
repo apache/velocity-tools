@@ -37,7 +37,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.5</version>
+                <version>2.19.1</version>
                 <executions>
                     <execution>
                         <id>integration-test</id>
@@ -56,7 +56,7 @@
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
-                <version>1.4.15</version>
+                <version>1.6.0</version>
                 <executions>
                     <execution>
                         <configuration>
@@ -88,25 +88,37 @@
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${servlet.api.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.8.1</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>httpunit</groupId>
             <artifactId>httpunit</artifactId>
-            <version>1.6</version>
+            <version>1.7</version>
             <scope>test</scope>
+        </dependency>
+        <!-- httpunit pom marks rhino.js as optional whereas it is not -->
+        <dependency>
+          <groupId>rhino</groupId>
+          <artifactId>js</artifactId>
+          <version>1.6R5</version>
         </dependency>
         <dependency>
         	<groupId>org.apache.velocity</groupId>
         	<artifactId>velocity-tools-xml</artifactId>
+        	<version>${project.version}</version>
+        	<scope>runtime</scope>
+        </dependency>
+        <dependency>
+        	<groupId>org.apache.velocity</groupId>
+        	<artifactId>velocity-tools-browser</artifactId>
         	<version>${project.version}</version>
         	<scope>runtime</scope>
         </dependency>
@@ -125,7 +137,7 @@
         <dependency>
         	<groupId>javax.servlet.jsp</groupId>
         	<artifactId>jsp-api</artifactId>
-        	<version>2.1</version>
+        	<version>2.2</version>
         	<type>jar</type>
         	<scope>provided</scope>
         </dependency>
