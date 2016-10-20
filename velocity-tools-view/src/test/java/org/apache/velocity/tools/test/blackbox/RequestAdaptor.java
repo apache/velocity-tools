@@ -19,6 +19,8 @@ package org.apache.velocity.tools.test.blackbox;
  * under the License.
  */
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Collections;
@@ -26,10 +28,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import javax.servlet.ServletContext;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * <p>Helper class for LinkToolTests class</p>
@@ -37,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Christopher Schultz
  * @version $Id$
  */
-public class ServletAdaptor implements InvocationHandler
+public class RequestAdaptor implements InvocationHandler
 {
     // helper class
     public class IteratorEnumeration implements Enumeration
@@ -53,18 +51,18 @@ public class ServletAdaptor implements InvocationHandler
     private String _contextPath;
     private String _pathInfo;
 
-    public ServletAdaptor(Map cookies)
+    public RequestAdaptor(Map cookies)
     {
         this(null, null, cookies);
     }
 
-    public ServletAdaptor(String contextPath,
+    public RequestAdaptor(String contextPath,
                           Map params)
     {
         this(contextPath, "", params);
     }
 
-    public ServletAdaptor(String contextPath, String pathInfo, Map params)
+    public RequestAdaptor(String contextPath, String pathInfo, Map params)
     {
         _contextPath = contextPath;
         if(null == _contextPath)
@@ -95,50 +93,10 @@ public class ServletAdaptor implements InvocationHandler
         {
             return request(proxy, method, args);
         }
-        else if(clazz.isAssignableFrom(HttpServletResponse.class))
-        {
-            return response(proxy, method, args);
-        }
-        else if(clazz.isAssignableFrom(ServletContext.class))
-        {
-            return context(proxy, method, args);
-        }
         else
         {
             throw new IllegalStateException("Unexpected proxy interface: "
                                             + clazz.getName());
-        }
-    }
-
-    protected Object response(Object proxy,
-                              Method method,
-                              Object[] args)
-    {
-        String methodName = method.getName();
-
-        if("encodeURL".equals(methodName)
-           || "encodeUrl".equals(methodName))
-        {
-            // Don't worry about adding ";jsessionid" or anything.
-            return args[0];
-        }
-        else if ("addCookie".equals(methodName))
-        {
-            Cookie c = (Cookie)args[0];
-            if (c.getMaxAge() == 0)
-            {
-                _params.remove(c.getName());
-            }
-            else
-            {
-                _params.put(c.getName(), c);
-            }
-            return null;
-        }
-        else
-        {
-            throw new IllegalStateException("Unexpected method call: "
-                                            + method);
         }
     }
 
@@ -262,22 +220,4 @@ public class ServletAdaptor implements InvocationHandler
                                             + method);
         }
     }
-
-    protected Object context(Object proxy,
-                             Method method,
-                             Object[] args)
-    {
-        String methodName = method.getName();
-
-        if("getContextPath".equals(methodName))
-        {
-            return _contextPath;
-        }
-        else
-        {
-            throw new IllegalStateException("Unexpected method call: "
-                                            + methodName);
-        }
-    }
-
 }
