@@ -165,7 +165,7 @@ public class ViewToolsIT {
 
     /******* Tests **********/
 
-    public @Test void testBrowserSnifferTool() throws Exception {
+    public @Test void testBrowserTool() throws Exception {
         /* check we are identified as a Java (HttpUnit) client */
         WebConversation conv = new WebConversation();
         WebRequest req = new GetMethodWebRequest(ROOT_URL+"browser.vm");
