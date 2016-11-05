@@ -44,6 +44,16 @@
                         <include>**/*TestCase.java</include>
                         <include>**/*Tests.java</include>
                     </includes>
+                    <systemProperties>
+                        <property>
+                            <name>test.output.dir</name>
+                            <value>${project.build.testOutputDirectory}</value>
+                        </property>
+                        <property>
+                            <name>test.result.dir</name>
+                            <value>${project.build.directory}/results</value>
+                        </property>
+                      </systemProperties>
                 </configuration>
             </plugin>
         </plugins>
@@ -72,5 +82,58 @@
             <version>3.4</version>
             <scope>test</scope>
         </dependency>
+        <!-- to reuse the MockLogger from velocity-tools-generic -->
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-tools-generic</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
+
+
+  <build>
+    <defaultGoal>install</defaultGoal>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${surefire.plugin.version}</version>
+        <configuration>
+          <skip>${maven.test.skip}</skip>
+          <systemProperties>
+            <property>
+              <name>test</name>
+              <value>${test}</value>
+            </property>
+            <property>
+              <name>test.output.dir</name>
+              <value>${project.build.testOutputDirectory}</value>
+            </property>
+            <property>
+              <name>test.result.dir</name>
+              <value>${project.build.directory}/results</value>
+            </property>
+            <property>
+              <name>org.slf4j.simpleLogger.defaultLogLevel</name>
+              <value>warn</value>
+              </property>
+          </systemProperties>
+        </configuration>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <skip>false</skip>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
