@@ -91,6 +91,7 @@ $demo.thisPage.insert("#doclink( 'BrowserTool' false )").
 #demo( 'browser' 'Yahoo' $desc )
 #demo( 'browser' 'Google' $desc )
 #demo( 'browser' 'Java' $desc )
+#demo( 'browser' 'httpunit' $desc )
 #demo( 'browser' 'Altavista' $desc )
 #demo( 'browser' 'Scooter' $desc )
 #demo( 'browser' 'Lycos' $desc )

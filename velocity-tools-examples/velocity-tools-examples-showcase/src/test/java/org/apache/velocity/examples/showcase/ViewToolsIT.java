@@ -166,11 +166,11 @@ public class ViewToolsIT {
     /******* Tests **********/
 
     public @Test void testBrowserTool() throws Exception {
-        /* check we are identified as a Java (HttpUnit) client */
+        /* check we are identified as a HttpUnit client */
         WebConversation conv = new WebConversation();
         WebRequest req = new GetMethodWebRequest(ROOT_URL+"browser.vm");
         WebResponse resp = conv.getResponse(req);
-        checkText(resp,"Java","true");
+        checkText(resp,"httpunit","true");
 
         /* check language */
         req.setHeaderField("Accept-Language","en");
