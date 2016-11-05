@@ -36,4 +36,7 @@
         <!-- move this to request scope -->
         <tool class="org.apache.velocity.tools.generic.ResourceTool"/>
     </toolbox>
+    <toolbox scope="session" createSession="false">
+        <tool class="org.apache.velocity.tools.view.BrowserTool"/>
+    </toolbox>
 </tools>
