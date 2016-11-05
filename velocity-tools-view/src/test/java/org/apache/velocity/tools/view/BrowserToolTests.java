@@ -51,7 +51,7 @@ public class BrowserToolTests {
     protected Map<String, String> readUAs(String filename) throws Exception
     {
         Map result = new TreeMap<String, String>();
-        BufferedReader reader = new BufferedReader(new FileReader(TEST_OUTPUT_DIR + "/" + filename));
+        BufferedReader reader = new BufferedReader(new FileReader(TEST_OUTPUT_DIR + "/user-agents/" + filename));
         String line;
         while ((line = reader.readLine()) != null)
         {
