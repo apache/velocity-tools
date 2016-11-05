@@ -18,13 +18,17 @@ import java.util.regex.Pattern;
 
 public class UAParser
 {
-    public UAParser(Logger log)
+    public UAParser()
+    {
+    }
+
+    public void setLog(Logger log)
     {
         this.LOG = log;
     }
 
     protected org.slf4j.Logger LOG = null;
-    
+
     public static class UAEntity
     {
         private String name = null;
@@ -242,7 +246,13 @@ public class UAParser
     }
 
     /* the big hairy parsing method */
-    public UserAgent parseUserAgent(String userAgentString)
+    public static UserAgent parseUserAgent(String userAgentString)
+    {
+        return parseUserAgent(userAgentString, null);
+    }
+
+    /* the big hairy parsing method */
+    public static UserAgent parseUserAgent(String userAgentString, Logger log)
     {
         UserAgent ua = null;
         try
@@ -587,7 +597,7 @@ public class UAParser
         }
         catch (Exception e)
         {
-            LOG.error("BrowserTool: Could not parse browser for User-Agent: {}", userAgentString, e);
+            if (log != null) log.error("BrowserTool: Could not parse browser for User-Agent: {}", userAgentString, e);
             ua = null;
         }
         return ua;

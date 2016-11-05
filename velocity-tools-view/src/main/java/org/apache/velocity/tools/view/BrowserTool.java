@@ -119,8 +119,6 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
 
     private static Pattern quality = Pattern.compile("^q\\s*=\\s*(\\d(?:0(?:.\\d{0,3})?|1(?:.0{0,3}))?)$");
 
-    /* parsing helpers */
-    private static UAParser uaParser = null;
     /**
      * Retrieves the User-Agent header from the request (if any).
      * @see #setUserAgentString
@@ -149,7 +147,6 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
             throw new NullPointerException("BrowserTool: log should not be set to null");
         }
         this.LOG = log;
-        uaParser = new UAParser(LOG);
     }
 
 
@@ -176,12 +173,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
         {
             userAgentString = ua;
             lowercaseUserAgentString = ua.toLowerCase();
-            if (uaParser == null)
-            {
-                /* can't run without a logger, can we? */
-                throw new VelocityException("BrowserTool: no logger was defined");
-            }
-            userAgent = uaParser.parseUserAgent(ua);
+            userAgent = UAParser.parseUserAgent(ua, LOG);
         }
     }
 
@@ -543,7 +535,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
 
     protected boolean test(String key)
     {
-        return lowercaseUserAgentString.indexOf(key) != -1;
+        return key == null ? null : lowercaseUserAgentString.indexOf(key.toLowerCase()) != -1;
     }
 
     private void parseAcceptLanguage()
