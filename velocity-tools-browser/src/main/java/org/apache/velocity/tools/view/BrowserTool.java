@@ -23,10 +23,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.*;
 
-import org.apache.devicemap.DeviceMapClient;
-import org.apache.devicemap.DeviceMapFactory;
-import org.apache.devicemap.data.Device;
-import org.apache.devicemap.loader.LoaderOption;
 import org.apache.velocity.exception.VelocityException;
 import org.apache.velocity.tools.ConversionUtils;
 import static org.apache.velocity.tools.view.UAParser.*;
@@ -47,7 +43,7 @@ import javax.servlet.http.HttpServletRequest;
  * <p>All properties are boolean, excpet those in italic which are strings (and major/minor versions which are integers)</p>
  * <p>The following properties are available:</p>
  * <ul>
- * <li><b>Device: </b><i>device</i> robot mobile tablet desktop</li>
+ * <li><b>Device: </b><i>device</i> robot mobile tablet desktop tv</li>
  * <li><b>Features:</b>css3 dom3</li>
  * <li><b>Browser:</b><i>userAgent.getBrowser().name userAgent.getBrowser().majorVersion userAgent.getBrowser().minorVersion</i></li>
  * <li><b>Rendering engine: </b><i>renderingEngine.name renderingEngine.minorVersion renderingEngine.majorVersion</i></li>
@@ -63,6 +59,16 @@ import javax.servlet.http.HttpServletRequest;
  * matching language, the tools defaut locale (or the first value of languagesFilter) is returned.
  * Their value is guarantied to belong to the set provided in languagesFilter, if any.</p>
  *
+ * <p>
+ *     Notes on implementation:
+ *     <ul>
+ *         <li>The parsing algorithm is mainly empirical. Used rules are rather generic, so shouldn't need recent updates to be accurate, but accuracy remains far from guaranteed for new devices.</li>
+ *         <li>Parsing should be fast, as the parser only uses a single regex iteration on the user agent string.</li>
+ *         <li>Game consoles, e-readers, etc... are for now classified as <i>mobile</i> devices (but can sometimes be identified by their operating system).</li>
+ *         <li>Needless to say, the frontier between different device types can be very thin...</li>
+ *     </ul>
+ * </p>
+ *
  * <p>Thanks to Lee Semel (lee@semel.net), the author of the HTTP::BrowserDetect Perl module.</p>
  * <p>See also:
  * <ul>
@@ -75,8 +81,15 @@ import javax.servlet.http.HttpServletRequest;
  *   <li>https://en.wikipedia.org/wiki/Comparison_of_layout_engines_(Cascading_Style_Sheets)</li>
  *   <li>https://en.wikipedia.org/wiki/Comparison_of_layout_engines_(Document_Object_Model)</li>
  *   <li>http://www.webapps-online.com/online-tools/user-agent-strings</li>
- *   <li>https://whichuserAgent.getBrowser().net/data/</li>
+ *   <li>https://whichbrowser.net/data/</li>
  * </ul>
+ * </p>
+ * <p>
+ *     TODO:
+ *     <ul>
+ *         <li>parse X-Wap-Profile header if present</li>
+ *         <li>parse X-Requested-With header if present</li>
+ *     </ul>
  * </p>
  *
  * @author <a href="mailto:claude@renegat.net">Claude Brisson</a>
@@ -232,7 +245,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
     /**
      * @Since VelocityTools 3.0
      */
-    public String getDeviceType()
+    public String getDevice()
     {
         return userAgent == null ? null : userAgent.getDeviceType().toString().toLowerCase();
     }
@@ -264,6 +277,14 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
     public boolean isDesktop()
     {
         return userAgent == null && userAgent.getDeviceType() == DeviceType.DESKTOP;
+    }
+
+    /**
+     * @Since VelocityTools 3.0
+     */
+    public boolean isTV()
+    {
+        return userAgent == null && userAgent.getDeviceType() == DeviceType.TV;
     }
 
     /**

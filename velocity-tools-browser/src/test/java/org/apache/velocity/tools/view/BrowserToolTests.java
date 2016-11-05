@@ -26,6 +26,8 @@ import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -33,6 +35,7 @@ import static org.apache.velocity.tools.view.UAParser.UAEntity;
 
 import org.apache.velocity.tools.generic.MockLogger;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 /**
  * <p>Tests for BrowserTool</p>
@@ -85,20 +88,21 @@ public class BrowserToolTests {
                 }
             }
             String found = builder.toString();
-            assertTrue("entry " + num + "/" + uas.size()+": wrong browser detected: browser={"+expected+"}, found={"+found+"}, ua={"+ua+"}", expected.toLowerCase().startsWith(found.toLowerCase()));
+            assertTrue("entry " + num + "/" + uas.size() + ": wrong browser detected: browser={" + expected + "}, found={" + found + "}, ua={" + ua + "}", expected.toLowerCase().startsWith(found.toLowerCase()));
         }
     }
 
-    protected void checkRobots(BrowserTool tool, Map<String, String> uas)
+    protected void checkDevices(BrowserTool tool, Map<String, String> uas)
     {
         int num = 0;
         for (Map.Entry<String, String> entry : uas.entrySet())
         {
             ++num;
-            String robot = entry.getValue();
+            String device = entry.getValue();
             String ua = entry.getKey();
             tool.setUserAgentString(ua);
-            assertTrue("entry " + num + "/" + uas.size()+": robot not detected: robot={"+robot+"}, ua={"+ua+"}", tool.isRobot());
+            String found = tool.getDevice();
+            assertTrue("entry " + num + "/" + uas.size() + ": wrong device detected: device={" + device + "}, found={" + found + "}, ua={" + ua + "}", device.equals(found));
         }
     }
 
@@ -113,7 +117,7 @@ public class BrowserToolTests {
             tool.setUserAgentString(ua);
             UAEntity os = tool.getOperatingSystem();
             assertNotNull("entry " + num + "/" + uas.size()+": operating system not detected: os={"+expected+"}, ua={" + ua + "}", os);
-            assertEquals("entry " + num + "/" + uas.size()+": operating system not correctly detected: os={" + expected + "}, found={" + os.getName() + "}, ua={"+ua+"}", expected.toLowerCase(), os.getName().toLowerCase());
+            assertEquals("entry " + num + "/" + uas.size()+": operating system not correctly detected: os={" + expected + "}, found={" + os.getName() + "}, ua={" + ua + "}", expected.toLowerCase(), os.getName().toLowerCase());
         }
     }
 
@@ -137,12 +141,12 @@ public class BrowserToolTests {
         checkBrowsers(tool, uas);
     }
 
-    public @Test void testRobotParsing() throws Exception
+    public @Test void testDeviceParsing() throws Exception
     {
         BrowserTool tool = new BrowserTool();
         tool.setLog(new MockLogger(false, false));
-        Map uas = readUAs("robots.txt");
-        checkRobots(tool, uas);
+        Map uas = readUAs("devices.txt");
+        checkDevices(tool, uas);
     }
 
     public @Test void testOperatingSystemParsing() throws Exception
@@ -152,4 +156,5 @@ public class BrowserToolTests {
         Map uas = readUAs("operating_systems.txt");
         checkOperatingSystems(tool, uas);
     }
+
 }
