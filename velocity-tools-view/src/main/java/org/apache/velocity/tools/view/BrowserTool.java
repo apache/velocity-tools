@@ -36,19 +36,19 @@ import org.apache.velocity.tools.config.InvalidScope;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- *  <p>userAgent.getBrowser()-sniffing tool (session or request scope requested, session scope advised).</p>
+ *  <p>Browser sniffing tool (session or request scope requested, session scope advised).</p>
  *  <p></p>
  * <p><b>Usage:</b></p>
- * <p>BrowserTool defines properties that are used to test the client userAgent.getBrowser(), operating system, device, language...</p>
+ * <p>BrowserTool defines properties that are used to test the client browser, operating system, device, language...</p>
  * <p>All properties are boolean, excpet those in italic which are strings (and major/minor versions which are integers)</p>
  * <p>The following properties are available:</p>
  * <ul>
  * <li><b>Device: </b><i>device</i> robot mobile tablet desktop tv</li>
  * <li><b>Features:</b>css3 dom3</li>
- * <li><b>Browser:</b><i>userAgent.getBrowser().name userAgent.getBrowser().majorVersion userAgent.getBrowser().minorVersion</i></li>
+ * <li><b>Browser:</b><i>browser.name browser.majorVersion browser.minorVersion</i></li>
  * <li><b>Rendering engine: </b><i>renderingEngine.name renderingEngine.minorVersion renderingEngine.majorVersion</i></li>
  * <li><b>Operating system: </b><i>operatingsystem.name operatingsystem.majorVersion operatingsystem.minorVersion</i></li>
- * <li><b>Specific userAgent.getBrowser() tests:</b>netscape firefox safari MSIE opera links mozilla konqueror chrome</li>
+ * <li><b>Specific browser tests:</b>netscape firefox safari MSIE opera links mozilla konqueror chrome</li>
  * <li><b>Specific rendering engine tests:</b>gecko webKit KHTML trident blink edgeHTML presto</li>
  * <li><b>Specific OS tests:</b>windows OSX linux unix BSD android iOS symbian</li>
  * <li><b>Languages</b>: <i>preferredLanguageTag</i> (a string like 'en', 'da', 'en-US', ...), <i>preferredLocale</i> (a java Locale)</li>
@@ -72,7 +72,7 @@ import javax.servlet.http.HttpServletRequest;
  * <p>Thanks to Lee Semel (lee@semel.net), the author of the HTTP::BrowserDetect Perl module.</p>
  * <p>See also:
  * <ul>
- *   <li>http://www.zytrax.com/tech/web/userAgent.getBrowser()_ids.htm</li>
+ *   <li>http://www.zytrax.com/tech/web/browser_ids.htm</li>
  *   <li>http://en.wikipedia.org/wiki/User_agent</li>
  *   <li>http://www.user-agents.org/</li>
  *   <li>https://github.com/OpenDDR</li>
@@ -96,7 +96,7 @@ import javax.servlet.http.HttpServletRequest;
  * @since VelocityTools 2.0
  * @version $Revision$ $Date$
  */
-@DefaultKey("userAgent.getBrowser()")
+@DefaultKey("browser")
 @InvalidScope(Scope.APPLICATION)
 public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io.Serializable
 {
@@ -348,7 +348,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
         return getRenderingEngine() != null && "Presto".equals(getRenderingEngine().getName());
     }
 
-    /* Specific userAgent.getBrowser()s */
+    /* Specific browsers */
 
     public boolean isChrome()
     {

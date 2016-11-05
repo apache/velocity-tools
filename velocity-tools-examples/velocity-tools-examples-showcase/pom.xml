@@ -57,6 +57,20 @@
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
                 <version>1.6.0</version>
+                <!-- enable remote debugging
+                <configuration>
+                    <configuration>
+                        <properties>
+                            <cargo.jvmargs>
+                                -Xdebug
+                                -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
+                                -Xnoagent
+                                -Djava.compiler=NONE
+                            </cargo.jvmargs>
+                        </properties>
+                    </configuration>
+                </configuration>
+                -->
                 <executions>
                     <execution>
                         <configuration>
@@ -113,12 +127,6 @@
         <dependency>
         	<groupId>org.apache.velocity</groupId>
         	<artifactId>velocity-tools-xml</artifactId>
-        	<version>${project.version}</version>
-        	<scope>runtime</scope>
-        </dependency>
-        <dependency>
-        	<groupId>org.apache.velocity</groupId>
-        	<artifactId>velocity-tools-browser</artifactId>
         	<version>${project.version}</version>
         	<scope>runtime</scope>
         </dependency>
