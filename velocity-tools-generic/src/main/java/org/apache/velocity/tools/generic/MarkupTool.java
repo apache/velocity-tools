@@ -26,9 +26,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 
-import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.config.DefaultKey;
-import org.apache.velocity.tools.generic.SafeConfig;
 
 /**
  * <b>NOTE: This tools is considered "alpha" quality due to lack of testing
@@ -78,11 +76,11 @@ public class MarkupTool extends SafeConfig
     /**
      * Configuration
      */
-    protected void configure(ValueParser props)
+    public void setLog(Logger log)
     {
-        this.LOG = (Logger)props.getValue(ToolContext.LOG_KEY);
+        this.LOG = log;
     }
-    
+
     public void setTab(String tab)
     {
         if (isConfigLocked())

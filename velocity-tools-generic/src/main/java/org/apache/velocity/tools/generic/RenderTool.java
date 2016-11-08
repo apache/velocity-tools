@@ -152,8 +152,6 @@ public class RenderTool extends SafeConfig
         {
             this.forceThreadSafe = false;
         }
-        
-        this.LOG = (Logger)parser.getValue(ToolContext.LOG_KEY);
     }
 
     /**
@@ -163,7 +161,14 @@ public class RenderTool extends SafeConfig
     public void setVelocityEngine(VelocityEngine ve)
     {
         this.engine = ve;
-        this.LOG = ve.getLog();
+    }
+
+    /**
+     * Allow user to specify a logger.
+     */
+    public void setLog(Logger log)
+    {
+        this.LOG = log;
     }
 
     /**
