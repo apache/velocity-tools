@@ -28,6 +28,17 @@ import org.slf4j.Logger;
  * <p>
  * This tool is used to log from within templates.
  * </p>
+ * <p>
+ * Of course, the desired log level must have been configured, using the method specific
+ * to the SLF4J implementation you are using. For instance, when using the webapp-slf4j-logger,
+ * you will use the following snippet of code in you /WEB-INF/web.xml file:
+ * <pre>
+ * &lt;context-param&gt;
+ *   &lt;param-name&gt;webapp-slf4j-logger.level&lt;/param-name&gt;
+ *   &lt;param-value&gt;debug&lt;/param-value&gt;
+ * &lt;/context-param&gt;
+ * </pre>
+ * </p>
  *
  * <p>
  * <pre>
