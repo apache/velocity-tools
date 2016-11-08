@@ -149,8 +149,6 @@ public class LinkTool extends SafeConfig implements Cloneable
      */
     protected void configure(ValueParser props)
     {
-        this.LOG = (Logger)props.getValue(ToolContext.LOG_KEY);
-
         String link = props.getString(URI_KEY);
         if (link != null)
         {
@@ -214,6 +212,11 @@ public class LinkTool extends SafeConfig implements Cloneable
         {
             setForceRelative(forceRelative);
         }
+    }
+
+    public void setLog(Logger log)
+    {
+        this.LOG = log;
     }
 
     /**
