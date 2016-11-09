@@ -26,6 +26,21 @@
   <body>
 
     <release version="3.0-SNAPSHOT" date="In Subversion">
+        <action type="fix" dev="cbrisson">
+            use static logging in Tools classes
+        </action>
+        <action type="add" dev="cbrisson">
+            new generic LogTool to emit logs from inside templates
+        </action>
+        <action type="add" dev="cbrisson">
+            drop unmaintained Struts tools
+        </action>
+        <action type="add" dev="cbrisson">
+            full review of BrowserTool implementation, update user-agents detection algorithm
+        </action>
+        <action type="add" dev="cbrisson">
+            upgraded to servlet API 3.0.1
+        </action>
       <action type="fix" dev="cbrisson">
         Removed deprecated 1.x configuration handling and depreacted 1.x tools initialization support
       </action>      
