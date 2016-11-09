@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.config.DefaultKey;
@@ -92,15 +93,13 @@ public class FieldTool extends SafeConfig
      */
     public static final String STORE_DYNAMIC_KEY = "storeDynamicLookups";
 
-    protected Logger log;
+    protected static Logger log = LoggerFactory.getLogger(FieldTool.class);
+    
     protected HashMap storage = new HashMap();
     protected boolean storeDynamicLookups = true;
 
     protected void configure(ValueParser values)
     {
-        // see if there's a log in there
-        this.log = (Logger)values.getValue("log");
-
         // retrieve any classnames to be inspected and inspect them
         // *before* setting the storeDynamicLookups property!
         String[] classnames = values.getStrings(INCLUDE_KEY);
@@ -148,10 +147,7 @@ public class FieldTool extends SafeConfig
             }
             catch (Exception e)
             {
-                if (log != null)
-                {
-                    log.debug("Unable to retrieve value of field at {}", name, e);
-                }
+                log.debug("Unable to retrieve value of field at {}", name, e);
             }
         }
         // otherwise, we should have stored the value directly
@@ -232,22 +228,21 @@ public class FieldTool extends SafeConfig
             if (Modifier.isStatic(mod) && Modifier.isPublic(mod))
             {
                 // make it easy to debug key collisions
-                if (log != null && log.isDebugEnabled() &&
-                    results.containsKey(field.getName()))
+                if (log.isDebugEnabled() && results.containsKey(field.getName()))
                 {
-                    log.debug("FieldTool: {} is being overridden by {}", field.getName(), clazz.getName());
+                    log.debug("{} is being overridden by {}", field.getName(), clazz.getName());
                 }
                 // if the field is final
                 if (Modifier.isFinal(mod))
                 {
                     // just get the value now
-                    results.put(field.getName(), retrieve(field, clazz, log));
+                    results.put(field.getName(), retrieve(field, clazz));
                 }
                 else
                 {
                     // put a wrapper with easy access
                     results.put(field.getName(),
-                                new MutableField(field, clazz, log));
+                                new MutableField(field, clazz));
                 }
             }
         }
@@ -256,11 +251,10 @@ public class FieldTool extends SafeConfig
 
     /**
      * Retrieves and returns the value of the specified {@link Field}
-     * in the specified {@link Class}.  If Logger is provided, then
-     * access errors will be logged, otherwise this will fail silently
-     * and return {@code null}.
+     * in the specified {@link Class}. Returns {@code null} in case of failure.
+     * 
      */
-    protected static Object retrieve(Field field, Class clazz, Logger log)
+    protected static Object retrieve(Field field, Class clazz)
     {
         try
         {
@@ -268,10 +262,7 @@ public class FieldTool extends SafeConfig
         }
         catch(IllegalAccessException iae)
         {
-            if (log != null)
-            {
-                log.warn("IllegalAccessException while trying to access {}", field.getName(), iae);
-            }
+            log.warn("IllegalAccessException while trying to access {}", field.getName(), iae);
             return null;
         }
     }
@@ -326,16 +317,14 @@ public class FieldTool extends SafeConfig
     /**
      * Holds a {@link Field} and {@link Class} reference for later
      * retrieval of the value of a field that is not final and may
-     * change at different lookups.  If a Logger is passed in,
-     * then this will log errors, otherwise it will fail silently.
+     * change at different lookups.
      */
     public static class MutableField
     {
         private final Class clazz;
         private final Field field;
-        private final Logger log;
 
-        public MutableField(Field f, Class c, Logger l)
+        public MutableField(Field f, Class c)
         {
             if (f == null || c == null)
             {
@@ -344,12 +333,11 @@ public class FieldTool extends SafeConfig
 
             field = f;
             clazz = c;
-            log = l;
         }
 
         public Object getValue()
         {
-            return FieldTool.retrieve(field, clazz, log);
+            return FieldTool.retrieve(field, clazz);
         }
     }
 

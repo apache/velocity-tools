@@ -19,7 +19,6 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
-import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,9 +32,9 @@ import org.dom4j.Node;
 import org.dom4j.Element;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
-import org.dom4j.io.XMLWriter;
 import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.velocity.tools.ConversionUtils;
 import org.apache.velocity.tools.ToolContext;
@@ -80,7 +79,7 @@ public class XmlTool extends SafeConfig
 {
     public static final String FILE_KEY = "file";
 
-    protected Logger LOG = null;
+    protected static Logger LOG = LoggerFactory.getLogger(XmlTool.class);
 
     private List<Node> nodes;
 
@@ -105,8 +104,6 @@ public class XmlTool extends SafeConfig
      */
     protected void configure(ValueParser parser)
     {
-        this.LOG = (Logger)parser.getValue(ToolContext.LOG_KEY);
-
         String file = parser.getString(FILE_KEY);
         if (file != null)
         {
@@ -201,10 +198,7 @@ public class XmlTool extends SafeConfig
         }
         catch (Exception e)
         {
-            if (LOG != null)
-            {
-                LOG.debug("XmlTool - Failed to read XML from : {}", o, e);
-            }
+            LOG.error("XmlTool - Failed to read XML from : {}", o, e);
             return null;
         }
     }
@@ -230,10 +224,7 @@ public class XmlTool extends SafeConfig
         }
         catch (Exception e)
         {
-            if (LOG != null)
-            {
-                LOG.debug("XmlTool - Failed to parse XML from : {}", o, e);
-            }
+            LOG.error("XmlTool - Failed to parse XML from : {}", o, e);
             return null;
         }
     }

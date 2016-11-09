@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.config.DefaultKey;
@@ -72,7 +73,8 @@ public class ClassTool extends SafeConfig
     public static final String INSPECT_KEY = "inspect";
     public static final String SHOW_DEPRECATED_KEY = "showDeprecated";
 
-    protected Logger log;
+    protected static Logger log = LoggerFactory.getLogger(ClassTool.class);
+    
     protected Class type;
     protected List<MethodSub> methods;
     protected List<ConstructorSub> constructors;
@@ -102,7 +104,6 @@ public class ClassTool extends SafeConfig
         }
 
         // manually duplicate configuration of the parent tool
-        this.log = tool.log;
         this.showDeprecated = tool.showDeprecated;
         setSafeMode(tool.isSafeMode());
         setLockConfig(tool.isConfigLocked());
@@ -110,7 +111,6 @@ public class ClassTool extends SafeConfig
 
     protected void configure(ValueParser values)
     {
-        this.log = (Logger)values.getValue("log");
         this.showDeprecated =
             values.getBoolean(SHOW_DEPRECATED_KEY, showDeprecated);
 
@@ -129,10 +129,7 @@ public class ClassTool extends SafeConfig
         }
         catch (Exception e)
         {
-            if (this.log != null)
-            {
-                this.log.error("Could not load Class for {}", name);
-            }
+            log.error("Could not load Class for {}", name);
             return null;
         }
     }

@@ -23,11 +23,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.*;
 
-import org.apache.velocity.exception.VelocityException;
 import org.apache.velocity.tools.ConversionUtils;
 import static org.apache.velocity.tools.view.UAParser.*;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
@@ -102,7 +102,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
 {
     private static final long serialVersionUID = 1734529350532353339L;
 
-    protected Logger LOG = null;
+    protected static Logger LOG = LoggerFactory.getLogger(BrowserTool.class);
 
     /* User-Agent */
     private String userAgentString = null;
@@ -138,19 +138,6 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
     }
 
     /**
-     * Set log.
-     */
-    public void setLog(Logger log)
-    {
-        if (log == null)
-        {
-            throw new NullPointerException("BrowserTool: log should not be set to null");
-        }
-        this.LOG = log;
-    }
-
-
-    /**
      * Sets the User-Agent string to be parsed for info.  If null, the string
      * will be empty and everything will return false or null.  Otherwise,
      * it will set the whole string to lower case before storing to simplify
@@ -173,7 +160,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
         {
             userAgentString = ua;
             lowercaseUserAgentString = ua.toLowerCase();
-            userAgent = UAParser.parseUserAgent(ua, LOG);
+            userAgent = UAParser.parseUserAgent(ua);
         }
     }
 

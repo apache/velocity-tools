@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.ToolContext;
@@ -106,7 +107,7 @@ public class LinkTool extends SafeConfig implements Cloneable
     public static final String CHARSET_KEY = "charset";
     public static final String XHTML_MODE_KEY = "xhtml";
 
-    protected Logger LOG = null;
+    protected static Logger LOG = LoggerFactory.getLogger(LinkTool.class);
     protected String scheme;
     protected String user;
     protected String host;
@@ -214,11 +215,6 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
     }
 
-    public void setLog(Logger log)
-    {
-        this.LOG = log;
-    }
-
     /**
      * Equivalent to clone, but with no checked exceptions.
      * If for some unfathomable reason clone() doesn't work,
@@ -249,10 +245,7 @@ public class LinkTool extends SafeConfig implements Cloneable
         catch (CloneNotSupportedException e)
         {
             String msg = "Could not properly clone " + getClass();
-            if (LOG != null)
-            {
-                LOG.error(msg, e);
-            }
+            LOG.error(msg, e);
             throw new RuntimeException(msg, e);
         }
     }
@@ -359,10 +352,7 @@ public class LinkTool extends SafeConfig implements Cloneable
             }
             catch (NumberFormatException nfe)
             {
-                if (LOG != null)
-                {
-                    LOG.debug("Could not convert '{}' to int", obj, nfe);
-                }
+                LOG.error("Could not convert '{}' to int", obj, nfe);
                 this.port = -2; // use this to mean error
             }
         }
@@ -917,10 +907,7 @@ public class LinkTool extends SafeConfig implements Cloneable
             }
             catch (Exception e)
             {
-                if (LOG != null)
-                {
-                    LOG.debug("Could not convert '{}' to URI", obj, e);
-                }
+                LOG.error("Could not convert '{}' to URI", obj, e);
                 return null;
             }
         }
@@ -965,10 +952,7 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
         catch (Exception e)
         {
-            if (LOG != null)
-            {
-                LOG.debug("Could not create URI", e);
-            }
+            LOG.error("Could not create URI", e);
         }
         return null;
     }
@@ -1760,10 +1744,7 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
         catch (UnsupportedEncodingException uee)
         {
-            if (LOG != null)
-            {
-                LOG.debug("Character encoding '{}' is unsupported", charset, uee);
-            }
+            LOG.error("Character encoding '{}' is unsupported", charset, uee);
             return null;
         }
     }
@@ -1786,10 +1767,7 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
         catch (UnsupportedEncodingException uee)
         {
-            if (LOG != null)
-            {
-                LOG.debug("Character encoding '{}' is unsupported", charset, uee);
-            }
+            LOG.error("Character encoding '{}' is unsupported", charset, uee);
             return null;
         }
     }

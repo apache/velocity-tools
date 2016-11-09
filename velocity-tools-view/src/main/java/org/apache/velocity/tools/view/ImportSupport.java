@@ -41,6 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>Provides methods to import arbitrary local or remote resources as strings.</p>
@@ -58,22 +59,14 @@ public abstract class ImportSupport
     /** Default character encoding for response. */
     protected static final String DEFAULT_ENCODING = "UTF-8";
 
-    protected Logger LOG;
+    protected static Logger LOG = LoggerFactory.getLogger(ImportSupport.class);
+    
     protected ServletContext application;
     protected HttpServletRequest request;
     protected HttpServletResponse response;
 
 
     // --------------------------------------- Setup Methods -------------
-
-    public void setLog(Logger log)
-    {
-        if (log == null)
-        {
-            throw new NullPointerException("log should not be set to null");
-        }
-        this.LOG = log;
-    }
 
     /**
      * Sets the current {@link HttpServletRequest}. This is required
@@ -172,7 +165,7 @@ public abstract class ImportSupport
                     }
                     catch (IOException ioe)
                     {
-                        LOG.error("ImportSupport : Could not close reader.", ioe);
+                        LOG.error("Could not close reader.", ioe);
                     }
                 }
 	        }
@@ -323,7 +316,7 @@ public abstract class ImportSupport
                     }
                     catch (IOException ioe)
                     {
-                        LOG.error("ImportSupport : Could not close InputStream", ioe);
+                        LOG.error("Could not close InputStream", ioe);
                     }
                 }
 
@@ -344,7 +337,7 @@ public abstract class ImportSupport
                     }
                     catch (IOException ioe)
                     {
-                        LOG.error("ImportSupport : Could not close InputStream", ioe);
+                        LOG.error("Could not close InputStream", ioe);
                     }
                 }
 

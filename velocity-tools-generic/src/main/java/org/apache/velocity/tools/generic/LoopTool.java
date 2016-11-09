@@ -26,10 +26,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Stack;
+
 import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>
@@ -95,6 +99,8 @@ public class LoopTool
     private Stack<ManagedIterator> iterators = new Stack<ManagedIterator>();
     private ManagedIterator last;
     private Map<String,Object> lastSyncedValues;
+
+    protected static Logger LOG = LoggerFactory.getLogger(LoopTool.class);
     
     /**
      * <p>Tells the LoopTool to watch the specified Array, Collection, Map,
@@ -586,7 +592,7 @@ public class LoopTool
         }
         catch (Exception e)
         {
-            //TODO: pick up a log so we can log this
+            LOG.error("Exception while getting Iterator:", e);
         }
         return null;
     }

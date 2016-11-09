@@ -31,6 +31,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -133,12 +135,11 @@ public class UiDependencyTool {
     private Map<String,Group> groups = null;
     private List<Type> types = DEFAULT_TYPES;
     private Map<String,List<String>> dependencies;
-    private Logger LOG;
+    private static Logger LOG = LoggerFactory.getLogger(UiDependencyTool.class);
     private String context = "";
 
     public void configure(Map params) {
         ServletContext app = (ServletContext)params.get(ViewContext.SERVLET_CONTEXT_KEY);
-        LOG = (Logger)params.get(ToolContext.LOG_KEY);
 
         HttpServletRequest request = (HttpServletRequest)params.get(ViewContext.REQUEST);
         context = request.getContextPath();
@@ -442,7 +443,7 @@ public class UiDependencyTool {
      */
     protected Group makeGroup(String name) {
         LOG.trace("UiDependencyTool: Creating group '{}'", name);
-        Group group = new Group(name, LOG);
+        Group group = new Group(name);
         groups.put(name, group);
         return group;
     }
@@ -531,11 +532,9 @@ public class UiDependencyTool {
         private Map<String,Integer> typeCounts = new LinkedHashMap<String,Integer>();
         private Map<String,List<String>> dependencies = new LinkedHashMap<String,List<String>>();
         private List<String> groups;
-        private Logger LOG;
 
-        public Group(String name, Logger log) {
+        public Group(String name) {
             this.name = name;
-            this.LOG = log;
         }
 
         public void addFile(String type, String value) {

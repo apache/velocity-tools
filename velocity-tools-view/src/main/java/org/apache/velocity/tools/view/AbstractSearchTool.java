@@ -24,6 +24,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
@@ -131,18 +132,10 @@ public abstract class AbstractSearchTool extends PagerTool
     protected static final String STORED_RESULTS_KEY =
         StoredResults.class.getName();
 
-    protected Logger LOG;
+    protected static Logger LOG = LoggerFactory.getLogger(AbstractSearchTool.class);
+
     private String criteriaKey = DEFAULT_CRITERIA_KEY;
     private Object criteria;
-
-    public void setLog(Logger log)
-    {
-        if (log == null)
-        {
-            throw new NullPointerException("log should not be set to null");
-        }
-        this.LOG = log;
-    }
 
     /**
      * Sets the criteria *if* it is set in the request parameters.
@@ -239,10 +232,7 @@ public abstract class AbstractSearchTool extends PagerTool
             }
             catch (Throwable t)
             {
-                if (LOG != null)
-                {
-                    LOG.error("AbstractSearchTool: executeQuery({}) failed", findMe, t);
-                }
+                LOG.error("executeQuery({}) failed", findMe, t);
             }
 
             /* because we can't trust executeQuery() not to return null
