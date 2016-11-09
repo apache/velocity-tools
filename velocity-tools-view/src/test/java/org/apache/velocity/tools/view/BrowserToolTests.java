@@ -33,9 +33,7 @@ import java.util.TreeMap;
 
 import static org.apache.velocity.tools.view.UAParser.UAEntity;
 
-import org.apache.velocity.tools.generic.MockLogger;
 import org.junit.Test;
-import org.slf4j.Logger;
 
 /**
  * <p>Tests for BrowserTool</p>
@@ -136,7 +134,6 @@ public class BrowserToolTests {
     public @Test void testBrowserParsing() throws Exception
     {
         BrowserTool tool = new BrowserTool();
-        tool.setLog(new MockLogger(false, false));
         Map uas = readUAs("browsers.txt");
         checkBrowsers(tool, uas);
     }
@@ -144,7 +141,6 @@ public class BrowserToolTests {
     public @Test void testDeviceParsing() throws Exception
     {
         BrowserTool tool = new BrowserTool();
-        tool.setLog(new MockLogger(false, false));
         Map uas = readUAs("devices.txt");
         checkDevices(tool, uas);
     }
@@ -152,7 +148,6 @@ public class BrowserToolTests {
     public @Test void testOperatingSystemParsing() throws Exception
     {
         BrowserTool tool = new BrowserTool();
-        tool.setLog(new MockLogger(false, false));
         Map uas = readUAs("operating_systems.txt");
         checkOperatingSystems(tool, uas);
     }

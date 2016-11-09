@@ -82,13 +82,5 @@
             <version>3.4</version>
             <scope>test</scope>
         </dependency>
-        <!-- to reuse the MockLogger from velocity-tools-generic -->
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity-tools-generic</artifactId>
-            <version>${project.version}</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 </project>

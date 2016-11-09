@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
@@ -58,9 +59,10 @@ import org.apache.velocity.tools.Scope;
 @ValidScope(Scope.REQUEST)
 public class CookieTool
 {
+    protected static Logger log = LoggerFactory.getLogger(CookieTool.class);
+
     protected HttpServletRequest request;
     protected HttpServletResponse response;
-    protected Logger log;
     private List<Cookie> jar;
 
     // --------------------------------------- Setup Methods -------------
@@ -91,15 +93,6 @@ public class CookieTool
             throw new NullPointerException("response should not be null");
         }
         this.response = response;
-    }
-
-    /**
-     * Sets the {@link Log} used for logging messages when Cookie
-     * creation fails due to an invalid name.
-     */
-    public void setLog(Logger log)
-    {
-        this.log = log;
     }
 
     // --------------------------------------- Setup Methods -------------
@@ -219,7 +212,7 @@ public class CookieTool
         }
         catch (IllegalArgumentException iae)
         {
-            log.debug("CookieTool: Could not create cookie with name \"{}\"", name, iae);
+            log.error("Could not create cookie with name \"{}\"", name, iae);
             return null;
         }
     }

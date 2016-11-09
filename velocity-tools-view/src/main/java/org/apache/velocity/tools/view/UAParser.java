@@ -4,7 +4,9 @@ import org.apache.velocity.exception.VelocityException;
 import org.apache.velocity.shaded.commons.lang3.tuple.ImmutablePair;
 import org.apache.velocity.shaded.commons.lang3.tuple.Pair;
 import org.apache.velocity.tools.ClassUtils;
+
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,12 +24,7 @@ public class UAParser
     {
     }
 
-    public void setLog(Logger log)
-    {
-        this.LOG = log;
-    }
-
-    protected org.slf4j.Logger LOG = null;
+    protected static Logger LOG = LoggerFactory.getLogger(BrowserTool.class);
 
     public static class UAEntity
     {
@@ -247,12 +244,6 @@ public class UAParser
 
     /* the big hairy parsing method */
     public static UserAgent parseUserAgent(String userAgentString)
-    {
-        return parseUserAgent(userAgentString, null);
-    }
-
-    /* the big hairy parsing method */
-    public static UserAgent parseUserAgent(String userAgentString, Logger log)
     {
         UserAgent ua = null;
         try
@@ -597,7 +588,7 @@ public class UAParser
         }
         catch (Exception e)
         {
-            if (log != null) log.error("BrowserTool: Could not parse browser for User-Agent: {}", userAgentString, e);
+            LOG.error("Could not parse browser for User-Agent: {}", userAgentString, e);
             ua = null;
         }
         return ua;

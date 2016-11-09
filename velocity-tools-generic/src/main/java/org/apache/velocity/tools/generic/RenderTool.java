@@ -22,6 +22,7 @@ package org.apache.velocity.tools.generic;
 import java.io.StringWriter;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -117,7 +118,8 @@ public class RenderTool extends SafeConfig
 
     public static final String KEY_FORCE_THREAD_SAFE = "forceThreadSafe";
 
-    protected Logger LOG = null;
+    protected static Logger LOG = LoggerFactory.getLogger(RenderTool.class);
+    
     private VelocityEngine engine = null;
     private Context context;
     private int parseDepth = DEFAULT_PARSE_DEPTH;
@@ -164,14 +166,6 @@ public class RenderTool extends SafeConfig
     }
 
     /**
-     * Allow user to specify a logger.
-     */
-    public void setLog(Logger log)
-    {
-        this.LOG = log;
-    }
-
-    /**
      * Set the maximum number of loops allowed when recursing.
      *
      * @since VelocityTools 1.2
@@ -184,10 +178,7 @@ public class RenderTool extends SafeConfig
         }
         else if (this.parseDepth != depth)
         {
-            if (LOG != null)
-            {
-                LOG.debug("RenderTool: Attempt was made to alter parse depth while config was locked.");
-            }
+            LOG.error("Attempt was made to alter parse depth while config was locked.");
         }
     }
 
@@ -207,10 +198,7 @@ public class RenderTool extends SafeConfig
         }
         else if (this.context != context)
         {
-            if (LOG != null)
-            {
-                LOG.debug("RenderTool: Attempt was made to set a new context while config was locked.");
-            }
+            LOG.error("Attempt was made to set a new context while config was locked.");
         }
     }
 
@@ -237,10 +225,7 @@ public class RenderTool extends SafeConfig
         }
         else if (this.catchExceptions != catchExceptions)
         {
-            if (LOG != null)
-            {
-                LOG.debug("RenderTool: Attempt was made to alter catchE while config was locked.");
-            }
+            LOG.error("Attempt was made to alter catchE while config was locked.");
         }
     }
 
@@ -312,10 +297,7 @@ public class RenderTool extends SafeConfig
             }
             catch (Exception e)
             {
-                if (LOG != null)
-                {
-                    LOG.debug("RenderTool.eval(): failed due to ", e);
-                }
+                LOG.error("evaluation failed:", e);
                 return null;
             }
         }
@@ -386,12 +368,9 @@ public class RenderTool extends SafeConfig
             else
             {
                 // abort, log and return what we have so far
-                if (LOG != null)
-                {
-                    LOG.debug("RenderTool.recurse() exceeded the maximum parse depth" +
-                              " of {} on the following template: {}",
-                              parseDepth, vtl);
-                }
+                LOG.error("recursion exceeded the maximum parse depth" +
+                          " of {} on the following template: {}",
+                          parseDepth, vtl);
                 return result;
             }
         }

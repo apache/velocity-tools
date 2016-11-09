@@ -26,8 +26,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.velocity.tools.config.DefaultKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * SortTool allows a user to sort a collection (or array, iterator, etc)
@@ -115,6 +118,8 @@ import org.apache.velocity.tools.config.DefaultKey;
 @DefaultKey("sorter")
 public class SortTool
 {
+    protected static Logger LOG = LoggerFactory.getLogger(SortTool.class);
+    
     /**
      * Sorts a Collection using a Comparator. A defensive copy is made
      * of the Collection beforehand, so the original Collection is left
@@ -200,6 +205,7 @@ public class SortTool
         else
         {
             // the object type is not supported
+            LOG.error("object type not supported: {}", o == null ? "null" : o.getClass().getName());
             return null;
         }
     }
@@ -243,6 +249,7 @@ public class SortTool
             return sort((Map)object, properties);
         }
         // the object type is not supported
+        LOG.error("object type not supported: {}", object == null ? "null" : object.getClass().getName());
         return null;
     }
 
@@ -277,7 +284,7 @@ public class SortTool
         }
         catch (Exception e)
         {
-            //TODO: log this
+            LOG.error("exception encountered while sorting: {}", e.getMessage());
             return null;
         }
     }

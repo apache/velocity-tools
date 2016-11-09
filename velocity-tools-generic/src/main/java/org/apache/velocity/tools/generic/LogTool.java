@@ -23,6 +23,7 @@ import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>
@@ -40,9 +41,8 @@ import org.slf4j.Logger;
  * </pre>
  * </p>
  *
- * <p>
+ * <p>You can optionnaly specify the logger name in the config (the default is to re-use the engine logger):
  * <pre>
- * Example tools.xml config:
  * &lt;tools&gt;
  *   &lt;toolbox scope="application"&gt;
  *     &lt;tool class="org.apache.velocity.tools.generic.LogTool"/&gt;
@@ -58,13 +58,23 @@ import org.slf4j.Logger;
 @ValidScope(Scope.APPLICATION)
 public class LogTool
 {
+    public static final String LOGGER_NAME_KEY = "loggerName";
+    
     private Logger LOG = null;
 
-    public void setLog(Logger log)
+    /**
+     * configure the logger
+     */
+    public void configure(ValueParser values)
     {
-        this.LOG = log;
+        String loggerName = values.getString(LOGGER_NAME_KEY);
+        if (loggerName == null)
+        {
+            loggerName = "Velocity";
+        }
+        LOG = LoggerFactory.getLogger(loggerName);
     }
-
+    
     public void error(String message)
     {
         LOG.error(message);
