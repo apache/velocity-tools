@@ -62,11 +62,8 @@
       <action type="add" dev="cbrisson">
         Switched log system facade to SLF4j
       </action>
-    </release>
-    
-    <release version="2.0.1-SNAPSHOT" date="In Subversion">
-      <action type="add" dev="nbubna">
-        Upgraded to Dom4j 1.6.1 and Velocity Engine 1.6.4
+      <action type="add" dev="cbrisson">
+        Upgraded to JUnit 4.12, Servlet API 3.0.1, Dom4j 1.6.1, commons-beanutils 1.9.3, commons-digester 3.2, and Velocity Engine 2.0.
       </action>
       <action type="fix" dev="nbubna" issue="VELTOOLS-129" due-to="Michael Osipov">
       </action>
@@ -82,17 +79,11 @@
       <action type="fix" dev="schultz" issue="VELTOOLS-144">
         added localization of DateFormat format strings
       </action>
-      <action type="fix" dev="schultz" issue="VELTOOLS-145">
-        changed StrutsLinkTool's parent class to restore API backward-compatibility
-      </action>
       <action type="fix" dev="schultz" issue="VELTOOLS-148">
         fixed a LinkTool bug with parametersToIgnore management
       </action>
       <action type="fix" dev="schultz" issue="VELTOOLS-149">
         changed LinkTool.addRequestParams to accept Object[]
-      </action>
-      <action type="add" dev="schultz">
-        Added StrutsLinkTool.action and StrutsLinkTool.forward methods as replacements for StrutsLinkTool.setAction and StrutsLinkTool.setForward to match other new LinkTool methods like LinkTool.relative and LinkTool.absolute
       </action>
       <action type="fix" dev="schultz" issue="VELTOOLS-146">
         $link.absolute($uri) should not encode query strings in the argument
