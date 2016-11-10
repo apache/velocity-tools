@@ -19,6 +19,7 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Date;
@@ -53,9 +54,10 @@ import org.apache.velocity.tools.config.SkipSetters;
  * @version $Revision$ $Date: 2007-02-26 11:24:39 -0800 (Mon, 26 Feb 2007) $
  * @since VelocityTools 2.0
  */
+
 @DefaultKey("convert")
 @SkipSetters
-public class ConversionTool extends LocaleConfig
+public class ConversionTool extends LocaleConfig implements Serializable
 {
     public static final String STRINGS_DELIMITER_FORMAT_KEY = "stringsDelimiter";
     public static final String STRINGS_TRIM_KEY = "trimStrings";

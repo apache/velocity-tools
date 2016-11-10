@@ -20,7 +20,10 @@ package org.apache.velocity.tools.generic;
  */
 
 import java.util.Collection;
+
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
+import org.apache.velocity.tools.config.ValidScope;
 
 /**
  * Simple tool to provide easy in-template instantiation of
@@ -55,6 +58,8 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @since Velocity Tools 1.2
  * @version $Revision$ $Date$
  */
+
+@ValidScope(Scope.APPLICATION)
 @DefaultKey("alternator")
 public class AlternatorTool extends SafeConfig
 {

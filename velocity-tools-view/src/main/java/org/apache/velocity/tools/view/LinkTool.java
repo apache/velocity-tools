@@ -64,6 +64,7 @@ import org.apache.velocity.tools.view.ServletUtils;
  * @since VelocityTools 2.0
  * @version $Id$
  */
+
 public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
 {
     public static final String INCLUDE_REQUEST_PARAMS_KEY = "includeRequestParams";

@@ -26,12 +26,16 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.lang.annotation.Annotation;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.velocity.tools.config.DefaultKey;
+import org.apache.velocity.tools.config.InvalidScope;
 import org.apache.velocity.tools.config.SkipSetters;
 import org.junit.Test;
 
@@ -111,12 +115,19 @@ public class ClassToolTests {
         classTool.setType(MyDeprecated.class);
         assertEquals(1, classTool.getAnnotations().size());
         classTool.setType(ValueParser.class);
-        assertEquals(2, classTool.getAnnotations().size());
-        Class type0 = classTool.getAnnotations().get(0).annotationType();
-        Class type1 = classTool.getAnnotations().get(1).annotationType();
-        assertTrue(type0 != type1);
-        assertTrue(type0 == DefaultKey.class || type1 == DefaultKey.class);
-        assertTrue(type0 == SkipSetters.class || type1 == SkipSetters.class);
+        List<Annotation> annotations = classTool.getAnnotations();
+        assertEquals(3, annotations.size());
+        Collections.sort(annotations, new Comparator<Annotation>()
+        {
+            @Override
+            public int compare(Annotation o1, Annotation o2)
+            {
+                return o1.toString().compareTo(o2.toString());
+            }
+        });
+        assertTrue(annotations.get(0).annotationType() == DefaultKey.class);
+        assertTrue(annotations.get(1).annotationType() == InvalidScope.class);
+        assertTrue(annotations.get(2).annotationType() == SkipSetters.class);
     }
 
     public @Test void methodGetConstructors() throws Exception

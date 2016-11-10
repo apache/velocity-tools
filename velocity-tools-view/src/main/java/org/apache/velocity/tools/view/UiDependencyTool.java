@@ -115,6 +115,7 @@ import org.apache.velocity.tools.config.ValidScope;
  * @author Nathan Bubna
  * @version $Revision: 16660 $
  */
+
 @DefaultKey("depends")
 @ValidScope(Scope.REQUEST)
 public class UiDependencyTool {

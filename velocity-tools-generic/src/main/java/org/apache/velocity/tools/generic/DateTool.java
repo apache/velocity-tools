@@ -19,6 +19,7 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -67,8 +68,9 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @since VelocityTools 1.0
  * @version $Revision$ $Date$
  */
+
 @DefaultKey("date")
-public class DateTool extends FormatConfig
+public class DateTool extends FormatConfig implements Serializable
 {
     /**
      * The key used for specifying a default timezone via tool configuration.

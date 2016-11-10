@@ -28,7 +28,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.apache.velocity.tools.ClassUtils;
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
+import org.apache.velocity.tools.config.ValidScope;
 
 /**
  * <p>
@@ -77,7 +79,9 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @since VelocityTools 2.0
  * @version $Id: FieldTool.java 463298 2006-10-12 16:10:32Z henning $
  */
+
 @DefaultKey("field")
+@ValidScope(Scope.APPLICATION)
 public class FieldTool extends SafeConfig
 {
     /**

@@ -26,7 +26,9 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.Collection;
 
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
+import org.apache.velocity.tools.config.InvalidScope;
 
 /**
  * <p>Utility class for easy parsing of String values held in a Map.</p>
@@ -43,7 +45,9 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Revision$ $Date$
  * @since VelocityTools 1.2
  */
+
 @DefaultKey("parser")
+@InvalidScope(Scope.SESSION) /* session scope forbidden: Object may not be Serializable */
 public class ValueParser extends ConversionTool implements Map<String,Object>
 {
     private Map<String,Object> source = null;

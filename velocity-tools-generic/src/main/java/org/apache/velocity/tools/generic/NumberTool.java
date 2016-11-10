@@ -19,8 +19,10 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.Locale;
+
 import org.apache.velocity.tools.ConversionUtils;
 import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.config.DefaultKey;
@@ -33,7 +35,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * or make conversions to and from various number types.
  * <p><pre>
  * Example uses:
- *  $myNumber                            -> 13.55
+ *  $myNumber                   -> 13.55
  *  $number.format($myNumber)   -> 13.6
  *  $number.currency($myNumber) -> $13.55
  *  $number.integer($myNumber)  -> 13
@@ -57,8 +59,9 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @since VelocityTools 1.2
  * @version $Id$
  */
+
 @DefaultKey("number")
-public class NumberTool extends FormatConfig
+public class NumberTool extends FormatConfig implements Serializable
 {
     // ------------------------- formatting methods ---------------------------
 

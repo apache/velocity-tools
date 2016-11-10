@@ -19,6 +19,7 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -73,8 +74,9 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Revision$ $Date: 2006-11-27 10:49:37 -0800 (Mon, 27 Nov 2006) $
  * @since VelocityTools 1.3
  */
+
 @DefaultKey("text")
-public class ResourceTool extends LocaleConfig
+public class ResourceTool extends LocaleConfig implements Serializable
 {
     public static final String BUNDLES_KEY = "bundles";
 

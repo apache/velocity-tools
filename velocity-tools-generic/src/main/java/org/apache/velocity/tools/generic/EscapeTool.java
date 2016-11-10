@@ -19,10 +19,13 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
-import java.net.URLEncoder;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import org.apache.velocity.shaded.commons.lang3.StringEscapeUtils;
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
+import org.apache.velocity.tools.config.ValidScope;
 
 /**
  * Tool for working with escaping in Velocity templates.
@@ -92,7 +95,9 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @since VelocityTools 1.2
  * @see StringEscapeUtils
  */
+
 @DefaultKey("esc")
+@ValidScope(Scope.APPLICATION)
 public class EscapeTool extends SafeConfig
 {
     public static final String DEFAULT_KEY = "esc";

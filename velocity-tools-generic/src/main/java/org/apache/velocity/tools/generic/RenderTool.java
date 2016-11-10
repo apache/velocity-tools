@@ -31,6 +31,7 @@ import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.config.DefaultKey;
+import org.apache.velocity.tools.config.InvalidScope;
 
 /**
  * This tool exposes methods to evaluate the given
@@ -103,7 +104,9 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @author Nathan Bubna
  * @version $Revision$ $Date$
  */
+
 @DefaultKey("render")
+@InvalidScope(Scope.SESSION)
 public class RenderTool extends SafeConfig
 {
     /**

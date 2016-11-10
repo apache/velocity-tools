@@ -54,6 +54,7 @@ import org.slf4j.LoggerFactory;
  * @since VelocityTools 3.0
  * @version $Id:  $
  */
+
 @DefaultKey("log")
 @ValidScope(Scope.APPLICATION)
 public class LogTool
