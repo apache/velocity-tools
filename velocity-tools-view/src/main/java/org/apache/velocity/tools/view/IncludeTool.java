@@ -19,6 +19,7 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
+import java.io.Serializable;
 import java.util.Locale;
 import java.util.Map;
 import javax.servlet.ServletContext;
@@ -48,9 +49,10 @@ import org.apache.velocity.tools.view.ViewToolContext;
  * @author Nathan Bubna
  * @since VelocityTools 2.0
  */
+
 @DefaultKey("include")
 @InvalidScope(Scope.APPLICATION)
-public class IncludeTool
+public class IncludeTool implements Serializable
 {
     /**
      * The key used to search initialization, context, and JVM

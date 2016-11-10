@@ -22,9 +22,12 @@ package org.apache.velocity.tools.generic;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.velocity.tools.ConversionUtils;
+import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
+import org.apache.velocity.tools.config.ValidScope;
 
 /**
  * <p>Tool for performing math in Velocity.</p>
@@ -54,7 +57,9 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @author Leon Messerschmidt
  * @version $Revision$ $Date$
  */
+
 @DefaultKey("math")
+@ValidScope(Scope.APPLICATION)
 public class MathTool extends FormatConfig
 {
     /* Old non-vararg methods (can be removed once we require Velocity 1.6) */

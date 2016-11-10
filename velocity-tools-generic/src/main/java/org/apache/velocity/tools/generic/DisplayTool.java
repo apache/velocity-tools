@@ -27,8 +27,10 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
+import org.apache.velocity.tools.Scope;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.velocity.tools.config.DefaultKey;
+import org.apache.velocity.tools.config.ValidScope;
 
 /**
  * Provides general utility methods for controlling the display of references.
@@ -70,7 +72,9 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @author Nathan Bubna
  * @version $Id: DisplayTool.java 463298 2006-10-12 16:10:32Z henning $
  */
+
 @DefaultKey("display")
+@ValidScope(Scope.APPLICATION)
 public class DisplayTool extends LocaleConfig
 {
     public static final String LIST_DELIM_KEY = "listDelim";

@@ -28,6 +28,9 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.apache.velocity.tools.Scope;
+import org.apache.velocity.tools.config.ValidScope;
+
 /**
  * Tool for comparing {@link java.util.Date} and {@link Calendar} values
  * in Velocity templates.  This is a subclass of {@link DateTool}
@@ -65,6 +68,8 @@ import java.util.ResourceBundle;
  * @since VelocityTools 1.4
  * @version $Revision$ $Date: 2006-04-04 12:35:17 -0700 (Tue, 04 Apr 2006) $
  */
+
+@ValidScope(Scope.APPLICATION)
 public class ComparisonDateTool extends DateTool
 {
     /** The number of milliseconds in a second. */

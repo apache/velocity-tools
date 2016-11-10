@@ -19,6 +19,7 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,8 +75,9 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Revision$ $Date: 2006-11-27 10:49:37 -0800 (Mon, 27 Nov 2006) $
  * @since VelocityTools 2.0
  */
+
 @DefaultKey("xml")
-public class XmlTool extends SafeConfig
+public class XmlTool extends SafeConfig implements Serializable
 {
     public static final String FILE_KEY = "file";
 

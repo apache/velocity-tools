@@ -43,6 +43,7 @@ import org.apache.velocity.tools.view.ImportSupport;
  * @since VelocityTools 2.0
  * @version $Revision$ $Date$
  */
+
 @DefaultKey("import")
 @ValidScope(Scope.REQUEST)
 public class ImportTool extends ImportSupport

@@ -79,6 +79,7 @@ import org.apache.velocity.tools.config.ValidScope;
  * @since VelocityTools 2.0
  * @version $Id: LinkTool.java 601976 2007-12-07 03:50:51Z nbubna $
  */
+
 @DefaultKey("link")
 @SkipSetters
 @ValidScope(Scope.REQUEST)
