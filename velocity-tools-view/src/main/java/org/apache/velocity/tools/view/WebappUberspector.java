@@ -29,7 +29,6 @@ import org.slf4j.Logger;
 import org.apache.velocity.util.introspection.AbstractChainableUberspector;
 import org.apache.velocity.util.introspection.Info;
 import org.apache.velocity.util.introspection.Introspector;
-import org.apache.velocity.util.introspection.VelMethod;
 import org.apache.velocity.util.introspection.VelPropertyGet;
 import org.apache.velocity.util.introspection.VelPropertySet;
 import org.apache.velocity.runtime.parser.node.AbstractExecutor;
