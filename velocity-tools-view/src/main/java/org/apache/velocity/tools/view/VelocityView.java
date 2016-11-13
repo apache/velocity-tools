@@ -327,7 +327,10 @@ public class VelocityView extends ViewToolManager
 
         // check for servlet-wide user props in the config init params at the
         // conventional location, and be silent if they're missing
-        setProps(velocity, USER_PROPERTIES_PATH, false);
+        if (!USER_PROPERTIES_PATH.equals(appPropsPath))
+        {
+            setProps(velocity, USER_PROPERTIES_PATH, false);
+        }
 
         // check for a custom location for servlet-wide user props
         String servletPropsPath = config.getInitParameter(PROPERTIES_KEY);
