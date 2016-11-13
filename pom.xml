@@ -91,6 +91,16 @@
                         <include>**/*TestCase.java</include>
                         <include>**/*Tests.java</include>
                     </includes>
+                    <systemProperties>
+                        <property>
+                            <name>org.slf4j.simpleLogger.defaultLogLevel</name>
+                            <value>trace</value>
+                        </property>
+                        <property>
+                            <name>org.slf4j.simpleLogger.logFile</name>
+                            <value>${project.build.directory}/velocity-tools.log</value>
+                        </property>
+                    </systemProperties>
                 </configuration>
             </plugin>
             <plugin>
