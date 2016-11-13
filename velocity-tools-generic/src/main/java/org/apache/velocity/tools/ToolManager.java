@@ -21,13 +21,12 @@ package org.apache.velocity.tools;
 
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.ConfigurationUtils;
 import org.apache.velocity.tools.config.FactoryConfiguration;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Manages tools for non-web applications. This simplifies the process
@@ -43,6 +42,7 @@ public class ToolManager
 {
     protected VelocityEngine velocity;
     protected ToolboxFactory factory;
+    protected Logger log = null;
     private Toolbox application;
     private boolean userOverwrite = true;
 
@@ -168,14 +168,24 @@ public class ToolManager
 
     public Logger getLog()
     {
-        if (velocity == null)
+        if (log == null)
         {
-            return LoggerFactory.getLogger(ToolManager.class);
+            synchronized (this)
+            {
+                if (log == null)
+                {
+                    if (velocity == null)
+                    {
+                        log = LoggerFactory.getLogger(ToolManager.class);
+                    }
+                    else
+                    {
+                        log = ConfigurationUtils.getLog(velocity, "tools");
+                    }
+                }
+            }
         }
-        else
-        {
-            return velocity.getLog();
-        }
+        return log;
     }
 
     public ToolContext createContext()

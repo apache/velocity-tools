@@ -28,9 +28,15 @@ import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+
+import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.ResourceNotFoundException;
+import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.ToolboxFactory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility methods for handling tool configurations.
@@ -530,5 +536,25 @@ public class ConfigurationUtils
             throw new IllegalArgumentException("There was an exception while executing "+CONFIG_FACTORY_METHOD+" in class "+factory.getName(), ite.getCause());
         }
     }
+
+    public static Logger getLog(VelocityEngine engine, String childNamespace)
+    {
+        /* first check config for a logger instance, then for a base logger name
+           this is mostly what RuntimeServices.getLog(String) does, but we don't
+            have access to RuntimeServices here
+         */
+        Logger logger = (Logger)engine.getProperty(RuntimeConstants.RUNTIME_LOG_INSTANCE);
+        if (logger == null)
+        {
+            String basename = (String)engine.getProperty(RuntimeConstants.RUNTIME_LOG_NAME);
+            if (basename == null)
+            {
+                basename = RuntimeConstants.DEFAULT_RUNTIME_LOG_NAME;
+            }
+            logger = LoggerFactory.getLogger(basename + "." + childNamespace);
+        }
+        return logger;
+    }
+
 
 }
