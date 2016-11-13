@@ -57,7 +57,7 @@ import org.slf4j.LoggerFactory;
 
 @DefaultKey("log")
 @ValidScope(Scope.APPLICATION)
-public class LogTool
+public class LogTool extends SafeConfig
 {
     public static final String LOGGER_NAME_KEY = "loggerName";
     
@@ -66,12 +66,12 @@ public class LogTool
     /**
      * configure the logger
      */
-    public void configure(ValueParser values)
+    protected void configure(ValueParser values)
     {
         String loggerName = values.getString(LOGGER_NAME_KEY);
         if (loggerName == null)
         {
-            loggerName = "Velocity";
+            loggerName = "org.apache.velocity.tools";
         }
         LOG = LoggerFactory.getLogger(loggerName);
     }

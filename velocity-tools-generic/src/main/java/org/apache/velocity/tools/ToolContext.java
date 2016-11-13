@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
+import org.apache.velocity.tools.config.ConfigurationUtils;
 
 /**
  * {@link Context} implementation that keeps a list of {@link Toolbox}es
@@ -164,7 +165,7 @@ public class ToolContext implements Context
     {
         // add the engine and log as common tool properties
         putToolProperty(ENGINE_KEY, engine);
-        putToolProperty(LOG_KEY, engine.getLog());
+        putToolProperty(LOG_KEY, ConfigurationUtils.getLog(engine, "tools"));
 
         // tell interested tools not to catch exceptions whenever there's a
         // method exception event handler configured for the engine
