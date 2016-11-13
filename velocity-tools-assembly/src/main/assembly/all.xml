@@ -107,14 +107,6 @@
             </includes>
         </fileSet>
         <fileSet>
-            <directory>../velocity-tools-struts</directory>
-            <outputDirectory>src/velocity-tools-struts</outputDirectory>
-            <includes>
-                <include>pom.xml</include>
-                <include>src/</include>
-            </includes>
-        </fileSet>
-        <fileSet>
             <directory>../velocity-tools-uberjar</directory>
             <outputDirectory>src/velocity-tools-uberjar</outputDirectory>
             <includes>
@@ -155,14 +147,6 @@
             </includes>
         </fileSet>
         <fileSet>
-            <directory>../velocity-tools-examples/velocity-tools-examples-struts</directory>
-            <outputDirectory>src/velocity-tools-examples/velocity-tools-examples-struts</outputDirectory>
-            <includes>
-                <include>pom.xml</include>
-                <include>src/</include>
-            </includes>
-        </fileSet>
-        <fileSet>
             <directory>../target/site</directory>
             <outputDirectory>docs</outputDirectory>
         </fileSet>
@@ -183,10 +167,6 @@
             <outputDirectory>docs/velocity-tools-view-jsp</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>../velocity-tools-struts/target/site</directory>
-            <outputDirectory>docs/velocity-tools-struts</outputDirectory>
-        </fileSet>
-        <fileSet>
             <directory>../velocity-tools-uberjar/target/site</directory>
             <outputDirectory>docs/velocity-tools-uberjar</outputDirectory>
         </fileSet>
@@ -205,10 +185,6 @@
         <fileSet>
             <directory>../velocity-tools-examples/velocity-tools-examples-showcase/target/site</directory>
             <outputDirectory>docs/velocity-tools-examples/velocity-tools-examples-showcase</outputDirectory>
-        </fileSet>
-        <fileSet>
-            <directory>../velocity-tools-examples/velocity-tools-examples-struts/target/site</directory>
-            <outputDirectory>docs/velocity-tools-examples/velocity-tools-examples-struts</outputDirectory>
         </fileSet>
     </fileSets>
 </assembly>
