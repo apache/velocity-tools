@@ -277,12 +277,12 @@ public class EscapeTool extends SafeConfig
     /**
      * Escapes the characters in a <code>String</code> using JavaScript String rules.
      * <br />
-     * Delegates the process to {@link StringEscapeUtils#escapeJavaScript(String)}.
+     * Delegates the process to {@link StringEscapeUtils#escapeEcmaScript(String)}.
      *
      * @param string the string to escape values, may be null
      * @return String with escaped values, <code>null</code> if null string input
      *
-     * @see StringEscapeUtils#escapeJavaScript(String)
+     * @see StringEscapeUtils#escapeEcmaScript(String)
      */
     public String javascript(Object string)
     {
@@ -296,7 +296,7 @@ public class EscapeTool extends SafeConfig
     /**
      * Escapes the characters in a <code>String</code> using HTML entities.
      * <br />
-     * Delegates the process to {@link StringEscapeUtils#escapeHtml(String)}.
+     * Delegates the process to {@link StringEscapeUtils#escapeHtml4(String)}.
      *
      * @param string the string to escape, may be null
      * @return a new escaped <code>String</code>, <code>null</code> if null string input
@@ -355,12 +355,11 @@ public class EscapeTool extends SafeConfig
     /**
      * Escapes the characters in a <code>String</code> to be suitable to pass to an SQL query.
      * <br />
-     * Delegates the process to {@link StringEscapeUtils#escapeSql(String)}.
+     * It boils down to doubling single quotes.
      *
      * @param string the string to escape, may be null
      * @return a new String, escaped for SQL, <code>null</code> if null string input
      *
-     * @see StringEscapeUtils#escapeSql(String)
      */
     public String sql(Object string)
     {

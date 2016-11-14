@@ -32,9 +32,6 @@ import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * <p>
  * A convenience tool to use with #foreach loops. It wraps a list
@@ -95,14 +92,12 @@ import org.slf4j.LoggerFactory;
 
 @DefaultKey("loop")
 @ValidScope(Scope.REQUEST)
-public class LoopTool
+public class LoopTool extends SafeConfig
 {
     private Stack<ManagedIterator> iterators = new Stack<ManagedIterator>();
     private ManagedIterator last;
     private Map<String,Object> lastSyncedValues;
 
-    protected static Logger LOG = LoggerFactory.getLogger(LoopTool.class);
-    
     /**
      * <p>Tells the LoopTool to watch the specified Array, Collection, Map,
      * Iterator, Iterable, Enumeration or POJO with an iterator() method
@@ -581,7 +576,7 @@ public class LoopTool
      * escaping into the template.  In the case of such problems,
      * this will return {@code null}.
      */
-    protected static Iterator getIterator(Object obj)
+    protected Iterator getIterator(Object obj)
     {
         if (obj == null)
         {
@@ -593,7 +588,7 @@ public class LoopTool
         }
         catch (Exception e)
         {
-            LOG.error("Exception while getting Iterator:", e);
+            log.error("Exception while getting Iterator:", e);
         }
         return null;
     }
@@ -607,7 +602,7 @@ public class LoopTool
      * in order to have it automatically skip over or stop before
      * certain elements in the iterator.
      */
-    public static class ManagedIterator implements Iterator
+    public class ManagedIterator implements Iterator
     {
         private String name;
         private Iterator iterator;
@@ -952,7 +947,7 @@ public class LoopTool
          */
         public ManagedIterator sync(Object iterable, String name)
         {
-            Iterator parallel = LoopTool.getIterator(iterable);
+            Iterator parallel = getIterator(iterable);
             if (parallel == null)
             {
                 return null;

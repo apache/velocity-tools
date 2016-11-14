@@ -45,6 +45,7 @@ public class ToolContext implements Context
     public static final String ENGINE_KEY = "velocityEngine";
     public static final String LOCALE_KEY = "locale";
     public static final String LOG_KEY = "log";
+    public static final String TOOLKEY_KEY = "key";
     public static final String CATCH_EXCEPTIONS_KEY = "catchExceptions";
 
     private List<Toolbox> toolboxes = new ArrayList<Toolbox>();

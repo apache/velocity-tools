@@ -7,6 +7,7 @@ import static org.apache.velocity.tools.view.UAParser.UAEntity;
 @Deprecated
 public abstract class BrowserToolDeprecatedMethods extends FormatConfig
 {
+    public abstract String getUserAgentString();
     public abstract UAEntity getBrowser();
     public abstract UAEntity getRenderingEngine();
     public abstract UAEntity getOperatingSystem();
@@ -25,6 +26,15 @@ public abstract class BrowserToolDeprecatedMethods extends FormatConfig
     public abstract boolean isLinux();
     protected abstract boolean test(String str);
 
+    /**
+     * @deprecated use {@link #getBrowser()}.getUserAgentString()
+     */
+    @Deprecated
+    public String getUserAgent()
+    {
+        return getUserAgentString();
+    }
+    
     /**
      * @deprecated use {@link #getBrowser()} version getters
      */

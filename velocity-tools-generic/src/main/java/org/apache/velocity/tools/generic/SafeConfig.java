@@ -19,6 +19,12 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.tools.ToolContext;
+import org.apache.velocity.tools.config.ConfigurationUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Map;
 
 /**
@@ -59,8 +65,21 @@ public class SafeConfig
      */
     public static final String SAFE_MODE_KEY = "safeMode";
 
+    /**
+     * Key used to explicitely specify the logger name
+     */
+    public static final String LOGGER_NAME_KEY = "loggerName";
+
+    /**
+     * Key used to specify whether or not tools shall use loggers
+     * named after the tools classes.
+     */
+    public static final String USE_CLASS_LOGGER_KEY = "useClassLogger";
+
     private boolean configLocked = false;
     private boolean safeMode = false;
+
+    protected Logger log = null;
 
     /**
      * Only allow subclass access to this.
@@ -108,6 +127,11 @@ public class SafeConfig
         if (!isConfigLocked())
         {
             ValueParser values = new ValueParser(params);
+
+            // set up logger
+            initLogger(values);
+
+            // call configure
             configure(values);
 
             setSafeMode(values.getBoolean(SAFE_MODE_KEY, true));
@@ -129,4 +153,35 @@ public class SafeConfig
         // base implementation does nothing
     }
 
+    /**
+     * Initialize logger. Default implementation will try to get a Velocity engine
+     * from the configuration parameters, then try to use either the configured logger
+     * instance, or the configured logger name suffixed by 'tools.&lt;key&gt;'
+     * @param params configuration parameters
+     */
+    protected void initLogger(ValueParser params)
+    {
+        String loggerName = params.getString(LOGGER_NAME_KEY);
+        if (loggerName != null)
+        {
+            log = LoggerFactory.getLogger(loggerName);
+        }
+        else
+        {
+            boolean useClassLogger = params.getBoolean(USE_CLASS_LOGGER_KEY, false);
+            if (!useClassLogger)
+            {
+                VelocityEngine engine = (VelocityEngine) params.get(ToolContext.ENGINE_KEY);
+                String key = (String) params.get(ToolContext.TOOLKEY_KEY);
+                if (engine != null && key != null)
+                {
+                    log = ConfigurationUtils.getLog(engine, "tools." + key);
+                }
+            }
+            if (log == null)
+            {
+                log = LoggerFactory.getLogger(getClass());
+            }
+        }
+    }
 }

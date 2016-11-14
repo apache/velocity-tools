@@ -28,9 +28,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.config.DefaultKey;
@@ -108,7 +105,6 @@ public class LinkTool extends SafeConfig implements Cloneable
     public static final String CHARSET_KEY = "charset";
     public static final String XHTML_MODE_KEY = "xhtml";
 
-    protected static Logger LOG = LoggerFactory.getLogger(LinkTool.class);
     protected String scheme;
     protected String user;
     protected String host;
@@ -246,7 +242,7 @@ public class LinkTool extends SafeConfig implements Cloneable
         catch (CloneNotSupportedException e)
         {
             String msg = "Could not properly clone " + getClass();
-            LOG.error(msg, e);
+            log.error(msg, e);
             throw new RuntimeException(msg, e);
         }
     }
@@ -353,7 +349,7 @@ public class LinkTool extends SafeConfig implements Cloneable
             }
             catch (NumberFormatException nfe)
             {
-                LOG.error("Could not convert '{}' to int", obj, nfe);
+                log.error("Could not convert '{}' to int", obj, nfe);
                 this.port = -2; // use this to mean error
             }
         }
@@ -908,7 +904,7 @@ public class LinkTool extends SafeConfig implements Cloneable
             }
             catch (Exception e)
             {
-                LOG.error("Could not convert '{}' to URI", obj, e);
+                log.error("Could not convert '{}' to URI", obj, e);
                 return null;
             }
         }
@@ -953,7 +949,7 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
         catch (Exception e)
         {
-            LOG.error("Could not create URI", e);
+            log.error("Could not create URI", e);
         }
         return null;
     }
@@ -1745,7 +1741,7 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
         catch (UnsupportedEncodingException uee)
         {
-            LOG.error("Character encoding '{}' is unsupported", charset, uee);
+            log.error("Character encoding '{}' is unsupported", charset, uee);
             return null;
         }
     }
@@ -1768,7 +1764,7 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
         catch (UnsupportedEncodingException uee)
         {
-            LOG.error("Character encoding '{}' is unsupported", charset, uee);
+            log.error("Character encoding '{}' is unsupported", charset, uee);
             return null;
         }
     }
