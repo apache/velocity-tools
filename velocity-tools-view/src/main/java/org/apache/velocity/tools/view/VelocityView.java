@@ -261,7 +261,7 @@ public class VelocityView extends ViewToolManager
         // (servletContext and factory should already be set by now
         if (this.velocity == null)
         {
-            this.velocity = new VelocityEngine();
+            setVelocityEngine(new VelocityEngine());
         }
 
         String allowOverwrite = config.findInitParameter(USER_OVERWRITE_KEY);
@@ -318,7 +318,7 @@ public class VelocityView extends ViewToolManager
     protected void configure(final JeeConfig config, final VelocityEngine velocity)
     {
         // first get the default properties, and bail if we don't find them
-	ExtProperties defaultProperties = getProperties(DEFAULT_PROPERTIES_PATH, true);
+        ExtProperties defaultProperties = getProperties(DEFAULT_PROPERTIES_PATH, true);
         velocity.setExtendedProperties(defaultProperties);
 
         // check for application-wide user props in the context init params
@@ -334,7 +334,16 @@ public class VelocityView extends ViewToolManager
 
         // check for a custom location for servlet-wide user props
         String servletPropsPath = config.getInitParameter(PROPERTIES_KEY);
-        setProps(velocity, servletPropsPath, true);
+        if (!USER_PROPERTIES_PATH.equals(servletPropsPath) && (appPropsPath == null || !appPropsPath.equals(servletPropsPath)))
+        {
+            setProps(velocity, servletPropsPath, true);
+        }
+
+        /* now that velocity engine is initialized, re-initialize our logger
+           so that it takes potentially provided configuration attributes
+           into account
+         */
+        initLog();
     }
 
     private boolean setProps(VelocityEngine velocity, String path, boolean require)
@@ -637,7 +646,7 @@ public class VelocityView extends ViewToolManager
     public Context render(HttpServletRequest request,
                           HttpServletResponse response) throws IOException
     {
-        // then get a context
+        // get a context
         Context context = createContext(request, response);
 
         // get the template
@@ -652,7 +661,7 @@ public class VelocityView extends ViewToolManager
     public Context render(HttpServletRequest request, Writer out)
         throws IOException
     {
-        // then get a context
+        // get a context
         Context context = createContext(request, null);
 
         // get the template

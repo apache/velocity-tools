@@ -21,9 +21,6 @@ package org.apache.velocity.tools.generic;
 
 import java.io.StringWriter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
@@ -121,8 +118,6 @@ public class RenderTool extends SafeConfig
 
     public static final String KEY_FORCE_THREAD_SAFE = "forceThreadSafe";
 
-    protected static Logger LOG = LoggerFactory.getLogger(RenderTool.class);
-    
     private VelocityEngine engine = null;
     private Context context;
     private int parseDepth = DEFAULT_PARSE_DEPTH;
@@ -181,7 +176,7 @@ public class RenderTool extends SafeConfig
         }
         else if (this.parseDepth != depth)
         {
-            LOG.error("Attempt was made to alter parse depth while config was locked.");
+            log.error("Attempt was made to alter parse depth while config was locked.");
         }
     }
 
@@ -201,7 +196,7 @@ public class RenderTool extends SafeConfig
         }
         else if (this.context != context)
         {
-            LOG.error("Attempt was made to set a new context while config was locked.");
+            log.error("Attempt was made to set a new context while config was locked.");
         }
     }
 
@@ -228,7 +223,7 @@ public class RenderTool extends SafeConfig
         }
         else if (this.catchExceptions != catchExceptions)
         {
-            LOG.error("Attempt was made to alter catchE while config was locked.");
+            log.error("Attempt was made to alter catchE while config was locked.");
         }
     }
 
@@ -300,7 +295,7 @@ public class RenderTool extends SafeConfig
             }
             catch (Exception e)
             {
-                LOG.error("evaluation failed:", e);
+                log.error("evaluation failed:", e);
                 return null;
             }
         }
@@ -371,7 +366,7 @@ public class RenderTool extends SafeConfig
             else
             {
                 // abort, log and return what we have so far
-                LOG.error("recursion exceeded the maximum parse depth" +
+                log.error("recursion exceeded the maximum parse depth" +
                           " of {} on the following template: {}",
                           parseDepth, vtl);
                 return result;

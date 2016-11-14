@@ -24,7 +24,6 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.config.SkipSetters;
 
 /**

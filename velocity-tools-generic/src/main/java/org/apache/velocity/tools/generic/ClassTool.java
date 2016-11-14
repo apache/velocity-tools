@@ -32,9 +32,6 @@ import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
@@ -77,8 +74,6 @@ public class ClassTool extends SafeConfig
     public static final String INSPECT_KEY = "inspect";
     public static final String SHOW_DEPRECATED_KEY = "showDeprecated";
 
-    protected static Logger log = LoggerFactory.getLogger(ClassTool.class);
-    
     protected Class type;
     protected List<MethodSub> methods;
     protected List<ConstructorSub> constructors;

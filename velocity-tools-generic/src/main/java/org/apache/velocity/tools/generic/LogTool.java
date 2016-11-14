@@ -22,7 +22,6 @@ import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
 
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -61,43 +60,41 @@ public class LogTool extends SafeConfig
 {
     public static final String LOGGER_NAME_KEY = "loggerName";
     
-    private Logger LOG = null;
-
     /**
      * configure the logger
      */
     protected void configure(ValueParser values)
     {
         String loggerName = values.getString(LOGGER_NAME_KEY);
-        if (loggerName == null)
+        if (loggerName != null)
         {
-            loggerName = "org.apache.velocity.tools";
+            /* override defaultly configured logger */
+            log = LoggerFactory.getLogger(loggerName);
         }
-        LOG = LoggerFactory.getLogger(loggerName);
     }
     
     public void error(String message)
     {
-        LOG.error(message);
+        log.error(message);
     }
 
     public void warn(String message)
     {
-        LOG.warn(message);
+        log.warn(message);
     }
 
     public void info(String message)
     {
-        LOG.info(message);
+        log.info(message);
     }
 
     public void debug(String message)
     {
-        LOG.debug(message);
+        log.debug(message);
     }
 
     public void trace(String message)
     {
-        LOG.trace(message);
+        log.trace(message);
     }
 }

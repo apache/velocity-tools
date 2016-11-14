@@ -24,9 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
@@ -72,7 +69,6 @@ public class MarkupTool extends SafeConfig
 
     private String tab = DEFAULT_TAB;
     private String delim = DEFAULT_DELIMITER;
-    private static Logger LOG = LoggerFactory.getLogger(MarkupTool.class);
 
     /**
      * Configuration
@@ -81,7 +77,7 @@ public class MarkupTool extends SafeConfig
     {
         if (isConfigLocked())
         {
-            LOG.error("setTab() failure: configuration is locked");
+            log.error("setTab() failure: configuration is locked");
         }
         else
         {

@@ -174,18 +174,23 @@ public class ToolManager
             {
                 if (log == null)
                 {
-                    if (velocity == null)
-                    {
-                        log = LoggerFactory.getLogger(ToolManager.class);
-                    }
-                    else
-                    {
-                        log = ConfigurationUtils.getLog(velocity, "tools");
-                    }
+                    initLog();
                 }
             }
         }
         return log;
+    }
+
+    protected void initLog()
+    {
+        if (velocity == null)
+        {
+            log = LoggerFactory.getLogger(ToolManager.class);
+        }
+        else
+        {
+            log = ConfigurationUtils.getLog(velocity, "tools");
+        }
     }
 
     public ToolContext createContext()

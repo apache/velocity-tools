@@ -102,8 +102,6 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
 {
     private static final long serialVersionUID = 1734529350532353339L;
 
-    protected static Logger LOG = LoggerFactory.getLogger(BrowserTool.class);
-
     /* User-Agent */
     private String userAgentString = null;
     private String lowercaseUserAgentString = null;
@@ -574,7 +572,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
                     }
                     else
                     {
-                        LOG.error("BrowserTool: could not parse language quality value: {}", language);
+                        log.error("BrowserTool: could not parse language quality value: {}", language);
                     }
                 }
             }

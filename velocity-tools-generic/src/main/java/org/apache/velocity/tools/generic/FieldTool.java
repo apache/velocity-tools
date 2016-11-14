@@ -24,9 +24,6 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
@@ -97,8 +94,6 @@ public class FieldTool extends SafeConfig
      */
     public static final String STORE_DYNAMIC_KEY = "storeDynamicLookups";
 
-    protected static Logger log = LoggerFactory.getLogger(FieldTool.class);
-    
     protected HashMap storage = new HashMap();
     protected boolean storeDynamicLookups = true;
 
@@ -258,7 +253,7 @@ public class FieldTool extends SafeConfig
      * in the specified {@link Class}. Returns {@code null} in case of failure.
      * 
      */
-    protected static Object retrieve(Field field, Class clazz)
+    protected Object retrieve(Field field, Class clazz)
     {
         try
         {
@@ -323,7 +318,7 @@ public class FieldTool extends SafeConfig
      * retrieval of the value of a field that is not final and may
      * change at different lookups.
      */
-    public static class MutableField
+    public class MutableField
     {
         private final Class clazz;
         private final Field field;
@@ -341,7 +336,7 @@ public class FieldTool extends SafeConfig
 
         public Object getValue()
         {
-            return FieldTool.retrieve(field, clazz);
+            return retrieve(field, clazz);
         }
     }
 

@@ -19,7 +19,9 @@ package org.apache.velocity.tools.config;
  * under the License.
  */
 
-import java.lang.reflect.Method;
+import java.util.Map;
+
+import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.ToolInfo;
 import org.apache.velocity.tools.ClassUtils;
 
@@ -56,7 +58,7 @@ public class ToolConfiguration extends Configuration
         // ensure any non-default key is also set as a property
         if (key != null && !key.equals(getDefaultKey()))
         {
-            setProperty("key", key);
+            setProperty(ToolContext.TOOLKEY_KEY, key);
         }
     }
 
@@ -265,7 +267,10 @@ public class ToolConfiguration extends Configuration
         }
         // it's ok to use this here, because we know it's the
         // first time properties have been added to this ToolInfo
-        info.addProperties(getPropertyMap());
+        Map<String,Object> properties = getPropertyMap();
+        // make sure key is present in properties, even for default properties
+        properties.put(ToolContext.TOOLKEY_KEY, getKey());
+        info.addProperties(properties);
         return info;
     }
 
