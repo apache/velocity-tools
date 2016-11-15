@@ -132,8 +132,6 @@ public abstract class AbstractSearchTool extends PagerTool
     protected static final String STORED_RESULTS_KEY =
         StoredResults.class.getName();
 
-    protected static Logger LOG = LoggerFactory.getLogger(AbstractSearchTool.class);
-
     private String criteriaKey = DEFAULT_CRITERIA_KEY;
     private Object criteria;
 
@@ -232,7 +230,7 @@ public abstract class AbstractSearchTool extends PagerTool
             }
             catch (Throwable t)
             {
-                LOG.error("executeQuery({}) failed", findMe, t);
+                getLog().error("executeQuery({}) failed", findMe, t);
             }
 
             /* because we can't trust executeQuery() not to return null

@@ -57,13 +57,13 @@ public class ImportTool extends ImportSupport
     public String read(Object obj) {
         if (obj == null)
         {
-            LOG.warn("ImportTool.read(): url is null!");
+            getLog().warn("ImportTool.read(): url is null!");
             return null;
         }
         String url = String.valueOf(obj).trim();
         if (url.length() == 0)
         {
-            LOG.warn("ImportTool.read(): url is empty string!");
+            getLog().warn("ImportTool.read(): url is empty string!");
             return null;
         }
         try
@@ -72,7 +72,7 @@ public class ImportTool extends ImportSupport
         }
         catch (Exception ex)
         {
-            LOG.error("ImportTool.read(): Exception while aquiring '{}'", url, ex);
+            getLog().error("ImportTool.read(): Exception while aquiring '{}'", url, ex);
             return null;
         }
     }

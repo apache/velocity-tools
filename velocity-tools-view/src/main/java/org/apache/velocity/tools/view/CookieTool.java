@@ -25,6 +25,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.velocity.tools.generic.SafeConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,7 +58,7 @@ import org.apache.velocity.tools.Scope;
  */
 @DefaultKey("cookies")
 @ValidScope(Scope.REQUEST)
-public class CookieTool
+public class CookieTool extends SafeConfig
 {
     protected static Logger log = LoggerFactory.getLogger(CookieTool.class);
 
@@ -212,7 +213,7 @@ public class CookieTool
         }
         catch (IllegalArgumentException iae)
         {
-            log.error("Could not create cookie with name \"{}\"", name, iae);
+            getLog().error("Could not create cookie with name \"{}\"", name, iae);
             return null;
         }
     }

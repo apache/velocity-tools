@@ -27,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
+import org.apache.velocity.tools.generic.SafeConfig;
 
 /**
  * <p>View tool for doing request-based pagination of
@@ -100,7 +101,7 @@ import org.apache.velocity.tools.config.InvalidScope;
  */
 @DefaultKey("pager")
 @InvalidScope({Scope.APPLICATION,Scope.SESSION})
-public class PagerTool
+public class PagerTool extends SafeConfig
 {
     public static final String DEFAULT_NEW_ITEMS_KEY = "new.items";
     public static final String DEFAULT_INDEX_KEY = "index";
