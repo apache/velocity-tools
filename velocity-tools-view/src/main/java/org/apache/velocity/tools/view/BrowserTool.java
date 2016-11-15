@@ -155,7 +155,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
         {
             userAgentString = ua;
             lowercaseUserAgentString = ua.toLowerCase();
-            userAgent = UAParser.parseUserAgent(ua);
+            userAgent = UAParser.parseUserAgent(ua, getLog());
         }
     }
 
