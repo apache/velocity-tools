@@ -24,8 +24,6 @@ public class UAParser
     {
     }
 
-    protected static Logger LOG = LoggerFactory.getLogger(BrowserTool.class);
-
     public static class UAEntity
     {
         private String name = null;
@@ -243,7 +241,7 @@ public class UAParser
     }
 
     /* the big hairy parsing method */
-    public static UserAgent parseUserAgent(String userAgentString)
+    public static UserAgent parseUserAgent(String userAgentString, Logger log)
     {
         UserAgent ua = null;
         try
@@ -588,7 +586,7 @@ public class UAParser
         }
         catch (Exception e)
         {
-            LOG.error("Could not parse browser for User-Agent: {}", userAgentString, e);
+            log.error("Could not parse browser for User-Agent: {}", userAgentString, e);
             ua = null;
         }
         return ua;
