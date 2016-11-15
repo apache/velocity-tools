@@ -58,43 +58,28 @@ import org.slf4j.LoggerFactory;
 @ValidScope(Scope.APPLICATION)
 public class LogTool extends SafeConfig
 {
-    public static final String LOGGER_NAME_KEY = "loggerName";
-    
-    /**
-     * configure the logger
-     */
-    protected void configure(ValueParser values)
-    {
-        String loggerName = values.getString(LOGGER_NAME_KEY);
-        if (loggerName != null)
-        {
-            /* override defaultly configured logger */
-            log = LoggerFactory.getLogger(loggerName);
-        }
-    }
-    
     public void error(String message)
     {
-        log.error(message);
+        getLog().error(message);
     }
 
     public void warn(String message)
     {
-        log.warn(message);
+        getLog().warn(message);
     }
 
     public void info(String message)
     {
-        log.info(message);
+        getLog().info(message);
     }
 
     public void debug(String message)
     {
-        log.debug(message);
+        getLog().debug(message);
     }
 
     public void trace(String message)
     {
-        log.trace(message);
+        getLog().trace(message);
     }
 }

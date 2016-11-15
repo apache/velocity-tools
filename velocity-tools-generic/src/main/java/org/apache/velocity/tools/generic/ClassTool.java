@@ -128,7 +128,7 @@ public class ClassTool extends SafeConfig
         }
         catch (Exception e)
         {
-            log.error("Could not load Class for {}", name);
+            getLog().error("Could not load Class for {}", name);
             return null;
         }
     }

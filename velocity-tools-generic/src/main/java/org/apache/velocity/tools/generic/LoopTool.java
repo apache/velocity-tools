@@ -588,7 +588,7 @@ public class LoopTool extends SafeConfig
         }
         catch (Exception e)
         {
-            log.error("Exception while getting Iterator:", e);
+            getLog().error("Exception while getting Iterator:", e);
         }
         return null;
     }

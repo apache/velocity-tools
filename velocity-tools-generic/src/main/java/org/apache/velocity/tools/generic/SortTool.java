@@ -201,7 +201,7 @@ public class SortTool extends SafeConfig
         else
         {
             // the object type is not supported
-            log.error("object type not supported: {}", o == null ? "null" : o.getClass().getName());
+            getLog().error("object type not supported: {}", o == null ? "null" : o.getClass().getName());
             return null;
         }
     }
@@ -245,7 +245,7 @@ public class SortTool extends SafeConfig
             return sort((Map)object, properties);
         }
         // the object type is not supported
-        log.error("object type not supported: {}", object == null ? "null" : object.getClass().getName());
+        getLog().error("object type not supported: {}", object == null ? "null" : object.getClass().getName());
         return null;
     }
 
@@ -280,7 +280,7 @@ public class SortTool extends SafeConfig
         }
         catch (Exception e)
         {
-            log.error("exception encountered while sorting: {}", e.getMessage());
+            getLog().error("exception encountered while sorting: {}", e.getMessage());
             return null;
         }
     }

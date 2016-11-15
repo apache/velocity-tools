@@ -176,7 +176,7 @@ public class RenderTool extends SafeConfig
         }
         else if (this.parseDepth != depth)
         {
-            log.error("Attempt was made to alter parse depth while config was locked.");
+            getLog().error("Attempt was made to alter parse depth while config was locked.");
         }
     }
 
@@ -196,7 +196,7 @@ public class RenderTool extends SafeConfig
         }
         else if (this.context != context)
         {
-            log.error("Attempt was made to set a new context while config was locked.");
+            getLog().error("Attempt was made to set a new context while config was locked.");
         }
     }
 
@@ -223,7 +223,7 @@ public class RenderTool extends SafeConfig
         }
         else if (this.catchExceptions != catchExceptions)
         {
-            log.error("Attempt was made to alter catchE while config was locked.");
+            getLog().error("Attempt was made to alter catchE while config was locked.");
         }
     }
 
@@ -295,7 +295,7 @@ public class RenderTool extends SafeConfig
             }
             catch (Exception e)
             {
-                log.error("evaluation failed:", e);
+                getLog().error("evaluation failed:", e);
                 return null;
             }
         }
@@ -366,7 +366,7 @@ public class RenderTool extends SafeConfig
             else
             {
                 // abort, log and return what we have so far
-                log.error("recursion exceeded the maximum parse depth" +
+                getLog().error("recursion exceeded the maximum parse depth" +
                           " of {} on the following template: {}",
                           parseDepth, vtl);
                 return result;
