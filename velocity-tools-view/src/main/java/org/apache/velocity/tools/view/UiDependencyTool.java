@@ -30,6 +30,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.velocity.tools.generic.SafeConfig;
+import org.apache.velocity.tools.generic.ValueParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -138,7 +139,7 @@ public class UiDependencyTool extends SafeConfig
     private static Logger LOG = LoggerFactory.getLogger(UiDependencyTool.class);
     private String context = "";
 
-    public void configure(Map params) {
+    protected void configure(ValueParser params) {
         ServletContext app = (ServletContext)params.get(ViewContext.SERVLET_CONTEXT_KEY);
 
         HttpServletRequest request = (HttpServletRequest)params.get(ViewContext.REQUEST);

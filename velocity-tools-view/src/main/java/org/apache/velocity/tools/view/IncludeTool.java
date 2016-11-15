@@ -29,6 +29,7 @@ import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
 import org.apache.velocity.tools.generic.SafeConfig;
+import org.apache.velocity.tools.generic.ValueParser;
 
 /**
  * Allows for transparent content negotiation in a manner mimicking
@@ -79,7 +80,7 @@ public class IncludeTool extends SafeConfig implements Serializable
      * @param params the {@link Map} of configuration parameters
      * @throws IllegalArgumentException if the param is not a ViewContext
      */
-    public void configure(Map params)
+    protected void configure(ValueParser params)
     {
         configure((ViewToolContext)params.get(ViewToolContext.CONTEXT_KEY));
     }
