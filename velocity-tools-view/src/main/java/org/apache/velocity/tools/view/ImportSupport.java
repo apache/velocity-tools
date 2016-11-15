@@ -40,6 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
+import org.apache.velocity.tools.generic.SafeConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +52,7 @@ import org.slf4j.LoggerFactory;
  * @since VelocityTools 2.0
  * @version $Revision$ $Date$
  */
-public abstract class ImportSupport
+public abstract class ImportSupport extends SafeConfig
 {
     protected static final String VALID_SCHEME_CHARS =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+.-";
@@ -59,8 +60,6 @@ public abstract class ImportSupport
     /** Default character encoding for response. */
     protected static final String DEFAULT_ENCODING = "UTF-8";
 
-    protected static Logger LOG = LoggerFactory.getLogger(ImportSupport.class);
-    
     protected ServletContext application;
     protected HttpServletRequest request;
     protected HttpServletResponse response;
@@ -165,7 +164,7 @@ public abstract class ImportSupport
                     }
                     catch (IOException ioe)
                     {
-                        LOG.error("Could not close reader.", ioe);
+                        getLog().error("Could not close reader.", ioe);
                     }
                 }
 	        }
@@ -316,7 +315,7 @@ public abstract class ImportSupport
                     }
                     catch (IOException ioe)
                     {
-                        LOG.error("Could not close InputStream", ioe);
+                        getLog().error("Could not close InputStream", ioe);
                     }
                 }
 
@@ -337,7 +336,7 @@ public abstract class ImportSupport
                     }
                     catch (IOException ioe)
                     {
-                        LOG.error("Could not close InputStream", ioe);
+                        getLog().error("Could not close InputStream", ioe);
                     }
                 }
 

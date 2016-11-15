@@ -26,9 +26,6 @@ import java.util.*;
 import org.apache.velocity.tools.ConversionUtils;
 import static org.apache.velocity.tools.view.UAParser.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
@@ -572,7 +569,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
                     }
                     else
                     {
-                        log.error("BrowserTool: could not parse language quality value: {}", language);
+                        getLog().error("BrowserTool: could not parse language quality value: {}", language);
                     }
                 }
             }

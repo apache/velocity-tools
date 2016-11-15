@@ -28,7 +28,7 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
-import org.apache.velocity.tools.view.ViewToolContext;
+import org.apache.velocity.tools.generic.SafeConfig;
 
 /**
  * Allows for transparent content negotiation in a manner mimicking
@@ -52,7 +52,7 @@ import org.apache.velocity.tools.view.ViewToolContext;
 
 @DefaultKey("include")
 @InvalidScope(Scope.APPLICATION)
-public class IncludeTool implements Serializable
+public class IncludeTool extends SafeConfig implements Serializable
 {
     /**
      * The key used to search initialization, context, and JVM
