@@ -77,7 +77,7 @@ public class MarkupTool extends SafeConfig
     {
         if (isConfigLocked())
         {
-            log.error("setTab() failure: configuration is locked");
+            getLog().error("setTab() failure: configuration is locked");
         }
         else
         {

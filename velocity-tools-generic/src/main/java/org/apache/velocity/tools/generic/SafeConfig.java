@@ -184,4 +184,20 @@ public class SafeConfig
             }
         }
     }
+
+    protected Logger getLog()
+    {
+        if (log == null)
+        {
+            /* if logger hasn't been innitialized, fall back to class logger */
+            synchronized(this)
+            {
+                if (log == null)
+                {
+                    log = LoggerFactory.getLogger(getClass());
+                }
+            }
+        }
+        return log;
+    }
 }

@@ -242,7 +242,7 @@ public class LinkTool extends SafeConfig implements Cloneable
         catch (CloneNotSupportedException e)
         {
             String msg = "Could not properly clone " + getClass();
-            log.error(msg, e);
+            getLog().error(msg, e);
             throw new RuntimeException(msg, e);
         }
     }
@@ -349,7 +349,7 @@ public class LinkTool extends SafeConfig implements Cloneable
             }
             catch (NumberFormatException nfe)
             {
-                log.error("Could not convert '{}' to int", obj, nfe);
+                getLog().error("Could not convert '{}' to int", obj, nfe);
                 this.port = -2; // use this to mean error
             }
         }
@@ -904,7 +904,7 @@ public class LinkTool extends SafeConfig implements Cloneable
             }
             catch (Exception e)
             {
-                log.error("Could not convert '{}' to URI", obj, e);
+                getLog().error("Could not convert '{}' to URI", obj, e);
                 return null;
             }
         }
@@ -949,7 +949,7 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
         catch (Exception e)
         {
-            log.error("Could not create URI", e);
+            getLog().error("Could not create URI", e);
         }
         return null;
     }
@@ -1741,7 +1741,7 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
         catch (UnsupportedEncodingException uee)
         {
-            log.error("Character encoding '{}' is unsupported", charset, uee);
+            getLog().error("Character encoding '{}' is unsupported", charset, uee);
             return null;
         }
     }
@@ -1764,7 +1764,7 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
         catch (UnsupportedEncodingException uee)
         {
-            log.error("Character encoding '{}' is unsupported", charset, uee);
+            getLog().error("Character encoding '{}' is unsupported", charset, uee);
             return null;
         }
     }
