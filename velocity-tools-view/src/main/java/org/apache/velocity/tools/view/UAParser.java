@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -24,7 +25,7 @@ public class UAParser
     {
     }
 
-    public static class UAEntity
+    public static class UAEntity implements Serializable
     {
         private String name = null;
         private int majorVersion = -1;
@@ -120,7 +121,7 @@ public class UAParser
         osTranslationMap.put("win98", "Windows");
     }
 
-    public static class UserAgent
+    public static class UserAgent implements Serializable
     {
         private DeviceType deviceType = null;
         private UAEntity operatingSystem = null;
