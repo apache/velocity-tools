@@ -60,7 +60,6 @@ import org.apache.velocity.tools.config.SkipSetters;
 public class ConversionTool extends LocaleConfig implements Serializable
 {
     public static final String STRINGS_DELIMITER_FORMAT_KEY = "stringsDelimiter";
-    public static final String STRINGS_TRIM_KEY = "trimStrings";
     public static final String DATE_FORMAT_KEY = "dateFormat";
     public static final String NUMBER_FORMAT_KEY = "numberFormat";
 
