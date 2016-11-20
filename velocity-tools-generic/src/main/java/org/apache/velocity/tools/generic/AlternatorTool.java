@@ -57,10 +57,12 @@ import org.apache.velocity.tools.config.ValidScope;
  *
  * @since Velocity Tools 1.2
  * @version $Revision$ $Date$
+ * @deprecated use CSS3 nth-child(even/odd) selectors or #if($foreach.index % 2)
  */
 
 @ValidScope(Scope.APPLICATION)
 @DefaultKey("alternator")
+@Deprecated
 public class AlternatorTool extends SafeConfig
 {
     public static final String AUTO_ALTERNATE_DEFAULT_KEY = "autoAlternate";
