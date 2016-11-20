@@ -44,6 +44,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  *     <li>'iso' for RFC 3339 with time zone (locale independent), optionally suffixed by '_time' or '_date' to get a specific time or date format</li>
  *     <li>a custom format, as specified in {@link SimpleDateFormat}</li>
  * </ul></p>
+ * <p>Iso formats don't display milliseconds and use a space separator between date and time.</p>
  * <p><pre>
  * Example of formatting the "current" date:
  *  $date                         -> Oct 19, 2003 9:54:50 PM
