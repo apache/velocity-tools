@@ -33,7 +33,9 @@ import org.apache.velocity.tools.generic.Alternator;
  * @author Nathan Bubna
  * @since VelocityTools 2.0
  * @version $Id$
+ * @deprecrated
  */
+@Deprecated
 public class AlternatorToolTests {
 
     public @Test void ctorAlternatorTool() throws Exception
