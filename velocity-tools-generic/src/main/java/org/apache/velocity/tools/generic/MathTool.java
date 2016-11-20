@@ -581,7 +581,9 @@ public class MathTool extends FormatConfig
      * @param num the number to be converted
      * @return a {@link Integer} representation of the number
      *         or <code>null</code> if it's invalid
+     * @deprecated use {@link NumberTool#toNumber(Object)}.intValue()
      */
+    @Deprecated
     public Integer toInteger(Object num)
     {
         Number n = toNumber(num);
@@ -600,7 +602,9 @@ public class MathTool extends FormatConfig
      * @param num the number to be converted
      * @return a {@link Long} integer representation of the number
      *         or <code>null</code> if it's invalid
+     * @deprecated use {@link NumberTool#toNumber(Object)}.longValue()
      */
+    @Deprecated
     public Long toLong(Object num)
     {
         Number n = toNumber(num);
@@ -619,7 +623,9 @@ public class MathTool extends FormatConfig
      * @param num the number to be converted
      * @return a {@link Double} representation of the number
      *         or <code>null</code> if it's invalid
+     * @deprecated use {@link NumberTool#toNumber(Object)}.doubleValue()
      */
+    @Deprecated
     public Double toDouble(Object num)
     {
         Number n = toNumber(num);
@@ -633,7 +639,7 @@ public class MathTool extends FormatConfig
 
     /**
      * Converts an object with a numeric value into a Number
-     * Valid formats are {@link Number} or a {@link String}
+      Valid formats are {@link Number} or a {@link String}
      * representation of a number.  Note that this does not
      * handle localized number formats.  Use the {@link NumberTool}
      * to handle such conversions.
@@ -641,7 +647,9 @@ public class MathTool extends FormatConfig
      * @param num the number to be converted
      * @return a {@link Number} representation of the number
      *         or <code>null</code> if it's invalid
+     * @deprecated use {@link NumberTool#toNumber(Object)}
      */
+    @Deprecated
     public Number toNumber(Object num)
     {
         return ConversionUtils.toNumber(num, getFormat(), getLocale());
