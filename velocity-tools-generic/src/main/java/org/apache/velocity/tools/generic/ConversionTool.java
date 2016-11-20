@@ -53,10 +53,13 @@ import org.apache.velocity.tools.config.SkipSetters;
  * @author Nathan Bubna
  * @version $Revision$ $Date: 2007-02-26 11:24:39 -0800 (Mon, 26 Feb 2007) $
  * @since VelocityTools 2.0
+ * @deprecated use NumberTool for numbers formatting/parsing, DateTool for date/time formatting/parsing,
+ * or CollectionTool for toStrings().
  */
 
 @DefaultKey("convert")
 @SkipSetters
+@Deprecated
 public class ConversionTool extends LocaleConfig implements Serializable
 {
     public static final String STRINGS_DELIMITER_FORMAT_KEY = "stringsDelimiter";
@@ -107,6 +110,7 @@ public class ConversionTool extends LocaleConfig implements Serializable
      * The default string delimiter is a comma.
      *
      * @see #parseStringList
+     * @deprecated use {@link CollectionTool#setStringsDelimiter(String)}
      */
     protected final void setStringsDelimiter(String stringsDelimiter)
     {
@@ -130,6 +134,10 @@ public class ConversionTool extends LocaleConfig implements Serializable
         this.stringsTrim = stringsTrim;
     }
 
+    /**
+     * @deprecated use {@link CollectionTool#getStringsTrim()}
+     * @return strings trim
+     */
     public final boolean getStringsTrim()
     {
         return this.stringsTrim;
@@ -140,6 +148,10 @@ public class ConversionTool extends LocaleConfig implements Serializable
         this.numberFormat = format;
     }
 
+    /**
+     * @deprecated use {@link NumberTool} format
+     * @return number format
+     */
     public final String getNumberFormat()
     {
         return this.numberFormat;
@@ -150,6 +162,10 @@ public class ConversionTool extends LocaleConfig implements Serializable
         this.dateFormat = format;
     }
 
+    /**
+     * @deprecated use {@link DateTool#getDateFormat()}
+     * @return date format
+     */
     public final String getDateFormat()
     {
         return this.dateFormat;
@@ -244,6 +260,7 @@ public class ConversionTool extends LocaleConfig implements Serializable
      * @param value the object to be converted
      * @return a {@link Locale} for the specified value or
      *         <code>null</code> if the value is null or the conversion failed
+     * @deprecated use {@link DateTool}.toLocale(Object)
      */
     public Locale toLocale(Object value)
     {
@@ -268,6 +285,7 @@ public class ConversionTool extends LocaleConfig implements Serializable
      * @param value the date to convert
      * @return the object as a {@link Date} or <code>null</code> if no
      *         conversion is possible
+     * @deprecated use {@link DateTool#toDate(Object)}
      */
     public Date toDate(Object value)
     {
@@ -284,6 +302,11 @@ public class ConversionTool extends LocaleConfig implements Serializable
         return parseDate(s);
     }
 
+    /**
+     * @param value
+     * @return calendar
+     * @deprecated use {@link DateTool#toCalendar(Object)}
+     */
     public Calendar toCalendar(Object value)
     {
         if (value == null)
@@ -310,6 +333,7 @@ public class ConversionTool extends LocaleConfig implements Serializable
      * @param value the value to be converted
      * @return an array of String objects containing all of the values
      *         derived from the specified array, Collection, or delimited String
+     * @deprecated use {@link CollectionTool#split(String)}
      */
     public String[] toStrings(Object value)
     {
@@ -695,6 +719,7 @@ public class ConversionTool extends LocaleConfig implements Serializable
      * @param value the string to parse
      * @return the string as a {@link Number} or <code>null</code> if no
      *         conversion is possible
+     * @deprecated use {@link NumberTool#toNumber(Object)}
      */
     public Number parseNumber(String value)
     {
@@ -711,6 +736,7 @@ public class ConversionTool extends LocaleConfig implements Serializable
      * @return the string as a {@link Number} or <code>null</code> if no
      *         conversion is possible
      * @see #parseNumber(String value, String format, Object locale)
+     * @deprecated use {@link NumberTool#toNumber(String, Object)}
      */
     public Number parseNumber(String value, String format)
     {
@@ -726,6 +752,7 @@ public class ConversionTool extends LocaleConfig implements Serializable
      * @return the string as a {@link Number} or <code>null</code> if no
      *         conversion is possible
      * @see java.text.NumberFormat#parse
+     * @deprecated use {@link NumberTool#toNumber(String, Object, Locale)}
      */
     public Number parseNumber(String value, Object locale)
     {
@@ -742,6 +769,7 @@ public class ConversionTool extends LocaleConfig implements Serializable
      * @return the string as a {@link Number} or <code>null</code> if no
      *         conversion is possible
      * @see java.text.NumberFormat#parse
+     * @deprecated use {@link NumberTool#toNumber(String, Object, Locale)}
      */
     public Number parseNumber(String value, String format, Object locale)
     {
@@ -764,6 +792,7 @@ public class ConversionTool extends LocaleConfig implements Serializable
      * @param value the date to convert
      * @return the object as a {@link Date} or <code>null</code> if no
      *         conversion is possible
+     * @deprecated use {@link DateTool#toDate(Object)}
      */
     public Date parseDate(String value)
     {
@@ -780,6 +809,7 @@ public class ConversionTool extends LocaleConfig implements Serializable
      * @return the string as a {@link Date} or <code>null</code> if no
      *         conversion is possible
      * @see ConversionUtils#toDate(String str, String format, Locale locale, TimeZone timezone)
+     * @deprecated use {@link DateTool#toDate(String, Object)}
      */
     public Date parseDate(String value, String format)
     {
@@ -795,6 +825,7 @@ public class ConversionTool extends LocaleConfig implements Serializable
      * @return the string as a {@link Date} or <code>null</code> if no
      *         conversion is possible
      * @see java.text.SimpleDateFormat#parse
+     * @deprecated use {@link DateTool#toDate(String, Object, Locale)}}
      */
     public Date parseDate(String value, Object locale)
     {
@@ -811,6 +842,7 @@ public class ConversionTool extends LocaleConfig implements Serializable
      * @return the string as a {@link Date} or <code>null</code> if no
      *         conversion is possible
      * @see java.text.SimpleDateFormat#parse
+     * @deprecated use {@link DateTool#toDate(String, Object, Locale)}}
      */
     public Date parseDate(String value, String format, Object locale)
     {
@@ -829,6 +861,7 @@ public class ConversionTool extends LocaleConfig implements Serializable
      *         conversion is possible
      * @see #getDateFormat
      * @see java.text.SimpleDateFormat#parse
+     * @deprecated use {@link DateTool#toDate(String, Object, Locale, TimeZone)}}
      */
     public Date parseDate(String value, String format,
                           Object locale, TimeZone timezone)

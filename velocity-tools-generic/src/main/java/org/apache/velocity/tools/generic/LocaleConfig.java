@@ -20,6 +20,8 @@ package org.apache.velocity.tools.generic;
  */
 
 import java.util.Locale;
+
+import org.apache.velocity.tools.ConversionUtils;
 import org.apache.velocity.tools.ToolContext;
 
 /**
@@ -70,5 +72,25 @@ public class LocaleConfig extends SafeConfig
     {
         this.locale = locale;
     }
+
+    /**
+     * @param value the object to be converted
+     * @return a {@link Locale} for the specified value or
+     *         <code>null</code> if the value is null or the conversion failed
+     * @since VelocityTools 3.0
+     */
+    public Locale toLocale(Object value)
+    {
+        if (value == null)
+        {
+            return null;
+        }
+        else if (value instanceof Locale)
+        {
+            return (Locale)value;
+        }
+        return ConversionUtils.toLocale(String.valueOf(value));
+    }
+
 
 }
