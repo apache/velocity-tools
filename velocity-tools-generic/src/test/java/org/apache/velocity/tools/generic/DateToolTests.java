@@ -28,9 +28,11 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Date;
 import java.util.Locale;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 //import org.apache.velocity.tools.generic.DateTool;
 
 /**
@@ -84,5 +86,15 @@ public class DateToolTests
         assertEquals("DateTool incorrectly localizes date format pattern",
                      ((SimpleDateFormat)DateFormat.getTimeInstance(DateFormat.SHORT, frFR)).toLocalizedPattern(),
                      dt.toLocalizedPattern("short_time", frFR));
+    }
+
+    public @Test void toIsoFormat() throws Exception
+    {
+        DateTool dt = new DateTool();
+        Date date = new Date();
+        dt.setTimeZone(TimeZone.getTimeZone("CET"));
+        assertEquals("DateTool incorrectly formatted iso format",
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:ssXXX").format(date),
+                dt.format("iso",date));
     }
 }
