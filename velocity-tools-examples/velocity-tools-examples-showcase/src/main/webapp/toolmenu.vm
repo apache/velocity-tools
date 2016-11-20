@@ -25,6 +25,7 @@
 #toolMenuItem( $llink 'alternator' )
 #toolMenuItem( $llink 'browser' )
 #toolMenuItem( $llink 'class' )
+#toolMenuItem( $llink 'collection' )
 #toolMenuItem( $llink 'context' )
 #toolMenuItem( $llink 'convert' )
 #toolMenuItem( $llink 'cookies' )
