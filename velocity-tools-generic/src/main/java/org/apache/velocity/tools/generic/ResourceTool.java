@@ -302,20 +302,6 @@ public class ResourceTool extends LocaleConfig implements Serializable
         return master;
     }
 
-    private Locale toLocale(Object obj)
-    {
-        if (obj == null)
-        {
-            return null;
-        }
-        if (obj instanceof Locale)
-        {
-            return (Locale)obj;
-        }
-        String s = String.valueOf(obj);
-        return ConversionUtils.toLocale(s);
-    }
-
     /**
      * Renders the specified resource value and arguments as a String.
      * The resource is treated as a {@link MessageFormat} pattern which
