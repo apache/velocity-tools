@@ -30,7 +30,9 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -51,6 +53,18 @@ public class ConversionUtils
     private static final int STYLE_PERCENT      = 2;
     //NOTE: '3' belongs to a non-public "scientific" style
     private static final int STYLE_INTEGER      = 4;
+
+    /* Java DateFormat standard constants extensions */
+    private static final int STYLE_INTL = 5; /* international format without time zone*/
+    private static final int STYLE_ISO = 6;  /* international format with timezone (RFC 3339) */
+
+
+    /* iso/intl date/time formats (locale-independant) */
+    private static DateFormat isoDateFormat = new SimpleDateFormat("yyyy-MM-dd");  /* date for iso/intl */
+    private static DateFormat intlTimeFormat = new SimpleDateFormat("HH:mm:ss");   /* time without timezone */
+    private static DateFormat isoTimeFormat = new SimpleDateFormat("HH:mm:ssXXX"); /* time with ISO 8601 timezone */
+    private static DateFormat intlTimestampFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");   /* timestamp without timezone */
+    private static DateFormat isoTimestampFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssXXX"); /* timestamp with ISO 88601 timezone */
 
     // cache custom formats
     private static ConcurrentMap<String,NumberFormat> customFormatsCache = new ConcurrentHashMap<String,NumberFormat>();
@@ -401,19 +415,53 @@ public class ConversionUtils
             else if (timeStyle < 0)
             {
                 // only a date style was specified
-                df = DateFormat.getDateInstance(dateStyle, locale);
+                switch (dateStyle)
+                {
+                    case STYLE_INTL:
+                    case STYLE_ISO:
+                        df = isoDateFormat;
+                        break;
+                    default:
+                        df = DateFormat.getDateInstance(dateStyle, locale);
+                        df.setTimeZone(timezone);
+                        break;
+                }
             }
             else if (dateStyle < 0)
             {
                 // only a time style was specified
-                df = DateFormat.getTimeInstance(timeStyle, locale);
+                switch (timeStyle)
+                {
+                    case STYLE_INTL:
+                        df = intlTimeFormat;
+                        break;
+                    case STYLE_ISO:
+                        df = (DateFormat) isoTimeFormat.clone();
+                        df.setTimeZone(timezone);
+                        break;
+                    default:
+                        df = DateFormat.getTimeInstance(timeStyle, locale);
+                        df.setTimeZone(timezone);
+                        break;
+                }
             }
             else
             {
-                df = DateFormat.getDateTimeInstance(dateStyle, timeStyle,
-                                                    locale);
+                switch (dateStyle)
+                {
+                    case STYLE_INTL:
+                        df = intlTimestampFormat;
+                        break;
+                    case STYLE_ISO:
+                        df = (DateFormat) isoTimestampFormat.clone();
+                        df.setTimeZone(timezone);
+                        break;
+                    default:
+                        df = DateFormat.getDateTimeInstance(dateStyle, timeStyle, locale);
+                        df.setTimeZone(timezone);
+                        break;
+                }
             }
-            df.setTimeZone(timezone);
             return df;
         }
         catch (Exception suppressed)
@@ -421,6 +469,19 @@ public class ConversionUtils
             // let it go...
             return null;
         }
+    }
+
+    static Map<String, Integer> stylesMap;
+    static
+    {
+        stylesMap = new HashMap<String, Integer>();
+        stylesMap.put("FULL", DateFormat.FULL);
+        stylesMap.put("LONG", DateFormat.LONG);
+        stylesMap.put("MEDIUM", DateFormat.MEDIUM);
+        stylesMap.put("SHORT", DateFormat.SHORT);
+        stylesMap.put("DEFAULT", DateFormat.DEFAULT);
+        stylesMap.put("INTL", STYLE_INTL);
+        stylesMap.put("ISO", STYLE_ISO);
     }
 
     /**
@@ -435,32 +496,8 @@ public class ConversionUtils
      */
     public static int getDateStyleAsInt(String style)
     {
-        // avoid needlessly running through all the string comparisons
-        if (style == null || style.length() < 4 || style.length() > 7) {
-            return -1;
-        }
-        if (style.equalsIgnoreCase("full"))
-        {
-            return DateFormat.FULL;
-        }
-        if (style.equalsIgnoreCase("long"))
-        {
-            return DateFormat.LONG;
-        }
-        if (style.equalsIgnoreCase("medium"))
-        {
-            return DateFormat.MEDIUM;
-        }
-        if (style.equalsIgnoreCase("short"))
-        {
-            return DateFormat.SHORT;
-        }
-        if (style.equalsIgnoreCase("default"))
-        {
-            return DateFormat.DEFAULT;
-        }
-        // ok, it's not any of the standard patterns
-        return -1;
+        Integer intStyle = stylesMap.get(style.toUpperCase());
+        return intStyle == null ? -1 : intStyle.intValue();
     }
 
 

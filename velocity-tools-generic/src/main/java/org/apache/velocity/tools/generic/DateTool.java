@@ -28,16 +28,22 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 import org.apache.velocity.tools.ConversionUtils;
-import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
- * Tool for working with {@link Date} and {@link Calendar}
+ * <p>Tool for working with {@link Date} and {@link Calendar}
  * in Velocity templates.  It is useful for accessing and
  * formatting the "current" date as well as for formatting
  * arbitrary {@link Date} and {@link Calendar} objects. Also
  * the tool can be used to retrieve {@link DateFormat} instances
- * or make conversions to and from various date types.
+ * or make conversions to and from various date types.</p>
+ * <p>Possible formats include:
+ * <ul>
+ *     <li>'short', 'medium', 'long', 'full' (from {@link java.text.DateFormat}, optionally suffixed by '_time' or '_date' to get a specific time or date format</li>
+ *     <li>'intl' for RFC 3339 without time zone (locale and time-zone independent), optionally suffixed by '_time' or '_date' to get a specific time or date format</li>
+ *     <li>'iso' for RFC 3339 with time zone (locale independent), optionally suffixed by '_time' or '_date' to get a specific time or date format</li>
+ *     <li>a custom format, as specified in {@link SimpleDateFormat}</li>
+ * </ul></p>
  * <p><pre>
  * Example of formatting the "current" date:
  *  $date                         -> Oct 19, 2003 9:54:50 PM
@@ -46,6 +52,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  *  $date.full_date               -> Sunday, October 19, 2003
  *  $date.get('default','short')  -> Oct 19, 2003 9:54 PM
  *  $date.get('yyyy-M-d H:m:s')   -> 2003-10-19 21:54:50
+ *  $date.iso                     -> 2003-10-19 21:54:50-07:00
  *
  * Example of formatting an arbitrary date:
  *  $myDate                        -> Tue Oct 07 03:14:50 PDT 2003
@@ -77,7 +84,7 @@ public class DateTool extends FormatConfig implements Serializable
      */
     public static final String TIMEZONE_KEY = "timezone";
 
-    private TimeZone timezone = TimeZone.getDefault(); 
+    private TimeZone timezone = TimeZone.getDefault();
 
     /**
      * Does the actual configuration. This is protected, so
@@ -567,7 +574,7 @@ public class DateTool extends FormatConfig implements Serializable
      * @param locale the {@link Locale} to be used
      * @param timezone the {@link TimeZone} to be used
      * @return an instance of {@link DateFormat}
-     * @see #getDateFormat(int timeStyle, int dateStyle, Locale locale, TimeZone timezone)
+     * @see {@link DateFormat#getDateFormat(int timeStyle, int dateStyle, Locale locale, TimeZone timezone)}
      * @since VelocityTools 1.1
      */
     public DateFormat getDateFormat(String dateStyle, String timeStyle,
