@@ -37,10 +37,10 @@ import java.util.Map;
  * within the collection, and to generate arrays by splitting strings.
  * </p>
  *
- * <p>The sort tool is specifically designed to use within a #foreach
+ * <p>The sort functionality is specifically designed to use within a #foreach
  * but you may find other uses for it.</p>
  *
- * <p>The sort tool can handle all of the collection types supported by
+ * <p>The sort methods can handle all of the collection types supported by
  * #foreach and the same constraints apply as well as the following.
  * Every object in the collection must support the set of properties
  * selected to sort on. Each property which is to be sorted on must
@@ -76,7 +76,7 @@ import java.util.Map;
  * End
  * </pre>
  *
- * The sort method takes two parameters a collection and a property name
+ * The sort method takes two parameters, a collection and a property name
  * or an array of property names. The property names and corresponding
  * methods must conform to java bean standards since commons-beanutils
  * is used to extract the property values.</p>
@@ -456,7 +456,7 @@ public class CollectionTool extends SafeConfig
                     else
                     {
                         //FIXME: log this
-                        // invalide property sort type. use default instead.
+                        // invalid property sort type. use default instead.
                         sortTypes[i] = TYPE_ASCENDING;
                     }
                 }
