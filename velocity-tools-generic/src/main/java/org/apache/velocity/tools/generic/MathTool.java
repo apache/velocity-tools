@@ -639,7 +639,7 @@ public class MathTool extends FormatConfig
 
     /**
      * Converts an object with a numeric value into a Number
-      Valid formats are {@link Number} or a {@link String}
+     * Valid formats are {@link Number} or a {@link String}
      * representation of a number.  Note that this does not
      * handle localized number formats.  Use the {@link NumberTool}
      * to handle such conversions.
