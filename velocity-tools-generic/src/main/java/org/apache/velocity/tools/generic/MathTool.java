@@ -901,9 +901,8 @@ public class MathTool extends FormatConfig
         }
 
         double result = 0;
-        for (int i = 0; i < values.length; i++)
-        {
-            result += values[i];
+        for (double value : values) {
+            result += value;
         }
         return new Double(result);
     }
@@ -938,9 +937,8 @@ public class MathTool extends FormatConfig
         }
 
         long result = 0;
-        for (int i = 0; i < values.length; i++)
-        {
-            result += values[i];
+        for (long value : values) {
+            result += value;
         }
         return Long.valueOf(result);
     }
