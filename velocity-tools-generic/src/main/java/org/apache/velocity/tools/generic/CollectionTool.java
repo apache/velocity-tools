@@ -22,6 +22,7 @@ package org.apache.velocity.tools.generic;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.velocity.tools.config.DefaultKey;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -405,8 +406,10 @@ public class CollectionTool extends SafeConfig
      * Does all of the comparisons
      */
     public static class PropertiesComparator
-        implements Comparator, java.io.Serializable
+        implements Comparator, Serializable
     {
+        private static final long serialVersionUID = 8139857062638518319L;
+
         private static final int TYPE_ASCENDING = 1;
         private static final int TYPE_DESCENDING = -1;
 
