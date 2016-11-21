@@ -166,6 +166,7 @@ public class CollectionTool extends SafeConfig
      * at any time, while preventing templates from doing so when
      * configure(Map) is locked.
      */
+    @Override
     protected void configure(ValueParser values)
     {
         super.configure(values);
@@ -227,7 +228,7 @@ public class CollectionTool extends SafeConfig
     public <T> Collection<T> sort(final Collection<T> c,
                                   final Comparator<T> comparator)
     {
-        final ArrayList<T> list = new ArrayList<T>(c);
+        final ArrayList<T> list = new ArrayList<>(c);
         Collections.sort(list, comparator);
         return list;
     }
@@ -345,8 +346,7 @@ public class CollectionTool extends SafeConfig
      */
     public Collection sort(Object object, String property)
     {
-        List properties = new ArrayList(1);
-        properties.add(property);
+        List<String> properties = Collections.singletonList(property);
 
         if (object instanceof Collection)
         {
@@ -367,8 +367,7 @@ public class CollectionTool extends SafeConfig
 
     public Collection sort(Collection collection, List properties)
     {
-        List list = new ArrayList(collection.size());
-        list.addAll(collection);
+        List<?> list = new ArrayList<>(collection);
         return internalSort(list, properties);
     }
 
@@ -468,6 +467,7 @@ public class CollectionTool extends SafeConfig
             }
         }
 
+        @Override
         public int compare(Object lhs, Object rhs)
         {
             for (int i = 0; i < properties.size(); i++)
