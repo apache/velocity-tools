@@ -39,12 +39,13 @@ import org.apache.velocity.tools.config.DefaultKey;
  * or make conversions to and from various date types.</p>
  * <p>Possible formats include:
  * <ul>
- *     <li>'short', 'medium', 'long', 'full' (from {@link java.text.DateFormat}, optionally suffixed by '_time' or '_date' to get a specific time or date format</li>
- *     <li>'intl' for RFC 3339 without time zone (locale and time-zone independent), optionally suffixed by '_time' or '_date' to get a specific time or date format</li>
- *     <li>'iso' for RFC 3339 with time zone (locale independent), optionally suffixed by '_time' or '_date' to get a specific time or date format</li>
+ *     <li>'short', 'medium', 'long', 'full' (from {@link java.text.DateFormat}, optionally suffixed by '_date' or '_time' to get a date-only or time-only format</li>
+ *     <li>'iso' for extended ISO 8601 without time zone (ex: '2016-11-24T10:27:30'), optionally suffixed by '_date' or '_time' to get a date-only or time-only format</li>
+ *     <li>'iso_tz', like 'iso' with time zone offset (ex: '2016-11-24T10:27:30+01:00'), optionally suffixed by '_time' to get a time-only format ('10:27:30+01:00')</li>
+ *     <li>'intl', like 'iso' but with a space separator between date and time (ex: '2016-11-24 10:27:30'), optionally suffixed by '_date' or '_time' to get a date-only or time-only format</li>
+ *     <li>'intl_tz', like 'intl' but with the time zone short id suffixed after another space (ex: '2016-11-24 10:27:30 CET'), optionally suffixed by '_time' to get a time-only format ('10:27:30+01:00')</li>
  *     <li>a custom format, as specified in {@link SimpleDateFormat}</li>
  * </ul></p>
- * <p>Iso formats don't display milliseconds and use a space separator between date and time.</p>
  * <p><pre>
  * Example of formatting the "current" date:
  *  $date                         -> Oct 19, 2003 9:54:50 PM
@@ -53,7 +54,9 @@ import org.apache.velocity.tools.config.DefaultKey;
  *  $date.full_date               -> Sunday, October 19, 2003
  *  $date.get('default','short')  -> Oct 19, 2003 9:54 PM
  *  $date.get('yyyy-M-d H:m:s')   -> 2003-10-19 21:54:50
- *  $date.iso                     -> 2003-10-19 21:54:50-07:00
+ *  $date.iso                     -> 2003-10-19T21:54:50-07:00
+ *  $date.iso_tz_time             -> 21:54:50-07:00
+ *  $date.intl_tz                 -> 2003-10-19 21:54:50 CET
  *
  * Example of formatting an arbitrary date:
  *  $myDate                        -> Tue Oct 07 03:14:50 PDT 2003
@@ -67,6 +70,9 @@ import org.apache.velocity.tools.config.DefaultKey;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
  * </pre></p>
+ *
+ * <p>Should you need to use several formats, you can either use explicit formats by means of the <code>toDate(format, date)</code> method,
+ * or you can declare several date tool instances with different formats.</p>
  *
  * <p>The methods of this tool are highly interconnected, and overriding
  * key methods provides an easy way to create subclasses that use
@@ -420,40 +426,17 @@ public class DateTool extends FormatConfig implements Serializable
      *
      * <p>
      * The specified format may be a standard style pattern ('full', 'long',
-     * 'medium', 'short', or 'default').
+     * 'medium', 'short', or 'default') or extended style pattern ('iso', 'iso_tz', 'intl', 'intl_tz').
      * </p>
      * <p>
      * You may also specify that you want only the date or time portion be
      * appending '_date' or '_time' respectively to the standard style pattern.
-     * (e.g. 'full_date' or 'long_time')
+     * (e.g. 'full_date', 'long_time', 'intl_date')
      * </p>
      * <p>
      * If the format fits neither of these patterns, then the output
      * will be formatted according to the symbols defined by
-     * {@link SimpleDateFormat}:
-     * <pre>
-     *   Symbol   Meaning                 Presentation        Example
-     *   ------   -------                 ------------        -------
-     *   G        era designator          (Text)              AD
-     *   y        year                    (Number)            1996
-     *   M        month in year           (Text & Number)     July & 07
-     *   d        day in month            (Number)            10
-     *   h        hour in am/pm (1~12)    (Number)            12
-     *   H        hour in day (0~23)      (Number)            0
-     *   m        minute in hour          (Number)            30
-     *   s        second in minute        (Number)            55
-     *   S        millisecond             (Number)            978
-     *   E        day in week             (Text)              Tuesday
-     *   D        day in year             (Number)            189
-     *   F        day of week in month    (Number)            2 (2nd Wed in July)
-     *   w        week in year            (Number)            27
-     *   W        week in month           (Number)            2
-     *   a        am/pm marker            (Text)              PM
-     *   k        hour in day (1~24)      (Number)            24
-     *   K        hour in am/pm (0~11)    (Number)            0
-     *   z        time zone               (Text)              Pacific Standard Time
-     *   '        escape for text         (Delimiter)
-     *   ''       single quote            (Literal)           '
+     * {@link SimpleDateFormat}.
      *
      *   Examples: "E, MMMM d" will result in "Tue, July 24"
      *             "EEE, M-d (H:m)" will result in "Tuesday, 7-24 (14:12)"
