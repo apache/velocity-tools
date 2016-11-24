@@ -93,8 +93,15 @@ public class DateToolTests
         DateTool dt = new DateTool();
         Date date = new Date();
         dt.setTimeZone(TimeZone.getTimeZone("CET"));
-        assertEquals("DateTool incorrectly formatted iso format",
-                new SimpleDateFormat("yyyy-MM-dd HH:mm:ssXXX").format(date),
-                dt.format("iso",date));
+        assertEquals("DateTool incorrectly formatted iso format", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(date), dt.format("iso", date));
+        assertEquals("DateTool incorrectly formatted iso format", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").format(date), dt.format("iso_tz",date));
+        assertEquals("DateTool incorrectly formatted iso format", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date), dt.format("intl",date));
+        assertEquals("DateTool incorrectly formatted iso format", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss zzz").format(date), dt.format("intl_tz",date));
+        assertEquals("DateTool incorrectly formatted iso format", new SimpleDateFormat("yyyy-MM-dd").format(date), dt.format("iso_date",date));
+        assertEquals("DateTool incorrectly formatted iso format", new SimpleDateFormat("yyyy-MM-dd").format(date), dt.format("intl_date",date));
+        assertEquals("DateTool incorrectly formatted iso format", new SimpleDateFormat("HH:mm:ss").format(date), dt.format("iso_time",date));
+        assertEquals("DateTool incorrectly formatted iso format", new SimpleDateFormat("HH:mm:ss").format(date), dt.format("intl_time",date));
+        assertEquals("DateTool incorrectly formatted iso format", new SimpleDateFormat("HH:mm:ssXXX").format(date), dt.format("iso_tz_time",date));
+        assertEquals("DateTool incorrectly formatted iso format", new SimpleDateFormat("HH:mm:ss zzz").format(date), dt.format("intl_tz_time",date));
     }
 }
