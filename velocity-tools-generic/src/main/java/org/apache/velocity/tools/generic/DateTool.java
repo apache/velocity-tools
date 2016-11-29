@@ -558,7 +558,7 @@ public class DateTool extends FormatConfig implements Serializable
      * @param locale the {@link Locale} to be used
      * @param timezone the {@link TimeZone} to be used
      * @return an instance of {@link DateFormat}
-     * @see {@link DateFormat#getDateFormat(int timeStyle, int dateStyle, Locale locale, TimeZone timezone)}
+     * @see {@link ConversionUtils#getDateFormat(String, Locale, TimeZone)}
      * @since VelocityTools 1.1
      */
     public DateFormat getDateFormat(String dateStyle, String timeStyle,

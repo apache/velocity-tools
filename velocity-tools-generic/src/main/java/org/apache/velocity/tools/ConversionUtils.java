@@ -19,13 +19,17 @@ package org.apache.velocity.tools;
  * under the License.
  */
 
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.FieldPosition;
 import java.text.NumberFormat;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
@@ -48,27 +52,15 @@ public class ConversionUtils
 {
     public static final ConversionUtils INSTANCE = new ConversionUtils();
 
+    /*
+     * Number formatting and parsing utilities
+     */
+
     private static final int STYLE_NUMBER       = 0;
     private static final int STYLE_CURRENCY     = 1;
     private static final int STYLE_PERCENT      = 2;
     //NOTE: '3' belongs to a non-public "scientific" style
     private static final int STYLE_INTEGER      = 4;
-
-    /* Java DateFormat standard constants extensions */
-    private static final int STYLE_ISO = 5;  /* ISO 8601 format */
-    private static final int STYLE_ISO_TZ = 6; /* ISO 8601 format with timezone offset */
-    private static final int STYLE_INTL = 7;  /* ISO 8601 human-readable format */
-    private static final int STYLE_INTL_TZ = 8; /* ISO 8601 human-readable format with timezone ID */
-
-    /* iso/intl date/time formats (locale-independant) */
-    private static DateFormat isoDateFormat = new SimpleDateFormat("yyyy-MM-dd");  /* ISO 8601 date */
-    private static DateFormat isoTimeFormat = new SimpleDateFormat("HH:mm:ss"); /* ISO 8601 time */
-    private static DateFormat isoTimestampFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); /* ISO 88601 timestamp */
-    private static DateFormat intlTimestampFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");   /* human-readable ISO-8601 timestamp */
-    private static DateFormat isoTimeTzFormat = new SimpleDateFormat("HH:mm:ssXXX"); /* ISO 8601 time with timezone offset */
-    private static DateFormat isoTimestampTzFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX"); /* ISO 88601 timestamp with timezone offset */
-    private static DateFormat intlTimeTzFormat = new SimpleDateFormat("HH:mm:ss zzz");   /* human-readable ISO-8601 time with timezone Olson ID */
-    private static DateFormat intlTimestampTzFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss zzz");   /* human-readable ISO-8601 timestamp with timezone Olson ID */
 
     // cache custom formats
     private static ConcurrentMap<String,NumberFormat> customFormatsCache = new ConcurrentHashMap<String,NumberFormat>();
@@ -312,8 +304,71 @@ public class ConversionUtils
         return toNumber(String.valueOf(value), format, locale);
     }
 
+    /*
+     * Date/time formatting & parsing utilities
+     */
 
-    // -------------------------- DateFormat creation methods --------------
+    /* Java DateFormat standard constants extensions */
+    private static final int STYLE_ISO = 5;  /* ISO 8601 format */
+    private static final int STYLE_ISO_TZ = 6; /* ISO 8601 format with timezone offset */
+    private static final int STYLE_INTL = 7;  /* ISO 8601 human-readable format */
+    private static final int STYLE_INTL_TZ = 8; /* ISO 8601 human-readable format with timezone ID */
+
+    /* iso/intl date/time formats (locale-independant) */
+    private static DateFormat isoDateFormat = new SimpleDateFormat("yyyy-MM-dd");  /* ISO 8601 date */
+    private static DateFormat isoTimeFormat = new SimpleDateFormat("HH:mm:ss"); /* ISO 8601 time */
+    private static DateFormat isoTimestampFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); /* ISO 88601 timestamp */
+    private static DateFormat intlTimestampFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");   /* human-readable ISO-8601 timestamp */
+    private static DateFormat isoTimeTzFormat = new SimpleDateFormat("HH:mm:ssXXX"); /* ISO 8601 time with timezone offset */
+    private static DateFormat isoTimestampTzFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX"); /* ISO 88601 timestamp with timezone offset */
+    private static DateFormat intlTimeTzFormat_base = new SimpleDateFormat("HH:mm:ss");   /* human-readable ISO-8601 time with timezone ID */
+    private static DateFormat intlTimestampTzFormat_base = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");   /* human-readable ISO-8601 timestamp with timezone ID */
+
+    /* a DateFormat that appends a space and the time zone ID to the wrapped DateFormat - needed because
+    * there is no letter format for time zone id in SimpleDateFormat. */
+    private static class TimeZoneIDSuffixFormat extends DateFormat
+    {
+        TimeZoneIDSuffixFormat(DateFormat wrappedFormat)
+        {
+            this.wrappedFormat = wrappedFormat;
+            this.calendar = wrappedFormat.getCalendar();
+            this.numberFormat = wrappedFormat.getNumberFormat();
+        }
+
+        @Override
+        public StringBuffer format(Date date, StringBuffer toAppendTo, FieldPosition fieldPosition)
+        {
+            StringBuffer sb = wrappedFormat.format(date, toAppendTo, fieldPosition);
+            sb.append(' ');
+            sb.append(getTimeZone().getID());
+            return sb;
+        }
+
+        /* This format is only here for formatting purposes... */
+        @Override
+        public Date parse(String source, ParsePosition pos)
+        {
+            throw new UnsupportedOperationException("intl_tz date/time formats cannot be used to parse dates");
+        }
+
+        @Override
+        public void setCalendar(Calendar newCalendar)
+        {
+            super.setCalendar(newCalendar);
+            wrappedFormat.setCalendar(newCalendar);
+        }
+
+        @Override
+        public void setNumberFormat(NumberFormat newNumberFormat)
+        {
+            super.setNumberFormat(newNumberFormat);
+            wrappedFormat.setNumberFormat(newNumberFormat);
+        }
+
+        /* no need to override setCalendar, since the calendar is shared between us and the wrapped format */
+
+        private DateFormat wrappedFormat;
+    }
 
     /**
      * Returns a {@link DateFormat} instance for the specified
@@ -414,7 +469,7 @@ public class ConversionUtils
             if (dateStyle < 0 && timeStyle < 0)
             {
                 // no style was specified, use default instance
-                df = DateFormat.getInstance();
+                df = DateFormat.getDateInstance();
             }
             else if (timeStyle < 0)
             {
@@ -422,14 +477,13 @@ public class ConversionUtils
                 switch (dateStyle)
                 {
                     case STYLE_ISO:
-                    case STYLE_ISO_TZ: /* isgnore TZ */
+                    case STYLE_ISO_TZ: /* ignore TZ */
                     case STYLE_INTL:
                     case STYLE_INTL_TZ:  /* ignore TZ */
-                        df = isoDateFormat;
+                        df = (DateFormat)isoDateFormat.clone();
                         break;
                     default:
                         df = DateFormat.getDateInstance(dateStyle, locale);
-                        df.setTimeZone(timezone);
                         break;
                 }
             }
@@ -440,19 +494,16 @@ public class ConversionUtils
                 {
                     case STYLE_ISO:
                     case STYLE_INTL:
-                        df = isoTimeFormat;
+                        df = (DateFormat)isoTimeFormat.clone();
                         break;
                     case STYLE_ISO_TZ:
                         df = (DateFormat)isoTimeTzFormat.clone();
-                        df.setTimeZone(timezone);
                         break;
                     case STYLE_INTL_TZ:
-                        df = (DateFormat)intlTimeTzFormat.clone();
-                        df.setTimeZone(timezone);
+                        df = new TimeZoneIDSuffixFormat((DateFormat)intlTimeTzFormat_base.clone());
                         break;
                     default:
                         df = DateFormat.getTimeInstance(timeStyle, locale);
-                        df.setTimeZone(timezone);
                         break;
                 }
             }
@@ -465,25 +516,24 @@ public class ConversionUtils
                         break;
                     case STYLE_ISO_TZ:
                         df = (DateFormat)isoTimestampTzFormat.clone();
-                        df.setTimeZone(timezone);
                         break;
                     case STYLE_INTL:
-                        df = intlTimestampFormat;
+                        df = (DateFormat)intlTimestampFormat.clone();
                         break;
                     case STYLE_INTL_TZ:
-                        df = (DateFormat) intlTimestampTzFormat.clone();
-                        df.setTimeZone(timezone);
+                        df = new TimeZoneIDSuffixFormat((DateFormat)intlTimestampTzFormat_base.clone());
                         break;
                     default:
                         df = DateFormat.getDateTimeInstance(dateStyle, timeStyle, locale);
-                        df.setTimeZone(timezone);
                         break;
                 }
             }
+            df.setTimeZone(timezone);
             return df;
         }
         catch (Exception suppressed)
         {
+            LoggerFactory.getLogger(ConversionUtils.class).error("could not get date/time format", suppressed);
             // let it go...
             return null;
         }
@@ -792,5 +842,4 @@ public class ConversionUtils
         catch (Exception e) {}
         return null;
     }
-
 }
