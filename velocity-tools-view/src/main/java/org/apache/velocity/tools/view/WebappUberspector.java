@@ -66,6 +66,10 @@ public class WebappUberspector extends AbstractChainableUberspector
      */
     public VelPropertyGet getPropertyGet(Object obj, String identifier, Info i)
     {
+        if (obj == null)
+        {
+            return null;
+        }
         VelPropertyGet ret = super.getPropertyGet(obj,identifier,i);
 
         if(ret == null)
@@ -106,6 +110,10 @@ public class WebappUberspector extends AbstractChainableUberspector
     public VelPropertySet getPropertySet(Object obj, String identifier,
                                          Object arg, Info i)
     {
+        if (obj == null)
+        {
+            return null;
+        }
         VelPropertySet ret = super.getPropertySet(obj,identifier,arg,i);
 
         if(ret == null) {
