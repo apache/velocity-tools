@@ -108,7 +108,7 @@ public class DateTool extends FormatConfig implements Serializable
         {
             setTimeZone(TimeZone.getTimeZone(tzId));
         }
-    } 
+    }
 
     protected void setTimeZone(TimeZone timezone)
     {
@@ -558,7 +558,7 @@ public class DateTool extends FormatConfig implements Serializable
      * @param locale the {@link Locale} to be used
      * @param timezone the {@link TimeZone} to be used
      * @return an instance of {@link DateFormat}
-     * @see {@link ConversionUtils#getDateFormat(String, Locale, TimeZone)}
+     * @see {@link ConversionUtils#getDateFormat(int, int, Locale, TimeZone)}
      * @since VelocityTools 1.1
      */
     public DateFormat getDateFormat(String dateStyle, String timeStyle,
