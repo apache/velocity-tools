@@ -260,7 +260,7 @@ public class VelocityViewServlet extends HttpServlet
         // use <Connector ... URIEncoding="UTF-8">)
         try
         {
-            request.setCharacterEncoding(getVelocityProperty("input.encoding", "UTF-8"));
+            request.setCharacterEncoding(getVelocityProperty(RuntimeConstants.INPUT_ENCODING, RuntimeConstants.ENCODING_DEFAULT));
         }
         catch (UnsupportedEncodingException uee)
         {
