@@ -1,8 +1,8 @@
 package org.apache.velocity.tools.view;
 
 import org.apache.velocity.exception.VelocityException;
-import org.apache.velocity.shaded.commons.lang3.tuple.ImmutablePair;
-import org.apache.velocity.shaded.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.velocity.tools.ClassUtils;
 
 import org.slf4j.Logger;

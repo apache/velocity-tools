@@ -23,11 +23,11 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.velocity.shaded.commons.collections.ExtendedProperties;
+import org.apache.velocity.util.ExtProperties;
 
 /**
  * <p> This reads in configuration info formatted as a property
- * file using {@link ExtendedProperties} from Commons-Collections.</p>
+ * file using {@link org.apache.velocity.util.ExtProperties}.</p>
  * <p>Example usage:
  * <pre>
  * FactoryConfiguration cfg = new PropertiesFactoryConfiguration();
@@ -87,14 +87,14 @@ public class PropertiesFactoryConfiguration extends FileFactoryConfiguration
      */
     public void read(InputStream input) throws IOException
     {
-        ExtendedProperties props = new ExtendedProperties();
+        ExtProperties props = new ExtProperties();
         props.load(input);
 
         // all factory settings should be prefixed with "tools"
         read(props.subset("tools"));
     }
 
-    public void read(ExtendedProperties factory)
+    public void read(ExtProperties factory)
     {
         // get the global properties
         readProperties(factory, this);
@@ -107,10 +107,10 @@ public class PropertiesFactoryConfiguration extends FileFactoryConfiguration
     }
 
 
-    protected void readProperties(ExtendedProperties configProps,
+    protected void readProperties(ExtProperties configProps,
                                   Configuration config)
     {
-        ExtendedProperties properties = configProps.subset("property");
+        ExtProperties properties = configProps.subset("property");
         if (properties != null)
         {
             for (Iterator i = properties.getKeys(); i.hasNext(); )
@@ -118,7 +118,7 @@ public class PropertiesFactoryConfiguration extends FileFactoryConfiguration
                 String name = (String)i.next();
                 String value = properties.getString(name);
 
-                ExtendedProperties propProps = properties.subset(name);
+                ExtProperties propProps = properties.subset(name);
                 if (propProps.size() == 1)
                 {
                     // then set this as a 'simple' property
@@ -138,7 +138,7 @@ public class PropertiesFactoryConfiguration extends FileFactoryConfiguration
         }
     }
 
-    protected void readToolboxes(ExtendedProperties factory)
+    protected void readToolboxes(ExtProperties factory)
     {
         String[] scopes = factory.getStringArray("toolbox");
         for (String scope : scopes)
@@ -147,13 +147,13 @@ public class PropertiesFactoryConfiguration extends FileFactoryConfiguration
             toolbox.setScope(scope);
             addToolbox(toolbox);
 
-            ExtendedProperties toolboxProps = factory.subset(scope);
+            ExtProperties toolboxProps = factory.subset(scope);
             readTools(toolboxProps, toolbox);
             readProperties(toolboxProps, toolbox);
         }
     }
 
-    protected void readTools(ExtendedProperties tools,
+    protected void readTools(ExtProperties tools,
                              ToolboxConfiguration toolbox)
     {
         for (Iterator i = tools.getKeys(); i.hasNext(); )
@@ -173,7 +173,7 @@ public class PropertiesFactoryConfiguration extends FileFactoryConfiguration
             toolbox.addTool(tool);
 
             // get tool properties prefixed by 'property'
-            ExtendedProperties toolProps = tools.subset(key);
+            ExtProperties toolProps = tools.subset(key);
             readProperties(toolProps, tool);
 
             // ok, get tool properties that aren't prefixed by 'property'
@@ -192,7 +192,7 @@ public class PropertiesFactoryConfiguration extends FileFactoryConfiguration
         }
     }
 
-    protected void readData(ExtendedProperties dataset)
+    protected void readData(ExtProperties dataset)
     {
         if (dataset != null)
         {
@@ -211,7 +211,7 @@ public class PropertiesFactoryConfiguration extends FileFactoryConfiguration
                 data.setValue(dataset.getString(key));
 
                 // get/set the type/converter properties
-                ExtendedProperties props = dataset.subset(key);
+                ExtProperties props = dataset.subset(key);
                 setProperties(props, data);
 
                 addData(data);
@@ -219,7 +219,7 @@ public class PropertiesFactoryConfiguration extends FileFactoryConfiguration
         }
     }
 
-    protected void setProperties(ExtendedProperties props, Data data)
+    protected void setProperties(ExtProperties props, Data data)
     {
         // let's just set/convert anything we can
         // this could be simplified to just check for type/class/converter
