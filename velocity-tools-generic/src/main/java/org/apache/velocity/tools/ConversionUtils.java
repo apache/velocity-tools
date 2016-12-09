@@ -210,7 +210,6 @@ public class ConversionUtils
      * or {@link Date}.  If it can't do that, it will get the string value and have 
      * {@link #toNumber(String,String,Locale)} try to parse it using the
      * default Locale and format.
-     
      * @param obj - the object to convert
      */
     public static Number toNumber(Object obj)
@@ -317,12 +316,12 @@ public class ConversionUtils
     /* iso/intl date/time formats (locale-independant) */
     private static DateFormat isoDateFormat = new SimpleDateFormat("yyyy-MM-dd");  /* ISO 8601 date */
     private static DateFormat isoTimeFormat = new SimpleDateFormat("HH:mm:ss"); /* ISO 8601 time */
-    private static DateFormat isoTimestampFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); /* ISO 88601 timestamp */
-    private static DateFormat intlTimestampFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");   /* human-readable ISO-8601 timestamp */
+    private static DateFormat isoTimestampFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); /* ISO 8601 timestamp */
+    private static DateFormat intlTimestampFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");   /* human-readable ISO 8601 timestamp */
     private static DateFormat isoTimeTzFormat = new SimpleDateFormat("HH:mm:ssXXX"); /* ISO 8601 time with timezone offset */
-    private static DateFormat isoTimestampTzFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX"); /* ISO 88601 timestamp with timezone offset */
-    private static DateFormat intlTimeTzFormat_base = new SimpleDateFormat("HH:mm:ss");   /* human-readable ISO-8601 time with timezone ID */
-    private static DateFormat intlTimestampTzFormat_base = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");   /* human-readable ISO-8601 timestamp with timezone ID */
+    private static DateFormat isoTimestampTzFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX"); /* ISO 8601 timestamp with timezone offset */
+    private static DateFormat intlTimeTzFormat_base = new SimpleDateFormat("HH:mm:ss");   /* human-readable ISO 8601 time with timezone ID */
+    private static DateFormat intlTimestampTzFormat_base = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");   /* human-readable ISO 8601 timestamp with timezone ID */
 
     /* a DateFormat that appends a space and the time zone ID to the wrapped DateFormat - needed because
     * there is no letter format for time zone id in SimpleDateFormat. */
@@ -692,7 +691,7 @@ public class ConversionUtils
      * String.valueOf(Object), especially with nulls, Arrays and Collections.
      * Null returns null, Arrays and Collections return their first value,
      * or null if they have no values.
-     * 
+     *
      * @param value the object to be turned into a String
      * @return the string value of the object or null if the value is null
      *         or it is an array whose first value is null
@@ -738,7 +737,7 @@ public class ConversionUtils
 
     /**
      * Converts any Object to a boolean using {@link #toString(Object)}
-     * and {@link Boolean#valueOf(String)}. 
+     * and {@link Boolean#valueOf(String)}.
      *
      * @param value the object to be converted
      * @return a {@link Boolean} object for the specified value or
