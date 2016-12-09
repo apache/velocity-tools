@@ -48,7 +48,7 @@
         Switched engine dependency to 2.0
       </action>      
       <action type="add" dev="cbrisson">
-        Reflect Velocity Engine dependency shading of commons-lang and commons-collections
+          Replace all uses of commons-collections ExtendedProperties class by org.apache.velocity.util.ExtProperties
       </action>
       <action type="add" dev="cbrisson">
         Removed deprecated class org.apache.velocity.tools.generic.log.LogSystemCommonsLog

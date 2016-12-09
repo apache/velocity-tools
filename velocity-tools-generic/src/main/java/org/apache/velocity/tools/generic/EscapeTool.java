@@ -22,7 +22,7 @@ package org.apache.velocity.tools.generic;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import org.apache.velocity.shaded.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;

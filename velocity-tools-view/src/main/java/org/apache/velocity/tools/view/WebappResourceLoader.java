@@ -26,7 +26,7 @@ import java.util.HashMap;
 import javax.servlet.ServletContext;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.Resource;
-import org.apache.velocity.runtime.resource.loader.ResourceLoader2;
+import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 import org.apache.velocity.util.ExtProperties;
 
 /**
@@ -52,7 +52,7 @@ import org.apache.velocity.util.ExtProperties;
  * @author <a href="mailto:claude@savoirweb.com">Claude Brisson</a>
  * @version $Id$  */
 
-public class WebappResourceLoader extends ResourceLoader2
+public class WebappResourceLoader extends ResourceLoader
 {
     /** The root paths for templates (relative to webapp's root). */
     protected String[] paths = null;
