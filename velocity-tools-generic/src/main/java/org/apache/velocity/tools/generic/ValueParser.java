@@ -23,12 +23,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Locale;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.Collection;
 
+import org.apache.velocity.tools.ConversionUtils;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
+import org.apache.velocity.tools.config.SkipSetters;
 
 /**
  * <p>Utility class for easy parsing of String values held in a Map.</p>
@@ -48,8 +49,13 @@ import org.apache.velocity.tools.config.InvalidScope;
 
 @DefaultKey("parser")
 @InvalidScope(Scope.SESSION) /* session scope forbidden: Object may not be Serializable */
-public class ValueParser extends ConversionTool implements Map<String,Object>
+@SkipSetters
+public class ValueParser extends FormatConfig implements Map<String,Object>
 {
+    public static final String STRINGS_DELIMITER_FORMAT_KEY = "stringsDelimiter";
+    public static final String DEFAULT_STRINGS_DELIMITER = ",";
+    private String stringsDelimiter = DEFAULT_STRINGS_DELIMITER;
+
     private Map<String,Object> source = null;
 
     private boolean allowSubkeys = true;
@@ -139,6 +145,17 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
     }
 
     /**
+     * Sets the delimiter used for separating values in a single String value.
+     * The default string delimiter is a comma.
+     *
+     * @see #getValues(String)
+     */
+    protected final void setStringsDelimiter(String stringsDelimiter)
+    {
+        this.stringsDelimiter = stringsDelimiter;
+    }
+
+    /**
      * Does the actual configuration. This is protected, so
      * subclasses may share the same ValueParser and call configure
      * at any time, while preventing templates from doing so when 
@@ -148,6 +165,12 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
     protected void configure(ValueParser values)
     {
         super.configure(values);
+
+        String delimiter = values.getString(STRINGS_DELIMITER_FORMAT_KEY);
+        if (delimiter != null)
+        {
+            setStringsDelimiter(delimiter);
+        }
 
         Boolean allow = values.getBoolean(ALLOWSUBKEYS_KEY);
         if(allow != null)
@@ -228,6 +251,30 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
         return value;
     }
 
+    protected String[] parseStringList(String value)
+    {
+        String[] values;
+        if (value.indexOf(stringsDelimiter) < 0)
+        {
+            values = new String[] { value };
+        }
+        else
+        {
+            values = value.split(stringsDelimiter);
+        }
+
+        return values;
+    }
+
+    /**
+     * <p>Returns an array of values. If the internal value is a string, it is split using the ',' delimitor (if you need
+     * to split strings around another separator, use $collection.split() with the properly configured separator).</p>
+     * <p>If the internal value is not an array or is a string without any ',', a singletin array is returned.</p>
+     * @param key the desired parameter's key
+     * @return array of values, or null of the key has not been found.
+     *         specified alternate Object if there is no matching
+     *         parameter
+     */
     public Object[] getValues(String key)
     {
         Object value = getValue(key);
@@ -254,7 +301,7 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
      */
     public String getString(String key)
     {
-        return toString(getValue(key));
+        return ConversionUtils.toString(getValue(key));
     }
 
     /**
@@ -277,7 +324,7 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
      */
     public Boolean getBoolean(String key)
     {
-        return toBoolean(getValue(key));
+        return ConversionUtils.toBoolean(getValue(key));
     }
 
     /**
@@ -311,7 +358,13 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
      */
     public Integer getInteger(String key)
     {
-        return toInteger(getValue(key));
+        Object value = getValue(key);
+        if (value == null)
+        {
+            return null;
+        }
+        Number number = ConversionUtils.toNumber(value, getFormat(), getLocale());
+        return number == null ? null : number.intValue();
     }
 
     /**
@@ -337,7 +390,13 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
      */
     public Double getDouble(String key)
     {
-        return toDouble(getValue(key));
+        Object value = getValue(key);
+        if (value == null)
+        {
+            return null;
+        }
+        Number number = ConversionUtils.toNumber(value, getFormat(), getLocale());
+        return number == null ? null : number.doubleValue();
     }
 
     /**
@@ -363,7 +422,7 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
      */
     public Number getNumber(String key)
     {
-        return toNumber(getValue(key));
+        return ConversionUtils.toNumber(getValue(key), getFormat(), getLocale());
     }
 
     /**
@@ -433,7 +492,17 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
      */
     public String[] getStrings(String key)
     {
-        return toStrings(getValues(key));
+        Object[] array = getValues(key);
+        if (array == null || String.class.isAssignableFrom(array.getClass().getComponentType()))
+        {
+            return (String[])array;
+        }
+        String[] ret = new String[array.length];
+        for (int i = 0; i < array.length; ++i)
+        {
+            ret[i] = ConversionUtils.toString(array[i]);
+        }
+        return ret;
     }
 
 
@@ -443,7 +512,17 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
      */
     public Boolean[] getBooleans(String key)
     {
-        return toBooleans(getValues(key));
+        Object[] array = getValues(key);
+        if (array == null || Boolean.class.isAssignableFrom(array.getClass().getComponentType()))
+        {
+            return (Boolean[])array;
+        }
+        Boolean[] ret = new Boolean[array.length];
+        for (int i = 0; i < array.length; ++i)
+        {
+            ret[i] = ConversionUtils.toBoolean(array[i]);
+        }
+        return ret;
     }
 
     /**
@@ -453,7 +532,17 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
      */
     public Number[] getNumbers(String key)
     {
-        return toNumbers(getValues(key));
+        Object[] array = getValues(key);
+        if (array == null || Number.class.isAssignableFrom(array.getClass().getComponentType()))
+        {
+            return (Number[])array;
+        }
+        Number[] ret = new Number[array.length];
+        for (int i = 0; i < array.length; ++i)
+        {
+            ret[i] = ConversionUtils.toNumber(array[i], getFormat(), getLocale());
+        }
+        return ret;
     }
 
     /**
@@ -463,7 +552,17 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
      */
     public int[] getInts(String key)
     {
-        return toInts(getValues(key));
+        Object[] array = getValues(key);
+        if (array == null)
+        {
+            return null;
+        }
+        int[] ret = new int[array.length];
+        for (int i = 0; i < array.length; ++i)
+        {
+            ret[i] = ConversionUtils.toNumber(array[i], getFormat(), getLocale()).intValue();
+        }
+        return ret;
     }
 
     /**
@@ -473,7 +572,17 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
      */
     public double[] getDoubles(String key)
     {
-        return toDoubles(getValues(key));
+        Object[] array = getValues(key);
+        if (array == null)
+        {
+            return null;
+        }
+        double[] ret = new double[array.length];
+        for (int i = 0; i < array.length; ++i)
+        {
+            ret[i] = ConversionUtils.toNumber(array[i], getFormat(), getLocale()).doubleValue();
+        }
+        return ret;
     }
 
     /**
@@ -483,7 +592,17 @@ public class ValueParser extends ConversionTool implements Map<String,Object>
      */
     public Locale[] getLocales(String key)
     {
-        return toLocales(getValues(key));
+        Object[] array = getValues(key);
+        if (array == null || Locale.class.isAssignableFrom(array.getClass().getComponentType()))
+        {
+            return (Locale[])array;
+        }
+        Locale[] ret = new Locale[array.length];
+        for (int i = 0; i < array.length; ++i)
+        {
+            ret[i] = ConversionUtils.toLocale(String.valueOf(array[i]));
+        }
+        return ret;
     }
 
     /**
