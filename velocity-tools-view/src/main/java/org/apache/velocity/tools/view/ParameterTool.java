@@ -147,6 +147,7 @@ public class ParameterTool extends ValueParser
         }
         else if (strings.length == 1)
         {
+
             return parseStringList(strings[0]);
         }
         return strings;
