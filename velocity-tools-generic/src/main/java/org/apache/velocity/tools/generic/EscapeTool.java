@@ -21,6 +21,7 @@ package org.apache.velocity.tools.generic;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.net.URLDecoder;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.velocity.tools.Scope;
@@ -53,7 +54,8 @@ import org.apache.velocity.tools.config.ValidScope;
  *  $esc.sql($sql)               -> McHale''s Navy
  *
  *  $url                         -> hello here & there
- *  $esc.url                     -> hello+here+%26+there
+ *  $esc.url($url)               -> hello+here+%26+there
+ *  $esc.unurl($esc.url($url))   -> hello here & there
  *
  *  $esc.dollar                  -> $
  *  $esc.d                       -> $
@@ -328,6 +330,27 @@ public class EscapeTool extends SafeConfig
         }
         try {
             return URLEncoder.encode(String.valueOf(string),"UTF-8");
+        } catch(UnsupportedEncodingException uee) {
+            return null;
+        }
+    }
+
+    /**
+     * Unscape the characters in a <code>String</code> encoded as an HTTP parameter value.
+     * <br/>
+     * Uses UTF-8 as default character encoding.
+     * @param string the string to unescape, may be null
+     * @return a new unescaped <code>String</code>, <code>null</code> if null string input
+     *
+     * @see java.net.URLDecoder#decode(String,String).
+     * @since VelocityTools 3.0
+     */
+    public String unurl(Object string) {
+        if (string == null) {
+            return null;
+        }
+        try {
+            return URLDecoder.decode(String.valueOf(string),"UTF-8");
         } catch(UnsupportedEncodingException uee) {
             return null;
         }
