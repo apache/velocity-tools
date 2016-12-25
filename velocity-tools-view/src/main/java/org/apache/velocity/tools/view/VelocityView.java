@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
+import java.util.Properties;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -47,7 +48,6 @@ import org.apache.velocity.tools.config.ConfigurationCleaner;
 import org.apache.velocity.tools.config.ConfigurationUtils;
 import org.apache.velocity.tools.config.FactoryConfiguration;
 import org.apache.velocity.tools.view.ViewToolContext;
-import org.apache.velocity.util.ExtProperties;
 import org.apache.velocity.util.SimplePool;
 
 /**
@@ -283,7 +283,7 @@ public class VelocityView extends ViewToolManager
     /**
      * Initializes the Velocity runtime, first calling
      * loadConfiguration(JeeConfig) to get a
-     * org.apache.velocity.util.ExtProperties
+     * java.util.Properties
      * of configuration information
      * and then calling velocityEngine.init().  Override this
      * to do anything to the environment before the
@@ -318,8 +318,8 @@ public class VelocityView extends ViewToolManager
     protected void configure(final JeeConfig config, final VelocityEngine velocity)
     {
         // first get the default properties, and bail if we don't find them
-        ExtProperties defaultProperties = getProperties(DEFAULT_PROPERTIES_PATH, true);
-        velocity.setExtendedProperties(defaultProperties);
+        Properties defaultProperties = getProperties(DEFAULT_PROPERTIES_PATH, true);
+        velocity.setProperties(defaultProperties);
 
         // check for application-wide user props in the context init params
         String appPropsPath = servletContext.getInitParameter(PROPERTIES_KEY);
@@ -357,7 +357,7 @@ public class VelocityView extends ViewToolManager
         // this will throw an exception if require is true and there
         // are no properties at the path.  if require is false, this
         // will return null when there's no properties at the path
-        ExtProperties props = getProperties(path, require);
+        Properties props = getProperties(path, require);
         if (props == null)
         {
             return false;
@@ -366,7 +366,7 @@ public class VelocityView extends ViewToolManager
         getLog().debug("Configuring Velocity with properties at: {}", path);
 
         // these props will override those already set
-        velocity.setExtendedProperties(props);
+        velocity.setProperties(props);
         // notify that new props were set
         return true;
     }
@@ -496,12 +496,12 @@ public class VelocityView extends ViewToolManager
     }
 
 
-    protected ExtProperties getProperties(String path)
+    protected Properties getProperties(String path)
     {
         return getProperties(path, false);
     }
 
-    protected ExtProperties getProperties(String path, boolean required)
+    protected Properties getProperties(String path, boolean required)
     {
         if (getLog().isTraceEnabled())
         {
@@ -514,7 +514,7 @@ public class VelocityView extends ViewToolManager
             return null;
         }
 
-        ExtProperties properties = new ExtProperties();
+        Properties properties = new Properties();
         try
         {
             properties.load(inputStream);
