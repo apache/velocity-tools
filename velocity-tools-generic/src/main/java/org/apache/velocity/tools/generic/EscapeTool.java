@@ -372,7 +372,7 @@ public class EscapeTool extends SafeConfig
         {
             return null;
         }
-        return StringEscapeUtils.escapeXml(String.valueOf(string));
+        return StringEscapeUtils.escapeXml10(String.valueOf(string));
     }
 
     /**
