@@ -93,6 +93,7 @@ import javax.servlet.http.HttpServletRequest;
  * @since VelocityTools 2.0
  * @version $Revision$ $Date$
  */
+
 @DefaultKey("browser")
 @InvalidScope(Scope.APPLICATION)
 public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io.Serializable

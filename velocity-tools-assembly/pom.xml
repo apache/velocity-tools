@@ -73,13 +73,6 @@
         </dependency>
         <dependency>
             <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity-tools-xml</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-tools-examples-simple</artifactId>
             <version>${project.version}</version>
             <type>war</type>

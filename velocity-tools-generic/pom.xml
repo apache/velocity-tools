@@ -30,6 +30,38 @@
   <artifactId>velocity-tools-generic</artifactId>
   <name>Apache Velocity Tools - Generic tools</name>
   <description>Generic tools that can be used in any context.</description>
+  <build>
+      <plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-shade-plugin</artifactId>
+              <version>2.4.3</version>
+              <executions>
+                  <execution>
+                      <id>shade</id>
+                      <phase>package</phase>
+                      <goals>
+                          <goal>shade</goal>
+                      </goals>
+                      <configuration>
+                          <artifactSet>
+                              <includes>
+                                  <include>org.json</include>
+                              </includes>
+                          </artifactSet>
+                          <relocations>
+                              <relocation>
+                                  <pattern>org.json</pattern>
+                                  <shadedPattern>org.apache.velocity.tools.shaded.org.json</shadedPattern>
+                              </relocation>
+                          </relocations>
+                          <minimizeJar>true</minimizeJar>
+                      </configuration>
+                  </execution>
+              </executions>
+          </plugin>
+      </plugins>
+  </build>
   <dependencies>
       <dependency>
           <groupId>org.apache.velocity</groupId>
@@ -62,6 +94,11 @@
           <artifactId>slf4j-simple</artifactId>
           <version>${slf4j.version}</version>
           <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.json</groupId>
+          <artifactId>json</artifactId>
+          <version>20160810</version>
       </dependency>
   </dependencies>
 </project>

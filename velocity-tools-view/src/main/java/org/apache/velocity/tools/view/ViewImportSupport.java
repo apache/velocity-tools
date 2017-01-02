@@ -19,11 +19,9 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringReader;
@@ -31,41 +29,55 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Locale;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-import org.apache.velocity.tools.generic.SafeConfig;
+import org.apache.velocity.tools.generic.ImportSupport;
+import org.apache.velocity.tools.generic.ValueParser;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * <p>Provides methods to import arbitrary local or remote resources as strings.</p>
  * <p>Based on ImportSupport from the JSTL taglib by Shawn Bayern</p>
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @since VelocityTools 2.0
+ * @author Claude Brisson
+ * @since VelocityTools 3.0
  * @version $Revision$ $Date$
  */
-public abstract class ImportSupport extends SafeConfig
+public class ViewImportSupport extends ImportSupport
 {
-    protected static final String VALID_SCHEME_CHARS =
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+.-";
-
-    /** Default character encoding for response. */
-    protected static final String DEFAULT_ENCODING = "UTF-8";
-
     protected ServletContext application;
     protected HttpServletRequest request;
     protected HttpServletResponse response;
 
-
     // --------------------------------------- Setup Methods -------------
+
+    protected void configure(ValueParser values)
+    {
+        super.configure(values);
+        HttpServletRequest request = (HttpServletRequest)values.get(ViewContext.REQUEST);
+        if (request != null)
+        {
+            setRequest(request);
+        }
+        HttpServletResponse response = (HttpServletResponse)values.get(ViewContext.RESPONSE);
+        if (response != null)
+        {
+            setResponse(response);
+        }
+        ServletContext servletContext = (ServletContext)values.get(ViewContext.SERVLET_CONTEXT_KEY);
+        if (servletContext != null)
+        {
+            setServletContext(servletContext);
+        }
+    }
 
     /**
      * Sets the current {@link HttpServletRequest}. This is required
@@ -120,8 +132,8 @@ public abstract class ImportSupport extends SafeConfig
      * methods handle the common.core logic of loading either a URL or a local
      * resource.
      *
-     * We consider the 'natural' form of absolute URLs to be Readers and
-     * relative URLs to be Strings.  Thus, to avoid doing extra work,
+     * We consider the 'natural' form of remote URLs to be Readers and
+     * local URLs to be Strings.  Thus, to avoid doing extra work,
      * acquireString() and acquireReader() delegate to one another as
      * appropriate.  (Perhaps I could have spelled things out more clearly,
      * but I thought this implementation was instructive, not to mention
@@ -130,101 +142,98 @@ public abstract class ImportSupport extends SafeConfig
 
     /**
      *
-     * @param url the URL resource to return as string
+     * @param url the remote URL resource to return as string
+     * @return the URL resource as string
+     * @throws IOException
+     */
+    protected String acquireRemoteURLString(String url) throws IOException
+    {
+        if (isSafeMode())
+        {
+            getLog().warn("safe mode prevented reading resource from remote url: {} ", url);
+            return null;
+        }
+        return super.acquireRemoteURLString(url);
+    }
+
+    /**
+     *
+     * @param url the local URL resource to return as string
      * @return the URL resource as string
      * @throws IOException
      * @throws java.lang.Exception
      */
-    protected String acquireString(String url) throws IOException, Exception {
-        // Record whether our URL is absolute or relative
-        if (isAbsoluteUrl(url))
+    protected String acquireLocalURLString(String url) throws IOException
+    {
+        // URL is local, so we must be an HTTP request
+        if (!(request instanceof HttpServletRequest
+            && response instanceof HttpServletResponse))
         {
-            // for absolute URLs, delegate to our peer
-            BufferedReader r = null;
-            try
-            {
-                r = new BufferedReader(acquireReader(url));
-                StringBuilder sb = new StringBuilder();
-                int i;
-                // under JIT, testing seems to show this simple loop is as fast
-                // as any of the alternatives
-                while ((i = r.read()) != -1)
-                {
-                    sb.append((char)i);
-                }
-                return sb.toString();
-            }
-            finally
-            {
-                if(r != null)
-                {
-                    try
-                    {
-                        r.close();
-                    }
-                    catch (IOException ioe)
-                    {
-                        getLog().error("Could not close reader.", ioe);
-                    }
-                }
-	        }
+            throw new IOException("Local import from non-HTTP request not allowed");
         }
-        else // handle relative URLs ourselves
+
+        // retrieve an appropriate ServletContext
+        // normalize the URL if we have an HttpServletRequest
+        if (!url.startsWith("/"))
         {
-            // URL is relative, so we must be an HTTP request
-            if (!(request instanceof HttpServletRequest
-                  && response instanceof HttpServletResponse))
-            {
-                throw new Exception("Relative import from non-HTTP request not allowed");
-            }
-
-            // retrieve an appropriate ServletContext
-            // normalize the URL if we have an HttpServletRequest
-            if (!url.startsWith("/"))
-            {
-                String sp = ((HttpServletRequest)request).getServletPath();
-                url = sp.substring(0, sp.lastIndexOf('/')) + '/' + url;
-            }
-
-            // strip the session id from the url
-            url = stripSession(url);
-
-            // from this context, get a dispatcher
-            RequestDispatcher rd = application.getRequestDispatcher(url);
-            if (rd == null)
-            {
-                throw new Exception("Couldn't get a RequestDispatcher for \""
-                                    + url + "\"");
-            }
-
-            // include the resource, using our custom wrapper
-            ImportResponseWrapper irw =
-                new ImportResponseWrapper((HttpServletResponse)response);
-            try
-            {
-                rd.include(request, irw);
-            }
-            catch (IOException ex)
-            {
-                throw new Exception("Problem importing the relative URL \""
-                                    + url + "\". " + ex);
-            }
-            catch (RuntimeException ex)
-            {
-                throw new Exception("Problem importing the relative URL \""
-                                    + url + "\". " + ex);
-            }
-
-            // disallow inappropriate response codes per JSTL spec
-            if (irw.getStatus() < 200 || irw.getStatus() > 299)
-            {
-                throw new Exception("Invalid response code '" + irw.getStatus()
-                                    + "' for \"" + url + "\"");
-            }
-
-            // recover the response String from our wrapper
-            return irw.getString();
+            String sp = ((HttpServletRequest)request).getServletPath();
+            url = sp.substring(0, sp.lastIndexOf('/')) + '/' + url;
         }
+
+        // strip the session id from the url
+        url = stripSession(url);
+
+        // from this context, get a dispatcher
+        RequestDispatcher rd = application.getRequestDispatcher(url);
+        if (rd == null)
+        {
+            throw new IOException("Couldn't get a RequestDispatcher for \""
+                + url + "\"");
+        }
+
+        // include the resource, using our custom wrapper
+        ImportResponseWrapper irw =
+            new ImportResponseWrapper((HttpServletResponse)response);
+        try
+        {
+            rd.include(request, irw);
+        }
+        catch (IOException ex)
+        {
+            throw new IOException("Problem importing the local URL \"" + url + "\": " + ex.getMessage(), ex);
+        }
+        catch (ServletException se)
+        {
+            throw new IOException("Problem importing the local URL \"" + url + "\": " + se.getMessage(), se);
+
+        }
+        /* let RuntimeExceptions go through */
+
+        // disallow inappropriate response codes per JSTL spec
+        if (irw.getStatus() < 200 || irw.getStatus() > 299)
+        {
+            throw new IOException("Invalid response code '" + irw.getStatus()
+                + "' for \"" + url + "\"");
+        }
+
+        // recover the response String from our wrapper
+        return irw.getString();
+    }
+
+    /**
+     *
+     * @param url the URL to read
+     * @return a Reader for the InputStream created from the supplied URL
+     * @throws IOException
+     */
+    protected Reader acquireRemoteURLReader(String url) throws IOException
+    {
+        if (isSafeMode())
+        {
+            getLog().warn("safe mode prevented reading resource from remote url: {}", url);
+            return null;
+        }
+        return super.acquireRemoteURLReader(url);
     }
 
     /**
@@ -234,121 +243,9 @@ public abstract class ImportSupport extends SafeConfig
      * @throws IOException
      * @throws java.lang.Exception
      */
-    protected Reader acquireReader(String url) throws IOException, Exception
+    protected Reader acquireLocalURLReader(String url) throws IOException
     {
-        if (!isAbsoluteUrl(url))
-        {
-            // for relative URLs, delegate to our peer
-            return new StringReader(acquireString(url));
-        }
-        else
-        {
-            // absolute URL
-            URLConnection uc = null;
-            HttpURLConnection huc = null;
-            InputStream i = null;
-
-            try
-            {
-                // handle absolute URLs ourselves, using java.net.URL
-                URL u = new URL(url);
-                // URL u = new URL("http", "proxy.hi.is", 8080, target);
-                uc = u.openConnection();
-                i = uc.getInputStream();
-
-                // check response code for HTTP URLs, per spec,
-                if (uc instanceof HttpURLConnection)
-                {
-                    huc = (HttpURLConnection)uc;
-
-                    int status = huc.getResponseCode();
-                    if (status < 200 || status > 299)
-                    {
-                        throw new Exception(status + " " + url);
-                    }
-                }
-
-                // okay, we've got a stream; encode it appropriately
-                Reader r = null;
-                String charSet;
-
-                // charSet extracted according to RFC 2045, section 5.1
-                String contentType = uc.getContentType();
-                if (contentType != null)
-                {
-                    charSet = ImportSupport.getContentTypeAttribute(contentType, "charset");
-                    if (charSet == null)
-                    {
-                        charSet = DEFAULT_ENCODING;
-                    }
-                }
-                else
-                {
-                    charSet = DEFAULT_ENCODING;
-                }
-
-                try
-                {
-                    r = new InputStreamReader(i, charSet);
-                }
-                catch (UnsupportedEncodingException ueex)
-                {
-                    r = new InputStreamReader(i, DEFAULT_ENCODING);
-                }
-
-                if (huc == null)
-                {
-                    return r;
-                }
-                else
-                {
-                    return new SafeClosingHttpURLConnectionReader(r, huc);
-                }
-            }
-            catch (IOException ex)
-            {
-                if (i != null)
-                {
-                    try
-                    {
-                        i.close();
-                    }
-                    catch (IOException ioe)
-                    {
-                        getLog().error("Could not close InputStream", ioe);
-                    }
-                }
-
-                if (huc != null)
-                {
-                    huc.disconnect();
-                }
-                throw new Exception("Problem accessing the absolute URL \""
-                                    + url + "\". " + ex);
-            }
-            catch (RuntimeException ex)
-            {
-                if (i != null)
-                {
-                    try
-                    {
-                        i.close();
-                    }
-                    catch (IOException ioe)
-                    {
-                        getLog().error("Could not close InputStream", ioe);
-                    }
-                }
-
-                if (huc != null)
-                {
-                    huc.disconnect();
-                }
-                // because the spec makes us
-                throw new Exception("Problem accessing the absolute URL \""
-                                    + url + "\". " + ex);
-            }
-        }
+        return new StringReader(acquireLocalURLString(url));
     }
 
     protected static class SafeClosingHttpURLConnectionReader extends Reader
@@ -564,40 +461,6 @@ public abstract class ImportSupport extends SafeConfig
     // Public utility methods
 
     /**
-     * Returns <tt>true</tt> if our current URL is absolute,
-     * <tt>false</tt> otherwise.
-     *
-     * @param url the url to check out
-     * @return true if the url is absolute
-     */
-    public static boolean isAbsoluteUrl(String url) {
-        // a null URL is not absolute, by our definition
-        if (url == null)
-        {
-            return false;
-        }
-
-        // do a fast, simple check first
-        int colonPos;
-        if ((colonPos = url.indexOf(':')) == -1)
-        {
-            return false;
-        }
-
-        // if we DO have a colon, make sure that every character
-        // leading up to it is a valid scheme character
-        for (int i = 0; i < colonPos; i++)
-        {
-            if (VALID_SCHEME_CHARS.indexOf(url.charAt(i)) == -1)
-            {
-                return false;
-            }
-        }
-        // if so, we've got an absolute url
-        return true;
-    }
-
-    /**
      * Strips a servlet session ID from <tt>url</tt>.  The session ID
      * is encoded as a URL "path parameter" beginning with "jsessionid=".
      * We thus remove anything we find between ";jsessionid=" (inclusive)
@@ -627,56 +490,14 @@ public abstract class ImportSupport extends SafeConfig
         return u.toString();
     }
 
-    /**
-     * Get the value associated with a content-type attribute.
-     * Syntax defined in RFC 2045, section 5.1.
-     *
-     * @param input the string containing the attributes
-     * @param name the name of the content-type attribute
-     * @return the value associated with a content-type attribute
-     */
-    public static String getContentTypeAttribute(String input, String name)
-    {
-        int begin;
-        int end;
-        int index = input.toUpperCase().indexOf(name.toUpperCase());
-        if (index == -1)
-        {
-            return null;
-        }
-        index = index + name.length(); // positioned after the attribute name
-        index = input.indexOf('=', index); // positioned at the '='
-        if (index == -1)
-        {
-            return null;
-        }
-        index += 1; // positioned after the '='
-        input = input.substring(index).trim();
+    //*********************************************************************
+    // Fetch local resource
 
-        if (input.charAt(0) == '"')
-        {
-            // attribute value is a quoted string
-            begin = 1;
-            end = input.indexOf('"', begin);
-            if (end == -1)
-            {
-                return null;
-            }
-        }
-        else
-        {
-            begin = 0;
-            end = input.indexOf(';');
-            if (end == -1)
-            {
-                end = input.indexOf(' ');
-            }
-            if (end == -1)
-            {
-                end = input.length();
-            }
-        }
-        return input.substring(begin, end).trim();
+    @Override
+    protected URL getFileResource(String resource) throws Exception
+    {
+        return application.getResource(resource);
     }
+
 
 }

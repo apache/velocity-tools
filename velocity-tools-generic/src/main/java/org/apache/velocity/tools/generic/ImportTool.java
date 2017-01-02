@@ -1,4 +1,4 @@
-package org.apache.velocity.tools.view;
+package org.apache.velocity.tools.generic;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -22,12 +22,10 @@ package org.apache.velocity.tools.view;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
-import org.apache.velocity.tools.generic.ValueParser;
 
 /**
- * General-purpose text-importing view tool for templates.
- * <p>Usage:<br />
- * Just call $import.read("http://www.foo.com/bleh.jsp?sneh=bar") to insert the contents of the named
+ * General-purpose text-importing tool for templates.
+ * <p>Usage: just call $import.read("http://www.foo.com/bleh.jsp?sneh=bar") to insert the contents of the named
  * resource into the template.
  * </p>
  * <p><pre>
@@ -40,38 +38,80 @@ import org.apache.velocity.tools.generic.ValueParser;
  * </pre></p>
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
- * @since VelocityTools 2.0
- * @version $Revision$ $Date$
+ * @since VelocityTools 3.0
+ * @version $Id$
  */
 
 @DefaultKey("import")
 @ValidScope(Scope.REQUEST)
-public class ImportTool extends org.apache.velocity.tools.generic.ImportTool
+public class ImportTool extends SafeConfig
 {
+    /**
+     * ImportSupport utility which provides underlying i/o
+     */
+    protected ImportSupport importSupport = null;
+
+    /**
+     * Importsupport initialization
+     * @param config
+     */
     protected void initializeImportSupport(ValueParser config)
     {
-        importSupport = new ViewImportSupport();
+        importSupport = new ImportSupport();
         importSupport.configure(config);
     }
 
+    /**
+     * Configuration
+     * @param values
+     */
     protected void configure(ValueParser values)
     {
-        super.configure(values);
+        initializeImportSupport(values);
+    }
+
+    /**
+     * Returns the supplied resource rendered as a String.
+     *
+     * @param resource the URL to import
+     * @return the URL as a string
+     */
+    public String read(String resource)
+    {
+        if (resource == null)
+        {
+            getLog().warn("resource is null!");
+            return null;
+        }
+        if (resource.length() == 0)
+        {
+            getLog().warn("resource is empty string!");
+            return null;
+        }
+        try
+        {
+            return importSupport.getResourceString(resource);
+        }
+        catch (Exception ex)
+        {
+            getLog().error("Exception while getting '{}'", resource, ex);
+            return null;
+        }
     }
 
     /**
      * Returns the supplied URL rendered as a String.
      *
-     * @param obj the URL to import
+     * @param url the URL to import
      * @return the URL as a string
      */
-    public String read(Object obj) {
-        if (obj == null)
+    public String fetch(String url)
+    {
+        if (url == null)
         {
             getLog().warn("URL is null!");
             return null;
         }
-        String url = String.valueOf(obj).trim();
         if (url.length() == 0)
         {
             getLog().warn("URL is empty string!");
@@ -87,4 +127,5 @@ public class ImportTool extends org.apache.velocity.tools.generic.ImportTool
             return null;
         }
     }
+
 }

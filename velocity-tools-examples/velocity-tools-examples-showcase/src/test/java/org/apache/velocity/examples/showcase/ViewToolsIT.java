@@ -24,11 +24,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.meterware.httpunit.PostMethodWebRequest;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -143,7 +148,7 @@ public class ViewToolsIT {
      */
     private WebResponse submitWithParam(WebResponse orig, String formname, String paramname, String value) throws Exception {
         WebForm form = orig.getFormWithName(formname);
-        form.setParameter(paramname,value);
+        form.setParameter(paramname, value);
         return form.submit();
     }
 
@@ -187,24 +192,24 @@ public class ViewToolsIT {
         WebResponse resp = conv.getResponse(req);
 
         /* check that getThis() is a ViewToolContext instance */
-        checkTextStart(resp,"getThis()","org.apache.velocity.tools.view.ViewToolContext");
+        checkTextStart(resp, "getThis()", "org.apache.velocity.tools.view.ViewToolContext");
 
         /* check contains('context') */
         resp = submitWithParam(resp,"contains_Object","contains_Object1","'context'");
-        checkText(resp,"contains(java.lang.Object)","true");
+        checkText(resp, "contains(java.lang.Object)", "true");
 
         /* check get('context') */
-        resp = submitWithParam(resp,"get_Object","get_Object1","'context'");
-        checkTextStart(resp,"get(java.lang.Object)","org.apache.velocity.tools.view.ViewContextTool");
+        resp = submitWithParam(resp, "get_Object", "get_Object1", "'context'");
+        checkTextStart(resp, "get(java.lang.Object)", "org.apache.velocity.tools.view.ViewContextTool");
 
         /* check keys (the only expected uppercase is in 'velocityCount') */
-        checkTextRegex(resp,"getKeys()","^\\[[a-z_A-Z]+(?:,\\s*[a-z_A-Z]+)*\\]$");
+        checkTextRegex(resp, "getKeys()", "^\\[[a-z_A-Z]+(?:,\\s*[a-z_A-Z]+)*\\]$");
 
         /* check toolbox */
         checkTextRegex(resp,"getToolbox()","^\\{[a-z_A-Z]+=.*(?:,\\s*[a-z_A-Z]+=.*)*\\}$");
 
         /* check values */
-        checkTextStartEnd(resp,"getValues()","[","]");
+        checkTextStartEnd(resp, "getValues()", "[", "]");
     }
 
     public @Test void testLinkTool() throws Exception {
@@ -316,4 +321,14 @@ public class ViewToolsIT {
         /* check all */
         checkTextRegex(resp,"all","^\\{.*\\}$");
     }
+
+    public @Test void testJsonTool() throws Exception
+    {
+        String json = "{\"foo\":\"bar\"}";
+        WebConversation conv = new WebConversation();
+        WebRequest req = new PostMethodWebRequest(ROOT_URL+"post_json.vm", new ByteArrayInputStream(json.getBytes(Charset.forName("UTF-8"))), "application/json");
+        WebResponse resp = conv.getResponse(req);
+        checkText(resp, "foo", "bar");
+    }
+
 }
