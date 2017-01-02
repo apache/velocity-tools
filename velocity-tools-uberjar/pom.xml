@@ -47,7 +47,6 @@
                             <artifactSet>
                                 <includes>
                                     <include>org.apache.velocity:velocity-tools-generic</include>
-                                    <include>org.apache.velocity:velocity-tools-xml</include>
                                     <include>org.apache.velocity:velocity-tools-view</include>
                                     <include>org.apache.velocity:velocity-tools-view-jsp</include>
                                 </includes>

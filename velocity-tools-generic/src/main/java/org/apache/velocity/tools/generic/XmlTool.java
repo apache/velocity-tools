@@ -19,8 +19,8 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import java.io.Reader;
 import java.io.Serializable;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,22 +28,29 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.dom4j.Attribute;
-import org.dom4j.Node;
-import org.dom4j.Element;
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.io.SAXReader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.velocity.tools.XmlUtils;
 
 import org.apache.velocity.tools.ConversionUtils;
-import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.config.DefaultKey;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 /**
  * <p>Tool for reading/navigating XML files.  This uses dom4j under the
  * covers to provide complete XPath support for traversing XML files.</p>
+ * <p>Configuration parameters:</p>
+ * <p>
+ *     <ul>
+ *         <li><code>resource</code>=<i>file or classpath resource</i></li>
+ *         <li><code>source</code>=<i>URL</i></li>
+ *     </ul>
+ * </p>
+ *
  * <p>Here's a short example:<pre>
  * XML file:
  *   &lt;foo&gt;&lt;bar&gt;woogie&lt;/bar&gt;&lt;a name="test"/&gt;&lt;/foo&gt;
@@ -62,66 +69,88 @@ import org.apache.velocity.tools.config.DefaultKey;
  * &lt;tools&gt;
  *   &lt;toolbox scope="application"&gt;
  *     &lt;tool class="org.apache.velocity.tools.generic.XmlTool"
- *              key="foo" file="doc.xml"/&gt;
+ *              key="foo" source="doc.xml"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
  * </pre></p>
  * <p>Note that this tool is included in the default GenericTools configuration
- * under the key "xml", but unless you set safeMode="false" for it, you will
+ * under the key "xml". You can read  but unless you set safeMode="false" for it, you will
  * only be able to parse XML strings.  Safe mode is on by default and blocks
- * access to the {@link #read(Object)} method.</p>
+ * access to the {@link #read(String)} method.</p>
  *
  * @author Nathan Bubna
- * @version $Revision$ $Date: 2006-11-27 10:49:37 -0800 (Mon, 27 Nov 2006) $
+ * @author Claude Brisson
+ * @version $Revision: 1769055 $ $Date: 2006-11-27 10:49:37 -0800 (Mon, 27 Nov 2006) $
  * @since VelocityTools 2.0
  */
 
 @DefaultKey("xml")
 public class XmlTool extends SafeConfig implements Serializable
 {
-    public static final String FILE_KEY = "file";
+    /**
+     * ImportSupport utility which provides underlying i/o
+     */
+    protected ImportSupport importSupport = null;
 
-    protected static Logger LOG = LoggerFactory.getLogger(XmlTool.class);
+    /**
+     * ImportSupport initialization
+     * @param config
+     */
+    protected void initializeImportSupport(ValueParser config)
+    {
+        importSupport = new ImportSupport();
+        importSupport.configure(config);
+    }
 
-    private List<Node> nodes;
+    /**
+     * Configuration.
+     * @param values
+     */
+    protected void configure(ValueParser values)
+    {
+        super.configure(values);
+        initializeImportSupport(values);
+        String resource = values.getString(ImportSupport.RESOURCE_KEY);
+        if (resource != null)
+        {
+            read(resource);
+        }
+        else
+        {
+            String url = values.getString(ImportSupport.URL_KEY);
+            if (url != null)
+            {
+                fetch(url);
+            }
+        }
+    }
 
+    /**
+     * Content nodes.
+     */
+    private List<Node> nodes = null;
+
+    /**
+     * Default constructor.
+     */
     public XmlTool() {}
 
+    /**
+     * Builds an XmlTool around a node.
+     * @param node
+     */
     public XmlTool(Node node)
     {
         this(Collections.singletonList(node));
     }
 
+    /**
+     * Builds an XmlTool around a nodes list.
+     * @param nodes
+     */
     public XmlTool(List<Node> nodes)
     {
         this.nodes = nodes;
-    }
-
-
-    /**
-     * Looks for the "file" parameter and automatically uses
-     * {@link #read(String)} to parse the file and set the
-     * resulting {@link Document} as the root node for this
-     * instance.
-     */
-    protected void configure(ValueParser parser)
-    {
-        String file = parser.getString(FILE_KEY);
-        if (file != null)
-        {
-            try
-            {
-                read(file);
-            }
-            catch (IllegalArgumentException iae)
-            {
-                throw iae;
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException("Could not read XML file at: "+file, e);
-            }
-        }
     }
 
     /**
@@ -129,108 +158,77 @@ public class XmlTool extends SafeConfig implements Serializable
      */
     protected void setRoot(Node node)
     {
-        if (node instanceof Document)
+        if (node == null)
         {
-            node = ((Document)node).getRootElement();
+            this.nodes = null;
         }
-        this.nodes = new ArrayList<Node>(1);
-        this.nodes.add(node);
-    }
-
-    /**
-     * Creates a {@link URL} from the string and passes it to {@link #read(URL)}.
-     */
-    protected void read(String file) throws Exception
-    {
-        URL url = ConversionUtils.toURL(file, this);
-        if (url == null)
+        else
         {
-            throw new IllegalArgumentException("Could not find file, classpath resource or standard URL for '"+file+"'.");
+            if (node instanceof Document)
+            {
+                node = ((Document) node).getDocumentElement();
+            }
+            this.nodes = new ArrayList<Node>(1);
+            this.nodes.add(node);
         }
-        read(url);
-    }
-
-    /**
-     * Reads, parses and creates a {@link Document} from the
-     * given {@link URL} and uses it as the root {@link Node} for this instance.
-     */
-    protected void read(URL url) throws Exception
-    {
-        SAXReader reader = new SAXReader();
-        setRoot(reader.read(url));
     }
 
     /**
      * Parses the given XML string and uses the resulting {@link Document}
      * as the root {@link Node}.
      */
-    protected void parse(String xml) throws Exception
+    public void parse(String xml)
     {
-        setRoot(DocumentHelper.parseText(xml));
-    }
-
-
-    /**
-     * If safe mode is explicitly turned off for this tool, then
-     * this will accept either a {@link URL} or the string representation
-     * thereof.  If valid, it will return a new {@link XmlTool} instance
-     * with that document as the root {@link Node}.  If reading the URL
-     * or parsing its content fails or if safe mode is on (the default),
-     * this will return {@code null}.
-     */
-    public XmlTool read(Object o)
-    {
-        if (isSafeMode() || o == null)
-        {
-            return null;
-        }
         try
         {
-            XmlTool xml = new XmlTool();
-            if (o instanceof URL)
+            if (xml != null)
             {
-                xml.read((URL)o);
+                setRoot(XmlUtils.parse(xml));
             }
-            else
-            {
-                String file = String.valueOf(o);
-                xml.read(file);
-            }
-            return xml;
         }
         catch (Exception e)
         {
-            LOG.error("XmlTool - Failed to read XML from : {}", o, e);
-            return null;
+            getLog().error("could not parse given XML string", e);
         }
     }
 
     /**
-     * This accepts XML in form.  If the XML is valid, it will return a
-     * new {@link XmlTool} instance with the resulting XML document
-     * as the root {@link Node}.  If parsing the content fails,
-     * this will return {@code null}.
+     * Reads and parses a local resource file
      */
-    public XmlTool parse(Object o)
+    public void read(String resource)
     {
-        if (o == null)
-        {
-            return null;
-        }
-        String s = String.valueOf(o);
         try
         {
-            XmlTool xml = new XmlTool();
-            xml.parse(s);
-            return xml;
+            Reader reader = importSupport.getResourceReader(resource);
+            if (reader != null)
+            {
+                setRoot(XmlUtils.parse(reader));
+            }
         }
         catch (Exception e)
         {
-            LOG.error("XmlTool - Failed to parse XML from : {}", o, e);
-            return null;
+            getLog().error("could not read XML resource {}", resource, e);
         }
     }
 
+    /**
+     * Reads and parses a remote or local URL
+     */
+    public void fetch(String url)
+    {
+        try
+        {
+            Reader reader = importSupport.acquireReader(url);
+            if (reader != null)
+            {
+                setRoot(XmlUtils.parse(reader));
+            }
+        }
+        catch (Exception e)
+        {
+            getLog().error("could not fetch XML content from URL {}", url, e);
+        }
+    }
 
     /**
      * This will first attempt to find an attribute with the
@@ -250,7 +248,7 @@ public class XmlTool extends SafeConfig implements Serializable
             return null;
         }
         String attr = attr(o);
-        if (attr != null)
+        if (attr != null && attr.length() > 0)
         {
             return attr;
         }
@@ -280,7 +278,7 @@ public class XmlTool extends SafeConfig implements Serializable
     {
         // give attributes and child elements priority
         Object name = get("name");
-        if (name != null)
+        if (name != null && !"".equals(name))
         {
             return name;
         }
@@ -298,7 +296,7 @@ public class XmlTool extends SafeConfig implements Serializable
         {
             return null;
         }
-        return node().getName();
+        return node().getNodeName();
     }
 
     /**
@@ -311,7 +309,7 @@ public class XmlTool extends SafeConfig implements Serializable
         {
             return null;
         }
-        return node().getPath();
+        return XmlUtils.nodePath(node());
     }
 
     /**
@@ -331,7 +329,11 @@ public class XmlTool extends SafeConfig implements Serializable
         Node node = node();
         if (node instanceof Element)
         {
-            return ((Element)node).attributeValue(key);
+            String value = ((Element)node).getAttribute(key);
+            if (value.length() > 0)
+            {
+                return value;
+            }
         }
         return null;
     }
@@ -347,10 +349,11 @@ public class XmlTool extends SafeConfig implements Serializable
         if (node instanceof Element)
         {
             Map<String,String> attrs = new HashMap<String,String>();
-            for (Iterator i = ((Element)node).attributeIterator(); i.hasNext();)
+            NamedNodeMap map = node.getAttributes();
+            for (int i = 0; i < map.getLength(); ++i)
             {
-                Attribute a = (Attribute)i.next();
-                attrs.put(a.getName(), a.getValue());
+                Attr attr = (Attr)map.item(i);
+                attrs.put(attr.getName(), attr.getValue());
             }
             return attrs;
         }
@@ -489,7 +492,14 @@ public class XmlTool extends SafeConfig implements Serializable
         List<Node> found = new ArrayList<Node>();
         for (Node n : nodes)
         {
-            found.addAll((List<Node>)n.selectNodes(xpath));
+            NodeList lst = XmlUtils.search(xpath, n);
+            if (lst != null)
+            {
+                for (int i = 0; i < lst.getLength(); ++i)
+                {
+                    found.add(lst.item(i));
+                }
+            }
         }
         if (found.isEmpty())
         {
@@ -509,8 +519,8 @@ public class XmlTool extends SafeConfig implements Serializable
         {
             return null;
         }
-        Element parent = node().getParent();
-        if (parent == null)
+        Node parent = node().getParentNode();
+        if (parent == null || parent instanceof Document)
         {
             return null;
         }
@@ -536,7 +546,15 @@ public class XmlTool extends SafeConfig implements Serializable
         List<Node> parents = new ArrayList<Node>(size());
         for (Node n : nodes)
         {
-            Element parent = n.getParent();
+            Element parent = null;
+            if (n instanceof Element)
+            {
+                parent = (Element)n.getParentNode();
+            }
+            else if (n instanceof Attr)
+            {
+                parent = ((Attr) n).getOwnerElement();
+            }
             if (parent != null && !parents.contains(parent))
             {
                 parents.add(parent);
@@ -565,7 +583,20 @@ public class XmlTool extends SafeConfig implements Serializable
         {
             if (n instanceof Element)
             {
-                kids.addAll((List<Node>)((Element)n).elements());
+                NodeList lst = n.getChildNodes();
+                for (int i = 0; i < lst.getLength(); ++i)
+                {
+                    Node child = lst.item(i);
+                    if (child instanceof Text)
+                    {
+                        String value = child.getNodeValue().trim();
+                        if (value.length() == 0)
+                        {
+                            continue;
+                        }
+                    }
+                    kids.add(child);
+                }
             }
         }
         return new XmlTool(kids);
@@ -584,8 +615,8 @@ public class XmlTool extends SafeConfig implements Serializable
         StringBuilder out = new StringBuilder();
         for (Node n : nodes)
         {
-            String text = n.getText();
-            if (text != null)
+            String text = n.getTextContent().trim();
+            if (text != null && text.length() > 0)
             {
                 out.append(text);
             }
@@ -603,7 +634,7 @@ public class XmlTool extends SafeConfig implements Serializable
      * If this instance has no XML {@link Node}s, then this
      * returns the result of {@code super.toString()}.  Otherwise, it
      * returns the XML (as a string) of all the internally held nodes
-     * that are not {@link Attribute}s. For attributes, only the value
+     * that are not {@link Attr}ibutes. For attributes, only the value
      * is used.
      */
     public String toString()
@@ -615,16 +646,16 @@ public class XmlTool extends SafeConfig implements Serializable
         StringBuilder out = new StringBuilder();
         for (Node n : nodes)
         {
-            if (n instanceof Attribute)
+            if (n instanceof Attr)
             {
-                out.append(n.getText().trim());
+                out.append(((Attr)n).getValue().trim());
             }
             else
             {
-                out.append(n.asXML());
+                out.append(XmlUtils.nodeToString(n));
             }
         }
-        return out.toString();
+        return out.toString().trim();
     }
 
     

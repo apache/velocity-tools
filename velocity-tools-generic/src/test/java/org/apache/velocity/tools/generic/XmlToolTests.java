@@ -31,8 +31,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.dom4j.Node;
 import org.junit.Test;
+import org.w3c.dom.Node;
 
 /**
  * <p>Tests for XmlTool</p>
@@ -63,6 +63,7 @@ public class XmlToolTests {
     private XmlTool stringBased() throws Exception
     {
         XmlTool xml = new XmlTool();
+        xml.configure(new ValueParser());
         xml.parse(XML_STRING);
         return xml;
     }
@@ -70,6 +71,7 @@ public class XmlToolTests {
     private XmlTool fileBased() throws Exception
     {
         XmlTool xml = new XmlTool();
+        xml.configure(new ValueParser());
         xml.read(XML_FILE);
         return xml;
     }
@@ -136,8 +138,8 @@ public class XmlToolTests {
     {
         XmlTool xml = new XmlTool();
         Map<String,String> params = new HashMap<String,String>();
-        assertEquals("file", XmlTool.FILE_KEY);
-        params.put(XmlTool.FILE_KEY, XML_FILE);
+        assertEquals("resource", ImportSupport.RESOURCE_KEY);
+        params.put(ImportSupport.RESOURCE_KEY, XML_FILE);
         xml.configure(params);
         assertEquals(1, xml.size());
         assertEquals("foo", xml.getName());
@@ -198,7 +200,7 @@ public class XmlToolTests {
         XmlTool xml = stringBased();
         //TODO: prepare the instance for testing
         String result = xml.getText();
-        assertEquals((String)null, result);
+        assertEquals("woogie\n  wiggie", result);
     }
 
     public @Test void methodGet_Number() throws Exception
@@ -273,9 +275,15 @@ public class XmlToolTests {
     public @Test void methodParse_Object() throws Exception
     {
         XmlTool xml = new XmlTool();
-        assertNull(xml.parse((Object)null));
-        assertNull(xml.parse((Object)"><S asdf8 ~$"));
-        assertNotNull(xml.parse((Object)XML_STRING));
+
+        xml.parse((String)null);
+        assertTrue(xml.isEmpty());
+
+        xml.parse("><S asdf8 ~$");
+        assertTrue(xml.isEmpty());
+
+        xml.parse(XML_STRING);
+        assertFalse(xml.isEmpty());
         //TODO: test other strings?
     }
 
@@ -294,6 +302,7 @@ public class XmlToolTests {
     public @Test void methodToString() throws Exception
     {
         XmlTool xml = new XmlTool();
+        xml.configure(new ValueParser());
         assertTrue(xml.toString().startsWith(XmlTool.class.getName()));
         xml.read(XML_FILE);
         assertTrue(xml.toString().startsWith("<foo>"));

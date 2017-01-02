@@ -35,6 +35,7 @@
 #toolMenuItem( $llink 'field' )
 #toolMenuItem( $llink 'import' )
 #toolMenuItem( $llink 'include' )
+#toolMenuItem( $llink 'json' )
 #toolMenuItem( $llink 'jsp' )
 #toolMenuItem( $llink 'link' )
 #toolMenuItem( $llink 'loop' )

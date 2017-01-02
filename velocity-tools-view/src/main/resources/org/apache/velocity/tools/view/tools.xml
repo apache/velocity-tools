@@ -25,11 +25,13 @@
         <tool class="org.apache.velocity.tools.view.CookieTool"/>
         <tool class="org.apache.velocity.tools.view.ImportTool"/>
         <tool class="org.apache.velocity.tools.view.IncludeTool"/>
+        <tool class="org.apache.velocity.tools.view.JsonTool"/>
         <tool class="org.apache.velocity.tools.view.LinkTool"/>
         <tool class="org.apache.velocity.tools.view.PagerTool"/>
         <tool class="org.apache.velocity.tools.view.ParameterTool"/>
         <tool class="org.apache.velocity.tools.view.ViewContextTool"/>
-        <!-- 
+        <tool class="org.apache.velocity.tools.view.XmlTool"/>
+        <!--
         This is not directly useable.
         <tool class="org.apache.velocity.tools.view.AbstractSearchTool"/>
         -->

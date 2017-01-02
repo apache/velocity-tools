@@ -26,6 +26,44 @@
   <body>
 
     <release version="3.0-SNAPSHOT" date="In Subversion">
+      <action type="add" dev="cbrisson">
+        ImportTool reenginering:
+        <ul>
+          <li>the ImportSupport utility class has been splitted between o.a.v.generic.ImportSupport and o.a.v.view.ViewImportSupport</li>
+          <li>the ImportTool now has a generic version (for remote URLs import) and a view version (for local URLs import) which cannot use remote URLs in safe mode</li>
+        </ul>
+      </action>
+      <action type="add" dev="cbrisson">
+        XmlTool now uses the standard JRE XML parser instead of the org.jdom API ; it is now in two flavors, the generic tools one and the view tools one. The view tools flavor
+        allows the parsing of http query xml post data.
+      </action>
+      <action type="add" dev="cbrisson">
+        Added a new JsonTool for parsing json. It is in two flavors, the generic tools one and the view tools one. The view tools flavor
+        allows the parsing of http query json post data.
+      </action>
+      <action type="add" dev="cbrisson">
+        Added an EscapeTool.unurl(String) unescaping method
+      </action>
+      <action type="add" dev="cbrisson">
+        Deprecated ConversionTool: date/time parsing and formatting methods belong to DateTool, while number parsing
+        and formatting methods belong to NumberTool ; toLocale() method is now in LocaleConfig
+      </action>
+      <action type="add" dev="cbrisson">
+        Deprecated SortTool, and added a CollectionTool to gather lists sorting/splitting methods
+      </action>
+      <action type="add" dev="cbrisson">
+        Deprecated MathTool number parsing methods, which are redundant with NumberTool ones
+      </action>
+      <action type="add" dev="cbrisson">
+        Deprecated AlternateTool
+      </action>
+      <action type="add" dev="cbrisson">
+        DateTool reenginering:
+        <ul>
+          <li>added iso and iso_tz date/datetime standard formats</li>
+          <li>added intl and intl_tz for human-readable international format (time zone displayed by id)</li>
+        </ul>
+      </action>
         <action type="fix" dev="cbrisson">
             use static logging in Tools classes
         </action>

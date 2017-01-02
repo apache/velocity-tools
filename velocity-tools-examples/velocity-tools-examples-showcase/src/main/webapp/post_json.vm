@@ -14,17 +14,5 @@
 ## KIND, either express or implied.  See the License for the
 ## specific language governing permissions and limitations
 ## under the License.
-#title( 'CollectionTool' )
-<p>
-$text.demo.thisPage.insert("#doclink( 'CollectionTool' true )").
-</p>
-<p>
-$text.collection.intro
-</p>
-
-#demoTableStart()
-
-#demo1( 'collection' 'split' 5 'split string' )
-#demoCustom( "sorter.sort(['b','c','a'])" )
-
-</table>
+#title( 'JsonTool test template' )
+<span id="foo">$json.foo</span>

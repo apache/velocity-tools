@@ -40,9 +40,12 @@
     </toolbox>
     <toolbox scope="request">
         <tool class="org.apache.velocity.tools.generic.ContextTool"/>
+        <tool class="org.apache.velocity.tools.generic.ImportTool"/>
+        <tool class="org.apache.velocity.tools.generic.JsonTool"/>
         <tool class="org.apache.velocity.tools.generic.LinkTool"/>
         <tool class="org.apache.velocity.tools.generic.LoopTool"/>
         <tool class="org.apache.velocity.tools.generic.RenderTool"/>
+        <tool class="org.apache.velocity.tools.generic.XmlTool"/>
         <!--
         This is not useful in its default form.
         But, if it were, it'd be request-scoped.

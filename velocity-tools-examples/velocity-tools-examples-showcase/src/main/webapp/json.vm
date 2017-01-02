@@ -14,17 +14,16 @@
 ## KIND, either express or implied.  See the License for the
 ## specific language governing permissions and limitations
 ## under the License.
-#title( 'CollectionTool' )
+#title( 'JsonTool' )
 <p>
-$text.demo.thisPage.insert("#doclink( 'CollectionTool' true )").
+$text.demo.thisPage.insert("#doclink( 'JsonTool' true )").
 </p>
 <p>
-$text.collection.intro
+$text.json.intro
 </p>
 
 #demoTableStart()
 
-#demo1( 'collection' 'split' 5 'split string' )
-#demoCustom( "sorter.sort(['b','c','a'])" )
+#demo1( 'json' 'parse' 5 'parse JSON string' )
 
 </table>

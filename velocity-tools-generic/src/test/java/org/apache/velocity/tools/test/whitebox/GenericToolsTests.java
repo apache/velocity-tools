@@ -38,6 +38,7 @@ import org.apache.velocity.tools.generic.ComparisonDateTool;
 import org.apache.velocity.tools.generic.DateTool;
 import org.apache.velocity.tools.generic.EscapeTool;
 import org.apache.velocity.tools.generic.FieldTool;
+import org.apache.velocity.tools.generic.JsonTool;
 import org.apache.velocity.tools.generic.MathTool;
 import org.apache.velocity.tools.generic.NumberTool;
 import org.apache.velocity.tools.generic.ResourceTool;
@@ -155,17 +156,17 @@ public class GenericToolsTests {
         assertEquals(new Integer(5),mathTool.floor(5.1));
         assertEquals(6,mathTool.getAverage(new long[] {5,6,7}));
         /* getTotal() watches the type of its first argument, so assertEquals needs a long */
-        assertEquals((long)7,mathTool.getTotal(new long[] {2,2,3}));
-        assertEquals(new Integer(8),mathTool.idiv(130,16));
+        assertEquals((long)7,mathTool.getTotal(new long[]{2, 2, 3}));
+        assertEquals(new Integer(8), mathTool.idiv(130, 16));
         assertEquals(9,mathTool.max(9,-10));
-        assertEquals(10,mathTool.min(10,20));
+        assertEquals(10, mathTool.min(10, 20));
         assertEquals(new Integer(11),mathTool.mod(37,13));
-        assertEquals(12,mathTool.mul(3,4));
+        assertEquals(12, mathTool.mul(3, 4));
         assertEquals(new Integer(13),mathTool.round(12.8));
         assertEquals(new Double(14.2),mathTool.roundTo(1,14.18));
         assertEquals(new Double(-5.0),mathTool.roundTo(2,-4.999));
         assertEquals(15,mathTool.sub(30,15));
-        assertEquals(16,mathTool.pow(4,2));
+        assertEquals(16, mathTool.pow(4, 2));
         assertEquals(new Integer(17),mathTool.toInteger("17"));
         assertEquals(new Double(18.1),mathTool.toDouble("18.1"));
     }

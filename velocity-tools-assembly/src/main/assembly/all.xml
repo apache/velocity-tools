@@ -83,14 +83,6 @@
             </includes>
         </fileSet>
         <fileSet>
-            <directory>../velocity-tools-xml</directory>
-            <outputDirectory>src/velocity-tools-xml</outputDirectory>
-            <includes>
-                <include>pom.xml</include>
-                <include>src/</include>
-            </includes>
-        </fileSet>
-        <fileSet>
             <directory>../velocity-tools-view</directory>
             <outputDirectory>src/velocity-tools-view</outputDirectory>
             <includes>
@@ -153,10 +145,6 @@
         <fileSet>
             <directory>../velocity-tools-generic/target/site</directory>
             <outputDirectory>docs/velocity-tools-generic</outputDirectory>
-        </fileSet>
-        <fileSet>
-            <directory>../velocity-tools-xml/target/site</directory>
-            <outputDirectory>docs/velocity-tools-xml</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>../velocity-tools-view/target/site</directory>
