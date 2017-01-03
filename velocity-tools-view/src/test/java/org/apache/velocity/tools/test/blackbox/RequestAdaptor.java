@@ -21,6 +21,7 @@ package org.apache.velocity.tools.test.blackbox;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Collections;
@@ -50,6 +51,11 @@ public class RequestAdaptor implements InvocationHandler
     private Map _params;
     private String _contextPath;
     private String _pathInfo;
+
+    public RequestAdaptor()
+    {
+        this(null, null, null);
+    }
 
     public RequestAdaptor(Map cookies)
     {
@@ -214,10 +220,41 @@ public class RequestAdaptor implements InvocationHandler
             }
             return jar;
         }
+        else if ("getContentLength".equals(methodName))
+        {
+            return getContentLength();
+        }
+        else if ("getContentType".equals(methodName))
+        {
+            return getContentType();
+        }
+        else if ("getReader".equals(methodName))
+        {
+            return getReader();
+        }
+        else if ("toString".equals(methodName))
+        {
+            return toString();
+        }
         else
         {
             throw new IllegalStateException("Unexpected method call: "
                                             + method);
         }
+    }
+
+    protected int getContentLength()
+    {
+        return -1;
+    }
+
+    protected String getContentType()
+    {
+        return null;
+    }
+
+    protected BufferedReader getReader()
+    {
+        return null;
     }
 }

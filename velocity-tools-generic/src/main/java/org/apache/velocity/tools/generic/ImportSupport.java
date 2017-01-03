@@ -91,6 +91,12 @@ public class ImportSupport extends SafeConfig
         super.configure(values);
     }
 
+    @Override
+    public void setSafeMode(boolean safe)
+    {
+        super.setSafeMode(safe);
+    }
+
     /**
      *
      * @param url the URL resource to return as string
@@ -380,7 +386,7 @@ public class ImportSupport extends SafeConfig
      */
     public static boolean isRemoteURL(String url)
     {
-        return getProtocol(url) == null;
+        return getProtocol(url) != null;
     }
 
     /**

@@ -37,6 +37,11 @@ public class ResponseAdaptor implements InvocationHandler
     // the params now also serve as a cookie jar for CookieToolTests
     private Map _params;
 
+    public ResponseAdaptor()
+    {
+        this(null);
+    }
+
     public ResponseAdaptor(Map params)
     {
         _params = params;
@@ -92,6 +97,10 @@ public class ResponseAdaptor implements InvocationHandler
         else if ("getCharacterEncoding".equals(methodName))
         {
             return "UTF-8";
+        }
+        else if ("toString".equals(methodName))
+        {
+            return toString();
         }
         else
         {
