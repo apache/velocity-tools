@@ -122,7 +122,11 @@ public class JsonTool extends ImportSupport implements Iterable
             String url = values.getString(ImportSupport.URL_KEY);
             if (url != null)
             {
+                /* temporary disable safe mode */
+                boolean safeMode = importSupport.isSafeMode();
+                importSupport.setSafeMode(false);
                 fetch(url);
+                importSupport.setSafeMode(safeMode);
             }
         }
     }
@@ -209,7 +213,7 @@ public class JsonTool extends ImportSupport implements Iterable
      * Parses the given JSON string and uses the resulting {@link Document}
      * as the root {@link Node}.
      */
-    public void parse(String xml) throws Exception
+    public void parse(String xml)
     {
         if (xml != null)
         {

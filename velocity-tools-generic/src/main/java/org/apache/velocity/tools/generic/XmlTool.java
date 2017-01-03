@@ -120,7 +120,11 @@ public class XmlTool extends SafeConfig implements Serializable
             String url = values.getString(ImportSupport.URL_KEY);
             if (url != null)
             {
+                /* temporary disable safe mode */
+                boolean safeMode = importSupport.isSafeMode();
+                importSupport.setSafeMode(false);
                 fetch(url);
+                importSupport.setSafeMode(safeMode);
             }
         }
     }

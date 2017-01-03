@@ -19,9 +19,12 @@ package org.apache.velocity.tools.test.blackbox;
  * under the License.
  */
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
+import java.io.InputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.net.URL;
 
 /**
  * <p>Helper class for LinkToolTests class</p>
@@ -32,6 +35,11 @@ import java.lang.reflect.Method;
 public class ServletContextAdaptor implements InvocationHandler
 {
     private String _contextPath;
+
+    public ServletContextAdaptor()
+    {
+        this(null);
+    }
 
     public ServletContextAdaptor(String contextPath)
     {
@@ -68,6 +76,22 @@ public class ServletContextAdaptor implements InvocationHandler
         {
             return _contextPath;
         }
+        else if ("getResource".equals(methodName))
+        {
+            return getResource((String)args[0]);
+        }
+        else if ("getResourceAsStream".equals(methodName))
+        {
+            return getResourceAsStream((String)args[0]);
+        }
+        else if ("getRequestDispatcher".equals(methodName))
+        {
+            return getRequestDispatcher((String)args[0]);
+        }
+        else if ("toString".equals(methodName))
+        {
+            return toString();
+        }
         else
         {
             throw new IllegalStateException("Unexpected method call: "
@@ -75,4 +99,18 @@ public class ServletContextAdaptor implements InvocationHandler
         }
     }
 
+    protected URL getResource(String path)
+    {
+        return null;
+    }
+
+    protected InputStream getResourceAsStream(String path)
+    {
+        return null;
+    }
+
+    protected RequestDispatcher getRequestDispatcher(String url)
+    {
+        return null;
+    }
 }
