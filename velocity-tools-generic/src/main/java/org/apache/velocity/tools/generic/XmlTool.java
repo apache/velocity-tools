@@ -19,6 +19,7 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import java.io.IOException;
 import java.io.Reader;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -201,9 +202,10 @@ public class XmlTool extends SafeConfig implements Serializable
      */
     public void read(String resource)
     {
+        Reader reader = null;
         try
         {
-            Reader reader = importSupport.getResourceReader(resource);
+            reader = importSupport.getResourceReader(resource);
             if (reader != null)
             {
                 setRoot(XmlUtils.parse(reader));
@@ -213,6 +215,17 @@ public class XmlTool extends SafeConfig implements Serializable
         {
             getLog().error("could not read XML resource {}", resource, e);
         }
+        finally
+        {
+            if (reader != null)
+            {
+                try
+                {
+                    reader.close();
+                }
+                catch (IOException ioe) {}
+            }
+        }
     }
 
     /**
@@ -220,9 +233,10 @@ public class XmlTool extends SafeConfig implements Serializable
      */
     public void fetch(String url)
     {
+        Reader reader = null;
         try
         {
-            Reader reader = importSupport.acquireReader(url);
+            reader = importSupport.acquireReader(url);
             if (reader != null)
             {
                 setRoot(XmlUtils.parse(reader));
@@ -231,6 +245,17 @@ public class XmlTool extends SafeConfig implements Serializable
         catch (Exception e)
         {
             getLog().error("could not fetch XML content from URL {}", url, e);
+        }
+        finally
+        {
+            if (reader != null)
+            {
+                try
+                {
+                    reader.close();
+                }
+                catch (IOException ioe) {}
+            }
         }
     }
 

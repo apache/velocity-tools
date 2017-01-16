@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -326,7 +326,7 @@ public class ViewToolsIT {
     {
         String json = "{\"foo\":\"bar\"}";
         WebConversation conv = new WebConversation();
-        WebRequest req = new PostMethodWebRequest(ROOT_URL+"post_json.vm", new ByteArrayInputStream(json.getBytes(Charset.forName("UTF-8"))), "application/json");
+        WebRequest req = new PostMethodWebRequest(ROOT_URL+"post_json.vm", new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)), "application/json");
         WebResponse resp = conv.getResponse(req);
         checkText(resp, "foo", "bar");
     }

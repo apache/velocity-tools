@@ -156,7 +156,7 @@ public class GenericToolsTests {
         assertEquals(new Integer(5),mathTool.floor(5.1));
         assertEquals(6,mathTool.getAverage(new long[] {5,6,7}));
         /* getTotal() watches the type of its first argument, so assertEquals needs a long */
-        assertEquals((long)7,mathTool.getTotal(new long[]{2, 2, 3}));
+        assertEquals(7L,mathTool.getTotal(new long[]{2, 2, 3}));
         assertEquals(new Integer(8), mathTool.idiv(130, 16));
         assertEquals(9,mathTool.max(9,-10));
         assertEquals(10, mathTool.min(10, 20));
