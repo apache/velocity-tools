@@ -78,14 +78,8 @@ public class ImportTool extends SafeConfig
      */
     public String read(String resource)
     {
-        if (resource == null)
+        if (resource == null || resource.length() == 0)
         {
-            getLog().warn("resource is null!");
-            return null;
-        }
-        if (resource.length() == 0)
-        {
-            getLog().warn("resource is empty string!");
             return null;
         }
         try
@@ -107,14 +101,8 @@ public class ImportTool extends SafeConfig
      */
     public String fetch(String url)
     {
-        if (url == null)
+        if (url == null || url.length() == 0)
         {
-            getLog().warn("URL is null!");
-            return null;
-        }
-        if (url.length() == 0)
-        {
-            getLog().warn("URL is empty string!");
             return null;
         }
         try
