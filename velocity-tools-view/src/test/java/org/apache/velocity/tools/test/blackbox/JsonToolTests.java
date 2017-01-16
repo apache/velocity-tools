@@ -23,6 +23,7 @@ import org.apache.velocity.tools.view.JsonTool;
 import static org.junit.Assert.*;
 
 import org.apache.velocity.tools.view.ViewContext;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.servlet.RequestDispatcher;
@@ -172,7 +173,12 @@ public class JsonToolTests
         assertEquals(json.get("hey"), "bro");
     }
 
-    public @Test void testConfigFetchRemoteSource()
+    /*
+      TODO - Test is ignored because it would fail while offline. We need to set up a local web server using Jetty to properly test it.
+      Michael Obispov suggested this example:
+      https://github.com/apache/maven-wagon/blob/master/wagon-providers/wagon-http/src/test/java/org/apache/maven/wagon/providers/http/HugeFileDownloadTest.java
+    */
+    public @Ignore @Test void testConfigFetchRemoteSource()
     {
         Map config = new HashMap();
         config.put("url", "http://svn.apache.org/viewvc/velocity/tools/trunk/velocity-tools-generic/src/test/resources/foo.json?revision=1776916&view=co&pathrev=1776916");
