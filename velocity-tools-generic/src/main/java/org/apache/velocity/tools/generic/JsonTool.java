@@ -20,6 +20,7 @@ package org.apache.velocity.tools.generic;
  */
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
@@ -152,7 +153,13 @@ public class JsonTool extends ImportSupport implements Iterable
         try
         {
             final int lookahead = 100;
-            int jsonType = 0; // 1 = object, 2 = array
+
+            final int TYPE_UNKNOWN = 0;
+            final int TYPE_OBJECT  = 1;
+            final int TYPE_ARRAY   = 2;
+            
+            int jsonType = TYPE_UNKNOWN;
+            
             if (!reader.markSupported())
             {
                 reader = new BufferedReader(reader);
@@ -166,10 +173,10 @@ public class JsonTool extends ImportSupport implements Iterable
                 switch (buffer[i])
                 {
                     case '{':
-                        jsonType = 1;
+                        jsonType = TYPE_OBJECT;
                         break;
                     case '[':
-                        jsonType = 2;
+                        jsonType = TYPE_ARRAY;
                         break;
                     case ' ':
                     case '\t':
@@ -182,23 +189,23 @@ public class JsonTool extends ImportSupport implements Iterable
                         throw new Exception(msg);
                     }
                 }
-                if (jsonType != 0)
+                if (jsonType != TYPE_UNKNOWN)
                 {
                     break;
                 }
             }
             switch (jsonType)
             {
-                case 0:
+                case TYPE_UNKNOWN:
                 {
                     String msg = "could not pase JSON: did not find any '{' or '[' in the first " + lookahead + " characters";
                     throw new Exception(msg);
                 }
-                case 1:
+                case TYPE_OBJECT:
                     jsonArray = null;
                     jsonObject = new JSONObject(new JSONTokener(reader));
                     break;
-                case 2:
+                case TYPE_ARRAY:
                     jsonObject = null;
                     jsonArray = new JSONArray(new JSONTokener(reader));
             }
@@ -213,13 +220,13 @@ public class JsonTool extends ImportSupport implements Iterable
      * Parses the given JSON string and uses the resulting {@link Document}
      * as the root {@link Node}.
      */
-    public void parse(String xml)
+    public void parse(String json)
     {
-        if (xml != null)
+        if (json != null)
         {
             try
             {
-                initJSON(xml);
+                initJSON(json);
             }
             catch (Exception e)
             {
@@ -235,9 +242,10 @@ public class JsonTool extends ImportSupport implements Iterable
     {
         if (resource != null)
         {
+            Reader reader = null;
             try
             {
-                Reader reader = importSupport.getResourceReader(resource);
+                reader = importSupport.getResourceReader(resource);
                 if (reader != null)
                 {
                     initJSON(reader);
@@ -246,6 +254,17 @@ public class JsonTool extends ImportSupport implements Iterable
             catch (Exception e)
             {
                 getLog().error("could not read JSON resource {}", resource, e);
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    try
+                    {
+                        reader.close();
+                    }
+                    catch (IOException ioe) {}
+                }        
             }
         }
     }
@@ -257,9 +276,10 @@ public class JsonTool extends ImportSupport implements Iterable
     {
         if (url != null)
         {
+            Reader reader = null;
             try
             {
-                Reader reader = importSupport.acquireReader(url);
+                reader = importSupport.acquireReader(url);
                 if (reader != null)
                 {
                     initJSON(reader);
@@ -268,6 +288,17 @@ public class JsonTool extends ImportSupport implements Iterable
             catch (Exception e)
             {
                 getLog().error("could not fetch JSON content from URL {}", url, e);
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    try
+                    {
+                        reader.close();
+                    }
+                    catch (IOException ioe) {}
+                }
             }
         }
     }
@@ -328,7 +359,7 @@ public class JsonTool extends ImportSupport implements Iterable
     {
         if (jsonObject != null)
         {
-            return jsonObject. keys();
+            return jsonObject.keys();
         }
         else if (jsonArray != null)
         {
