@@ -176,7 +176,7 @@ public class XmlToolTests
 
     /*
       TODO - Test is ignored because it would fail while offline. We need to set up a local web server using Jetty to properly test it.
-      Michael Obispov suggested this example:
+      Michael Osipov suggested this example:
       https://github.com/apache/maven-wagon/blob/master/wagon-providers/wagon-http/src/test/java/org/apache/maven/wagon/providers/http/HugeFileDownloadTest.java
     */
     public @Ignore @Test void testConfigFetchRemoteSource()
