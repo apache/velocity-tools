@@ -79,6 +79,172 @@ import org.w3c.dom.Node;
 @InvalidScope(Scope.SESSION)
 public class JsonTool extends ImportSupport implements Iterable
 {
+
+    /**
+     * Container for *either* an array *or* an object
+     */
+    public static class HybridJsonContainer
+    {
+        /**
+         * JSONObject content
+         */
+        private JSONObject jsonObject = null;
+        
+        /**
+         * JSONArray content
+         */
+        private JSONArray jsonArray = null;
+
+        /**
+         * wraps the object into an hybrid JSON container if necessary
+         */
+        private static Object wrapIfNeeded(Object obj)
+        {
+            if (obj == null)
+            {
+                return obj;
+            }
+            else if (obj instanceof JSONArray)
+            {
+                return new HybridJsonContainer((JSONArray)obj);
+            }
+            else if (obj instanceof JSONObject)
+            {
+                return new HybridJsonContainer((JSONObject)obj);
+            }
+            else
+            {
+                return obj;
+            }
+        }
+        
+        /**
+         * wraps an object
+         */
+        public HybridJsonContainer(JSONObject object)
+        {
+            jsonObject = object;
+        }
+
+        /**
+         * wraps an array
+         */
+        public HybridJsonContainer(JSONArray array)
+        {
+            jsonArray = array;
+        }
+
+        public Object get(int index)
+        {
+            Object ret = null;
+            if (jsonArray != null)
+            {
+                ret = wrapIfNeeded(jsonArray.opt(index));
+            }
+            else if (jsonObject != null)
+            {
+                ret = wrapIfNeeded(jsonObject.opt(String.valueOf(index)));
+            }
+            return ret;
+        }
+        
+        /**
+         * Get a property from root object
+         * @param key
+         * @return property value, or null
+         */
+        public Object get(String key)
+        {
+            Object ret = null;
+            if (jsonArray != null)
+            {
+                try
+                {
+                    ret = wrapIfNeeded(jsonArray.get(Integer.parseInt(key)));
+                }
+                catch (NumberFormatException nfe) {}
+            }
+            else if (jsonObject != null)
+            {
+                ret = wrapIfNeeded(jsonObject.opt(key));
+            }
+            return ret;
+        }
+        
+        /**
+         * Iterate keys of root object.
+         * @return iterator
+         */
+        public Iterator<String> keys()
+        {
+            return jsonObject == null ? null : jsonObject.keys();
+        }
+
+        /**
+         * Get set of root object keys.
+         * @return
+         */
+        public Set<String> keySet()
+        {
+            return jsonObject == null ? null : jsonObject.keySet();
+        }
+
+        /**
+         * Get an iterator. For a root object, returns an iterator over key names. For a root array, returns an iterator
+         * over contained objects.
+         * @return iterator
+         */
+        public Iterator iterator()
+        {
+            if (jsonObject != null)
+            {
+                return jsonObject.keys();
+            }
+            else if (jsonArray != null)
+            {
+                return jsonArray.iterator();
+            }
+            return null;
+        }
+
+        /**
+         * Get size of root object or array.
+         * @return size
+         */
+        public int length()
+        {
+            return jsonObject == null ? jsonArray == null ? null : jsonArray.length() : jsonObject.length();
+        }
+
+        /**
+         * Get array of root object keys.
+         * @return array of keys
+         */
+        public JSONArray names()
+        {
+            return jsonObject == null ? null : jsonObject.names();
+        }
+
+        /**
+         * Query root object or array using a JSON pointer
+         * @param jsonPointer
+         * @return result
+         */
+        public Object query(String jsonPointer)
+        {
+            return jsonObject == null ? jsonArray == null ? null : wrapIfNeeded(jsonArray.query(jsonPointer)) : wrapIfNeeded(jsonObject.query(jsonPointer));
+        }
+
+        /**
+         * Convert JSON object or array into string
+         * @return JSON representation of the root object or array
+         */
+        public String toString()
+        {
+            return jsonObject == null ? jsonArray == null ? "null" : jsonArray.toString() : jsonObject.toString();
+        }        
+    }
+    
     /**
      * ImportSupport utility which provides underlying i/o
      */
@@ -94,15 +260,8 @@ public class JsonTool extends ImportSupport implements Iterable
         importSupport.configure(config);
     }
 
-    /**
-     * JSONObject content
-     */
-    private JSONObject jsonObject = null;
-
-    /**
-     * JSONArray content
-     */
-    private JSONArray jsonArray = null;
+    private HybridJsonContainer root = null;
+    
 
     /**
      * Looks for the "file" parameter and automatically uses
@@ -202,12 +361,10 @@ public class JsonTool extends ImportSupport implements Iterable
                     throw new Exception(msg);
                 }
                 case TYPE_OBJECT:
-                    jsonArray = null;
-                    jsonObject = new JSONObject(new JSONTokener(reader));
+                    root = new HybridJsonContainer(new JSONObject(new JSONTokener(reader)));
                     break;
                 case TYPE_ARRAY:
-                    jsonObject = null;
-                    jsonArray = new JSONArray(new JSONTokener(reader));
+                    root = new HybridJsonContainer(new JSONArray(new JSONTokener(reader)));
             }
         }
         catch (Exception e)
@@ -309,7 +466,7 @@ public class JsonTool extends ImportSupport implements Iterable
      */
     public Object root()
     {
-        return jsonObject != null ? jsonObject : jsonArray ;
+        return root;
     }
 
     /**
@@ -319,7 +476,7 @@ public class JsonTool extends ImportSupport implements Iterable
      */
     public Object get(int index)
     {
-        return jsonArray == null ? null : jsonArray.get(index);
+        return root == null ? null : root.get(index);
     }
 
     /**
@@ -329,7 +486,7 @@ public class JsonTool extends ImportSupport implements Iterable
      */
     public Object get(String key)
     {
-        return jsonObject == null ? null : jsonObject.get(key);
+        return root == null ? null : root.get(key);
     }
 
     /**
@@ -338,7 +495,7 @@ public class JsonTool extends ImportSupport implements Iterable
      */
     public Iterator<String> keys()
     {
-        return jsonObject == null ? null : jsonObject.keys();
+        return root == null ? null : root.keys();
     }
 
     /**
@@ -347,7 +504,7 @@ public class JsonTool extends ImportSupport implements Iterable
      */
     public Set<String> keySet()
     {
-        return jsonObject == null ? null : jsonObject.keySet();
+        return root == null ? null : root.keySet();
     }
 
     /**
@@ -357,15 +514,7 @@ public class JsonTool extends ImportSupport implements Iterable
      */
     public Iterator iterator()
     {
-        if (jsonObject != null)
-        {
-            return jsonObject.keys();
-        }
-        else if (jsonArray != null)
-        {
-            return jsonArray.iterator();
-        }
-        return null;
+        return root == null ? null : root.iterator();
     }
 
     /**
@@ -374,7 +523,7 @@ public class JsonTool extends ImportSupport implements Iterable
      */
     public int length()
     {
-        return jsonObject == null ? jsonArray == null ? null : jsonArray.length() : jsonObject.length();
+        return root == null ? null : root.length();
     }
 
     /**
@@ -383,7 +532,7 @@ public class JsonTool extends ImportSupport implements Iterable
      */
     public JSONArray names()
     {
-        return jsonObject == null ? null : jsonObject.names();
+        return root == null ? null : root.names();
     }
 
     /**
@@ -393,7 +542,7 @@ public class JsonTool extends ImportSupport implements Iterable
      */
     public Object query(String jsonPointer)
     {
-        return jsonObject == null ? jsonArray == null ? null : jsonArray.query(jsonPointer) : jsonObject.query(jsonPointer);
+        return root == null ? null : root.query(jsonPointer);
     }
 
     /**
@@ -402,6 +551,6 @@ public class JsonTool extends ImportSupport implements Iterable
      */
     public String toString()
     {
-        return jsonObject == null ? jsonArray == null ? "null" : jsonArray.toString() : jsonObject.toString();
+        return root == null ? null : root.toString();
     }
 }

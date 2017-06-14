@@ -44,6 +44,5 @@ public class JsonToolTests
         JsonTool jsonTool = new JsonTool();
         jsonTool.configure(config);
         assertEquals(jsonTool.get("foo"), "bar");
-        assertEquals(jsonTool.get("array").getClass(), JSONArray.class);
     }
 }
