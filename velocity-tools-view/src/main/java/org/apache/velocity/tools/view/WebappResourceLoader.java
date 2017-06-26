@@ -147,7 +147,10 @@ public class WebappResourceLoader extends ResourceLoader
             try
             {
                 rawStream = servletContext.getResourceAsStream(path);
-                result = buildReader(rawStream, encoding);
+                if (rawStream != null)
+                {
+                    result = buildReader(rawStream, encoding);
+                }
 
                 /* save the path and exit the loop if we found the template */
                 if (result != null)
