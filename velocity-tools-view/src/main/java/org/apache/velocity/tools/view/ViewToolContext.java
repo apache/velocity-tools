@@ -109,7 +109,10 @@ public class ViewToolContext extends ToolContext implements ViewContext
         putToolProperty(RESPONSE, getResponse());
         putToolProperty(SESSION, getSession());
         putToolProperty(SERVLET_CONTEXT_KEY, getServletContext());
-        putToolProperty(PATH_KEY, ServletUtils.getPath(getRequest()));
+        if (getRequest() != null)
+        {
+            putToolProperty(PATH_KEY, ServletUtils.getPath(getRequest()));
+        }
     }
 
     protected List<Toolbox> getToolboxes()
@@ -129,12 +132,14 @@ public class ViewToolContext extends ToolContext implements ViewContext
 
     protected void addToolboxesUnderKey(String toolboxKey)
     {
-        Toolbox reqTools = (Toolbox)getRequest().getAttribute(toolboxKey);
-        if (reqTools != null)
+        if (getRequest() != null)
         {
-            addToolbox(reqTools);
+            Toolbox reqTools = (Toolbox)getRequest().getAttribute(toolboxKey);
+            if (reqTools != null)
+            {
+                addToolbox(reqTools);
+            }
         }
-
         if (getSession() != null)
         {
             Toolbox sessTools = (Toolbox)getSession().getAttribute(toolboxKey);
@@ -214,11 +219,11 @@ public class ViewToolContext extends ToolContext implements ViewContext
     {
         if (key.equals(REQUEST))
         {
-            return request;
+            return getRequest();
         }
         else if(key.equals(RESPONSE))
         {
-            return response;
+            return getResponse();
         }
         else if (key.equals(SESSION))
         {
@@ -241,7 +246,11 @@ public class ViewToolContext extends ToolContext implements ViewContext
      */
     public Object getAttribute(String key)
     {
-        Object o = request.getAttribute(key);
+        Object o = null;
+        if (getRequest() != null)
+        {
+            getRequest().getAttribute(key);
+        }
         if (o == null)
         {
             if (getSession() != null)
@@ -324,8 +333,8 @@ public class ViewToolContext extends ToolContext implements ViewContext
      {
          return super.containsKey(key)
            || getAttribute(key) != null
-           || key.equals(REQUEST) && request != null
-           || key.equals(RESPONSE) && response != null
+           || key.equals(REQUEST) && getRequest() != null
+           || key.equals(RESPONSE) && getResponse() != null
            || key.equals(SESSION) && getSession() != null
            || key.equals(APPLICATION) && application != null;
      }
