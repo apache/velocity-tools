@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.velocity.util.ExtProperties;
 import org.slf4j.Logger;
 
 import org.apache.velocity.Template;
@@ -517,7 +518,12 @@ public class VelocityView extends ViewToolManager
         Properties properties = new Properties();
         try
         {
-            properties.load(inputStream);
+            /* For backward compatibility reasons, keep using an ExtProperties at load time,
+             so that redundant properties become multivalued.
+              */
+            ExtProperties extProps = new ExtProperties();
+            extProps.load(inputStream);
+            properties.putAll(extProps);
         }
         catch (IOException ioe)
         {
