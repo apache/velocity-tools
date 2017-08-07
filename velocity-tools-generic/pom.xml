@@ -46,13 +46,17 @@
                       <configuration>
                           <artifactSet>
                               <includes>
-                                  <include>org.json</include>
+                                  <include>com.googlecode.json-simple:json-simple</include>
                               </includes>
                           </artifactSet>
                           <relocations>
                               <relocation>
-                                  <pattern>org.json</pattern>
-                                  <shadedPattern>org.apache.velocity.tools.shaded.org.json</shadedPattern>
+                                  <pattern>org.json.simple</pattern>
+                                  <shadedPattern>org.apache.velocity.tools.shaded.org.json.simple</shadedPattern>
+                              </relocation>
+                              <relocation>
+                                  <pattern>org.json.simple.parser</pattern>
+                                  <shadedPattern>org.apache.velocity.tools.shaded.org.json.simple.parser</shadedPattern>
                               </relocation>
                           </relocations>
                           <minimizeJar>true</minimizeJar>
@@ -96,9 +100,9 @@
           <scope>test</scope>
       </dependency>
       <dependency>
-          <groupId>org.json</groupId>
-          <artifactId>json</artifactId>
-          <version>20160810</version>
+          <groupId>com.googlecode.json-simple</groupId>
+          <artifactId>json-simple</artifactId>
+          <version>1.1.1</version>
       </dependency>
   </dependencies>
 </project>
