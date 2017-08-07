@@ -30,9 +30,9 @@ import java.util.Set;
 
 import org.apache.velocity.tools.ConversionUtils;
 import org.apache.velocity.tools.XmlUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
@@ -139,11 +139,11 @@ public class JsonTool extends ImportSupport implements Iterable
             Object ret = null;
             if (jsonArray != null)
             {
-                ret = wrapIfNeeded(jsonArray.opt(index));
+                ret = wrapIfNeeded(jsonArray.get(index));
             }
             else if (jsonObject != null)
             {
-                ret = wrapIfNeeded(jsonObject.opt(String.valueOf(index)));
+                ret = wrapIfNeeded(jsonObject.get(String.valueOf(index)));
             }
             return ret;
         }
@@ -166,7 +166,7 @@ public class JsonTool extends ImportSupport implements Iterable
             }
             else if (jsonObject != null)
             {
-                ret = wrapIfNeeded(jsonObject.opt(key));
+                ret = wrapIfNeeded(jsonObject.get(key));
             }
             return ret;
         }
@@ -177,7 +177,7 @@ public class JsonTool extends ImportSupport implements Iterable
          */
         public Iterator<String> keys()
         {
-            return jsonObject == null ? null : jsonObject.keys();
+            return jsonObject == null ? null : jsonObject.keySet().iterator();
         }
 
         /**
@@ -198,7 +198,7 @@ public class JsonTool extends ImportSupport implements Iterable
         {
             if (jsonObject != null)
             {
-                return jsonObject.keys();
+                return jsonObject.keySet().iterator();
             }
             else if (jsonArray != null)
             {
@@ -211,28 +211,9 @@ public class JsonTool extends ImportSupport implements Iterable
          * Get size of root object or array.
          * @return size
          */
-        public int length()
+        public int size()
         {
-            return jsonObject == null ? jsonArray == null ? null : jsonArray.length() : jsonObject.length();
-        }
-
-        /**
-         * Get array of root object keys.
-         * @return array of keys
-         */
-        public JSONArray names()
-        {
-            return jsonObject == null ? null : jsonObject.names();
-        }
-
-        /**
-         * Query root object or array using a JSON pointer
-         * @param jsonPointer
-         * @return result
-         */
-        public Object query(String jsonPointer)
-        {
-            return jsonObject == null ? jsonArray == null ? null : wrapIfNeeded(jsonArray.query(jsonPointer)) : wrapIfNeeded(jsonObject.query(jsonPointer));
+            return jsonObject == null ? jsonArray == null ? null : jsonArray.size() : jsonObject.size();
         }
 
         /**
@@ -260,8 +241,7 @@ public class JsonTool extends ImportSupport implements Iterable
         importSupport.configure(config);
     }
 
-    private HybridJsonContainer root = null;
-    
+    private HybridJsonContainer root = null;    
 
     /**
      * Looks for the "file" parameter and automatically uses
@@ -311,65 +291,21 @@ public class JsonTool extends ImportSupport implements Iterable
     {
         try
         {
-            final int lookahead = 100;
-
-            final int TYPE_UNKNOWN = 0;
-            final int TYPE_OBJECT  = 1;
-            final int TYPE_ARRAY   = 2;
-            
-            int jsonType = TYPE_UNKNOWN;
-            
-            if (!reader.markSupported())
+            Object result = new JSONParser().parse(reader);
+            if (result instanceof JSONObject)
             {
-                reader = new BufferedReader(reader);
+                root = new HybridJsonContainer((JSONObject)result);
             }
-            reader.mark(lookahead);
-            char buffer[] = new char[lookahead];
-            int read = reader.read(buffer);
-            reader.reset();
-            for (int i = 0; i < read; ++i)
+            else if (result instanceof JSONArray)
             {
-                switch (buffer[i])
-                {
-                    case '{':
-                        jsonType = TYPE_OBJECT;
-                        break;
-                    case '[':
-                        jsonType = TYPE_ARRAY;
-                        break;
-                    case ' ':
-                    case '\t':
-                    case '\r':
-                    case '\n':
-                        break;
-                    default:
-                    {
-                        String msg = "could not pase JSON: invalid character at position " + i + ": '" + buffer[i] + "'";
-                        throw new Exception(msg);
-                    }
-                }
-                if (jsonType != TYPE_UNKNOWN)
-                {
-                    break;
-                }
+                root = new HybridJsonContainer((JSONArray)result);
             }
-            switch (jsonType)
-            {
-                case TYPE_UNKNOWN:
-                {
-                    String msg = "could not pase JSON: did not find any '{' or '[' in the first " + lookahead + " characters";
-                    throw new Exception(msg);
-                }
-                case TYPE_OBJECT:
-                    root = new HybridJsonContainer(new JSONObject(new JSONTokener(reader)));
-                    break;
-                case TYPE_ARRAY:
-                    root = new HybridJsonContainer(new JSONArray(new JSONTokener(reader)));
-            }
+            else throw new Exception("Expecting JSON array or object");
         }
         catch (Exception e)
         {
             getLog().error("error while setting up JSON source", e);
+            root = null;
         }
     }
 
@@ -521,28 +457,9 @@ public class JsonTool extends ImportSupport implements Iterable
      * Get size of root object or array.
      * @return size
      */
-    public int length()
+    public int size()
     {
-        return root == null ? null : root.length();
-    }
-
-    /**
-     * Get array of root object keys.
-     * @return array of keys
-     */
-    public JSONArray names()
-    {
-        return root == null ? null : root.names();
-    }
-
-    /**
-     * Query root object or array using a JSON pointer
-     * @param jsonPointer
-     * @return result
-     */
-    public Object query(String jsonPointer)
-    {
-        return root == null ? null : root.query(jsonPointer);
+        return root == null ? null : root.size();
     }
 
     /**
