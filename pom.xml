@@ -130,9 +130,7 @@
         <module>velocity-tools-generic</module>
         <module>velocity-tools-view</module>
         <module>velocity-tools-view-jsp</module>
-        <module>velocity-tools-uberjar</module>
         <module>velocity-tools-examples</module>
-        <module>velocity-tools-assembly</module>
     </modules>
 
     <!-- This project is an effort by many people. If you feel that your name
