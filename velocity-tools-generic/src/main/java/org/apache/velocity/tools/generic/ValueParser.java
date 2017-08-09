@@ -19,11 +19,12 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Locale;
-import java.util.Set;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.velocity.tools.ConversionUtils;
 import org.apache.velocity.tools.Scope;
@@ -610,7 +611,7 @@ public class ValueParser extends FormatConfig implements Map<String,Object>
      */
     public boolean hasSubkeys()
     {
-        if (getSource() == null)
+        if (getSource() == null || !getAllowSubkeys())
         {
             return false;
         }
@@ -634,6 +635,31 @@ public class ValueParser extends FormatConfig implements Map<String,Object>
         return hasSubkeys;
     }
 
+    /**
+     * returns the set of all possible first-level subkeys, including complete keys without dots (or returns keySet() if allowSubKeys is false)
+     */
+    public Set<String> getSubkeys()
+    {
+        Set<String> keys = keySet();
+        if (getSource() == null || !getAllowSubkeys())
+        {
+            return keys;
+        }
+        else
+        {
+            Set<String> result = new TreeSet<String>();
+            for (String key: keys)
+            {
+                int dot = key.indexOf('.');
+                if (dot > 0 && dot < key.length())
+                {
+                    result.add(key.substring(0, dot));
+                }
+            }
+            return result;
+        }
+    }
+    
     /**
      * subkey getter that returns a map <subkey#2> -> value
      * for every "subkey.subkey2" found entry
@@ -677,22 +703,22 @@ public class ValueParser extends FormatConfig implements Map<String,Object>
 
     public int size()
     {
-        return getSource().size();
+        return getSource() == null ? 0 : getSource().size();
     }
 
     public boolean isEmpty()
     {
-        return getSource().isEmpty();
+        return getSource() == null || getSource().isEmpty();
     }
 
     public boolean containsKey(Object key)
     {
-        return getSource().containsKey(key);
+        return getSource() == null ? false : getSource().containsKey(key);
     }
 
     public boolean containsValue(Object value)
     {
-        return getSource().containsValue(value);
+        return getSource() == null ? false : getSource().containsValue(value);
     }
 
     public Object get(Object key)
@@ -745,11 +771,11 @@ public class ValueParser extends FormatConfig implements Map<String,Object>
     }
 
     public Set<String> keySet() {
-        return getSource().keySet();
+        return getSource() == null ? null : getSource().keySet();
     }
 
     public Collection values() {
-        return getSource().values();
+        return getSource() == null ? null : getSource().values();
     }
 
     public Set<Map.Entry<String,Object>> entrySet() {
