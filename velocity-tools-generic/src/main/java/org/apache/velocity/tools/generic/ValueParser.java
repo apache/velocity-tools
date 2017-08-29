@@ -255,7 +255,7 @@ public class ValueParser extends FormatConfig implements Map<String,Object>
     protected String[] parseStringList(String value)
     {
         String[] values;
-        if (value.indexOf(stringsDelimiter) < 0)
+        if (stringsDelimiter.length() == 0 || value.indexOf(stringsDelimiter) < 0)
         {
             values = new String[] { value };
         }
