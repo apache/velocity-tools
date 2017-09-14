@@ -249,7 +249,7 @@ public class ViewToolContext extends ToolContext implements ViewContext
         Object o = null;
         if (getRequest() != null)
         {
-            getRequest().getAttribute(key);
+            o = getRequest().getAttribute(key);
         }
         if (o == null)
         {
