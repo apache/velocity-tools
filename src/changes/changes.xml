@@ -24,13 +24,16 @@
     <title>Changelog</title>
   </properties>
   <body>
-
     <release version="3.0-SNAPSHOT" date="In Subversion">
+      <action type="fix" dev="cbrisson">
+        Removed deprecated components velocity-tools-uberjar and velocity-tools-assembly
+      </action>
       <action type="add" dev="cbrisson">
         ImportTool reenginering:
         <ul>
           <li>the ImportSupport utility class has been splitted between o.a.v.generic.ImportSupport and o.a.v.view.ViewImportSupport</li>
           <li>the ImportTool now has a generic version (for remote URLs import) and a view version (for local URLs import) which cannot use remote URLs in safe mode</li>
+          <li>the local URLs import respects the 3.1 servlets specification: query parameters of the included URL do overwrite original ones</li>
         </ul>
       </action>
       <action type="add" dev="cbrisson">

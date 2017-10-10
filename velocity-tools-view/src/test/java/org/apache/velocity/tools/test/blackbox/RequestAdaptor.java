@@ -158,6 +158,18 @@ public class RequestAdaptor implements InvocationHandler
         {
             return new IteratorEnumeration(_params.keySet().iterator());
         }
+        else if("getAttribute".equals(methodName))
+        {
+            return null;
+        }
+        else if("setAttribute".equals(methodName))
+        {
+            return null;
+        }
+        else if("removeAttribute".equals(methodName))
+        {
+            return null;
+        }
         else if("getSession".equals(methodName))
         {
             return null;
