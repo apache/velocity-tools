@@ -29,7 +29,11 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Locale;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -38,6 +42,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
+import org.apache.velocity.tools.Toolbox;
 import org.apache.velocity.tools.generic.ImportSupport;
 import org.apache.velocity.tools.generic.ValueParser;
 import org.slf4j.Logger;
@@ -183,6 +188,14 @@ public class ViewImportSupport extends ImportSupport
         // strip the session id from the url
         url = stripSession(url);
 
+        // According to the 3.1 Servlet API specification, the query string parameters of the URL to include
+        // take *precedence* over the original query string parameters. It means that:
+        // - we must merge both query strings
+        // - we must set aside the cached request toolbox during the include
+        url = mergeQueryStrings(url);
+        Object parentToolbox = request.getAttribute(Toolbox.KEY);
+        request.removeAttribute(Toolbox.KEY);
+        
         // from this context, get a dispatcher
         RequestDispatcher rd = application.getRequestDispatcher(url);
         if (rd == null)
@@ -206,6 +219,10 @@ public class ViewImportSupport extends ImportSupport
         {
             throw new IOException("Problem importing the local URL \"" + url + "\": " + se.getMessage(), se);
 
+        }
+        finally
+        {
+            request.setAttribute(Toolbox.KEY, parentToolbox);
         }
         /* let RuntimeExceptions go through */
 
@@ -488,6 +505,57 @@ public class ViewImportSupport extends ImportSupport
             u.delete(sessionStart, sessionEnd);
         }
         return u.toString();
+    }
+
+    //*********************************************************************
+    // Merge query strings
+
+    /**
+     * Merge original parameters into the query string
+     *
+     * @param url the url to include
+     * @return the merged url
+     */
+    protected String mergeQueryStrings(String url)
+    {
+        Map<String, String[]> originalParameters = request.getParameterMap();
+        if (originalParameters.size() > 0)
+        {
+            StringBuilder builder = new StringBuilder(url);
+            Set<String> newParameterNames = new HashSet<String>();
+            int qm = url.indexOf('?');
+            if (qm != -1)
+            {
+                
+                String[] newParameters = url.substring(qm + 1).split("&");
+                for (String newParam : newParameters)
+                {
+                    int eq = newParam.indexOf('=');
+                    if (eq != -1)
+                    {
+                        newParam = newParam.substring(eq);
+                    }
+                    newParameterNames.add(newParam);
+                }
+            }
+            char separator = ( qm == -1 ? '?' : '&' );
+            for (Map.Entry<String, String[]> entry : originalParameters.entrySet())
+            {
+                String key = entry.getKey();
+                if (!newParameterNames.contains(key))
+                {
+                    key = URLEncoder.encode(key);
+                    for (String value : entry.getValue())
+                    {
+                        builder.append(separator);
+                        separator = '&';
+                        builder.append(key).append('=').append(URLEncoder.encode(value));
+                    }
+                }
+            }
+            url = builder.toString();
+        }
+        return url;
     }
 
     //*********************************************************************
