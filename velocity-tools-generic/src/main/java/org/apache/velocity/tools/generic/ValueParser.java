@@ -268,9 +268,9 @@ public class ValueParser extends FormatConfig implements Map<String,Object>
     }
 
     /**
-     * <p>Returns an array of values. If the internal value is a string, it is split using the ',' delimitor (if you need
-     * to split strings around another separator, use $collection.split() with the properly configured separator).</p>
-     * <p>If the internal value is not an array or is a string without any ',', a singletin array is returned.</p>
+     * <p>Returns an array of values. If the internal value is a string, it is split using the configured delimitor
+     * (',' by default).</p>
+     * <p>If the internal value is not an array or is a string without any delimiter, a singletin array is returned.</p>
      * @param key the desired parameter's key
      * @return array of values, or null of the key has not been found.
      *         specified alternate Object if there is no matching
