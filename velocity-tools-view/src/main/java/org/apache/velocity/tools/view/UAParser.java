@@ -33,11 +33,27 @@ public class UAParser
 
         public UAEntity(String n, String maj, String min)
         {
+            this(n, maj, min, false);
+        }
+        
+        public UAEntity(String n, String maj, String min, boolean wantsFullVersion)
+        {
             name = n;
             try
             {
                 majorVersion = maj == null ? -1 : Integer.valueOf(maj);
-                minorVersion = maj == null ? -1 : Integer.valueOf(min);
+                try
+                {
+                    minorVersion = maj == null ? -1 : Integer.valueOf(min);
+                }
+                catch (NumberFormatException nfe)
+                {
+                    minorVersion = -1;
+                    if (wantsFullVersion)
+                    {
+                        majorVersion = -1;
+                    }
+                }
             }
             catch (NumberFormatException nfe)
             {
@@ -152,7 +168,7 @@ public class UAParser
             String alternate = browserTranslationMap.get(entity.toLowerCase());
             if (alternate != null) { entity = alternate; }
             if ("Navigator".equals(entity)) { entity = "Netscape"; }
-            browser = new UAEntity(entity, major, minor);
+            browser = new UAEntity(entity, major, minor, true);
             if ("Edge".equals(entity) && renderingEngine == null) { renderingEngine = new UAEntity("EdgeHTML", major, minor); }
         }
 
