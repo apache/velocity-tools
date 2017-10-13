@@ -334,6 +334,7 @@ martha=engine
 presto=engine
 prince=engine
 trident=engine
+gecko=engine
 
 # operating systems
 amigaos=os,desktop
