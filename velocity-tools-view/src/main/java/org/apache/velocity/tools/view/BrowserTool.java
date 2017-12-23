@@ -49,6 +49,7 @@ import javax.servlet.http.HttpServletRequest;
  * <li><b>Specific rendering engine tests:</b>gecko webKit KHTML trident blink edgeHTML presto</li>
  * <li><b>Specific OS tests:</b>windows OSX linux unix BSD android iOS symbian</li>
  * <li><b>Languages</b>: <i>preferredLanguageTag</i> (a string like 'en', 'da', 'en-US', ...), <i>preferredLocale</i> (a java Locale)</li>
+ * <li><b>IP address</b>: <i>IPAddress</i>
  * </ul>
  *
  * <p>Language properties are filtered by the languagesFilter tool param, if present, which is here to specify which languages are acceptable on the server side.
@@ -100,6 +101,9 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
 {
     private static final long serialVersionUID = 1734529350532353339L;
 
+    /* IP */
+    private String IPAddress = null;
+    
     /* User-Agent */
     private String userAgentString = null;
     private String lowercaseUserAgentString = null;
@@ -125,6 +129,19 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
         {
             setUserAgentString(request.getHeader("User-Agent"));
             setAcceptLanguage(request.getHeader("Accept-Language"));
+
+            /* Get IP Address */
+            IPAddress = request.getHeader("X-FORWARDED-FOR");
+            if (IPAddress == null)
+            {
+                IPAddress = request.getRemoteAddr();
+            }
+            int coma;
+            if (IPAddress != null && (coma = IPAddress.indexOf(',')) != -1)
+            {
+                /* keep the leftmost address */
+                IPAddress = IPAddress.substring(0, coma);
+            }
         }
         else
         {
@@ -198,7 +215,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
     }
 
 
-    /* Generic getter for unknown tests
+    /* Generic getter for custom tests
      */
     public boolean get(String key)
     {
@@ -213,6 +230,25 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
     public String getAcceptLanguage()
     {
         return acceptLanguage;
+    }
+
+    /**
+     * <p>
+     *   Get the client browser IP address. In the session scope, which is the default,
+     *   it corresponds to the <i>first</i> seen IP adress.
+     * </p>
+     * <p>
+     *   The tool tries to get the real IP address whenever the request has been proxied.
+     * </p>
+     * <p>
+     *   Please note that the result may be null.
+     * </p>
+     * @return the IP address as a string
+     * @Since VelocityTools 3.0
+     */
+    public String getIPAddress()
+    {
+        return IPAddress;
     }
 
     /* device type */
