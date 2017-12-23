@@ -25,6 +25,9 @@
   </properties>
   <body>
     <release version="3.0-SNAPSHOT" date="In Subversion">
+      <action type="add" dev="cbrisson">
+        Added <code>$browser.IPAddress</code>
+      </action>
       <action type="fix" dev="cbrisson">
         Removed deprecated components velocity-tools-uberjar and velocity-tools-assembly
       </action>
