@@ -20,7 +20,7 @@
 -->
 
 <tools>
-    <data type="number" key="TOOLS_VERSION" value="2.0"/>
+    <data type="number" key="TOOLS_VERSION" value="3.0-SNAPSHOT"/>
     <data type="boolean" key="GENERIC_TOOLS_AVAILABLE" value="true"/>
     <toolbox scope="application">
         <tool class="org.apache.velocity.tools.generic.ClassTool"/>
