@@ -48,10 +48,13 @@ import org.apache.velocity.tools.generic.ValueParser;
 @ValidScope(Scope.REQUEST)
 public class ImportTool extends org.apache.velocity.tools.generic.ImportTool
 {
-    protected void initializeImportSupport(ValueParser config)
+    protected synchronized void initializeImportSupport(ValueParser config)
     {
-        importSupport = new ViewImportSupport();
-        importSupport.configure(config);
+        if (importSupport == null)
+        {
+            importSupport = new ViewImportSupport();
+            importSupport.configure(config);
+        }
     }
 
     protected void configure(ValueParser values)

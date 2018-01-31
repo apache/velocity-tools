@@ -97,10 +97,13 @@ public class XmlTool extends SafeConfig implements Serializable
      * ImportSupport initialization
      * @param config
      */
-    protected void initializeImportSupport(ValueParser config)
+    protected synchronized void initializeImportSupport(ValueParser config)
     {
-        importSupport = new ImportSupport();
-        importSupport.configure(config);
+        if (importSupport == null)
+        {
+            importSupport = new ImportSupport();
+            importSupport.configure(config);
+        }
     }
 
     /**
@@ -182,7 +185,7 @@ public class XmlTool extends SafeConfig implements Serializable
      * Parses the given XML string and uses the resulting {@link Document}
      * as the root {@link Node}.
      */
-    public void parse(String xml)
+    public XmlTool parse(String xml)
     {
         try
         {
@@ -195,16 +198,21 @@ public class XmlTool extends SafeConfig implements Serializable
         {
             getLog().error("could not parse given XML string", e);
         }
+        return this;
     }
 
     /**
      * Reads and parses a local resource file
      */
-    public void read(String resource)
+    public XmlTool read(String resource)
     {
         Reader reader = null;
         try
         {
+            if (importSupport == null)
+            {
+                initializeImportSupport(new ValueParser());
+            }
             reader = importSupport.getResourceReader(resource);
             if (reader != null)
             {
@@ -226,16 +234,21 @@ public class XmlTool extends SafeConfig implements Serializable
                 catch (IOException ioe) {}
             }
         }
+        return this;
     }
 
     /**
      * Reads and parses a remote or local URL
      */
-    public void fetch(String url)
+    public XmlTool fetch(String url)
     {
         Reader reader = null;
         try
         {
+            if (importSupport == null)
+            {
+                initializeImportSupport(new ValueParser());
+            }
             reader = importSupport.acquireReader(url);
             if (reader != null)
             {
@@ -257,6 +270,7 @@ public class XmlTool extends SafeConfig implements Serializable
                 catch (IOException ioe) {}
             }
         }
+        return this;
     }
 
     /**

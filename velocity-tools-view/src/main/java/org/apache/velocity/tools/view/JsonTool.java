@@ -47,10 +47,13 @@ public class JsonTool extends org.apache.velocity.tools.generic.JsonTool
      * @param config
      */
     @Override
-    protected void initializeImportSupport(ValueParser config)
+    protected synchronized void initializeImportSupport(ValueParser config)
     {
-        importSupport = new ViewImportSupport();
-        importSupport.configure(config);
+        if (importSupport == null)
+        {
+            importSupport = new ViewImportSupport();
+            importSupport.configure(config);
+        }
     }
 
     /**

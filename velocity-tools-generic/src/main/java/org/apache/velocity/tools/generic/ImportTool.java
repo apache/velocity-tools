@@ -55,10 +55,13 @@ public class ImportTool extends SafeConfig
      * Importsupport initialization
      * @param config
      */
-    protected void initializeImportSupport(ValueParser config)
+    protected synchronized void initializeImportSupport(ValueParser config)
     {
-        importSupport = new ImportSupport();
-        importSupport.configure(config);
+        if (importSupport == null)
+        {
+            importSupport = new ImportSupport();
+            importSupport.configure(config);
+        }
     }
 
     /**
@@ -84,6 +87,10 @@ public class ImportTool extends SafeConfig
         }
         try
         {
+            if (importSupport == null)
+            {
+                initializeImportSupport(new ValueParser());
+            }
             return importSupport.getResourceString(resource);
         }
         catch (Exception ex)
@@ -107,6 +114,10 @@ public class ImportTool extends SafeConfig
         }
         try
         {
+            if (importSupport == null)
+            {
+                initializeImportSupport(new ValueParser());
+            }
             return importSupport.acquireString(url);
         }
         catch (Exception ex)
