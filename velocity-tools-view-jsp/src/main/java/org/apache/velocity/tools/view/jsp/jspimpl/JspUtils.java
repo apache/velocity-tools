@@ -115,7 +115,6 @@ public class JspUtils
      * @param pageContext The page context.
      * @param tag The tag to execute.
      * @throws JspException If something goes wrong.
-     * @throws IOException If something goes wrong.
      */
     public static void executeTag(InternalContextAdapter context, Node node,
             PageContext pageContext, Tag tag) throws JspException
