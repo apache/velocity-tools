@@ -40,10 +40,13 @@ public class XmlTool extends org.apache.velocity.tools.generic.XmlTool
      * @param config
      */
     @Override
-    protected void initializeImportSupport(ValueParser config)
+    protected synchronized void initializeImportSupport(ValueParser config)
     {
-        importSupport = new ViewImportSupport();
-        importSupport.configure(config);
+        if (importSupport == null)
+        {
+            importSupport = new ViewImportSupport();
+            importSupport.configure(config);
+        }
     }
 
     /**

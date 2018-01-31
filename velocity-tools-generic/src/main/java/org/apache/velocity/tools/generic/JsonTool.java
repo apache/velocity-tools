@@ -88,10 +88,13 @@ public class JsonTool extends ImportSupport implements Iterable
      * ImportSupport initialization
      * @param config
      */
-    protected void initializeImportSupport(ValueParser config)
+    protected synchronized void initializeImportSupport(ValueParser config)
     {
-        importSupport = new ImportSupport();
-        importSupport.configure(config);
+        if (importSupport == null)
+        {
+            importSupport = new ImportSupport();
+            importSupport.configure(config);
+        }
     }
 
     private JsonContent root = null;    
@@ -192,6 +195,10 @@ public class JsonTool extends ImportSupport implements Iterable
             Reader reader = null;
             try
             {
+                if (importSupport == null)
+                {
+                    initializeImportSupport(new ValueParser());
+                }
                 reader = importSupport.getResourceReader(resource);
                 if (reader != null)
                 {
@@ -227,6 +234,10 @@ public class JsonTool extends ImportSupport implements Iterable
             Reader reader = null;
             try
             {
+                if (importSupport == null)
+                {
+                    initializeImportSupport(new ValueParser());
+                }
                 reader = importSupport.acquireReader(url);
                 if (reader != null)
                 {
