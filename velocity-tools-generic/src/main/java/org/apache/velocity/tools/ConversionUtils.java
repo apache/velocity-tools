@@ -31,10 +31,13 @@ import java.text.FieldPosition;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -840,5 +843,17 @@ public class ConversionUtils
         }
         catch (Exception e) {}
         return null;
+    }
+
+    public static List asList(Object value)
+    {
+        if (value instanceof List) return (List)value;
+        else if (value.getClass().isArray()) return Arrays.asList(value);
+        else
+        {
+            List ret = new ArrayList();
+            ret.add(value);
+            return ret;
+        }
     }
 }
