@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 import org.apache.velocity.tools.ConversionUtils;
@@ -657,6 +658,19 @@ public class ConversionTool extends LocaleConfig implements Serializable
         return calendars;
     }
 
+    /**
+     * Convert a singleton or an array as List  
+     * @param value Object to be converted
+     * @return either the object itself if it's already a list,
+     *         the object converted to a list if it's an array,
+     *         or a new singleton list.
+     */
+    public List toList(Object value)
+    {
+        if (value == null) return null;
+        else return ConversionUtils.asList(value);
+    }
+    
 
     // --------------------- basic string parsing methods --------------
 
