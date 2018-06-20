@@ -27,6 +27,10 @@
     <servlet-name>velocity</servlet-name>
     <servlet-class>org.apache.velocity.tools.view.VelocityLayoutServlet</servlet-class>
     <init-param>
+      <param-name>org.apache.velocity.tools.loadDefaults</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
       <param-name>org.apache.velocity.tools.cleanConfiguration</param-name>
       <param-value>true</param-value>
     </init-param>

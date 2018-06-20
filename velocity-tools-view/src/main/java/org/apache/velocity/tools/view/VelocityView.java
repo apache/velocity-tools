@@ -149,7 +149,7 @@ public class VelocityView extends ViewToolManager
 
     /**
      * Controls loading of available default tool configurations
-     * provided by VelocityTools. The default is true.
+     * provided by VelocityTools. The default is false.
      */
     public static final String LOAD_DEFAULTS_KEY =
         "org.apache.velocity.tools.loadDefaults";
@@ -350,18 +350,6 @@ public class VelocityView extends ViewToolManager
             velocity.setProperties(appProperties);
         }
 
-        // check for servlet-wide user props in the config init params at the
-        // conventional location, and be silent if they're missing
-        if (!USER_PROPERTIES_PATH.equals(appPropsPath))
-        {
-            Properties appProperties = getProperties(USER_PROPERTIES_PATH, false, false, true);
-            if (appProperties != null)
-            {
-                getLog().debug("Configuring Velocity with properties at: {}", appPropsPath);
-                velocity.setProperties(defaultProperties);
-            }
-        }
-
         // check for a custom location for servlet-wide user props
         String servletPropsPath = config.getInitParameter(PROPERTIES_KEY);
         if (servletPropsPath != null && !USER_PROPERTIES_PATH.equals(servletPropsPath) && (appPropsPath == null || !appPropsPath.equals(servletPropsPath)))
@@ -370,6 +358,18 @@ public class VelocityView extends ViewToolManager
             Properties servletProperties = getProperties(DEFAULT_PROPERTIES_PATH, true, !isInWebInf, isInWebInf);
             getLog().debug("Configuring Velocity with properties at: {}", servletPropsPath);
             velocity.setProperties(servletProperties);
+        }
+
+        // check for servlet-wide user props in the config init params at the
+        // conventional location, and be silent if they're missing
+        if (appPropsPath == null && servletPropsPath == null)
+        {
+            Properties appProperties = getProperties(USER_PROPERTIES_PATH, false, false, true);
+            if (appProperties != null)
+            {
+                getLog().debug("Configuring Velocity with properties at: {}", appPropsPath);
+                velocity.setProperties(defaultProperties);
+            }
         }
 
         /* now that velocity engine is initialized, re-initialize our logger
@@ -383,7 +383,6 @@ public class VelocityView extends ViewToolManager
      * Here's the configuration lookup/loading order:
      * <ol>
      * <li>If loadDefaults is true, {@link ConfigurationUtils#getDefaultTools()}</li>
-     * <li>{@link ConfigurationUtils#getAutoLoaded}(false)</li>
      * <li>Config file optionally specified by servletContext {@code org.apache.velocity.tools} init-param</li>
      * <li>Config file optionally at {@code /WEB-INF/tools.xml} (conventional location)</li>
      * <li>Config file optionally specified by servlet {@code org.apache.velocity.tools} init-param</li>
@@ -400,41 +399,54 @@ public class VelocityView extends ViewToolManager
         FactoryConfiguration factoryConfig = new FactoryConfiguration("VelocityView.configure(config,factory)");
 
         String loadDefaults = config.findInitParameter(LOAD_DEFAULTS_KEY);
-        if (loadDefaults == null || "true".equalsIgnoreCase(loadDefaults))
+        if (loadDefaults == null || "false".equalsIgnoreCase(loadDefaults))
+        {
+            // let the user know that the defaults were suppressed
+            getLog().debug("Default tools not loaded.");
+        }
+        else
         {
             // add all available default tools
             getLog().trace("Loading default tools configuration...");
             factoryConfig.addConfiguration(ConfigurationUtils.getDefaultTools());
         }
-        else
-        {
-            // let the user know that the defaults were suppressed
-            getLog().debug("Default tools configuration has been suppressed.");
-        }
-
-        // this gets the auto loaded config from the classpath
-        // this doesn't include defaults since they're handled already
-        FactoryConfiguration autoLoaded = ConfigurationUtils.getAutoLoaded(false, true, false);
-        factoryConfig.addConfiguration(autoLoaded);
 
         // check for application-wide user config in the context init params
         String appToolsPath = servletContext.getInitParameter(TOOLS_KEY);
-        setConfig(factoryConfig, appToolsPath, true);
-
-        // check for user configuration at the conventional location,
-        // and be silent if they're missing
-        setConfig(factoryConfig, USER_TOOLS_PATH, false);
+        if (appToolsPath != null)
+        {
+            FactoryConfiguration appToolsConfig = getConfiguration(appToolsPath, true);
+            factoryConfig.addConfiguration(appToolsConfig);
+            getLog().debug("Loaded configuration from: {}", appToolsPath);
+        }
 
         // check for a custom location for servlet-wide user props
         String servletToolsPath = config.getInitParameter(TOOLS_KEY);
-        setConfig(factoryConfig, servletToolsPath, true);
+        if (servletToolsPath != null)
+        {
+            FactoryConfiguration servletToolsConfig = getConfiguration(appToolsPath, true);
+            factoryConfig.addConfiguration(servletToolsConfig);
+            getLog().debug("Loaded configuration from: {}", servletToolsPath);
+        }
+
+        if (appToolsPath == null && servletToolsPath == null)
+        {
+            // check for user configuration at the conventional location,
+            // and be silent if they're missing
+            FactoryConfiguration standardLocationConfiguration = getConfiguration(USER_TOOLS_PATH, false);
+            if (standardLocationConfiguration != null)
+            {
+                factoryConfig.addConfiguration(standardLocationConfiguration);
+                getLog().debug("Loaded configuration from: {}", USER_TOOLS_PATH);
+            }
+        }
 
         // check for "injected" configuration in application attributes
         FactoryConfiguration injected = ServletUtils.getConfiguration(servletContext);
         if (injected != null)
         {
-            getLog().debug("Adding configuration instance in servletContext attributes as '{}'", TOOLS_KEY);
             factoryConfig.addConfiguration(injected);
+            getLog().debug("Added configuration instance in servletContext attributes as '{}'", TOOLS_KEY);
         }
 
         // see if we should only keep valid tools, data, and properties

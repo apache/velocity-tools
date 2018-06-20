@@ -145,7 +145,7 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
 
     public EasyFactoryConfiguration autoLoad(boolean includeDefaults)
     {
-        addConfiguration(ConfigurationUtils.getAutoLoaded(includeDefaults));
+        addConfiguration(ConfigurationUtils.getDefaultTools());
         addedDefaults = true;
         return this;
     }
