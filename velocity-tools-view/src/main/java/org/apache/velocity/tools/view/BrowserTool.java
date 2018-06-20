@@ -117,7 +117,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
     private List<String> languagesFilter = null;
     private String preferredLanguage = null;
 
-    private static Pattern quality = Pattern.compile("^q\\s*=\\s*(\\d(?:0(?:.\\d{0,3})?|1(?:.0{0,3}))?)$");
+    private static Pattern quality = Pattern.compile("^q\\s*=\\s*((?:0|1)(?:.\\d{0,3})?)$");
 
     /**
      * Retrieves the User-Agent header from the request (if any).
@@ -538,7 +538,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
         // fallback
         if(preferredLanguage == null)
         {
-            preferredLanguage = filterLanguageTag(languagesFilter == null ? getLocale().getDisplayName() : languagesFilter.get(0));
+            preferredLanguage = filterLanguageTag(languagesFilter == null ? getLocale().getLanguage() : languagesFilter.get(0));
         }
         // preferredLanguage should now never be null
         assert(preferredLanguage != null);
