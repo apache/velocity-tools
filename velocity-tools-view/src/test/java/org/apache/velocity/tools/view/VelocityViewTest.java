@@ -22,6 +22,7 @@ package org.apache.velocity.tools.view;
 import static org.junit.Assert.*;
 import static org.easymock.EasyMock.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 
@@ -64,6 +65,14 @@ public class VelocityViewTest
         expect(config.findInitParameter(VelocityView.USER_OVERWRITE_KEY)).andReturn(null);
         expect(config.findInitParameter(VelocityView.LOAD_DEFAULTS_KEY)).andReturn("false");
         expect(servletContext.getInitParameter(VelocityView.PROPERTIES_KEY)).andReturn(null);
+        expect(servletContext.getResourceAsStream(VelocityView.USER_PROPERTIES_PATH))
+            .andReturn(getClass().getResourceAsStream("/WEB-INF/velocity.properties"));
+        expect(servletContext.getResourceAsStream("/VM_global_library.vm"))
+            .andReturn(getClass().getResourceAsStream("/VM_global_library.vm"));
+        expect(servletContext.getResourceAsStream("/VM_global_library.vm"))
+            .andReturn(getClass().getResourceAsStream("/VM_global_library.vm"));
+        String root = new File(getClass().getResource("/").getFile()).getAbsolutePath();
+        expect(servletContext.getRealPath("/")).andReturn(root);
         expect(config.getInitParameter(VelocityView.PROPERTIES_KEY)).andReturn(null);
         expect(config.findInitParameter(VelocityView.CLEAN_CONFIGURATION_KEY)).andReturn(null);
         expect(servletContext.getInitParameter(VelocityView.TOOLS_KEY)).andReturn(null);
@@ -71,9 +80,11 @@ public class VelocityViewTest
         expect(servletContext.getAttribute(ServletUtils.CONFIGURATION_KEY)).andReturn(null);
         expect(servletContext.getResourceAsStream(VelocityView.USER_TOOLS_PATH))
             .andReturn(getClass().getResourceAsStream("/org/apache/velocity/tools/view/tools.xml"));
-
         expect(request.getAttribute("javax.servlet.include.servlet_path")).andReturn("/charset-test.vm");
         expect(request.getAttribute("javax.servlet.include.path_info")).andReturn(null);
+        expect(servletContext.getResourceAsStream("/charset-test.vm"))
+            .andReturn(getClass().getResourceAsStream("/charset-test.vm"));
+        expect(servletContext.getRealPath("/")).andReturn(root);
 
         // This was necessary to verify the bug, now it is not called at all.
         // expect(response.getCharacterEncoding()).andReturn("ISO-8859-1");

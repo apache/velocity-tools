@@ -27,6 +27,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -212,22 +214,7 @@ public class ClassUtils
         return foundSome;
     }
 
-    /**
-     * Load a given resource.
-     * <p/>
-     * This method will try to load the resource using the following methods (in order):
-     * <ul>
-     * <li>Thread.currentThread().getContextClassLoader().getResource(name)</li>
-     * <li>{@link ClassUtils}.class.getClassLoader().getResource(name)</li>
-     * <li>{@link ClassUtils}.class.getResource(name)</li>
-     * <li>caller.getClass().getResource(name) or, if caller is a Class,
-     *     caller.getResource(name)</li>
-     * </ul>
-     *
-     * @param name The name of the resource to load
-     * @param caller The instance or {@link Class} calling this method
-     */
-    public static URL getResource(String name, Object caller)
+    private static URL getResourceImpl(final String name, final Object caller)
     {
         URL url = getThreadContextLoader().getResource(name);
         if (url == null)
@@ -250,6 +237,66 @@ public class ClassUtils
         return url;
     }
 
+    private static InputStream getResourceAsStreamImpl(final String name, final Object caller)
+    {
+        InputStream inputStream = getThreadContextLoader().getResourceAsStream(name);
+        if (inputStream == null)
+        {
+            inputStream = getClassLoader().getResourceAsStream(name);
+            if (inputStream == null)
+            {
+                inputStream = ClassUtils.class.getResourceAsStream(name);
+                if (inputStream == null && caller != null)
+                {
+                    Class callingClass = caller.getClass();
+                    if (callingClass == Class.class)
+                    {
+                        callingClass = (Class)caller;
+                    }
+                    inputStream = callingClass.getResourceAsStream(name);
+                }
+            }
+        }
+        return inputStream;
+    }
+
+    /**
+     * Load a given resource.
+     * <p/>
+     * This method will try to load the resource using the following methods (in order):
+     * <ul>
+     * <li>Thread.currentThread().getContextClassLoader().getResource(name)</li>
+     * <li>{@link ClassUtils}.class.getClassLoader().getResource(name)</li>
+     * <li>{@link ClassUtils}.class.getResource(name)</li>
+     * <li>caller.getClass().getResource(name) or, if caller is a Class,
+     *     caller.getResource(name)</li>
+     * </ul>
+     *
+     * @param name The name of the resource to load
+     * @param caller The instance or {@link Class} calling this method
+     */
+    public static URL getResource(final String name, final Object caller)
+    {
+        URL url = null;
+        if (System.getSecurityManager() != null)
+        {
+            url = AccessController.doPrivileged(
+                new PrivilegedAction<URL>()
+                {
+                    @Override
+                    public URL run()
+                    {
+                        return getResourceImpl(name, caller);
+                    }
+                });
+        }
+        else
+        {
+            url = getResourceImpl(name, caller);
+        }
+        return url;
+    }
+
     /**
      * This is a convenience method to load a resource as a stream.
      * <p/>
@@ -258,17 +305,26 @@ public class ClassUtils
      * @param name The name of the resource to load
      * @param caller The instance or {@link Class} calling this method
      */
-    public static InputStream getResourceAsStream(String name, Object caller)
+    public static InputStream getResourceAsStream(final String name, final Object caller)
     {
-        URL url = getResource(name, caller);
-        try
+        InputStream inputStream = null;
+        if (System.getSecurityManager() != null)
         {
-            return (url == null) ? null : url.openStream();
+            inputStream = AccessController.doPrivileged(
+                new PrivilegedAction<InputStream>()
+                {
+                    @Override
+                    public InputStream run()
+                    {
+                        return getResourceAsStreamImpl(name, caller);
+                    }
+                });
         }
-        catch (IOException e)
+        else
         {
-            return null;
+            inputStream = getResourceAsStreamImpl(name, caller);
         }
+        return inputStream;
     }
 
     public static Method findMethod(Class clazz, String name, Class[] params)

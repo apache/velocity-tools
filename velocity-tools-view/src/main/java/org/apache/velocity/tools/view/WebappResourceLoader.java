@@ -22,6 +22,8 @@ package org.apache.velocity.tools.view;
 import java.io.File;
 import java.io.InputStream;
 import java.io.Reader;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.HashMap;
 import javax.servlet.ServletContext;
 import org.apache.velocity.exception.ResourceNotFoundException;
@@ -142,11 +144,26 @@ public class WebappResourceLoader extends ResourceLoader
         Exception exception = null;
         for (int i = 0; i < paths.length; i++)
         {
-            String path = paths[i] + name;
+            final String path = paths[i] + name;
             InputStream rawStream = null;
             try
             {
-                rawStream = servletContext.getResourceAsStream(path);
+                if (System.getSecurityManager() != null)
+                {
+                    rawStream = AccessController.doPrivileged(
+                        new PrivilegedAction<InputStream>()
+                        {
+                            @Override
+                            public InputStream run()
+                            {
+                                return servletContext.getResourceAsStream(path);
+                            }
+                        });
+                }
+                else
+                {
+                    rawStream = servletContext.getResourceAsStream(path);
+                }
                 if (rawStream != null)
                 {
                     result = buildReader(rawStream, encoding);

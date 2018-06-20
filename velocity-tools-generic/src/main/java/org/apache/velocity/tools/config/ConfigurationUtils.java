@@ -163,20 +163,33 @@ public class ConfigurationUtils
     }
 
     /**
+     * Returns a {@link FactoryConfiguration} including all
+     * {@link #getDefaultTools()} (only if includeDefaults is {@code true}) as well as any tools that can be
+     * automatically loaded from "tools.xml" or "tools.properties" found
+     * at the root of the classpath or in the current directory.
+     *
+     * @see #getAutoLoaded(boolean includeDefaults)
+     */
+    public static FactoryConfiguration getAutoLoaded(boolean includeDefaults)
+    {
+        return getAutoLoaded(includeDefaults, true, true);
+    }
+
+    /**
      * Returns a {@link FactoryConfiguration} composed, in order of the
      * following configurations:
      * <ul>
      *   <li>{@link #getDefaultTools()} (only if includeDefaults is {@code true})</li>
-     *   <li>All "tools.xml" configurations found in the classpath root, in the order found</li>
-     *   <li>All "tools.properties" configurations found in the classpath root, in the order found</li>
-     *   <li>The "tools.xml" file in the current directory (if any)</li>
-     *   <li>The "tools.properties" file in the current directory (if any)</li>
+     *   <li>All "tools.xml" configurations found in the classpath root, in the order found (only if searchClasspath is true)</li>
+     *   <li>All "tools.properties" configurations found in the classpath root, in the order found (only if searchClasspath is true)</li>
+     *   <li>The "tools.xml" file in the current directory (if any, and only if searchCurrentDirectory is true)</li>
+     *   <li>The "tools.properties" file in the current directory (if any, and only if searchCurrentDirectory is true)</li>
      * </ul>
      * If the includeDefaults parameter is null and no such files described above
      * can be found, then the configuration returned by this method will be
      * empty, but it should never be {@code null}.
      */
-    public static FactoryConfiguration getAutoLoaded(boolean includeDefaults)
+    public static FactoryConfiguration getAutoLoaded(boolean includeDefaults, boolean searchClasspath, boolean searchCurrentDirectory)
     {
         FactoryConfiguration auto;
         if (includeDefaults)
@@ -192,32 +205,38 @@ public class ConfigurationUtils
 
         //TODO: look for any Tools classes in the root of the classpath
 
-        // look for all tools.xml in the classpath
-        FactoryConfiguration cpXml = findInClasspath(AUTOLOADED_XML_PATH);
-        if (cpXml != null)
+        if (searchClasspath)
         {
-            auto.addConfiguration(cpXml);
+            // look for all tools.xml in the classpath
+            FactoryConfiguration cpXml = findInClasspath(AUTOLOADED_XML_PATH);
+            if (cpXml != null)
+            {
+                auto.addConfiguration(cpXml);
+            }
+
+            // look for all tools.properties in the classpath
+            FactoryConfiguration cpProps = findInClasspath(AUTOLOADED_PROPS_PATH);
+            if (cpProps != null)
+            {
+                auto.addConfiguration(cpProps);
+            }
         }
 
-        // look for all tools.properties in the classpath
-        FactoryConfiguration cpProps = findInClasspath(AUTOLOADED_PROPS_PATH);
-        if (cpProps != null)
+        if (searchCurrentDirectory)
         {
-            auto.addConfiguration(cpProps);
-        }
+            // look for tools.xml in the current file system
+            FactoryConfiguration fsXml = findInFileSystem(AUTOLOADED_XML_PATH);
+            if (fsXml != null)
+            {
+                auto.addConfiguration(fsXml);
+            }
 
-        // look for tools.xml in the current file system
-        FactoryConfiguration fsXml = findInFileSystem(AUTOLOADED_XML_PATH);
-        if (fsXml != null)
-        {
-            auto.addConfiguration(fsXml);
-        }
-
-        // look for tools.properties in the file system
-        FactoryConfiguration fsProps = findInFileSystem(AUTOLOADED_PROPS_PATH);
-        if (fsProps != null)
-        {
-            auto.addConfiguration(fsProps);
+            // look for tools.properties in the file system
+            FactoryConfiguration fsProps = findInFileSystem(AUTOLOADED_PROPS_PATH);
+            if (fsProps != null)
+            {
+                auto.addConfiguration(fsProps);
+            }
         }
 
         // return the config we've accumulated
