@@ -83,7 +83,6 @@ public class ClassUtils
 
     /**
      * Load a class with a given name.
-     * <p/>
      * It will try to load the class in the following order:
      * <ul>
      * <li>From {@link Thread}.currentThread().getContextClassLoader()
@@ -136,6 +135,7 @@ public class ClassUtils
      *
      * @param name The name of the resources to load
      * @param caller The instance or {@link Class} calling this method
+     * @return the list of found resources
      */
     public static List<URL> getResources(String name, Object caller)
     {
@@ -262,7 +262,6 @@ public class ClassUtils
 
     /**
      * Load a given resource.
-     * <p/>
      * This method will try to load the resource using the following methods (in order):
      * <ul>
      * <li>Thread.currentThread().getContextClassLoader().getResource(name)</li>
@@ -274,6 +273,7 @@ public class ClassUtils
      *
      * @param name The name of the resource to load
      * @param caller The instance or {@link Class} calling this method
+     * @return the found URL, or null if not found
      */
     public static URL getResource(final String name, final Object caller)
     {
@@ -299,11 +299,11 @@ public class ClassUtils
 
     /**
      * This is a convenience method to load a resource as a stream.
-     * <p/>
      * The algorithm used to find the resource is given in getResource()
      *
      * @param name The name of the resource to load
      * @param caller The instance or {@link Class} calling this method
+     * @return the resource input stream or null if not found
      */
     public static InputStream getResourceAsStream(final String name, final Object caller)
     {
@@ -399,6 +399,8 @@ public class ClassUtils
     /**
      * Retrieves an Iterator from or creates and Iterator for the specified object.
      * This method is almost entirely copied from Engine's UberspectImpl class.
+     * @param obj the target obj
+     * @return an iterator over the content of obj, or null if not found
      */
     public static Iterator getIterator(Object obj)
         throws NoSuchMethodException, IllegalAccessException, InvocationTargetException

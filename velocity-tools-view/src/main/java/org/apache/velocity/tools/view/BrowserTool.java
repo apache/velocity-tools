@@ -57,18 +57,16 @@ import javax.servlet.http.HttpServletRequest;
  * matching language, the tools defaut locale (or the first value of languagesFilter) is returned.
  * Their value is guarantied to belong to the set provided in languagesFilter, if any.</p>
  *
- * <p>
- *     Notes on implementation:
- *     <ul>
- *         <li>The parsing algorithm is mainly empirical. Used rules are rather generic, so shouldn't need recent updates to be accurate, but accuracy remains far from guaranteed for new devices.</li>
- *         <li>Parsing should be fast, as the parser only uses a single regex iteration on the user agent string.</li>
- *         <li>Game consoles, e-readers, etc... are for now classified as <i>mobile</i> devices (but can sometimes be identified by their operating system).</li>
- *         <li>Needless to say, the frontier between different device types can be very thin...</li>
- *     </ul>
- * </p>
+ * <p>Notes on implementation:</p>
+ * <ul>
+ *     <li>The parsing algorithm is mainly empirical. Used rules are rather generic, so shouldn't need recent updates to be accurate, but accuracy remains far from guaranteed for new devices.</li>
+ *     <li>Parsing should be fast, as the parser only uses a single regex iteration on the user agent string.</li>
+ *     <li>Game consoles, e-readers, etc... are for now classified as <i>mobile</i> devices (but can sometimes be identified by their operating system).</li>
+ *     <li>Needless to say, the frontier between different device types can be very thin...</li>
+ * </ul>
  *
  * <p>Thanks to Lee Semel (lee@semel.net), the author of the HTTP::BrowserDetect Perl module.</p>
- * <p>See also:
+ * <p>See also:</p>
  * <ul>
  *   <li>http://www.zytrax.com/tech/web/browser_ids.htm</li>
  *   <li>http://en.wikipedia.org/wiki/User_agent</li>
@@ -81,14 +79,11 @@ import javax.servlet.http.HttpServletRequest;
  *   <li>http://www.webapps-online.com/online-tools/user-agent-strings</li>
  *   <li>https://whichbrowser.net/data/</li>
  * </ul>
- * </p>
- * <p>
- *     TODO:
- *     <ul>
- *         <li>parse X-Wap-Profile header if present</li>
- *         <li>parse X-Requested-With header if present</li>
- *     </ul>
- * </p>
+ * <p>TODO:</p>
+ * <ul>
+ *     <li>parse X-Wap-Profile header if present</li>
+ *     <li>parse X-Requested-With header if present</li>
+ * </ul>
  *
  * @author <a href="mailto:claude@renegat.net">Claude Brisson</a>
  * @since VelocityTools 2.0
@@ -244,7 +239,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
      *   Please note that the result may be null.
      * </p>
      * @return the IP address as a string
-     * @Since VelocityTools 3.0
+     * @since VelocityTools 3.0
      */
     public String getIPAddress()
     {
@@ -254,7 +249,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
     /* device type */
 
     /**
-     * @Since VelocityTools 3.0
+     * @since VelocityTools 3.0
      */
     public String getDevice()
     {
@@ -267,7 +262,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
     }
 
     /**
-     * @Since VelocityTools 3.0
+     * @since VelocityTools 3.0
      */
     public boolean isTablet()
     {
@@ -275,7 +270,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
     }
 
     /**
-     * @Since VelocityTools 3.0
+     * @since VelocityTools 3.0
      */
     public boolean isMobile()
     {
@@ -283,7 +278,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
     }
 
     /**
-     * @Since VelocityTools 3.0
+     * @since VelocityTools 3.0
      */
     public boolean isDesktop()
     {
@@ -291,7 +286,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
     }
 
     /**
-     * @Since VelocityTools 3.0
+     * @since VelocityTools 3.0
      */
     public boolean isTV()
     {
@@ -299,7 +294,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
     }
 
     /**
-     * @Since VelocityTools 3.0
+     * @since VelocityTools 3.0
      */
     public UAEntity getBrowser()
     {
@@ -307,7 +302,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
     }
 
     /**
-     * @Since VelocityTools 3.0
+     * @since VelocityTools 3.0
      */
     public UAEntity getRenderingEngine()
     {
@@ -315,7 +310,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io
     }
 
     /**
-     * @Since VelocityTools 3.0
+     * @since VelocityTools 3.0
      */
     public UAEntity getOperatingSystem()
     {

@@ -33,12 +33,12 @@ import org.apache.velocity.tools.generic.ValueParser;
 
 /**
  * <p>Utility class for easy parsing of {@link ServletRequest} parameters.</p>
- * <p><pre>
+ * <pre>
  * Template example(s):
- *   $params.foo                ->  bar
- *   $params.getNumber('baz')   ->  12.6
- *   $params.getInt('baz')      ->  12
- *   $params.getNumbers('baz')  ->  [12.6]
+ *   $params.foo                -&gt;  bar
+ *   $params.getNumber('baz')   -&gt;  12.6
+ *   $params.getInt('baz')      -&gt;  12
+ *   $params.getNumbers('baz')  -&gt;  [12.6]
  *
  * Toolbox configuration:
  * &lt;tools&gt;
@@ -46,7 +46,7 @@ import org.apache.velocity.tools.generic.ValueParser;
  *     &lt;tool class="org.apache.velocity.tools.view.ParameterTool"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </pre></p>
+ * </pre>
  *
  * <p>When used as a view tool, this should only be used in the request scope.
  * This class is, however, quite useful in your application's controller, filter,

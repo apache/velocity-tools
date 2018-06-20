@@ -28,13 +28,13 @@ import org.apache.velocity.util.ExtProperties;
 /**
  * <p> This reads in configuration info formatted as a property
  * file using {@link org.apache.velocity.util.ExtProperties}.</p>
- * <p>Example usage:
+ * <p>Example usage:</p>
  * <pre>
  * FactoryConfiguration cfg = new PropertiesFactoryConfiguration();
  * cfg.read("my.properties");
  * ToolboxFactory factory = cfg.createFactory();
- * </pre></p>
- * <p>This reads in a configuration such as:
+ * </pre>
+ * <p>This reads in a configuration such as:</p>
  * <pre>
  * tools.toolbox = request,application
  * tools.property.locale = en_us
@@ -54,7 +54,7 @@ import org.apache.velocity.util.ExtProperties;
  * tools.data.debug = false
  * tools.data.debug.type = boolean
  * </pre>
- * <strong>NOTE</strong>: "property", "data", and "toolbox" are
+ * <p><strong>NOTE</strong>: "property", "data", and "toolbox" are
  * reserved words do not use them as tool keys or toolbox scopes.</p>
  *
  * @author Nathan Bubna

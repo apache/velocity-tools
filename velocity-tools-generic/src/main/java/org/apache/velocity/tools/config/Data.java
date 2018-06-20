@@ -42,7 +42,7 @@ import org.apache.velocity.tools.ConversionUtils;
  * and {@link FactoryConfiguration}.  In other words,
  * anything you can do in a {@link Data} configuration, you
  * can do with a {@link Property}.</p>
- * <p>Some features supported here are:
+ * <p>Some features supported here are:</p>
  * <ul>
  * <li>built in {@link Type}s for strings, booleans, numbers, fields 
  *     and lists thereof</li>
@@ -50,7 +50,6 @@ import org.apache.velocity.tools.ConversionUtils;
  *     with no explicit type</li>
  * <li>support for any Commons-BeanUtils {@link Converter} implementation</li>
  * </ul>
- * </p>
  *
  * @author Nathan Bubna
  * @version $Id: Data.java 511959 2007-02-26 19:24:39Z nbubna $

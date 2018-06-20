@@ -71,7 +71,7 @@ public class ToolInfo implements java.io.Serializable
 
     /**
      * Tries to create an instance of the specified Class, then looks for a
-     * configure(Map<String,Object>) method.
+     * configure(Map&lt;String,Object&gt;) method.
      *
      * @param clazz the java.lang.Class of the tool
      */

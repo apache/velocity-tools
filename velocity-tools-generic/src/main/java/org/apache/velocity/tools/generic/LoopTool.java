@@ -59,23 +59,24 @@ import org.apache.velocity.tools.config.ValidScope;
  * </p>
  * <p>
  * Example of use:
+ * </p>
  * <pre>
  *  Template
  *  ---
  *  #set( $list = [1..7] )
  *  #set( $others = [3..10] )
  *  #foreach( $item in $loop.watch($list).sync($others, 'other') )
- *  $item -> $loop.other
- *  #if( $item >= 5 )$loop.stop()#end
+ *  $item -&gt; $loop.other
+ *  #if( $item &gt;= 5 )$loop.stop()#end
  *  #end
  *
  *  Output
  *  ------
- *  1 -> 3
- *  2 -> 4
- *  3 -> 5
- *  4 -> 6
- *  5 -> 7
+ *  1 -&gt; 3
+ *  2 -&gt; 4
+ *  3 -&gt; 5
+ *  4 -&gt; 6
+ *  5 -&gt; 7
  *
  * Example tools.xml config (if you want to use this with VelocityView):
  * &lt;tools&gt;
@@ -84,7 +85,6 @@ import org.apache.velocity.tools.config.ValidScope;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
  * </pre>
- * </p>
  *
  * @author Nathan Bubna
  * @version $Id: LoopTool.java 590893 2007-11-01 04:40:21Z nbubna $
@@ -377,9 +377,9 @@ public class LoopTool extends SafeConfig
     }
 
     /**
-     * <p>This serves two purposes:
+     * <p>This serves two purposes:</p>
      * <ul><li>Getting the current value of a sync'ed iterator</li>
-     * <li>Abbreviate syntax for properties of outer loops</li></ul></p>
+     * <li>Abbreviate syntax for properties of outer loops</li></ul>
      * <p>First, it searches all the loops being managed for one
      * with a sync'ed Iterator under the specified name and
      * returns the current value for that sync'ed iterator,

@@ -24,7 +24,7 @@ import java.util.Collection;
 /**
  * Utility class for easily alternating over values in a list.
  *
- * <p><b>Example usage:</b>
+ * <p><b>Example usage:</b></p>
  * <pre>
  * java...
  *      String[] myColors = new String[]{"red", "blue"};
@@ -44,7 +44,7 @@ import java.util.Collection;
  *      3 is red and groovy
  *      4 is blue and hip
  *      5 is red and fly
- * </pre></p>
+ * </pre>
  *
  * @since Velocity Tools 1.2
  * @version $Id$

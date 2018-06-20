@@ -94,21 +94,21 @@ import org.apache.velocity.tools.config.InvalidScope;
  *   #end
  * </pre>
  *
- * The output of this might look like:<br><br>
- *   <form method="get" action="">
- *    <input type="text" value="foo">
- *    <input type="submit" value="Find">
- *   </form>
- *   Showing 1-5 of 8<br>
- *   1. foo<br>
- *   2. bar<br>
- *   3. blah<br>
- *   4. woogie<br>
- *   5. baz<br><br>
- *   <b>1</b> <a href="">2</a> <a href="">Next</a>
- * </p>
- * <p>
- * <b>Example tools.xml configuration:</b>
+ * <p>The output of this might look like:</p>
+ * <pre>
+ *   &lt;form method="get" action=""&gt;
+ *    &lt;input type="text" value="foo"&gt;
+ *    &lt;input type="submit" value="Find"&gt;
+ *   &lt;/form&gt;
+ *   Showing 1-5 of 8&lt;br&gt;
+ *   1. foo&lt;br&gt;
+ *   2. bar&lt;br&gt;
+ *   3. blah&lt;br&gt;
+ *   4. woogie&lt;br&gt;
+ *   5. baz&lt;br&gt;&lt;br&gt;
+ *   &lt;b&gt;1&lt;/b&gt; &lt;a href=""&gt;2&lt;/a&gt; &lt;a href=""&gt;Next&lt;/a&gt;
+ * </pre>
+ * <p>Example tools.xml configuration:</p>
  * <pre>
  * &lt;tools&gt;
  *   &lt;toolbox scope="request"&gt;
@@ -116,7 +116,6 @@ import org.apache.velocity.tools.config.InvalidScope;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
  * </pre>
- * </p>
  *
  * @author Nathan Bubna
  * @since VelocityTools 2.0

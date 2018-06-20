@@ -36,18 +36,19 @@ import org.apache.velocity.tools.Scope;
 
 /**
  * <p>View tool for convenient cookie access and creation.</p>
- * <p><pre>
- * Template example(s):
+ * <p>Template example(s):</p>
+ * <pre>
  *  $cookie.foo
  *  $cookie.add("bar",'woogie')
- *
- * tools.xml configuration:
+ * </pre>
+ * <p>tools.xml configuration:</p>
+ * <pre>
  * &lt;tools&gt;
  *   &lt;toolbox scope="request"&gt;
  *     &lt;tool class="org.apache.velocity.tools.view.CookieTool"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </pre></p>
+ * </pre>
  *
  * <p>This class is only designed for use as a request-scope tool.</p>
  *

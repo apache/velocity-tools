@@ -171,7 +171,6 @@ public class ImportSupport extends SafeConfig
      * @param url the URL to read
      * @return a Reader for the InputStream created from the supplied URL
      * @throws IOException
-     * @throws java.lang.Exception
      */
     public Reader acquireReader(String url) throws IOException
     {
@@ -191,7 +190,6 @@ public class ImportSupport extends SafeConfig
      * @param url the URL to read
      * @return a Reader for the InputStream created from the supplied URL
      * @throws IOException
-     * @throws java.lang.Exception
      */
     protected Reader acquireRemoteURLReader(String url) throws  IOException
     {
@@ -305,7 +303,6 @@ public class ImportSupport extends SafeConfig
      * @param url the URL to read
      * @return a Reader for the InputStream created from the supplied URL
      * @throws IOException
-     * @throws java.lang.Exception
      */
     protected Reader acquireLocalURLReader(String url) throws  IOException
     {
@@ -483,8 +480,6 @@ public class ImportSupport extends SafeConfig
      * then with a classpath entry.
      * @param resource the resource to read
      * @return the content of the resource
-     * @throws IOException
-     * @throws java.lang.Exception
      */
     public String getResourceString(String resource)
     {
@@ -518,8 +513,6 @@ public class ImportSupport extends SafeConfig
      * then with a classpath entry.
      * @param resource the resource to read
      * @return a reader of the resource
-     * @throws IOException
-     * @throws java.lang.Exception
      */
     public Reader getResourceReader(String resource)
     {
@@ -567,7 +560,6 @@ public class ImportSupport extends SafeConfig
      * @param resource the resource to read
      * @return the content of the resource
      * @throws IOException
-     * @throws java.lang.Exception
      */
     protected URL getFileResource(String resource) throws Exception
     {
@@ -585,7 +577,6 @@ public class ImportSupport extends SafeConfig
      * @param resource the resource to read
      * @return the content of the resource
      * @throws IOException
-     * @throws java.lang.Exception
      */
     protected URL getClasspathResource(String resource) throws Exception
     {

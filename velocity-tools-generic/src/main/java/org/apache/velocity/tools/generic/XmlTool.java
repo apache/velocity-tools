@@ -45,14 +45,13 @@ import org.w3c.dom.Text;
  * <p>Tool for reading/navigating XML files.  This uses dom4j under the
  * covers to provide complete XPath support for traversing XML files.</p>
  * <p>Configuration parameters:</p>
- * <p>
- *     <ul>
- *         <li><code>resource</code>=<i>file or classpath resource</i></li>
- *         <li><code>source</code>=<i>URL</i></li>
- *     </ul>
- * </p>
+ * <ul>
+ *     <li><code>resource</code>=<i>file or classpath resource</i></li>
+ *     <li><code>source</code>=<i>URL</i></li>
+ * </ul>
  *
- * <p>Here's a short example:<pre>
+ * <p>Here's a short example:</p>
+ * <pre>
  * XML file:
  *   &lt;foo&gt;&lt;bar&gt;woogie&lt;/bar&gt;&lt;a name="test"/&gt;&lt;/foo&gt;
  *
@@ -73,7 +72,7 @@ import org.w3c.dom.Text;
  *              key="foo" source="doc.xml"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </pre></p>
+ * </pre>
  * <p>Note that this tool is included in the default GenericTools configuration
  * under the key "xml". You can read  but unless you set safeMode="false" for it, you will
  * only be able to parse XML strings.  Safe mode is on by default and blocks

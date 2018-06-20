@@ -82,7 +82,7 @@ public class JsonContent
 
     /**
      * Get a value from root array
-     * @param key
+     * @param index
      * @return value, or null
      */
     public Object get(int index)

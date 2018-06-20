@@ -25,7 +25,7 @@ import org.apache.velocity.tools.ToolboxFactory;
 /**
  * <p>{@link FactoryConfiguration} subclass that simplifies the process of
  * configuring a {@link ToolboxFactory} in Java without the use of an
- * xml or properties configuration file.  Below is an example:
+ * xml or properties configuration file.  Below is an example:</p>
  *
  * <pre><code>
  * EasyFactoryConfiguration config = new EasyFactoryConfiguration();
@@ -35,10 +35,10 @@ import org.apache.velocity.tools.ToolboxFactory;
  * config.toolbox(Scope.APPLICATION)
  *  .tool(NumberTool.class).property("locale", Locale.FR);
  * ToolboxFactory factory = config.createFactory();
- * </code></pre></p>
+ * </code></pre>
  *
  * <p>Doing the above without this class would require the following to
- *    create an equivalent {@link FactoryConfiguration} in Java:
+ *    create an equivalent {@link FactoryConfiguration} in Java:</p>
  *
  * <pre><code>
  * FactoryConfiguration factoryConfig = new FactoryConfiguration();
@@ -59,10 +59,10 @@ import org.apache.velocity.tools.ToolboxFactory;
  * toolbox.addTool(tool);
  * factoryConfig.addToolbox(toolbox);
  * ToolboxFactory factory = factoryConfig.createFactory();
- * </code></pre></p>
+ * </code></pre>
  *
  * <p>Of course, you could directly configure a {@link ToolboxFactory}
- *    with relatively little effort as well:
+ *    with relatively little effort as well:</p>
  *
  * <pre><code>
  * ToolboxFactory factory = new ToolboxFactory();
@@ -74,7 +74,7 @@ import org.apache.velocity.tools.ToolboxFactory;
  * factory.addToolInfo(Scope.APPLICATION, info);
  * </code></pre>
  *
- * But this is not reusable.  Why does that matter?  Well, it doesn't matter
+ * <p>But this is not reusable.  Why does that matter?  Well, it doesn't matter
  * for application developers.  But, if another framework wishes to provide
  * a common VelocityTools configuration for application developers, this may
  * come in handy.  Or it may not.  In any case, it was mildly fun to write. :)

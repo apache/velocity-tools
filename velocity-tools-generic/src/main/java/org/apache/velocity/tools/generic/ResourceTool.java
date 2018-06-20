@@ -31,16 +31,16 @@ import org.apache.velocity.tools.config.DefaultKey;
 
 /**
  * <p>Tool for accessing ResourceBundles and formatting messages therein.</p>
- * <p><pre>
- * Template example(s):
- *   $text.foo                      ->  bar
- *   $text.hello.world              ->  Hello World!
- *   $text.keys                     ->  [foo, hello.world, world]
+ * <p>Template example(s):</p>
+ * <pre>
+ *   $text.foo                      -&gt;  bar
+ *   $text.hello.world              -&gt;  Hello World!
+ *   $text.keys                     -&gt;  [foo, hello.world, world]
  *   #set( $otherText = $text.bundle('otherBundle') )
- *   $otherText.foo                 ->  woogie
- *   $otherText.bar                 ->  The args are {0} and {1}.
- *   $otherText.bar.insert(4)       ->  The args are 4 and {1}.
- *   $otherText.bar.insert(4,true)  ->  The args are 4 and true.
+ *   $otherText.foo                 -&gt;  woogie
+ *   $otherText.bar                 -&gt;  The args are {0} and {1}.
+ *   $otherText.bar.insert(4)       -&gt;  The args are 4 and {1}.
+ *   $otherText.bar.insert(4,true)  -&gt;  The args are 4 and true.
  *
  * Toolbox configuration example:
  * &lt;tools&gt;
@@ -50,20 +50,19 @@ import org.apache.velocity.tools.config.DefaultKey;
  *              locale="en_US"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </pre></p>
+ * </pre>
  *
  * <p>This comes in very handy when internationalizing templates.
  *    Note that the default resource bundle baseName is "resources", and
- *    the default locale is either:
- *    <ul>
- *      <li>the result of HttpServletRequest.getLocale() (if used in request scope
+ *    the default locale is either:<p>
+ * <ul>
+ *    <li>the result of HttpServletRequest.getLocale() (if used in request scope
  *          of a VelocityView app)</li>
- *      <li>the configured locale for this tool (as shown above)<li>
- *      <li>the configured locale for the toolbox this tool is in<li>
- *      <li>the configured locale for the toolbox factory managing this tool</li>
- *      <li>the system locale, if none of the above</li>
- *    </ul>.
- * </p>
+ *    <li>the configured locale for this tool (as shown above)<li>
+ *    <li>the configured locale for the toolbox this tool is in<li>
+ *    <li>the configured locale for the toolbox factory managing this tool</li>
+ *    <li>the system locale, if none of the above</li>
+ * </ul>
  * <p>Also, be aware that very few performance considerations have been made
  *    in this initial version.  It should do fine, but if you have performance
  *    issues, please report them to dev@velocity.apache.org, so we can make
@@ -233,7 +232,7 @@ public class ResourceTool extends LocaleConfig implements Serializable
      * will be done.
      *
      * @param prefix the prefix for the requested keys
-     * @param bundles the resource bundles to search
+     * @param baseName the resource bundle base name
      * @param loc the locale to use
      */
     public List<String> getKeys(String prefix, String baseName, Object loc)

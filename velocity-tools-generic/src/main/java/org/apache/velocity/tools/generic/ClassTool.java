@@ -47,8 +47,6 @@ import org.apache.velocity.tools.config.ValidScope;
  * for code execution, nor direct access to the actual methods, constructors or fields
  * of the class being inspected.
  * </p>
- *
- * <p>
  * <pre>
  * Example tools.xml config:
  * &lt;tools&gt;
@@ -57,7 +55,7 @@ import org.apache.velocity.tools.config.ValidScope;
  *              inspect="com.org.Foo"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </pre></p>
+ * </pre>
  * <p>
  * If no Class to be inspected is specified, the default is java.lang.Object.
  * </p>

@@ -25,8 +25,7 @@ import javax.servlet.ServletContext;
 /**
  * <p>Because sometimes you don't care about the difference between a
  * servlet and a filter.  Why isn't there a common interface for
- * {@link FilterConfig} and {@link ServletConfig} already? Sheesh.</p>
- * </p>
+ * {@link JeeFilterConfig} and {@link JeeServletConfig} already? Sheesh.</p>
  * <p>
  * Anyway, this also adds the ability to fake everything if you don't have
  * either a FilterConfig or a ServletConfig handy. Just implement it and

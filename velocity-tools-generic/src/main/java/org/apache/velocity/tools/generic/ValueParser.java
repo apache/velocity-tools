@@ -38,7 +38,7 @@ import org.apache.velocity.tools.config.SkipSetters;
  * <p>This comes in very handy when parsing parameters.</p>
  *
  * <p>When subkeys are allowed, getValue("foo") will also search for all keys
- * of the form "foo.bar" and return a ValueParser of the type "bar" -> value for all found values.</p>
+ * of the form "foo.bar" and return a ValueParser of the type "bar" -&gt; value for all found values.</p>
  *
  * TODO: someone doing java configuration ought to be able to put a source Map
  *       in the tool properties, allowing this to be used like other tools
@@ -661,7 +661,7 @@ public class ValueParser extends FormatConfig implements Map<String,Object>
     }
     
     /**
-     * subkey getter that returns a map <subkey#2> -> value
+     * subkey getter that returns a map subkey#2 -&gt; value
      * for every "subkey.subkey2" found entry
      *
      * @param subkey subkey to search for

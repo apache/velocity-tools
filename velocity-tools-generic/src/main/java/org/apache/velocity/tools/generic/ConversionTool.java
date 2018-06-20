@@ -34,11 +34,12 @@ import org.apache.velocity.tools.config.SkipSetters;
 
 /**
  * <p>Utility class for easy conversion of String values to richer types.</p>
- * <p><pre>
- * Template example(s):
- *   $convert.toNumber('12.6')   ->  12.6
- *   $convert.toInt('12.6')      ->  12
- *   $convert.toNumbers('12.6,42')  ->  [12.6, 42]
+ * <p>
+ * <p>Template example(s):</p>
+ * <pre>
+ *   $convert.toNumber('12.6')   -&gt;  12.6
+ *   $convert.toInt('12.6')      -&gt;  12
+ *   $convert.toNumbers('12.6,42')  -&gt;  [12.6, 42]
  *
  * Toolbox configuration:
  * &lt;tools&gt;
@@ -47,7 +48,7 @@ import org.apache.velocity.tools.config.SkipSetters;
  *              dateFormat="yyyy-MM-dd"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </pre></p>
+ * </pre>
  *
  * <p>This comes in very handy when parsing anything.</p>
  *
@@ -164,7 +165,7 @@ public class ConversionTool extends LocaleConfig implements Serializable
     }
 
     /**
-     * @deprecated use {@link DateTool#getDateFormat()}
+     * @deprecated use {@link DateTool} getDateFormat() methods
      * @return date format
      */
     public final String getDateFormat()

@@ -41,34 +41,27 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 /**
- * <p>Tool which can parse a JSON file.</o>
+ * <p>Tool which can parse a JSON file.</p>
  * <p>Usage:</p>
- * <p>
- *     <ul>
- *         <li>$json.parse(<i>json string</i>)</li>
- *         <li>$json.read(<i>file or classpath resource</i>)</li>
- *         <li>$json.fetch(<i>URL</i>)</li>
- *     </ul>
- * </p>
+ * <ul>
+ *     <li>$json.parse(<i>json string</i>)</li>
+ *     <li>$json.read(<i>file or classpath resource</i>)</li>
+ *     <li>$json.fetch(<i>URL</i>)</li>
+ * </ul>
  * <p>Configuration parameters:</p>
- * <p>
- *     <ul>
- *         <li><code>resource</code>=<i>file or classpath resource</i></li>
- *         <li><code>source</code>=<i>URL</i></li>
- *     </ul>
- * </p>
- * <p>
- *     <pre>
- * Example configuration:
+ * <ul>
+ *     <li><code>resource</code>=<i>file or classpath resource</i></li>
+ *     <li><code>source</code>=<i>URL</i></li>
+ * </ul>
+ * <p>Example configuration:</p>
+ * <pre>
  * &lt;tools&gt;
  *   &lt;toolbox scope="request"&gt;
  *     &lt;tool class="org.apache.velocity.tools.generic.JsonTool"
  *              key="foo" resource="doc.xml"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- *
- *     </pre>
- * </p>
+ * </pre>
  * @author Claude Brisson
  * @since VelocityTools 3.0
  * @version $Id:$

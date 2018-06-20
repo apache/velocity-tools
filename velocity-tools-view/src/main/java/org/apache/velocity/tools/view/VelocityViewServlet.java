@@ -95,7 +95,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
  *     at least not return any of the failed request content. Essentially,
  *     setting this to {@code true} degrades performance in order to enable
  *     a more "correct" error response"</dd>
- *  </dd>
  * </dl>
  *
  * @version $Id$

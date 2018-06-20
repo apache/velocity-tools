@@ -741,9 +741,9 @@ public class VelocityView extends ViewToolManager
      * @param name The file name of the template to retrieve relative to the
      *             template root.
      * @return The requested template.
-     * @throws ResourceNotFoundException if template not found
+     * @throws org.apache.velocity.exception.ResourceNotFoundException if template not found
      *          from any available source.
-     * @throws ParseErrorException if template cannot be parsed due
+     * @throws org.apache.velocity.exception.ParseErrorException if template cannot be parsed due
      *          to syntax (or other) error.
      */
     public Template getTemplate(String name)
@@ -759,9 +759,9 @@ public class VelocityView extends ViewToolManager
      *             template root.
      * @param encoding the character encoding of the template
      * @return The requested template.
-     * @throws ResourceNotFoundException if template not found
+     * @throws org.apache.velocity.exception.ResourceNotFoundException if template not found
      *          from any available source.
-     * @throws ParseErrorException if template cannot be parsed due
+     * @throws org.apache.velocity.exception.ParseErrorException if template cannot be parsed due
      *          to syntax (or other) error.
      */
     public Template getTemplate(String name, String encoding)

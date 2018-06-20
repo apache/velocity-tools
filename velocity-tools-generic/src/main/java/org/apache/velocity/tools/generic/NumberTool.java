@@ -28,17 +28,17 @@ import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
- * Tool for working with {@link Number} in Velocity templates.
+ * <p>Tool for working with {@link Number} in Velocity templates.
  * It is useful for accessing and
  * formatting arbitrary {@link Number} objects. Also
  * the tool can be used to retrieve {@link NumberFormat} instances
- * or make conversions to and from various number types.
- * <p><pre>
+ * or make conversions to and from various number types.</p>
+ * <pre>
  * Example uses:
- *  $myNumber                   -> 13.55
- *  $number.format($myNumber)   -> 13.6
- *  $number.currency($myNumber) -> $13.55
- *  $number.integer($myNumber)  -> 13
+ *  $myNumber                   -gt; 13.55
+ *  $number.format($myNumber)   -gt; 13.6
+ *  $number.currency($myNumber) -gt; $13.55
+ *  $number.integer($myNumber)  -gt; 13
  *
  * Example tools.xml config (if you want to use this with VelocityView):
  * &lt;tools&gt;
@@ -46,7 +46,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  *     &lt;tool class="org.apache.velocity.tools.generic.MathTool"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </pre></p>
+ * </pre>
  *
  * <p>This tool is entirely threadsafe, and has no instance members.
  * It may be used in any scope (request, session, or application).

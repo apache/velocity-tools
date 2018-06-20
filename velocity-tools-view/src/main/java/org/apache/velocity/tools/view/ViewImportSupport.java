@@ -167,7 +167,6 @@ public class ViewImportSupport extends ImportSupport
      * @param url the local URL resource to return as string
      * @return the URL resource as string
      * @throws IOException
-     * @throws java.lang.Exception
      */
     protected String acquireLocalURLString(String url) throws IOException
     {
@@ -259,7 +258,6 @@ public class ViewImportSupport extends ImportSupport
      * @param url the URL to read
      * @return a Reader for the InputStream created from the supplied URL
      * @throws IOException
-     * @throws java.lang.Exception
      */
     protected Reader acquireLocalURLReader(String url) throws IOException
     {

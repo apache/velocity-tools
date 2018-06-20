@@ -64,7 +64,7 @@ import org.apache.velocity.tools.config.ValidScope;
  *   Not Null: not null
  *   Null: --
  *   
- * </pre></p>
+ * </pre>
  *
  * @since VelocityTools 2.0
  * @author <a href="sean@somacity.com">Sean Legassick</a>
@@ -395,7 +395,7 @@ public class DisplayTool extends LocaleConfig
     }
 
     /**
-     * Uses {@link String#format(Locale,String,Object...} to format the specified String
+     * Uses {@link String#format(Locale,String,Object...)} to format the specified String
      * with the specified arguments.  Please note that the format
      * required here is quite different from that of
      * {@link #message(String,Object...)}.

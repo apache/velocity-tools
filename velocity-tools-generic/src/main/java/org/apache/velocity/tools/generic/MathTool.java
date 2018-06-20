@@ -44,14 +44,14 @@ import org.apache.velocity.tools.config.ValidScope;
  * debugging feedback that Velocity will render the reference
  * literally. (e.g. $math.div(1, 0) renders as '$math.div(1, 0)')</li>
  * </ul>
- * <p><pre>
- * Example tools.xml config:
+ * <p>Example tools.xml config:</p>
+ * <pre>
  * &lt;tools&gt;
  *   &lt;toolbox scope="application"&gt;
  *     &lt;tool class="org.apache.velocity.tools.generic.MathTool"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </pre></p>
+ * </pre>
  *
  * @author Nathan Bubna
  * @author Leon Messerschmidt
@@ -679,7 +679,7 @@ public class MathTool extends FormatConfig
      * an instance of the best matching type (Integer, Long, or Double).
      * If either an argument or the result is not an integer (i.e. has no
      * decimal when rendered) the result will be returned as a Double.
-     * If not and the result is < -2147483648 or > 2147483647, then a
+     * If not and the result is &lt; -2147483648 or &gt; 2147483647, then a
      * Long will be returned.  Otherwise, an Integer will be returned.
      */
     protected Number matchType(double out, Number... in)

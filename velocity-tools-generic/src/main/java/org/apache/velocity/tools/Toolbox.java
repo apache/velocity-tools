@@ -187,6 +187,7 @@ public class Toolbox implements java.io.Serializable
      * This will not include the keys for any cached data. Note that inclusion
      * in this map does NOT mean that all these tools will be available for
      * all requests, as this map ignores all path restrictions on the tools.
+     * @return a map of tools classes indexed by key
      */
     public Map<String,Class> getToolClassMap()
     {
@@ -213,6 +214,8 @@ public class Toolbox implements java.io.Serializable
      * Returns a new {@link Toolbox} that is a combination of
      * this Toolbox with one or more specified {@link Toolbox}es.
      * Neither this instance nor those specified are modified.
+     * @param toolboxes Toolboxes to combine
+     * @return the combined toolbox
      */
     public Toolbox combine(Toolbox... toolboxes)
     {

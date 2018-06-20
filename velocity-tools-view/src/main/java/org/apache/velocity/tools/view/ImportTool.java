@@ -26,18 +26,18 @@ import org.apache.velocity.tools.generic.ValueParser;
 
 /**
  * General-purpose text-importing view tool for templates.
- * <p>Usage:<br />
+ * <p>Usage:<br>
  * Just call $import.read("http://www.foo.com/bleh.jsp?sneh=bar") to insert the contents of the named
  * resource into the template.
  * </p>
- * <p><pre>
+ * <pre>
  * Toolbox configuration:
  * &lt;tools&gt;
  *   &lt;toolbox scope="request"&gt;
  *     &lt;tool class="org.apache.velocity.tools.view.ImportTool"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </pre></p>
+ * </pre>
  *
  * @author <a href="mailto:marinoj@centrum.is">Marino A. Jonsson</a>
  * @since VelocityTools 2.0
