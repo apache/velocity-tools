@@ -178,12 +178,17 @@ public class ViewToolsIT {
         checkText(resp,"httpunit","true");
 
         /* check language */
+        conv = new WebConversation();
+        req = new GetMethodWebRequest(ROOT_URL+"browser.vm");
         req.setHeaderField("Accept-Language","en");
         resp = conv.getResponse(req);
         checkText(resp,"preferredLanguage","en");
-        req.setHeaderField("Accept-Language","en-US,en;q=0.8");
+
+        conv = new WebConversation();
+        req = new GetMethodWebRequest(ROOT_URL+"browser.vm");
+        req.setHeaderField("Accept-Language","fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7");
         resp = conv.getResponse(req);
-        checkText(resp,"preferredLanguage","en");
+        checkText(resp,"preferredLanguage","fr");
     }
 
     public @Test void testContextTool() throws Exception {

@@ -30,7 +30,7 @@
   </toolbox>
 
   <toolbox scope="session" locale="en_US">
-    <tool class="org.apache.velocity.tools.view.BrowserTool" languagesFilter="en"/>
+    <tool class="org.apache.velocity.tools.view.BrowserTool" languagesFilter="en,fr"/>
   </toolbox>
 
   <toolbox scope="application">
