@@ -38,6 +38,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
@@ -413,9 +414,22 @@ public class ViewImportSupport extends ImportSupport
             }
             ServletOutputStream sos = new ServletOutputStream()
                 {
+                    @Override
                     public void write(int b) throws IOException
                     {
                         bos.write(b);
+                    }
+
+                    @Override
+                    public boolean isReady()
+                    {
+                        return true;
+                    }
+
+                    @Override
+                    public void setWriteListener(WriteListener writeListener)
+                    {
+                        // nop
                     }
                 };
             return sos;
