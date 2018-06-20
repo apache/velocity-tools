@@ -22,6 +22,8 @@ package org.apache.velocity.tools.view;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.Writer;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.List;
 import java.util.Properties;
 import javax.servlet.FilterConfig;
@@ -305,7 +307,23 @@ public class VelocityView extends ViewToolManager
         // now all is ready - init Velocity
         try
         {
-            velocity.init();
+            if (System.getSecurityManager() != null)
+            {
+                AccessController.doPrivileged(
+                    new PrivilegedAction<Void>()
+                    {
+                        @Override
+                        public Void run()
+                        {
+                            velocity.init();
+                            return null;
+                        }
+                    });
+            }
+            else
+            {
+                velocity.init();
+            }
         }
         catch(Exception e)
         {
@@ -318,26 +336,40 @@ public class VelocityView extends ViewToolManager
 
     protected void configure(final JeeConfig config, final VelocityEngine velocity)
     {
-        // first get the default properties, and bail if we don't find them
-        Properties defaultProperties = getProperties(DEFAULT_PROPERTIES_PATH, true);
+        // first get the default properties from the classpath, and bail if we don't find them
+        Properties defaultProperties = getProperties(DEFAULT_PROPERTIES_PATH, true, true, false);
         velocity.setProperties(defaultProperties);
 
         // check for application-wide user props in the context init params
         String appPropsPath = servletContext.getInitParameter(PROPERTIES_KEY);
-        setProps(velocity, appPropsPath, true);
+        if (appPropsPath != null)
+        {
+            boolean isInWebInf = appPropsPath.startsWith("/WEB-INF") || appPropsPath.startsWith("WEB-INF");
+            Properties appProperties = getProperties(DEFAULT_PROPERTIES_PATH, true, !isInWebInf, isInWebInf);
+            getLog().debug("Configuring Velocity with properties at: {}", appPropsPath);
+            velocity.setProperties(appProperties);
+        }
 
         // check for servlet-wide user props in the config init params at the
         // conventional location, and be silent if they're missing
         if (!USER_PROPERTIES_PATH.equals(appPropsPath))
         {
-            setProps(velocity, USER_PROPERTIES_PATH, false);
+            Properties appProperties = getProperties(USER_PROPERTIES_PATH, false, false, true);
+            if (appProperties != null)
+            {
+                getLog().debug("Configuring Velocity with properties at: {}", appPropsPath);
+                velocity.setProperties(defaultProperties);
+            }
         }
 
         // check for a custom location for servlet-wide user props
         String servletPropsPath = config.getInitParameter(PROPERTIES_KEY);
-        if (!USER_PROPERTIES_PATH.equals(servletPropsPath) && (appPropsPath == null || !appPropsPath.equals(servletPropsPath)))
+        if (servletPropsPath != null && !USER_PROPERTIES_PATH.equals(servletPropsPath) && (appPropsPath == null || !appPropsPath.equals(servletPropsPath)))
         {
-            setProps(velocity, servletPropsPath, true);
+            boolean isInWebInf = servletPropsPath.startsWith("/WEB-INF") || servletPropsPath.startsWith("WEB-INF");
+            Properties servletProperties = getProperties(DEFAULT_PROPERTIES_PATH, true, !isInWebInf, isInWebInf);
+            getLog().debug("Configuring Velocity with properties at: {}", servletPropsPath);
+            velocity.setProperties(servletProperties);
         }
 
         /* now that velocity engine is initialized, re-initialize our logger
@@ -346,32 +378,6 @@ public class VelocityView extends ViewToolManager
          */
         initLog();
     }
-
-    private boolean setProps(VelocityEngine velocity, String path, boolean require)
-    {
-        if (path == null)
-        {
-            // only bother with this if a path was given
-            return false;
-        }
-
-        // this will throw an exception if require is true and there
-        // are no properties at the path.  if require is false, this
-        // will return null when there's no properties at the path
-        Properties props = getProperties(path, require);
-        if (props == null)
-        {
-            return false;
-        }
-
-        getLog().debug("Configuring Velocity with properties at: {}", path);
-
-        // these props will override those already set
-        velocity.setProperties(props);
-        // notify that new props were set
-        return true;
-    }
-
 
     /**
      * Here's the configuration lookup/loading order:
@@ -408,9 +414,7 @@ public class VelocityView extends ViewToolManager
 
         // this gets the auto loaded config from the classpath
         // this doesn't include defaults since they're handled already
-        // and it could theoretically pick up an auto-loaded config from the
-        // filesystem, but that is highly unlikely to happen in a webapp env
-        FactoryConfiguration autoLoaded = ConfigurationUtils.getAutoLoaded(false);
+        FactoryConfiguration autoLoaded = ConfigurationUtils.getAutoLoaded(false, true, false);
         factoryConfig.addConfiguration(autoLoaded);
 
         // check for application-wide user config in the context init params
@@ -475,7 +479,6 @@ public class VelocityView extends ViewToolManager
 
     protected InputStream getInputStream(String path, boolean required)
     {
-        // first, search the classpath
         InputStream inputStream = ServletUtils.getInputStream(path, this.servletContext);
 
         // if we didn't find one
@@ -499,19 +502,33 @@ public class VelocityView extends ViewToolManager
 
     protected Properties getProperties(String path)
     {
-        return getProperties(path, false);
+        return getProperties(path, false, true, true);
     }
 
     protected Properties getProperties(String path, boolean required)
+    {
+        return getProperties(path, required, true, true);
+    }
+
+    protected Properties getProperties(String path, boolean required, boolean searchClasspath, boolean searchWebapp)
     {
         if (getLog().isTraceEnabled())
         {
             getLog().trace("Searching for properties at {} ", path);
         }
-
-        InputStream inputStream = getInputStream(path, required);
+        InputStream inputStream = ServletUtils.getInputStream(path, this.servletContext, searchClasspath, searchWebapp);
         if (inputStream == null)
         {
+            String msg = "Did not find resource at: "+path;
+            if (required)
+            {
+                getLog().error(msg);
+                throw new ResourceNotFoundException(msg);
+            }
+            else
+            {
+                getLog().debug(msg);
+            }
             return null;
         }
 
@@ -589,15 +606,9 @@ public class VelocityView extends ViewToolManager
         }
         catch (RuntimeException re)
         {
-            if (required)
-            {
-                getLog().error(re.getMessage(), re);
-                throw re;
-            }
-            else
-            {
-                getLog().debug(re.getMessage(), re);
-            }
+            // even if the file is not required, an error inside it is considered fatal
+            getLog().error(re.getMessage(), re);
+            throw re;
         }
         return config;
     }

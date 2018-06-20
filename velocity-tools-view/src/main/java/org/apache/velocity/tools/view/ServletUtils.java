@@ -25,6 +25,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -295,32 +297,38 @@ public class ServletUtils
         return null;
     }
 
-    public static InputStream getInputStream(String path, ServletContext application)
+    public static InputStream getInputStream(final String path, ServletContext application)
     {
-        // first, search the classpath
-        InputStream inputStream = ClassUtils.getResourceAsStream(path, ServletUtils.class);
-        if (inputStream == null)
-        {
-            // then, try the servlet context
-            inputStream = application.getResourceAsStream(path);
+        return getInputStream(path, application, true, true);
+    }
 
-            if (inputStream == null)
+    public static InputStream getInputStream(final String path, final ServletContext application, boolean searchClasspath, boolean searchWebapp)
+    {
+        InputStream inputStream = null;
+        // first search classpath if asked so
+        if (searchClasspath)
+        {
+            inputStream = ClassUtils.getResourceAsStream(path, ServletUtils.class);
+        }
+        if (inputStream == null && searchWebapp)
+        {
+            // then webapp
+            if (System.getSecurityManager() != null)
             {
-                // then, try the file system directly
-                File file = new File(path);
-                if (file.exists())
-                {
-                    try
+                inputStream = AccessController.doPrivileged(
+                    new PrivilegedAction<InputStream>()
                     {
-                        inputStream = new FileInputStream(file);
-                    }
-                    catch (FileNotFoundException fnfe)
-                    {
-                        // we should not be able to get here
-                        // since we already checked whether the file exists
-                        throw new IllegalStateException(fnfe);
-                    }
-                }
+                        @Override
+                        public InputStream run()
+                        {
+
+                            return application.getResourceAsStream(path);
+                        }
+                    });
+            }
+            else
+            {
+                inputStream = application.getResourceAsStream(path);
             }
         }
         return inputStream;
