@@ -35,8 +35,8 @@ import org.apache.velocity.tools.generic.ValueParser;
 /**
  * <p>Tool for convenient access to {@link Context} data and
  *  meta-data.</p>
- * <p><pre>
- * Template example(s):
+ * <p>Template example(s):</p>
+ * <pre>
  *  #foreach( $key in $context.keys )
  *    $key = $context.get($key)
  *  #end
@@ -47,7 +47,7 @@ import org.apache.velocity.tools.generic.ValueParser;
  *     &lt;tool class="org.apache.velocity.tools.generic.ContextTool"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </pre></p>
+ * </pre>
  *
  * <p>This class is only designed for use as a request-scope tool.</p>
  *

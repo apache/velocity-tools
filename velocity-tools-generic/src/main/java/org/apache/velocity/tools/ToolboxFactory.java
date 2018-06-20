@@ -33,6 +33,7 @@ import org.apache.velocity.tools.config.ToolConfiguration;
  * and is meant to stick around for the life of the application.
  * </p><p>
  * It works like this:
+ * </p>
  * <ol>
  * <li>Build up your {@link FactoryConfiguration}(s)</li>
  * <li>Create a {@link ToolboxFactory} instance</li>
@@ -43,7 +44,7 @@ import org.apache.velocity.tools.config.ToolConfiguration;
  * <li>When you want a tool, get that {@link Toolbox} and
  * ask it for the tool you want (e.g. <code>toolbox.get("math")</code>).</li>
  * </ol>
- * </p><p>
+ * <p>
  * Of course, most users will not have to do any of this
  * as much of it is handled for them by some combination of 
  * {@link ToolManager} or {@link org.apache.velocity.tools.view.VelocityView}

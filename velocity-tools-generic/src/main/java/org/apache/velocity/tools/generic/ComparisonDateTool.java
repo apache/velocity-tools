@@ -32,7 +32,7 @@ import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.ValidScope;
 
 /**
- * Tool for comparing {@link java.util.Date} and {@link Calendar} values
+ * <p>Tool for comparing {@link java.util.Date} and {@link Calendar} values
  * in Velocity templates.  This is a subclass of {@link DateTool}
  * and thus provides all the functionality of that tool and
  * augments it with the ability to find the relationship between
@@ -42,16 +42,16 @@ import org.apache.velocity.tools.config.ValidScope;
  * "3 hrs away") or the value of a specific time unit may be requested.
  * When using the textual representations, you can configure the
  * tool to use alternate resource bundles and to skip over units
- * you do not want to be included.
- * <p><pre>
+ * you do not want to be included.</p>
+ * <pre>
  * Example of formatting the "current" date:
- *  $date.whenIs('2005-07-04')                -> 1 year ago
- *  $date.whenIs('2007-02-15').full           -> 1 year 32 weeks 2 days 17 hours 38 minutes 44 seconds 178 milliseconds ago
- *  $date.whenIs('2007-02-15').days           -> -730
- *  $date.whenIs($date.calendar)              -> now
- *  $date.whenIs('2005-07-04', '2005-07-04')  -> same time
- *  $date.difference('2005-07-04','2005-07-04')      -> 0 milliseconds
- *  $date.difference('2005-07-04','2007-02-15').abbr -> 1 yr
+ *  $date.whenIs('2005-07-04')                -&gt; 1 year ago
+ *  $date.whenIs('2007-02-15').full           -&gt; 1 year 32 weeks 2 days 17 hours 38 minutes 44 seconds 178 milliseconds ago
+ *  $date.whenIs('2007-02-15').days           -&gt; -730
+ *  $date.whenIs($date.calendar)              -&gt; now
+ *  $date.whenIs('2005-07-04', '2005-07-04')  -&gt; same time
+ *  $date.difference('2005-07-04','2005-07-04')      -&gt; 0 milliseconds
+ *  $date.difference('2005-07-04','2007-02-15').abbr -&gt; 1 yr
  *
  * Example tools.xml config (if you want to use this with VelocityView):
  * &lt;tools&gt;
@@ -61,7 +61,7 @@ import org.apache.velocity.tools.config.ValidScope;
  *              bundle="org.apache.velocity.tools.generic.times"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </pre></p>
+ * </pre>
  *
  * @author Nathan Bubna
  * @author Chris Townsen

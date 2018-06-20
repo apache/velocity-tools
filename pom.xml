@@ -122,12 +122,20 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.0.1</version>
                 <configuration>
-                    <aggregate>true</aggregate>
                     <excludePackageNames>org.apache.velocity.tools.examples</excludePackageNames>
                     <additionalparam>${javadoc.opts}</additionalparam>
-                    <links>
-                    </links>
+                    <detectLinks/>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>aggregate</id>
+                        <goals>
+                            <goal>aggregate</goal>
+                        </goals>
+                        <configuration>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

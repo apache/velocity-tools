@@ -33,12 +33,12 @@ import org.apache.commons.digester3.RuleSet;
  * passing a new {@link RuleSet} to the {@link #setRuleSet} method.
  * See the configuration documentation on the main web site for 
  * instructions on the XML format supported by the default rules.</p>
- * <p>Example usage:
+ * <p>Example usage:</p>
  * <pre>
  * FactoryConfiguration cfg = new XmlFactoryConfiguration("Dev Tools");
  * cfg.read("devtools.xml");
  * ToolboxFactory factory = cfg.createFactory();
- * </pre></p>
+ * </pre>
  *
  * @author Nathan Bubna
  * @version $Id: XmlFactoryConfiguration.java 511959 2007-02-26 19:24:39Z nbubna $

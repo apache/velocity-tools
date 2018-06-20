@@ -214,6 +214,7 @@ public class ConversionUtils
      * {@link #toNumber(String,String,Locale)} try to parse it using the
      * default Locale and format.
      * @param obj - the object to convert
+     * @return the converted Number or null if the conversion failed
      */
     public static Number toNumber(Object obj)
     {
@@ -226,6 +227,9 @@ public class ConversionUtils
      * as the second parameter.  If you do so, then it will have
      * {@link #toNumber(String,String,Locale)} try to parse it using the
      * default Locale and format.
+     * @param obj the target object
+     * @param handleStrings whether to try to convert from a string
+     * @return the converted Number or null if the conversion failed
      */
     public static Number toNumber(Object obj, boolean handleStrings)
     {
@@ -582,6 +586,7 @@ public class ConversionUtils
      * or {@link Number}.  If it can't do that, it will return {@code null}.
      *
      * @param obj - the object to convert
+     * @return the converted Date, or null if the conversion failed
      */
     public static Date toDate(Object obj)
     {

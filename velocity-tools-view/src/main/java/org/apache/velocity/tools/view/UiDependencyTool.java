@@ -85,15 +85,17 @@ import org.apache.velocity.tools.config.ValidScope;
  *      &lt;script type="text/javascript" src="js/profile.js"&gt;&lt;/script&gt;
  *    &lt;/head&gt;
  *  ...
- *
- * Example tools.xml:
+ * </pre>
+ * <p>Example tools.xml:</p>
+ * <pre>
  * &lt;tools&gt;
  *   &lt;toolbox scope="request"&gt;
  *     &lt;tool class="org.apache.velocity.tools.view.beta.UiDependencyTool"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- *
- * Example ui.xml:
+ * </pre>
+ * <p>Example ui.xml:</p>
+ * <pre>
  * &lt;ui&gt;
  *   &lt;type name="style"&gt;&lt;![CDATA[&lt;link rel="stylesheet" type="text/css" href="/styles/{file}"&gt;]]&gt;&lt;/type&gt;
  *   &lt;group name="globals"&gt;
@@ -109,7 +111,6 @@ import org.apache.velocity.tools.config.ValidScope;
  *   &lt;/group&gt;
  * &lt;/ui&gt;
  * </pre>
- * </p>
  *
  * @author Nathan Bubna
  * @version $Revision: 16660 $

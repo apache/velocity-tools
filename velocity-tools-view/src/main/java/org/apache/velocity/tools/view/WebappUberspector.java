@@ -37,12 +37,11 @@ import org.apache.velocity.runtime.parser.node.SetExecutor;
 /**
  * <p>This custom uberspector allows getAttribute() and setAttribute() as standard
  * getters and setters for the "request","session" and "application" keys.
- * <p>It allows VTL statements like:
+ * <p>It allows VTL statements like:</p>
  * <pre>
  * #set($session.foo = 'youpi')
  * session parameter 'foo' has value: $session.foo
  * </pre>
- * </p>
  * <p>This uberspector requires Velocity 1.6+ ; to use it, you must specify <code>org.apache.velocity.tools.view.WebappUberspector</code>
  * as the last uberspector to the <code>runtime.introspector.uberspect</code> property in you <code>velocity.properties</code> file.</p>
  *
@@ -62,7 +61,6 @@ public class WebappUberspector extends AbstractChainableUberspector
      * @param identifier
      * @param i
      * @return A Velocity Getter Method.
-     * @throws Exception
      */
     public VelPropertyGet getPropertyGet(Object obj, String identifier, Info i)
     {
@@ -105,7 +103,6 @@ public class WebappUberspector extends AbstractChainableUberspector
      * @param arg
      * @param i
      * @return A Velocity Setter method.
-     * @throws Exception
      */
     public VelPropertySet getPropertySet(Object obj, String identifier,
                                          Object arg, Info i)

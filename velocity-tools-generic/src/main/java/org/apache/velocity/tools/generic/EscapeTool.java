@@ -33,60 +33,61 @@ import org.apache.velocity.tools.config.ValidScope;
  * It provides methods to escape outputs for Velocity, Java, JavaScript, HTML, HTTP, XML and SQL.
  * Also provides methods to render VTL characters that otherwise needs escaping.
  *
- * <p><pre>
- * Example uses:
- *  $velocity                    -> Please escape $ and #!
- *  $esc.velocity($velocity)     -> Please escape ${esc.d} and ${esc.h}!
+ * <p>Example uses:</p>
+ * <pre>
+ *  $velocity                    -&gt; Please escape $ and #!
+ *  $esc.velocity($velocity)     -&gt; Please escape ${esc.d} and ${esc.h}!
  *
- *  $java                        -> He didn't say, "Stop!"
- *  $esc.java($java)             -> He didn't say, \"Stop!\"
+ *  $java                        -&gt; He didn't say, "Stop!"
+ *  $esc.java($java)             -&gt; He didn't say, \"Stop!\"
  *
- *  $javascript                  -> He didn't say, "Stop!"
- *  $esc.javascript($javascript) -> He didn\'t say, \"Stop!\"
+ *  $javascript                  -&gt; He didn't say, "Stop!"
+ *  $esc.javascript($javascript) -&gt; He didn\'t say, \"Stop!\"
  *
- *  $html                        -> "bread" & "butter"
- *  $esc.html($html)             -> &amp;quot;bread&amp;quot; &amp;amp; &amp;quot;butter&amp;quot;
+ *  $html                        -&gt; "bread" &amp; "butter"
+ *  $esc.html($html)             -&gt; &amp;quot;bread&amp;quot; &amp;amp; &amp;quot;butter&amp;quot;
  *
- *  $xml                         -> "bread" & "butter"
- *  $esc.xml($xml)               -> &amp;quot;bread&amp;quot; &amp;amp; &amp;quot;butter&amp;quot;
+ *  $xml                         -&gt; "bread" &amp; "butter"
+ *  $esc.xml($xml)               -&gt; &amp;quot;bread&amp;quot; &amp;amp; &amp;quot;butter&amp;quot;
  *
- *  $sql                         -> McHale's Navy
- *  $esc.sql($sql)               -> McHale''s Navy
+ *  $sql                         -&gt; McHale's Navy
+ *  $esc.sql($sql)               -&gt; McHale''s Navy
  *
- *  $url                         -> hello here & there
- *  $esc.url($url)               -> hello+here+%26+there
- *  $esc.unurl($esc.url($url))   -> hello here & there
+ *  $url                         -&gt; hello here &amp; there
+ *  $esc.url($url)               -&gt; hello+here+%26+there
+ *  $esc.unurl($esc.url($url))   -&gt; hello here &amp; there
  *
- *  $esc.dollar                  -> $
- *  $esc.d                       -> $
+ *  $esc.dollar                  -&gt; $
+ *  $esc.d                       -&gt; $
  *
- *  $esc.hash                    -> #
- *  $esc.h                       -> #
+ *  $esc.hash                    -&gt; #
+ *  $esc.h                       -&gt; #
  *
- *  $esc.backslash               -> \
- *  $esc.b                       -> \
+ *  $esc.backslash               -&gt; \
+ *  $esc.b                       -&gt; \
  *
- *  $esc.quote                   -> "
- *  $esc.q                       -> "
+ *  $esc.quote                   -&gt; "
+ *  $esc.q                       -&gt; "
  *
- *  $esc.singleQuote             -> '
- *  $esc.s                       -> '
+ *  $esc.singleQuote             -&gt; '
+ *  $esc.s                       -&gt; '
  *
- *  $esc.newline                 -> 
+ *  $esc.newline                 -&gt; 
  *
- *  $esc.n                       -> 
+ *  $esc.n                       -&gt; 
  *
  *
- *  $esc.exclamation             -> !
- *  $esc.e                       -> !
- *
- * Example tools.xml config (if you want to use this with VelocityView):
+ *  $esc.exclamation             -&gt; !
+ *  $esc.e                       -&gt; !
+ * </pre>
+ * <p>Example tools.xml config (if you want to use this with VelocityView):</p>
+ * <pre>
  * &lt;tools&gt;
  *   &lt;toolbox scope="application"&gt;
  *     &lt;tool class="org.apache.velocity.tools.generic.EscapeTool"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </pre></p>
+ * </pre>
  *
  * <p>This tool is entirely threadsafe, and has no instance members.
  * It may be used in any scope (request, session, or application).
@@ -180,9 +181,8 @@ public class EscapeTool extends SafeConfig
     }
 
     /**
-     * Escapes the characters in a <code>String</code> using Java String rules.
-     * <br />
-     * Delegates the process to {@link StringEscapeUtils#escapeJava(String)}.
+     * <p>Escapes the characters in a <code>String</code> using Java String rules.</p>
+     * <p>Delegates the process to {@link StringEscapeUtils#escapeJava(String)}.</p>
      *
      * @param string the string to escape values, may be null
      * @return String with escaped values, <code>null</code> if null string input
@@ -277,9 +277,8 @@ public class EscapeTool extends SafeConfig
     } 
 
     /**
-     * Escapes the characters in a <code>String</code> using JavaScript String rules.
-     * <br />
-     * Delegates the process to {@link StringEscapeUtils#escapeEcmaScript(String)}.
+     * <p>Escapes the characters in a <code>String</code> using JavaScript String rules.</p>
+     * <p>Delegates the process to {@link StringEscapeUtils#escapeEcmaScript(String)}.</p>
      *
      * @param string the string to escape values, may be null
      * @return String with escaped values, <code>null</code> if null string input
@@ -296,9 +295,8 @@ public class EscapeTool extends SafeConfig
     }
 
     /**
-     * Escapes the characters in a <code>String</code> using HTML entities.
-     * <br />
-     * Delegates the process to {@link StringEscapeUtils#escapeHtml4(String)}.
+     * <p>Escapes the characters in a <code>String</code> using HTML entities.</p>
+     * <p>Delegates the process to {@link StringEscapeUtils#escapeHtml4(String)}.</p>
      *
      * @param string the string to escape, may be null
      * @return a new escaped <code>String</code>, <code>null</code> if null string input
@@ -315,13 +313,12 @@ public class EscapeTool extends SafeConfig
     }
 
     /**
-     * Escape the characters in a <code>String</code> to be suitable to use as an HTTP parameter value.
-     * <br/>
-     * Uses UTF-8 as default character encoding.
+     * <p>Escape the characters in a <code>String</code> to be suitable to use as an HTTP parameter value.</p>
+     * <p>Uses UTF-8 as default character encoding.</p>
      * @param string the string to escape, may be null
      * @return a new escaped <code>String</code>, <code>null</code> if null string input
      *
-     * See java.net.URLEncoder#encode(String,String).
+     * See java.net.URLEncoder#encode(String,String)
      * @since VelocityTools 1.3
      */
     public String url(Object string) {
@@ -336,13 +333,12 @@ public class EscapeTool extends SafeConfig
     }
 
     /**
-     * Unscape the characters in a <code>String</code> encoded as an HTTP parameter value.
-     * <br/>
-     * Uses UTF-8 as default character encoding.
+     * <p>Unscape the characters in a <code>String</code> encoded as an HTTP parameter value.</p>
+     * <p>Uses UTF-8 as default character encoding.</p>
      * @param string the string to unescape, may be null
      * @return a new unescaped <code>String</code>, <code>null</code> if null string input
      *
-     * @see java.net.URLDecoder#decode(String,String).
+     * @see java.net.URLDecoder#decode(String,String)
      * @since VelocityTools 3.0
      */
     public String unurl(Object string) {
@@ -357,9 +353,8 @@ public class EscapeTool extends SafeConfig
     }
 
     /**
-     * Escapes the characters in a <code>String</code> using XML entities.
-     * <br />
-     * Delegates the process to {@link StringEscapeUtils#escapeXml(String)}.
+     * <p>Escapes the characters in a <code>String</code> using XML entities.</p>
+     * <p>Delegates the process to {@link StringEscapeUtils#escapeXml(java.lang.String)}.</p>
      *
      * @param string the string to escape, may be null
      * @return a new escaped <code>String</code>, <code>null</code> if null string input
@@ -376,9 +371,8 @@ public class EscapeTool extends SafeConfig
     }
 
     /**
-     * Escapes the characters in a <code>String</code> to be suitable to pass to an SQL query.
-     * <br />
-     * It boils down to doubling single quotes.
+     * <p>Escapes the characters in a <code>String</code> to be suitable to pass to an SQL query.</p>
+     * <p>It boils down to doubling single quotes.</p>
      *
      * @param string the string to escape, may be null
      * @return a new String, escaped for SQL, <code>null</code> if null string input
@@ -394,12 +388,12 @@ public class EscapeTool extends SafeConfig
     }
 
     /**
-     * Converts the specified Unicode code point and/or escape sequence into
+     * <p>Converts the specified Unicode code point and/or escape sequence into
      * the associated Unicode character.  This allows numeric
      * code points or String versions of the numeric code point to be correctly
      * translated within a template.  This is especially useful for those
      * creating unicode from a reference value, or injecting a unicode character
-     * into a template with a version of Velocity prior to 1.6.
+     * into a template with a version of Velocity prior to 1.6.</p>
      * @param code the code to be translated/escaped, may be null
      * @return the unicode character for that code, {@code null} if input was null
      * @see Character#toChars(int codePoint)

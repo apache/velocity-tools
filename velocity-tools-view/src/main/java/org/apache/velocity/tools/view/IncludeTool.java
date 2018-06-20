@@ -134,14 +134,14 @@ public class IncludeTool extends SafeConfig implements Serializable
      * for the locale of the current request.  Use in conjuction with
      * Apache httpd's <code>MultiViews</code>, or by itself.</p>
      *
-     * <p>Usage from a template would be something like the following:
-     * <blockquote><code><pre>
+     * <p>Usage from a template would be something like the following:</p>
+     * <pre><code>
      * #parse( $include.find('header.vm', 'en') )
      * #include( $include.find('my_page.html', 'en') )
      * #parse( $include.find('footer.vm', 'en') )
-     * </pre></code></blockquote>
+     * </code></pre>
      *
-     * You might also wrap this method using another pull/view tool
+     * <p>You might also wrap this method using another pull/view tool
      * which does internationalization/localization/content negation
      * for a single point of access.</p>
      *
@@ -178,12 +178,12 @@ public class IncludeTool extends SafeConfig implements Serializable
      * <p>Checks to see whether a #parse-able template or
      * #include-able resource exists under the specified name/path.</p>
      *
-     * <p>Usage from a template would be something like the following:
-     * <blockquote><code><pre>
+     * <p>Usage from a template would be something like the following:</p>
+     * <pre>
      * #if( $include.exists('header.vm') )
      *   #parse( 'header.vm' )
      * #end
-     * </pre></code></blockquote>
+     * </pre>
      *
      * @see VelocityEngine#resourceExists
      */

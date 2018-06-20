@@ -31,9 +31,9 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
- * SortTool allows a user to sort a collection (or array, iterator, etc)
+ * <p>SortTool allows a user to sort a collection (or array, iterator, etc)
  * on any arbitary set of properties exposed by the objects contained
- * within the collection.
+ * within the collection.</p>
  *
  * <p>The sort tool is specifically designed to use within a #foreach
  * but you may find other uses for it.</p>
@@ -42,13 +42,12 @@ import org.apache.velocity.tools.config.DefaultKey;
  * #foreach and the same constraints apply as well as the following.
  * Every object in the collection must support the set of properties
  * selected to sort on. Each property which is to be sorted on must
- * return one of the follow:
+ * return one of the follow:</p>
  * <ul>
  *   <li>Primitive type: e.g. int, char, long etc</li>
  *   <li>Standard Object: e.g. String, Integer, Long etc</li>
  *   <li>Object which implements the Comparable interface.</li>
  * </ul>
- * </p>
  *
  * <p>During the sort operation all properties are compared by calling
  * compareTo() with the exception of Strings for which
@@ -59,7 +58,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * The original collection will not be re-ordered; a new list containing
  * the sorted elements will always be returned.</p>
  *
- * <p>The tool is used as follows:
+ * <p>The tool is used as follows:</p>
  * <pre>
  * Single Property Sort
  * #foreach($obj in $sorter.sort($objects, "name"))
@@ -74,7 +73,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * End
  * </pre>
  *
- * The sort method takes two parameters a collection and a property name
+ * <p>The sort method takes two parameters a collection and a property name
  * or an array of property names. The property names and corresponding
  * methods must conform to java bean standards since commons-beanutils
  * is used to extract the property values.</p>
@@ -82,7 +81,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * <p>By default the sort tool sorts ascending, you can override this by
  * adding a sort type suffix to any property name.</p>
  *
- * <p>The supported suffixes are:
+ * <p>The supported suffixes are:</p>
  * <pre>
  * For ascending
  * :asc
@@ -93,20 +92,20 @@ import org.apache.velocity.tools.config.DefaultKey;
  * #foreach($obj in $sorter.sort($objects, ["name:asc", "ordinal:desc"]))
  *   $obj.name, $obj.ordinal
  * #end
- * </pre><p>
+ * </pre>
  *
  * <p>This will sort first by Name in ascending order and then by Ordinal
  * in descending order, of course you could have left the :asc off of the
  * 'Name' property as ascending is always the default.</p>
  *
- * <p><pre>
- * Example tools.xml config (if you want to use this with VelocityView):
+ * <p>Example tools.xml config (if you want to use this with VelocityView):</p>
+ * <pre>
  * &lt;tools&gt;
  *   &lt;toolbox scope="application"&gt;
  *     &lt;tool class="org.apache.velocity.tools.generic.SortTool"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </pre></p>
+ * </pre>
  *
  * @author S. Brett Sutton
  * @author Nathan Bubna

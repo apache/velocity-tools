@@ -34,11 +34,10 @@ import org.apache.velocity.tools.config.ValidScope;
  * This is a simple tools class to allow easy access to static fields in a class,
  * such as string constants from within a template.  Velocity will not introspect
  * for class fields (and won't in the future :), but writing setter/getter methods
- * to do this is a pain,  so use this if you really have to access fields.
+ * to do this is a pain,  so use this if you really have to access fields.</p>
  *
- * <p>
+ * <p>Example uses in a template:</p>
  * <pre>
- * Example uses in a template:
  *   ## here we access a constant in a class include in the configuration
  *     $field.COUNTER_NAME
  *
@@ -53,16 +52,16 @@ import org.apache.velocity.tools.config.ValidScope;
  *   ## available in the tool (change this by storeDynamicLookups="false")
  *   ## so here we get another constant from the Integer class
  *     $field.MAX_VALUE
- *
- *
- * Example tools.xml config:
+ * </pre>
+ * <p>Example tools.xml config:</p>
+ * <pre>
  * &lt;tools&gt;
  *   &lt;toolbox scope="application"&gt;
  *     &lt;tool class="org.apache.velocity.tools.generic.FieldTool"
  *              include="org.apache.velocity.runtime.RuntimeConstants,com.org.MyConstants"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </pre></p>
+ * </pre>
  *
  * <p>
  * Right now, this tool only gives access to <code>public static</code> fields.

@@ -35,14 +35,14 @@ import org.apache.velocity.tools.view.ServletUtils;
  *     <li>retrieve server, port and path info for the current request</li>
  *     <li>reconstruct or alter the current request URI</li>
  *     <li>and more..</li>
- * </ul></p>
+ * </ul>
  * 
  * <p>The LinkTool is somewhat special in that nearly all public methods return
  * a new instance of LinkTool. This facilitates greatly the repeated use
  * of the LinkTool in Velocity and leads to an elegant syntax.</p>
  * 
- * <p><pre>
- * Template example(s):
+ * <p>Template example(s):</p><pre>
+ * 
  *   #set( $base = $link.path('MyPage.vm').anchor('view') )
  *   &lt;a href="$base.param('select','this')"&gt;this&lt;/a&gt;
  *   &lt;a href="$base.param('select','that')"&gt;that&lt;/a&gt;
@@ -54,7 +54,7 @@ import org.apache.velocity.tools.view.ServletUtils;
  *              forceRelative="true" includeRequestParams="true"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </pre></p>
+ * </pre>
  *
  * <p>This tool may only be used in the request scope.</p>
  *

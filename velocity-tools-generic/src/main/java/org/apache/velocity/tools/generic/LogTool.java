@@ -31,23 +31,22 @@ import org.slf4j.LoggerFactory;
  * <p>
  * Of course, the desired log level must have been configured, using the method specific
  * to the SLF4J implementation you are using. For instance, when using the webapp-slf4j-logger,
- * you will use the following snippet of code in you /WEB-INF/web.xml file:
+ * you will use the following snippet of code in you /WEB-INF/web.xml file:</p>
  * <pre>
  * &lt;context-param&gt;
  *   &lt;param-name&gt;webapp-slf4j-logger.level&lt;/param-name&gt;
  *   &lt;param-value&gt;debug&lt;/param-value&gt;
  * &lt;/context-param&gt;
  * </pre>
- * </p>
  *
- * <p>You can optionnaly specify the logger name in the config (the default is to re-use the engine logger):
+ * <p>You can optionnaly specify the logger name in the config (the default is to re-use the engine logger):</p>
  * <pre>
  * &lt;tools&gt;
  *   &lt;toolbox scope="application"&gt;
  *     &lt;tool class="org.apache.velocity.tools.generic.LogTool"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </pre></p>
+ * </pre>
  *
  * @author Claude Brisson
  * @since VelocityTools 3.0

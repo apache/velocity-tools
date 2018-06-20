@@ -29,7 +29,7 @@ import org.xml.sax.Attributes;
  * Commons-{@link Digester} to process configuration info
  * formatted as XML.  This is the default RuleSet used by
  * {@link XmlFactoryConfiguration}.</p>
- * <p>Here is a short example XML:
+ * <p>Here is a short example XML:</p>
  * <pre><code>
  * &lt;tools&gt; 
  *     &lt;data type="number" key="version" value="1.1"/&gt;
@@ -49,7 +49,7 @@ import org.xml.sax.Attributes;
  *         &lt;tool class="org.apache.velocity.tools.generic.DateTool"/&gt;
  *     &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </code></pre></p>
+ * </code></pre>
  *
  * @author Nathan Bubna
  * @version $Id: XmlConfiguration.java 511959 2007-02-26 19:24:39Z nbubna $

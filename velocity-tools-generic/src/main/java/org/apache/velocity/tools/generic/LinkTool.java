@@ -35,13 +35,13 @@ import org.apache.velocity.tools.config.SkipSetters;
 import org.apache.velocity.tools.config.ValidScope;
 
 /**
- * <p>The LinkTool provides many methods to work with URIs and can help you:
+ * <p>The LinkTool provides many methods to work with URIs and can help you:</p>
  * <ul>
  *     <li>construct full URIs (opaque, absolute or relative)</li>
  *     <li>encode and decode URLs (part or whole)</li>
  *     <li>retrieve path info for the current request</li>
  *     <li>and more..</li>
- * </ul></p>
+ * </ul>
  *
  * <p>This GenericTools (i.e. non-servlet based) version of LinkTool
  * is largely based upon the same API and behavior as the older
@@ -57,8 +57,8 @@ import org.apache.velocity.tools.config.ValidScope;
  * a new instance of LinkTool. This facilitates greatly the repeated use
  * of the LinkTool in Velocity and leads to an elegant syntax.</p>
  * 
- * <p><pre>
- * Template example(s):
+ * <p>Template example(s):</p>
+ * <pre>
  *   #set( $base = $link.relative('MyPage.vm').anchor('view') )
  *   &lt;a href="$base.param('select','this')"&gt;this&lt;/a&gt;
  *   &lt;a href="$base.param('select','that')"&gt;that&lt;/a&gt;
@@ -70,7 +70,7 @@ import org.apache.velocity.tools.config.ValidScope;
  *              uri="http://velocity.apache.org/tools/devel/"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </pre></p>
+ * </pre>
  *
  * @author Nathan Bubna
  * @since VelocityTools 2.0
@@ -82,7 +82,7 @@ import org.apache.velocity.tools.config.ValidScope;
 @ValidScope(Scope.REQUEST)
 public class LinkTool extends SafeConfig implements Cloneable
 {
-    /** Standard HTML delimiter for query data ('&') */
+    /** Standard HTML delimiter for query data ('&amp;') */
     public static final String HTML_QUERY_DELIMITER = "&";
 
     /** XHTML delimiter for query data ('&amp;amp;') */
@@ -254,14 +254,14 @@ public class LinkTool extends SafeConfig implements Cloneable
 
     /**
      * <p>Controls the delimiter used for separating query data pairs.
-     *    By default, the standard '&' character is used.</p>
+     *    By default, the standard '&amp;' character is used.</p>
      * <p>This is not exposed to templates as this decision is best not
      *    made at that level.</p>
      * <p>Subclasses may easily override the init() method to set this
      *    appropriately and then call super.init()</p>
      *
      * @param xhtml if true, the XHTML query data delimiter ('&amp;amp;')
-     *        will be used.  if false, then '&' will be used.
+     *        will be used.  if false, then '&amp;' will be used.
      * @see <a href="http://www.w3.org/TR/xhtml1/#C_12">Using Ampersands in Attribute Values (and Elsewhere)</a>
      */
     public void setXHTML(boolean xhtml)
@@ -1260,10 +1260,10 @@ public class LinkTool extends SafeConfig implements Cloneable
      * set to true. If the specified relative path is null, that is treated
      * the same as an empty path.</p>
      *
-     * Example:<br>
+     * <p>Example:
      * <code>&lt;a href='$link.relative("/login/index.vm")'&gt;Login Page&lt;/a&gt;</code><br>
-     * produces something like</br>
-     * <code>&lt;a href="/myapp/login/index.vm"&gt;Login Page&lt;/a&gt;</code><br>
+     * produces something like<br>
+     * <code>&lt;a href="/myapp/login/index.vm"&gt;Login Page&lt;/a&gt;</code></p>
      *
      * @param obj A directory-relative URI reference (e.g. file path in current directory)
      * @return a new instance of LinkTool with the specified changes
@@ -1333,17 +1333,18 @@ public class LinkTool extends SafeConfig implements Cloneable
      * or anchor, those values will not be overwritten when using
      * this method.</p>
      *
-     * Example:<br>
+     * <p>Example:<br>
      * <code>&lt;a href='$link.absolute("login/index.vm")'&gt;Login Page&lt;/a&gt;</code><br>
-     * produces something like<br/>
+     * produces something like<br>
      * <code>&lt;a href="http://myserver.net/myapp/login/index.vm"&gt;Login Page&lt;/a&gt;</code>;<br>
      * <code>&lt;a href='$link.absolute("/login/index.vm")'&gt;Login Page&lt;/a&gt;</code><br>
-     * produces something like<br/>
+     * produces something like<br>
      * <code>&lt;a href="http://myserver.net/login/index.vm"&gt;Login Page&lt;/a&gt;</code>;<br>
      * and<br>
      * <code>&lt;a href='$link.absolute("http://theirserver.com/index.jsp")'&gt;Their, Inc.&lt;/a&gt;</code><br>
-     * produces something like<br/>
-     * <code>&lt;a href="http://theirserver.net/index.jsp"&gt;Their, Inc.&lt;/a&gt;</code><br>
+     * produces something like<br>
+     * <code>&lt;a href="http://theirserver.net/index.jsp"&gt;Their, Inc.&lt;/a&gt;</code>
+     * </p>
      *
      * @param obj A root-relative or context-relative path or an absolute URI.
      * @return a new instance of LinkTool with the specified path or URI
@@ -1560,10 +1561,10 @@ public class LinkTool extends SafeConfig implements Cloneable
      * <p>Returns a copy of the link with the specified anchor to be
      *    added to the end of the generated hyperlink.</p>
      *
-     * Example:<br>
+     * <p>Example:<br>
      * <code>&lt;a href='$link.setAnchor("foo")'&gt;Foo&lt;/a&gt;</code><br>
-     * produces something like</br>
-     * <code>&lt;a href="#foo"&gt;Foo&lt;/a&gt;</code><br>
+     * produces something like<br>
+     * <code>&lt;a href="#foo"&gt;Foo&lt;/a&gt;</code></p>
      *
      * @param anchor an internal document reference
      * @return a new instance of LinkTool with the set anchor
@@ -1592,7 +1593,7 @@ public class LinkTool extends SafeConfig implements Cloneable
     /**
      * Returns the full URI reference that's been built with this tool,
      * including the query string and anchor, e.g.
-     * <code>http://myserver.net/myapp/stuff/View.vm?id=42&type=blue#foo</code>.
+     * <code>http://myserver.net/myapp/stuff/View.vm?id=42&amp;type=blue#foo</code>.
      * Typically, it is not necessary to call this method explicitely.
      * Velocity will call the toString() method automatically to obtain
      * a representable version of an object.

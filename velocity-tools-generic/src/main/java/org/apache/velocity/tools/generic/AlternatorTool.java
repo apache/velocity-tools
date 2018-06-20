@@ -30,7 +30,7 @@ import org.apache.velocity.tools.config.ValidScope;
  * {@link Alternator}s from varying "list" types or individual
  * arguments.
  *
- * <p><b>Example Use:</b>
+ * <p><b>Example Use:</b></p>
  * <pre>
  * tools.xml...
  * &lt;tools&gt;
@@ -53,7 +53,7 @@ import org.apache.velocity.tools.config.ValidScope;
  *   Number 3 is red and groovy. I dig groovy numbers.
  *   Number 4 is blue and hip. I dig hip numbers.
  *   Number 5 is red and fly. I dig fly numbers.
- * </pre></p>
+ * </pre>
  *
  * @since Velocity Tools 1.2
  * @version $Revision$ $Date$

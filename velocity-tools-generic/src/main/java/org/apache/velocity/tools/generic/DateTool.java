@@ -37,7 +37,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * arbitrary {@link Date} and {@link Calendar} objects. Also
  * the tool can be used to retrieve {@link DateFormat} instances
  * or make conversions to and from various date types.</p>
- * <p>Possible formats include:
+ * <p>Possible formats include:</p>
  * <ul>
  *     <li>'short', 'medium', 'long', 'full' (from {@link java.text.DateFormat}, optionally suffixed by '_date' or '_time' to get a date-only or time-only format</li>
  *     <li>'iso' for extended ISO 8601 without time zone (ex: '2016-11-24T10:27:30'), optionally suffixed by '_date' or '_time' to get a date-only or time-only format</li>
@@ -45,22 +45,22 @@ import org.apache.velocity.tools.config.DefaultKey;
  *     <li>'intl', like 'iso' but with a space separator between date and time (ex: '2016-11-24 10:27:30'), optionally suffixed by '_date' or '_time' to get a date-only or time-only format</li>
  *     <li>'intl_tz', like 'intl' but with the time zone short id suffixed after another space (ex: '2016-11-24 10:27:30 CET'), optionally suffixed by '_time' to get a time-only format ('10:27:30+01:00')</li>
  *     <li>a custom format, as specified in {@link SimpleDateFormat}</li>
- * </ul></p>
- * <p><pre>
- * Example of formatting the "current" date:
- *  $date                         -> Oct 19, 2003 9:54:50 PM
- *  $date.long                    -> October 19, 2003 9:54:50 PM PDT
- *  $date.medium_time             -> 9:54:50 PM
- *  $date.full_date               -> Sunday, October 19, 2003
- *  $date.get('default','short')  -> Oct 19, 2003 9:54 PM
- *  $date.get('yyyy-M-d H:m:s')   -> 2003-10-19 21:54:50
- *  $date.iso                     -> 2003-10-19T21:54:50-07:00
- *  $date.iso_tz_time             -> 21:54:50-07:00
- *  $date.intl_tz                 -> 2003-10-19 21:54:50 CET
+ * </ul>
+ * <p>Example of formatting the "current" date:</p>
+ * <pre>
+ *  $date                         -&gt; Oct 19, 2003 9:54:50 PM
+ *  $date.long                    -&gt; October 19, 2003 9:54:50 PM PDT
+ *  $date.medium_time             -&gt; 9:54:50 PM
+ *  $date.full_date               -&gt; Sunday, October 19, 2003
+ *  $date.get('default','short')  -&gt; Oct 19, 2003 9:54 PM
+ *  $date.get('yyyy-M-d H:m:s')   -&gt; 2003-10-19 21:54:50
+ *  $date.iso                     -&gt; 2003-10-19T21:54:50-07:00
+ *  $date.iso_tz_time             -&gt; 21:54:50-07:00
+ *  $date.intl_tz                 -&gt; 2003-10-19 21:54:50 CET
  *
  * Example of formatting an arbitrary date:
- *  $myDate                        -> Tue Oct 07 03:14:50 PDT 2003
- *  $date.format('medium',$myDate) -> Oct 7, 2003 3:14:50 AM
+ *  $myDate                        -&gt; Tue Oct 07 03:14:50 PDT 2003
+ *  $date.format('medium',$myDate) -&gt; Oct 7, 2003 3:14:50 AM
  *
  * Example tools.xml config (if you want to use this with VelocityView):
  * &lt;tools&gt;
@@ -69,7 +69,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  *              format="yyyy-MM-dd"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </pre></p>
+ * </pre>
  *
  * <p>Should you need to use several formats, you can either use explicit formats by means of the <code>toDate(format, date)</code> method,
  * or you can declare several date tool instances with different formats.</p>
@@ -437,11 +437,11 @@ public class DateTool extends FormatConfig implements Serializable
      * If the format fits neither of these patterns, then the output
      * will be formatted according to the symbols defined by
      * {@link SimpleDateFormat}.
-     *
+     * </p>
+     * <pre>
      *   Examples: "E, MMMM d" will result in "Tue, July 24"
      *             "EEE, M-d (H:m)" will result in "Tuesday, 7-24 (14:12)"
      * </pre>
-     * </p>
      *
      * @param format the custom or standard pattern to be used
      * @param obj the date to format
@@ -558,7 +558,7 @@ public class DateTool extends FormatConfig implements Serializable
      * @param locale the {@link Locale} to be used
      * @param timezone the {@link TimeZone} to be used
      * @return an instance of {@link DateFormat}
-     * @see {@link ConversionUtils#getDateFormat(int, int, Locale, TimeZone)}
+     * @see ConversionUtils#getDateFormat(int,int,Locale,TimeZone)
      * @since VelocityTools 1.1
      */
     public DateFormat getDateFormat(String dateStyle, String timeStyle,

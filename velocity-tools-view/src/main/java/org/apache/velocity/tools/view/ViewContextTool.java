@@ -32,19 +32,20 @@ import org.apache.velocity.tools.view.ViewContext;
  * <p>Extension of {@link ContextTool} that includes keys and values
  * from the {@link HttpServletRequest}, {@link HttpSession} and
  * {@link ServletContext}.</p>
- * <p><pre>
- * Template example(s):
+ * <p>Template example(s):
+ * <pre>
  *  #foreach( $key in $context.keys )
  *    $key = $context.get($key)
  *  #end
- *
- * Toolbox configuration:
+ * </pre>
+ * <p>Toolbox configuration:</p>
+ * <pre>
  * &lt;tools&gt;
  *   &lt;toolbox scope="request"&gt;
  *     &lt;tool class="org.apache.velocity.tools.view.ViewContextTool"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </pre></p>
+ * </pre>
  *
  * <p>This class is only designed for use as a request-scope VelocityView tool.</p>
  *

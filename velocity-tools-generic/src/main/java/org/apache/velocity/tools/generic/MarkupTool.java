@@ -34,19 +34,18 @@ import org.apache.velocity.tools.config.DefaultKey;
  *
  * <p>
  * A tool to make it easy to generate XML or HTML on the fly.  It uses a CSS-type
- * syntax with a vaguely jQuery-ish API to help you generate the markup you need.
- * <p>
+ * syntax with a vaguely jQuery-ish API to help you generate the markup you need.</p>
  * <pre>
  * Example uses in a template:
  *   #set( $foospan = $markup.span.id($foo.id).body($foo) )
  *   $markup.tag('table tr.bar td').body("This is $foospan")
  *
  * Output:
- *   <table>
- *     <tr class="bar">
- *       <td>This is <span id="foo1">my first foo.</span></td>
- *     </tr>
- *   </table>
+ *   &lt;table&gt;
+ *     &lt;tr class="bar"&gt;
+ *       &lt;td&gt;This is &lt;span id="foo1"&gt;my first foo.&lt;/span&gt;&lt;/td&gt;
+ *     &lt;/tr&gt;
+ *   &lt;/table&gt;
  *
  *
  * Example tools.xml config:
@@ -55,7 +54,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  *     &lt;tool class="org.apache.velocity.tools.generic.alpha.MarkupTool"/&gt;
  *   &lt;/toolbox&gt;
  * &lt;/tools&gt;
- * </pre></p>
+ * </pre>
  *
  * @author Nathan Bubna
  * @since VelocityTools 2.0
