@@ -62,9 +62,8 @@ public class ViewToolManager extends ToolManager
     private String toolboxKey = DEFAULT_TOOLBOX_KEY;
 
     /**
-     * Constructs an instance already configured to use the 
-     * {@link ConfigurationUtils#getAutoLoaded()()} configuration
-     * and any configuration specified via a "org.apache.velocity.tools"
+     * Constructs an instance already configured to use
+     * any configuration specified via a "org.apache.velocity.tools"
      * system property.
      */
     public ViewToolManager(ServletContext app)

@@ -48,8 +48,7 @@ public class ToolManager
 
     /**
      * Constructs an instance already configured to use the 
-     * {@link ConfigurationUtils#getAutoLoaded()} configuration
-     * and any configuration specified via a "org.apache.velocity.tools"
+     * any configuration specified via a "org.apache.velocity.tools"
      * system property.
      */
     public ToolManager()
@@ -74,16 +73,12 @@ public class ToolManager
 
     public void autoConfigure(boolean includeDefaults)
     {
-        FactoryConfiguration config =
-            ConfigurationUtils.getAutoLoaded(includeDefaults);
-
         // look for any specified via system property
         FactoryConfiguration sys = ConfigurationUtils.findFromSystemProperty();
         if (sys != null)
         {
-            config.addConfiguration(sys);
+            configure(sys);
         }
-        configure(config);
     }
 
     public void configure(FactoryConfiguration config)

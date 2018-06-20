@@ -156,22 +156,9 @@ public class ConfigTests {
 
     public @Test void testAutoConfig()
     {
-        FactoryConfiguration autoMinusDef = ConfigurationUtils.getAutoLoaded(false);
-        assertValid(autoMinusDef);
-
-        assertValid(autoMinusDef);
-        assertConfigEquals(getBaseConfig(), autoMinusDef);
-
-        FactoryConfiguration auto = ConfigurationUtils.getAutoLoaded();
-        assertValid(auto);
-
         // get the default tools
         FactoryConfiguration def = ConfigurationUtils.getDefaultTools();
         assertValid(def);
-        // add the autoloaded ones (sans defaults) onto the default
-        def.addConfiguration(autoMinusDef);
-        // and see that it comes out the same
-        assertConfigEquals(auto, def);
     }
 
     public @Test void testBadData()
