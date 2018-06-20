@@ -1,0 +1,155 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+///////////////////////////////////////////////////
+//
+// Give Maven repository libs all permissions
+//
+///////////////////////////////////////////////////
+
+grant codeBase "file:@cargo.repository@/-"
+{
+    permission java.security.AllPermission "", "";
+};
+
+///////////////////////////////////////////////////
+//
+// Give Jetty libs all permissions
+//
+///////////////////////////////////////////////////
+
+grant codeBase "file:@cargo.container@/-"
+{
+    permission java.security.AllPermission "", "";
+};
+
+///////////////////////////////////////////////////
+//
+// Give anyone basic and reflection runtime rights
+//
+///////////////////////////////////////////////////
+
+grant
+{
+    permission java.lang.RuntimePermission "accessDeclaredMembers";
+    permission java.lang.RuntimePermission "getProtectionDomain";
+    permission java.lang.RuntimePermission "getClassLoader";
+};
+
+///////////////////////////////////////////////////
+//
+// Let webapp resolve classes dependencies
+//
+///////////////////////////////////////////////////
+
+grant codeBase "file:@cargo.webapp@/WEB-INF/classes/-"
+{
+    permission java.io.FilePermission "@cargo.webapp@/WEB-INF/lib/*", "read";
+    permission java.io.FilePermission "@cargo.webapp@/WEB-INF/classes/-", "read";
+};
+
+grant codeBase "file:@cargo.webapp@/WEB-INF/lib/*"
+{
+    permission java.io.FilePermission "@cargo.webapp@/WEB-INF/lib/*", "read";
+    permission java.io.FilePermission "@cargo.webapp@/WEB-INF/classes/-", "read";
+};
+
+
+///////////////////////////////////////////////////
+//
+// Give webapp-slf4j-logger all permissions
+//
+///////////////////////////////////////////////////
+
+// (since the logger will install an IPFilter tag, it's here in all calling stacks)
+
+grant codeBase "file:@cargo.webapp@/WEB-INF/lib/webapp-slf4j-logger-@cargo.webapp-slf4j-logger.version@.jar
+{
+    permission java.security.AllPermission "", "";
+};
+
+///////////////////////////////////////////////////
+//
+// Give slf4j permission to read its properties
+//
+///////////////////////////////////////////////////
+
+// all calling chain is needed
+
+grant codeBase "file:@cargo.webapp@/WEB-INF/lib/slf4j-api-@cargo.slf4j.version@.jar"
+{
+    permission java.util.PropertyPermission "slf4j.*", "read";
+};
+
+grant codeBase "file:@cargo.webapp@/WEB-INF/lib/velocity-engine-core-@cargo.velocity-engine.version@.jar"
+{
+    permission java.util.PropertyPermission "slf4j.*", "read";
+};
+
+grant codeBase "file:@cargo.webapp@/WEB-INF/lib/velocity-tools-view-@cargo.velocity-tools.version@.jar"
+{
+    permission java.util.PropertyPermission "slf4j.*", "read";
+};
+
+///////////////////////////////////////////////////
+//
+// Give velocity, velocity-tools-generic and velocity-tools-view only needed rights
+//
+///////////////////////////////////////////////////
+
+// engine
+
+grant codeBase "file:@cargo.webapp@/WEB-INF/lib/velocity-engine-core-@cargo.velocity-engine.version@.jar"
+{
+    // read default velocity.properties from velocity-engine-core jar
+    permission java.io.FilePermission "@cargo.webapp@/WEB-INF/lib/velocity-engine-core-@cargo.velocity-engine.version@.jar", "read";
+};
+
+// generic tools
+
+grant codeBase "file:@cargo.webapp@/WEB-INF/lib/velocity-tools-generic-@cargo.velocity-tools.version@.jar"
+{
+    // read default velocity.properties and default toolbox from velocity-tools-view jar
+    permission java.io.FilePermission "@cargo.webapp@/WEB-INF/lib/velocity-tools-view-@cargo.velocity-tools.version@.jar", "read";
+
+    // read default toolbox from velocity-tools-generic jar
+    permission java.io.FilePermission "@cargo.webapp@/WEB-INF/lib/velocity-tools-generic-@cargo.velocity-tools.version@.jar", "read";
+};
+
+
+// view tools
+
+grant codeBase "file:@cargo.webapp@/WEB-INF/lib/velocity-tools-view-@cargo.velocity-tools.version@.jar"
+{
+    // read permissions on the webapp
+    permission java.io.FilePermission "@cargo.webapp@/-", "read";
+
+    // get request character encoding (specific to jetty)
+    permission java.util.PropertyPermission "org.eclipse.jetty.util.UrlEncoding.charset","read";    
+};
+
+///////////////////////////////////////////////////
+//
+// Showcase samples need some more permissions
+//
+///////////////////////////////////////////////////
+
+grant codeBase "file:@cargo.webapp@/WEB-INF/classes/-"
+{
+};

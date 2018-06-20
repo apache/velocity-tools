@@ -27,6 +27,9 @@
         <groupId>org.apache.velocity</groupId>
         <version>3.0-SNAPSHOT</version>
     </parent>
+    <properties>
+      <webapp-slf4j-logger.version>1.3</webapp-slf4j-logger.version>
+    </properties>
     <groupId>org.apache.velocity</groupId>
     <artifactId>velocity-tools-examples-showcase</artifactId>
     <packaging>war</packaging>
@@ -37,7 +40,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.19.1</version>
+                <version>2.22.0</version>
                 <executions>
                     <execution>
                         <id>integration-test</id>
@@ -56,21 +59,43 @@
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
-                <version>1.6.0</version>
-                <!-- enable remote debugging
+                <version>1.6.8</version>
                 <configuration>
+                    <container>
+                        <containerId>jetty9x</containerId>
+                    </container>
                     <configuration>
+                        <files>
+                            <copy>
+                                <file>${project.basedir}/src/main/policy/showcase.policy</file>
+                                <todir>/</todir>
+                                <configfile>true</configfile>
+                            </copy>
+                        </files>
                         <properties>
+                            <cargo.container>${project.build.directory}/cargo/installs</cargo.container>
+                            <cargo.repository>${settings.localRepository}</cargo.repository>
+                            <cargo.webapp>${project.build.directory}/${project.artifactId}</cargo.webapp>
+                            <cargo.velocity-engine.version>${velocity.engine.version}</cargo.velocity-engine.version>
+                            <cargo.velocity-tools.version>${project.version}</cargo.velocity-tools.version>
+                            <cargo.slf4j.version>${slf4j.version}</cargo.slf4j.version>
+                            <cargo.webapp-slf4j-logger.version>${webapp-slf4j-logger.version}</cargo.webapp-slf4j-logger.version>
                             <cargo.jvmargs>
-                                -Xdebug
-                                -Xrunjdwp:transport=dt_socket,server=n,suspend=y,address=5005
-                                -Xnoagent
-                                -Djava.compiler=NONE
+                                <!-- enable remote debugging
+                                -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006
+                                -->
+
+                                <!-- enable Jetty debug log
+                                -Dorg.eclipse.jetty.LEVEL=DEBUG
+                                -->
+
+                                <!-- enable security manager -->
+                                -Djava.security.manager
+                                -Djava.security.policy=${project.build.directory}/cargo/configurations/jetty9x/showcase.policy
                             </cargo.jvmargs>
                         </properties>
                     </configuration>
                 </configuration>
-                -->
                 <executions>
                     <execution>
                         <configuration>
@@ -122,7 +147,7 @@
         <dependency>
           <groupId>rhino</groupId>
           <artifactId>js</artifactId>
-          <version>1.6R5</version>
+          <version>1.7R2</version>
         </dependency>
         <dependency>
         	<groupId>org.apache.velocity</groupId>
@@ -146,7 +171,7 @@
         <dependency>
             <groupId>com.republicate</groupId>
             <artifactId>webapp-slf4j-logger</artifactId>
-            <version>1.1</version>
+            <version>${webapp-slf4j-logger.version}</version>
         	<scope>runtime</scope>
         </dependency>
     </dependencies>
