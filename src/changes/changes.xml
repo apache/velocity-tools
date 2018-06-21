@@ -25,6 +25,18 @@
   </properties>
   <body>
     <release version="3.0-SNAPSHOT" date="In Subversion">
+      <action type="fix" dev="cbrisson">
+        Drop undocumented autoloaded tools feature, and have org.apache.velocity.tools.loadDefaults default to false
+      </action>
+      <action type="fix" dev="cbrisson">
+        Make tools-view initialization much pickier about file accesses, to ease the use of a Java SecurityManager
+      </action>
+      <action type="fix" dev="cbrisson">
+        Fixed BrowserTool Accept-Language header parsing
+      </action>
+      <action type="add" dev="cbrisson">
+        Added new <code>$conv.toList(obj)</code> method
+      </action>      
       <action type="add" dev="cbrisson">
         Added <code>$browser.IPAddress</code>
       </action>
