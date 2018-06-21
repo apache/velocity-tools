@@ -144,12 +144,3 @@ grant codeBase "file:@cargo.webapp@/WEB-INF/lib/velocity-tools-view-@cargo.veloc
     permission java.util.PropertyPermission "org.eclipse.jetty.util.UrlEncoding.charset","read";    
 };
 
-///////////////////////////////////////////////////
-//
-// Showcase samples need some more permissions
-//
-///////////////////////////////////////////////////
-
-grant codeBase "file:@cargo.webapp@/WEB-INF/classes/-"
-{
-};
