@@ -368,7 +368,7 @@ public class VelocityView extends ViewToolManager
             if (appProperties != null)
             {
                 getLog().debug("Configuring Velocity with properties at: {}", appPropsPath);
-                velocity.setProperties(defaultProperties);
+                velocity.setProperties(appProperties);
             }
         }
 
