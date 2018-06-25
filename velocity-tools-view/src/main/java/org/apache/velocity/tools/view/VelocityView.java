@@ -345,17 +345,17 @@ public class VelocityView extends ViewToolManager
         if (appPropsPath != null)
         {
             boolean isInWebInf = appPropsPath.startsWith("/WEB-INF") || appPropsPath.startsWith("WEB-INF");
-            Properties appProperties = getProperties(DEFAULT_PROPERTIES_PATH, true, !isInWebInf, isInWebInf);
+            Properties appProperties = getProperties(appPropsPath, true, !isInWebInf, isInWebInf);
             getLog().debug("Configuring Velocity with properties at: {}", appPropsPath);
             velocity.setProperties(appProperties);
         }
 
         // check for a custom location for servlet-wide user props
         String servletPropsPath = config.getInitParameter(PROPERTIES_KEY);
-        if (servletPropsPath != null && !USER_PROPERTIES_PATH.equals(servletPropsPath) && (appPropsPath == null || !appPropsPath.equals(servletPropsPath)))
+        if (servletPropsPath != null && (appPropsPath == null || !appPropsPath.equals(servletPropsPath)))
         {
             boolean isInWebInf = servletPropsPath.startsWith("/WEB-INF") || servletPropsPath.startsWith("WEB-INF");
-            Properties servletProperties = getProperties(DEFAULT_PROPERTIES_PATH, true, !isInWebInf, isInWebInf);
+            Properties servletProperties = getProperties(servletPropsPath, true, !isInWebInf, isInWebInf);
             getLog().debug("Configuring Velocity with properties at: {}", servletPropsPath);
             velocity.setProperties(servletProperties);
         }
