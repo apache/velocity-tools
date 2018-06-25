@@ -49,14 +49,7 @@ import org.apache.velocity.util.EnumerationIterator;
  */
 public class ClassUtils
 {
-    public static final ClassUtils INSTANCE = new ClassUtils();
-
     private ClassUtils() {}
-
-    public ClassUtils getInstance()
-    {
-        return INSTANCE;
-    }
 
     // shortcuts for readability...
     private static final ClassLoader getThreadContextLoader()
