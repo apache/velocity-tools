@@ -216,7 +216,7 @@ public class CollectionTool extends SafeConfig
     /**
      * Sorts a Collection using a Comparator. A defensive copy is made
      * of the Collection beforehand, so the original Collection is left
-     * untouched.
+     * untouched and null elements filtered out.
      *
      * @param c The Collection to sort.
      * @param comparator The comparator to use for sorting.
@@ -227,7 +227,18 @@ public class CollectionTool extends SafeConfig
     public <T> Collection<T> sort(final Collection<T> c,
                                   final Comparator<T> comparator)
     {
-        final ArrayList<T> list = new ArrayList<>(c);
+        ArrayList<T> list = new ArrayList<>();
+        for (T elem : c)
+        {
+            if (elem != null)
+            {
+                list.add(elem);
+            }
+        }
+        if (list.size() < c.size())
+        {
+            getLog().warn("[collection] sort: null items have been filtered");
+        }
         Collections.sort(list, comparator);
         return list;
     }
@@ -235,7 +246,7 @@ public class CollectionTool extends SafeConfig
     /**
      * Sorts an array using a Comparator. A defensive copy is made
      * of the array beforehand, so the original array is left
-     * untouched.
+     * untouched and null elements filtered out.
      *
      * @param a The array to sort.
      * @param comparator The comparator to use for sorting.
@@ -245,7 +256,20 @@ public class CollectionTool extends SafeConfig
      */
     public <T> T[] sort(final T[] a, final Comparator<T> comparator)
     {
-        final T[] copy = a.clone();
+        int nulls = 0;
+        for (T t : a)
+        {
+            if (t == null)
+            {
+                ++nulls;
+            }
+        }
+        if (nulls > 0)
+        {
+            getLog().warn("[collection] sort: null items have been filtered out");
+        }
+        final T[] copy = Arrays.copyOf(a,a.length - nulls);
+        for (int from = 0, to = 0; from < a.length; ++from) if (a[from] != null) copy[to++] = a[from];
         Arrays.sort(copy, comparator);
         return copy;
     }
@@ -366,7 +390,18 @@ public class CollectionTool extends SafeConfig
 
     public Collection sort(Collection collection, List properties)
     {
-        List<?> list = new ArrayList<>(collection);
+        List list = new ArrayList<>();
+        for (Object o : collection)
+        {
+            if (o != null)
+            {
+                list.add(o);
+            }
+        }
+        if (list.size() < collection.size())
+        {
+            getLog().warn("[collection] sort: null items have been filtered out");
+        }
         return internalSort(list, properties);
     }
 
@@ -377,7 +412,7 @@ public class CollectionTool extends SafeConfig
 
     public Collection sort(Object[] array, List properties)
     {
-        return internalSort(Arrays.asList(array), properties);
+        return sort(Arrays.asList(array), properties);
     }
 
     protected Collection internalSort(List list, List properties)
@@ -387,7 +422,9 @@ public class CollectionTool extends SafeConfig
             if (properties == null)
             {
                 Collections.sort(list);
-            } else {
+            }
+            else
+            {
                 Collections.sort(list, new PropertiesComparator(properties));
             }
             return list;
