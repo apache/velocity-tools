@@ -116,10 +116,17 @@ public class VelocityLayoutServlet extends VelocityViewServlet
      */
     public static final String KEY_ERROR_INVOCATION_EXCEPTION = "invocation_exception";
 
+    /**
+     * The velocity.properties key for specifying
+     * whether dynamic layout change is allowed
+     */
+    public static final String PROPERTY_DYNAMIC_LAYOUT =
+        "tools.view.servlet.layout.dynamic";
 
     protected String errorTemplate;
     protected String layoutDir;
     protected String defaultLayout;
+    protected boolean allowDynamicLayout;
 
     /**
      * Initializes Velocity, the view servlet and checks for changes to
@@ -153,6 +160,9 @@ public class VelocityLayoutServlet extends VelocityViewServlet
 
         // for efficiency's sake, make defaultLayout a full path now
         defaultLayout = layoutDir + defaultLayout;
+
+        // initialize dynamic layout availability
+        allowDynamicLayout = "true".equalsIgnoreCase(getVelocityProperty(PROPERTY_DYNAMIC_LAYOUT, "false"));
     }
 
 
@@ -181,7 +191,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
     {
         // check if an alternate layout has been specified
         // by way of the request parameters
-        String layout = request.getParameter(KEY_LAYOUT);
+        String layout = allowDynamicLayout ? request.getParameter(KEY_LAYOUT) : null;
         // also look in the request attributes 
         if (layout == null) 
         { 
