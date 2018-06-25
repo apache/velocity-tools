@@ -126,7 +126,6 @@ public class VelocityLayoutServlet extends VelocityViewServlet
     protected String errorTemplate;
     protected String layoutDir;
     protected String defaultLayout;
-    protected boolean allowDynamicLayout;
 
     /**
      * Initializes Velocity, the view servlet and checks for changes to
@@ -160,9 +159,6 @@ public class VelocityLayoutServlet extends VelocityViewServlet
 
         // for efficiency's sake, make defaultLayout a full path now
         defaultLayout = layoutDir + defaultLayout;
-
-        // initialize dynamic layout availability
-        allowDynamicLayout = "true".equalsIgnoreCase(getVelocityProperty(PROPERTY_DYNAMIC_LAYOUT, "false"));
     }
 
 
@@ -189,15 +185,8 @@ public class VelocityLayoutServlet extends VelocityViewServlet
      */
     protected String findLayout(HttpServletRequest request)
     {
-        // check if an alternate layout has been specified
-        // by way of the request parameters
-        String layout = allowDynamicLayout ? request.getParameter(KEY_LAYOUT) : null;
-        // also look in the request attributes 
-        if (layout == null) 
-        { 
-            layout = (String)request.getAttribute(KEY_LAYOUT); 
-        }
-        return layout;
+        // look in the request attributes
+        return (String)request.getAttribute(KEY_LAYOUT);
     }
 
     /**

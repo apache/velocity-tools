@@ -25,7 +25,7 @@
          version="3.0">
   <servlet>
     <servlet-name>velocity</servlet-name>
-    <servlet-class>org.apache.velocity.tools.view.VelocityLayoutServlet</servlet-class>
+    <servlet-class>org.apache.velocity.tools.examples.showcase.ShowcaseLayoutServlet</servlet-class>
     <init-param>
       <param-name>org.apache.velocity.tools.loadDefaults</param-name>
       <param-value>true</param-value>
