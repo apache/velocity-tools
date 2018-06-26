@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.Iterator;
@@ -70,12 +71,12 @@ import org.w3c.dom.Node;
 // JSONObject isn't (yet?) Serializable, so session scope is invalid
 @DefaultKey("json")
 @InvalidScope(Scope.SESSION)
-public class JsonTool extends ImportSupport implements Iterable
+public class JsonTool extends ImportSupport implements Iterable, Serializable
 {
     /**
      * ImportSupport utility which provides underlying i/o
      */
-    protected ImportSupport importSupport = null;
+    protected transient ImportSupport importSupport = null;
 
     /**
      * ImportSupport initialization

@@ -90,7 +90,7 @@ public class XmlTool extends SafeConfig implements Serializable
     /**
      * ImportSupport utility which provides underlying i/o
      */
-    protected ImportSupport importSupport = null;
+    protected transient ImportSupport importSupport = null;
 
     /**
      * ImportSupport initialization

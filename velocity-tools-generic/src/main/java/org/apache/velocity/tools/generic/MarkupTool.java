@@ -19,6 +19,7 @@ package org.apache.velocity.tools.generic;
  * under the License.    
  */
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +62,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  * @version $Id$
  */
 @DefaultKey("mark")
-public class MarkupTool extends SafeConfig
+public class MarkupTool extends SafeConfig implements Serializable
 {
     public static final String DEFAULT_TAB = "  ";
     public static final String DEFAULT_DELIMITER = " ";

@@ -19,6 +19,7 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.net.URI;
@@ -82,7 +83,7 @@ import org.apache.velocity.tools.config.ValidScope;
 @DefaultKey("link")
 @SkipSetters
 @ValidScope(Scope.REQUEST)
-public class LinkTool extends SafeConfig implements Cloneable
+public class LinkTool extends SafeConfig implements Cloneable, Serializable
 {
     /** Standard HTML delimiter for query data ('&amp;') */
     public static final String HTML_QUERY_DELIMITER = "&";

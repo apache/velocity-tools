@@ -19,6 +19,7 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -57,7 +58,7 @@ import org.apache.velocity.tools.generic.ValueParser;
  */
 @DefaultKey("context")
 @InvalidScope({Scope.APPLICATION,Scope.SESSION})
-public class ContextTool extends SafeConfig
+public class ContextTool extends SafeConfig implements Serializable
 {
     protected Context context;
     protected Map<String,Object> toolbox;

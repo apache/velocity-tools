@@ -19,10 +19,10 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.velocity.tools.ConversionUtils;
 import org.apache.velocity.tools.Scope;
@@ -60,7 +60,7 @@ import org.apache.velocity.tools.config.ValidScope;
 
 @DefaultKey("math")
 @ValidScope(Scope.APPLICATION)
-public class MathTool extends FormatConfig
+public class MathTool extends FormatConfig implements Serializable
 {
     /* Old non-vararg methods (can be removed once we require Velocity 1.6) */
 

@@ -19,6 +19,7 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import java.io.Serializable;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
@@ -44,12 +45,12 @@ import org.apache.velocity.tools.config.ValidScope;
 
 @DefaultKey("import")
 @ValidScope(Scope.REQUEST)
-public class ImportTool extends SafeConfig
+public class ImportTool extends SafeConfig implements Serializable
 {
     /**
      * ImportSupport utility which provides underlying i/o
      */
-    protected ImportSupport importSupport = null;
+    protected transient ImportSupport importSupport = null;
 
     /**
      * Importsupport initialization

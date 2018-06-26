@@ -19,6 +19,7 @@ package org.apache.velocity.tools.generic;
  * under the License.    
  */
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -75,7 +76,7 @@ import org.apache.velocity.tools.config.ValidScope;
 
 @DefaultKey("display")
 @ValidScope(Scope.APPLICATION)
-public class DisplayTool extends LocaleConfig
+public class DisplayTool extends LocaleConfig implements Serializable
 {
     public static final String LIST_DELIM_KEY = "listDelim";
     public static final String LIST_FINAL_DELIM_KEY = "listFinalDelim";
