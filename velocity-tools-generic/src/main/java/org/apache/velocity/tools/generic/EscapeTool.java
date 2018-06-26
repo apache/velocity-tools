@@ -19,10 +19,10 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.net.URLDecoder;
-
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
@@ -101,7 +101,7 @@ import org.apache.velocity.tools.config.ValidScope;
 
 @DefaultKey("esc")
 @ValidScope(Scope.APPLICATION)
-public class EscapeTool extends SafeConfig
+public class EscapeTool extends SafeConfig implements Serializable
 {
     public static final String DEFAULT_KEY = "esc";
     

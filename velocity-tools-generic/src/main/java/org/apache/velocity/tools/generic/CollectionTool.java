@@ -115,7 +115,7 @@ import java.util.Map;
  * @version $Id$
  */
 @DefaultKey("collection")
-public class CollectionTool extends SafeConfig
+public class CollectionTool extends SafeConfig implements Serializable
 {
     public static final String STRINGS_DELIMITER_FORMAT_KEY = "stringsDelimiter";
     public static final String STRINGS_TRIM_KEY = "trimStrings";

@@ -19,6 +19,7 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.*;
@@ -92,7 +93,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @DefaultKey("browser")
 @InvalidScope(Scope.APPLICATION)
-public class BrowserTool extends BrowserToolDeprecatedMethods implements java.io.Serializable
+public class BrowserTool extends BrowserToolDeprecatedMethods implements Serializable
 {
     private static final long serialVersionUID = 1734529350532353339L;
 

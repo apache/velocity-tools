@@ -19,6 +19,7 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -92,7 +93,7 @@ import org.apache.velocity.tools.config.ValidScope;
 
 @DefaultKey("loop")
 @ValidScope(Scope.REQUEST)
-public class LoopTool extends SafeConfig
+public class LoopTool extends SafeConfig implements Serializable
 {
     private Stack<ManagedIterator> iterators = new Stack<ManagedIterator>();
     private ManagedIterator last;

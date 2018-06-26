@@ -19,8 +19,8 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import java.io.Serializable;
 import java.util.Collection;
-
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
@@ -63,7 +63,7 @@ import org.apache.velocity.tools.config.ValidScope;
 @ValidScope(Scope.APPLICATION)
 @DefaultKey("alternator")
 @Deprecated
-public class AlternatorTool extends SafeConfig
+public class AlternatorTool extends SafeConfig implements Serializable
 {
     public static final String AUTO_ALTERNATE_DEFAULT_KEY = "autoAlternate";
 

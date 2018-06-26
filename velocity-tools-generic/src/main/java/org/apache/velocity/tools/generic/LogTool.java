@@ -18,10 +18,10 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import java.io.Serializable;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
-
 import org.slf4j.LoggerFactory;
 
 /**
@@ -55,7 +55,7 @@ import org.slf4j.LoggerFactory;
 
 @DefaultKey("log")
 @ValidScope(Scope.APPLICATION)
-public class LogTool extends SafeConfig
+public class LogTool extends SafeConfig implements Serializable
 {
     public void error(String message)
     {
