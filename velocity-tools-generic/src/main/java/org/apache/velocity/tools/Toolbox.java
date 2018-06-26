@@ -102,14 +102,20 @@ public class Toolbox implements java.io.Serializable
 
     public Object get(String key, String path, Map<String,Object> context)
     {
-        Object tool = null;
-        if (cache != null)
-        {
-            tool = getFromCache(key, path);
-        }
+        /* try the cache */
+        Object tool = getFromCache(key, path);
+
         if (tool == null)
         {
-            tool = getFromInfo(key, path, context);
+            /* synchronize and try again */
+            synchronized (this)
+            {
+                tool = getFromCache(key, path);
+                if (tool == null)
+                {
+                    tool = getFromInfo(key, path, context);
+                }
+            }
         }
         return tool;
     }
