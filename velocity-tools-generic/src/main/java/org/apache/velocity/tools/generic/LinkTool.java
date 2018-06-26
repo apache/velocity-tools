@@ -20,6 +20,7 @@ package org.apache.velocity.tools.generic;
  */
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.ToolContext;
@@ -439,7 +441,35 @@ public class LinkTool extends SafeConfig implements Cloneable
         }
         else if (obj instanceof Map)
         {
-            this.query = new LinkedHashMap((Map)obj);
+            this.query = new LinkedHashMap();
+            for (Map.Entry keyValues : (Set<Map.Entry>)((Map)obj).entrySet())
+            {
+                String key = String.valueOf(keyValues.getKey());
+                Object values = keyValues.getValue();
+                if (values.getClass().isArray())
+                {
+                    int size = Array.getLength(values);
+                    switch (size)
+                    {
+                        case 0:
+                            break;
+                        case 1:
+                            this.query.put(key, Array.get(values, 0));
+                            break;
+                        default:
+                            List lst = new ArrayList();
+                            for (int i = 0; i < Array.getLength(values); ++i)
+                            {
+                                lst.add(Array.get(values, i));
+                            }
+                            this.query.put(key, lst);
+                    }
+                }
+                else
+                {
+                    this.query.put(key, values);
+                }
+            }
         }
         else
         {
