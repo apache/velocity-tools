@@ -73,6 +73,8 @@
                             </copy>
                         </files>
                         <properties>
+                            <!-- variables referenced in the showcase policy file -->
+                            <!-- commented since broken on windows due to a cargo bug like MNG-6386
                             <cargo.container>${project.build.directory}/cargo/installs</cargo.container>
                             <cargo.repository>${settings.localRepository}</cargo.repository>
                             <cargo.webapp>${project.build.directory}/${project.artifactId}</cargo.webapp>
@@ -80,6 +82,7 @@
                             <cargo.velocity-tools.version>${project.version}</cargo.velocity-tools.version>
                             <cargo.slf4j.version>${slf4j.version}</cargo.slf4j.version>
                             <cargo.webapp-slf4j-logger.version>${webapp-slf4j-logger.version}</cargo.webapp-slf4j-logger.version>
+                            -->
                             <cargo.jvmargs>
                                 <!-- enable remote debugging
                                 -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006
@@ -89,9 +92,11 @@
                                 -Dorg.eclipse.jetty.LEVEL=DEBUG
                                 -->
 
-                                <!-- enable security manager -->
+                                <!-- enable security manager
+                                     (disabled for now, see above note about policy file)
                                 -Djava.security.manager
                                 -Djava.security.policy=${project.build.directory}/cargo/configurations/jetty9x/showcase.policy
+                                 -->
                             </cargo.jvmargs>
                         </properties>
                     </configuration>
