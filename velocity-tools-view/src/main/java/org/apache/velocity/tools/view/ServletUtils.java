@@ -297,22 +297,18 @@ public class ServletUtils
         return null;
     }
 
-    public static InputStream getInputStream(final String path, ServletContext application)
-    {
-        return getInputStream(path, application, true, true);
-    }
-
-    public static InputStream getInputStream(final String path, final ServletContext application, boolean searchClasspath, boolean searchWebapp)
+    public static InputStream getInputStream(final String path, final ServletContext application)
     {
         InputStream inputStream = null;
-        // first search classpath if asked so
-        if (searchClasspath)
+        boolean webappResource = path != null && (path.startsWith("WEB-INF") || path.startsWith("/WEB-INF"));
+        if (!webappResource)
         {
+            // search classpath except for WEB-INF/*
             inputStream = ClassUtils.getResourceAsStream(path, ServletUtils.class);
         }
-        if (inputStream == null && searchWebapp)
+        else
         {
-            // then webapp
+            // then webapp only for WEB-INF/*
             if (System.getSecurityManager() != null)
             {
                 inputStream = AccessController.doPrivileged(
