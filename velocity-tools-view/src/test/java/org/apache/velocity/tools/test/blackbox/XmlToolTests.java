@@ -21,7 +21,6 @@ package org.apache.velocity.tools.test.blackbox;
 
 import org.apache.velocity.tools.view.ViewContext;
 import org.apache.velocity.tools.view.XmlTool;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.servlet.RequestDispatcher;
@@ -179,10 +178,16 @@ public class XmlToolTests
       Michael Osipov suggested this example:
       https://github.com/apache/maven-wagon/blob/master/wagon-providers/wagon-http/src/test/java/org/apache/maven/wagon/providers/http/HugeFileDownloadTest.java
     */
-    public @Ignore @Test void testConfigFetchRemoteSource()
+    public @Test void testConfigFetchRemoteSource()
     {
+        TestURLHandler.registerTestURL("foo.xml",
+            "<foo>\n" +
+            "  <bar name=\"a\"/>\n" +
+            "  <baz>woogie</baz>\n" +
+            "  <baz>wiggie</baz>\n" +
+            "</foo>");
         Map config = new HashMap();
-        config.put("url", "http://svn.apache.org/viewvc/velocity/tools/trunk/velocity-tools-generic/src/test/resources/file.xml?revision=1776916&view=co&pathrev=1776916");
+        config.put("url", "veltest://anywhere/foo.xml");
         XmlTool xml = newXmlTool(config);
         assertEquals("woogie\n  wiggie", xml.getText());
     }
