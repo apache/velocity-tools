@@ -25,6 +25,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import javax.servlet.FilterConfig;
@@ -297,11 +299,15 @@ public class ServletUtils
         return null;
     }
 
+    protected static boolean isWebappResource(String path)
+    {
+      return path != null && (path.startsWith("WEB-INF") || path.startsWith("/WEB-INF"));
+    }
+
     public static InputStream getInputStream(final String path, final ServletContext application)
     {
         InputStream inputStream = null;
-        boolean webappResource = path != null && (path.startsWith("WEB-INF") || path.startsWith("/WEB-INF"));
-        if (!webappResource)
+        if (!isWebappResource(path))
         {
             // search classpath except for WEB-INF/*
             inputStream = ClassUtils.getResourceAsStream(path, ServletUtils.class);
@@ -330,6 +336,48 @@ public class ServletUtils
         return inputStream;
     }
 
+    public static URL getURL(final String path, final ServletContext application)
+    {
+        URL url = null;
+        if (!isWebappResource(path))
+        {
+            // search classpath except for WEB-INF/*
+            url = ClassUtils.getResource(path, ServletUtils.class);
+        }
+        else
+        {
+            // then webapp only for WEB-INF/*
+            if (System.getSecurityManager() != null)
+            {
+                url = AccessController.doPrivileged(
+                    new PrivilegedAction<URL>()
+                    {
+                        @Override
+                        public URL run()
+                        {
+                            try
+                            {
+                                return application.getResource(path);
+                            }
+                            catch (MalformedURLException mue)
+                            {
+                                return null;
+                            }
+                        }
+                    });
+            }
+            else
+            {
+                try
+                {
+                    url = application.getResource(path);
+                }
+                catch (MalformedURLException mue) {}
+            }
+        }
+        return url;
+    }
+
     public static FactoryConfiguration getConfiguration(ServletContext application)
     {
         Object obj = application.getAttribute(CONFIGURATION_KEY);
@@ -348,11 +396,11 @@ public class ServletUtils
         return null;
     }
 
-    public static FactoryConfiguration getConfiguration(String path, ServletContext application)
+    public static FactoryConfiguration getConfiguration(final String path, final ServletContext application)
     {
         // first make sure we can even get such a file
-        InputStream inputStream = getInputStream(path, application);
-        if (inputStream == null)
+        URL url = getURL(path, application);
+        if (url == null)
         {
             return null;
         }
@@ -378,25 +426,11 @@ public class ServletUtils
         // now, try to read the file
         try
         {
-            config.read(inputStream);
+            config.read(url);
         }
-        catch (IOException ioe)
+        catch (Exception e)
         {
-            throw new RuntimeException("Failed to load configuration at: "+path, ioe);
-        }
-        finally
-        {
-            try
-            {
-                if (inputStream != null)
-                {
-                    inputStream.close();
-                }
-            }
-            catch (IOException ioe)
-            {
-                throw new RuntimeException("Failed to close input stream for "+path, ioe);
-            }
+            throw new RuntimeException("Failed to load configuration at: "+path, e);
         }
         return config;
     }

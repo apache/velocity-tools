@@ -19,7 +19,7 @@
  under the License.
 -->
 
-<tools>
+<tools xmlns:xi="http://www.w3.org/2001/XInclude">
   <data key="author">Nathan Bubna</data>
   <toolbox scope="request">
     <tool class="org.apache.velocity.tools.examples.showcase.tool.LayoutLinkTool"/>
@@ -39,4 +39,12 @@
     <tool key="number" format="#0.0"/>
     <tool key="xml" file="file.xml" safeMode="false"/>
   </toolbox>
+
+  <!-- xi:include tests -->
+  <!-- cbrisson: I'm a bit polluting the showcase example webapp with XInclude testcases
+       but those testcases have an example value in the source code as well
+  -->
+  <xi:include href="included/test-xinclude1.xml"/>
+  <xi:include href="included/test-xinclude2.xml" xpointer="element(/1/1)"/> <!-- xpointer() scheme is not supported by xerces -->
+  <data key="xinclude_3"><xi:include href="included/test-xinclude3.txt" parse="text"/></data>
 </tools>

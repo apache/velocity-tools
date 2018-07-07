@@ -208,7 +208,7 @@ public class ViewToolsIT {
         checkTextStart(resp, "get(java.lang.Object)", "org.apache.velocity.tools.view.ViewContextTool");
 
         /* check keys (the only expected uppercase is in 'velocityCount') */
-        checkTextRegex(resp, "getKeys()", "^\\[[a-z_A-Z]+(?:,\\s*[a-z_A-Z]+)*\\]$");
+        checkTextRegex(resp, "getKeys()", "^\\[[a-z_A-Z][a-z_A-Z0-9]*(?:,\\s*[a-z_A-Z][a-z_A-Z0-9]*)*\\]$");
 
         /* check toolbox */
         checkTextRegex(resp,"getToolbox()","^\\{[a-z_A-Z]+=.*(?:,\\s*[a-z_A-Z]+=.*)*\\}$");
@@ -336,4 +336,11 @@ public class ViewToolsIT {
         checkText(resp, "foo", "bar");
     }
 
+    public @Test void testXInclude() throws Exception
+    {
+        WebConversation conv = new WebConversation();
+        WebRequest req = new GetMethodWebRequest(ROOT_URL+"nolayout/xinclude.txt");
+        WebResponse resp = conv.getResponse(req);
+        assertEquals("success success success", resp.getText().trim());
+    }
 }

@@ -331,29 +331,13 @@ public class ConfigurationUtils
         }
 
         // now, try to read the file
-        InputStream inputStream = null;
         try
         {
-            inputStream = url.openStream();
-            config.read(inputStream);
+            config.read(url);
         }
-        catch (IOException ioe)
+        catch (Exception e)
         {
             return null;
-        }
-        finally
-        {
-            if (inputStream != null)
-            {
-                try
-                {
-                    inputStream.close();
-                }
-                catch (IOException ioe)
-                {
-                    throw new RuntimeException("Could not close input stream for "+path, ioe);
-                }
-            }
         }
         return config;
     }

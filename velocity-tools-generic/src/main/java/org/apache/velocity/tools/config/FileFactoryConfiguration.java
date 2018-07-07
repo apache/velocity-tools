@@ -19,7 +19,6 @@ package org.apache.velocity.tools.config;
  * under the License.
  */
 
-import java.io.InputStream;
 import java.io.IOException;
 import java.net.URL;
 
@@ -29,8 +28,7 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.tools.ConversionUtils;
 
 /**
- * Provides support for reading a configuration file from a specified path,
- * This frees the user from having to obtain an InputStream themselves.
+ * Provides support for reading a configuration file from a specified path.
  *
  * @author Nathan Bubna
  * @version $Id: XmlFactoryConfiguration.java 511959 2007-02-26 19:24:39Z nbubna $
@@ -43,11 +41,11 @@ public abstract class FileFactoryConfiguration extends FactoryConfiguration
     }
 
     /**
-     * <p>Reads an configuration from an {@link InputStream}.</p>
+     * <p>Reads an configuration from an {@link URL}.</p>
      * 
-     * @param input the InputStream to read from
+     * @param url the InputStream to read from
      */
-    public abstract void read(InputStream input) throws IOException;
+    protected abstract void readImpl(URL url) throws IOException;
 
     /**
      * <p>Reads a configuration file from the specified file path
@@ -115,7 +113,7 @@ public abstract class FileFactoryConfiguration extends FactoryConfiguration
     {
         try
         {
-            read(url, url.openStream(), required, log);
+            readImpl(url);
             // only add the sources which can be read
             addSource("    .read("+url.toString()+")");
         }
@@ -132,44 +130,4 @@ public abstract class FileFactoryConfiguration extends FactoryConfiguration
             }
         }
     }
-
-
-    protected void read(Object source, InputStream inputStream,
-                        boolean required, Logger log)
-    {
-        try
-        {
-            read(inputStream);
-        }
-        catch (IOException ioe)
-        {
-            String msg = "InputStream could not be read from: "+source;
-            if (log != null)
-            {
-                log.debug(msg, ioe);
-            }
-            if (required)
-            {
-                throw new RuntimeException(msg, ioe);
-            }
-        }
-        finally
-        {
-            try
-            {
-                if (inputStream != null)
-                {
-                    inputStream.close();
-                }
-            }
-            catch (IOException ioe)
-            {
-                if (log != null)
-                {
-                    log.error("Failed to close input stream for {}", source, ioe);
-                }
-            }
-        }
-    }
-
 }

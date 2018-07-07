@@ -21,6 +21,7 @@ package org.apache.velocity.tools.config;
 
 import java.io.InputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Iterator;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.velocity.util.ExtProperties;
@@ -83,12 +84,12 @@ public class PropertiesFactoryConfiguration extends FileFactoryConfiguration
      * <p>Reads an properties file from an {@link InputStream}
      * and uses it to configure this {@link FactoryConfiguration}.</p>
      * 
-     * @param input the InputStream to read from
+     * @param url the URL to read from
      */
-    public void read(InputStream input) throws IOException
+    protected void readImpl(URL url) throws IOException
     {
         ExtProperties props = new ExtProperties();
-        props.load(input);
+        props.load(url.openStream());
 
         // all factory settings should be prefixed with "tools"
         read(props.subset("tools"));
