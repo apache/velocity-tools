@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.net.URL;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -114,7 +115,7 @@ public class VelocityViewTest
         expect(servletContext.getInitParameter(VelocityView.TOOLS_KEY)).andAnswer(eval((String)null));
         expect(config.getInitParameter(VelocityView.TOOLS_KEY)).andAnswer(eval((String)null));
         expect(servletContext.getAttribute(ServletUtils.CONFIGURATION_KEY)).andAnswer(eval((String)null));
-        expect(servletContext.getResourceAsStream(VelocityView.USER_TOOLS_PATH)).andAnswer(eval((InputStream)null));
+        expect(servletContext.getResource(VelocityView.USER_TOOLS_PATH)).andAnswer(eval((URL)null));
         expect(request.getAttribute("javax.servlet.include.servlet_path")).andAnswer(eval("/charset-test.vm"));
         expect(request.getAttribute("javax.servlet.include.path_info")).andAnswer(eval((String)null));
 

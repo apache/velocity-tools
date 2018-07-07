@@ -19,8 +19,8 @@ package org.apache.velocity.tools.config;
  * under the License.
  */
 
-import java.io.InputStream;
 import java.io.IOException;
+import java.net.URL;
 import org.xml.sax.SAXException;
 import org.apache.commons.digester3.Digester;
 import org.apache.commons.digester3.RuleSet;
@@ -47,6 +47,11 @@ public class XmlFactoryConfiguration extends FileFactoryConfiguration
 {
     private RuleSet ruleSet;
 
+    /**
+     * Creates an instance
+     *
+     * @see FactoryConfiguration#setSource(String)
+     */
     public XmlFactoryConfiguration()
     {
         this("");
@@ -54,7 +59,7 @@ public class XmlFactoryConfiguration extends FileFactoryConfiguration
 
     /**
      * Creates an instance using the specified string
-     * as an identifier to distinguish this instance when debugging.
+     * as an identifier to distinguish this instance when debugging
      *
      * @param id the name of the "source" of this instance
      * @see FactoryConfiguration#setSource(String)
@@ -85,21 +90,23 @@ public class XmlFactoryConfiguration extends FileFactoryConfiguration
 
 
     /**
-     * <p>Reads an XML document from an {@link InputStream}
+     * <p>Reads an XML document from an {@link URL}
      * and uses it to configure this {@link FactoryConfiguration}.</p>
      * 
-     * @param input the InputStream to read from
+     * @param url the URL to read from
      */
-    public void read(InputStream input) throws IOException
+    protected void readImpl(URL url) throws IOException
     {
         Digester digester = new Digester();
+        digester.setNamespaceAware(true);
+        digester.setXIncludeAware(true);
         digester.setValidating(false);
         digester.setUseContextClassLoader(true);
         digester.push(this);
         digester.addRuleSet(getRuleSet());
         try
         {
-            digester.parse(input);
+            digester.parse(url);
         }
         catch (SAXException saxe)
         {

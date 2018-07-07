@@ -23,29 +23,42 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3.0.xsd"
          version="3.0">
+  <!-- servlets -->
   <servlet>
     <servlet-name>velocity</servlet-name>
     <servlet-class>org.apache.velocity.tools.examples.showcase.ShowcaseLayoutServlet</servlet-class>
-    <init-param>
-      <param-name>org.apache.velocity.tools.loadDefaults</param-name>
-      <param-value>true</param-value>
-    </init-param>
-    <init-param>
-      <param-name>org.apache.velocity.tools.cleanConfiguration</param-name>
-      <param-value>true</param-value>
-    </init-param>
-    <init-param>
-      <param-name>org.apache.velocity.tools.userCanOverwriteTools</param-name>
-      <param-value>false</param-value>
-    </init-param>
   </servlet>
+  <servlet>
+    <servlet-name>velocity-standard</servlet-name>
+    <servlet-class>org.apache.velocity.tools.view.VelocityViewServlet</servlet-class>
+  </servlet>
+  <!-- servlet mappings -->
+  <servlet-mapping>
+    <servlet-name>velocity-standard</servlet-name>
+    <url-pattern>nolayout/*</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>velocity</servlet-name>
     <url-pattern>*.vm</url-pattern>
   </servlet-mapping>
+  <!-- context params -->
+  <context-param>
+    <param-name>org.apache.velocity.tools.loadDefaults</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  <context-param>
+    <param-name>org.apache.velocity.tools.cleanConfiguration</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  <context-param>
+    <param-name>org.apache.velocity.tools.userCanOverwriteTools</param-name>
+    <param-value>false</param-value>
+  </context-param> 
+  <!-- welcome file -->
   <welcome-file-list>
     <welcome-file>index.vm</welcome-file>
   </welcome-file-list>
+  <!-- listeners -->
   <listener>
     <listener-class>org.apache.velocity.tools.examples.showcase.sample.SampleListInitializer</listener-class>
   </listener>
