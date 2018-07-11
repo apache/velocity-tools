@@ -95,6 +95,9 @@ import org.apache.commons.lang3.StringEscapeUtils;
  *     at least not return any of the failed request content. Essentially,
  *     setting this to {@code true} degrades performance in order to enable
  *     a more "correct" error response"</dd>
+ *   <dt>org.apache.velocity.tools.view.class</dt>
+ *   <dd>Allows to specify a custom class (inheriting from VelocityView) as
+ *   the View class.</dd>
  * </dl>
  *
  * @version $Id$

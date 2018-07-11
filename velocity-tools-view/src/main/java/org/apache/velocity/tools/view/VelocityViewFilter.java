@@ -55,8 +55,8 @@ import org.apache.velocity.tools.view.ViewToolContext;
  *     Velocity is initialized with the settings in the classpath at
  *     'org.apache.velocity.tools.view.velocity.properties'.</dd>
  *   <dt>org.apache.velocity.tools.loadDefaults</dt>
- *   <dd>By default, this is {@code true}. If set to {@code false}, then
- *     the default toolbox configuration will not be added to your (if any)
+ *   <dd>By default, this is {@code false}. If set to {@code true}, then
+ *     the default toolbox configuration will be added prior to your (if any)
  *     custom configuration.</dd>
  *   <dt>org.apache.velocity.tools.cleanConfiguration</dt>
  *   <dd>By default, this is {@code false}. If set to {@code true}, then
@@ -75,12 +75,12 @@ import org.apache.velocity.tools.view.ViewToolContext;
  *   <dd>If you set a value for this property, this filter will create
  *     and prepare a {@link ViewToolContext} for each request, and then
  *     place it into the request attributes under the key you set. This
- *     is primarily for those who have this filter NOT share a config
- *     (i.e. non-shared VelocityView) and thus will find it easier to
- *     retrieve a working context from the request attributes than it
- *     would be to get the VelocityView for this filter and have it
- *     create the context for them.  Most users will have no trouble
- *     getting a shared VelocityView and creating the context themselves.</dd>
+ *     is primarily for those who use this filter WITHOUT sharing a config
+ *     (i.e. non-shared VelocityView), letting them retrieve the context
+ *     as the request attribute.</dd>
+ *   <dt>org.apache.velocity.tools.view.class</dt>
+ *   <dd>Allows to specify a custom class (inheriting from VelocityView) as
+ *   the View class.</dd>
  * </dl>
  *
  * @version $Id: VelocityViewFilter.java 611011 2008-01-11 01:32:59Z nbubna $
