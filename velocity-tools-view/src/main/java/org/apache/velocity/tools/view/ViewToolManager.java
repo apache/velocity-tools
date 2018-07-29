@@ -108,7 +108,7 @@ public class ViewToolManager extends ToolManager
     /**
      * Sets whether or not the creation of a new {@link ViewToolContext}
      * should make the various scoped {@link Toolbox} instances available
-     * publically via the HttpServletRequest/HttpSession/ServletContext
+     * publicly via the HttpServletRequest/HttpSession/ServletContext
      * attributes or simply add the Toolbox instances directly to the
      * context. <b>It is important to note that if this is set to false,
      * session-scoped tools will NOT be stored in the session, but instead
