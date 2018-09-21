@@ -19,21 +19,16 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
-import java.util.Date;
-import java.util.Locale;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
-//import org.apache.velocity.tools.generic.DateTool;
+
+import org.junit.Test;
 
 /**
  * <p>Tests for DateToolTests</p>
@@ -44,64 +39,87 @@ import java.util.TimeZone;
  */
 public class DateToolTests
 {
+    private final Locale TEST_LOCALE = Locale.FRANCE;
+    private final TimeZone TEST_TIME_ZONE = TimeZone.getTimeZone("Europe/Paris");
+
     public @Test void toLocalizedPattern_simplePattern() throws Exception
     {
         DateTool dt = new DateTool();
 
-        Locale frFR = new Locale("fr", "FR");
-
         assertEquals("DateTool incorrectly localizes date format pattern",
-                     new SimpleDateFormat("yyyy-MM-dd", frFR).toLocalizedPattern(), // "aaaa-MM-jj"
-                     dt.toLocalizedPattern("yyyy-MM-dd", frFR));
+                     new SimpleDateFormat("yyyy-MM-dd", TEST_LOCALE).toLocalizedPattern(), // "aaaa-MM-jj"
+                     dt.toLocalizedPattern("yyyy-MM-dd", TEST_LOCALE));
     }
 
     public @Test void toLocalizedPattern_predefinedDateTimePattern() throws Exception
     {
         DateTool dt = new DateTool();
 
-        Locale frFR = new Locale("fr", "FR");
-
         assertEquals("DateTool incorrectly localizes date format pattern",
-                     ((SimpleDateFormat)DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, frFR)).toLocalizedPattern(),
-                     dt.toLocalizedPattern("short", frFR));
+                     ((SimpleDateFormat)DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, TEST_LOCALE)).toLocalizedPattern(),
+                     dt.toLocalizedPattern("short", TEST_LOCALE));
     }
 
     public @Test void toLocalizedPattern_predefinedDatePattern() throws Exception
     {
         DateTool dt = new DateTool();
 
-        Locale frFR = new Locale("fr", "FR");
-
         assertEquals("DateTool incorrectly localizes date format pattern",
-                     ((SimpleDateFormat)DateFormat.getDateInstance(DateFormat.SHORT, frFR)).toLocalizedPattern(),
-                     dt.toLocalizedPattern("short_date", frFR));
+                     ((SimpleDateFormat)DateFormat.getDateInstance(DateFormat.SHORT, TEST_LOCALE)).toLocalizedPattern(),
+                     dt.toLocalizedPattern("short_date", TEST_LOCALE));
     }
 
     public @Test void toLocalizedPattern_predefinedTimePattern() throws Exception
     {
         DateTool dt = new DateTool();
 
-        Locale frFR = new Locale("fr", "FR");
-
         assertEquals("DateTool incorrectly localizes date format pattern",
-                     ((SimpleDateFormat)DateFormat.getTimeInstance(DateFormat.SHORT, frFR)).toLocalizedPattern(),
-                     dt.toLocalizedPattern("short_time", frFR));
+                     ((SimpleDateFormat)DateFormat.getTimeInstance(DateFormat.SHORT, TEST_LOCALE)).toLocalizedPattern(),
+                     dt.toLocalizedPattern("short_time", TEST_LOCALE));
     }
 
     public @Test void toIsoFormat() throws Exception
     {
         DateTool dt = new DateTool();
-        Date date = new Date();
-        dt.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
-        assertEquals("DateTool incorrectly formatted iso format", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(date), dt.format("iso", date));
-        assertEquals("DateTool incorrectly formatted iso format", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").format(date), dt.format("iso_tz",date));
-        assertEquals("DateTool incorrectly formatted iso format", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date), dt.format("intl",date));
-        assertEquals("DateTool incorrectly formatted iso format", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date) + " Europe/Paris", dt.format("intl_tz",date));
-        assertEquals("DateTool incorrectly formatted iso format", new SimpleDateFormat("yyyy-MM-dd").format(date), dt.format("iso_date",date));
-        assertEquals("DateTool incorrectly formatted iso format", new SimpleDateFormat("yyyy-MM-dd").format(date), dt.format("intl_date",date));
-        assertEquals("DateTool incorrectly formatted iso format", new SimpleDateFormat("HH:mm:ss").format(date), dt.format("iso_time",date));
-        assertEquals("DateTool incorrectly formatted iso format", new SimpleDateFormat("HH:mm:ss").format(date), dt.format("intl_time",date));
-        assertEquals("DateTool incorrectly formatted iso format", new SimpleDateFormat("HH:mm:ssXXX").format(date), dt.format("iso_tz_time",date));
-        assertEquals("DateTool incorrectly formatted iso format", new SimpleDateFormat("HH:mm:ss").format(date) + " Europe/Paris", dt.format("intl_tz_time",date));
+
+        dt.setLocale(TEST_LOCALE);
+        dt.setTimeZone(TEST_TIME_ZONE);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeZone(TEST_TIME_ZONE);
+
+        Date date = cal.getTime();
+        SimpleDateFormat format = new SimpleDateFormat();
+        format.setCalendar(cal);
+
+        format.applyPattern("yyyy-MM-dd'T'HH:mm:ss");
+        assertEquals("DateTool incorrectly formatted iso format", format.format(date), dt.format("iso", date));
+
+        format.applyPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
+        assertEquals("DateTool incorrectly formatted iso format", format.format(date), dt.format("iso_tz",date));
+
+        format.applyPattern("yyyy-MM-dd HH:mm:ss");
+        assertEquals("DateTool incorrectly formatted iso format", format.format(date), dt.format("intl",date));
+
+        format.applyPattern("yyyy-MM-dd HH:mm:ss");
+        assertEquals("DateTool incorrectly formatted iso format", format.format(date) + " " + TEST_TIME_ZONE.getID(), dt.format("intl_tz",date));
+
+        format.applyPattern("yyyy-MM-dd");
+        assertEquals("DateTool incorrectly formatted iso format", format.format(date), dt.format("iso_date",date));
+
+        format.applyPattern("yyyy-MM-dd");
+        assertEquals("DateTool incorrectly formatted iso format", format.format(date), dt.format("intl_date",date));
+
+        format.applyPattern("HH:mm:ss");
+        assertEquals("DateTool incorrectly formatted iso format",format.format(date), dt.format("iso_time",date));
+
+        format.applyPattern("HH:mm:ss");
+        assertEquals("DateTool incorrectly formatted iso format", format.format(date), dt.format("intl_time",date));
+
+        format.applyPattern("HH:mm:ssXXX");
+        assertEquals("DateTool incorrectly formatted iso format", format.format(date), dt.format("iso_tz_time",date));
+
+        format.applyPattern("HH:mm:ss");
+        assertEquals("DateTool incorrectly formatted iso format", format.format(date) + " " + TEST_TIME_ZONE.getID(), dt.format("intl_tz_time",date));
     }
 }
