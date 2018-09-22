@@ -20,164 +20,168 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <artifactId>velocity-tools-examples</artifactId>
-        <groupId>org.apache.velocity</groupId>
-        <version>3.0-SNAPSHOT</version>
-    </parent>
-    <properties>
-      <webapp-slf4j-logger.version>1.3</webapp-slf4j-logger.version>
-    </properties>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
     <groupId>org.apache.velocity</groupId>
-    <artifactId>velocity-tools-examples-showcase</artifactId>
-    <packaging>war</packaging>
-    <name>Apache Velocity Tools Examples - Showcase</name>
-    <description>Showcase of features in Velocity Tools.</description>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.22.0</version>
-                <executions>
-                    <execution>
-                        <id>integration-test</id>
-                        <goals>
-                            <goal>integration-test</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>verify</id>
-                        <goals>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.cargo</groupId>
-                <artifactId>cargo-maven2-plugin</artifactId>
-                <version>1.6.8</version>
-                <configuration>
-                    <container>
-                        <containerId>jetty9x</containerId>
-                    </container>
-                    <configuration>
-                        <files>
-                            <copy>
-                                <file>${project.basedir}/src/main/policy/showcase.policy</file>
-                                <todir>/</todir>
-                                <configfile>true</configfile>
-                            </copy>
-                        </files>
-                        <properties>
-                            <!-- variables referenced in the showcase policy file -->
-                            <!-- commented since broken on windows due to a cargo bug like MNG-6386
-                            <cargo.container>${project.build.directory}/cargo/installs</cargo.container>
-                            <cargo.repository>${settings.localRepository}</cargo.repository>
-                            <cargo.webapp>${project.build.directory}/${project.artifactId}</cargo.webapp>
-                            <cargo.velocity-engine.version>${velocity.engine.version}</cargo.velocity-engine.version>
-                            <cargo.velocity-tools.version>${project.version}</cargo.velocity-tools.version>
-                            <cargo.slf4j.version>${slf4j.version}</cargo.slf4j.version>
-                            <cargo.webapp-slf4j-logger.version>${webapp-slf4j-logger.version}</cargo.webapp-slf4j-logger.version>
-                            -->
-                            <cargo.jvmargs>
-                                <!-- enable remote debugging
-                                -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006
-                                -->
+    <artifactId>velocity-tools-examples</artifactId>
+    <version>3.0-SNAPSHOT</version>
+  </parent>
 
-                                <!-- enable Jetty debug log
-                                -Dorg.eclipse.jetty.LEVEL=DEBUG
-                                -->
+  <artifactId>velocity-tools-examples-showcase</artifactId>
+  <packaging>war</packaging>
 
-                                <!-- enable security manager
-                                     (disabled for now, see above note about policy file)
-                                -Djava.security.manager
-                                -Djava.security.policy=${project.build.directory}/cargo/configurations/jetty9x/showcase.policy
-                                 -->
-                            </cargo.jvmargs>
-                        </properties>
-                    </configuration>
-                </configuration>
-                <executions>
-                    <execution>
-                        <configuration>
-                            <wait>false</wait>
-                        </configuration>
-                        <id>start-server</id>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                        <phase>pre-integration-test</phase>
-                    </execution>
-                    <execution>
-                        <id>stop-server</id>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                        <phase>post-integration-test</phase>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-        <finalName>velocity-tools-examples-showcase</finalName>
-    </build>
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity-tools-view</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${servlet.api.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>httpunit</groupId>
-            <artifactId>httpunit</artifactId>
-            <version>1.7</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- httpunit pom marks rhino.js as optional whereas it is not -->
-        <dependency>
-          <groupId>rhino</groupId>
-          <artifactId>js</artifactId>
-          <version>1.7R2</version>
-        </dependency>
-        <dependency>
-        	<groupId>org.apache.velocity</groupId>
-        	<artifactId>velocity-tools-view-jsp</artifactId>
-        	<version>${project.version}</version>
-        	<type>jar</type>
-        	<scope>compile</scope>
-        </dependency>
-        <dependency>
-        	<groupId>javax.servlet</groupId>
-        	<artifactId>jstl</artifactId>
-        	<version>1.2</version>
-        </dependency>
-        <dependency>
-        	<groupId>javax.servlet.jsp</groupId>
-        	<artifactId>jsp-api</artifactId>
-        	<version>2.2</version>
-        	<type>jar</type>
-        	<scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.republicate</groupId>
-            <artifactId>webapp-slf4j-logger</artifactId>
-            <version>${webapp-slf4j-logger.version}</version>
-        	<scope>runtime</scope>
-        </dependency>
-    </dependencies>
+  <name>Apache Velocity Tools Examples - Showcase</name>
+  <description>Showcase of features in Velocity Tools.</description>
+  
+  <properties>
+    <webapp-slf4j-logger.version>1.3</webapp-slf4j-logger.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity-tools-view</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>${servlet.api.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>httpunit</groupId>
+      <artifactId>httpunit</artifactId>
+      <version>1.7</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- httpunit pom marks rhino.js as optional whereas it is not -->
+    <dependency>
+      <groupId>rhino</groupId>
+      <artifactId>js</artifactId>
+      <version>1.7R2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity-tools-view-jsp</artifactId>
+      <version>${project.version}</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>jsp-api</artifactId>
+      <version>2.2</version>
+      <type>jar</type>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.republicate</groupId>
+      <artifactId>webapp-slf4j-logger</artifactId>
+      <version>${webapp-slf4j-logger.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.22.0</version>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>verify</id>
+            <goals>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven2-plugin</artifactId>
+        <version>1.6.8</version>
+        <configuration>
+          <container>
+            <containerId>jetty9x</containerId>
+          </container>
+          <configuration>
+            <files>
+              <copy>
+                <file>${project.basedir}/src/main/policy/showcase.policy</file>
+                <todir>/</todir>
+                <configfile>true</configfile>
+              </copy>
+            </files>
+            <properties>
+              <!-- variables referenced in the showcase policy file -->
+              <!-- commented since broken on windows due to a cargo bug like MNG-6386
+              <cargo.container>${project.build.directory}/cargo/installs</cargo.container>
+              <cargo.repository>${settings.localRepository}</cargo.repository>
+              <cargo.webapp>${project.build.directory}/${project.artifactId}</cargo.webapp>
+              <cargo.velocity-engine.version>${velocity.engine.version}</cargo.velocity-engine.version>
+              <cargo.velocity-tools.version>${project.version}</cargo.velocity-tools.version>
+              <cargo.slf4j.version>${slf4j.version}</cargo.slf4j.version>
+              <cargo.webapp-slf4j-logger.version>${webapp-slf4j-logger.version}</cargo.webapp-slf4j-logger.version>
+              -->
+              <cargo.jvmargs>
+                <!-- enable remote debugging
+                -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006
+                -->
+
+                <!-- enable Jetty debug log
+                -Dorg.eclipse.jetty.LEVEL=DEBUG
+                -->
+
+                <!-- enable security manager
+                   (disabled for now, see above note about policy file)
+                -Djava.security.manager
+                -Djava.security.policy=${project.build.directory}/cargo/configurations/jetty9x/showcase.policy
+                 -->
+              </cargo.jvmargs>
+            </properties>
+          </configuration>
+        </configuration>
+        <executions>
+          <execution>
+            <configuration>
+              <wait>false</wait>
+            </configuration>
+            <id>start-server</id>
+            <goals>
+              <goal>start</goal>
+            </goals>
+            <phase>pre-integration-test</phase>
+          </execution>
+          <execution>
+            <id>stop-server</id>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+            <phase>post-integration-test</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
