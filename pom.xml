@@ -20,196 +20,197 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <parent>
-        <artifactId>velocity-master</artifactId>
-        <groupId>org.apache.velocity</groupId>
-        <version>2</version>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
+  <parent>
     <groupId>org.apache.velocity</groupId>
-    <artifactId>velocity-tools-parent</artifactId>
-    <name>VelocityTools</name>
-    <version>3.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <artifactId>velocity-master</artifactId>
+    <version>2</version>
+  </parent>
 
-    <url>http://velocity.apache.org/tools/devel/</url>
-    <description>
-        VelocityTools is an integrated collection of Velocity subprojects
-        with the common goal of creating tools and infrastructure to speed and ease
-        development of both web and non-web applications using the Velocity template
-        engine.
-    </description>
-    <inceptionYear>2002</inceptionYear>
+  <artifactId>velocity-tools-parent</artifactId>
+  <version>3.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
 
+  <name>VelocityTools</name>
+  <description>
+    VelocityTools is an integrated collection of Velocity subprojects
+    with the common goal of creating tools and infrastructure to speed and ease
+    development of both web and non-web applications using the Velocity template
+    engine.
+  </description>
+  <url>https://velocity.apache.org/tools/devel/</url>
+  <inceptionYear>2002</inceptionYear>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <junit.version>4.12</junit.version>
+    <slf4j.version>1.7.25</slf4j.version>
+    <surefire.plugin.version>2.22.0</surefire.plugin.version>
+    <servlet.api.version>3.1.0</servlet.api.version>
+    <velocity.engine.version>2.0</velocity.engine.version>
+  </properties>
+
+  <modules>
+    <module>velocity-tools-generic</module>
+    <module>velocity-tools-view</module>
+    <module>velocity-tools-view-jsp</module>
+    <module>velocity-tools-examples</module>
+  </modules>
+
+  <scm>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/velocity/tools/trunk</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/velocity/tools/trunk</developerConnection>
+    <url>https://svn.apache.org/viewvc/velocity/tools/trunk</url>
+  </scm>
+  <issueManagement>
+    <system>jira</system>
+    <url>https://issues.apache.org/jira/browse/VELTOOLS</url>
+  </issueManagement>
+
+  <!-- This project is an effort by many people. If you feel that your name
+     should be in here and has been omitted in error, please open an issue with
+     the Velocity Tools Issue tracker. -->
+  <contributors>
+    <contributor>
+      <name>Chris Townsen</name>
+    </contributor>
+    <contributor>
+      <name>Craig R. McClanahan</name>
+    </contributor>
+    <contributor>
+      <name>Dave Bryson</name>
+    </contributor>
+    <contributor>
+      <name>David Graham</name>
+    </contributor>
+    <contributor>
+      <name>David Winterfeldt</name>
+    </contributor>
+    <contributor>
+      <name>Denis Bredelet</name>
+    </contributor>
+    <contributor>
+      <name>Dmitri Colebatch</name>
+    </contributor>
+    <contributor>
+      <name>Gabriel Sidler</name>
+    </contributor>
+    <contributor>
+      <name>Kent Johnson</name>
+    </contributor>
+    <contributor>
+      <name>Leon Messerschmidt</name>
+    </contributor>
+    <contributor>
+      <name>Mike Kienenberger</name>
+    </contributor>
+    <contributor>
+      <name>Oliver O'Halloran</name>
+    </contributor>
+    <contributor>
+      <name>S. Brett Sutton</name>
+    </contributor>
+    <contributor>
+      <name>Shinobu Kawai</name>
+    </contributor>
+    <contributor>
+      <name>Spencer Davis</name>
+    </contributor>
+    <contributor>
+      <name>Ted Husted</name>
+    </contributor>
+    <contributor>
+      <name>Tim Colson</name>
+    </contributor>
+  </contributors>
+
+  <build>
+    <defaultGoal>install</defaultGoal>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.5.3</version>
+          <configuration>
+            <useReleaseProfile>false</useReleaseProfile>
+            <autoVersionSubmodules>true</autoVersionSubmodules>
+            <goals>deploy</goals>
+            <arguments>-Papache-release</arguments>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <debug>true</debug>
+          <optimize>false</optimize>
+          <showDeprecation>true</showDeprecation>
+          <showWarning>true</showWarning>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${surefire.plugin.version}</version>
+        <configuration>
+          <includes>
+            <include>**/Test*.java</include>
+            <include>**/*Test.java</include>
+            <include>**/*TestCase.java</include>
+            <include>**/*Tests.java</include>
+          </includes>
+          <systemProperties>
+            <property>
+              <name>org.slf4j.simpleLogger.defaultLogLevel</name>
+              <value>trace</value>
+            </property>
+            <property>
+              <name>org.slf4j.simpleLogger.logFile</name>
+              <value>${project.build.directory}/velocity-tools.log</value>
+            </property>
+          </systemProperties>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.0.1</version>
+        <configuration>
+          <excludePackageNames>org.apache.velocity.tools.examples</excludePackageNames>
+          <additionalparam>${javadoc.opts}</additionalparam>
+          <detectLinks/>
+        </configuration>
+        <executions>
+          <execution>
+            <id>aggregate</id>
+            <goals>
+              <goal>aggregate</goal>
+            </goals>
+            <configuration>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <!-- java 8 doclint checks are too strict for our current javadoc state... -->
+  <profiles>
+    <profile>
+    <id>doclint-java8-disable</id>
+    <activation>
+      <jdk>[1.8,)</jdk>
+    </activation>
     <properties>
-      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      <junit.version>4.12</junit.version>
-      <slf4j.version>1.7.25</slf4j.version>
-      <surefire.plugin.version>2.22.0</surefire.plugin.version>
-      <servlet.api.version>3.1.0</servlet.api.version>
-      <velocity.engine.version>2.0</velocity.engine.version>
+      <javadoc.opts>-Xdoclint:none</javadoc.opts>
     </properties>
-
-    <!-- java 8 doclint checks are too strict for our current javadoc state... -->
-    <profiles>
-      <profile>
-        <id>doclint-java8-disable</id>
-        <activation>
-          <jdk>[1.8,)</jdk>
-        </activation>
-        <properties>
-          <javadoc.opts>-Xdoclint:none</javadoc.opts>
-        </properties>
-      </profile>
-    </profiles>
-
-    <build>
-        <defaultGoal>install</defaultGoal>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>2.5.3</version>
-                    <configuration>
-                        <useReleaseProfile>false</useReleaseProfile>
-                        <autoVersionSubmodules>true</autoVersionSubmodules>
-                        <goals>deploy</goals>
-                        <arguments>-Papache-release</arguments>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <debug>true</debug>
-                    <optimize>false</optimize>
-                    <showDeprecation>true</showDeprecation>
-                    <showWarning>true</showWarning>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${surefire.plugin.version}</version>
-                <configuration>
-                    <includes>
-                        <include>**/Test*.java</include>
-                        <include>**/*Test.java</include>
-                        <include>**/*TestCase.java</include>
-                        <include>**/*Tests.java</include>
-                    </includes>
-                    <systemProperties>
-                        <property>
-                            <name>org.slf4j.simpleLogger.defaultLogLevel</name>
-                            <value>trace</value>
-                        </property>
-                        <property>
-                            <name>org.slf4j.simpleLogger.logFile</name>
-                            <value>${project.build.directory}/velocity-tools.log</value>
-                        </property>
-                    </systemProperties>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.1</version>
-                <configuration>
-                    <excludePackageNames>org.apache.velocity.tools.examples</excludePackageNames>
-                    <additionalparam>${javadoc.opts}</additionalparam>
-                    <detectLinks/>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>aggregate</id>
-                        <goals>
-                            <goal>aggregate</goal>
-                        </goals>
-                        <configuration>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
-    <issueManagement>
-        <system>JIRA</system>
-        <url>http://issues.apache.org/jira/browse/VELTOOLS</url>
-    </issueManagement>
-    <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/velocity/tools/trunk</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/velocity/tools/trunk</developerConnection>
-        <url>http://svn.apache.org/viewvc/velocity/tools/trunk</url>
-    </scm>
-    <modules>
-        <module>velocity-tools-generic</module>
-        <module>velocity-tools-view</module>
-        <module>velocity-tools-view-jsp</module>
-        <module>velocity-tools-examples</module>
-    </modules>
-
-    <!-- This project is an effort by many people. If you feel that your name
-         should be in here and has been omitted in error, please open an issue with
-         the Velocity Tools Issue tracker. -->
-    <contributors>
-        <contributor>
-            <name>Chris Townsen</name>
-        </contributor>
-        <contributor>
-            <name>Craig R. McClanahan</name>
-        </contributor>
-        <contributor>
-            <name>Dave Bryson</name>
-        </contributor>
-        <contributor>
-            <name>David Graham</name>
-        </contributor>
-        <contributor>
-            <name>David Winterfeldt</name>
-        </contributor>
-        <contributor>
-            <name>Denis Bredelet</name>
-        </contributor>
-        <contributor>
-            <name>Dmitri Colebatch</name>
-        </contributor>
-        <contributor>
-            <name>Gabriel Sidler</name>
-        </contributor>
-        <contributor>
-            <name>Kent Johnson</name>
-        </contributor>
-        <contributor>
-            <name>Leon Messerschmidt</name>
-        </contributor>
-        <contributor>
-            <name>Mike Kienenberger</name>
-        </contributor>
-        <contributor>
-            <name>Oliver O'Halloran</name>
-        </contributor>
-        <contributor>
-            <name>S. Brett Sutton</name>
-        </contributor>
-        <contributor>
-            <name>Shinobu Kawai</name>
-        </contributor>
-        <contributor>
-            <name>Spencer Davis</name>
-        </contributor>
-        <contributor>
-            <name>Ted Husted</name>
-        </contributor>
-        <contributor>
-            <name>Tim Colson</name>
-        </contributor>
-    </contributors>
+    </profile>
+  </profiles>
 </project>
