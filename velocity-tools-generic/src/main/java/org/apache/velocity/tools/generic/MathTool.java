@@ -62,7 +62,7 @@ import org.apache.velocity.tools.config.ValidScope;
 @ValidScope(Scope.APPLICATION)
 public class MathTool extends FormatConfig implements Serializable
 {
-    /* Old non-vararg methods (can be removed once we require Velocity 1.6) */
+    private static final long serialVersionUID = 3207828679772113341L;
 
     public Number add(Object num1, Object num2)
     {

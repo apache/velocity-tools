@@ -6,7 +6,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.velocity.tools.ClassUtils;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,6 +26,8 @@ public class UAParser
 
     public static class UAEntity implements Serializable
     {
+        private static final long serialVersionUID = 5148646199164619995L;
+
         private String name = null;
         private int majorVersion = -1;
         private int minorVersion = -1;
@@ -35,7 +36,7 @@ public class UAParser
         {
             this(n, maj, min, false);
         }
-        
+
         public UAEntity(String n, String maj, String min, boolean wantsFullVersion)
         {
             name = n;
@@ -139,6 +140,8 @@ public class UAParser
 
     public static class UserAgent implements Serializable
     {
+        private static final long serialVersionUID = 2295189396414933725L;
+
         private DeviceType deviceType = null;
         private UAEntity operatingSystem = null;
         private UAEntity browser = null;
@@ -177,7 +180,7 @@ public class UAParser
             if (deviceType == DeviceType.ROBOT) return;
             renderingEngine = new UAEntity(entity, major, minor);
         }
-        
+
         protected void setDeviceType(DeviceType deviceType)
         {
             this.deviceType = deviceType;

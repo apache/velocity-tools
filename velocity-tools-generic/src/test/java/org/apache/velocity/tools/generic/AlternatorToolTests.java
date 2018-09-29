@@ -21,9 +21,7 @@ package org.apache.velocity.tools.generic;
 
 import org.junit.*;
 import static org.junit.Assert.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.apache.velocity.tools.generic.Alternator;
 
@@ -122,4 +120,4 @@ public class AlternatorToolTests {
     }
 
 }
-        
+

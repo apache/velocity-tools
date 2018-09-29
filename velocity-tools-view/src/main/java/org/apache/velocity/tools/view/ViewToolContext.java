@@ -19,9 +19,7 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -211,7 +209,7 @@ public class ViewToolContext extends ToolContext implements ViewContext
     }
 
     /**
-     * Returns the current matching servlet request, response, session, 
+     * Returns the current matching servlet request, response, session,
      * or servlet context instance, or null if the key matches none of those
      * keys.
      */

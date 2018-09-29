@@ -60,6 +60,8 @@ import org.apache.velocity.tools.generic.ValueParser;
 @InvalidScope({Scope.APPLICATION,Scope.SESSION})
 public class ContextTool extends SafeConfig implements Serializable
 {
+    private static final long serialVersionUID = 2214413657621101511L;
+
     protected Context context;
     protected Map<String,Object> toolbox;
 

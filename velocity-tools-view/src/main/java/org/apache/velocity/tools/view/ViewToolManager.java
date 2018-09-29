@@ -31,7 +31,6 @@ import org.apache.velocity.tools.Toolbox;
 import org.apache.velocity.tools.ToolboxFactory;
 import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.ToolManager;
-import org.apache.velocity.tools.config.ConfigurationUtils;
 import org.apache.velocity.tools.config.FactoryConfiguration;
 import org.apache.velocity.tools.view.ServletUtils;
 import org.apache.velocity.tools.view.ViewContext;
@@ -181,7 +180,7 @@ public class ViewToolManager extends ToolManager
     protected void updateGlobalProperties()
     {
         // check for a createSession setting
-        Boolean create = 
+        Boolean create =
             (Boolean)this.factory.getGlobalProperty(CREATE_SESSION_PROPERTY);
         if (create != null)
         {
@@ -189,7 +188,7 @@ public class ViewToolManager extends ToolManager
         }
 
         // check for a publishToolboxes setting
-        Boolean publish = 
+        Boolean publish =
             (Boolean)this.factory.getGlobalProperty(PUBLISH_TOOLBOXES_PROPERTY);
         if (publish != null)
         {
@@ -271,7 +270,7 @@ public class ViewToolManager extends ToolManager
             // put the toolboxes where the ViewToolContext
             // and others can find them
             publishToolboxes(request);
-            
+
             // these would otherwise be done in super.prepareContext
             VelocityEngine engine = getVelocityEngine();
             if (engine != null)

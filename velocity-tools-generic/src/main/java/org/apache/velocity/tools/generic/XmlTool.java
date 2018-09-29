@@ -87,6 +87,8 @@ import org.w3c.dom.Text;
 @DefaultKey("xml")
 public class XmlTool extends SafeConfig implements Serializable
 {
+    private static final long serialVersionUID = 8217744660691416595L;
+
     /**
      * ImportSupport utility which provides underlying i/o
      */
@@ -513,7 +515,7 @@ public class XmlTool extends SafeConfig implements Serializable
      * {@link Node}s held by this instance and returns a new
      * {@link XmlTool} instance that wraps those results.
      * If the specified value is null or this instance does
-     * not currently hold any nodes, then this will return 
+     * not currently hold any nodes, then this will return
      * {@code null}.  If the specified value, when converted
      * to a string, does not contain a '/' character, then
      * it has "//" prepended to it.  This means that a call to
@@ -700,7 +702,7 @@ public class XmlTool extends SafeConfig implements Serializable
         return out.toString().trim();
     }
 
-    
+
     /**
      * Iterator implementation that wraps a Node list iterator
      * to return new XmlTool instances for each item in the wrapped

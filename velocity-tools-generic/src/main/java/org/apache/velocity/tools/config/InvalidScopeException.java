@@ -20,13 +20,15 @@ package org.apache.velocity.tools.config;
  */
 
 /**
- * 
+ *
  *
  * @author Nathan Bubna
  * @version $Id: InvalidScopeException.java 511959 2007-02-26 19:24:39Z nbubna $
  */
 public class InvalidScopeException extends ConfigurationException
 {
+    private static final long serialVersionUID = -8551578237473304915L;
+
     // this isn't crucial to keep around if the exception is serialized
     private final transient ToolConfiguration tool;
 

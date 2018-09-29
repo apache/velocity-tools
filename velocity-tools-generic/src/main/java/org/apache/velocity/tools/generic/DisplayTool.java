@@ -16,7 +16,7 @@ package org.apache.velocity.tools.generic;
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
- * under the License.    
+ * under the License.
  */
 
 import java.io.Serializable;
@@ -38,7 +38,7 @@ import org.apache.velocity.tools.config.ValidScope;
  * Currently, this class contains methods for "pretty printing" an array or
  * {@link Collection}, methods for truncating the string value of a reference
  * at a configured or specified length, methods for displaying an alternate
- * value when a specified value is null, a method for generating whitespace, 
+ * value when a specified value is null, a method for generating whitespace,
  * a "printf" type of method for formatting messages, and
  * methods for forcing values into "cells" of equal size (via truncation or
  * padding with whitespace).
@@ -64,7 +64,7 @@ import org.apache.velocity.tools.config.ValidScope;
  *   This is...
  *   Not Null: not null
  *   Null: --
- *   
+ *
  * </pre>
  *
  * @since VelocityTools 2.0
@@ -78,6 +78,8 @@ import org.apache.velocity.tools.config.ValidScope;
 @ValidScope(Scope.APPLICATION)
 public class DisplayTool extends LocaleConfig implements Serializable
 {
+    private static final long serialVersionUID = 2841919854651475788L;
+
     public static final String LIST_DELIM_KEY = "listDelim";
     public static final String LIST_FINAL_DELIM_KEY = "listFinalDelim";
     public static final String TRUNCATE_LENGTH_KEY = "truncateLength";
@@ -101,13 +103,13 @@ public class DisplayTool extends LocaleConfig implements Serializable
     /**
      * Does the actual configuration. This is protected, so
      * subclasses may share the same ValueParser and call configure
-     * at any time, while preventing templates from doing so when 
+     * at any time, while preventing templates from doing so when
      * configure(Map) is locked.
      */
     protected void configure(ValueParser values)
     {
         super.configure(values);
-        
+
         String listDelim = values.getString(LIST_DELIM_KEY);
         if (listDelim != null)
         {
@@ -281,7 +283,7 @@ public class DisplayTool extends LocaleConfig implements Serializable
     /**
      * Formats a collection or array into the form
      * "A&lt;delim&gt;B&lt;finaldelim&gt;C".
-     * 
+     *
      * @param list A collection or array.
      * @param delim A String.
      * @param finaldelim A String.
@@ -295,7 +297,7 @@ public class DisplayTool extends LocaleConfig implements Serializable
     /**
      * Formats a specified property of collection or array of objects into the
      * form "A&lt;delim&gt;B&lt;finaldelim&gt;C".
-     * 
+     *
      * @param list A collection or array.
      * @param delim A String.
      * @param finaldelim A String.
@@ -476,7 +478,7 @@ public class DisplayTool extends LocaleConfig implements Serializable
      * Limits the string value of 'truncateMe' to the specified max length in
      * characters. If the string gets curtailed, the specified suffix is used as
      * the ending of the truncated string.
-     * 
+     *
      * @param truncateMe The value to be truncated.
      * @param maxLength An int with the maximum length.
      * @param suffix A String.
@@ -491,7 +493,7 @@ public class DisplayTool extends LocaleConfig implements Serializable
      * Limits the string value of 'truncateMe' to the latest complete word
      * within the specified maxLength. If the string gets curtailed, the
      * specified suffix is used as the ending of the truncated string.
-     * 
+     *
      * @param truncateMe The value to be truncated.
      * @param maxLength An int with the maximum length.
      * @param suffix A String.
@@ -612,7 +614,7 @@ public class DisplayTool extends LocaleConfig implements Serializable
         else
         {
             return value + space(cellsize - value.length());
-        }    
+        }
     }
 
     /**
@@ -704,7 +706,7 @@ public class DisplayTool extends LocaleConfig implements Serializable
      */
     public String br(Object obj)
     {
-        if (obj == null) 
+        if (obj == null)
         {
             return null;
         }
@@ -736,7 +738,7 @@ public class DisplayTool extends LocaleConfig implements Serializable
         {
             return null;
         }
-        
+
         //build list of tags to be used in regex pattern
         StringBuilder allowedTagList = new StringBuilder();
         if (allowedTags != null)
@@ -798,13 +800,13 @@ public class DisplayTool extends LocaleConfig implements Serializable
         }
         else
         {
-            //if the last letter is capital then we will append capital letters 
+            //if the last letter is capital then we will append capital letters
             boolean isCapital = !singular.substring(singular.length() - 1)
                                 .toLowerCase().equals(singular
                                 .substring(singular.length() - 1));
-            
+
             String word = singular.toLowerCase();
-            
+
             if (word.endsWith("x") || word.endsWith("sh")
                     || word.endsWith("ch") || word.endsWith("s"))
             {

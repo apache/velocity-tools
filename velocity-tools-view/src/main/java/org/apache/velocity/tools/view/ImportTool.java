@@ -48,6 +48,8 @@ import org.apache.velocity.tools.generic.ValueParser;
 @ValidScope(Scope.REQUEST)
 public class ImportTool extends org.apache.velocity.tools.generic.ImportTool
 {
+    private static final long serialVersionUID = 9071583951325800486L;
+
     protected synchronized void initializeImportSupport(ValueParser config)
     {
         if (importSupport == null)

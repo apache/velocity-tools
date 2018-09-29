@@ -20,7 +20,7 @@ package org.apache.velocity.tools.config;
  */
 
 import java.util.Collection;
-import java.util.SortedSet;
+
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.ToolboxFactory;
 
@@ -127,7 +127,7 @@ public class ToolboxConfiguration
                     throw new InvalidScopeException(this, tool);
                 }
             }
- 
+
             // if the set of valid scopes has been limited, check to be
             // sure that this toolbox's scope is in the set
             String[] validScopes = tool.getValidScopes();

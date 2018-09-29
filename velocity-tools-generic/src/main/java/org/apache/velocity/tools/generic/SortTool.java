@@ -19,15 +19,6 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
@@ -117,4 +108,6 @@ import org.apache.velocity.tools.config.DefaultKey;
 @Deprecated
 public class SortTool extends CollectionTool
 {
+
+    private static final long serialVersionUID = -9150476432881809190L;
 }

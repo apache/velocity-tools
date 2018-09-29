@@ -23,11 +23,9 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.velocity.tools.generic.ValueParser;
 
 /**
  * <p>Tests for DisplayTool</p>
@@ -212,7 +210,7 @@ public class DisplayToolTests {
         assertEquals("123", display.list(nums, "", ""));
         assertEquals("1; 2 und 3", display.list(nums, "; ", " und "));
     }
-    
+
     public @Test void methodList_ObjectStringStringString() throws Exception
     {
         TestBean bean1 = new TestBean(1, "one");
@@ -221,7 +219,7 @@ public class DisplayToolTests {
         TestBean[] beanArray = new TestBean[] { bean1, bean2, bean3 };
         List<TestBean> beanList = new ArrayList<TestBean>();
         beanList.addAll(Arrays.asList(beanArray));
-        
+
         DisplayTool display = new DisplayTool();
         assertEquals(null, display.list(null, null, null, null));
         assertEquals("1null2null3", display.list(beanArray, null, null, "num"));
@@ -349,7 +347,7 @@ public class DisplayToolTests {
         assertEquals("foob", display.truncate("foobar", 4, null));
         assertEquals("foo>", display.truncate("foobar", 4, ">"));
     }
-    
+
     public @Test void methodTruncate_ObjectintStringboolean() throws Exception
     {
         DisplayTool display = new DisplayTool();
@@ -369,7 +367,7 @@ public class DisplayToolTests {
         assertEquals("test", display.uncapitalize("Test"));
         assertEquals("tEST", display.uncapitalize("TEST"));
     }
-    
+
     public @Test void methodBr_Object() throws Exception
     {
         DisplayTool display = new DisplayTool();
@@ -378,7 +376,7 @@ public class DisplayToolTests {
         assertEquals("<br />\n", display.br("\n"));
         assertEquals("line1 <br />\n LINE2", display.br("line1 \n LINE2"));
     }
-    
+
     public @Test void methodStripTags_Object() throws Exception
     {
         DisplayTool display = new DisplayTool();
@@ -389,7 +387,7 @@ public class DisplayToolTests {
         assertEquals("", display.stripTags(""));
         assertEquals("paragraph link header1 header2 bold", display.stripTags(html));
     }
-    
+
     public @Test void methodStripTags_ObjectStringVarArgs() throws Exception
     {
         DisplayTool display = new DisplayTool();
@@ -398,14 +396,14 @@ public class DisplayToolTests {
                       + "<br><br/><br  /><b>bold</b>";
         assertEquals(null, display.stripTags(null, (String[])null));
         assertEquals("", display.stripTags("","",""));
-        assertEquals("paragraph link <h1>header1</h1> <h2>header2</h2> bold", 
+        assertEquals("paragraph link <h1>header1</h1> <h2>header2</h2> bold",
                 display.stripTags(html, "h1", "h2"));
-        assertEquals("paragraph <a href=\"url\" target='t'>link</a> header1 header2 bold", 
+        assertEquals("paragraph <a href=\"url\" target='t'>link</a> header1 header2 bold",
                 display.stripTags(html, "a"));
-        assertEquals("paragraph link header1 header2 <br><br/><br  /><b>bold</b>", 
+        assertEquals("paragraph link header1 header2 <br><br/><br  /><b>bold</b>",
                 display.stripTags(html, "b", "", null, "br"));
     }
-    
+
     public @Test void methodPlural_intString() throws Exception
     {
         DisplayTool display = new DisplayTool();
@@ -419,7 +417,7 @@ public class DisplayToolTests {
         assertEquals("foxes", display.plural(2,"fox"));
         assertEquals("churches", display.plural(2,"church"));
     }
-    
+
     public @Test void methodPlural_intStringString() throws Exception
     {
         DisplayTool display = new DisplayTool();
@@ -432,13 +430,13 @@ public class DisplayToolTests {
     public class TestBean {
         private int num;
         private String str;
-        
+
         public TestBean(int num, String str)
         {
             this.num = num;
             this.str = str;
         }
-        
+
         public int getNum()
         {
             return num;

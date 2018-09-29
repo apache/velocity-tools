@@ -59,7 +59,7 @@ import org.apache.velocity.tools.config.ValidScope;
  * <p>The LinkTool is somewhat special in that nearly all public methods return
  * a new instance of LinkTool. This facilitates greatly the repeated use
  * of the LinkTool in Velocity and leads to an elegant syntax.</p>
- * 
+ *
  * <p>Template example(s):</p>
  * <pre>
  *   #set( $base = $link.relative('MyPage.vm').anchor('view') )
@@ -85,6 +85,8 @@ import org.apache.velocity.tools.config.ValidScope;
 @ValidScope(Scope.REQUEST)
 public class LinkTool extends SafeConfig implements Cloneable, Serializable
 {
+    private static final long serialVersionUID = -9178414982270037545L;
+
     /** Standard HTML delimiter for query data ('&amp;') */
     public static final String HTML_QUERY_DELIMITER = "&";
 
@@ -718,7 +720,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
     /**
      * Turns the specified key and value into a properly encoded
      * query pair string.  If the value is an array or List, then
-     * this will create a delimited string of query pairs, reusing 
+     * this will create a delimited string of query pairs, reusing
      * the same key for each of the values separately.
      */
     protected String toQuery(Object key, Object value)
@@ -768,7 +770,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
 
     /**
      * Uses {@link #normalizeQuery} to make all delimiters in the
-     * specified query string match the current query delimiter 
+     * specified query string match the current query delimiter
      * and then uses {@link #parseQuery(String,String)} to parse it
      * according to that same delimiter.
      */

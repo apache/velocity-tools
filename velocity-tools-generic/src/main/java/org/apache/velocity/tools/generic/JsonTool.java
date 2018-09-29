@@ -19,18 +19,13 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Serializable;
 import java.io.StringReader;
-import java.net.URL;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.velocity.tools.ConversionUtils;
-import org.apache.velocity.tools.XmlUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -73,6 +68,8 @@ import org.w3c.dom.Node;
 @InvalidScope(Scope.SESSION)
 public class JsonTool extends ImportSupport implements Iterable, Serializable
 {
+    private static final long serialVersionUID = -6239459645862004347L;
+
     /**
      * ImportSupport utility which provides underlying i/o
      */
@@ -91,7 +88,7 @@ public class JsonTool extends ImportSupport implements Iterable, Serializable
         }
     }
 
-    private JsonContent root = null;    
+    private JsonContent root = null;
 
     /**
      * Looks for the "file" parameter and automatically uses
@@ -212,7 +209,7 @@ public class JsonTool extends ImportSupport implements Iterable, Serializable
                         reader.close();
                     }
                     catch (IOException ioe) {}
-                }        
+                }
             }
         }
         return this;

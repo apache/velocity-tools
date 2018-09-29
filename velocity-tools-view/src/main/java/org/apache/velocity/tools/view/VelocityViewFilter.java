@@ -19,11 +19,9 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
-import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -68,7 +66,7 @@ import org.apache.velocity.tools.view.ViewToolContext;
  *   <dt>org.apache.velocity.tools.shared.config</dt>
  *   <dd>By default, this is {@code true}. If set to {@code false}, then
  *     the {@link VelocityView} used by this filter will not be shared
- *     with other VelocityViewFilters, {@link VelocityViewServlet}s or 
+ *     with other VelocityViewFilters, {@link VelocityViewServlet}s or
  *     {@link org.apache.velocity.tools.view.jsp.VelocityViewTag}s in the
  *     application.</dd>
  *   <dt>org.apache.velocity.tools.context.key</dt>

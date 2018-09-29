@@ -55,6 +55,8 @@ import org.apache.velocity.tools.generic.ValueParser;
 @InvalidScope(Scope.APPLICATION)
 public class IncludeTool extends SafeConfig implements Serializable
 {
+    private static final long serialVersionUID = -1547421197271245152L;
+
     /**
      * The key used to search initialization, context, and JVM
      * parameters for the default language to use.

@@ -72,24 +72,26 @@ import org.apache.velocity.tools.config.ValidScope;
 @ValidScope(Scope.APPLICATION)
 public class ComparisonDateTool extends DateTool
 {
+    private static final long serialVersionUID = 6847034688404674662L;
+
     /** The number of milliseconds in a second. */
     public static final long MILLIS_PER_SECOND = 1000l;
-    
+
     /** The number of millseconds in a minute. */
     public static final long MILLIS_PER_MINUTE = 60l * MILLIS_PER_SECOND;
-    
+
     /** The number of milliseconds in an hour. */
     public static final long MILLIS_PER_HOUR = 60l * MILLIS_PER_MINUTE;
-    
+
     /** The number of milliseconds in a day. */
     public static final long MILLIS_PER_DAY = 24l * MILLIS_PER_HOUR;
-    
+
     /** The number of milliseconds in a week. */
     public static final long MILLIS_PER_WEEK = 7l * MILLIS_PER_DAY;
-    
+
     /** An approximation of the number of milliseconds in a month. */
     public static final long MILLIS_PER_MONTH = 30l * MILLIS_PER_DAY;
-    
+
     /** An approximation of the number of milliseconds in a year. */
     public static final long MILLIS_PER_YEAR = 365l * MILLIS_PER_DAY;
 
@@ -103,7 +105,7 @@ public class ComparisonDateTool extends DateTool
     public static final String SKIPPED_UNITS_KEY = "skip";
 
     /** The default path of the relative format resource bundles. */
-    public static final String DEFAULT_BUNDLE_NAME = 
+    public static final String DEFAULT_BUNDLE_NAME =
         "org.apache.velocity.tools.generic.times";
 
 
@@ -301,7 +303,7 @@ public class ComparisonDateTool extends DateTool
      * {@link #getCalendar()} and the specified date.  The default
      * rendering of that Comparison will be the largest unit difference
      * between the dates followed by a description of their relative position.
-     * 
+     *
      * @param then The date in question
      */
     public Comparison whenIs(Object then)
@@ -314,7 +316,7 @@ public class ComparisonDateTool extends DateTool
      * and the first specified date.  The default
      * rendering of that Comparison will be the largest unit difference
      * between the dates followed by a description of their relative position.
-     * 
+     *
      * @param now The date to use as representative of "now"
      * @param then The date in question
      */
@@ -328,7 +330,7 @@ public class ComparisonDateTool extends DateTool
      * the second specified date and the first specified date.  The default
      * rendering of that Comparison will be the largest unit difference
      * between the dates.
-     * 
+     *
      * @param now The date to use as representative of "now"
      * @param then The secondary date
      */
@@ -349,7 +351,7 @@ public class ComparisonDateTool extends DateTool
         long ms = calThen.getTimeInMillis() - calNow.getTimeInMillis();
         return new Comparison(ms, type, this.depth, false, null);
     }
-        
+
 
     /**
      * @param ms The time in milliseconds
@@ -403,13 +405,13 @@ public class ComparisonDateTool extends DateTool
             // then return without direction suffix
             return friendly;
         }
-            
+
         // otherwise, get the appropriate direction key
         String directionKey = (isBefore) ? BEFORE_KEY : AFTER_KEY;
         if (type == CURRENT_TYPE)
         {
             directionKey = CURRENT_PREFIX + directionKey;
-            
+
             if (friendly != null && friendly.startsWith("1"))
             {
                 // check for the corner case of "1 day ago" or "1 day away"
@@ -441,12 +443,12 @@ public class ComparisonDateTool extends DateTool
 
     /**
      * Converts the specified positive duration of milliseconds into larger
-     * units up to the specified number of positive units, beginning with the 
+     * units up to the specified number of positive units, beginning with the
      * largest positive unit.  e.g.
      * <code>toString(181453, 3, false, null)</code> will return
      * "3 minutes 1 second 453 milliseconds",
      * <code>toString(181453, 2, false, null)</code> will return
-     * "3 minutes 1 second", and 
+     * "3 minutes 1 second", and
      * <code>toString(180000, 2, true, null)</code> will return
      * "3 min".
      */
@@ -648,7 +650,7 @@ public class ComparisonDateTool extends DateTool
         }
 
         /**
-         * Sets this comparison to be rendered as a 
+         * Sets this comparison to be rendered as a
          * {@link ComparisonDateTool#difference}. This effectively means that
          * the comparison will render as a period of time, without any suffix
          * to describe the relative position of the dates being compared (e.g. "later"

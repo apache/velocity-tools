@@ -55,6 +55,8 @@ import org.apache.velocity.tools.view.ViewContext;
  */
 public class ViewContextTool extends ContextTool
 {
+    private static final long serialVersionUID = -4601239636234865712L;
+
     protected HttpServletRequest request;
     protected HttpSession session;
     protected ServletContext application;

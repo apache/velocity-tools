@@ -47,6 +47,8 @@ import org.apache.velocity.tools.config.ValidScope;
 @ValidScope(Scope.REQUEST)
 public class ImportTool extends SafeConfig implements Serializable
 {
+    private static final long serialVersionUID = -6707904279566187527L;
+
     /**
      * ImportSupport utility which provides underlying i/o
      */

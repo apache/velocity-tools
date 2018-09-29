@@ -72,9 +72,9 @@ import org.apache.velocity.tools.config.ValidScope;
  *  $esc.singleQuote             -&gt; '
  *  $esc.s                       -&gt; '
  *
- *  $esc.newline                 -&gt; 
+ *  $esc.newline                 -&gt;
  *
- *  $esc.n                       -&gt; 
+ *  $esc.n                       -&gt;
  *
  *
  *  $esc.exclamation             -&gt; !
@@ -103,14 +103,16 @@ import org.apache.velocity.tools.config.ValidScope;
 @ValidScope(Scope.APPLICATION)
 public class EscapeTool extends SafeConfig implements Serializable
 {
+    private static final long serialVersionUID = -6063849274118412139L;
+
     public static final String DEFAULT_KEY = "esc";
-    
+
     private String key = DEFAULT_KEY;
 
     /**
      * Does the actual configuration. This is protected, so
      * subclasses may share the same ValueParser and call configure
-     * at any time, while preventing templates from doing so when 
+     * at any time, while preventing templates from doing so when
      * configure(Map) is locked.
      */
     protected void configure(ValueParser values)
@@ -197,7 +199,7 @@ public class EscapeTool extends SafeConfig implements Serializable
         }
         return StringEscapeUtils.escapeJava(String.valueOf(string));
     }
-    
+
     /**
      * Escapes the characters in a <code>String</code> using java.util.Properties rules for escaping property keys.
      *
@@ -213,7 +215,7 @@ public class EscapeTool extends SafeConfig implements Serializable
         }
         return dumpString(String.valueOf(string), true);
     }
-    
+
     /**
      * Escapes the characters in a <code>String</code> using java.util.Properties rules for escaping property values.
      *
@@ -229,7 +231,7 @@ public class EscapeTool extends SafeConfig implements Serializable
         }
         return dumpString(String.valueOf(string), false);
     }
-    
+
     /**
      * This code was pulled from the Apache Harmony project.  See
      * https://svn.apache.org/repos/asf/harmony/enhanced/classlib/trunk/modules/luni/src/main/java/java/util/Properties.java
@@ -274,7 +276,7 @@ public class EscapeTool extends SafeConfig implements Serializable
             }
         }
         return builder.toString();
-    } 
+    }
 
     /**
      * <p>Escapes the characters in a <code>String</code> using JavaScript String rules.</p>
@@ -413,7 +415,7 @@ public class EscapeTool extends SafeConfig implements Serializable
         int codePoint = Integer.valueOf(s, 16);
         return String.valueOf(Character.toChars(codePoint));
     }
-            
+
 
     /**
      * Renders a dollar sign ($).
