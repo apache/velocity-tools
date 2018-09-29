@@ -26,19 +26,17 @@ import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.meterware.httpunit.PostMethodWebRequest;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.HTMLElement;
+import com.meterware.httpunit.PostMethodWebRequest;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebForm;
 import com.meterware.httpunit.WebRequest;
