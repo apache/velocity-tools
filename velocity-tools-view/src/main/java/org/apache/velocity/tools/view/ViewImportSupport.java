@@ -20,7 +20,6 @@ package org.apache.velocity.tools.view;
  */
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
@@ -46,7 +45,6 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import org.apache.velocity.tools.Toolbox;
 import org.apache.velocity.tools.generic.ImportSupport;
 import org.apache.velocity.tools.generic.ValueParser;
-import org.slf4j.Logger;
 
 /**
  * <p>Provides methods to import arbitrary local or remote resources as strings.</p>
@@ -195,7 +193,7 @@ public class ViewImportSupport extends ImportSupport
         url = mergeQueryStrings(url);
         Object parentToolbox = request.getAttribute(Toolbox.KEY);
         request.removeAttribute(Toolbox.KEY);
-        
+
         // from this context, get a dispatcher
         RequestDispatcher rd = application.getRequestDispatcher(url);
         if (rd == null)
@@ -538,7 +536,7 @@ public class ViewImportSupport extends ImportSupport
             int qm = url.indexOf('?');
             if (qm != -1)
             {
-                
+
                 String[] newParameters = url.substring(qm + 1).split("&");
                 for (String newParam : newParameters)
                 {

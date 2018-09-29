@@ -26,7 +26,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import org.apache.velocity.tools.ConversionUtils;
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
@@ -77,6 +76,8 @@ import org.apache.velocity.tools.config.DefaultKey;
 @DefaultKey("text")
 public class ResourceTool extends LocaleConfig implements Serializable
 {
+    private static final long serialVersionUID = 7942357727574280447L;
+
     public static final String BUNDLES_KEY = "bundles";
 
     private String[] bundles = new String[] { "resources" };

@@ -21,7 +21,6 @@ package org.apache.velocity.tools.view;
 
 import javax.servlet.ServletRequest;
 
-import org.apache.velocity.tools.generic.ImportSupport;
 import org.apache.velocity.tools.generic.ValueParser;
 
 import org.apache.velocity.tools.Scope;
@@ -41,6 +40,8 @@ import org.apache.velocity.tools.config.ValidScope;
 @ValidScope(Scope.REQUEST)
 public class JsonTool extends org.apache.velocity.tools.generic.JsonTool
 {
+
+    private static final long serialVersionUID = -4305396131049004070L;
 
     /**
      * Importsupport initialization

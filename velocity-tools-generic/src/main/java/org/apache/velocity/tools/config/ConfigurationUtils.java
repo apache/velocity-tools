@@ -20,8 +20,6 @@ package org.apache.velocity.tools.config;
  */
 
 import java.io.File;
-import java.io.InputStream;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -34,7 +32,6 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.ToolboxFactory;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

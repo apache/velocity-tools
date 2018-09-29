@@ -45,7 +45,7 @@ import org.apache.velocity.tools.config.ValidScope;
  * to understand and use.  Rather than try to migrate that implementation
  * via deprecation and new methods, it was simplest to just create an
  * entirely new tool that simplified the original API and was easy
- * to augment with useful new features like support for nested 
+ * to augment with useful new features like support for nested
  * (and nameable) loops, skipping ahead in loops, synchronizing multiple
  * iterators, getting the iteration count of loops, identifying if a loop is
  * on its first or last iteration, and so on.
@@ -95,6 +95,8 @@ import org.apache.velocity.tools.config.ValidScope;
 @ValidScope(Scope.REQUEST)
 public class LoopTool extends SafeConfig implements Serializable
 {
+    private static final long serialVersionUID = -4760226781390687478L;
+
     private Stack<ManagedIterator> iterators = new Stack<ManagedIterator>();
     private ManagedIterator last;
     private Map<String,Object> lastSyncedValues;
@@ -130,7 +132,7 @@ public class LoopTool extends SafeConfig implements Serializable
      * a name which is given to the {@link ManagedIterator} that is returned.
      * This allows the user to send stop or skip commands to that specific
      * iterator even when there are nested iterators within it that are being
-     * watched.  If the given name is {@code null}, then this will return 
+     * watched.  If the given name is {@code null}, then this will return
      * {@code null} even if the object can be watched. Provided names cannot
      * be {@code null}.
      * @see #watch(Object)
@@ -572,7 +574,7 @@ public class LoopTool extends SafeConfig implements Serializable
 
 
     /**
-     * Wraps access to {@link ClassUtils#getIterator} is a 
+     * Wraps access to {@link ClassUtils#getIterator} is a
      * nice little try/catch block to prevent exceptions from
      * escaping into the template.  In the case of such problems,
      * this will return {@code null}.
@@ -597,7 +599,7 @@ public class LoopTool extends SafeConfig implements Serializable
 
     /**
      * Iterator implementation that wraps a standard {@link Iterator}
-     * and allows it to be prematurely stopped, skipped ahead, and 
+     * and allows it to be prematurely stopped, skipped ahead, and
      * associated with a name for advanced nested loop control.
      * This also allows a arbitrary {@link ActionCondition}s to be added
      * in order to have it automatically skip over or stop before
@@ -921,7 +923,7 @@ public class LoopTool extends SafeConfig implements Serializable
          * name s"synced" (e.g. $loop.synced or $loop.get('synced'))
          * and are automatically updated for each iteration by this instance.
          * </p><p><b>NOTE</b>: if you are sync'ing multiple iterators
-         * with the same managed iterator, you must use 
+         * with the same managed iterator, you must use
          * {@link #sync(Object,String)} or else your the later iterators
          * will simply replace the earlier ones under the default
          * 'synced' key.</p>

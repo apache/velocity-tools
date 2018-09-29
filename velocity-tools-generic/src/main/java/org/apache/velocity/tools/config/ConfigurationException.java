@@ -20,13 +20,15 @@ package org.apache.velocity.tools.config;
  */
 
 /**
- * 
+ *
  *
  * @author Nathan Bubna
  * @version $Id: ConfigurationException.java 511959 2007-02-26 19:24:39Z nbubna $
  */
 public class ConfigurationException extends RuntimeException
 {
+    private static final long serialVersionUID = -561545916548921830L;
+
     private final Object source;
 
     public ConfigurationException(Data data, Throwable cause)

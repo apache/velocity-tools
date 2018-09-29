@@ -33,8 +33,10 @@ import org.apache.velocity.tools.view.VelocityLayoutServlet;
 public class LayoutLinkTool extends LinkTool
 {
 
-	public LayoutLinkTool layout(Object obj)
-	{
+    private static final long serialVersionUID = -3140621321122037963L;
+
+    public LayoutLinkTool layout(Object obj)
+    {
         if (obj == null)
         {
             return null;
@@ -49,6 +51,6 @@ public class LayoutLinkTool extends LinkTool
             layout += ".vm";
         }
         return (LayoutLinkTool)param(VelocityLayoutServlet.KEY_LAYOUT, layout);
-	}
+    }
 
 }

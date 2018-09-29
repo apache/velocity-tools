@@ -24,28 +24,20 @@ import java.io.IOException;
 import java.io.Writer;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.List;
 import java.util.Properties;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.velocity.util.ExtProperties;
-import org.slf4j.Logger;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.io.VelocityWriter;
-import org.apache.velocity.runtime.RuntimeConstants;
-import org.apache.velocity.tools.ClassUtils;
-import org.apache.velocity.tools.Scope;
-import org.apache.velocity.tools.Toolbox;
 import org.apache.velocity.tools.ToolboxFactory;
 import org.apache.velocity.tools.config.ConfigurationCleaner;
 import org.apache.velocity.tools.config.ConfigurationUtils;
@@ -98,7 +90,7 @@ public class VelocityView extends ViewToolManager
 
     /** The HTTP output encoding. */
     public static final String OUTPUT_ENCODING_KEY = "output.encoding";
-    
+
     /**
      * Key used to access the ServletContext in
      * the Velocity application attributes.

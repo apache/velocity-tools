@@ -86,6 +86,8 @@ import org.apache.velocity.tools.config.DefaultKey;
 @DefaultKey("date")
 public class DateTool extends FormatConfig implements Serializable
 {
+    private static final long serialVersionUID = 2300448853392306057L;
+
     /**
      * The key used for specifying a default timezone via tool configuration.
      */

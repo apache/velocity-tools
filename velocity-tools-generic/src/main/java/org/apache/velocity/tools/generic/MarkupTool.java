@@ -16,7 +16,7 @@ package org.apache.velocity.tools.generic;
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
- * under the License.    
+ * under the License.
  */
 
 import java.io.Serializable;
@@ -64,6 +64,8 @@ import org.apache.velocity.tools.config.DefaultKey;
 @DefaultKey("mark")
 public class MarkupTool extends SafeConfig implements Serializable
 {
+    private static final long serialVersionUID = -777597069616274442L;
+
     public static final String DEFAULT_TAB = "  ";
     public static final String DEFAULT_DELIMITER = " ";
 

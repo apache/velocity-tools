@@ -20,13 +20,15 @@ package org.apache.velocity.tools.config;
  */
 
 /**
- * 
+ *
  *
  * @author Nathan Bubna
  * @version $Id: NullKeyException.java 511959 2007-02-26 19:24:39Z nbubna $
  */
 public class NullKeyException extends ConfigurationException
 {
+    private static final long serialVersionUID = -3939817560016273430L;
+
     public NullKeyException(Data data)
     {
         super(data, "Key is null for data with value of '"+data.getValue()+'\'');

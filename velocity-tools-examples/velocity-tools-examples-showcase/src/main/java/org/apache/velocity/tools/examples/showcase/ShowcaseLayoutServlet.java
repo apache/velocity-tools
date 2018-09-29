@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ShowcaseLayoutServlet extends VelocityLayoutServlet
 {
+    private static final long serialVersionUID = -8743195198276764930L;
+
     /**
      * Searches for a non-default layout to be used for this request.
      * This implementation checks the request parameters and attributes.

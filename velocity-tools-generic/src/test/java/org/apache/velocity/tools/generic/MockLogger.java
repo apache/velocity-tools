@@ -16,19 +16,16 @@ package org.apache.velocity.tools.generic;
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
- * under the License.    
+ * under the License.
  */
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import org.slf4j.Logger;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.helpers.MessageFormatter;
 import org.slf4j.spi.LocationAwareLogger;
-
-import org.apache.velocity.runtime.RuntimeServices;
 
 /**
  * Logger implementation that can easily capture output
@@ -68,7 +65,7 @@ public class MockLogger extends MarkerIgnoringBase
             startCapture();
         }
     }
-    
+
     public static final int LOG_LEVEL_TRACE = LocationAwareLogger.TRACE_INT;
     public static final int LOG_LEVEL_DEBUG = LocationAwareLogger.DEBUG_INT;
     public static final int LOG_LEVEL_INFO = LocationAwareLogger.INFO_INT;
@@ -136,7 +133,7 @@ public class MockLogger extends MarkerIgnoringBase
     {
         return !suppress && level >= enabledLevel;
     }
-            
+
     /**
      * Return the captured log messages to date.
      * @return log messages

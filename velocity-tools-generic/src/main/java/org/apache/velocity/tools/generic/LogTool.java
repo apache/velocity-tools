@@ -22,7 +22,6 @@ import java.io.Serializable;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
-import org.slf4j.LoggerFactory;
 
 /**
  * <p>
@@ -57,6 +56,8 @@ import org.slf4j.LoggerFactory;
 @ValidScope(Scope.APPLICATION)
 public class LogTool extends SafeConfig implements Serializable
 {
+    private static final long serialVersionUID = 2081207016220808266L;
+
     public void error(String message)
     {
         getLog().error(message);

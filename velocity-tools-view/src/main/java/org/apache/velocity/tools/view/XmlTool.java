@@ -35,6 +35,8 @@ import javax.servlet.ServletRequest;
 
 public class XmlTool extends org.apache.velocity.tools.generic.XmlTool
 {
+    private static final long serialVersionUID = 8975478801777360304L;
+
     /**
      * ImportSupport initialization.
      * @param config

@@ -24,7 +24,6 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 import org.apache.velocity.tools.ConversionUtils;
-import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.config.DefaultKey;
 
 /**
@@ -63,6 +62,8 @@ import org.apache.velocity.tools.config.DefaultKey;
 @DefaultKey("number")
 public class NumberTool extends FormatConfig implements Serializable
 {
+    private static final long serialVersionUID = -4336524405835332577L;
+
     // ------------------------- formatting methods ---------------------------
 
     /**

@@ -36,13 +36,13 @@ import org.apache.velocity.tools.view.ServletUtils;
  *     <li>reconstruct or alter the current request URI</li>
  *     <li>and more..</li>
  * </ul>
- * 
+ *
  * <p>The LinkTool is somewhat special in that nearly all public methods return
  * a new instance of LinkTool. This facilitates greatly the repeated use
  * of the LinkTool in Velocity and leads to an elegant syntax.</p>
- * 
+ *
  * <p>Template example(s):</p><pre>
- * 
+ *
  *   #set( $base = $link.path('MyPage.vm').anchor('view') )
  *   &lt;a href="$base.param('select','this')"&gt;this&lt;/a&gt;
  *   &lt;a href="$base.param('select','that')"&gt;that&lt;/a&gt;
@@ -67,6 +67,8 @@ import org.apache.velocity.tools.view.ServletUtils;
 
 public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
 {
+    private static final long serialVersionUID = 6814069794929110755L;
+
     public static final String INCLUDE_REQUEST_PARAMS_KEY = "includeRequestParams";
 
     protected HttpServletRequest request;
@@ -84,7 +86,7 @@ public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
     @Override
     protected void configure(ValueParser props)
     {
-        // request values override configured defaults 
+        // request values override configured defaults
         //NOTE: not sure this is the most intuitive way in all cases;
         // it might make sense to provide the option of whether req/res
         // values override configured ones or vice versa.
@@ -96,7 +98,7 @@ public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
         {
             setIncludeRequestParams(incParams);
         }
-        
+
         // set default/start values from request & response
         this.response =
             (HttpServletResponse)props.getValue(ViewContext.RESPONSE);
@@ -291,7 +293,7 @@ public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
 
     /**
      * <p>Returns a URL that addresses the web application. (e.g.
-     * <code>http://myserver.net/myapp/</code>. 
+     * <code>http://myserver.net/myapp/</code>.
      * This essentially just replaces the full path with
      * the {@link #getContextPath()} and removes the anchor and query
      * data.

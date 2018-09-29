@@ -19,7 +19,6 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
-import org.json.simple.JSONArray;
 import org.junit.Test;
 
 import java.util.HashMap;
