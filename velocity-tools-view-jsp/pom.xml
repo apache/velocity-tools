@@ -36,7 +36,11 @@
 
   <dependencies>
     <dependency>
-        <groupId>org.apache.velocity</groupId>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity-engine-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.velocity</groupId>
       <artifactId>velocity-tools-view</artifactId>
       <version>${project.version}</version>
     </dependency>
