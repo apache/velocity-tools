@@ -415,7 +415,7 @@ public class VelocityView extends ViewToolManager
         String servletToolsPath = config.getInitParameter(TOOLS_KEY);
         if (servletToolsPath != null)
         {
-            FactoryConfiguration servletToolsConfig = getConfiguration(appToolsPath, true);
+            FactoryConfiguration servletToolsConfig = getConfiguration(servletToolsPath, true);
             factoryConfig.addConfiguration(servletToolsConfig);
             getLog().debug("Loaded configuration from: {}", servletToolsPath);
         }
