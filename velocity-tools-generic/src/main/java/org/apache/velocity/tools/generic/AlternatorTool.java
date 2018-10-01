@@ -73,6 +73,7 @@ public class AlternatorTool extends SafeConfig implements Serializable
     /**
      * Looks for a default auto-alternate value in the given params,
      * if not, set the default to true.
+     * @param parser configuration values
      */
     protected void configure(ValueParser parser)
     {
@@ -82,6 +83,7 @@ public class AlternatorTool extends SafeConfig implements Serializable
 
     /**
      * Returns true if the default for auto-alternating is true.
+     * @return flag value
      * @since VelocityTools 1.3
      */
     public boolean getAutoAlternateDefault()
@@ -91,6 +93,7 @@ public class AlternatorTool extends SafeConfig implements Serializable
 
     /**
      * Sets the default for auto-alternating.
+     * @param bool flag value
      * @since VelocityTools 1.3
      */
     protected void setAutoAlternateDefault(boolean bool)
@@ -100,6 +103,8 @@ public class AlternatorTool extends SafeConfig implements Serializable
 
     /**
      * Make an automatic {@link Alternator} from the specifed objects.
+     * @param list values to alternate over
+     * @return alternator
      */
     public Alternator make(Object... list)
     {
@@ -112,6 +117,7 @@ public class AlternatorTool extends SafeConfig implements Serializable
      *
      * @param auto See {@link Alternator#setAuto(boolean auto)}.
      * @param list The list of elements to alternate.
+     * @return alternator
      */
     public Alternator make(boolean auto, Object... list)
     {
@@ -131,6 +137,7 @@ public class AlternatorTool extends SafeConfig implements Serializable
     /**
      * Make an automatic {@link Alternator} from the specified objects.
      *
+     * @param list objects to alternate over
      * @return a new, automatic Alternator with the specified values or 
      *         <code>null</code> if there are none specified.
      * @since VelocityTools 1.3
@@ -143,6 +150,7 @@ public class AlternatorTool extends SafeConfig implements Serializable
     /**
      * Make a manual {@link Alternator} from the specified objects.
      *
+     * @param list objects to alternate over
      * @return a new, manual Alternator with the values in the array or 
      *         <code>null</code> if the array is <code>null</code>.
      * @since VelocityTools 1.3

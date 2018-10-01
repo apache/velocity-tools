@@ -58,6 +58,7 @@ public class Alternator
     /**
      * Creates a new Alternator for the specified list.  Alternation
      * defaults to automatic.
+     * @param list the elements to alternate over
      */
     public Alternator(Object... list)
     {
@@ -96,6 +97,7 @@ public class Alternator
     /**
      * If set to true, the list index will shift automatically after a
      * call to toString().
+     * @param auto flag value
      */
     public void setAuto(boolean auto)
     {
@@ -113,6 +115,7 @@ public class Alternator
 
     /**
      * Returns the current item without shifting the list index.
+     * @return current item
      */
     public Object getCurrent()
     {
@@ -121,6 +124,7 @@ public class Alternator
 
     /**
      * Returns the current item, then shifts the list index.
+     * @return current item
      */
     public Object getNext()
     {
@@ -134,6 +138,7 @@ public class Alternator
      * <code>null</code> if the current item is null.  <b>If {@link
      * #auto} is true, this will shift after returning the current
      * item</b>.
+     * @return string representation of the current item
      */
     public String toString()
     {
@@ -148,5 +153,4 @@ public class Alternator
         }
         return o.toString();
     }
-
 }

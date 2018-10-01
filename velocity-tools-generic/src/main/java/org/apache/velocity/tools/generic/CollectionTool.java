@@ -132,6 +132,7 @@ public class CollectionTool extends SafeConfig implements Serializable
      * Sets the delimiter used for separating values in a single String value.
      * The default string delimiter is a comma.
      *
+     * @param stringsDelimiter strings delimiter
      * @see #split(String)
      */
     protected final void setStringsDelimiter(String stringsDelimiter)
@@ -139,6 +140,10 @@ public class CollectionTool extends SafeConfig implements Serializable
         this.stringsDelimiter = stringsDelimiter;
     }
 
+    /**
+     * Gets the configured strings delimiter
+     * @return strings delimiter
+     */
     public final String getStringsDelimiter()
     {
         return this.stringsDelimiter;
@@ -149,6 +154,7 @@ public class CollectionTool extends SafeConfig implements Serializable
      * a delimited string value.
      * The default is true.
      *
+     * @param stringsTrim flag value
      * @see #split(String)
      */
     protected final void setStringsTrim(boolean stringsTrim)
@@ -156,6 +162,10 @@ public class CollectionTool extends SafeConfig implements Serializable
         this.stringsTrim = stringsTrim;
     }
 
+    /**
+     * Gets whether to trim strings
+     * @return whether to trim strings
+     */
     public final boolean getStringsTrim()
     {
         return this.stringsTrim;
@@ -166,6 +176,7 @@ public class CollectionTool extends SafeConfig implements Serializable
      * subclasses may share the same ValueParser and call configure
      * at any time, while preventing templates from doing so when
      * configure(Map) is locked.
+     * @param values configuration values
      */
     @Override
     protected void configure(ValueParser values)
@@ -329,21 +340,41 @@ public class CollectionTool extends SafeConfig implements Serializable
         }
     }
 
+    /**
+     * Sort a collection
+     * @param collection collection to sort, left unchanged
+     * @return new sorted collection
+     */
     public Collection sort(Collection collection)
     {
         return sort(collection, (List)null);
     }
 
+    /**
+     * Sort an array
+     * @param array array to sort, left unchanged
+     * @return new sorted collection
+     */
     public Collection sort(Object[] array)
     {
         return sort(array, (List)null);
     }
 
+    /**
+     * Sort map values
+     * @param map map to sort
+     * @return new sorted collection of map values
+     */
     public Collection sort(Map map)
     {
         return sort(map, (List)null);
     }
 
+    /**
+     * Sort a collection, array or map
+     * @param object collection, array or map to sort
+     * @return new sorted collection, or null of object type is not supported
+     */    
     public Collection sort(Object object)
     {
         if (object instanceof Collection)
@@ -366,8 +397,9 @@ public class CollectionTool extends SafeConfig implements Serializable
     /**
      * Sorts the collection on a single property.
      *
-     * @param object the collection to be sorted.
+     * @param object the collection to be sorted, left unchanged.
      * @param property the property to sort on.
+     * @return new collection, sorted.
      */
     public Collection sort(Object object, String property)
     {
@@ -390,6 +422,13 @@ public class CollectionTool extends SafeConfig implements Serializable
         return null;
     }
 
+    /**
+     * Sorts the collection on several properties.
+     *
+     * @param object the collection to be sorted, left unchanged.
+     * @param property the property to sort on.
+     * @return new collection, sorted.
+     */
     public Collection sort(Collection collection, List properties)
     {
         List list = new ArrayList<>();
@@ -407,16 +446,37 @@ public class CollectionTool extends SafeConfig implements Serializable
         return internalSort(list, properties);
     }
 
+    /**
+     * Sorts map values on several properties.
+     *
+     * @param map the map to be sorted, left unchanged.
+     * @param properties the properties to sort on.
+     * @return new collection, sorted.
+     */
     public Collection sort(Map map, List properties)
     {
         return sort(map.values(), properties);
     }
 
+    /**
+     * Sorts array on several properties.
+     *
+     * @param array array to be sorted, left unchanged.
+     * @param properties the properties to sort on.
+     * @return new collection, sorted.
+     */
     public Collection sort(Object[] array, List properties)
     {
         return sort(Arrays.asList(array), properties);
     }
 
+    /**
+     * Internal sorting method.
+     *
+     * @param list values to sort.
+     * @param properties the properties to sort on.
+     * @return new collection, sorted.
+     */
     protected Collection internalSort(List list, List properties)
     {
         try
@@ -550,6 +610,9 @@ public class CollectionTool extends SafeConfig implements Serializable
      * from the specified object. Subclasses that wish to perform more
      * advanced, efficient, or just different property retrieval methods
      * should override this method to do so.
+     * @param object target object
+     * @param property target property
+     * @return comparable
      */
     protected static Comparable getComparable(Object object, String property)
     {

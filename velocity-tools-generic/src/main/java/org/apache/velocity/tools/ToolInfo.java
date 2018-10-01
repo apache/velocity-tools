@@ -50,6 +50,8 @@ public class ToolInfo implements java.io.Serializable
     /**
      * Creates a new instance using the minimum required info
      * necessary for a tool.
+     * @param key tool key
+     * @param class tool class
      */
     public ToolInfo(String key, Class clazz)
     {
@@ -60,6 +62,10 @@ public class ToolInfo implements java.io.Serializable
 
     /***********************  Mutators *************************/
 
+    /**
+     * Set the tool key
+     * @param key tool key
+     */
     public void setKey(String key)
     {
         this.key = key;
@@ -120,6 +126,10 @@ public class ToolInfo implements java.io.Serializable
         }
     }
 
+    /**
+     * Set whether or not to skip setters.
+     * @param cfgOnly flag value
+     */
     public void setSkipSetters(boolean cfgOnly)
     {
         this.skipSetters = cfgOnly;
@@ -129,6 +139,7 @@ public class ToolInfo implements java.io.Serializable
      * Adds a map of properties from a parent scope to the properties
      * for this tool.  Only new properties will be added; any that
      * are already set for this tool will be ignored.
+     * @param parentProps parent properties map
      */
     public void addProperties(Map<String,Object> parentProps)
     {
@@ -146,12 +157,19 @@ public class ToolInfo implements java.io.Serializable
 
     /**
      * Puts a new property for this tool.
+     * @param name property name
+     * @param value property value
+     * @return previous property value
      */
     public Object putProperty(String name, Object value)
     {
         return getProps().put(name, value);
     }
 
+    /**
+     * Get tools property (synchronized version)
+     * @return tools property
+     */
     protected synchronized Map<String,Object> getProps()
     {
         if (properties == null)
@@ -164,31 +182,55 @@ public class ToolInfo implements java.io.Serializable
 
     /***********************  Accessors *************************/
 
+    /**
+     * Get tool key
+     * @return tool key
+     */
     public String getKey()
     {
         return key;
     }
 
+    /**
+     * Get tool class name
+     * @return tool class name
+     */
     public String getClassname()
     {
         return clazz.getName();
     }
 
+    /**
+     * Get tool class
+     * @return tool class
+     */
     public Class getToolClass()
     {
         return clazz;
     }
 
+    /**
+     * Get tool properties
+     * @return tools properties
+     */
     public Map<String,Object> getProperties()
     {
         return getProps();
     }
 
+    /**
+     * Get whether this tool has a <code>configure()</code> method
+     * @return <code>true</code> if the tool has a <code>configure()</code> method, <code>false</code> otherwise
+     */
     public boolean hasConfigure()
     {
         return (getConfigure() != null);
     }
 
+    /**
+     * Get whether setters are to be skipped
+     * @return whether to skip setters
+     */
     public boolean isSkipSetters()
     {
         if (skipSetters == null)
@@ -231,6 +273,8 @@ public class ToolInfo implements java.io.Serializable
      * will be initialized using the given properties combined with
      * whatever "constant" properties have been put into this
      * ToolInfo.
+     * @param dynamicProperties map of dynamic properties
+     * @return newly created and configured object
      */
     public Object create(Map<String,Object> dynamicProperties)
     {
@@ -264,6 +308,8 @@ public class ToolInfo implements java.io.Serializable
      * if the class lacks the {@link SkipSetters} annotation, then any
      * specific setters matching the configuration keys are called, then
      * the general configure(Map) method (if any) is called.
+     * @param tool newly created tool to be configured
+     * @param configuration properties
      */
     protected void configure(Object tool, Map<String,Object> configuration)
     {
@@ -294,6 +340,10 @@ public class ToolInfo implements java.io.Serializable
         }
     }
 
+    /**
+     * Try to find a <code>configure()</code> method.
+     * @return <code>configure()</code> method if found, <code>null</code>otherwise.
+     */
     protected Method getConfigure()
     {
         if (this.configure == null)
@@ -330,6 +380,11 @@ public class ToolInfo implements java.io.Serializable
                 setResponse(ServletResponse)
                 setServletContext(ServletContext)    */
 
+    /**
+     * Creates a new instance for this tool.
+     * @return newly created tool
+     * @throws IllegalStateException if creation failed
+     */
     protected Object newInstance()
     {
         try
@@ -353,7 +408,13 @@ public class ToolInfo implements java.io.Serializable
         }
     }
 
-
+    /**
+     * Invoke a single argument method on a tool
+     * @param method the method to invoke
+     * @param tool the tool on which to invoke the method
+     * @param param the method argument
+     * @throws IllegalStateException if invocation failed
+     */
     protected void invoke(Method method, Object tool, Object param)
     {
         try
@@ -375,7 +436,13 @@ public class ToolInfo implements java.io.Serializable
         }
     }
 
-
+    /**
+     * Set a property on a tool instance
+     * @param tool tool instance
+     * @param name property name
+     * @param value property value
+     * @throws Exception if setting the property throwed
+     */
     protected void setProperty(Object tool, String name, Object value) throws Exception
     {
         if (PropertyUtils.isWriteable(tool, name))
@@ -387,6 +454,11 @@ public class ToolInfo implements java.io.Serializable
     }
 
     //TODO? move to Utils?
+    /**
+     * Combine several property maps
+     * @param maps maps to combine
+     * @return combined map
+     */
     protected Map<String,Object> combine(Map<String,Object>... maps)
     {
         Map<String,Object> combined = new HashMap<String,Object>();

@@ -91,6 +91,8 @@ public class ClassTool extends SafeConfig
      * Creates a new instance that inspects the specified type
      * and otherwise shares the configuration values of the specified "parent"
      * ClassTool instance.
+     * @param tool parent class tool
+     * @param type class to inspect
      */
     protected ClassTool(ClassTool tool, Class type)
     {
@@ -106,6 +108,10 @@ public class ClassTool extends SafeConfig
         setLockConfig(tool.isConfigLocked());
     }
 
+    /**
+     * Configure this tool
+     * @param values configuration values
+     */
     protected void configure(ValueParser values)
     {
         this.showDeprecated =
@@ -118,6 +124,11 @@ public class ClassTool extends SafeConfig
         }
     }
 
+    /**
+     * Find a class given its name
+     * @param name class name
+     * @return found class or null
+     */
     private Class toClass(String name)
     {
         try
@@ -131,6 +142,10 @@ public class ClassTool extends SafeConfig
         }
     }
 
+    /**
+     * Set the class to inspect
+     * @param type the class to inspect
+     */
     protected void setType(Class type)
     {
         if (type == null)
@@ -140,6 +155,11 @@ public class ClassTool extends SafeConfig
         this.type = type;
     }
 
+    /**
+     * Check if an annotation deprecates its class
+     * @param element annotation
+     * @return deprecation status
+     */
     protected static boolean isDeprecated(AnnotatedElement element)
     {
         return (element.getAnnotation(Deprecated.class) != null);
@@ -147,6 +167,7 @@ public class ClassTool extends SafeConfig
 
     /**
      * Returns the current showDeprecated setting.
+     * @return flag value
      */
     public boolean getShowDeprecated()
     {
@@ -155,6 +176,7 @@ public class ClassTool extends SafeConfig
 
     /**
      * Returns the {@link Class} being inspected by this instance.
+     * @return inspected class
      */
     public Class getType()
     {
@@ -166,6 +188,8 @@ public class ClassTool extends SafeConfig
      * Class with the specified name.  If the specified Class cannot
      * be found, then this will return {@code null}. All other
      * configuration settings will be copied to the new instance.
+     * @param name class name
+     * @return new class tool
      */
     public ClassTool inspect(String name)
     {
@@ -181,6 +205,8 @@ public class ClassTool extends SafeConfig
      * Class of the specified {@link Object}.  If the specified object
      * is null, then this will return {@code null}. All other
      * configuration settings will be copied to the new instance.
+     * @param obj object instance to inspect
+     * @return new class tool
      */
     public ClassTool inspect(Object obj)
     {
@@ -197,6 +223,7 @@ public class ClassTool extends SafeConfig
      * If the current inspectee has no super class,
      * then this will return {@code null}. All other
      * configuration settings will be copied to the new instance.
+     * @return parent class tool
      */
     public ClassTool getSuper()
     {
@@ -216,6 +243,8 @@ public class ClassTool extends SafeConfig
      * If {@link #isSafeMode()} is {@code true} and the specified Class
      * is not declared {@code public}, then this will return
      * {@code null}.
+     * @param type class to inspect
+     * @return new class tool
      */
     public ClassTool inspect(Class type)
     {
@@ -235,6 +264,7 @@ public class ClassTool extends SafeConfig
 
     /**
      * Returns the name of the package to which the inspected Class belongs.
+     * @return package name
      */
     public String getPackage()
     {
@@ -244,6 +274,7 @@ public class ClassTool extends SafeConfig
     /**
      * Returns the simple name (i.e. full name with package name removed) of
      * the inspected Class.
+     * @return inspected class simple name
      */
     public String getName()
     {
@@ -252,6 +283,7 @@ public class ClassTool extends SafeConfig
 
     /**
      * Returns the fully-qualified name for the inspected Class.
+     * @return inspected class name
      */
     public String getFullName()
     {
@@ -263,6 +295,7 @@ public class ClassTool extends SafeConfig
      * inspected is successful; otherwise returns false.  Unlike calling
      * newInstance() directly from a template, this will not throw an
      * Exception if it fails, as all Exceptions are caught.
+     * @return new instances supported or not
      */
     public boolean supportsNewInstance()
     {
@@ -279,6 +312,7 @@ public class ClassTool extends SafeConfig
 
     /**
      * Returns true if the inspected Class has been deprecated.
+     * @return deprecation status
      */
     public boolean isDeprecated()
     {
@@ -287,6 +321,7 @@ public class ClassTool extends SafeConfig
 
     /**
      * Returns true if the inspected Class is declared public.
+     * @return whether the inspected class is public
      */
     public boolean isPublic()
     {
@@ -295,6 +330,7 @@ public class ClassTool extends SafeConfig
 
     /**
      * Returns true if the inspected Class is declared protected.
+     * @return whether the inspected class is protected
      */
     public boolean isProtected()
     {
@@ -303,6 +339,7 @@ public class ClassTool extends SafeConfig
 
     /**
      * Returns true if the inspected Class is declared private.
+     * @return whether the inspected class is private
      */
     public boolean isPrivate()
     {
@@ -312,6 +349,7 @@ public class ClassTool extends SafeConfig
     /**
      * Returns true if the inspected Class is an inner class
      * that has been declared static or is a standard outer class..
+     * @return whether the inspected class is static
      */
     public boolean isStatic()
     {
@@ -320,6 +358,7 @@ public class ClassTool extends SafeConfig
 
     /**
      * Returns true if the inspected Class is declared final.
+     * @return whether the inspected class is final
      */
     public boolean isFinal()
     {
@@ -328,6 +367,7 @@ public class ClassTool extends SafeConfig
 
     /**
      * Returns true if the inspected Class is an interface.
+     * @return whether the inspected class is an interface
      */
     public boolean isInterface()
     {
@@ -337,6 +377,7 @@ public class ClassTool extends SafeConfig
     /**
      * Returns true if the inspected Class is declared strictfp
      * (uses strict floating point math).
+     * @return whether the inspected class is strictfp
      */
     public boolean isStrict()
     {
@@ -345,6 +386,7 @@ public class ClassTool extends SafeConfig
 
     /**
      * Returns true if the inspected Class is declared abstract.
+     * @return whether the inspected class is abstract
      */
     public boolean isAbstract()
     {
@@ -357,6 +399,7 @@ public class ClassTool extends SafeConfig
      * in safe mode (which *is* the default), this will only return
      * the public methods.  You must configure safe mode to be off
      * to receive a list of all methods.
+     * @return methods inspectors list
      */
     public List<MethodSub> getMethods()
     {
@@ -385,6 +428,7 @@ public class ClassTool extends SafeConfig
      * in safe mode (which *is* the default), this will only return
      * the public constructors.  You must configure safe mode to be off
      * to receive a list of all constructors.
+     * @return constructors inspectors list
      */
     public List<ConstructorSub> getConstructors()
     {
@@ -413,6 +457,7 @@ public class ClassTool extends SafeConfig
      * in safe mode (which *is* the default), this will only return
      * the public fields.  You must configure safe mode to be off
      * to receive a list of all fields.
+     * @return fields inspectors list
      */
     public List<FieldSub> getFields()
     {
@@ -439,6 +484,7 @@ public class ClassTool extends SafeConfig
      * Returns a {@link Set} of all {@link Class}es that are
      * part of the signatures (i.e. parameters or return types)
      * of the inspected Class's methods, constructors and fields.
+     * @return referenced classes set
      */
     public Set<Class> getTypes()
     {
@@ -491,12 +537,16 @@ public class ClassTool extends SafeConfig
 
     /**
      * Returns the {@link Annotation}s of the Class being inspected.
+     * @return annotation list
      */
     public List<Annotation> getAnnotations()
     {
         return Arrays.asList(getType().getAnnotations());
     }
 
+    /**
+     * @return string representation of inspected class
+     */
     public String toString()
     {
         return getType().toString();
@@ -512,16 +562,26 @@ public class ClassTool extends SafeConfig
     {
         protected Field field;
 
+        /**
+         * FieldSub constructor
+         * @param field inspected field
+         */
         public FieldSub(Field field)
         {
             this.field = field;
         }
 
+        /**
+         * @return inspected element
+         */
         protected AnnotatedElement getElement()
         {
             return field;
         }
 
+        /**
+         * @return field name
+         */
         public String getName()
         {
             return field.getName();
@@ -530,6 +590,7 @@ public class ClassTool extends SafeConfig
         /**
          * Simply returns the name of the field, since field names
          * cannot be overloaded.
+         * @return unique name
          */
         public String getUniqueName()
         {
@@ -539,12 +600,16 @@ public class ClassTool extends SafeConfig
 
         /**
          * Simply returns the name of the field.
+         * @return field name
          */
         public String getJavadocRef()
         {
             return field.getName();
         }
 
+        /**
+         * @return field class
+         */
         public Class getType()
         {
             return field.getType();
@@ -554,6 +619,7 @@ public class ClassTool extends SafeConfig
          * Returns the value of the field if and only if
          * it is a static field that has no access restrictions
          * set by the security manager.
+         * @return value of static field
          */
         public Object getStaticValue()
         {
@@ -571,11 +637,17 @@ public class ClassTool extends SafeConfig
             return null;
         }
 
+        /**
+         * @return inspected field modifiers
+         */
         protected int getModifiers()
         {
             return field.getModifiers();
         }
 
+        /**
+         * @return inspected field inspector type, aka "field"
+         */
         protected String getSubType()
         {
             return "field";
@@ -590,21 +662,34 @@ public class ClassTool extends SafeConfig
     {
         protected Constructor constructor;
 
+        /**
+         * Constructor inspector constructor
+         * @param constructor constructor to inspect
+         */
         public ConstructorSub(Constructor constructor)
         {
             this.constructor = constructor;
         }
 
+        /**
+         * @return inspected element
+         */
         protected AnnotatedElement getElement()
         {
             return constructor;
         }
 
+        /**
+         * @return inspected constructor name
+         */
         public String getName()
         {
             return constructor.getDeclaringClass().getSimpleName();
         }
 
+        /**
+         * @return inspected constructor parameters
+         */
         public Class[] getParameters()
         {
             return constructor.getParameterTypes();
@@ -613,17 +698,24 @@ public class ClassTool extends SafeConfig
         /**
          * Returns true if the final parameter for the constructor was declared
          * as a vararg.
+         * @return whether the inspected constructor is vararg
          */
         public boolean isVarArgs()
         {
             return constructor.isVarArgs();
         }
 
+        /**
+         * @return inspected constructor modifiers
+         */
         protected int getModifiers()
         {
             return constructor.getModifiers();
         }
 
+        /**
+         * @return inspector type, aka "constructor"
+         */
         protected String getSubType()
         {
             return "constructor";
@@ -638,16 +730,26 @@ public class ClassTool extends SafeConfig
     {
         protected Method method;
 
+        /**
+         * Method inspector constructor
+         * @param method methodto inspect
+         */
         public MethodSub(Method method)
         {
             this.method = method;
         }
 
+        /**
+         * @return inspected element
+         */
         protected AnnotatedElement getElement()
         {
             return method;
         }
 
+        /**
+         * @return method name
+         */
         public String getName()
         {
             return method.getName();
@@ -658,6 +760,7 @@ public class ClassTool extends SafeConfig
          * (which does not exactly follow the javabean spec for such things)
          * then it will return the "bean property" equivalent of the method name.
          * (e.g. for getFoo(), isFoo() or setFoo(foo) it will return "foo")
+         * @return related property name, or null
          */
         public String getPropertyName()
         {
@@ -702,6 +805,7 @@ public class ClassTool extends SafeConfig
         /**
          * Returns true if the final parameter for the method was declared
          * as a vararg.
+         * @return vararg status
          */
         public boolean isVarArgs()
         {
@@ -710,27 +814,40 @@ public class ClassTool extends SafeConfig
 
         /**
          * Returns true if the return type of this method is void.
+         * @return <code>true</code> if the inspected method returns null
          */
         public boolean isVoid()
         {
             return (getReturns() == Void.TYPE);
         }
 
+        /**
+         * @return inspected method return type
+         */
         public Class getReturns()
         {
             return method.getReturnType();
         }
 
+        /**
+         * @return inspected method parameters types
+         */
         public Class[] getParameters()
         {
             return method.getParameterTypes();
         }
 
+        /**
+         * @return inspected method modifiers
+         */
         protected int getModifiers()
         {
             return method.getModifiers();
         }
 
+        /**
+         * @return inspector type, aka "method"
+         */
         protected String getSubType()
         {
             return "method";
@@ -746,6 +863,9 @@ public class ClassTool extends SafeConfig
         public abstract Class[] getParameters();
         public abstract boolean isVarArgs();
 
+        /**
+         * @return whether the inspected callable takes parameters
+         */
         public boolean takesParameters()
         {
             return (getParameterCount() > 0);
@@ -754,6 +874,7 @@ public class ClassTool extends SafeConfig
         /**
          * Returns the number of expected parameters. If this method or
          * constructor is declared with varargs, the vararg only counts as one.
+         * @return inspected callable parameters count
          */
         public int getParameterCount()
         {
@@ -766,6 +887,7 @@ public class ClassTool extends SafeConfig
          * and overloaded methods with a useful name that would still be a
          * valid method name.  This is particularly useful for generating
          * JUnit test method names.
+         * @return inspected callable unique name
          */
         public String getUniqueName()
         {
@@ -808,6 +930,10 @@ public class ClassTool extends SafeConfig
             return uniqueName;
         }
 
+        /**
+         * Get (and cache) inspected callable signature
+         * @return inspected callable signature
+         */
         public String getSignature()
         {
             if (signature == null)
@@ -817,6 +943,9 @@ public class ClassTool extends SafeConfig
             return signature;
         }
 
+        /**
+         * @return inspected callable javadoc ref
+         */
         public String getJavadocRef()
         {
             if (javadocRef == null)
@@ -826,6 +955,11 @@ public class ClassTool extends SafeConfig
             return javadocRef;
         }
 
+        /**
+         * Internal method to get the inspected callable signature.
+         * @param fullNames whether to use full names
+         * @return inspected callable signature
+         */
         protected String signature(boolean fullNames)
         {
             Class[] params = getParameters();
@@ -903,87 +1037,140 @@ public class ClassTool extends SafeConfig
 
         /**
          * Returns the {@link Annotation}s of the element being inspected.
+         * @return annotations list
          */
         public List<Annotation> getAnnotations()
         {
             return Arrays.asList(getElement().getAnnotations());
         }
 
+        /**
+         * Inspected object deprecation status
+         * @return deprecation status
+         */
         public boolean isDeprecated()
         {
             return ClassTool.isDeprecated(getElement());
         }
 
+        /**
+         * @return whether the inspected object is public
+         */
         public boolean isPublic()
         {
             return Modifier.isPublic(getModifiers());
         }
 
+        /**
+         * @return whether the inspected object is protected
+         */
         public boolean isProtected()
         {
             return Modifier.isProtected(getModifiers());
         }
 
+        /**
+         * @return whether the inspected object is private
+         */
         public boolean isPrivate()
         {
             return Modifier.isPrivate(getModifiers());
         }
 
+        /**
+         * @return whether the inspected object is static
+         */
         public boolean isStatic()
         {
             return Modifier.isStatic(getModifiers());
         }
 
+        /**
+         * @return whether the inspected object is final
+         */
         public boolean isFinal()
         {
             return Modifier.isFinal(getModifiers());
         }
 
+        /**
+         * @return whether the inspected object is an interface
+         */
         public boolean isInterface()
         {
             return Modifier.isInterface(getModifiers());
         }
 
+        /**
+         * @return whether the inspected object is native
+         */
         public boolean isNative()
         {
             return Modifier.isNative(getModifiers());
         }
 
+        /**
+         * @return whether the inspected object is strictfp
+         */
         public boolean isStrict()
         {
             return Modifier.isStrict(getModifiers());
         }
 
+        /**
+         * @return whether the inspected object is synchronized
+         */
         public boolean isSynchronized()
         {
             return Modifier.isSynchronized(getModifiers());
         }
 
+        /**
+         * @return whether the inspected object is transcient
+         */
         public boolean isTransient()
         {
             return Modifier.isTransient(getModifiers());
         }
 
+        /**
+         * @return whether the inspected object is volatile
+         */
         public boolean isVolatile()
         {
             return Modifier.isVolatile(getModifiers());
         }
 
+        /**
+         * @return whether the inspected object is abstract
+         */
         public boolean isAbstract()
         {
             return Modifier.isAbstract(getModifiers());
         }
 
+        /**
+         * Compare unique names of inspected and given objects
+         * @param that object to compare to
+         * @return comparison result
+         */
         public int compareTo(T that)
         {
             return this.getUniqueName().compareTo(that.getUniqueName());
         }
 
+        /**
+         * @return hash code
+         */
         public int hashCode()
         {
             return this.getUniqueName().hashCode();
         }
 
+        /**
+         * @param obj object to compare to
+         * @return whether it's the same object
+         */
         public boolean equals(Object obj)
         {
             if (obj instanceof Sub)
@@ -994,6 +1181,9 @@ public class ClassTool extends SafeConfig
             return false;
         }
 
+        /**
+         * @return string representation
+         */
         public String toString()
         {
             return getSubType() + ' ' + getJavadocRef();

@@ -47,7 +47,7 @@ public class ToolManager
     private boolean userOverwrite = true;
 
     /**
-     * Constructs an instance already configured to use the 
+     * Constructs an instance already configured to use the default tools and
      * any configuration specified via a "org.apache.velocity.tools"
      * system property.
      */
@@ -56,11 +56,27 @@ public class ToolManager
         this(true, true);
     }
 
+    /**
+     * Constructs an instance that may or not include default tools,
+     * and already configured with
+     * any configuration specified via a "org.apache.velocity.tools"
+     * system property.
+     * @param includeDefaults whether to include default tools
+     */
     public ToolManager(boolean includeDefaults)
     {
         this(true, includeDefaults);
     }
 
+    /**
+     * Constructs an instance that may or not include default tools,
+     * and which may or not be already configured with
+     * any configuration specified via a "org.apache.velocity.tools"
+     * system property.
+     * @param autoConfig whether to use configuration file specified
+     *        in the <code>org.apache.velocity.tools</code> system property
+     * @param includeDefaults whether to include default tools
+     */
     public ToolManager(boolean autoConfig, boolean includeDefaults)
     {
         this.factory = new ToolboxFactory();
@@ -71,6 +87,11 @@ public class ToolManager
         }
     }
 
+    /**
+     * Autoconfiguration using the configuration file potentially found
+     * in the <code>org.apache.velocity.tools</code> system property.
+     * @param includeDefaults whether to include default tools
+     */
     public void autoConfigure(boolean includeDefaults)
     {
         // look for any specified via system property
@@ -81,6 +102,10 @@ public class ToolManager
         }
     }
 
+    /**
+     * Configure the tool manager with this toolbox factory config
+     * @param config toolbox factory config
+     */
     public void configure(FactoryConfiguration config)
     {
         // clear the cached application toolbox
@@ -88,6 +113,10 @@ public class ToolManager
         this.factory.configure(config);
     }
 
+    /**
+     * Configure the tool manager with the provided configuration file
+     * @param path path to configuration file
+     */
     public void configure(String path)
     {
         FactoryConfiguration config = findConfig(path);
@@ -101,6 +130,11 @@ public class ToolManager
         }
     }
 
+    /**
+     * Find a configuration file
+     * @param path path to a configuration file
+     * @return toolbox factory configuration
+     */
     protected FactoryConfiguration findConfig(String path)
     {
         return ConfigurationUtils.find(path);
@@ -108,6 +142,7 @@ public class ToolManager
 
     /**
      * Returns the underlying {@link ToolboxFactory} being used.
+     * @return underlying toolbox factory
      */
     public ToolboxFactory getToolboxFactory()
     {
@@ -118,6 +153,7 @@ public class ToolManager
      * Sets the underlying ToolboxFactory being used.
      * <b>If you use this, be sure that your ToolboxFactory
      * is already properly configured.</b>
+     * @param factory toolbox factory
      */
     public void setToolboxFactory(ToolboxFactory factory)
     {
@@ -136,6 +172,7 @@ public class ToolManager
      * Sets the underlying VelocityEngine being used.
      * <b>If you use this, be sure that your VelocityEngine
      * is already properly configured and initialized.</b>
+     * @param engine VelocityEngine instance
      */
     public void setVelocityEngine(VelocityEngine engine)
     {
@@ -146,21 +183,37 @@ public class ToolManager
         }
     }
 
+    /**
+     * Get the underlying VelocityEngine being used.
+     * @return VelocityEngine instance
+     */
     public VelocityEngine getVelocityEngine()
     {
         return this.velocity;
     }
 
+    /**
+     * Set whether template user can overwrite tools keys
+     * @param overwrite flag value
+     */
     public void setUserCanOverwriteTools(boolean overwrite)
     {
         this.userOverwrite = overwrite;
     }
 
+    /**
+     * Get whether template user can overwrite tools keys
+     * @return flag value
+     */    
     public boolean getUserCanOverwriteTools()
     {
         return this.userOverwrite;
     }
 
+    /**
+     * Get logger
+     * @return logger
+     */
     public Logger getLog()
     {
         if (log == null)
@@ -176,6 +229,9 @@ public class ToolManager
         return log;
     }
 
+    /**
+     * init logger
+     */
     protected void initLog()
     {
         if (velocity == null)
@@ -188,11 +244,21 @@ public class ToolManager
         }
     }
 
+    /**
+     * create new context with configured toolboxes tools
+     * @return newly created context
+     */
     public ToolContext createContext()
     {
         return createContext(null);
     }
 
+    /**
+     * create new context with configured toolboxes tools,
+     * using the provided tools properties
+     * @param toolProps tools properties
+     * @return newly created context
+     */
     public ToolContext createContext(Map<String,Object> toolProps)
     {
         ToolContext context = new ToolContext(toolProps);
@@ -200,6 +266,10 @@ public class ToolManager
         return context;
     }
 
+    /**
+     * Prepare context
+     * @param context tool context
+     */
     protected void prepareContext(ToolContext context)
     {
         context.setUserCanOverwriteTools(this.userOverwrite);
@@ -210,6 +280,10 @@ public class ToolManager
         addToolboxes(context);
     }
 
+    /**
+     * Add toolboxes to contex
+     * @param context context
+     */
     protected void addToolboxes(ToolContext context)
     {
         if (hasApplicationTools())
@@ -222,31 +296,59 @@ public class ToolManager
         }
     }
 
+    /**
+     * Check for the presence of tools in a given scope
+     * @param scope scope to check
+     * @return whether this scope contains tools
+     */
     protected boolean hasTools(String scope)
     {
         return this.factory.hasTools(scope);
     }
 
+    /**
+     * Create a toolbox for the given scope
+     * @param scope scope
+     * @return newly created toolbox
+     */
     protected Toolbox createToolbox(String scope)
     {
         return this.factory.createToolbox(scope);
     }
 
+    /**
+     * Check whether this tool manager has request scoped tools
+     * @return <code>true</code> if this tool manager has request scoped tools,
+     *         <code>false</code> otherwise
+     */
     protected boolean hasRequestTools()
     {
         return hasTools(Scope.REQUEST);
     }
 
+    /**
+     * Get the toolbox for request scoped tools
+     * @return toolbox of request scoped tools
+     */
     protected Toolbox getRequestToolbox()
     {
         return createToolbox(Scope.REQUEST);
     }
 
+    /**
+     * Check whether this tool manager has application scoped tools
+     * @return <code>true</code> if this tool manager has application scoped tools,
+     *         <code>false</code> otherwise
+     */
     protected boolean hasApplicationTools()
     {
         return hasTools(Scope.APPLICATION);
     }
 
+    /**
+     * Get the toolbox for application scoped tools
+     * @return toolbox of application scoped tools
+     */
     protected Toolbox getApplicationToolbox()
     {
         if (this.application == null && hasApplicationTools())

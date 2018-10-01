@@ -394,6 +394,9 @@ public class ClassUtils
      * This method is almost entirely copied from Engine's UberspectImpl class.
      * @param obj the target obj
      * @return an iterator over the content of obj, or null if not found
+     * @throws NoSuchMethodException if no iterator() method
+     * @throws IllegalAccessException if iterator() method not callable
+     * @throws InvocationTargetException if iterator() method throwed
      */
     public static Iterator getIterator(Object obj)
         throws NoSuchMethodException, IllegalAccessException, InvocationTargetException

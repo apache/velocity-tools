@@ -68,7 +68,8 @@ public final class XmlUtils
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XmlUtils.class);
 
-    /** Handles xml errors so that they're not logged to stderr.
+    /**
+     * Handles xml errors so that they're not logged to stderr.
      */
     private static final ErrorHandler errorHandler = new ErrorHandler()
     {
@@ -200,6 +201,10 @@ public final class XmlUtils
         }
     }
 
+    /**
+     * Get a document builder
+     * @return document builder
+     */
     private static synchronized DocumentBuilder getDocumentBuilder()
     {
         DocumentBuilder builder = null;
@@ -239,6 +244,10 @@ public final class XmlUtils
         return builder;
     }
 
+    /**
+     * Release the given document builder
+     * @param document builder
+     */
     private static synchronized void releaseBuilder(DocumentBuilder builder)
     {
         builder.reset();
@@ -250,9 +259,9 @@ public final class XmlUtils
     /**
      * Extracts an attribute from a node.
      *
-     * @param node
-     * @param attr
-     * @param def
+     * @param node target node
+     * @param attr attribute name
+     * @param def default value
      * @return The value of the attribute, or def
      */
     public static String getAttribute(Node node, String attr, String def)
@@ -267,8 +276,8 @@ public final class XmlUtils
     }
 
     /**
-     * @param node
-     * @param attr
+     * @param node target node
+     * @param attr attribute name
      * @return The value of the given attribute, or null if not present.
      */
     public static String getAttribute(Node node, String attr)
@@ -279,9 +288,9 @@ public final class XmlUtils
     /**
      * Retrieves an attribute as a boolean.
      *
-     * @param node
-     * @param attr
-     * @param def
+     * @param node target node
+     * @param attr attribute name
+     * @param def default value
      * @return True if the attribute exists and is not equal to "false"
      *    false if equal to "false", and def if not present.
      */
@@ -296,8 +305,8 @@ public final class XmlUtils
     }
 
     /**
-     * @param node
-     * @param attr
+     * @param node target node
+     * @param attr attribute name
      * @return True if the attribute exists and is not equal to "false"
      *    false otherwise.
      */
@@ -307,6 +316,9 @@ public final class XmlUtils
     }
 
     /**
+     * @param target node
+     * @param attr attribute name
+     * @param def default value
      * @return An attribute coerced to an integer.
      */
     public static int getIntAttribute(Node node, String attr, int def)
@@ -327,6 +339,8 @@ public final class XmlUtils
     }
 
     /**
+     * @param node target node
+     * @param attr attribute name
      * @return An attribute coerced to an integer.
      */
     public static int getIntAttribute(Node node, String attr)
@@ -336,7 +350,7 @@ public final class XmlUtils
 
     /**
      * Attempts to parse the input xml into a single element.
-     * @param xml
+     * @param xml xml stream reader
      * @return The document object
      */
     public static Element parse(Reader xml)
@@ -362,7 +376,7 @@ public final class XmlUtils
 
     /**
      * Attempts to parse the input xml into a single element.
-     * @param xml
+     * @param xml xml string
      * @return The document object
      */
     public static Element parse(String xml)
@@ -388,7 +402,8 @@ public final class XmlUtils
 
     /**
      * <p>Builds the xpath expression for a node (tries to use id/name nodes when possible to get a unique path)</p>
-     *
+     * @param n target node
+     * @return node xpath
      */
     // (borrow from http://stackoverflow.com/questions/5046174/get-xpath-from-the-org-w3c-dom-node )
     public static String nodePath(Node n)
@@ -497,8 +512,12 @@ public final class XmlUtils
         return buffer.toString();
     }
 
+    /**
+     * XML Node to string
+     * @param node XML node
+     * @return XML node string representation
+     */
     public static String nodeToString(Node node)
-
     {
         StringWriter sw = new StringWriter();
         try
@@ -517,6 +536,11 @@ public final class XmlUtils
         return sw.toString();
     }
 
+    /**
+     * Checkes whether the given mime type is an XML format
+     * @param mimeType
+     * @return <code>true</code> if this mime type is an XML format
+     */
     public static boolean isXmlMimeType(String mimeType)
     {
         return mimeType != null &&

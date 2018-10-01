@@ -83,12 +83,17 @@ public class SafeConfig
 
     /**
      * Only allow subclass access to this.
+     * @param lock whether to lock config
      */
     protected void setLockConfig(boolean lock)
     {
         this.configLocked = lock;
     }
 
+    /**
+     * Set or clear safe mode.
+     * @param safe whether to set safe mode
+     */
     protected void setSafeMode(boolean safe)
     {
         this.safeMode = safe;
@@ -97,6 +102,7 @@ public class SafeConfig
     /**
      * Returns {@code true} if the {@link #configure(Map)} method
      * has been locked.
+     * @return locked status
      */
     public boolean isConfigLocked()
     {
@@ -105,6 +111,7 @@ public class SafeConfig
 
     /**
      * Returns {@code true} if this tool is in "safe mode".
+     * @return safe mode status
      */
     public boolean isSafeMode()
     {
@@ -121,6 +128,7 @@ public class SafeConfig
      * The safe mode value should be a boolean under the key
      * {@link #SAFE_MODE_KEY} and the lock value should be a boolean
      * under the key {@link #LOCK_CONFIG_KEY}.
+     * @param params configuration values map
      */
     public void configure(Map params)
     {
@@ -147,6 +155,7 @@ public class SafeConfig
      * subclasses may share the same ValueParser and call configure
      * at any time, while preventing templates from doing so when 
      * configure(Map) is locked.
+     * @param values configuration values
      */
     protected void configure(ValueParser values)
     {
@@ -185,6 +194,10 @@ public class SafeConfig
         }
     }
 
+    /**
+     * Get logger
+     * @return logger
+     */
     protected Logger getLog()
     {
         if (log == null)

@@ -65,6 +65,7 @@ public class ToolContext implements Context
     /**
      * Creates an instance that automatically has the specified
      * VelocityEngine and related tool properties set.
+     * @param engine VelocityEngine instance
      */
     public ToolContext(VelocityEngine engine)
     {
@@ -75,6 +76,7 @@ public class ToolContext implements Context
 
     /**
      * Creates an instance starting with the specified tool properties.
+     * @param toolProps tools properties
      */
     public ToolContext(Map<String,Object> toolProps)
     {
@@ -91,6 +93,7 @@ public class ToolContext implements Context
      * The default value is {@code true}.  Set this to false if you want to
      * ensure that your tool references are never replaced within the course
      * of a template.
+     * @param overwrite flag value
      */
     public void setUserCanOverwriteTools(boolean overwrite)
     {
@@ -99,6 +102,7 @@ public class ToolContext implements Context
 
     /**
      * Default is {@code true}.
+     * @return flag value
      * @see #setUserCanOverwriteTools
      */
     public boolean getUserCanOverwriteTools()
@@ -115,6 +119,7 @@ public class ToolContext implements Context
      * Returns a {@link Map} of all tools available to this
      * context. NOTE: this is not a cheap operation as it will
      * request and initialize an instance of every available tool.
+     * @return aggregated toolbox of all available tools
      */
     public Map<String,Object> getToolbox()
     {
@@ -130,6 +135,7 @@ public class ToolContext implements Context
     /**
      * Gets a map of keys to classes for all available tools.
      * This does not include any data nor any local context values.
+     * @return aggregated map of all available tools classes
      */
     public Map<String,Class> getToolClassMap()
     {
@@ -161,6 +167,7 @@ public class ToolContext implements Context
      * engine has a MethodExceptionEventHandler configured, then
      * this will automatically set {@link #CATCH_EXCEPTIONS_KEY}
      * to false in the tool properties.
+     * @param engine VelocityEngine instance
      */
     public void putVelocityEngine(VelocityEngine engine)
     {
