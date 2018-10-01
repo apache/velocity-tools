@@ -24,17 +24,17 @@
     <title>Changelog</title>
   </properties>
   <body>
-    <release version="3.0-SNAPSHOT" date="In Subversion">
+    <release version="3.0" date="2018-10-01">
       <action type="add" dev="michaelo">
         upgraded to servlet API 3.1.0
       </action>
-      <action type="fix" dev="michaelo">
+      <action type="fix" dev="michaelo" issue="VELTOOLS-179">
         JsonTool now uses an explicit dependency to <code>com.github.cliftonlabs.json-simple</code>
       </action>
-      <action type="fix" dev="cbrisson">
+      <action type="fix" dev="cbrisson" issue="VELTOOLS-162">
         The <code>tools.xml</code> file can now use XInclude file inclusion mechanism
       </action>
-      <action type="fix" dev="cbrisson">
+      <action type="fix" dev="cbrisson" issue="VELTOOLS-161">
         Most tools are now serializable
       </action>
       <action type="fix" dev="cbrisson">
@@ -139,7 +139,7 @@
         Switched log system facade to SLF4j
       </action>
       <action type="add" dev="cbrisson">
-        Upgraded to JUnit 4.12, Servlet API 3.0.1, Dom4j 1.6.1, commons-beanutils 1.9.3, commons-digester 3.2, and Velocity Engine 2.0.
+        Upgraded to JUnit 4.12, commons-beanutils 1.9.3, commons-digester 3.2, and Velocity Engine 2.0.
       </action>
       <action type="fix" dev="nbubna" issue="VELTOOLS-129" due-to="Michael Osipov">
       </action>
