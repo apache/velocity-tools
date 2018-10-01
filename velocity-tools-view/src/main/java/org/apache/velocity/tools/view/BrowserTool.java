@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  *  <p>Browser sniffing tool (session or request scope requested, session scope advised).</p>
- *  <p></p>
  * <p><b>Usage:</b></p>
  * <p>BrowserTool defines properties that are used to test the client browser, operating system, device, language...</p>
  * <p>All properties are boolean, excpet those in italic which are strings (and major/minor versions which are integers)</p>
@@ -117,6 +116,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
 
     /**
      * Retrieves the User-Agent header from the request (if any).
+     * @param request servlet request
      * @see #setUserAgentString
      */
     public void setRequest(HttpServletRequest request)
@@ -151,6 +151,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
      * will be empty and everything will return false or null.  Otherwise,
      * it will set the whole string to lower case before storing to simplify
      * parsing.
+     * @param ua user agent string
      */
     public void setUserAgentString(String ua)
     {
@@ -250,6 +251,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
     /* device type */
 
     /**
+     * @return found device
      * @since VelocityTools 3.0
      */
     public String getDevice()
@@ -263,6 +265,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
     }
 
     /**
+     * @return whether found device is a tablet
      * @since VelocityTools 3.0
      */
     public boolean isTablet()
@@ -271,6 +274,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
     }
 
     /**
+     * @return whether found device is a mobile device
      * @since VelocityTools 3.0
      */
     public boolean isMobile()
@@ -279,6 +283,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
     }
 
     /**
+     * @return whether found device is a desktop device
      * @since VelocityTools 3.0
      */
     public boolean isDesktop()
@@ -287,6 +292,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
     }
 
     /**
+     * @return whether found device is a TV
      * @since VelocityTools 3.0
      */
     public boolean isTV()
@@ -295,6 +301,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
     }
 
     /**
+     * @return parsed browser
      * @since VelocityTools 3.0
      */
     public UAEntity getBrowser()
@@ -303,6 +310,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
     }
 
     /**
+     * @return parsed rendering engine
      * @since VelocityTools 3.0
      */
     public UAEntity getRenderingEngine()
@@ -311,6 +319,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
     }
 
     /**
+     * @return parsed operating system
      * @since VelocityTools 3.0
      */
     public UAEntity getOperatingSystem()

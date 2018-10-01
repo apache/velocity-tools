@@ -26,45 +26,30 @@ public abstract class BrowserToolDeprecatedMethods extends FormatConfig
     public abstract boolean isLinux();
     protected abstract boolean test(String str);
 
-    /**
-     * @deprecated use {@link #getBrowser()}.getUserAgentString()
-     */
     @Deprecated
     public String getUserAgent()
     {
         return getUserAgentString();
     }
     
-    /**
-     * @deprecated use {@link #getBrowser()} version getters
-     */
     @Deprecated
     public String getVersion()
     {
         return getBrowser().getMajorVersion() + "." + getBrowser().getMinorVersion();
     }
 
-    /**
-     * @deprecated use {@link #getBrowser()}.getMajorVersion()
-     */
     @Deprecated
     public int getMajorVersion()
     {
         return getBrowser().getMajorVersion();
     }
 
-    /**
-     * @deprecated use {@link #getBrowser()}.getMinorVersion()
-     */
     @Deprecated
     public int getMinorVersion()
     {
         return getBrowser().getMinorVersion();
     }
 
-    /**
-     * @deprecated use {@link #getRenderingEngine()} and version getters
-     */
     @Deprecated
     public String getGeckoVersion()
     {
@@ -75,9 +60,7 @@ public abstract class BrowserToolDeprecatedMethods extends FormatConfig
                         null;
     }
 
-    /**
-     * @deprecated use {@link #getRenderingEngine()} and version getters
-     */
+    @Deprecated
     public int getGeckoMajorVersion()
     {
         UAEntity renderingEngine = getRenderingEngine();
@@ -87,9 +70,7 @@ public abstract class BrowserToolDeprecatedMethods extends FormatConfig
                         0;
     }
 
-    /**
-     * @deprecated use {@link #getRenderingEngine()} version getters
-     */
+    @Deprecated
     public int getGeckoMinorVersion()
     {
         UAEntity renderingEngine = getRenderingEngine();
@@ -99,350 +80,263 @@ public abstract class BrowserToolDeprecatedMethods extends FormatConfig
                         0;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getNav2()
     {
         return isNetscape() && getBrowser().getMajorVersion() == 2;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getNav3()
     {
         return isNetscape() && getMajorVersion() == 3;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getNav4()
     {
         return isNetscape() && getMajorVersion() == 4;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getNav4up()
     {
         return isNetscape() && getMajorVersion() >= 4;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getNav45()
     {
         return isNetscape() && getMajorVersion() == 4 &&
                 getMinorVersion() == 5;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getNav45up()
     {
         return isNetscape() && getMajorVersion() >= 5 ||
                 getNav4() && getMinorVersion() >= 5;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getNavgold()
     {
         return test("gold");
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getNav6()
     {
         return isNetscape() && getMajorVersion() == 5; /* sic */
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getNav6up()
     {
         return isNetscape() && getMajorVersion() >= 5;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getIe()
     {
         return isMSIE();
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getIe3()
     {
         return isMSIE() && getBrowser().getMajorVersion() < 4;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getIe4()
     {
         return isMSIE() && getBrowser().getMajorVersion() == 4;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getIe4up()
     {
         return isMSIE() && getBrowser().getMajorVersion() >= 4;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getIe5()
     {
         return isMSIE() && getBrowser().getMajorVersion() == 5;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getIe5up()
     {
         return isMSIE() && getBrowser().getMajorVersion() >= 5;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getIe55()
     {
         return isMSIE() && getBrowser().getMajorVersion() == 5 && getBrowser().getMinorVersion() >= 5;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getIe55up()
     {
         return (getIe5() && getBrowser().getMinorVersion() >= 5) ||
                 (isMSIE() && getBrowser().getMajorVersion() >= 6);
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getIe6()
     {
         return isMSIE() && getBrowser().getMajorVersion() == 6;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getIe6up()
     {
         return isMSIE() && getBrowser().getMajorVersion() >= 6;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getIe7()
     {
         return isMSIE() && getBrowser().getMajorVersion() == 7;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getIe7up()
     {
         return isMSIE() && getBrowser().getMajorVersion() >= 7;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getIe8()
     {
         return isMSIE() && getBrowser().getMajorVersion() == 8;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getIe8up()
     {
         return isMSIE() && getBrowser().getMajorVersion() >= 8;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getOpera3()
     {
         return isOpera() && getBrowser().getMajorVersion() == 3;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getOpera4()
     {
         return isOpera() && getBrowser().getMajorVersion() == 4;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getOpera5()
     {
         return isOpera() && getBrowser().getMajorVersion() == 5;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getOpera6()
     {
         return isOpera() && getBrowser().getMajorVersion() == 6;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getOpera7()
     {
         return isOpera() && getBrowser().getMajorVersion() == 7;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getOpera8()
     {
         return isOpera() && getBrowser().getMajorVersion() == 8;
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getOpera9()
     {
         return test("opera/9");
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getWin16()
     {
         return test("win16") || test("16bit") || test("windows 3") ||
                 test("windows 16-bit");
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getWin3x()
     {
         return test("win16") || test("windows 3") || test("windows 16-bit");
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getWin31()
     {
         return test("win16") || test("windows 3.1") || test("windows 16-bit");
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getWin95()
     {
         return test("win95") || test("windows 95");
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getWin98()
     {
         return test("win98") || test("windows 98");
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getWinnt()
     {
         return test("winnt") || test("windows nt") || test("nt4") || test("nt3");
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getWin2k()
     {
         return test("nt 5.0") || test("nt5");
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getWinxp()
     {
         return test("nt 5.1");
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getVista()
     {
         return test("nt 6.0");
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getDotnet()
     {
         return test(".net clr");
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getWinme()
     {
         return test("win 9x 4.90");
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public boolean getWin32()
     {
         return getWin95() || getWin98() || getWinnt() || getWin2k() ||
                 getWinxp() || getWinme() || test("win32");
     }
 
-    /**
-     * @deprecated use isOSX()
-     */
     @Deprecated
     public boolean isMac()
     {

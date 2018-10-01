@@ -815,7 +815,7 @@ public class LoopTool extends SafeConfig implements Serializable
          * @return the parallel value from the specified sync'ed iterator.
          * If no sync'ed iterator exists with that name or that iterator
          * is finished, this will return {@code null}.
-         * @param iterator name
+         * @param name iterator name
          * @return iterator current value
          */
         public Object get(String name)

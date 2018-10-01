@@ -71,6 +71,8 @@ public class ServletUtils
      * Retrieves the path for the specified request regardless of
      * whether this is a direct request or an include by the
      * RequestDispatcher.
+     * @param request servlet request
+     * @return request path
      */
     public static String getPath(HttpServletRequest request)
     {
@@ -98,6 +100,8 @@ public class ServletUtils
      * Returns the shared {@link VelocityView} for the specified
      * {@link ServletConfig}'s context. If one has not yet been created, it
      * will create, store it for future access, and then return it.
+     * @param config servlet config
+     * @return VelocityView instance
      */
     public static VelocityView getVelocityView(ServletConfig config)
     {
@@ -109,6 +113,8 @@ public class ServletUtils
      * Returns the shared {@link VelocityView} for the specified
      * {@link FilterConfig}'s context. If one has not yet been created, it
      * will create, store it for future access, and then return it.
+     * @param config filter config
+     * @return VelocityView instance
      */
     public static VelocityView getVelocityView(FilterConfig config)
     {
@@ -119,6 +125,8 @@ public class ServletUtils
      * Returns the shared {@link VelocityView} for the specified
      * {@link JeeConfig}'s context. If one has not yet been created, it
      * will create, store it for future access, and then return it.
+     * @param config configuration parameters container (webapp, servlet or filter)
+     * @return VelocityView instance
      */
     public static VelocityView getVelocityView(JeeConfig config)
     {
@@ -190,6 +198,8 @@ public class ServletUtils
      * Returns the shared {@link VelocityView} for the specified
      * {@link ServletContext}. If one has not yet been created,
      * it will create one, store it for future access, and then return it.
+     * @param application servlet context
+     * @return VelocityView instance
      */
     public static VelocityView getVelocityView(ServletContext application)
     {
@@ -201,6 +211,9 @@ public class ServletUtils
      * {@link ServletContext}. If one has not yet been created and
      * the second parameter is <code>true</code>, then it will
      * create one, store it for future access, and return it.
+     * @param application servlet context
+     * @param createIfMissing whether to create VelocityView if not yet built
+     * @return VelocityView instance
      */
     public static VelocityView getVelocityView(ServletContext application,
                                                boolean createIfMissing) {
@@ -435,6 +448,10 @@ public class ServletUtils
      * Returns a mutex (lock object) unique to the specified session
      * and stored under the specified key to allow for reliable
      * synchronization on the session.
+     * @param session HTTP session
+     * @param key mutex key
+     * @param caller caller object
+     * @return session mutex object
      */
     public static Object getMutex(HttpSession session, String key, Object caller)
     {

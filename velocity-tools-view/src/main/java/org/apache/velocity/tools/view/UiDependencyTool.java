@@ -178,6 +178,8 @@ public class UiDependencyTool extends SafeConfig
      * Adds all the files required for the specified group, then returns
      * this instance.  If the group name is null or no such group exists,
      * this will return null to indicate the error.
+     * @param name group name
+     * @return this or null
      */
     public UiDependencyTool on(String name) {
         Map<String,List<String>> groupDeps = getGroupDependencies(name);
@@ -193,6 +195,9 @@ public class UiDependencyTool extends SafeConfig
      * Adds the specified file to this instance's list of dependencies
      * of the specified type, then returns this instance.  If either the
      * type or file are null, this will return null to indicate the error.
+     * @param type file type
+     * @param file dependency file
+     * @return this or null
      */
     public UiDependencyTool on(String type, String file) {
         if (type == null || file == null) {
@@ -206,6 +211,7 @@ public class UiDependencyTool extends SafeConfig
     /**
      * Formats and prints all the current dependencies of this tool,
      * using a new line in between the printed/formatted files.
+     * @return all dependencies
      */
     public String print() {
         return printAll("\n");
@@ -219,6 +225,8 @@ public class UiDependencyTool extends SafeConfig
      * as a delimiter and print all of this instance's dependencies of all
      * types, using the specified value as the delimiter in between the
      * printed/formatted files.
+     * @param typeOrDelim type asked for, or delimiter
+     * @return all dependencies
      * @see #print(String,String)
      * @see #printAll(String)
      */
@@ -236,6 +244,9 @@ public class UiDependencyTool extends SafeConfig
      * Formats and prints all of this instance's current dependencies of the
      * specified type, using the specified delimiter in between the
      * printed/formatted files.
+     * @param type file type
+     * @param delim lines delimiter
+     * @return list of dependencies for thie type, formatted using delimiter
      */
     public String print(String type, String delim) {
         List<String> files = getDependencies(type);
@@ -255,6 +266,8 @@ public class UiDependencyTool extends SafeConfig
     /**
      * Formats and prints all the current dependencies of this tool,
      * using the specified delimiter in between the printed/formatted files.
+     * @param delim delimiter
+     * @return list of dependencies
      */
     public String printAll(String delim) {
         if (dependencies == null) {
@@ -281,6 +294,8 @@ public class UiDependencyTool extends SafeConfig
 
     /**
      * Sets a custom {context} variable for the formats to use.
+     * @param path context path
+     * @return this
      */
     public UiDependencyTool context(String path)
     {
@@ -290,6 +305,8 @@ public class UiDependencyTool extends SafeConfig
 
     /**
      * Retrieves the configured format string for the specified file type.
+     * @param type file type
+     * @return configured format
      */
     public String getFormat(String type) {
         Type t = getType(type);
@@ -301,6 +318,8 @@ public class UiDependencyTool extends SafeConfig
 
     /**
      * Sets the format string for the specified file type.
+     * @param type file type
+     * @param format format string
      */
     public void setFormat(String type, String format) {
         if (format == null || type == null) {
@@ -325,6 +344,7 @@ public class UiDependencyTool extends SafeConfig
      * Returns the current dependencies of this instance, organized
      * as an ordered map of file types to lists of the required files
      * of that type.
+     * @return map of all dependencies
      */
     public Map<String,List<String>> getDependencies() {
         return dependencies;
@@ -332,6 +352,8 @@ public class UiDependencyTool extends SafeConfig
 
     /**
      * Returns the {@link List} of files for the specified file type, if any.
+     * @param type file type
+     * @return all dependencies for this type
      */
     public List<String> getDependencies(String type) {
         if (dependencies == null) {
@@ -344,6 +366,8 @@ public class UiDependencyTool extends SafeConfig
      * Returns the dependencies of the specified group, organized
      * as an ordered map of file types to lists of the required files
      * of that type.
+     * @param name group name
+     * @return map of all dependencies for this group
      */
     public Map<String,List<String>> getGroupDependencies(String name) {
         Group group = getGroup(name);
@@ -356,6 +380,7 @@ public class UiDependencyTool extends SafeConfig
     /**
      * Returns an empty String to avoid polluting the template output after a
      * successful call to {@link #on(String)} or {@link #on(String,String)}.
+     * @return empty string
      */
     @Override
     public String toString() {
@@ -369,6 +394,8 @@ public class UiDependencyTool extends SafeConfig
      * an IllegalArgumentException.  Otherwise, it will simply do nothing. Any
      * checked exceptions during the actual reading of the file are caught and
      * wrapped as {@link RuntimeException}s.
+     * @param file file
+     * @param required whether this file is required
      */
     protected void read(String file, boolean required) {
         getLog().debug("UiDependencyTool: Reading file from {}", file);
@@ -403,6 +430,7 @@ public class UiDependencyTool extends SafeConfig
     /**
      * Creates the {@link Digester} used by {@link #read} to create
      * the group info for this instance out of the specified XML file.
+     * @return new digester
      */
     protected Digester createDigester() {
         Digester digester = new Digester();
@@ -420,6 +448,9 @@ public class UiDependencyTool extends SafeConfig
      * Applies the format string to the given value.  Currently,
      * this simply replaces '{file}' with the value.  If you
      * want to handle more complicated formats, override this method.
+     * @param format format string
+     * @param value dependency file
+     * @return formatted string
      */
     protected String format(String format, String value) {
         if (format == null) {
@@ -431,6 +462,8 @@ public class UiDependencyTool extends SafeConfig
     /**
      * NOTE: This method may change or disappear w/o warning; don't depend
      * on it unless you're willing to update your code whenever this changes.
+     * @param name file name
+     * @return group this file belongs to, or null
      */
     protected Group getGroup(String name) {
         if (groups == null) {
@@ -442,6 +475,8 @@ public class UiDependencyTool extends SafeConfig
     /**
      * NOTE: This method may change or disappear w/o warning; don't depend
      * on it unless you're willing to update your code whenever this changes.
+     * @param name group name
+     * @return new group
      */
     protected Group makeGroup(String name) {
         getLog().trace("UiDependencyTool: Creating group '{}'", name);
@@ -453,6 +488,7 @@ public class UiDependencyTool extends SafeConfig
     /**
      * Adds the specified files organized by type to this instance's
      * current dependencies.
+     * @param fbt dependencies map
      */
     protected void addDependencies(Map<String,List<String>> fbt) {
         if (this.dependencies == null) {
@@ -479,6 +515,8 @@ public class UiDependencyTool extends SafeConfig
 
     /**
      * Adds a file to this instance's dependencies under the specified type.
+     * @param type file type
+     * @param file file name
      */
     protected void addFile(String type, String file) {
         List<String> files = null;
@@ -500,6 +538,8 @@ public class UiDependencyTool extends SafeConfig
 
     /**
      * For internal use only. Use/override get/setFormat instead.
+     * @param type file type
+     * @return {@link Type} object
      */
     private Type getType(String type) {
         for (Type t : types) {

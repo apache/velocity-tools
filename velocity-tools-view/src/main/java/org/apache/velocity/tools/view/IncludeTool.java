@@ -108,6 +108,9 @@ public class IncludeTool extends SafeConfig implements Serializable
      * Calls {@link #find(String, String)} using the
      * language extracted from <code>locale</code>.
      *
+     * @param name resource filename
+     * @param locale locale
+     * @return locallized resource filename
      * @see #find(String, String)
      */
     public String find(String name, Locale locale)
@@ -123,6 +126,8 @@ public class IncludeTool extends SafeConfig implements Serializable
      * Calls {@link #find(String, String)} using the
      * default language.
      *
+     * @param name resource filename
+     * @return locallized resource filename
      * @see #find(String, String)
      */
     public String find(String name)
@@ -187,6 +192,8 @@ public class IncludeTool extends SafeConfig implements Serializable
      * #end
      * </pre>
      *
+     * @param name resource filename
+     * @return whether resource exists
      * @see VelocityEngine#resourceExists
      */
     public boolean exists(String name)
@@ -207,6 +214,9 @@ public class IncludeTool extends SafeConfig implements Serializable
      * Checks to see whether a localized version of the
      * named template exists for the specified language.
      *
+     * @param name resource filename
+     * @param language asked language
+     * @return whether resource exists
      * @see #exists(String)
      */
     public boolean exists(String name, String language)

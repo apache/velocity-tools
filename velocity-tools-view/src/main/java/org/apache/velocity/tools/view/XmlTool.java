@@ -39,7 +39,7 @@ public class XmlTool extends org.apache.velocity.tools.generic.XmlTool
 
     /**
      * ImportSupport initialization.
-     * @param config
+     * @param config configuration values
      */
     @Override
     protected synchronized void initializeImportSupport(ValueParser config)
@@ -53,7 +53,7 @@ public class XmlTool extends org.apache.velocity.tools.generic.XmlTool
 
     /**
      * Configuration. Parses request body if appropriate.
-     * @param values
+     * @param values configuration values
      */
     protected void configure(ValueParser values)
     {

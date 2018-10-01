@@ -59,19 +59,19 @@ public interface ViewContext
 
 
     /**
-     * <p>Returns the instance of {@link HttpServletRequest} for this request.</p>
+     * @return the instance of {@link HttpServletRequest} for this request.
      */
     public HttpServletRequest getRequest();
 
 
     /**
-     * <p>Returns the instance of {@link HttpServletResponse} for this request.</p>
+     * @return the instance of {@link HttpServletResponse} for this request.
      */
     public HttpServletResponse getResponse();
 
 
     /**
-     * <p>Returns the instance of {@link ServletContext} for this request.</p>
+     * @return the instance of {@link ServletContext} for this request.
      */
     public ServletContext getServletContext();
 
@@ -80,20 +80,21 @@ public interface ViewContext
      * <p>Searches for the named attribute in request, session (if valid),
      * and application scope(s) in order and returns the value associated
      * or null.</p>
-     *
+     * @param key attribute key
+     * @return attribute value or null
      * @since VelocityTools 1.1
      */
     public Object getAttribute(String key);
 
 
     /**
-     * <p>Returns a reference to the current Velocity context.</p>
+     * @return a reference to the current Velocity context.
      */
     public Context getVelocityContext();
 
 
     /**
-     * <p>Returns the current VelocityEngine instance.</p>
+     * @return the current VelocityEngine instance.
      */
     public VelocityEngine getVelocityEngine();
 

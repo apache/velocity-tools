@@ -53,7 +53,7 @@ import org.apache.velocity.tools.config.DefaultKey;
  *
  * <p>This comes in very handy when internationalizing templates.
  *    Note that the default resource bundle baseName is "resources", and
- *    the default locale is either:<p>
+ *    the default locale is either:</p>
  * <ul>
  *    <li>the result of HttpServletRequest.getLocale() (if used in request scope
  *          of a VelocityView app)</li>
@@ -121,7 +121,7 @@ public class ResourceTool extends LocaleConfig implements Serializable
 
     /**
      * Accepts objects and uses their string value as the key.
-     * @param k key
+     * @param key key
      * @return Key object
      */
     public Key get(String key)

@@ -107,7 +107,7 @@ public class ConfigurationUtils
     /**
      * <p>Returns a {@link FactoryConfiguration} including all default
      * "VelocityView" tools available as well as the default "GenericTools".</p>
-     * @return all default tools {@link ConfigurationFactory}
+     * @return all default tools {@link FactoryConfiguration}
      * @throws ConfigurationException if a tools.xml is not found at the {@link #VIEW_DEFAULTS_PATH}.
      */
     public static FactoryConfiguration getVelocityView()
@@ -162,7 +162,7 @@ public class ConfigurationUtils
      * Convenience method that automatically creates a new
      * {@link ConfigurationCleaner} and applies it to the specified
      * {@link Configuration}.
-     * @param config {@link configuration}
+     * @param config {@link Configuration}
      */
     public static void clean(Configuration config)
     {
@@ -178,7 +178,7 @@ public class ConfigurationUtils
      * will throw a {@link ResourceNotFoundException}.
      *
      * @param path configuration path
-     * @return new {@linkFactoryConfiguration}
+     * @return new {@link FactoryConfiguration}
      * @see #find(String path)
      */
     public static FactoryConfiguration load(String path)

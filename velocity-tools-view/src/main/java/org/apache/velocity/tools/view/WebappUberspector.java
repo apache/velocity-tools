@@ -57,9 +57,9 @@ public class WebappUberspector extends AbstractChainableUberspector
 
     /**
      * Property getter
-     * @param obj
-     * @param identifier
-     * @param i
+     * @param obj target object
+     * @param identifier property key
+     * @param i tool info
      * @return A Velocity Getter Method.
      */
     public VelPropertyGet getPropertyGet(Object obj, String identifier, Info i)
@@ -98,10 +98,10 @@ public class WebappUberspector extends AbstractChainableUberspector
 
     /**
      * Property setter
-     * @param obj
-     * @param identifier
-     * @param arg
-     * @param i
+     * @param obj target object
+     * @param identifier property key
+     * @param arg value to set
+     * @param i tool info
      * @return A Velocity Setter method.
      */
     public VelPropertySet getPropertySet(Object obj, String identifier,
@@ -138,10 +138,10 @@ public class WebappUberspector extends AbstractChainableUberspector
         private Object [] params;
 
         /**
-         * @param log
-         * @param introspector
-         * @param clazz
-         * @param property
+         * @param log logger
+         * @param introspector introspector instance
+         * @param clazz class name
+         * @param property property name
          */
         public GetAttributeExecutor(final Logger log, final Introspector introspector,
                 final Class clazz, final String property)
@@ -173,6 +173,10 @@ public class WebappUberspector extends AbstractChainableUberspector
         }
 
         /**
+         * @param o target object
+         * @return execution result
+         * @throws IllegalAccessException if thrown by underlying code
+         * @throws InvocationTargetException if thrown by underlying code
          * @see org.apache.velocity.runtime.parser.node.AbstractExecutor#execute(java.lang.Object)
          */
         public Object execute(final Object o)
@@ -191,11 +195,11 @@ public class WebappUberspector extends AbstractChainableUberspector
         private final String property;
 
         /**
-         * @param log
-         * @param introspector
-         * @param clazz
-         * @param arg
-         * @param property
+         * @param log logger
+         * @param introspector introspector instance
+         * @param clazz target class
+         * @param arg value to set
+         * @param property property name
          */
         public SetAttributeExecutor(final Logger log, final Introspector introspector,
                 final Class clazz, final Object arg, final String property)
@@ -208,8 +212,8 @@ public class WebappUberspector extends AbstractChainableUberspector
         }
 
         /**
-         * @param clazz
-         * @param arg
+         * @param clazz target class
+         * @param arg expected arguments
          */
         protected void discover(final Class clazz, final Object arg)
         {
@@ -233,6 +237,10 @@ public class WebappUberspector extends AbstractChainableUberspector
         }
 
         /**
+         * @param o target object
+         * @param value value to set
+         * @throws IllegalAccessException if thrown by underlying code
+         * @throws InvocationTargetException if thrown by underlying code
          * @see org.apache.velocity.runtime.parser.node.SetExecutor#execute(java.lang.Object, java.lang.Object)
          */
         public Object execute(final Object o, final Object value)

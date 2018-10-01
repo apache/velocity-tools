@@ -146,7 +146,7 @@ public class XmlTool extends SafeConfig implements Serializable
 
     /**
      * Builds an XmlTool around a node.
-     * @param node
+     * @param node target node
      */
     public XmlTool(Node node)
     {
@@ -155,7 +155,7 @@ public class XmlTool extends SafeConfig implements Serializable
 
     /**
      * Builds an XmlTool around a nodes list.
-     * @param nodes
+     * @param nodes nodes list
      */
     public XmlTool(List<Node> nodes)
     {
@@ -246,7 +246,7 @@ public class XmlTool extends SafeConfig implements Serializable
     /**
      * Reads and parses a remote or local URL
      * @param url resource URL
-     * @ return new XmlTool
+     * @return new XmlTool
      */
     public XmlTool fetch(String url)
     {
@@ -488,6 +488,7 @@ public class XmlTool extends SafeConfig implements Serializable
     /**
      * Returns an {@link XmlTool} that wraps the specified
      * {@link Node} from this instance's internal Node list.
+     * @param n node index in current nodes list
      * @return a wrapper on the nth node or null
      */
     public XmlTool get(Number n)

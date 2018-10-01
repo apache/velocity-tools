@@ -47,8 +47,8 @@ import org.apache.velocity.tools.config.ToolConfiguration;
  * <p>
  * Of course, most users will not have to do any of this
  * as much of it is handled for them by some combination of 
- * {@link ToolManager} or {@link org.apache.velocity.tools.view.VelocityView}
- * and a {@link ToolContext} or {@link org.apache.velocity.tools.view.ViewToolContext}.
+ * {@link ToolManager} or org.apache.velocity.tools.view.VelocityView
+ * and a {@link ToolContext} or org.apache.velocity.tools.view.ViewToolContext.
  * </p><p>
  * <strong>NOTE:</strong> While you are free to pass in new configuration info
  * at any time, that data will only affect {@link Toolbox}es created subsequently.

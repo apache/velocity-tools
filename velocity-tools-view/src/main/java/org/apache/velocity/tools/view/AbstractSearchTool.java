@@ -269,7 +269,7 @@ public abstract class AbstractSearchTool extends PagerTool
      * Executes a query for the specified criteria.
      *
      * <p>This method must be implemented! A simple
-     * implementation might be something like:
+     * implementation might be something like:</p>
      * <pre>
      * protected List executeQuery(Object crit)
      * {
@@ -277,6 +277,7 @@ public abstract class AbstractSearchTool extends PagerTool
      * }
      * </pre>
      *
+     * @param criteria search criteria
      * @return a {@link List} of results for this query
      */
     protected abstract List executeQuery(Object criteria);

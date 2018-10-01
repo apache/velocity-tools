@@ -87,6 +87,7 @@ public class ViewImportSupport extends ImportSupport
      * Sets the current {@link HttpServletRequest}. This is required
      * for this tool to operate and will throw a NullPointerException
      * if this is not set or is set to {@code null}.
+     * @param request servlet request
      */
     public void setRequest(HttpServletRequest request)
     {
@@ -101,6 +102,7 @@ public class ViewImportSupport extends ImportSupport
      * Sets the current {@link HttpServletResponse}. This is required
      * for this tool to operate and will throw a NullPointerException
      * if this is not set or is set to {@code null}.
+     * @param response servlet response
      */
     public void setResponse(HttpServletResponse response)
     {
@@ -115,6 +117,7 @@ public class ViewImportSupport extends ImportSupport
      * Sets the {@link ServletContext}. This is required
      * for this tool to operate and will throw a NullPointerException
      * if this is not set or is set to {@code null}.
+     * @param application servlet context
      */
     public void setServletContext(ServletContext application)
     {
@@ -148,7 +151,7 @@ public class ViewImportSupport extends ImportSupport
      *
      * @param url the remote URL resource to return as string
      * @return the URL resource as string
-     * @throws IOException
+     * @throws IOException if thrown by underlying code
      */
     protected String acquireRemoteURLString(String url) throws IOException
     {
@@ -164,7 +167,7 @@ public class ViewImportSupport extends ImportSupport
      *
      * @param url the local URL resource to return as string
      * @return the URL resource as string
-     * @throws IOException
+     * @throws IOException if not allowed or if thrown by underlying code
      */
     protected String acquireLocalURLString(String url) throws IOException
     {
@@ -239,7 +242,7 @@ public class ViewImportSupport extends ImportSupport
      *
      * @param url the URL to read
      * @return a Reader for the InputStream created from the supplied URL
-     * @throws IOException
+     * @throws IOException if not allowed or thrown by underlying code
      */
     protected Reader acquireRemoteURLReader(String url) throws IOException
     {
@@ -255,7 +258,7 @@ public class ViewImportSupport extends ImportSupport
      *
      * @param url the URL to read
      * @return a Reader for the InputStream created from the supplied URL
-     * @throws IOException
+     * @throws IOException if thrown by underlying code
      */
     protected Reader acquireLocalURLReader(String url) throws IOException
     {
@@ -431,13 +434,17 @@ public class ViewImportSupport extends ImportSupport
             return sos;
         }
 
-        /** Has no effect. */
+        /** Has no effect.
+         * @param x ignored
+         */
         public void setContentType(String x)
         {
             // ignore
         }
 
-        /** Has no effect. */
+        /** Has no effect.
+         * @param x ignored
+         */
         public void setLocale(Locale x)
         {
             // ignore

@@ -179,7 +179,7 @@ public class ParameterTool extends ValueParser
     }
 
     /**
-     * Returns the map of all parameters available for the current request.
+     * @return the map of all parameters available for the current request.
      */
     public Map getAll()
     {

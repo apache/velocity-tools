@@ -73,7 +73,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
  *   <dd>By default, this is {@code true}. If set to {@code false}, then
  *     the {@link VelocityView} used by this servlet will not be shared
  *     with {@link VelocityViewFilter}s, other VelocityViewServlets or
- *     {@link org.apache.velocity.tools.view.jsp.VelocityViewTag}s in the
+ *     org.apache.velocity.tools.view.jsp.VelocityViewTag's in the
  *     application.</dd>
  *   <dt>org.apache.velocity.tools.loadDefaults</dt>
  *   <dd>By default, this is {@code true}. If set to {@code false}, then
@@ -137,6 +137,9 @@ public class VelocityViewServlet extends HttpServlet
     /**
      * Looks up an init parameter with the specified key in either the
      * ServletConfig or, failing that, in the ServletContext.
+     * @param config servlet config
+     * @param key parameter key
+     * @return parameter value or null
      */
     protected String findInitParameter(ServletConfig config, String key)
     {
@@ -179,6 +182,10 @@ public class VelocityViewServlet extends HttpServlet
 
     /**
      * Handles GET - calls doRequest()
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException from underlying call
+     * @throws IOException from underlying call
      */
     public void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException
@@ -189,6 +196,10 @@ public class VelocityViewServlet extends HttpServlet
 
     /**
      * Handle a POST request - calls doRequest()
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException from underlying call
+     * @throws IOException from underlying call
      */
     public void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException
@@ -202,6 +213,7 @@ public class VelocityViewServlet extends HttpServlet
      *
      *  @param request  HttpServletRequest object containing client request
      *  @param response HttpServletResponse object for the response
+     *  @throws IOException from underlying processing
      */
     protected void doRequest(HttpServletRequest request, HttpServletResponse response)
         throws IOException
@@ -251,8 +263,9 @@ public class VelocityViewServlet extends HttpServlet
      *    Velocity input encoding.
      *  </p>
      *
-     *  @param request  HttpServletRequest object containing client request
-     *  @param response HttpServletResponse object for the response
+     * @param request  HttpServletRequest object containing client request
+     * @param response HttpServletResponse object for the response
+     * @throws IOException if thrown by underlying handling
      */
     protected void initRequest(HttpServletRequest request, HttpServletResponse response) throws IOException
     {

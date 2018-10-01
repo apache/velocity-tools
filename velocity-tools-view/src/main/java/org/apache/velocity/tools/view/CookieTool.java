@@ -73,6 +73,7 @@ public class CookieTool extends SafeConfig
      * Sets the current {@link HttpServletRequest}. This is required
      * for this tool to operate and will throw a NullPointerException
      * if this is not set or is set to {@code null}.
+     * @param request servlet request
      */
     public void setRequest(HttpServletRequest request)
     {
@@ -87,6 +88,7 @@ public class CookieTool extends SafeConfig
      * Sets the current {@link HttpServletResponse}. This is required
      * for this tool to operate and will throw a NullPointerException
      * if this is not set or is set to {@code null}.
+     * @param response servlet response
      */
     public void setResponse(HttpServletResponse response)
     {
@@ -131,6 +133,8 @@ public class CookieTool extends SafeConfig
      * <p>So, if you had a cookie named 'foo', you'd get it's value
      * by <code>$cookies.foo.value</code> or it's max age
      * by <code>$cookies.foo.maxAge</code></p>
+     * @param name cookie name
+     * @return found cookie or null
      */
     public Cookie get(String name)
     {

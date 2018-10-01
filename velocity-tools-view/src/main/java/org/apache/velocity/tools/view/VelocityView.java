@@ -202,7 +202,7 @@ public class VelocityView extends ViewToolManager
     }
 
     /**
-     * Returns the configured default Content-Type.
+     * @return the configured default Content-Type.
      */
     public String getDefaultContentType()
     {
@@ -211,6 +211,7 @@ public class VelocityView extends ViewToolManager
 
     /**
      * Sets the configured default Content-Type.
+     * @param type default content type
      */
     public void setDefaultContentType(String type)
     {
@@ -226,6 +227,9 @@ public class VelocityView extends ViewToolManager
      * because the VelocityEngine interface sucks compared to the singleton's.
      * Use of this method assumes that {@link #init(JeeConfig,VelocityEngine)}
      * has already been called.
+     * @param key property key
+     * @param alternate default value
+     * @return property value
      */
     protected String getProperty(String key, String alternate)
     {
@@ -286,6 +290,7 @@ public class VelocityView extends ViewToolManager
      * initialize the singleton in other ways.
      *
      * @param config servlet configuration parameters
+     * @param velocity VelocityEngine instance
      */
     protected void init(JeeConfig config, final VelocityEngine velocity)
     {
@@ -384,6 +389,8 @@ public class VelocityView extends ViewToolManager
      * tool, toolbox or data configurations if you set the
      * {@code org.apache.velocity.tools.cleanConfiguration} init-param to true in
      * either your servlet or servletContext init-params.
+     * @param config configuration values container
+     * @param factory toolbox factory instance
      */
     protected void configure(final JeeConfig config, final ToolboxFactory factory)
     {
@@ -657,6 +664,7 @@ public class VelocityView extends ViewToolManager
      * @param response HttpServletResponse object for the response
      * @return the {@link Context} prepared and used to perform the rendering
      *         to allow proper cleanup afterward
+     * @throws IOException if thrown by underling code
      */
     public Context render(HttpServletRequest request,
                           HttpServletResponse response) throws IOException
@@ -697,6 +705,7 @@ public class VelocityView extends ViewToolManager
      *
      * @param request servlet request from client
      * @param response servlet reponse to client
+     * @return newly created context
      */
     @Override
     public ViewToolContext createContext(HttpServletRequest request,
@@ -781,6 +790,7 @@ public class VelocityView extends ViewToolManager
      * @param template template being rendered
      * @param context Context created by the {@link #createContext}
      * @param writer into which the content is rendered
+     * @throws IOException if thrown by underling code
      */
     public void merge(Template template, Context context, Writer writer)
         throws IOException
@@ -832,6 +842,7 @@ public class VelocityView extends ViewToolManager
      * @param template template object returned by the handleRequest() method
      * @param context Context created by the {@link #createContext}
      * @param writer a VelocityWriter that the template is merged into
+     * @throws IOException if thrown by underling code
      */
     protected void performMerge(Template template, Context context, Writer writer)
         throws IOException

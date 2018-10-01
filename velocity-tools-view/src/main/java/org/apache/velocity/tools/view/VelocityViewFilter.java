@@ -67,7 +67,7 @@ import org.apache.velocity.tools.view.ViewToolContext;
  *   <dd>By default, this is {@code true}. If set to {@code false}, then
  *     the {@link VelocityView} used by this filter will not be shared
  *     with other VelocityViewFilters, {@link VelocityViewServlet}s or
- *     {@link org.apache.velocity.tools.view.jsp.VelocityViewTag}s in the
+ *     org.apache.velocity.tools.view.jsp.VelocityViewTag's in the
  *     application.</dd>
  *   <dt>org.apache.velocity.tools.context.key</dt>
  *   <dd>If you set a value for this property, this filter will create
@@ -132,6 +132,8 @@ public class VelocityViewFilter implements Filter
     /**
      * Looks up an init parameter with the specified key in either the
      * FilterConfig or, failing that, in the ServletContext.
+     * @param key init parameter key
+     * @return found value or null
      */
     protected String findInitParameter(String key)
     {

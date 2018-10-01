@@ -64,6 +64,7 @@ public class ViewToolManager extends ToolManager
      * Constructs an instance already configured to use
      * any configuration specified via a "org.apache.velocity.tools"
      * system property.
+     * @param app servlet context
      */
     public ViewToolManager(ServletContext app)
     {
@@ -112,6 +113,7 @@ public class ViewToolManager extends ToolManager
      * context. <b>It is important to note that if this is set to false,
      * session-scoped tools will NOT be stored in the session, but instead
      * be recreated for each request.</b>
+     * @param publish whether to publish the available toolboxes     
      * @see #publishToolboxes
      * @see #setToolboxKey
      */
@@ -131,6 +133,7 @@ public class ViewToolManager extends ToolManager
 
     /**
      * Sets a new attribute key to be used for publishing each {@link Toolbox}.
+     * @param key toolbox key
      * @see #setPublishToolboxes
      * @see #publishToolboxes
      */
@@ -157,6 +160,7 @@ public class ViewToolManager extends ToolManager
      * Sets whether or not a new HttpSession should be created
      * when there are session scoped tools to be stored in the session,
      * but no session has been created yet.
+     * @param create whether to create a new session if needed
      * @see #publishToolboxes
      */
     public void setCreateSession(boolean create)
@@ -301,6 +305,7 @@ public class ViewToolManager extends ToolManager
      * Places the {@link Scope#REQUEST} {@link Toolbox} (if any)
      * into the {@link ServletRequest} attributes using
      * {@link Toolbox#KEY} as the key.
+     * @param request servlet request
      */
     public void publishToolboxes(ServletRequest request)
     {
@@ -323,6 +328,7 @@ public class ViewToolManager extends ToolManager
      * Toolbox (if any) into the attributes of the {@link HttpSession} (if any)
      * then ensures that the {@link Scope#APPLICATION} Toolbox (if any)
      * has been placed in the {@link ServletContext} attributes.
+     * @param request servlet request
      */
     public void publishToolboxes(HttpServletRequest request)
     {

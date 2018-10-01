@@ -179,6 +179,8 @@ public class ViewToolContext extends ToolContext implements ViewContext
     /**
      * Finds "user" set values, either in the local context
      * or in the scoped attributes if none is in the local context.
+     * @param key attribute name
+     * @return found value or null
      * @see #internalGet
      * @see #getAttribute
      */
@@ -195,6 +197,8 @@ public class ViewToolContext extends ToolContext implements ViewContext
     /**
      * Finds the automatically provided values, either configured
      * tools or servlet API objects (request, response, etc).
+     * @param key attribute key
+     * @return found configured value or null
      * @see #findTool
      * @see #getServletApi
      */
@@ -212,6 +216,8 @@ public class ViewToolContext extends ToolContext implements ViewContext
      * Returns the current matching servlet request, response, session,
      * or servlet context instance, or null if the key matches none of those
      * keys.
+     * @param key attribute key
+     * @return found value or null
      */
     protected Object getServletApi(String key)
     {
@@ -239,7 +245,8 @@ public class ViewToolContext extends ToolContext implements ViewContext
      * <p>Searches for the named attribute in request, session (if valid),
      * and application scope(s) in order and returns the value associated
      * or null.</p>
-     *
+     * @param key attribute key
+     * @return found value or null
      * @since VelocityTools 1.1
      */
     public Object getAttribute(String key)
@@ -274,7 +281,7 @@ public class ViewToolContext extends ToolContext implements ViewContext
 
 
     /**
-     * <p>Returns the current servlet request.</p>
+     * @return the current servlet request.
      */
     public HttpServletRequest getRequest()
     {
@@ -282,7 +289,7 @@ public class ViewToolContext extends ToolContext implements ViewContext
     }
 
     /**
-     * <p>Returns the current servlet response.</p>
+     * @return the current servlet response.
      */
     public HttpServletResponse getResponse()
     {
@@ -290,7 +297,7 @@ public class ViewToolContext extends ToolContext implements ViewContext
     }
 
     /**
-     * <p>Returns the current session, if any.</p>
+     * @return the current session, if any.
      */
     public HttpSession getSession()
     {
@@ -298,7 +305,7 @@ public class ViewToolContext extends ToolContext implements ViewContext
     }
 
     /**
-     * <p>Returns the servlet context.</p>
+     * @return the servlet context.
      */
     public ServletContext getServletContext()
     {
@@ -306,7 +313,7 @@ public class ViewToolContext extends ToolContext implements ViewContext
     }
 
     /**
-     * <p>Returns a reference to the Velocity context (this object).</p>
+     * @return a reference to the Velocity context (this object).
      */
     public Context getVelocityContext()
     {
@@ -314,7 +321,7 @@ public class ViewToolContext extends ToolContext implements ViewContext
     }
 
     /**
-     * <p>Returns a reference to the VelocityEngine.</p>
+     * @return a reference to the VelocityEngine.
      */
     public VelocityEngine getVelocityEngine()
     {

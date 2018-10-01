@@ -124,6 +124,7 @@ public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
     /**
      * <p>Controls whether or not this tool starts off with all parameters
      * from the last request automatically.  Default is false.</p>
+     * @param includeRequestParams whether or not to keep current request params
      */
     public void setIncludeRequestParams(boolean includeRequestParams)
     {
@@ -136,6 +137,7 @@ public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
      * If no parameters are specified,
      * then all of the current request's parameters will be added.
      *
+     * @param butOnlyThese curent request parameters to keep
      * @return A LinkTool object with the specified parameters from
      *         the current request added to it or all the params if none specified.
      */
@@ -148,6 +150,7 @@ public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
      * Adds all of the current request's parameters to this link's
      * "query data" except for those whose keys match any of the specified strings.
      *
+     * @param ignoreThese curent request parameters to ignore
      * @return A LinkTool object with all of the current request's parameters
      *         added to it, except those specified.
      */
@@ -161,6 +164,7 @@ public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
      * "query data" except for those whose keys match any of the specified strings
      * or already have a value set for them in the current instance.
      *
+     * @param ignoreThese curent request parameters to ignore
      * @return A LinkTool object with all of the current request's parameters
      *         added to it, except those specified or those that already have
      *         values.
@@ -242,6 +246,7 @@ public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
      * changed (e.g. via a call to {@link #path(Object)}), then this will
      * simply be the first "directory" in the path (i.e. everything from
      * the start up to the second backslash).
+     * @return context path
      * @see #relative(Object)
      */
     @Override
@@ -272,6 +277,7 @@ public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
      * {@link #path(Object)}), then this will
      * simply be everything in the path after the {@link #getContextPath()}
      * (i.e. the second "/" in the path and everything after).
+     * @return request path
      */
     public String getRequestPath()
     {
@@ -297,6 +303,7 @@ public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
      * This essentially just replaces the full path with
      * the {@link #getContextPath()} and removes the anchor and query
      * data.
+     * @return context URL
      */
     public String getContextURL()
     {
@@ -310,6 +317,7 @@ public class LinkTool extends org.apache.velocity.tools.generic.LinkTool
     /**
      * Overrides to use response.encodeURL to get session id into URL
      * if sessions are used but cookies are not supported.
+     * @return final string representation
      */
     @Override
     public String toString()

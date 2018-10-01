@@ -132,6 +132,7 @@ public class PagerTool extends SafeConfig
      * Initializes this tool with the specified {@link HttpServletRequest}.
      * This is required for this tool to operate and will throw a
      * NullPointerException if this is not set or is set to {@code null}.
+     * @param request servlet request
      */
     public void setRequest(HttpServletRequest request)
     {
@@ -442,6 +443,7 @@ public class PagerTool extends SafeConfig
     /**
      * Returns the number of pages that can be made from this list
      * given the set number of items per page.
+     * @return number of available pages
      */
     public int getPagesAvailable()
     {
@@ -499,6 +501,7 @@ public class PagerTool extends SafeConfig
 
     /**
      * Returns the total number of items available.
+     * @return number of items
      * @since VelocityTools 1.3
      */
     public int getTotal()

@@ -45,7 +45,7 @@ public class JsonTool extends org.apache.velocity.tools.generic.JsonTool
 
     /**
      * Importsupport initialization
-     * @param config
+     * @param config configuration values
      */
     @Override
     protected synchronized void initializeImportSupport(ValueParser config)
@@ -59,7 +59,7 @@ public class JsonTool extends org.apache.velocity.tools.generic.JsonTool
 
     /**
      * Check if a given mime type is of JSON type
-     * @param mimeType
+     * @param mimeType mime type
      * @return whether given mime type is of JSON type
      */
     protected static boolean isJsonMimeType(String mimeType)
@@ -74,7 +74,7 @@ public class JsonTool extends org.apache.velocity.tools.generic.JsonTool
 
     /**
      * Configuration. Parses request body if appropriate.
-     * @param parser
+     * @param parser configuration values
      */
     protected void configure(ValueParser parser)
     {

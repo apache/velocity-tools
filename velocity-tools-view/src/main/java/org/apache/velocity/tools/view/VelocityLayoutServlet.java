@@ -182,6 +182,8 @@ public class VelocityLayoutServlet extends VelocityViewServlet
     /**
      * Searches for a non-default layout to be used for this request.
      * This implementation checks the request parameters and attributes.
+     * @param request servlet request
+     * @return layout name or null
      */
     protected String findLayout(HttpServletRequest request)
     {
@@ -192,6 +194,9 @@ public class VelocityLayoutServlet extends VelocityViewServlet
     /**
      * Overrides VelocityViewServlet.mergeTemplate to do a two-pass
      * render for handling layouts
+     * @param template {@link Template} object
+     * @param context Velocity context
+     * @param response servlet response
      */
     protected void mergeTemplate(Template template, Context context,
                                  HttpServletResponse response)
@@ -249,6 +254,9 @@ public class VelocityLayoutServlet extends VelocityViewServlet
 
     /**
      * Overrides VelocityViewServlet to display user's custom error template
+     * @param request servlet request
+     * @param response servlet response
+     * @param e thrown error
      */
     protected void error(HttpServletRequest request,
                          HttpServletResponse response,

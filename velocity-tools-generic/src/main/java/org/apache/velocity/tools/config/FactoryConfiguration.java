@@ -76,7 +76,7 @@ public class FactoryConfiguration
     /**
      * Creates a new instance with the specified source name
      * combined with this class's name as the initial source.
-     * @param source configuration source
+     * @param source configuration source name
      */
     public FactoryConfiguration(String source)
     {
@@ -86,6 +86,7 @@ public class FactoryConfiguration
     /**
      * Allows subclasses to construct an instance that uses their classname.
      * @param clazz FactoryConfiguration class name
+     * @param source configuration source name
      */
     protected FactoryConfiguration(Class clazz, String source)
     {
@@ -104,7 +105,7 @@ public class FactoryConfiguration
     /**
      * Sets the name of the original source of this particular instance.
      * This does not affect subsequently added sources.
-     * @param source configuration source
+     * @param source configuration source name
      */
     public void setSource(String source)
     {
@@ -158,7 +159,7 @@ public class FactoryConfiguration
 
     /**
      * Search for Data by key
-     * @param datum key of data to get
+     * @param key key of data to get
      * @return found Data or null
      */
     public Data getData(String key)
