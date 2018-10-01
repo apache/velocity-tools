@@ -25,6 +25,26 @@
   </properties>
   <body>
     <release version="3.0-SNAPSHOT" date="In Subversion">
+      <action type="fix" dev="michaelo">
+        JsonTool now uses an explicit dependency to <code>com.github.cliftonlabs.json-simple</code>
+      </action>
+      <action type="fix" dev="cbrisson">
+        The <code>tools.xml</code> file can now use XInclude file inclusion mechanism
+      </action>
+      <action type="fix" dev="cbrisson">
+        Most tools are now serializable
+      </action>
+      <action type="fix" dev="cbrisson">
+        CollectionTool.sort() now filters out null elements
+      </action>
+      <action type="fix" dev="cbrisson">
+        ViewLayoutServlet layout cannot be changed using GET parameters, unless configured with the
+        <code>tools.view.servlet.layout.dynamic</code> servlet param to true
+      </action>
+      <action type="fix" dev="cbrisson">
+        Review tools-view initialization: default tools are now loaded only when asked for via the <code>org.apache.velocity.tools.loadDefaults</code>
+        parameter (as an init or servlet parameter).
+      </action>
       <action type="fix" dev="cbrisson">
         Drop undocumented autoloaded tools feature, and have org.apache.velocity.tools.loadDefaults default to false
       </action>
