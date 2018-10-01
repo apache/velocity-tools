@@ -957,9 +957,9 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
             {
                 if (opaque)
                 {
-                    if (query != null && query.size() > 0
+                    if (query != null && query.size() > 0)
                     {
-                        getLog().warn("Ignoring given parameters in opaque URI: {}", getQuery())
+                        getLog().warn("Ignoring given parameters in opaque URI: {}", getQuery());
                     }
                     // path is used as scheme-specific part
                     return new URI(scheme, path, fragment);
