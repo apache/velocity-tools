@@ -30,7 +30,7 @@
 
   <groupId>org.apache.velocity.tools</groupId>
   <artifactId>velocity-tools-parent</artifactId>
-  <version>3.0</version>
+  <version>3.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>VelocityTools</name>
@@ -55,9 +55,9 @@
   </modules>
 
   <scm>
-    <connection>scm:svn:https://svn.apache.org/repos/asf/velocity/tools/tags/3.0</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/velocity/tools/tags/3.0</developerConnection>
-    <url>https://svn.apache.org/viewvc/velocity/tools/tags/3.0</url>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/velocity/tools/trunk</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/velocity/tools/trunk</developerConnection>
+    <url>https://svn.apache.org/viewvc/velocity/tools/trunk</url>
   </scm>
   <issueManagement>
     <system>jira</system>
