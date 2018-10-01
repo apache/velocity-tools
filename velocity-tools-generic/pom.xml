@@ -57,9 +57,9 @@
       <artifactId>slf4j-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.googlecode.json-simple</groupId>
+      <groupId>com.github.cliftonlabs</groupId>
       <artifactId>json-simple</artifactId>
-      <version>1.1.1</version>
+      <version>3.0.2</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -72,40 +72,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>shade</id>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <artifactSet>
-                <includes>
-                  <include>com.googlecode.json-simple:json-simple</include>
-                </includes>
-              </artifactSet>
-              <relocations>
-                <relocation>
-                  <pattern>org.json.simple</pattern>
-                  <shadedPattern>org.apache.velocity.tools.shaded.org.json.simple</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.json.simple.parser</pattern>
-                  <shadedPattern>org.apache.velocity.tools.shaded.org.json.simple.parser</shadedPattern>
-                </relocation>
-              </relocations>
-              <minimizeJar>true</minimizeJar>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 </project>

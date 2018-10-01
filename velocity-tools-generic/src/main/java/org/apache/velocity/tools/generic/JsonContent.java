@@ -22,8 +22,8 @@ package org.apache.velocity.tools.generic;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import com.github.cliftonlabs.json_simple.JsonArray;
+import com.github.cliftonlabs.json_simple.JsonObject;
 
 /**
  * Container for *either* an array *or* an object
@@ -34,12 +34,12 @@ public class JsonContent
     /**
      * JSONObject content
      */
-    private JSONObject jsonObject = null;
-        
+    private JsonObject jsonObject = null;
+
     /**
      * JSONArray content
      */
-    private JSONArray jsonArray = null;
+    private JsonArray jsonArray = null;
 
     /**
      * wraps the object into an hybrid JSON container if necessary
@@ -50,24 +50,24 @@ public class JsonContent
         {
             return obj;
         }
-        else if (obj instanceof JSONArray)
+        else if (obj instanceof JsonArray)
         {
-            return new JsonContent((JSONArray)obj);
+            return new JsonContent((JsonArray)obj);
         }
-        else if (obj instanceof JSONObject)
+        else if (obj instanceof JsonObject)
         {
-            return new JsonContent((JSONObject)obj);
+            return new JsonContent((JsonObject)obj);
         }
         else
         {
             return obj;
         }
     }
-        
+
     /**
      * wraps an object
      */
-    public JsonContent(JSONObject object)
+    public JsonContent(JsonObject object)
     {
         jsonObject = object;
     }
@@ -75,7 +75,7 @@ public class JsonContent
     /**
      * wraps an array
      */
-    public JsonContent(JSONArray array)
+    public JsonContent(JsonArray array)
     {
         jsonArray = array;
     }
@@ -98,7 +98,7 @@ public class JsonContent
         }
         return ret;
     }
-        
+
     /**
      * Get a property from root object
      * @param key
@@ -121,7 +121,7 @@ public class JsonContent
         }
         return ret;
     }
-        
+
     /**
      * Iterate keys of root object.
      * @return iterator
@@ -174,7 +174,7 @@ public class JsonContent
     public String toString()
     {
         return jsonObject == null ? jsonArray == null ? "null" : jsonArray.toString() : jsonObject.toString();
-    }        
+    }
 
     /**
      * Check if wrapped object is null
@@ -184,16 +184,16 @@ public class JsonContent
     {
         return jsonArray == null && jsonObject == null;
     }
-        
+
     /**
      * Check if wrapped object is a JSONObject
-     * @return true if wrapped object is a JSONObject         
+     * @return true if wrapped object is a JSONObject
      */
     public boolean isObject()
     {
         return jsonObject != null;
     }
-        
+
     /**
      * Check if wrapped object is a JSONArray
      * @return true if wrapped object is a JSONArray

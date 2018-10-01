@@ -26,15 +26,15 @@ import java.io.StringReader;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+
+import com.github.cliftonlabs.json_simple.JsonArray;
+import com.github.cliftonlabs.json_simple.JsonObject;
+import com.github.cliftonlabs.json_simple.Jsoner;
 
 /**
  * <p>Tool which can parse a JSON file.</p>
@@ -138,14 +138,14 @@ public class JsonTool extends ImportSupport implements Iterable, Serializable
     {
         try
         {
-            Object result = new JSONParser().parse(reader);
-            if (result instanceof JSONObject)
+            Object result = Jsoner.deserialize(reader);
+            if (result instanceof JsonObject)
             {
-                root = new JsonContent((JSONObject)result);
+                root = new JsonContent((JsonObject)result);
             }
-            else if (result instanceof JSONArray)
+            else if (result instanceof JsonArray)
             {
-                root = new JsonContent((JSONArray)result);
+                root = new JsonContent((JsonArray)result);
             }
             else throw new Exception("Expecting JSON array or object");
         }
