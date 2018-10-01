@@ -127,6 +127,7 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
     /**
      * Adds the {@link ConfigurationUtils#getDefaultTools()} configuration to this
      * the current configuration.
+     * @return new EasyFacotryConfiguration instance with all default tools
      */
     public EasyFactoryConfiguration addDefaultTools()
     {

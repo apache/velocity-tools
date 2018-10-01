@@ -73,6 +73,7 @@ public class XmlFactoryConfiguration extends FileFactoryConfiguration
     /**
      * Sets the {@link RuleSet} this loader will use to
      * digest the xml toolbox.
+     * @param rules rules set
      */
     public void setRuleSet(RuleSet rules)
     {
@@ -82,6 +83,7 @@ public class XmlFactoryConfiguration extends FileFactoryConfiguration
     /**
      * <p>Retrieves the rule set Digester should use to parse and load
      * the toolbox for this manager.</p>
+     * @return rules set
      */
     public RuleSet getRuleSet()
     {

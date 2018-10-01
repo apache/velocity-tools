@@ -81,6 +81,8 @@ public class NumberTool extends FormatConfig implements Serializable
 
     /**
      * Convenience method equivalent to $number.format("currency", $foo).
+     * @param obj the number object to be formatted
+     * @return the specified number formatted as a currency
      * @since VelocityTools 1.3
      */
     public String currency(Object obj)
@@ -90,6 +92,8 @@ public class NumberTool extends FormatConfig implements Serializable
 
     /**
      * Convenience method equivalent to $number.format("integer", $foo).
+     * @param obj the number object to be formatted
+     * @return the specified number formatted as an integer
      * @since VelocityTools 1.3
      */
     public String integer(Object obj)
@@ -99,6 +103,8 @@ public class NumberTool extends FormatConfig implements Serializable
 
     /**
      * Convenience method equivalent to $number.format("number", $foo).
+     * @param obj the number object to be formatted
+     * @return the specified number formatted as a number
      * @since VelocityTools 1.3
      */
     public String number(Object obj)
@@ -108,6 +114,8 @@ public class NumberTool extends FormatConfig implements Serializable
 
     /**
      * Convenience method equivalent to $number.format("percent", $foo).
+     * @param obj the number object to be formatted
+     * @return the specified number formatted as a percentage
      * @since VelocityTools 1.3
      */
     public String percent(Object obj)

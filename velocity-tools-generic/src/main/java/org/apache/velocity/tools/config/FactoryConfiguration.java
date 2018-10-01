@@ -76,6 +76,7 @@ public class FactoryConfiguration
     /**
      * Creates a new instance with the specified source name
      * combined with this class's name as the initial source.
+     * @param source configuration source
      */
     public FactoryConfiguration(String source)
     {
@@ -84,6 +85,7 @@ public class FactoryConfiguration
 
     /**
      * Allows subclasses to construct an instance that uses their classname.
+     * @param clazz FactoryConfiguration class name
      */
     protected FactoryConfiguration(Class clazz, String source)
     {
@@ -92,6 +94,7 @@ public class FactoryConfiguration
 
     /**
      * Returns the original source of this particular instance.
+     * @return configuration source
      */
     public String getSource()
     {
@@ -101,6 +104,7 @@ public class FactoryConfiguration
     /**
      * Sets the name of the original source of this particular instance.
      * This does not affect subsequently added sources.
+     * @param source configuration source
      */
     public void setSource(String source)
     {
@@ -111,17 +115,24 @@ public class FactoryConfiguration
      * Returns the list of sources for this configuration info in
      * order starting from the source name given to this instance
      * (if any) and going to the most recently added source.
+     * @return list of all configuration sources
      */
     public List<String> getSources()
     {
         return this.sources;
     }
 
+    /**
+     * @param source source to add
+     */
     public void addSource(String source)
     {
         this.sources.add(source);
     }
 
+    /**
+     * @param newDatum data to add
+     */
     public void addData(Data newDatum)
     {
         // check if we already have a matching datum
@@ -136,11 +147,20 @@ public class FactoryConfiguration
         data.add(newDatum);
     }
 
+    /**
+     * @param datum data to remove
+     * @return <code>true</code> if removed
+     */
     public boolean removeData(Data datum)
     {
         return data.remove(datum);
     }
 
+    /**
+     * Search for Data by key
+     * @param datum key of data to get
+     * @return found Data or null
+     */
     public Data getData(String key)
     {
         // create an example to search with
@@ -149,6 +169,11 @@ public class FactoryConfiguration
         return getData(findme);
     }
 
+    /**
+     * Search for Data by value
+     * @param findme value to find
+     * @return found Data or null
+     */
     public Data getData(Data findme)
     {
         for (Data datum : data)
@@ -245,6 +270,8 @@ public class FactoryConfiguration
      * encompassing all relevant info about the configuration except for the
      * source information.  In other words, two FactoryConfigurations are considered
      * equal if they have the same data, properties and toolboxes in String form.
+     * @param o object to compare to
+     * @return equality
      */
     @Override
     public boolean equals(Object o)

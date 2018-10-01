@@ -120,7 +120,7 @@ public class ValueParser extends FormatConfig implements Map<String,Object>
 
     /**
      * allow or disallow subkeys
-     * @param allow
+     * @param allow flag value
      */
     protected void setAllowSubkeys(boolean allow)
     {
@@ -138,7 +138,7 @@ public class ValueParser extends FormatConfig implements Map<String,Object>
 
     /**
      * Set or unset read-only behaviour
-     * @param ro
+     * @param ro flag value
      */
     protected void setReadOnly(boolean ro)
     {
@@ -149,6 +149,7 @@ public class ValueParser extends FormatConfig implements Map<String,Object>
      * Sets the delimiter used for separating values in a single String value.
      * The default string delimiter is a comma.
      *
+     * @param stringsDelimiter strings delimiter
      * @see #getValues(String)
      */
     protected final void setStringsDelimiter(String stringsDelimiter)
@@ -161,6 +162,7 @@ public class ValueParser extends FormatConfig implements Map<String,Object>
      * subclasses may share the same ValueParser and call configure
      * at any time, while preventing templates from doing so when 
      * configure(Map) is locked.
+     * @param values configuration values
      */
     @Override
     protected void configure(ValueParser values)
@@ -225,6 +227,8 @@ public class ValueParser extends FormatConfig implements Map<String,Object>
      * Returns the value mapped to the specified key
      * in the {@link Map} returned by {@link #getSource()}. If there is
      * no source, then this will always return {@code null}.
+     * @param key property key
+     * @return property value, or null
      */
     public Object getValue(String key)
     {
@@ -608,6 +612,7 @@ public class ValueParser extends FormatConfig implements Map<String,Object>
 
     /**
      * Determines whether there are subkeys available in the source map.
+     * @return <code>true</code> if there are subkeys (key names containing a dot)
      */
     public boolean hasSubkeys()
     {
@@ -637,6 +642,7 @@ public class ValueParser extends FormatConfig implements Map<String,Object>
 
     /**
      * returns the set of all possible first-level subkeys, including complete keys without dots (or returns keySet() if allowSubKeys is false)
+     * @return the set of all possible first-level subkeys
      */
     public Set<String> getSubkeys()
     {

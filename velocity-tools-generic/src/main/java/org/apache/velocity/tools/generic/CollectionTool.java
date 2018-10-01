@@ -83,7 +83,7 @@ import java.util.Map;
  * <p>By default the sort tool sorts ascending, you can override this by
  * adding a sort type suffix to any property name.</p>
  *
- * <p>The supported suffixes are:
+ * <p>The supported suffixes are:</p>
  * <pre>
  * For ascending
  * :asc
@@ -94,7 +94,7 @@ import java.util.Map;
  * #foreach($obj in $sorter.sort($objects, ["name:asc", "ordinal:desc"]))
  *   $obj.name, $obj.ordinal
  * #end
- * </pre><p>
+ * </pre>
  *
  * <p>This will sort first by Name in ascending order and then by Ordinal
  * in descending order, of course you could have left the :asc off of the
@@ -231,6 +231,7 @@ public class CollectionTool extends SafeConfig implements Serializable
      * of the Collection beforehand, so the original Collection is left
      * untouched and null elements filtered out.
      *
+     * @param <T> collection content class
      * @param c The Collection to sort.
      * @param comparator The comparator to use for sorting.
      * @return A copy of the original Collection,
@@ -261,6 +262,7 @@ public class CollectionTool extends SafeConfig implements Serializable
      * of the array beforehand, so the original array is left
      * untouched and null elements filtered out.
      *
+     * @param <T> array content class
      * @param a The array to sort.
      * @param comparator The comparator to use for sorting.
      * @return A copy of the original array,
@@ -292,6 +294,7 @@ public class CollectionTool extends SafeConfig implements Serializable
      * of the values beforehand, so the original Map is left
      * untouched.
      *
+     * @param <T> Map values class
      * @param map The Map whose values should be sorted.
      * @param comparator The comparator to use for sorting.
      * @return A copy of the original Map's values,
@@ -425,8 +428,8 @@ public class CollectionTool extends SafeConfig implements Serializable
     /**
      * Sorts the collection on several properties.
      *
-     * @param object the collection to be sorted, left unchanged.
-     * @param property the property to sort on.
+     * @param collection the collection to be sorted, left unchanged.
+     * @param properties the properties to sort on.
      * @return new collection, sorted.
      */
     public Collection sort(Collection collection, List properties)

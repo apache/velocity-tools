@@ -34,7 +34,6 @@ import org.apache.velocity.tools.config.SkipSetters;
 
 /**
  * <p>Utility class for easy conversion of String values to richer types.</p>
- * <p>
  * <p>Template example(s):</p>
  * <pre>
  *   $convert.toNumber('12.6')   -&gt;  12.6
@@ -83,6 +82,7 @@ public class ConversionTool extends LocaleConfig implements Serializable
      * subclasses may share the same ValueParser and call configure
      * at any time, while preventing templates from doing so when 
      * configure(Map) is locked.
+     * @param values configuration values
      */
     protected void configure(ValueParser values)
     {
@@ -111,6 +111,7 @@ public class ConversionTool extends LocaleConfig implements Serializable
      * Sets the delimiter used for separating values in a single String value.
      * The default string delimiter is a comma.
      *
+     * @param stringsDelimiter strings delimiter to use
      * @see #parseStringList
      * @deprecated use {@link CollectionTool#setStringsDelimiter(String)}
      */
@@ -119,6 +120,10 @@ public class ConversionTool extends LocaleConfig implements Serializable
         this.stringsDelimiter = stringsDelimiter;
     }
 
+    /**
+     * Gets the delimiter used for separating values in a single String value.
+     * @return string delimiter
+     */
     public final String getStringsDelimiter()
     {
         return this.stringsDelimiter;
@@ -129,6 +134,8 @@ public class ConversionTool extends LocaleConfig implements Serializable
      * a delimited string value.
      * The default is true.
      *
+     * @param stringsTrim flag value
+     * @deprecated use {@link CollectionTool#setStringsTrim(boolean)}
      * @see #parseStringList
      */
     protected final void setStringsTrim(boolean stringsTrim)
@@ -138,13 +145,18 @@ public class ConversionTool extends LocaleConfig implements Serializable
 
     /**
      * @deprecated use {@link CollectionTool#getStringsTrim()}
-     * @return strings trim
+     * @return strings trim flag
      */
     public final boolean getStringsTrim()
     {
         return this.stringsTrim;
     }
 
+    /**
+     * Sets numbers format
+     * @deprecated use {@link NumberTool} format
+     * @param format numbers format
+     */
     protected final void setNumberFormat(String format)
     {
         this.numberFormat = format;
@@ -159,6 +171,11 @@ public class ConversionTool extends LocaleConfig implements Serializable
         return this.numberFormat;
     }
 
+    /**
+     * Sets date format
+     * @param format date format
+     * @deprecated use {@link DateTool} setDateFormat() methods
+     */
     protected final void setDateFormat(String format)
     {
         this.dateFormat = format;
@@ -305,7 +322,7 @@ public class ConversionTool extends LocaleConfig implements Serializable
     }
 
     /**
-     * @param value
+     * @param value target object
      * @return calendar
      * @deprecated use {@link DateTool#toCalendar(Object)}
      */
@@ -692,6 +709,8 @@ public class ConversionTool extends LocaleConfig implements Serializable
      * Converts a single String value into an array of Strings by splitting
      * it on the tool's set stringsDelimiter.  The default stringsDelimiter is a comma,
      * and by default, all strings parsed out are trimmed before returning.
+     * @param value string list to parse
+     * @return array of strings
      */
     protected String[] parseStringList(String value)
     {
@@ -716,7 +735,8 @@ public class ConversionTool extends LocaleConfig implements Serializable
 
     /**
      * Converts a String value into a Locale.
-     *
+     * @param value string of locale to parse
+     * @return parsed locale, or null
      */
     protected Locale parseLocale(String value)
     {

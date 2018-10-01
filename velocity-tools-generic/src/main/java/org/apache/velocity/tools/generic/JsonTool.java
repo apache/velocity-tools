@@ -40,7 +40,7 @@ import com.github.cliftonlabs.json_simple.Jsoner;
  * <p>Tool which can parse a JSON file.</p>
  * <p>Usage:</p>
  * <ul>
- *     <li>$json.parse(<i>json string</i>)</li>
+ *     <li>$json.parse(<i>JSON string</i>)</li>
  *     <li>$json.read(<i>file or classpath resource</i>)</li>
  *     <li>$json.fetch(<i>URL</i>)</li>
  * </ul>
@@ -77,7 +77,7 @@ public class JsonTool extends ImportSupport implements Iterable, Serializable
 
     /**
      * ImportSupport initialization
-     * @param config
+     * @param config configuration values
      */
     protected synchronized void initializeImportSupport(ValueParser config)
     {
@@ -94,6 +94,7 @@ public class JsonTool extends ImportSupport implements Iterable, Serializable
      * Looks for the "file" parameter and automatically uses
      * {@link #initJSON(String)} to parse the file (searched in filesystem current path and classpath) and set the
      * resulting JSON object as the root node for this instance.
+     * @param values configuration values
      */
     protected void configure(ValueParser values)
     {
@@ -120,7 +121,7 @@ public class JsonTool extends ImportSupport implements Iterable, Serializable
 
     /**
      * Initialize JSON content from a string.
-     * @param json
+     * @param json JSON string
      */
     protected void initJSON(String json)
     {
@@ -132,7 +133,7 @@ public class JsonTool extends ImportSupport implements Iterable, Serializable
 
     /**
      * Initialize JSON content from a reader.
-     * @param reader
+     * @param reader JSON stream reader
      */
     protected void initJSON(Reader reader)
     {
@@ -159,6 +160,8 @@ public class JsonTool extends ImportSupport implements Iterable, Serializable
     /**
      * Parses the given JSON string and uses the resulting {@link Document}
      * as the root {@link Node}.
+     * @param json JSON string
+     * @return new JsonTool
      */
     public JsonTool parse(String json)
     {
@@ -178,6 +181,8 @@ public class JsonTool extends ImportSupport implements Iterable, Serializable
 
     /**
      * Reads and parses a local JSON resource file
+     * @param resource resource name
+     * @return new JsonTool
      */
     public JsonTool read(String resource)
     {
@@ -217,6 +222,8 @@ public class JsonTool extends ImportSupport implements Iterable, Serializable
 
     /**
      * Reads and parses a remote or local URL
+     * @param url resource URL
+     * @return new JSonTool
      */
     public JsonTool fetch(String url)
     {
@@ -275,7 +282,7 @@ public class JsonTool extends ImportSupport implements Iterable, Serializable
 
     /**
      * Get a property from root object
-     * @param key
+     * @param key property key
      * @return property value, or null
      */
     public Object get(String key)
@@ -294,7 +301,7 @@ public class JsonTool extends ImportSupport implements Iterable, Serializable
 
     /**
      * Get set of root object keys.
-     * @return
+     * @return keys set
      */
     public Set<String> keySet()
     {

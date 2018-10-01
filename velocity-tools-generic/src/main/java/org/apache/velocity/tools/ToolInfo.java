@@ -51,7 +51,7 @@ public class ToolInfo implements java.io.Serializable
      * Creates a new instance using the minimum required info
      * necessary for a tool.
      * @param key tool key
-     * @param class tool class
+     * @param clazz tool class
      */
     public ToolInfo(String key, Class clazz)
     {

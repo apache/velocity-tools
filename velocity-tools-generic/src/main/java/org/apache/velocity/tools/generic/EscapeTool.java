@@ -126,6 +126,7 @@ public class EscapeTool extends SafeConfig implements Serializable
 
     /**
      * Sets the key under which this tool has been configured.
+     * @param key tool key
      * @see #velocity
      */
     protected void setKey(String key)
@@ -140,6 +141,7 @@ public class EscapeTool extends SafeConfig implements Serializable
     /**
      * Should return the key under which this tool has been configured.
      * The default is 'esc'.
+     * @return tool key
      * @see #velocity
      */
     public String getKey()
@@ -235,6 +237,9 @@ public class EscapeTool extends SafeConfig implements Serializable
     /**
      * This code was pulled from the Apache Harmony project.  See
      * https://svn.apache.org/repos/asf/harmony/enhanced/classlib/trunk/modules/luni/src/main/java/java/util/Properties.java
+     * @param string property key or property value
+     * @param key <code>true</code> for a property key
+     * @return escaped string
      */
     protected String dumpString(String string, boolean key) {
         StringBuilder builder = new StringBuilder();
@@ -520,6 +525,7 @@ public class EscapeTool extends SafeConfig implements Serializable
     /**
      * Renders a new line character appropriate for the
      * operating system ("\n" in java).
+     * @return system newline string
      * @see #getN()
      */
     public String getNewline()
@@ -530,6 +536,7 @@ public class EscapeTool extends SafeConfig implements Serializable
     /**
      * Renders a new line character appropriate for the
      * operating system ("\n" in java).
+     * @return system newline string
      * @see #getNewline()
      */
     public String getN()

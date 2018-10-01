@@ -86,6 +86,7 @@ public class ToolConfiguration extends Configuration
     /**
      * Returns the key set for this tool. If no key has been explicitly
      * set, this will return the result of {@link #getDefaultKey()}.
+     * @return tool key
      */
     public String getKey()
     {
@@ -103,6 +104,7 @@ public class ToolConfiguration extends Configuration
      * is transformed into the key by removing any 'Tool' suffix and
      * lowercasing the first character.  This will only return {@code null}
      * if there is both no key and no classname set for this tool.
+     * @return default tool key
      */
     public String getDefaultKey()
     {

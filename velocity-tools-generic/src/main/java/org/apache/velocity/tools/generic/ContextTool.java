@@ -78,6 +78,7 @@ public class ContextTool extends SafeConfig implements Serializable
 
     /**
      * Returns the context being analyzed by this tool.
+     * @return analyzed context
      */
     public Context getThis()
     {
@@ -102,6 +103,7 @@ public class ContextTool extends SafeConfig implements Serializable
     /**
      * <p>Return a {@link Set} of the available reference keys in the current
      * context.</p>
+     * @return keys set
      */
     public Set getKeys()
     {
@@ -130,6 +132,7 @@ public class ContextTool extends SafeConfig implements Serializable
     /**
      * Actually do the work of filling in the set of keys
      * for {@link #getKeys} here so subclasses can add keys too.
+     * @param keys set to fill with keys
      */
     protected void fillKeyset(Set keys)
     {
@@ -157,6 +160,7 @@ public class ContextTool extends SafeConfig implements Serializable
     /**
      * <p>Return a {@link Set} of the available values in the current
      * context.</p>
+     * @return values set
      */
     public Set getValues()
     {
@@ -175,6 +179,8 @@ public class ContextTool extends SafeConfig implements Serializable
     /**
      * <p>Returns {@code true} if the context contains a value for the specified
      * reference name (aka context key).</p>
+     * @param refName context key
+     * @return <code>true</code> if key is present in the context
      */
     public boolean contains(Object refName)
     {
@@ -183,6 +189,8 @@ public class ContextTool extends SafeConfig implements Serializable
 
     /**
      * Retrieves the value for the specified reference name (aka context key).
+     * @param refName context key
+     * @return found value, or null
      */
     public Object get(Object refName)
     {

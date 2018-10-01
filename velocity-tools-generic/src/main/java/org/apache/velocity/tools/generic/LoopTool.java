@@ -135,6 +135,9 @@ public class LoopTool extends SafeConfig implements Serializable
      * watched.  If the given name is {@code null}, then this will return
      * {@code null} even if the object can be watched. Provided names cannot
      * be {@code null}.
+     * @param obj an object that Velocity's #foreach directive can iterate over
+     * @param name loop name
+     * @return a {@link ManagedIterator} that this tool instance will track
      * @see #watch(Object)
      */
     public ManagedIterator watch(Object obj, String name)
@@ -187,6 +190,7 @@ public class LoopTool extends SafeConfig implements Serializable
      * This is just like {@link #stop()} except that the stop command is issued
      * <strong>only</strong> to the loop/iterator with the specified name.
      * If no such loop is found with that name, then no stop command is issued.
+     * @param name loop name
      * @see #stop()
      */
     public void stop(String name)
@@ -207,6 +211,7 @@ public class LoopTool extends SafeConfig implements Serializable
      * both to the loop/iterator with the specified name and all loops nested within
      * it.  If no such loop is found with that name, then no stop commands are
      * issued.
+     * @param name loop name
      * @see #stop()
      * @see #stop(String)
      */
@@ -267,6 +272,7 @@ public class LoopTool extends SafeConfig implements Serializable
      * provided by the likes of {@link ManagedIterator#exclude(Object)}, any elements
      * skipped are still considered in the results returned by {@link #getCount()}
      * and {@link #isFirst()}.
+     * @param number number of iterations
      */
     public void skip(int number)
     {
@@ -281,6 +287,8 @@ public class LoopTool extends SafeConfig implements Serializable
     /**
      * This tells the specified loop to skip ahead the specified number of
      * iterations.
+     * @param number number of iterations
+     * @param name loop name
      * @see #skip(int)
      */
     public void skip(int number, String name)
@@ -310,7 +318,7 @@ public class LoopTool extends SafeConfig implements Serializable
     }
 
     /**
-     * Returns {@code true} if the current loop is on its first iteration.
+     * @return {@code true} if the current loop is on its first iteration.
      */
     public Boolean isFirst()
     {
@@ -322,8 +330,9 @@ public class LoopTool extends SafeConfig implements Serializable
     }
 
     /**
-     * Returns {@code true} if the loop with the specified name
+     * @return {@code true} if the loop with the specified name
      * is on its first iteration.
+     * @param name loop name
      */
     public Boolean isFirst(String name)
     {
@@ -337,7 +346,7 @@ public class LoopTool extends SafeConfig implements Serializable
     }
 
     /**
-     * Returns the result of {@link #isFirst}. Exists to allow $loop.first syntax.
+     * @return the result of {@link #isFirst}. Exists to allow $loop.first syntax.
      */
     public Boolean getFirst()
     {
@@ -345,7 +354,7 @@ public class LoopTool extends SafeConfig implements Serializable
     }
 
     /**
-     * Returns {@code true} if the current loop is on its last iteration.
+     * @return {@code true} if the current loop is on its last iteration.
      */
     public Boolean isLast()
     {
@@ -357,8 +366,9 @@ public class LoopTool extends SafeConfig implements Serializable
     }
 
     /**
-     * Returns {@code true} if the loop with the specified name
+     * @return {@code true} if the loop with the specified name
      * is on its last iteration.
+     * @param name loop name
      */
     public Boolean isLast(String name)
     {
@@ -372,7 +382,7 @@ public class LoopTool extends SafeConfig implements Serializable
     }
 
     /**
-     * Returns the result of {@link #isLast}. Exists to allow $loop.last syntax.
+     * @return the result of {@link #isLast}. Exists to allow $loop.last syntax.
      */
     public Boolean getLast()
     {
@@ -393,6 +403,8 @@ public class LoopTool extends SafeConfig implements Serializable
      * This syntax is shorter and clearer than {@code $loop.getCount('foo')}.
      * If the key starts with a property name and ends with an outer loop
      * name, then the value of that property for that loop is returned.
+     * @param key sync'ed Iterator name
+     * @return current iterator value
      */
     public Object get(String key)
     {
@@ -442,6 +454,9 @@ public class LoopTool extends SafeConfig implements Serializable
     /**
      * Asks the loop with the specified name for the current value
      * of the specified sync'ed iterator, if any.
+     * @param name loop name
+     * @param synced sync'ed Iterator name
+     * @return current iterator value
      */
     public Object get(String name, String synced)
     {
@@ -460,6 +475,7 @@ public class LoopTool extends SafeConfig implements Serializable
      * you {@link #skip} ahead in this loop, those skipped iterations will
      * still be reflected in the index.  If iteration has not begun, this
      * will return {@code null}.
+     * @return current loop index
      */
     public Integer getIndex()
     {
@@ -477,6 +493,8 @@ public class LoopTool extends SafeConfig implements Serializable
      * you {@link #skip} ahead in this loop, those skipped iterations will
      * still be reflected in the index.  If iteration has not begun, this
      * will return {@code null}.
+     * @param name loop name
+     * @return current loop index
      */
     public Integer getIndex(String name)
     {
@@ -493,6 +511,7 @@ public class LoopTool extends SafeConfig implements Serializable
      * is the first iteration, then the count will be 1.  If you {@link #skip}
      * ahead in this loop, those skipped iterations will still be included in
      * the count.
+     * @return items count
      */
     public Integer getCount()
     {
@@ -508,6 +527,8 @@ public class LoopTool extends SafeConfig implements Serializable
      * is the first iteration, then the count will be 1.  If you {@link #skip}
      * ahead in this loop, those skipped iterations will still be included in
      * the count.
+     * @param name loop name
+     * @return loop items count
      */
     public Integer getCount(String name)
     {
@@ -526,6 +547,7 @@ public class LoopTool extends SafeConfig implements Serializable
      * isFirst, isLast, etc which would otherwise fail on the last item
      * in a loop due to the necessity of popping iterators off the
      * stack when the last item is retrieved. (See VELTOOLS-124)
+     * @return most recent iterator
      */
     public ManagedIterator getThis()
     {
@@ -537,6 +559,7 @@ public class LoopTool extends SafeConfig implements Serializable
      * This is only useful for debugging, as iterators are
      * popped off the stack at the start of their final iteration,
      * making this frequently "incorrect".
+     * @return depth
      */
     public int getDepth()
     {
@@ -547,6 +570,8 @@ public class LoopTool extends SafeConfig implements Serializable
     /**
      * Finds the {@link ManagedIterator} with the specified name
      * if it is in this instance's iterator stack.
+     * @param name loop name
+     * @return loop iterator
      */
     protected ManagedIterator findIterator(String name)
     {
@@ -564,6 +589,7 @@ public class LoopTool extends SafeConfig implements Serializable
     /**
      * Don't let templates call this, but allow subclasses
      * and ManagedIterator to have access.
+     * @return pop'ed iterator
      */
     protected ManagedIterator pop()
     {
@@ -578,6 +604,8 @@ public class LoopTool extends SafeConfig implements Serializable
      * nice little try/catch block to prevent exceptions from
      * escaping into the template.  In the case of such problems,
      * this will return {@code null}.
+     * @param obj target iterator
+     * @return wrapped iterator or null
      */
     protected Iterator getIterator(Object obj)
     {
@@ -632,7 +660,7 @@ public class LoopTool extends SafeConfig implements Serializable
         }
 
         /**
-         * Returns the name of this instance.
+         * @return the name of this instance.
          */
         public String getName()
         {
@@ -640,7 +668,7 @@ public class LoopTool extends SafeConfig implements Serializable
         }
 
         /**
-         * Returns true if either 0 or 1 elements have been returned
+         * @return true if either 0 or 1 elements have been returned
          * by {@link #next()}.
          */
         public boolean isFirst()
@@ -653,7 +681,7 @@ public class LoopTool extends SafeConfig implements Serializable
         }
 
         /**
-         * Returns true if the last element returned by {@link #next()}
+         * @return true if the last element returned by {@link #next()}
          * is the last element available in the iterator being managed
          * which satisfies any/all {@link ActionCondition}s set for this
          * instance. Otherwise, returns false.
@@ -664,7 +692,7 @@ public class LoopTool extends SafeConfig implements Serializable
         }
 
         /**
-         * Returns the result of {@link #isFirst}. Exists to allow $loop.this.first syntax.
+         * @return the result of {@link #isFirst}. Exists to allow $loop.this.first syntax.
          */
         public boolean getFirst()
         {
@@ -672,7 +700,7 @@ public class LoopTool extends SafeConfig implements Serializable
         }
 
         /**
-         * Returns the result of {@link #isLast}. Exists to allow $loop.this.last syntax.
+         * @return the result of {@link #isLast}. Exists to allow $loop.this.last syntax.
          */
         public boolean getLast()
         {
@@ -680,7 +708,7 @@ public class LoopTool extends SafeConfig implements Serializable
         }
 
         /**
-         * Returns true if there are more elements in the iterator
+         * @return true if there are more elements in the iterator
          * being managed by this instance which satisfy all the
          * {@link ActionCondition}s set for this instance.  Returns
          * false if there are no more valid elements available.
@@ -691,7 +719,7 @@ public class LoopTool extends SafeConfig implements Serializable
         }
 
         /**
-         * Returns the result of {@link #hasNext}. Exists to allow $loop.this.hasNext syntax.
+         * @return the result of {@link #hasNext}. Exists to allow $loop.this.hasNext syntax.
          */
         public boolean getHasNext()
         {
@@ -770,7 +798,8 @@ public class LoopTool extends SafeConfig implements Serializable
         }
 
         /**
-         * Returns {@code true} if this ManagedIterator has a sync'ed
+         * @param name syn'ed iterator name
+         * @return {@code true} if this ManagedIterator has a sync'ed
          * iterator with the specified name.
          */
         public boolean isSyncedWith(String name)
@@ -783,9 +812,11 @@ public class LoopTool extends SafeConfig implements Serializable
         }
 
         /**
-         * Returns the parallel value from the specified sync'ed iterator.
+         * @return the parallel value from the specified sync'ed iterator.
          * If no sync'ed iterator exists with that name or that iterator
          * is finished, this will return {@code null}.
+         * @param iterator name
+         * @return iterator current value
          */
         public Object get(String name)
         {
@@ -802,7 +833,7 @@ public class LoopTool extends SafeConfig implements Serializable
         }
 
         /**
-         * Returns the number of elements returned by {@link #next()} so far.
+         * @return the number of elements returned by {@link #next()} so far.
          */
         public int getCount()
         {
@@ -810,7 +841,7 @@ public class LoopTool extends SafeConfig implements Serializable
         }
 
         /**
-         * Returns the 0-based index of the current item.
+         * @return the 0-based index of the current item.
          */
         public int getIndex()
         {
@@ -818,7 +849,7 @@ public class LoopTool extends SafeConfig implements Serializable
         }
 
         /**
-         * Returns the next element that meets the set {@link ActionCondition}s
+         * @return the next element that meets the set {@link ActionCondition}s
          * (if any) in the iterator being managed. If there are none left, then
          * this will throw a {@link NoSuchElementException}.
          */
@@ -879,6 +910,7 @@ public class LoopTool extends SafeConfig implements Serializable
         /**
          * Directs this instance to completely exclude
          * any elements equal to the specified Object.
+         * @param compare value to exclude
          * @return This same {@link ManagedIterator} instance
          */
         public ManagedIterator exclude(Object compare)
@@ -890,6 +922,7 @@ public class LoopTool extends SafeConfig implements Serializable
         /**
          * Directs this instance to stop iterating immediately prior to
          * any element equal to the specified Object.
+         * @param compare value to stop at
          * @return This same {@link ManagedIterator} instance
          */
         public ManagedIterator stop(Object compare)
@@ -900,6 +933,7 @@ public class LoopTool extends SafeConfig implements Serializable
         /**
          * Adds a new {@link ActionCondition} for this instance to check
          * against the elements in the iterator being managed.
+         * @param condition condition
          * @return This same {@link ManagedIterator} instance
          */
         public ManagedIterator condition(ActionCondition condition)
@@ -928,6 +962,7 @@ public class LoopTool extends SafeConfig implements Serializable
          * will simply replace the earlier ones under the default
          * 'synced' key.</p>
          *
+         * @param iterable Iterator to synchronize with
          * @return This same {@link ManagedIterator} instance
          * @see SyncedIterator
          * @see #get(String)
@@ -944,6 +979,8 @@ public class LoopTool extends SafeConfig implements Serializable
          * name specified here (e.g. $loop.name or $loop.get('name'))
          * and are automatically updated for each iteration by this instance.
          *
+         * @param iterable iterator to synchronize with
+         * @param name loop name
          * @return This same {@link ManagedIterator} instance
          * @see SyncedIterator
          * @see #get(String)
@@ -963,6 +1000,9 @@ public class LoopTool extends SafeConfig implements Serializable
             return this;
         }
 
+        /**
+         * @return last sync'ed values
+         */
         public Map<String,Object> getLastSyncedValues()
         {
             if (synced == null)
@@ -1014,6 +1054,8 @@ public class LoopTool extends SafeConfig implements Serializable
 
         /**
          * Returns true if the specified value meets the set {@link Condition}
+         * @param value value to test
+         * @return whether the value matchers the condition
          */
         public boolean matches(Object value)
         {
@@ -1120,7 +1162,7 @@ public class LoopTool extends SafeConfig implements Serializable
         }
 
         /**
-         * Returns the currently parallel value, if any.
+         * @return the currently parallel value, if any.
          */
         public Object get()
         {

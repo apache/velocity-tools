@@ -221,6 +221,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * Equivalent to clone, but with no checked exceptions.
      * If for some unfathomable reason clone() doesn't work,
      * this will throw a RuntimeException.
+     * @return new LinkTool
      */
     protected LinkTool duplicate()
     {
@@ -232,6 +233,8 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * If for some unfathomable reason clone() doesn't work,
      * this will throw a RuntimeException.  If doing a deep
      * clone, then the parameter Map will also be cloned.
+     * @param deep whether to make a deep copy
+     * @return new LinkTool
      */
     protected LinkTool duplicate(boolean deep)
     {
@@ -278,6 +281,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * Sets whether or not the {@link #setParam} method
      * will override existing query values for the same key or simply append
      * the new value to a list of existing values.
+     * @param addParams whether to add or replace params
      */
     public void setAppendParams(boolean addParams)
     {
@@ -291,6 +295,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * one.  NOTE: using {@link #absolute()}, {@link #absolute(Object)},
      * {@link #relative()}, or {@link #relative(Object)} will alter this
      * setting accordingly on the new instances they return.
+     * @param forceRelative whether to force a relative URI
      */
     public void setForceRelative(boolean forceRelative)
     {
@@ -300,6 +305,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
     /**
      * This will treat empty strings like null values
      * and will trim any trailing ':' character.
+     * @param obj scheme
      */
     public void setScheme(Object obj)
     {
@@ -321,11 +327,19 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
         }
     }
 
+    /**
+     * Sets user info
+     * @param obj user info
+     */
     public void setUserInfo(Object obj)
     {
         this.user = obj == null ? null : String.valueOf(obj);
     }
 
+    /**
+     Sets host
+     @param obj host
+     */
     public void setHost(Object obj)
     {
         this.host = obj == null ? null : String.valueOf(obj);
@@ -335,6 +349,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * If the specified object is null, this will set the port value
      * to -1 to indicate that.  If it is non-null and cannot be converted
      * to an integer, then it will be set to -2 to indicate an error.
+     * @param obj port
      */
     public void setPort(Object obj)
     {
@@ -364,6 +379,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * If this instance is not opaque and the specified value does
      * not start with a '/' character, then that will be prepended
      * automatically.
+     * @param obj path
      */
     public void setPath(Object obj)
     {
@@ -386,6 +402,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * to the current {@link #getPath} value.  If the specified
      * value is null or this instance is opaque, then this is
      * a no-op.
+     * @param obj path
      */
     public void appendPath(Object obj)
     {
@@ -400,6 +417,9 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * If neither is null, this will append the end to the start,
      * making sure that there is only one '/' character between
      * the two values.
+     * @param start start path
+     * @param end end path
+     * @return combined path
      */
     protected String combinePath(String start, String end)
     {
@@ -435,6 +455,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * replace any current query value with that. If it is a String,
      * it will use {@link #parseQuery(String)} to parse it into a map
      * of keys to values.
+     * @param obj query
      */
     public void setQuery(Object obj)
     {
@@ -481,6 +502,10 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
         }
     }
 
+    /**
+     * @param qs query string
+     * @return normalized string
+     */
     protected String normalizeQuery(String qs)
     {
         // if we have multiple pairs...
@@ -495,6 +520,8 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
 
     /**
      * Converts the map of keys to values into a query string.
+     * @param parameters parameters
+     * @return query string
      */
     public String toQuery(Map parameters)
     {
@@ -519,6 +546,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
     /**
      * Uses {@link #combineQuery} to append the specified value
      * to the current {@link #getQuery} value.
+     * @param obj query to append
      */
     public void appendQuery(Object obj)
     {
@@ -536,6 +564,9 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * already under that key.  If {@link #appendParams} is
      * false, this will override the existing values with the
      * specified new value.
+     * @param key parameter key
+     * @param value parameter value
+     * @param append whether to append parameter to existing ones with same key
      */
     public void setParam(Object key, Object value, boolean append)
     {
@@ -621,6 +652,8 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * is not a Map, it will turn it into a String and use {@link #parseQuery} to
      * parse it. Once it is a Map, it will iterate through the entries appending
      * each key/value to the current query data.
+     * @param obj parameters
+     * @param append whether to append parameters
      */
     public void setParams(Object obj, boolean append)
     {
@@ -653,6 +686,8 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
     /**
      * Removes the query pair(s) with the specified key from the
      * query data and returns the remove value(s), if any.
+     * @param key parameter key
+     * @return parameter value or null
      */
     public Object removeParam(Object key)
     {
@@ -667,6 +702,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
     /**
      * In this class, this method ignores true values.  If passed a false value,
      * it will call {@link #setQuery} with a null value to clear all query data.
+     * @param keep <code>false</code> will clear query
      */
     protected void handleParamsBoolean(boolean keep)
     {
@@ -682,6 +718,9 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * at the start of the second param and any '&amp;' or '&amp;amp;' at the
      * end of the first one, then combine the two, making sure that they
      * are separated by only one delimiter.
+     * @param current current query
+     * @param add added query
+     * @return combined query
      */
     protected String combineQuery(String current, String add)
     {
@@ -722,6 +761,9 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * query pair string.  If the value is an array or List, then
      * this will create a delimited string of query pairs, reusing
      * the same key for each of the values separately.
+     * @param key parameter key
+     * @param value parameter value(s)
+     * @return encoded query string fragment
      */
     protected String toQuery(Object key, Object value)
     {
@@ -773,6 +815,8 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * specified query string match the current query delimiter
      * and then uses {@link #parseQuery(String,String)} to parse it
      * according to that same delimiter.
+     * @param query query string
+     * @return parameters map
      */
     protected Map<String,Object> parseQuery(String query)
     {
@@ -785,6 +829,9 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * If there are multiple query pairs in the string that have the same
      * key, then the values will be combined into a single List value
      * associated with that key.
+     * @param query query string
+     * @param queryDelim query delimiter
+     * @return parameters map
      */
     protected Map<String,Object> parseQuery(String query, String queryDelim)
     {
@@ -826,6 +873,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
 
     /**
      * Sets the anchor for this instance and treats empty strings like null.
+     * @param obj fragment
      */
     public void setFragment(Object obj)
     {
@@ -851,6 +899,8 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * values from the URI object to this instance, when not null or empty.
      * In other words, when given a URI this will only set values present
      * in the URI.
+     * @param obj URI
+     * @return success
      */
     protected boolean setFromURI(Object obj)
     {
@@ -922,6 +972,8 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
 
     /**
      * Turns the specified object into a string and thereby a URI.
+     * @param obj source object
+     * @return URI or null
      */
     protected URI toURI(Object obj)
     {
@@ -947,6 +999,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * Tries to create a URI from the current port, opacity, scheme,
      * userInfo, host, path, query and fragment set for this instance,
      * using the {@link URI} constructor that is appropriate to the opacity.
+     * @return URI object or null
      */
     protected URI createURI()
     {
@@ -996,6 +1049,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
     /**
      * Returns the configured charset used by the {@link #encode} and
      * {@link #decode} methods.
+     * @return character encoding
      */
     public String getCharacterEncoding()
     {
@@ -1006,6 +1060,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * Returns true if the query delimiter used by this instance is
      * using <code>&amp;amp;</code> as the delimiter for query data pairs
      * or just using <code>&amp;</code>.
+     * @return whether the query string delimiter uses the XHTML delimiter
      */
     public boolean isXHTML()
     {
@@ -1015,6 +1070,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
     /**
      * Returns true if {@link #param(Object,Object)} appends values;
      * false if the method overwrites existing value(s) for the specified key.
+     * @return whether parameters are appended to the query string
      */
     public boolean getAppendParams()
     {
@@ -1024,6 +1080,8 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
 
     /**
      * Returns a new instance with the specified value set as its scheme.
+     * @param scheme scheme
+     * @return new LinkTool
      */
     public LinkTool scheme(Object scheme)
     {
@@ -1034,6 +1092,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
 
     /**
      * Returns a new instance with the scheme set to "https".
+     * @return new LinkTool
      */
     public LinkTool secure()
     {
@@ -1042,6 +1101,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
 
     /**
      * Returns a new instance with the scheme set to "http".
+     * @return new LinkTool
      */
     public LinkTool insecure()
     {
@@ -1050,6 +1110,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
 
     /**
      * Return the scheme value for this instance.
+     * @return scheme
      */
     public String getScheme()
     {
@@ -1058,6 +1119,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
 
     /**
      * Returns true if this instance's scheme is "https".
+     * @return whether the protocol is secure
      */
     public boolean isSecure()
     {
@@ -1066,6 +1128,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
 
     /**
      * Returns true if this instance represents an opaque URI.
+     * @return opacity flag
      * @see URI
      */
     public boolean isOpaque()
@@ -1076,6 +1139,8 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
     /**
      * Returns a new instance with the specified value
      * set as its user info.
+     * @param info user info
+     * @return new LinkTool
      */
     public LinkTool user(Object info)
     {
@@ -1086,6 +1151,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
 
     /**
      * Returns the {@link URI#getUserInfo()} value for this instance.
+     * @return user info
      */
     public String getUser()
     {
@@ -1096,6 +1162,8 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * Returns a new instance with the specified value set as its
      * host.  If no scheme has yet been set, the new instance will
      * also have its scheme set to the {@link #DEFAULT_SCHEME} (http).
+     * @param host host
+     * @return new LinkTool
      */
     public LinkTool host(Object host)
     {
@@ -1112,6 +1180,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
 
     /**
      * Return the host value for this instance.
+     * @return host
      */
     public String getHost()
     {
@@ -1125,6 +1194,8 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * null for {@link #toString} and other
      * {@link #createURI}-dependent methods to alert the user
      * to the error.
+     * @param port port
+     * @return new LinkTool
      */
     public LinkTool port(Object port)
     {
@@ -1135,6 +1206,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
 
     /**
      * Returns the  port value, if any.
+     * @return port or null
      */
     public Integer getPort()
     {
@@ -1148,6 +1220,8 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
     /**
      * Returns a new instance with the specified value
      * set as its path.
+     * @param pth path
+     * @return new link tool
      */
     public LinkTool path(Object pth)
     {
@@ -1158,6 +1232,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
 
     /**
      * Returns the current path value for this instance.
+     * @return path
      */
     public String getPath()
     {
@@ -1167,6 +1242,8 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
     /**
      * Appends the given value to the end of the current
      * path value.
+     * @param pth path to append
+     * @return new LinkTool
      */
     public LinkTool append(Object pth)
     {
@@ -1179,6 +1256,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * Returns the directory stack
      * in the set {@link #getPath()} value, by just trimming
      * off all that follows the last "/".
+     * @return directory stack
      */
     public String getDirectory()
     {
@@ -1197,6 +1275,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
     /**
      * Returns the last section of the path,
      * which is all that follows the final "/".
+     * @return file
      */
     public String getFile()
     {
@@ -1220,6 +1299,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * was an error when the port value was last set. It will
      * return null for any opaque URLs as well, as those have
      * no host or port.
+     * @return root
      */
     public String getRoot()
     {
@@ -1238,6 +1318,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * sets the path, query, and fragment to null on
      * the returned instance.
      * @see #getRoot()
+     * @return new LinkTool
      */
     public LinkTool root()
     {
@@ -1256,6 +1337,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * Returns a new LinkTool instance with
      * the path set to the result of {@link #getDirectory()}
      * and the query and fragment set to null.
+     * @return new LinkTool
      */
     public LinkTool directory()
     {
@@ -1274,6 +1356,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
     /**
      * Returns true if this instance is being forced to
      * return relative URIs or has a null scheme value.
+     * @return whether the link is relative
      */
     public boolean isRelative()
     {
@@ -1283,6 +1366,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
     /**
      * Returns a copy of this LinkTool instance that has
      * {@link #setForceRelative} set to true.
+     * @return new LinkTool
      */
     public LinkTool relative()
     {
@@ -1330,6 +1414,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * At this level, this only returns the result of {@link #getDirectory}.
      * It is here as an extension hook for subclasses to change the
      * "context" for relative links.
+     * @return context path
      * @see #relative(Object)
      * @see #getDirectory
      */
@@ -1341,6 +1426,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
     /**
      * Returns true if this instance has a scheme value
      * and is not being forced to create relative URIs.
+     * @return whether this link is absolute
      */
     public boolean isAbsolute()
     {
@@ -1351,6 +1437,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * Returns a copy of this LinkTool instance that has
      * {@link #setForceRelative} set to false and sets the
      * scheme to the "http" if no scheme has been set yet.
+     * @return new LinkTool
      */
     public LinkTool absolute()
     {
@@ -1437,6 +1524,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * If the tool is not in "safe mode"--which it is by default--
      * this will return the {@link URI} representation of this instance,
      * if any.
+     * @return URI
      * @see SafeConfig#isSafeMode()
      */
     public URI getUri()
@@ -1455,6 +1543,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * or query data set for this LinkTool. A typical application of
      * this method is with the HTML base tag. For example:
      * <code>&lt;base href="$link.baseRef"&gt;</code>
+     * @return base link
      */
     public String getBaseRef()
     {
@@ -1468,6 +1557,8 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * Sets the specified value as the current query data,
      * after normalizing the pair delimiters.  This overrides
      * any existing query.
+     * @param query query string
+     * @return new LinkTool
      */
     public LinkTool query(Object query)
     {
@@ -1478,6 +1569,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
 
     /**
      * Returns the current query as a string, if any.
+     * @return query string
      */
     public String getQuery()
     {
@@ -1615,12 +1707,16 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
 
     /**
      * Returns the anchor (internal document reference) set for this link.
+     * @return anchor
      */
     public String getAnchor()
     {
         return this.fragment;
     }
 
+    /**
+     * @return self
+     */
     public LinkTool getSelf()
     {
         // there are no self-params to bother with at this level,
@@ -1634,6 +1730,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * Typically, it is not necessary to call this method explicitely.
      * Velocity will call the toString() method automatically to obtain
      * a representable version of an object.
+     * @return string representation
      */
     public String toString()
     {
@@ -1657,6 +1754,8 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * but then URI encodes all the % from that encoding.  Here,
      * we isolate the query data and manually decode the encoded
      * %25 in that section back to %, without decoding anything else.
+     * @param url source url
+     * @return decoded url
      */
     protected String decodeQueryPercents(String url)
     {
@@ -1727,6 +1826,8 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * LinkTool instance whose toString() method returns a
      * String equal to that returned by this instance's toString()
      * @see #toString()
+     * @param obj object to compare to
+     * @return equality
      */
     @Override
     public boolean equals(Object obj)
@@ -1748,6 +1849,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
      * Returns the hash code for the result of toString().
      * If toString() returns {@code null} (yes, we do break that contract),
      * this will return {@code -1}.
+     * @return hash code
      */
     @Override
     public int hashCode()
@@ -1764,7 +1866,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
     /**
      * Delegates encoding of the specified url content to
      * {@link URLEncoder#encode} using the configured character encoding.
-     *
+     * @param obj URL to encode
      * @return String - the encoded url.
      */
     public String encode(Object obj)
@@ -1787,7 +1889,7 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
     /**
      * Delegates decoding of the specified url content to
      * {@link URLDecoder#decode} using the configured character encoding.
-     *
+     * @param obj URL to decode
      * @return String - the decoded url.
      */
     public String decode(Object obj)

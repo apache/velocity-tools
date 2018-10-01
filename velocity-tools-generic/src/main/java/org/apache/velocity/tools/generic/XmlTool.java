@@ -96,7 +96,7 @@ public class XmlTool extends SafeConfig implements Serializable
 
     /**
      * ImportSupport initialization
-     * @param config
+     * @param config configuration values
      */
     protected synchronized void initializeImportSupport(ValueParser config)
     {
@@ -109,7 +109,7 @@ public class XmlTool extends SafeConfig implements Serializable
 
     /**
      * Configuration.
-     * @param values
+     * @param values configuration values
      */
     protected void configure(ValueParser values)
     {
@@ -164,6 +164,7 @@ public class XmlTool extends SafeConfig implements Serializable
 
     /**
      * Sets a singular root {@link Node} for this instance.
+     * @param node new root node
      */
     protected void setRoot(Node node)
     {
@@ -185,6 +186,8 @@ public class XmlTool extends SafeConfig implements Serializable
     /**
      * Parses the given XML string and uses the resulting {@link Document}
      * as the root {@link Node}.
+     * @param xml XML string
+     * @return new XmlTool
      */
     public XmlTool parse(String xml)
     {
@@ -204,6 +207,8 @@ public class XmlTool extends SafeConfig implements Serializable
 
     /**
      * Reads and parses a local resource file
+     * @param resource resource path
+     * @return new  XmlTool
      */
     public XmlTool read(String resource)
     {
@@ -240,6 +245,8 @@ public class XmlTool extends SafeConfig implements Serializable
 
     /**
      * Reads and parses a remote or local URL
+     * @param url resource URL
+     * @ return new XmlTool
      */
     public XmlTool fetch(String url)
     {
@@ -284,6 +291,8 @@ public class XmlTool extends SafeConfig implements Serializable
      * does not contain a '/', it appends the result of {@link #getPath()}
      * and a '/' to the front of it.  Finally, it delegates the string to the
      * {@link #find(String)} method and returns the result of that.
+     * @param o attribute name, number, xpath relative expression
+     * @return found value or null
      */
     public Object get(Object o)
     {
@@ -317,6 +326,7 @@ public class XmlTool extends SafeConfig implements Serializable
     /**
      * Asks {@link #get(Object)} for a "name" result.
      * If none, this will return the result of {@link #getNodeName()}.
+     * @return found value or null
      */
     public Object getName()
     {
@@ -333,6 +343,7 @@ public class XmlTool extends SafeConfig implements Serializable
      * Returns the name of the root node. If the internal {@link Node}
      * list has more than one {@link Node}, it will only return the name
      * of the first node in the list.
+     * @return node name
      */
     public String getNodeName()
     {
@@ -346,6 +357,7 @@ public class XmlTool extends SafeConfig implements Serializable
     /**
      * Returns the XPath that identifies the first/sole {@link Node}
      * represented by this instance.
+     * @return xpath node path
      */
     public String getPath()
     {
@@ -362,6 +374,8 @@ public class XmlTool extends SafeConfig implements Serializable
      * Node is an {@link Element}.  If it is a non-Element node type or
      * there is no value for that attribute in this element, then this
      * will return {@code null}.
+     * @param o attribute name
+     * @return attribute value or null
      */
     public String attr(Object o)
     {
@@ -386,6 +400,7 @@ public class XmlTool extends SafeConfig implements Serializable
      * Returns a {@link Map} of all attributes for the first/sole
      * {@link Node} held internally by this instance.  If that Node is
      * not an {@link Element}, this will return null.
+     * @return attributes map
      */
     public Map<String,String> attributes()
     {
@@ -408,6 +423,7 @@ public class XmlTool extends SafeConfig implements Serializable
     /**
      * Returns {@code true} if there are no {@link Node}s internally held
      * by this instance.
+     * @return whether the set of current nodes is empty
      */
     public boolean isEmpty()
     {
@@ -416,6 +432,7 @@ public class XmlTool extends SafeConfig implements Serializable
 
     /**
      * Returns the number of {@link Node}s internally held by this instance.
+     * @return the size of the set of current nodes
      */
     public int size()
     {
@@ -429,6 +446,7 @@ public class XmlTool extends SafeConfig implements Serializable
     /**
      * Returns an {@link Iterator} that returns new {@link XmlTool}
      * instances for each {@link Node} held internally by this instance.
+     * @return an iterator on wrappers of current nodes or null
      */
     public Iterator<XmlTool> iterator()
     {
@@ -442,6 +460,7 @@ public class XmlTool extends SafeConfig implements Serializable
     /**
      * Returns an {@link XmlTool} that wraps only the
      * first {@link Node} from this instance's internal Node list.
+     * @return a wrapper on the first node or null
      */
     public XmlTool getFirst()
     {
@@ -455,6 +474,7 @@ public class XmlTool extends SafeConfig implements Serializable
     /**
      * Returns an {@link XmlTool} that wraps only the
      * last {@link Node} from this instance's internal Node list.
+     * @return a wrapper on the last node or null
      */
     public XmlTool getLast()
     {
@@ -468,6 +488,7 @@ public class XmlTool extends SafeConfig implements Serializable
     /**
      * Returns an {@link XmlTool} that wraps the specified
      * {@link Node} from this instance's internal Node list.
+     * @return a wrapper on the nth node or null
      */
     public XmlTool get(Number n)
     {
@@ -486,6 +507,7 @@ public class XmlTool extends SafeConfig implements Serializable
     /**
      * Returns the first/sole {@link Node} from this
      * instance's internal Node list, if any.
+     * @return the unwrapped first node or null
      */
     public Node node()
     {
@@ -500,6 +522,8 @@ public class XmlTool extends SafeConfig implements Serializable
     /**
      * Converts the specified object to a String and calls
      * {@link #find(String)} with that.
+     * @param o xpath to search
+     * @return a wrapper on found nodes or null
      */
     public XmlTool find(Object o)
     {
@@ -522,6 +546,8 @@ public class XmlTool extends SafeConfig implements Serializable
      * {@code $xml.find("a")} is equivalent to calling
      * {@code $xml.find("//a")}.  The full range of XPath
      * selectors is supported here.
+     * @param xpath xpath to search
+     * @return a wrapper on found nodes or null
      */
     public XmlTool find(String xpath)
     {
@@ -556,6 +582,7 @@ public class XmlTool extends SafeConfig implements Serializable
      * Returns a new {@link XmlTool} instance that wraps
      * the parent {@link Element} of the first/sole {@link Node}
      * being wrapped by this instance.
+     * @return wrapper on the parent of the first node or null
      */
     public XmlTool getParent()
     {
@@ -576,6 +603,7 @@ public class XmlTool extends SafeConfig implements Serializable
      * the parent {@link Element}s of each of the {@link Node}s
      * being wrapped by this instance.  This does not return
      * all ancestors, just the immediate parents.
+     * @return a wrapper on the set of parents nodes or null
      */
     public XmlTool parents()
     {
@@ -615,6 +643,7 @@ public class XmlTool extends SafeConfig implements Serializable
      * Returns a new {@link XmlTool} instance that wraps all the
      * child {@link Element}s of all the current internally held nodes
      * that are {@link Element}s themselves.
+     * @return a wrapper on the children of current nodes
      */
     public XmlTool children()
     {
@@ -649,6 +678,7 @@ public class XmlTool extends SafeConfig implements Serializable
     /**
      * Returns the concatenated text content of all the internally held
      * nodes.  Obviously, this is most useful when only one node is held.
+     * @return text of current nodes or null
      */
     public String getText()
     {
@@ -680,6 +710,7 @@ public class XmlTool extends SafeConfig implements Serializable
      * returns the XML (as a string) of all the internally held nodes
      * that are not {@link Attr}ibutes. For attributes, only the value
      * is used.
+     * @return XML string of current nodes or null
      */
     public String toString()
     {

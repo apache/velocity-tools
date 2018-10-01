@@ -100,6 +100,7 @@ public class DateTool extends FormatConfig implements Serializable
      * subclasses may share the same ValueParser and call configure
      * at any time, while preventing templates from doing so when
      * configure(Map) is locked.
+     * @param values configuration values
      */
     protected void configure(ValueParser values)
     {
@@ -112,6 +113,10 @@ public class DateTool extends FormatConfig implements Serializable
         }
     }
 
+    /**
+     * Sets time zone
+     * @param timezone time zone
+     */
     protected void setTimeZone(TimeZone timezone)
     {
         if (timezone == null)
@@ -197,7 +202,7 @@ public class DateTool extends FormatConfig implements Serializable
     // ------------------------- date value access ---------------------------
 
     /**
-     * Returns the year value of the date returned by {@link #getCalendar()}.
+     * @return the year value of the date returned by {@link #getCalendar()}.
      *
      * @since VelocityTools 1.2
      */
@@ -207,7 +212,8 @@ public class DateTool extends FormatConfig implements Serializable
     }
 
     /**
-     * Returns the year value of the specified date.
+     * @param date target date
+     * @return the year value of the specified date.
      *
      * @since VelocityTools 1.2
      */
@@ -217,7 +223,7 @@ public class DateTool extends FormatConfig implements Serializable
     }
 
     /**
-     * Returns the month value of the date returned by {@link #getCalendar()}.
+     * @return the month value of the date returned by {@link #getCalendar()}.
      *
      * @since VelocityTools 1.2
      */
@@ -227,7 +233,8 @@ public class DateTool extends FormatConfig implements Serializable
     }
 
     /**
-     * Returns the month value of the specified date.
+     * @param date target date
+     * @return the month value of the specified date.
      *
      * @since VelocityTools 1.2
      */
@@ -237,7 +244,7 @@ public class DateTool extends FormatConfig implements Serializable
     }
 
     /**
-     * Returns the day (of the month) value of the date
+     * @return the day (of the month) value of the date
      * returned by {@link #getCalendar()}.
      * <br><br>
      * NOTE: Unlike java.util.Date, this returns the day of the month.
@@ -254,7 +261,8 @@ public class DateTool extends FormatConfig implements Serializable
     }
 
     /**
-     * Returns the day (of the month) value for the specified date.
+     * @param date target date
+     * @return the day (of the month) value for the specified date.
      * <br><br>
      * NOTE: Unlike java.util.Date, this returns the day of the month.
      * It is equivalent to Date.getDate() and
@@ -270,7 +278,8 @@ public class DateTool extends FormatConfig implements Serializable
     }
 
     /**
-     * Return the specified value of the date returned by
+     * @param field target field
+     * @return the specified value of the date returned by
      * {@link #getCalendar()} or null if the field is invalid.
      *
      * @since VelocityTools 1.2
@@ -281,7 +290,7 @@ public class DateTool extends FormatConfig implements Serializable
     }
 
     /**
-     * Returns the specified value of the specified date,
+     * @return the specified value of the specified date,
      * or null if the field or date is invalid.  The field may be
      * an Integer or it may be the name of the field as a String.
      *
@@ -316,7 +325,7 @@ public class DateTool extends FormatConfig implements Serializable
     }
 
     /**
-     * Returns the specified value of the specified date,
+     * @return the specified value of the specified date,
      * or null if the field or date is invalid.
      *
      * @param field the int for the desired field (e.g. Calendar.MONTH)

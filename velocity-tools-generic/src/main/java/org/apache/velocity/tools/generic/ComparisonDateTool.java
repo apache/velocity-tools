@@ -188,6 +188,9 @@ public class ComparisonDateTool extends DateTool
 
     /**
      * Retrieves the specified text resource.
+     * @param key key
+     * @param locale locale
+     * @return text resource
      */
     protected String getText(String key, Locale locale)
     {
@@ -241,6 +244,8 @@ public class ComparisonDateTool extends DateTool
 
     /**
      * Returns the number of whole Years in the specified number of milliseconds.
+     * @param ms milliseconds
+     * @return years
      */
     public static long toYears(long ms)
     {
@@ -249,6 +254,8 @@ public class ComparisonDateTool extends DateTool
 
     /**
      * Returns the number of whole Months in the specified number of milliseconds.
+     * @param ms milliseconds
+     * @return months
      */
     public static long toMonths(long ms)
     {
@@ -257,6 +264,8 @@ public class ComparisonDateTool extends DateTool
 
     /**
      * Returns the number of whole Weeks in the specified number of milliseconds.
+     * @param ms milliseconds
+     * @return weeks
      */
     public static long toWeeks(long ms)
     {
@@ -265,6 +274,8 @@ public class ComparisonDateTool extends DateTool
 
     /**
      * Returns the number of whole Days in the specified number of milliseconds.
+     * @param ms milliseconds
+     * @return days
      */
     public static long toDays(long ms)
     {
@@ -273,6 +284,8 @@ public class ComparisonDateTool extends DateTool
 
     /**
      * Returns the number of whole Hours in the specified number of milliseconds.
+     * @param ms milliseconds
+     * @return hours
      */
     public static long toHours(long ms)
     {
@@ -281,6 +294,8 @@ public class ComparisonDateTool extends DateTool
 
     /**
      * Returns the number of whole Minutes in the specified number of milliseconds.
+     * @param ms milliseconds
+     * @return minutes
      */
     public static long toMinutes(long ms)
     {
@@ -289,6 +304,8 @@ public class ComparisonDateTool extends DateTool
 
     /**
      * Returns the number of whole Seconds in the specified number of milliseconds.
+     * @param ms milliseconds
+     * @return seconds
      */
     public static long toSeconds(long ms)
     {
@@ -305,6 +322,7 @@ public class ComparisonDateTool extends DateTool
      * between the dates followed by a description of their relative position.
      *
      * @param then The date in question
+     * @return {@link Comparison} object
      */
     public Comparison whenIs(Object then)
     {
@@ -319,6 +337,7 @@ public class ComparisonDateTool extends DateTool
      *
      * @param now The date to use as representative of "now"
      * @param then The date in question
+     * @return {@link Comparison} object
      */
     public Comparison whenIs(Object now, Object then)
     {
@@ -333,12 +352,20 @@ public class ComparisonDateTool extends DateTool
      *
      * @param now The date to use as representative of "now"
      * @param then The secondary date
+     * @return {@link Comparison} object
      */
     public Comparison difference(Object now, Object then)
     {
         return compare(now, then, DIFF_TYPE);
     }
 
+    /**
+     * Internal comparison method.
+     * @param now The date to use as representative of "now"
+     * @param then The secondary date
+     * @param type Difference type
+     * @return {@link Comparison} object
+     */
     protected Comparison compare(Object now, Object then, int type)
     {
         Calendar calThen = toCalendar(then);
@@ -360,6 +387,7 @@ public class ComparisonDateTool extends DateTool
      * @param depth The maximum number of units deep to show
      * @param abbr Whether the units should be abbreviated or not
      * @param loc The locale to be used when looking up resources
+     * @return String representation
      */
     protected String toString(long ms, int type, int depth,
                               boolean abbr, Locale loc)
@@ -451,6 +479,11 @@ public class ComparisonDateTool extends DateTool
      * "3 minutes 1 second", and
      * <code>toString(180000, 2, true, null)</code> will return
      * "3 min".
+     * @param diff milliseconds
+     * @param maxUnitDepth maximum unit depth
+     * @param abbreviate whether to abbreviate unit names
+     * @param locale locale to use
+     * @return string representation of the difference
      */
     protected String toString(long diff, int maxUnitDepth,
                               boolean abbreviate, Locale locale)
@@ -533,6 +566,14 @@ public class ComparisonDateTool extends DateTool
         private final boolean abbreviate;
         private final Locale locale;
 
+        /**
+         * Comparison object constructor
+         * @param ms milliseconds
+         * @param type comparison type
+         * @param depth units depth
+         * @param abbr whether to abbreviate units
+         * @param loc locale to use
+         */
         public Comparison(long ms, int type, int depth, boolean abbr, Locale loc)
         {
             this.milliseconds = ms;
@@ -545,6 +586,8 @@ public class ComparisonDateTool extends DateTool
         /**
          * Sets whether or not this comparison is to be rendered in
          * abbreviated form or not. By default, it is not abbreviated.
+         * @param abbr flag value
+         * @return new Comparison object
          */
         public Comparison abbr(boolean abbr)
         {
@@ -555,6 +598,8 @@ public class ComparisonDateTool extends DateTool
         /**
          * Set the maximum number of units to render for this comparison.
          * By default, this is set to 1 unit.
+         * @param depth max units depth
+         * @return new Comparison object
          */
         public Comparison depth(int depth)
         {
@@ -567,6 +612,8 @@ public class ComparisonDateTool extends DateTool
          * rendering. This defaults to the Locale configured for this tool,
          * if any.  If no locale was configured, this defaults to the system
          * default.
+         * @param loc locale to use
+         * @return new Comparison object
          */
         public Comparison locale(Locale loc)
         {
@@ -576,6 +623,7 @@ public class ComparisonDateTool extends DateTool
 
         /**
          * Return the approximate number of years between the dates being compared.
+         * @return years
          */
         public long getYears()
         {
@@ -584,6 +632,7 @@ public class ComparisonDateTool extends DateTool
 
         /**
          * Return the approximate number of months between the dates being compared.
+         * @return months
          */
         public long getMonths()
         {
@@ -592,6 +641,7 @@ public class ComparisonDateTool extends DateTool
 
         /**
          * Return the number of weeks between the dates being compared.
+         * @return weeks
          */
         public long getWeeks()
         {
@@ -600,6 +650,7 @@ public class ComparisonDateTool extends DateTool
 
         /**
          * Return the number of days between the dates being compared.
+         * @return days
          */
         public long getDays()
         {
@@ -608,6 +659,7 @@ public class ComparisonDateTool extends DateTool
 
         /**
          * Return the number of hours between the dates being compared.
+         * @return hours
          */
         public long getHours()
         {
@@ -616,6 +668,7 @@ public class ComparisonDateTool extends DateTool
 
         /**
          * Return the number of minutes between the dates being compared.
+         * @return minutes
          */
         public long getMinutes()
         {
@@ -624,6 +677,7 @@ public class ComparisonDateTool extends DateTool
 
         /**
          * Return the number of seconds between the dates being compared.
+         * @return seconds
          */
         public long getSeconds()
         {
@@ -632,6 +686,7 @@ public class ComparisonDateTool extends DateTool
 
         /**
          * Return the number of milliseconds between the dates being compared.
+         * @return milliseconds
          */
         public long getMilliseconds()
         {
@@ -643,6 +698,7 @@ public class ComparisonDateTool extends DateTool
          * to the maximum number of time units available to the tool. By default,
          * there are 8 units available, but the tool may be configured to "skip"
          * any of the standard units, thus shortening the maximum depth.
+         * @return new Comparison object
          */
         public Comparison getFull()
         {
@@ -655,6 +711,7 @@ public class ComparisonDateTool extends DateTool
          * the comparison will render as a period of time, without any suffix
          * to describe the relative position of the dates being compared (e.g. "later"
          * or "ago").
+         * @return new Comparison object
          */
         public Comparison getDifference()
         {
@@ -668,6 +725,7 @@ public class ComparisonDateTool extends DateTool
          * This effectively means that the comparison will render with a suffix
          * to describe the relative position of the dates being compared (e.g. "later"
          * or "ago").
+         * @return new Comparison object
          */
         public Comparison getRelative()
         {
@@ -679,6 +737,7 @@ public class ComparisonDateTool extends DateTool
          * This is equivalent to calling {@link #abbr(boolean abbr)} with
          * {@code true} as the argument, thus setting this comparison to be
          * rendered in abbreviated form.
+         * @return new Comparison object
          */
         public Comparison getAbbr()
         {
@@ -687,6 +746,7 @@ public class ComparisonDateTool extends DateTool
 
         /**
          * Renders this comparison to a String.
+         * @return string representation
          */
         public String toString()
         {

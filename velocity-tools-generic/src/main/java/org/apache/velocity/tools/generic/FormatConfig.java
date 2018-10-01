@@ -69,6 +69,7 @@ public class FormatConfig extends LocaleConfig
 
     /**
      * Sets the default format for this instance.
+     * @param format default format
      */
     protected void setFormat(String format)
     {

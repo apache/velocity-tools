@@ -316,7 +316,7 @@ public final class XmlUtils
     }
 
     /**
-     * @param target node
+     * @param node target node
      * @param attr attribute name
      * @param def default value
      * @return An attribute coerced to an integer.
@@ -538,7 +538,7 @@ public final class XmlUtils
 
     /**
      * Checkes whether the given mime type is an XML format
-     * @param mimeType
+     * @param mimeType mime type
      * @return <code>true</code> if this mime type is an XML format
      */
     public static boolean isXmlMimeType(String mimeType)

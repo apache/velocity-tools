@@ -155,6 +155,7 @@ public class RenderTool extends SafeConfig
     /**
      * Allow user to specify a VelocityEngine to be used
      * in place of the Velocity singleton.
+     * @param ve VelocityEngine instance
      */
     public void setVelocityEngine(VelocityEngine ve)
     {
@@ -163,7 +164,7 @@ public class RenderTool extends SafeConfig
 
     /**
      * Set the maximum number of loops allowed when recursing.
-     *
+     * @param depth parse depth
      * @since VelocityTools 1.2
      */
     public void setParseDepth(int depth)
@@ -181,6 +182,7 @@ public class RenderTool extends SafeConfig
     /**
      * Sets the {@link Context} to be used by the {@link #eval(String)}
      * and {@link #recurse(String)} methods.
+     * @param context Velocity context
      */
     public void setVelocityContext(Context context)
     {
@@ -200,7 +202,7 @@ public class RenderTool extends SafeConfig
 
     /**
      * Get the maximum number of loops allowed when recursing.
-     *
+     * @return parse depth
      * @since VelocityTools 1.2
      */
     public int getParseDepth()
@@ -211,6 +213,7 @@ public class RenderTool extends SafeConfig
     /**
      * Sets whether or not the render() and eval() methods should catch
      * exceptions during their execution or not.
+     * @param catchExceptions whether to catch exceptions
      * @since VelocityTools 1.3
      */
     public void setCatchExceptions(boolean catchExceptions)
@@ -228,6 +231,7 @@ public class RenderTool extends SafeConfig
     /**
      * Returns <code>true</code> if this render() and eval() methods will
      * catch exceptions thrown during rendering.
+     * @return whether to catch exceptions
      * @since VelocityTools 1.3
      */
     public boolean getCatchExceptions()
@@ -248,6 +252,7 @@ public class RenderTool extends SafeConfig
      *
      * @param vtl the code to be evaluated
      * @return the evaluated code as a String
+     * @throws Exception if womething went wrong
      */
     public String eval(String vtl) throws Exception
     {
@@ -266,6 +271,7 @@ public class RenderTool extends SafeConfig
      * @see #eval(String)
      * @param vtl the code to be evaluated
      * @return the evaluated code as a String
+     * @throws Exception if womething went wrong
      */
     public String recurse(String vtl) throws Exception
     {
@@ -282,6 +288,7 @@ public class RenderTool extends SafeConfig
      * @param ctx the current Context
      * @param vtl the code to be evaluated
      * @return the evaluated code as a String
+     * @throws Exception if womething went wrong
      */
     public String eval(Context ctx, String vtl) throws Exception
     {
@@ -340,6 +347,7 @@ public class RenderTool extends SafeConfig
      * @param ctx the current Context
      * @param vtl the code to be evaluated
      * @return the evaluated code as a String
+     * @throws Exception if womething went wrong
      */
     public String recurse(Context ctx, String vtl) throws Exception
     {

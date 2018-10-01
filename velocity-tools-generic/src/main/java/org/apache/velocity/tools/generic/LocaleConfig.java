@@ -67,6 +67,7 @@ public class LocaleConfig extends SafeConfig
 
     /**
      * Sets the default locale for this instance.
+     * @param locale default locale to use
      */
     protected void setLocale(Locale locale)
     {

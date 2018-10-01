@@ -110,6 +110,8 @@ public class ResourceTool extends LocaleConfig implements Serializable
 
     /**
      * Accepts objects and uses their string value as the key.
+     * @param k key
+     * @return Key object
      */
     public Key get(Object k)
     {
@@ -117,11 +119,20 @@ public class ResourceTool extends LocaleConfig implements Serializable
         return get(key);
     }
 
+    /**
+     * Accepts objects and uses their string value as the key.
+     * @param k key
+     * @return Key object
+     */
     public Key get(String key)
     {
         return new Key(key, this.bundles, getLocale(), null);
     }
 
+    /**
+     * Lists available keys
+     * @return keys list
+     */
     public List<String> getKeys()
     {
         return getKeys(null, this.bundles, getLocale());
@@ -163,6 +174,9 @@ public class ResourceTool extends LocaleConfig implements Serializable
      * and locale, if such exists.  If the baseName or locale is null
      * or if the locale argument cannot be converted to a {@link Locale},
      * then this will return null.
+     * @param baseName base name
+     * @param loc locale
+     * @return resource bundle
      */
     protected ResourceBundle getBundle(String baseName, Object loc)
     {
@@ -182,6 +196,7 @@ public class ResourceTool extends LocaleConfig implements Serializable
      * @param key the key for the requested resource
      * @param baseName the base name of the resource bundle to search
      * @param loc the locale to use
+     * @return value
      */
     public Object get(Object key, String baseName, Object loc)
     {
@@ -209,6 +224,7 @@ public class ResourceTool extends LocaleConfig implements Serializable
      * @param k the key for the requested resource
      * @param bundles the resource bundles to search
      * @param l the locale to use
+     * @return value
      */
     public Object get(Object k, String[] bundles, Object l)
     {
@@ -235,6 +251,7 @@ public class ResourceTool extends LocaleConfig implements Serializable
      * @param prefix the prefix for the requested keys
      * @param baseName the resource bundle base name
      * @param loc the locale to use
+     * @return keys list
      */
     public List<String> getKeys(String prefix, String baseName, Object loc)
     {
@@ -280,6 +297,7 @@ public class ResourceTool extends LocaleConfig implements Serializable
      * @param prefix the prefix for the requested keys
      * @param bundles the resource bundles to search
      * @param loc the locale to use
+     * @return keys list
      * @see #getKeys(String,String,Object)
      */
     public List<String> getKeys(String prefix, String[] bundles, Object loc)
@@ -306,6 +324,9 @@ public class ResourceTool extends LocaleConfig implements Serializable
      * Renders the specified resource value and arguments as a String.
      * The resource is treated as a {@link MessageFormat} pattern which
      * is used for formatting along with any specified argument values.
+     * @param resource resource object
+     * @param args arguments
+     * @return formatted string
      */
     public String render(Object resource, Object[] args)
     {

@@ -72,6 +72,7 @@ public class ConfigurationUtils
      * will override their superclasses.  So, if you are using the VelocityStruts
      * jar, then your $link reference will be a StrutsLinkTool.  If you are using
      * the VelocityView jar, it will be a standard LinkTool.
+     * @return the default {@link FactoryConfiguration}
      */
     public static FactoryConfiguration getDefaultTools()
     {
@@ -90,6 +91,7 @@ public class ConfigurationUtils
     /**
      * Returns a {@link FactoryConfiguration} including all default
      * "GenericTools" available and no others.
+     * @return the generic tools default {@link FactoryConfiguration}
      */
     public static FactoryConfiguration getGenericTools()
     {
@@ -105,6 +107,7 @@ public class ConfigurationUtils
     /**
      * <p>Returns a {@link FactoryConfiguration} including all default
      * "VelocityView" tools available as well as the default "GenericTools".</p>
+     * @return all default tools {@link ConfigurationFactory}
      * @throws ConfigurationException if a tools.xml is not found at the {@link #VIEW_DEFAULTS_PATH}.
      */
     public static FactoryConfiguration getVelocityView()
@@ -123,6 +126,7 @@ public class ConfigurationUtils
      * Returns a {@link FactoryConfiguration} loaded from the path specified
      * in the "org.apache.velocity.tools" system property (if any).
      * If no such property has been set {@code null} will be returned.
+     * @return system property defined {@link FactoryConfiguration}
      * @throws ResourceNotFoundException if the system property has a value
      *         but no configuration file was found at the specified location
      */
@@ -139,6 +143,7 @@ public class ConfigurationUtils
     /**
      * Returns a new, standard {@link ToolboxFactory} configured
      * with the results of {@link #findFromSystemProperty()}.
+     * @return new {@link ToolboxFactory}
      */
     public static ToolboxFactory createFactory()
     {
@@ -157,6 +162,7 @@ public class ConfigurationUtils
      * Convenience method that automatically creates a new
      * {@link ConfigurationCleaner} and applies it to the specified
      * {@link Configuration}.
+     * @param config {@link configuration}
      */
     public static void clean(Configuration config)
     {
@@ -171,6 +177,8 @@ public class ConfigurationUtils
      * at the specified path.  If no such file is found at that path, this
      * will throw a {@link ResourceNotFoundException}.
      *
+     * @param path configuration path
+     * @return new {@linkFactoryConfiguration}
      * @see #find(String path)
      */
     public static FactoryConfiguration load(String path)
@@ -191,6 +199,8 @@ public class ConfigurationUtils
      * configuration loaded from the file system is given precedence (i.e.
      * it is added onto the other).  If no match is found in either, then
      * this will return {@code null}.
+     * @param path configuration classpath or filesystem path
+     * @return new {@link FactoryConfiguration} for the given path
      */
     public static FactoryConfiguration find(String path)
     {
@@ -215,6 +225,8 @@ public class ConfigurationUtils
      * specified path.  If found, it will read and return it as a
      * {@link FactoryConfiguration}.  If not found, this will return
      * {@code null}.
+     * @param path filesystem path
+     * @return new {@link FactoryConfiguration} for the given path
      * @throws IllegalStateException if the file exists, but its path could not be converted to a URL for reading.
      */
     public static FactoryConfiguration findInFileSystem(String path)
@@ -235,6 +247,8 @@ public class ConfigurationUtils
     }
 
     /**
+     * @param path configuration classpath
+     * @return new {@link FactoryConfiguration} for the given classpath
      * @see #findInClasspath(String path, Object caller)
      */
     public static FactoryConfiguration findInClasspath(String path)
@@ -250,6 +264,9 @@ public class ConfigurationUtils
      * {@code null}.  If there are multiple matching resources in the
      * classpath, then they will be added together in the order found
      * (i.e. the last one will have precedence).
+     * @param path configuration classpath
+     * @param caller classloader context
+     * @return new {@link FactoryConfiguration} for the given classpath
      * @see ClassUtils#getResources(String path, Object caller)
      */
     public static FactoryConfiguration findInClasspath(String path, Object caller)
@@ -297,6 +314,8 @@ public class ConfigurationUtils
      * Returns a {@link FactoryConfiguration} read from a known configuration
      * file type at the specified {@link URL}.  If the file is missing or unreadable,
      * this will simply return {@code null} (i.e. if an IOException is thrown).
+     * @param url configuration URL
+     * @return new {@link FactoryConfiguration} for the given URL
      * @throws UnsupportedOperationException if the file type (identified via suffix)
      *         is neither ".xml" or ".properties"
      */
@@ -339,6 +358,11 @@ public class ConfigurationUtils
         return config;
     }
 
+    /**
+     * Get a specific {@link FactoryConfiguration} class
+     * @param classname FacotyConfiguration class
+     * @return new FactoryConfiguration instance
+     */
     public static FactoryConfiguration getFromClass(String classname)
     {
         try

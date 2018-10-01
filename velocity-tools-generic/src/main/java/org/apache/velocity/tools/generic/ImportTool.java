@@ -56,7 +56,7 @@ public class ImportTool extends SafeConfig implements Serializable
 
     /**
      * Importsupport initialization
-     * @param config
+     * @param config configuration values
      */
     protected synchronized void initializeImportSupport(ValueParser config)
     {
@@ -69,7 +69,7 @@ public class ImportTool extends SafeConfig implements Serializable
 
     /**
      * Configuration
-     * @param values
+     * @param values configuration values
      */
     protected void configure(ValueParser values)
     {

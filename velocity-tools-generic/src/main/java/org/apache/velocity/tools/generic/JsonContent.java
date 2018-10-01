@@ -66,6 +66,7 @@ public class JsonContent
 
     /**
      * wraps an object
+     * @param object JsonObject to wrap
      */
     public JsonContent(JsonObject object)
     {
@@ -74,6 +75,7 @@ public class JsonContent
 
     /**
      * wraps an array
+     * @param array JsonArray to wrap
      */
     public JsonContent(JsonArray array)
     {
@@ -82,7 +84,7 @@ public class JsonContent
 
     /**
      * Get a value from root array
-     * @param index
+     * @param index array index
      * @return value, or null
      */
     public Object get(int index)
@@ -101,7 +103,7 @@ public class JsonContent
 
     /**
      * Get a property from root object
-     * @param key
+     * @param key map key
      * @return property value, or null
      */
     public Object get(String key)
@@ -133,7 +135,7 @@ public class JsonContent
 
     /**
      * Get set of root object keys.
-     * @return
+     * @return keys set
      */
     public Set<String> keySet()
     {

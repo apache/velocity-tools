@@ -95,6 +95,7 @@ public class Data implements Comparable<Data>
     /**
      * This doesn't take a {@link Class} parameter because
      * this class was not created for all-java configuration.
+     * @param classname class name
      */
     public void setClass(String classname)
     {
@@ -158,6 +159,7 @@ public class Data implements Comparable<Data>
     /**
      * This is a convenience method for those doing configuration in java.
      * It cannot be named setConverter(), or else it would confuse BeanUtils.
+     * @param converter value converter
      */
     public void convertWith(Converter converter)
     {

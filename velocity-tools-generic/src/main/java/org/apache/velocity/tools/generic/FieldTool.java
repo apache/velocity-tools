@@ -126,6 +126,8 @@ public class FieldTool extends SafeConfig
      * Returns the value for the specified field name as found
      * in the stored {@link Map} of field names to values (or placeholders).
      * Returns {@code null} if there is no matching field.
+     * @param name field name
+     * @return field value
      */
     public Object get(String name)
     {
@@ -159,6 +161,8 @@ public class FieldTool extends SafeConfig
      * {@link Class} with the specified name cannot be loaded, this will
      * return {@code null}, rather than throw an exception.
      *
+     * @param classname target class name
+     * @return {@link FieldToolSub} object
      * @see #in(Class clazz)
      */
     public FieldToolSub in(String classname)
@@ -178,6 +182,8 @@ public class FieldTool extends SafeConfig
      * of all the public static field names to values (or a placeholder
      * if the value is not final) for the {@link Class} of the
      * specified Object.
+     * @param instance target instance
+     * @return {@link FieldToolSub} object
      * @see #in(Class clazz)
      */
     public FieldToolSub in(Object instance)
@@ -193,6 +199,8 @@ public class FieldTool extends SafeConfig
      * Returns a {@link FieldToolSub} holding a {@link Map}
      * of all the public static field names to values (or a placeholder
      * if the value is not final) for the specified {@link Class}.
+     * @param clazz target class
+     * @return {@link FieldToolSub} object
      */
     public FieldToolSub in(Class clazz)
     {
@@ -215,6 +223,8 @@ public class FieldTool extends SafeConfig
      * stores their value (if final) or else a {@link MutableField} for
      * in a {@link Map} under the fields' names.  This will never return
      * null, only an empty Map if there are no public static fields.
+     * @param clazz target class
+     * @return fields map
      */
     protected Map<String,Object> inspect(Class clazz)
     {
@@ -251,6 +261,9 @@ public class FieldTool extends SafeConfig
      * Retrieves and returns the value of the specified {@link Field}
      * in the specified {@link Class}. Returns {@code null} in case of failure.
      * 
+     * @param field target field
+     * @param clazz target class
+     * @return field value
      */
     protected Object retrieve(Field field, Class clazz)
     {

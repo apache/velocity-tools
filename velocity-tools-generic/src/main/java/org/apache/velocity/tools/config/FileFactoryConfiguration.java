@@ -44,6 +44,7 @@ public abstract class FileFactoryConfiguration extends FactoryConfiguration
      * <p>Reads an configuration from an {@link URL}.</p>
      * 
      * @param url the InputStream to read from
+     * @throws IOException if a problem occurs
      */
     protected abstract void readImpl(URL url) throws IOException;
 

@@ -83,14 +83,18 @@ public class ImportSupport extends SafeConfig
      */
 
     /**
-     * configure import support
-     * @param values
+     * Configure import support
+     * @param values configuration values
      */
     protected void configure(ValueParser values)
     {
         super.configure(values);
     }
 
+    /**
+     * Sets or clears safe mode
+     * @param safe flag value
+     */
     @Override
     public void setSafeMode(boolean safe)
     {
@@ -101,7 +105,7 @@ public class ImportSupport extends SafeConfig
      *
      * @param url the URL resource to return as string
      * @return the URL resource as string
-     * @throws IOException
+     * @throws IOException if operation failed
      */
     public String acquireString(String url) throws IOException
     {
@@ -120,7 +124,7 @@ public class ImportSupport extends SafeConfig
      * Aquire the content of a remote URL.
      * @param url remote URL
      * @return the URL resource as string
-     * @throws IOException
+     * @throws IOException if operation failed
      */
     protected String acquireRemoteURLString(String url) throws IOException
     {
@@ -159,7 +163,7 @@ public class ImportSupport extends SafeConfig
      * Aquire the content of a local URL.
      * @param url local URL
      * @return the URL resource as string
-     * @throws IOException
+     * @throws IOException if operation failed
      */
     protected String acquireLocalURLString(String url) throws IOException
     {
@@ -170,7 +174,7 @@ public class ImportSupport extends SafeConfig
      * Acquire a reader to an URL
      * @param url the URL to read
      * @return a Reader for the InputStream created from the supplied URL
-     * @throws IOException
+     * @throws IOException if operation failed
      */
     public Reader acquireReader(String url) throws IOException
     {
@@ -189,7 +193,7 @@ public class ImportSupport extends SafeConfig
      * Acquire a reader to a remote URL
      * @param url the URL to read
      * @return a Reader for the InputStream created from the supplied URL
-     * @throws IOException
+     * @throws IOException if operation failed
      */
     protected Reader acquireRemoteURLReader(String url) throws  IOException
     {
@@ -302,7 +306,7 @@ public class ImportSupport extends SafeConfig
      * Acquire a reader to a local URL - non applicable to the generic version of ImportSupport
      * @param url the URL to read
      * @return a Reader for the InputStream created from the supplied URL
-     * @throws IOException
+     * @throws IOException if operation failed
      */
     protected Reader acquireLocalURLReader(String url) throws  IOException
     {
@@ -559,7 +563,7 @@ public class ImportSupport extends SafeConfig
      * Overridable local file URL builder.
      * @param resource the resource to read
      * @return the content of the resource
-     * @throws IOException
+     * @throws Exception if operation failed
      */
     protected URL getFileResource(String resource) throws Exception
     {
@@ -576,7 +580,7 @@ public class ImportSupport extends SafeConfig
      * Classpath entry URL builder
      * @param resource the resource to read
      * @return the content of the resource
-     * @throws IOException
+     * @throws Exception if operation failed
      */
     protected URL getClasspathResource(String resource) throws Exception
     {

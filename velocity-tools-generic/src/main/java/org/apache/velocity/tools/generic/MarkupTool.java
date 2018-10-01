@@ -74,6 +74,7 @@ public class MarkupTool extends SafeConfig implements Serializable
 
     /**
      * Configuration
+     * @param tab tab string
      */
     public void setTab(String tab)
     {
@@ -398,6 +399,11 @@ public class MarkupTool extends SafeConfig implements Serializable
 
         /************* rendering methods **************/
 
+        /**
+         * Render tag
+         * @param indent indentation string
+         * @param s string builder
+         */
         protected void render(String indent, StringBuilder s)
         {
             if (render_start(indent, s))
@@ -407,6 +413,12 @@ public class MarkupTool extends SafeConfig implements Serializable
             }
         }
 
+        /**
+         * Start tag rendering
+         * @param indent indentation string
+         * @param s string builder
+         * @return whether a closing tag is needed
+         */
         protected boolean render_start(String indent, StringBuilder s)
         {
             if (indent != null)
@@ -430,11 +442,19 @@ public class MarkupTool extends SafeConfig implements Serializable
             }
         }
 
+        /**
+         * Render tag name
+         * @param s string builder
+         */
         protected void render_name(StringBuilder s)
         {
             s.append(name == null ? "div" : name);
         }
 
+        /**
+         * render tag id
+         * @param s string builder
+         */
         protected void render_id(StringBuilder s)
         {
             if (id != null)
@@ -443,6 +463,10 @@ public class MarkupTool extends SafeConfig implements Serializable
             }
         }
 
+        /**
+         * render tag classes
+         * @param s string builder
+         */
         protected void render_classes(StringBuilder s)
         {
             if (classes != null)
@@ -460,6 +484,10 @@ public class MarkupTool extends SafeConfig implements Serializable
             }
         }
 
+        /**
+         * Render tag attributes
+         * @param s string builder
+         */
         protected void render_attributes(StringBuilder s)
         {
             if (attributes != null)
@@ -476,6 +504,11 @@ public class MarkupTool extends SafeConfig implements Serializable
             }
         }
 
+        /**
+         * Render tag body
+         * @param indent indentation string
+         * @param s string builder
+         */
         protected void render_body(String indent, StringBuilder s)
         {
             String kidIndent = indent + tool.getTab();
@@ -493,6 +526,11 @@ public class MarkupTool extends SafeConfig implements Serializable
             }
         }
 
+        /**
+         * Render tag end
+         * @param indent indentation string
+         * @param s string builder
+         */
         protected void render_end(String indent, StringBuilder s)
         {
             if (indent != null)
@@ -502,6 +540,9 @@ public class MarkupTool extends SafeConfig implements Serializable
             s.append("</").append(name).append('>');
         }
 
+        /**
+         * @return string representation
+         */
         public String toString()
         {
             StringBuilder s = new StringBuilder();

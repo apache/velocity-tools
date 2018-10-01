@@ -659,6 +659,9 @@ public class MathTool extends FormatConfig implements Serializable
     // --------------------------- protected methods ------------------
 
     /**
+     * @param in instance of wanted Number class
+     * @param out input number
+     * @return wanted Number
      * @see #matchType(double,Number...)
      */
     protected Number matchType(Number in, double out)
@@ -667,6 +670,10 @@ public class MathTool extends FormatConfig implements Serializable
     }
 
     /**
+     * @param in1 instance #1 of wanted Number class
+     * @param in2 instance #1 of wanted Number class
+     * @param out input number
+     * @return wanted Number
      * @see #matchType(double,Number...)
      */
     protected Number matchType(Number in1, Number in2, double out)
@@ -681,6 +688,9 @@ public class MathTool extends FormatConfig implements Serializable
      * decimal when rendered) the result will be returned as a Double.
      * If not and the result is &lt; -2147483648 or &gt; 2147483647, then a
      * Long will be returned.  Otherwise, an Integer will be returned.
+     * @param out target number value
+     * @param in wanted Number classes
+     * @return wanted Number
      */
     protected Number matchType(double out, Number... in)
     {
@@ -722,6 +732,10 @@ public class MathTool extends FormatConfig implements Serializable
         }
     }
 
+    /**
+     * @param value target value
+     * @return wether it contains a decimal separator (non locale-aware for now - TODO)
+     */
     protected boolean hasFloatingPoint(String value)
     {
         return value.indexOf('.') >= 0;

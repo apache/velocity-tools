@@ -334,6 +334,11 @@ public class DisplayTool extends LocaleConfig implements Serializable
 
     /**
      * Does the actual formatting of the collection.
+     * @param list collection of objects to format
+     * @param delim delimiter
+     * @param finaldelim final delimiter
+     * @param property objects property to use
+     * @return formatted string
      */
     protected String format(Collection list, String delim, String finaldelim,
                             String property)
@@ -370,6 +375,9 @@ public class DisplayTool extends LocaleConfig implements Serializable
      * required here is quite different from that of
      * {@link #printf(String,Object...)}.
      *
+     * @param format format string
+     * @param args arguments
+     * @return formatted message
      * @since VelocityTools 2.0
      */
     public String message(String format, Object... args)
@@ -403,6 +411,9 @@ public class DisplayTool extends LocaleConfig implements Serializable
      * required here is quite different from that of
      * {@link #message(String,Object...)}.
      *
+     * @param format format string
+     * @param args printf arguments
+     * @return formatted string
      * @see java.util.Formatter
      * @since VelocityTools 2.0
      */
@@ -536,6 +547,7 @@ public class DisplayTool extends LocaleConfig implements Serializable
     /**
      * Returns a string of spaces of the specified length.
      * @param length the number of spaces to return
+     * @return string of spaces
      */
     public String space(int length)
     {
@@ -556,6 +568,7 @@ public class DisplayTool extends LocaleConfig implements Serializable
      * Truncates or pads the string value of the specified object as necessary
      * to ensure that the returned string's length equals the default cell size.
      * @param obj the value to be put in the 'cell'
+     * @return truncated/padded string
      */
     public String cell(Object obj)
     {
@@ -567,6 +580,7 @@ public class DisplayTool extends LocaleConfig implements Serializable
      * to ensure that the returned string's length equals the specified cell size.
      * @param obj the value to be put in the 'cell'
      * @param cellsize the size of the cell into which the object must be placed
+     * @return truncated/padded string
      */
     public String cell(Object obj, int cellsize)
     {
@@ -581,6 +595,7 @@ public class DisplayTool extends LocaleConfig implements Serializable
      * @param obj the value to be put in the 'cell'
      * @param suffix the suffix to put at the end of any values that need truncating
      *               to indicate that they've been truncated
+     * @return truncated/padded string
      */
     public String cell(Object obj, String suffix)
     {
@@ -594,6 +609,7 @@ public class DisplayTool extends LocaleConfig implements Serializable
      * @param cellsize the size of the cell into which the object must be placed
      * @param suffix the suffix to put at the end of any values that need truncating
      *               to indicate that they've been truncated
+     * @return truncated/padded string
      */
     public String cell(Object obj, int cellsize, String suffix)
     {
@@ -622,6 +638,7 @@ public class DisplayTool extends LocaleConfig implements Serializable
      * to upper case and returns the resulting string.
      *
      * @param capitalizeMe The value to be capitalized.
+     * @return capitalized string
      */
     public String capitalize(Object capitalizeMe)
     {
@@ -650,6 +667,7 @@ public class DisplayTool extends LocaleConfig implements Serializable
      * to lower case and returns the resulting string.
      *
      * @param uncapitalizeMe The value to be uncapitalized.
+     * @return uncapitalized string
      */
     public String uncapitalize(Object uncapitalizeMe)
     {
@@ -675,7 +693,7 @@ public class DisplayTool extends LocaleConfig implements Serializable
 
     /**
      * Returns a configured default value if specified value is null.
-     * @param checkMe
+     * @param checkMe object to check
      * @return a configured default value if the specified value is null.
      */
     public Object alt(Object checkMe)
@@ -685,8 +703,8 @@ public class DisplayTool extends LocaleConfig implements Serializable
 
     /**
      * Returns the second argument if first argument specified is null.
-     * @param checkMe
-     * @param alternate
+     * @param checkMe object to check
+     * @param alternate alternate value
      * @return the second argument if the first is null.
      */
     public Object alt(Object checkMe, Object alternate)
@@ -702,7 +720,8 @@ public class DisplayTool extends LocaleConfig implements Serializable
      * Inserts HTML line break tag (&lt;br /&gt;) in front of all newline
      * characters of the string value of the specified object and returns the
      * resulting string.
-     * @param obj
+     * @param obj source object
+     * @return string with added br tags
      */
     public String br(Object obj)
     {
@@ -719,7 +738,8 @@ public class DisplayTool extends LocaleConfig implements Serializable
     /**
      * Removes HTML tags from the string value of the specified object and
      * returns the resulting string.
-     * @param obj
+     * @param obj source object
+     * @return text stripped from HTML tags
      */
     public String stripTags(Object obj)
     {
@@ -729,8 +749,9 @@ public class DisplayTool extends LocaleConfig implements Serializable
     /**
      * Removes all not allowed HTML tags from the string value of the specified
      * object and returns the resulting string.
-     * @param obj
+     * @param obj source object
      * @param allowedTags An array of allowed tag names (i.e. "h1","br","img")
+     * @return text stripped from given HTML tags
      */
     public String stripTags(Object obj, String... allowedTags)
     {
@@ -769,8 +790,9 @@ public class DisplayTool extends LocaleConfig implements Serializable
      * returns 'singular'. Plural form is built using some basic English
      * language rules for nouns which does not guarantee correct syntax of a
      * result in all cases.
-     * @param value
+     * @param value count
      * @param singular Singular form of a word.
+     * @return guessed plural
      */
     public String plural(int value, String singular)
     {
@@ -780,9 +802,10 @@ public class DisplayTool extends LocaleConfig implements Serializable
     /**
      * Returns 'plural' parameter if passed 'value' is plural, otherwise
      * 'singular' is returned.
-     * @param value
+     * @param value count
      * @param singular Singular form of a word.
      * @param plural Plural form of a word.
+     * @return guessed plural
      */
     public String plural(int value, String singular, String plural)
     {
@@ -832,6 +855,10 @@ public class DisplayTool extends LocaleConfig implements Serializable
      * Subclasses that wish to perform more advanced, efficient, or just
      * different property retrieval methods should override this method to do
      * so.
+     * @param object target object
+     * @param property target property
+     * @return property value
+     * @throws IllegalArgumentException if it wasn't possible to get the object's property value
      */
     protected Object getProperty(Object object, String property)
     {
@@ -848,6 +875,8 @@ public class DisplayTool extends LocaleConfig implements Serializable
 
     /**
      * Returns the {@link Measurements} of the string value of the specified object.
+     * @param measureMe object to measure
+     * @return {@link Measurements} object
      */
     public Measurements measure(Object measureMe)
     {
