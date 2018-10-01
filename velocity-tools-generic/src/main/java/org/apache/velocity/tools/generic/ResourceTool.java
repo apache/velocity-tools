@@ -437,6 +437,7 @@ public class ResourceTool extends LocaleConfig implements Serializable
             }
             if (!getExists())
             {
+                getLog().warn("missing key: {}", this.key);
                 return "???"+this.key+"???";
             }
             return ResourceTool.this.render(this.rawValue, this.args);
