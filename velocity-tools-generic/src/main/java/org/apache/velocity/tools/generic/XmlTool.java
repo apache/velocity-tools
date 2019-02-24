@@ -42,8 +42,8 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 /**
- * <p>Tool for reading/navigating XML files.  This uses dom4j under the
- * covers to provide complete XPath support for traversing XML files.</p>
+ * <p>Tool for reading/navigating XML files, with XPath expressions support.</p>
+ *
  * <p>Configuration parameters:</p>
  * <ul>
  *     <li><code>resource</code>=<i>file or classpath resource</i></li>
