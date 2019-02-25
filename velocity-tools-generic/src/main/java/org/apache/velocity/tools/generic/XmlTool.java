@@ -468,6 +468,10 @@ public class XmlTool extends SafeConfig implements Serializable
         {
             return this;
         }
+        else if (isEmpty())
+        {
+            return null;
+        }
         return new XmlTool(node());
     }
 
@@ -482,6 +486,10 @@ public class XmlTool extends SafeConfig implements Serializable
         {
             return this;
         }
+        else if (isEmpty())
+        {
+            return null;
+        }
         return new XmlTool(nodes.get(size() - 1));
     }
 
@@ -493,7 +501,7 @@ public class XmlTool extends SafeConfig implements Serializable
      */
     public XmlTool get(Number n)
     {
-        if (n == null)
+        if (n == null || isEmpty())
         {
             return null;
         }
@@ -552,7 +560,7 @@ public class XmlTool extends SafeConfig implements Serializable
      */
     public XmlTool find(String xpath)
     {
-        if (xpath == null || xpath.length() == 0)
+        if (xpath == null || xpath.length() == 0 || isEmpty())
         {
             return null;
         }
