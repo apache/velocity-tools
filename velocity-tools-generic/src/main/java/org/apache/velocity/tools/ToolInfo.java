@@ -41,6 +41,8 @@ public class ToolInfo implements java.io.Serializable
 
     private String key;
     private Class clazz;
+    private Class factory;
+    private transient Method create;
     private boolean restrictToIsExact;
     private String restrictTo;
     private Map<String,Object> properties;
@@ -55,8 +57,20 @@ public class ToolInfo implements java.io.Serializable
      */
     public ToolInfo(String key, Class clazz)
     {
+        this(key, clazz, null);
+    }
+
+    /**
+     * Creates a new instance using the minimum required info
+     * necessary for a tool.
+     * @param key tool key
+     * @param clazz tool class
+     */
+    public ToolInfo(String key, Class clazz, Class factory)
+    {
         setKey(key);
         setClass(clazz);
+        setFactory(factory);
     }
 
 
@@ -76,9 +90,7 @@ public class ToolInfo implements java.io.Serializable
     }
 
     /**
-     * Tries to create an instance of the specified Class, then looks for a
-     * configure(Map&lt;String,Object&gt;) method.
-     *
+     * Set the tool class
      * @param clazz the java.lang.Class of the tool
      */
     public void setClass(Class clazz)
@@ -94,6 +106,24 @@ public class ToolInfo implements java.io.Serializable
         //      in order to fail as earlier as possible.  most people won't
         //      manually create ToolInfo.  if they do and we can't get an
         //      instance, they should be capable of figuring out what happened
+    }
+
+    /**
+     * <p>Set the factory class used to create tool instances.</p>
+     * <p>The factory is supposed to have one of those three methods:</p>
+     * <ul>
+     *     <li>create<i>ToolClassName</i>()</li>
+     *     <li>new<i>ToolClassName</i>()</li>
+     *     <li>get<i>ToolClassName</i>()</li>
+     * </ul>
+     * <p>where <i>ToolClassName</i> is the tool's class name.</p>
+     * <p>If this method takes one <code>java.util.Map</code> argument, it will be given the tool's configuration map.</p>
+     *
+     * @param factory factory class
+     */
+    public void setFactory(Class factory)
+    {
+        this.factory = factory;
     }
 
     /**
@@ -207,6 +237,15 @@ public class ToolInfo implements java.io.Serializable
     public Class getToolClass()
     {
         return clazz;
+    }
+
+    /**
+     * Get factory class
+     * @return factory class or null if not provided
+     */
+    public Class getFactory()
+    {
+        return factory;
     }
 
     /**
@@ -389,7 +428,16 @@ public class ToolInfo implements java.io.Serializable
     {
         try
         {
-            return clazz.newInstance();
+            Class factory = getFactory();
+            if (factory == null)
+            {
+                return clazz.newInstance();
+            }
+            else
+            {
+                Method factoryMethod = ClassUtils.findFactoryMethod(factory, clazz);
+                return factoryMethod.invoke(null, new Object[] {});
+            }
         }
         /* we shouldn't get either of these exceptions here because
          * we already got an instance of this class during setClass().
@@ -400,12 +448,13 @@ public class ToolInfo implements java.io.Serializable
                   getClassname() + "\"";
             throw new IllegalStateException(message, iae);
         }
-        catch (InstantiationException ie)
+        catch (InstantiationException | InvocationTargetException e)
         {
             String message = "Exception while instantiating instance of \"" +
                   getClassname() + "\"";
-            throw new IllegalStateException(message, ie);
+            throw new IllegalStateException(message, e);
         }
+
     }
 
     /**

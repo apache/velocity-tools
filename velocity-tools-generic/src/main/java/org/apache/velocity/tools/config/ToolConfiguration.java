@@ -19,6 +19,8 @@ package org.apache.velocity.tools.config;
  * under the License.
  */
 
+import java.lang.invoke.WrongMethodTypeException;
+import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.apache.velocity.tools.ToolContext;
@@ -46,6 +48,7 @@ public class ToolConfiguration extends Configuration
 
     private String key;
     private String classname;
+    private String factoryClassname;
     private String restrictTo;
     private Boolean skipSetters;
     private Status status;
@@ -70,6 +73,17 @@ public class ToolConfiguration extends Configuration
     public void setClassname(String classname)
     {
         this.classname = classname;
+        this.status = null;
+    }
+
+    public void setFactory(Class factory)
+    {
+        setFactoryClassname(factory.getName());
+    }
+
+    public void setFactoryClassname(String factoryClassname)
+    {
+        this.factoryClassname = factoryClassname;
         this.status = null;
     }
 
@@ -142,11 +156,26 @@ public class ToolConfiguration extends Configuration
         return this.classname;
     }
 
+    public String getFactoryClassname() { return factoryClassname; }
+
     public Class getToolClass()
     {
         try
         {
             return ClassUtils.getClass(getClassname());
+        }
+        catch (ClassNotFoundException cnfe)
+        {
+            throw new ConfigurationException(this, cnfe);
+        }
+    }
+
+    public Class getFactory()
+    {
+        try
+        {
+            String factoryClassname = getFactoryClassname();
+            return factoryClassname == null ? null : ClassUtils.getClass(factoryClassname);
         }
         catch (ClassNotFoundException cnfe)
         {
@@ -190,36 +219,61 @@ public class ToolConfiguration extends Configuration
             {
                 this.status = Status.NONE;
             }
-
-            try
+            else
             {
-                // make sure the classname resolves to a class we have
-                Class clazz = ClassUtils.getClass(getClassname());
+                try
+                {
+                    // make sure the classname resolves to a class we have
+                    Class clazz = ClassUtils.getClass(getClassname());
 
-                // try hard to ensure we have all necessary supporting classes
-                digForDependencies(clazz);
+                    // try hard to ensure we have all necessary supporting classes
+                    digForDependencies(clazz);
 
-                // create an instance to make sure we can do that
-                clazz.newInstance();
+                    // create an instance to make sure we can do that
+                    if (factoryClassname == null)
+                    {
+                        clazz.newInstance();
+                    }
+                    else
+                    {
+                        Class factory = ClassUtils.getClass(getFactoryClassname());
+                        Method factoryMethod = ClassUtils.findFactoryMethod(factory, clazz);
+                        if (factoryMethod == null)
+                        {
+                            String target = clazz.getSimpleName();
+                            throw new IllegalArgumentException("Factory class hasn't any method named create" + target + "(), new" + target + "() or get" + target + "()");
+                        }
+                        Object instance = factoryMethod.invoke(null, new Object[]{});
+                        if (instance == null)
+                        {
+                            throw new WrongMethodTypeException("Factory method '" + factoryMethod.toString() + "' returned null");
+                        }
+                        Class instanceClass = instance.getClass();
+                        if (!clazz.isAssignableFrom(instanceClass))
+                        {
+                            throw new WrongMethodTypeException("Factory method '" + factoryMethod + "' is expected to return an instance of class '" + getClassname() + "'");
+                        }
+                    }
 
-                this.status = Status.VALID;
-                this.problem = null;
-            }
-            catch (ClassNotFoundException cnfe)
-            {
-                this.status = Status.MISSING;
-                this.problem = cnfe;
-            }
-            catch (NoClassDefFoundError ncdfe)
-            {
-                this.status = Status.UNSUPPORTED;
-                this.problem = ncdfe;
-            }
-            catch (Throwable t)
-            {
-                // for all other problems...
-                this.status = Status.UNINSTANTIABLE;
-                this.problem = t;
+                    this.status = Status.VALID;
+                    this.problem = null;
+                }
+                catch (ClassNotFoundException cnfe)
+                {
+                    this.status = Status.MISSING;
+                    this.problem = cnfe;
+                }
+                catch (NoClassDefFoundError ncdfe)
+                {
+                    this.status = Status.UNSUPPORTED;
+                    this.problem = ncdfe;
+                }
+                catch (Throwable t)
+                {
+                    // for all other problems...
+                    this.status = Status.UNINSTANTIABLE;
+                    this.problem = t;
+                }
             }
         }
         return this.status;
@@ -254,7 +308,7 @@ public class ToolConfiguration extends Configuration
         switch (status)
         {
             case VALID:
-                info = new ToolInfo(getKey(), getToolClass());
+                info = new ToolInfo(getKey(), getToolClass(), getFactory());
                 break;
             default:
                 throw problem == null ?
@@ -396,22 +450,30 @@ public class ToolConfiguration extends Configuration
         }
         else
         {
-            switch (getStatus())
+            if (status == null)
             {
-                case VALID:
-                    break;
-                case NONE:
-                case MISSING:
-                    out.append("Invalid ");
-                    break;
-                case UNSUPPORTED:
-                    out.append("Unsupported ");
-                    break;
-                case UNINSTANTIABLE:
-                    out.append("Unusable ");
-                    break;
-                default:
-                    break;
+                // toString() sbould not change the status
+                out.append("Unchecked ");
+            }
+            else
+            {
+                switch (getStatus())
+                {
+                    case VALID:
+                        break;
+                    case NONE:
+                    case MISSING:
+                        out.append("Invalid ");
+                        break;
+                    case UNSUPPORTED:
+                        out.append("Unsupported ");
+                        break;
+                    case UNINSTANTIABLE:
+                        out.append("Unusable ");
+                        break;
+                    default:
+                        break;
+                }
             }
             out.append("Tool '");
             out.append(getKey());

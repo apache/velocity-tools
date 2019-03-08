@@ -354,6 +354,23 @@ public class ConfigTests {
     //TODO: add tests for FactoryConfiguration
 
 
+    public @Test void testFactories()
+    {
+        ToolConfiguration tool = new ToolConfiguration();
+        tool.setClassname(FactoredTool.class.getName());
+        tool.setFactoryClassname(BadFactory.class.getName());
+        assertInvalid(tool);
+
+        tool.setFactoryClassname(NullFactory.class.getName());
+        assertInvalid(tool);
+
+        tool.setFactoryClassname(WrongPurposeFactory.class.getName());
+        assertInvalid(tool);
+
+        tool.setFactoryClassname(GoodFactory.class.getName());
+        assertValid(tool);
+    }
+
 
     /************* Support classes and methods ******************/
 
@@ -364,6 +381,34 @@ public class ConfigTests {
         public @Test @Ignore void foo() {}
     }
 
+    @DefaultKey("factored")
+    public static class FactoredTool
+    {
+        public FactoredTool(String dummyArg) {}
+    }
+
+    public static class BadFactory
+    {
+        public static void doNothing() {}
+    }
+
+    public static class NullFactory
+    {
+        public static FactoredTool createFactoredTool() { return null; }
+    }
+
+    public static class WrongPurposeFactory
+    {
+        public static FakeTool createFactoredTool() { return new FakeTool(); }
+    }
+
+    public static class GoodFactory
+    {
+        public static FactoredTool createFactoredTool()
+        {
+            return new FactoredTool("dummy");
+        }
+    }
 
     protected void assertConfigEquals(Configuration one, Configuration two)
     {
@@ -378,6 +423,9 @@ public class ConfigTests {
     {
         assertNotNull(one);
         assertNotNull(two);
+
+        one.validate();
+        two.validate();
 
         // for now, just compare the toString() output without source info
         assertEquals(one.toString(false), two.toString(false));

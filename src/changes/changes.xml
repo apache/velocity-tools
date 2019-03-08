@@ -24,6 +24,11 @@
     <title>Changelog</title>
   </properties>
   <body>
+    <release version="3.1" date="Not yet released">
+      <action type="add" dev="cbrisson">
+        Added an optional 'factory' attribute to tools with the classname of a factory for creating new tools instances
+      </action>
+    </release>
     <release version="3.0" date="2018-10-01">
       <action type="add" dev="michaelo">
         upgraded to servlet API 3.1.0

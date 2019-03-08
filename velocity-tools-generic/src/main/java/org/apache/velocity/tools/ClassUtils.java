@@ -106,6 +106,14 @@ public class ClassUtils
         }
     }
 
+    /**
+     * Get an instance of a named class.
+     * @param classname class name
+     * @return new class instance
+     * @throws ClassNotFoundException if class is not found
+     * @throws IllegalAccessException if not granted
+     * @throws InstantiationException if instance creation throwed
+     */
     public static Object getInstance(String classname)
          throws ClassNotFoundException, IllegalAccessException,
                 InstantiationException
@@ -320,6 +328,14 @@ public class ClassUtils
         return inputStream;
     }
 
+    /**
+     * Find a callable method in a class
+     * @param clazz target class
+     * @param name method name
+     * @param params method arguments classes
+     * @return method object
+     * @throws SecurityException if not granted
+     */
     public static Method findMethod(Class clazz, String name, Class[] params)
         throws SecurityException
     {
@@ -335,6 +351,14 @@ public class ClassUtils
         return findDeclaredMethod(clazz, name, params);
     }
 
+    /**
+     * Find a declared method in a class. It will be made accessible if needed and allowed.
+     * @param clazz target class
+     * @param name method name
+     * @param params method arguments classes
+     * @return
+     * @throws SecurityException if not allowed
+     */
     public static Method findDeclaredMethod(Class clazz, String name, Class[] params)
         throws SecurityException
     {
@@ -365,6 +389,15 @@ public class ClassUtils
         return null;
     }
 
+    /**
+     * Given a static field path, aka <i>classname</i>.<i>field</i>, get the field value.
+     * @param fieldPath field path
+     * @return field value
+     * @throws ClassNotFoundException if class hasn't been found
+     * @throws NoSuchFieldException if field hasn't been found
+     * @throws SecurityException if not granted
+     * @throws IllegalAccessException if field is not accessible
+     */
     public static Object getFieldValue(String fieldPath)
         throws ClassNotFoundException, NoSuchFieldException,
                SecurityException, IllegalAccessException
@@ -377,6 +410,15 @@ public class ClassUtils
         return getFieldValue(clazz, fieldname);
     }
 
+    /**
+     * Given a class and a static field name, get the field value.
+     * @param clazz target class
+     * @param fieldname field name
+     * @return field value
+     * @throws NoSuchFieldException if field hasn't been found
+     * @throws SecurityException if not granted
+     * @throws IllegalAccessException if field is not accessible
+     */
     public static Object getFieldValue(Class clazz, String fieldname)
         throws NoSuchFieldException, SecurityException, IllegalAccessException
     {
@@ -440,6 +482,32 @@ public class ClassUtils
                 return null;
             }
         }
+    }
+
+    private static String factoryMethodPrefixes[] = { "create", "new", "get" };
+
+    /**
+     * <p>Given a factory class and a target class, search for the following methods:</p>
+     * <ul>
+     *     <li><code>create<i>TargetClassname</i>()</code>,</li>
+     *     <li><code>new<i>TargetClassname</i>()</code>, or</li>
+     *     <li><code>get<i>TargetClassname</i>()</code>.</li>
+     * </ul>
+     * @param factory factory class
+     * @param target target class
+     * @return first factory method found, or null otherwise
+     */
+    public static Method findFactoryMethod(Class factory, Class target)
+    {
+        Method ret = null;
+        String undecoratedName = target.getSimpleName();
+        for (String prefix : factoryMethodPrefixes)
+        {
+            String methodName = prefix + undecoratedName;
+            ret = findMethod(factory, methodName, new Class[] {});
+            if (ret != null) break;
+        }
+        return ret;
     }
 
 }
