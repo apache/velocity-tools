@@ -137,7 +137,7 @@ public class XmlToolTests {
     public @Test void methodConfigure_ValueParser() throws Exception
     {
         XmlTool xml = new XmlTool();
-        Map<String,String> params = new HashMap<String,String>();
+        Map<String,Object> params = new HashMap<String,Object>();
         assertEquals("resource", ImportSupport.RESOURCE_KEY);
         params.put(ImportSupport.RESOURCE_KEY, XML_FILE);
         xml.configure(params);
