@@ -130,7 +130,7 @@ public class SafeConfig
      * under the key {@link #LOCK_CONFIG_KEY}.
      * @param params configuration values map
      */
-    public void configure(Map<String, Object> params)
+    public void configure(Map<String, ? extends Object> params)
     {
         if (!isConfigLocked())
         {
