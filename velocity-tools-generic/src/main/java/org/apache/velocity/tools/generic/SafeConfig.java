@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * <p>Implements common logic and constants for tools which automatically
@@ -76,7 +77,7 @@ public class SafeConfig
      */
     public static final String USE_CLASS_LOGGER_KEY = "useClassLogger";
 
-    private boolean configLocked = false;
+    private AtomicBoolean configLocked = new AtomicBoolean(false);
     private boolean safeMode = false;
 
     protected Logger log = null;
@@ -87,7 +88,7 @@ public class SafeConfig
      */
     protected void setLockConfig(boolean lock)
     {
-        this.configLocked = lock;
+        this.configLocked.set(lock);
     }
 
     /**
@@ -106,7 +107,7 @@ public class SafeConfig
      */
     public boolean isConfigLocked()
     {
-        return this.configLocked;
+        return this.configLocked.get();
     }
 
     /**
@@ -134,19 +135,25 @@ public class SafeConfig
     {
         if (!isConfigLocked())
         {
-            ValueParser values = new ValueParser(params);
+            synchronized (this)
+            {
+                if (!isConfigLocked())
+                {
+                    ValueParser values = new ValueParser(params);
 
-            // set up logger
-            initLogger(values);
+                    // set up logger
+                    initLogger(values);
 
-            // call configure
-            configure(values);
+                    // call configure
+                    configure(values);
 
-            setSafeMode(values.getBoolean(SAFE_MODE_KEY, true));
+                    setSafeMode(values.getBoolean(SAFE_MODE_KEY, true));
 
-            // check under the new key
-            Boolean lock = values.getBoolean(LOCK_CONFIG_KEY, Boolean.TRUE);
-            setLockConfig(lock.booleanValue());
+                    // check under the new key
+                    Boolean lock = values.getBoolean(LOCK_CONFIG_KEY, Boolean.TRUE);
+                    setLockConfig(lock.booleanValue());
+                }
+            }
         }
     }
 
