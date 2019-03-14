@@ -22,6 +22,7 @@
 <tools> 
     <data type="boolean" key="VIEW_TOOLS_AVAILABLE" value="true"/>
     <toolbox scope="request">
+        <tool class="org.apache.velocity.tools.view.BreadcrumbTool"/>
         <tool class="org.apache.velocity.tools.view.CookieTool"/>
         <tool class="org.apache.velocity.tools.view.ImportTool"/>
         <tool class="org.apache.velocity.tools.view.IncludeTool"/>
