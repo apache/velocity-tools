@@ -112,146 +112,150 @@ public class RequestAdaptor implements InvocationHandler
     {
         String methodName = method.getName();
 
-        if("getContextPath".equals(methodName))
+        switch (methodName)
         {
-            return _contextPath;
-        }
-        else if("getParameter".equals(methodName))
-        {
-            Object value = _params.get(args[0]);
-
-            if(value instanceof String)
+            case "getContextPath":
             {
-                return value;
+                return _contextPath;
             }
-            else if (value instanceof String[])
+            case "getParameter":
             {
-                return ((String[])value)[0];
-            }
-            else
-            {
-                throw new IllegalStateException("Parameter value must be either String or String[].");
-            }
-        }
-        else if("getParameterValues".equals(methodName))
-        {
-            Object value = _params.get(args[0]);
-
-            if(value instanceof String)
-            {
-                return new String[] { (String)value };
-            }
-            else if (value instanceof String[])
-            {
-                return value;
-            }
-            else
-            {
-                throw new IllegalStateException("Parameter value must be either String or String[].");
-            }
-        }
-        else if("getParameterMap".equals(methodName))
-        {
-            return Collections.unmodifiableMap(_params);
-        }
-        else if("getParameterNames".equals(methodName))
-        {
-            return new IteratorEnumeration(_params.keySet().iterator());
-        }
-        else if("getAttribute".equals(methodName))
-        {
-            return null;
-        }
-        else if("setAttribute".equals(methodName))
-        {
-            return null;
-        }
-        else if("removeAttribute".equals(methodName))
-        {
-            return null;
-        }
-        else if("getSession".equals(methodName))
-        {
-            return null;
-        }
-        else if("getAttribute".equals(methodName))
-        {
-            if(((String)args[0]).equals("XHTML"))
-            {
-                return Boolean.TRUE; // xhtml = true
-            }
-            else
-            {
-                return null;
-            }
-        }
-        else if ("getScheme".equals(methodName))
-        {
-            return "http";
-        }
-        else if ("getServerPort".equals(methodName))
-        {
-            return new Integer(8081);
-        }
-        else if ("getServerName".equals(methodName))
-        {
-            return "localhost";
-        }
-        else if ("getServletPath".equals(methodName))
-        {
-            return _contextPath;
-        }
-        else if ("getPathInfo".equals(methodName))
-        {
-            return _pathInfo;
-        }
-        else if("getCharacterEncoding".equals(methodName))
-        {
-            return "UTF-8";
-        }
-        else if ("getCookies".equals(methodName))
-        {
-            // just let params double as the cookie store
-            Cookie[] jar = new Cookie[_params.size()];
-            int i = 0;
-            for (Iterator iter = _params.keySet().iterator(); iter.hasNext(); i++)
-            {
-                Object key = iter.next();
-                Object val = _params.get(key);
-                if (val instanceof Cookie)
+                Object value = _params.get(args[0]);
+                if (value instanceof String)
                 {
-                    jar[i] = (Cookie)val;
+                    return value;
+                }
+                else if (value instanceof String[])
+                {
+                    return ((String[]) value)[0];
                 }
                 else
                 {
-                    String name = String.valueOf(key);
-                    String value = String.valueOf(val);
-                    jar[i] = new Cookie(name, value);
-                    _params.put(name, jar[i]);
+                    throw new IllegalStateException("Parameter value must be either String or String[].");
                 }
             }
-            return jar;
-        }
-        else if ("getContentLength".equals(methodName))
-        {
-            return getContentLength();
-        }
-        else if ("getContentType".equals(methodName))
-        {
-            return getContentType();
-        }
-        else if ("getReader".equals(methodName))
-        {
-            return getReader();
-        }
-        else if ("toString".equals(methodName))
-        {
-            return toString();
-        }
-        else
-        {
-            throw new IllegalStateException("Unexpected method call: "
-                                            + method);
+            case "getParameterValues":
+            {
+                Object value = _params.get(args[0]);
+
+                if (value instanceof String)
+                {
+                    return new String[]{(String) value};
+                }
+                else if (value instanceof String[])
+                {
+                    return value;
+                }
+                else
+                {
+                    throw new IllegalStateException("Parameter value must be either String or String[].");
+                }
+            }
+            case "getParameterMap":
+            {
+                return Collections.unmodifiableMap(_params);
+            }
+            case "getParameterNames":
+            {
+                return new IteratorEnumeration(_params.keySet().iterator());
+            }
+            case "getAttribute":
+            {
+                if (((String) args[0]).equals("XHTML"))
+                {
+                    return Boolean.TRUE; // xhtml = true
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            case "setAttribute":
+            {
+                return null;
+            }
+            case "removeAttribute":
+            {
+                return null;
+            }
+            case "getSession":
+            {
+                return null;
+            }
+            case "getScheme":
+            {
+                return "http";
+            }
+            case "getServerPort":
+            {
+                return new Integer(8081);
+            }
+
+
+            case "getServerName":
+            {
+                return "localhost";
+            }
+            case "getServletPath":
+            {
+                return _contextPath;
+            }
+            case "getPathInfo":
+            {
+                return _pathInfo;
+            }
+            case "getRequestURI":
+            {
+                return _pathInfo;
+            }
+            case "getCharacterEncoding":
+            {
+                return "UTF-8";
+            }
+            case "getCookies":
+            {
+                // just let params double as the cookie store
+                Cookie[] jar = new Cookie[_params.size()];
+                int i = 0;
+                for (Iterator iter = _params.keySet().iterator(); iter.hasNext(); i++)
+                {
+                    Object key = iter.next();
+                    Object val = _params.get(key);
+                    if (val instanceof Cookie)
+                    {
+                        jar[i] = (Cookie) val;
+                    }
+                    else
+                    {
+                        String name = String.valueOf(key);
+                        String value = String.valueOf(val);
+                        jar[i] = new Cookie(name, value);
+                        _params.put(name, jar[i]);
+                    }
+                }
+                return jar;
+            }
+            case "getContentLength":
+            {
+                return getContentLength();
+            }
+            case "getContentType":
+            {
+                return getContentType();
+            }
+            case "getReader":
+            {
+                return getReader();
+            }
+            case "toString":
+            {
+                return toString();
+            }
+            default:
+            {
+                throw new IllegalStateException("Unexpected method call: "
+                    + method);
+            }
         }
     }
 

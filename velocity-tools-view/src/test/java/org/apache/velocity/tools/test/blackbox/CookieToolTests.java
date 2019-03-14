@@ -38,42 +38,26 @@ import org.junit.Test;
  * @author Nathan Bubna
  * @version $Id$
  */
-public class CookieToolTests
+public class CookieToolTests extends BaseToolTests
 {
-    private CookieTool newCookieTool(InvocationHandler requestHandler, InvocationHandler responseHandler)
+    private CookieTool newCookieTool(InvocationHandler requestHandler, InvocationHandler responseHandler) throws Exception
     {
-        Object requestProxy
-            = Proxy.newProxyInstance(this.getClass().getClassLoader(),
-                                     new Class[] { HttpServletRequest.class },
-                                     requestHandler);
-
-        Object responseProxy
-                = Proxy.newProxyInstance(this.getClass().getClassLoader(),
-                new Class[] { HttpServletResponse.class },
-                responseHandler);
-
-        HttpServletRequest request = (HttpServletRequest)requestProxy;
-        HttpServletResponse response = (HttpServletResponse)responseProxy;
-
-        CookieTool cookies = new CookieTool();
-        cookies.setRequest(request);
-        cookies.setResponse(response);
-        return cookies;
+        return newTool(CookieTool.class, requestHandler, responseHandler);
     }
 
-    private CookieTool newCookieTool(Map cookies)
+    private CookieTool newCookieTool(Map cookies) throws Exception
     {
         return newCookieTool(new RequestAdaptor(cookies), new ResponseAdaptor(cookies));
     }
 
-    private CookieTool newCookieTool(String name, Object value)
+    private CookieTool newCookieTool(String name, Object value) throws Exception
     {
         Map cookies = new LinkedHashMap();
         cookies.put(name, value);
         return newCookieTool(cookies);
     }
 
-    public @Test void testCreate_StringString()
+    public @Test void testCreate_StringString() throws Exception
     {
         CookieTool cookies = newCookieTool(new LinkedHashMap());
         Cookie c = cookies.create("a", "b");
@@ -83,7 +67,7 @@ public class CookieToolTests
         assertEquals(-1, c.getMaxAge());
     }
 
-    public @Test void testCreate_StringStringObject()
+    public @Test void testCreate_StringStringObject() throws Exception
     {
         CookieTool cookies = newCookieTool(new LinkedHashMap());
         Cookie c = cookies.create("a", "b", 10);
@@ -98,13 +82,13 @@ public class CookieToolTests
         assertNull(c);
     }
 
-    public @Test void testGet_String()
+    public @Test void testGet_String() throws Exception
     {
         CookieTool cookies = newCookieTool("a", "b");
         assertEquals("b", cookies.get("a").toString());
     }
 
-    public @Test void testGetAll()
+    public @Test void testGetAll() throws Exception
     {
         CookieTool cookies = newCookieTool("a", "b");
         assertEquals("[b]", cookies.getAll().toString());
@@ -120,7 +104,7 @@ public class CookieToolTests
         assertEquals("foo", all.get(1).getName());
     }
 
-    public @Test void testToString()
+    public @Test void testToString() throws Exception
     {
         CookieTool cookies = newCookieTool("a", "b");
         assertEquals("[a=b]", cookies.toString());
@@ -132,7 +116,7 @@ public class CookieToolTests
         assertEquals("[a=b, foo=bar]", cookies.toString());
     }
 
-    public @Test void testAdd_StringString()
+    public @Test void testAdd_StringString() throws Exception
     {
         Map jar = new LinkedHashMap();
         jar.put("a", "b");
@@ -146,7 +130,7 @@ public class CookieToolTests
         assertEquals("b", cookies.get("a").getValue());
     }
 
-    public @Test void testAdd_StringStringObject()
+    public @Test void testAdd_StringStringObject() throws Exception
     {
         Map jar = new LinkedHashMap();
         jar.put("a", "b");
@@ -162,7 +146,7 @@ public class CookieToolTests
         assertEquals(10, c.getMaxAge());
     }
 
-    public @Test void testDelete_String()
+    public @Test void testDelete_String() throws Exception
     {
         Map jar = new LinkedHashMap();
         jar.put("a", "b");
