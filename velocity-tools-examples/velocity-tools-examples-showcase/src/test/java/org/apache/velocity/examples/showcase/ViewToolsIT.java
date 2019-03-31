@@ -31,7 +31,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.velocity.app.VelocityEngine;
 import org.junit.BeforeClass;
+import org.junit.ComparisonFailure;
 import org.junit.Test;
 
 import com.meterware.httpunit.GetMethodWebRequest;
@@ -84,7 +86,11 @@ public class ViewToolsIT {
     private void checkTextStart(WebResponse resp,String id,String text) throws Exception {
         HTMLElement element = resp.getElementWithID(id);
         assertNotNull(element);
-        assertTrue(element.getText().startsWith(text));
+        // do better reporting than assertTrue()
+        if(!element.getText().startsWith(text))
+        {
+                throw new ComparisonFailure("Element id #" + id + " text does not start as expected:", element.getText() , text);
+        }
     }
 
     /**
@@ -264,6 +270,9 @@ public class ViewToolsIT {
         WebRequest req = new GetMethodWebRequest(ROOT_URL+"params.vm?foo=bar&b=false&n=55&d=1.2");
         WebResponse resp = conv.getResponse(req);
 
+        String velocityVersion = VelocityEngine.class.getPackage().getSpecificationVersion();
+        boolean newArrayDisplay = velocityVersion.compareTo("2.1") >= 0;
+
         /* check exists(foo) */
         resp = submitWithParam(resp,"exists","exists","foo");
         checkText(resp,"exists","true");
@@ -294,23 +303,23 @@ public class ViewToolsIT {
 
         /* check getStrings(foo) */
         resp = submitWithParam(resp,"getStrings","getStrings","foo");
-        checkTextStart(resp,"getStrings","[Ljava.lang.String;@");
+        checkTextStart(resp,"getStrings", newArrayDisplay ? "[bar]" : "[Ljava.lang.String;@");
 
         /* check getBooleans(b) */
         resp = submitWithParam(resp,"getBooleans","getBooleans","b");
-        checkTextStart(resp,"getBooleans","[Ljava.lang.Boolean;@");
+        checkTextStart(resp,"getBooleans", newArrayDisplay ? "[false]" : "[Ljava.lang.Boolean;@");
 
         /* check getNumbers(n) */
         resp = submitWithParam(resp,"getNumbers","getNumbers","n");
-        checkTextStart(resp,"getNumbers","[Ljava.lang.Number;@");
+        checkTextStart(resp,"getNumbers", newArrayDisplay ? "[55]" : "[Ljava.lang.Number;@");
 
         /* check getDoubles(d) */
         resp = submitWithParam(resp,"getDoubles","getDoubles","d");
-        checkTextStart(resp,"getDoubles","[D@");
+        checkTextStart(resp,"getDoubles", newArrayDisplay ? "[1.2]" : "[D@");
 
         /* check getInts(n) */
         resp = submitWithParam(resp,"getInts","getInts","n");
-        checkTextStart(resp,"getInts","[I@");
+        checkTextStart(resp,"getInts", newArrayDisplay ? "[55]" : "[I@");
 
         /* check getString(bar,foo) */
         WebForm form = resp.getFormWithName("getString2");
