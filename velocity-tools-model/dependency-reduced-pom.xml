@@ -26,16 +26,27 @@
                 <includes>
                   <include>commons-codec:commons-codec</include>
                 </includes>
-                <excludes>
-                  <exclude>org.slf4j:slf4j-api</exclude>
-                </excludes>
               </artifactSet>
+              <filters>
+                <filter>
+                  <artifact>commons-codec:commons-codec</artifact>
+                  <includes>
+                    <include>org/apache/commons/codec/Encoder.class</include>
+                    <include>org/apache/commons/codec/Decoder.class</include>
+                    <include>org/apache/commons/codec/BinaryEncoder.class</include>
+                    <include>org/apache/commons/codec/BinaryDecoder.class</include>
+                    <include>org/apache/commons/codec/binary/BaseNCodec.class</include>
+                    <include>org/apache/commons/codec/binary/Base64.class</include>
+                  </includes>
+                </filter>
+              </filters>
               <relocations>
                 <relocation>
                   <pattern>org.apache.commons.codec</pattern>
-                  <shadedPattern>org.apache.velocity.tools.model.shaded.commons.codec</shadedPattern>
+                  <shadedPattern>org.apache.velocity.tools.model.util.shaded.commons.codec</shadedPattern>
                 </relocation>
               </relocations>
+              <keepDependenciesWithProvidedScope>false</keepDependenciesWithProvidedScope>
               <minimizeJar>true</minimizeJar>
             </configuration>
           </execution>
@@ -51,7 +62,7 @@
             </property>
             <property>
               <name>org.slf4j.simpleLogger.defaultLogLevel</name>
-              <value>trace</value>
+              <value>info</value>
             </property>
           </systemProperties>
         </configuration>
@@ -63,26 +74,6 @@
       <groupId>org.apache.velocity.tools</groupId>
       <artifactId>velocity-tools-generic</artifactId>
       <version>3.1-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.velocity.tools</groupId>
-      <artifactId>velocity-tools-view</artifactId>
-      <version>3.1-SNAPSHOT</version>
-      <scope>compile</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>3.1.0</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.atteo</groupId>
-      <artifactId>evo-inflector</artifactId>
-      <version>1.2.2</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -102,42 +93,6 @@
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.25</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-dbcp2</artifactId>
-      <version>2.6.0</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>commons-pool2</artifactId>
-          <groupId>org.apache.commons</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.hsqldb</groupId>
-      <artifactId>hsqldb</artifactId>
-      <version>2.4.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.6</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.easymock</groupId>
-      <artifactId>easymock</artifactId>
-      <version>3.6</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>objenesis</artifactId>
-          <groupId>org.objenesis</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
   </dependencies>
   <properties>
