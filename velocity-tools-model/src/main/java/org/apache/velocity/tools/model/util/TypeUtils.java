@@ -21,8 +21,6 @@ package org.apache.velocity.tools.model.util;
 
 import org.apache.commons.codec.binary.Base64;
 
-import java.io.Serializable;
-import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.Date;
