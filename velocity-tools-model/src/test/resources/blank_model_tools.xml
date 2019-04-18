@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<tools>
+    <toolbox scope="application">
+        <tool key="model" definition="blank_model.xml" datasource="jdbc/test-data-source"/>
+    </toolbox>
+</tools>

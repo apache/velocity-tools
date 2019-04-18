@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<model write="java" identifiers.mapping="lowercase">
+    <book>
+        <scalar name="count_authors">select count(*) from book_author where book_id = <book_id/></scalar>
+        <rowset name="authors" result="author">select * from author where book_id = <book_id/></rowset>
+    </book>
+    <author/>
+    <scalar name="count_books">select count(*) from book</scalar>
+</model>
