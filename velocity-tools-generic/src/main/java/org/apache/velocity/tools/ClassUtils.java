@@ -336,7 +336,7 @@ public class ClassUtils
      * @return method object
      * @throws SecurityException if not granted
      */
-    public static Method findMethod(Class clazz, String name, Class[] params)
+    public static Method findMethod(Class clazz, String name, Class... params)
         throws SecurityException
     {
         try
@@ -359,7 +359,7 @@ public class ClassUtils
      * @return
      * @throws SecurityException if not allowed
      */
-    public static Method findDeclaredMethod(Class clazz, String name, Class[] params)
+    public static Method findDeclaredMethod(Class clazz, String name, Class... params)
         throws SecurityException
     {
         try

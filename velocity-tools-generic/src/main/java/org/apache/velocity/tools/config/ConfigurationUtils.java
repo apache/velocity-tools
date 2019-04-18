@@ -47,6 +47,8 @@ public class ConfigurationUtils
         "/org/apache/velocity/tools/generic/tools.xml";
     public static final String VIEW_DEFAULTS_PATH =
         "/org/apache/velocity/tools/view/tools.xml";
+    public static final String MODEL_DEFAULTS_PATH =
+        "/org/apache/velocity/tools/model/tools.xml";
 
     public static final String AUTOLOADED_XML_PATH = "tools.xml";
     public static final String AUTOLOADED_PROPS_PATH = "tools.properties";

@@ -321,7 +321,7 @@ public class ToolManager
      * @return <code>true</code> if this tool manager has request scoped tools,
      *         <code>false</code> otherwise
      */
-    protected boolean hasRequestTools()
+    public boolean hasRequestTools()
     {
         return hasTools(Scope.REQUEST);
     }
@@ -330,7 +330,7 @@ public class ToolManager
      * Get the toolbox for request scoped tools
      * @return toolbox of request scoped tools
      */
-    protected Toolbox getRequestToolbox()
+    public Toolbox getRequestToolbox()
     {
         return createToolbox(Scope.REQUEST);
     }
@@ -340,7 +340,7 @@ public class ToolManager
      * @return <code>true</code> if this tool manager has application scoped tools,
      *         <code>false</code> otherwise
      */
-    protected boolean hasApplicationTools()
+    public boolean hasApplicationTools()
     {
         return hasTools(Scope.APPLICATION);
     }
@@ -349,7 +349,7 @@ public class ToolManager
      * Get the toolbox for application scoped tools
      * @return toolbox of application scoped tools
      */
-    protected Toolbox getApplicationToolbox()
+    public Toolbox getApplicationToolbox()
     {
         if (this.application == null && hasApplicationTools())
         {

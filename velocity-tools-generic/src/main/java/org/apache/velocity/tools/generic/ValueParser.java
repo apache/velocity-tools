@@ -673,7 +673,7 @@ public class ValueParser extends FormatConfig implements Map<String,Object>
      * @param subkey subkey to search for
      * @return the map of found values
      */
-    protected ValueParser getSubkey(String subkey)
+    public ValueParser getSubkey(String subkey)
     {
         if (!hasSubkeys() || subkey == null || subkey.length() == 0)
         {

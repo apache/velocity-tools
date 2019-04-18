@@ -31,6 +31,18 @@ public class ConfigurationException extends RuntimeException
 
     private final Object source;
 
+    public ConfigurationException(String message)
+    {
+        super(message);
+        source = null;
+    }
+
+    public ConfigurationException(String message, Throwable cause)
+    {
+        super(message, cause);
+        source = null;
+    }
+
     public ConfigurationException(Data data, Throwable cause)
     {
         super(cause);
