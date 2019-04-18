@@ -88,6 +88,10 @@
               <name>test.output.dir</name>
               <value>${project.build.testOutputDirectory}</value>
             </property>
+            <property>
+              <name>org.slf4j.simpleLogger.defaultLogLevel</name>
+              <value>info</value>
+            </property>
             </systemProperties>
         </configuration>
       </plugin>

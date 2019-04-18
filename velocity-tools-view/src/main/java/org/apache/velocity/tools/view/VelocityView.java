@@ -126,6 +126,12 @@ public class VelocityView extends ViewToolManager
         "/org/apache/velocity/tools/view/velocity.properties";
 
     /**
+     * Optional Model Runtime properties.
+     */
+    public static final String MODEL_PROPERTIES_PATH =
+        "/org/apache/velocity/tools/model/velocity.properties";
+
+    /**
      * This is the string that is looked for when getInitParameter is
      * called ("org.apache.velocity.properties").
      */

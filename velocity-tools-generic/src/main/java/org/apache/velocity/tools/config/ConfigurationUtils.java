@@ -85,6 +85,9 @@ public class ConfigurationUtils
         // view tools may not be available
         config.read(VIEW_DEFAULTS_PATH, false);
 
+        // model tools may not be available
+        config.read(MODEL_DEFAULTS_PATH, false);
+
         // defaults should *always* be clean!
         clean(config);
         return config;
@@ -108,7 +111,7 @@ public class ConfigurationUtils
 
     /**
      * <p>Returns a {@link FactoryConfiguration} including all default
-     * "VelocityView" tools available as well as the default "GenericTools".</p>
+     * "velocity-tools-view" tools available as well as the default "GenericTools".</p>
      * @return all default tools {@link FactoryConfiguration}
      * @throws ConfigurationException if a tools.xml is not found at the {@link #VIEW_DEFAULTS_PATH}.
      */
@@ -123,6 +126,26 @@ public class ConfigurationUtils
         clean(config);
         return config;
     }
+
+    /**
+     * <p>Returns a {@link FactoryConfiguration} including all default
+     * "velocity-tools-view" and "velocity-tools-model" tools available as well as the default "GenericTools".</p>
+     * @return all default tools {@link FactoryConfiguration}
+     * @throws ConfigurationException if a tools.xml is not found at the {@link #VIEW_DEFAULTS_PATH}.
+     */
+    public static FactoryConfiguration getModelView()
+    {
+        FileFactoryConfiguration config =
+            new XmlFactoryConfiguration("ConfigurationUtils.getVelocityView()");
+        config.read(GENERIC_DEFAULTS_PATH);
+        config.read(VIEW_DEFAULTS_PATH);
+        config.read(MODEL_DEFAULTS_PATH);
+
+        // defaults should *always* be clean!
+        clean(config);
+        return config;
+    }
+
 
     /**
      * Returns a {@link FactoryConfiguration} loaded from the path specified
