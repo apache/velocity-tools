@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">
 <!--
 
     Licensed to the Apache Software Foundation (ASF) under one
@@ -19,24 +20,16 @@
     under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-
-  <parent>
-    <groupId>org.apache.velocity.tools</groupId>
-    <artifactId>velocity-tools-parent</artifactId>
-    <version>3.1-SNAPSHOT</version>
-  </parent>
-
-  <artifactId>velocity-tools-examples</artifactId>
-  <packaging>pom</packaging>
-
-  <name>Apache Velocity Tools - Examples</name>
-  <description>Examples to show how to use Velocity Tools</description>
-
-  <modules>
-    <module>velocity-tools-examples-bookshelf</module>
-    <module>velocity-tools-examples-showcase</module>
-    <module>velocity-tools-examples-simple</module>
-  </modules>
-</project>
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+    <New id="bookshelf-database" class="org.eclipse.jetty.plus.jndi.Resource">
+        <Arg></Arg>
+        <Arg>jdbc/bookshelf</Arg>
+        <Arg>
+            <New class="org.apache.commons.dbcp2.BasicDataSource">
+                <Set name="Url">jdbc:hsqldb:.</Set>
+                <Set name="Username">sa</Set>
+                <Set name="Password"></Set>
+            </New>
+        </Arg>
+    </New>
+</Configure>

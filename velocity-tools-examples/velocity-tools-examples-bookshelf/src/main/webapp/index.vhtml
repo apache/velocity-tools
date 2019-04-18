@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <title>Velocity Bookshelf Example</title>
+  </head>
+  <body>
+    <h1>Velocity Bookshelf Example</h1>
+    My bookshelf has $model.book.count books:
+    <ul>
+#foreach( $book in $model.book )
+      <li>
+        $book.title, written by
+  #foreach( $author in $book.authors )
+        $author.name#if($foreach.hasNext) and #end
+  #end
+        published by $book.publisher.name
+      </li>
+#else
+      <li>(no book)</li>
+#end
+    </ul>
+  </body>
+</html>
