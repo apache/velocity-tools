@@ -32,9 +32,6 @@ import org.apache.velocity.tools.ToolboxFactory;
 import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.ToolManager;
 import org.apache.velocity.tools.config.FactoryConfiguration;
-import org.apache.velocity.tools.view.ServletUtils;
-import org.apache.velocity.tools.view.ViewContext;
-import org.apache.velocity.tools.view.ViewToolContext;
 
 /**
  * Manages tools for web applications. This simplifies the process

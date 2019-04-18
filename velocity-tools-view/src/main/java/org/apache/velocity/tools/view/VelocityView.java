@@ -31,8 +31,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.velocity.util.ExtProperties;
-
 import org.apache.velocity.Template;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
@@ -42,7 +40,7 @@ import org.apache.velocity.tools.ToolboxFactory;
 import org.apache.velocity.tools.config.ConfigurationCleaner;
 import org.apache.velocity.tools.config.ConfigurationUtils;
 import org.apache.velocity.tools.config.FactoryConfiguration;
-import org.apache.velocity.tools.view.ViewToolContext;
+import org.apache.velocity.util.ExtProperties;
 import org.apache.velocity.util.SimplePool;
 
 /**
