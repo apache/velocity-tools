@@ -477,6 +477,45 @@ public class ServletUtils
         return lock;
     }
 
+    /**
+     * If end is null, this will return start and vice versa.
+     * If neither is null, this will append the end to the start,
+     * making sure that there is only one '/' character between
+     * the two values.
+     * @param before start path
+     * @param after end path
+     * @return combined path
+     */
+    public static String combinePath(String before, String after)
+    {
+        // code taken from generics LinkTool.
+        // TODO - it should be factorize somewhere in generics tools.
+        if (after == null)
+        {
+            return before;
+        }
+        if (before == null)
+        {
+            return after;
+        }
+
+        // make sure we don't get // or nothing between start and end
+        boolean startEnds = before.endsWith("/");
+        boolean endStarts = after.startsWith("/");
+        if (startEnds ^ endStarts) //one
+        {
+            return before + after;
+        }
+        else if (startEnds & endStarts) //both
+        {
+            return before + after.substring(1, after.length());
+        }
+        else //neither
+        {
+            return before + '/' + after;
+        }
+    }
+
     private static class SessionMutex implements java.io.Serializable
     {
     }
