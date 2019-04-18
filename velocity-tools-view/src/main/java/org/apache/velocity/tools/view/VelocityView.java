@@ -341,6 +341,13 @@ public class VelocityView extends ViewToolManager
         Properties defaultProperties = getProperties(DEFAULT_PROPERTIES_PATH, true);
         velocity.setProperties(defaultProperties);
 
+        // load model properties, if present in the classpath
+        Properties modelProperties = getProperties(MODEL_PROPERTIES_PATH, false);
+        if (modelProperties != null)
+        {
+            velocity.setProperties(modelProperties);
+        }
+
         // check for application-wide user props in the context init params
         String appPropsPath = servletContext.getInitParameter(PROPERTIES_KEY);
         if (appPropsPath != null)
