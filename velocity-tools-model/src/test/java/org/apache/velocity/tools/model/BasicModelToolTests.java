@@ -20,8 +20,6 @@ package org.apache.velocity.tools.model;
  */
 
 
-import org.apache.commons.dbcp2.BasicDataSource;
-import org.apache.commons.io.IOUtils;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
@@ -32,30 +30,21 @@ import org.apache.velocity.tools.config.ConfigurationException;
 import org.apache.velocity.tools.config.ConfigurationUtils;
 import org.apache.velocity.tools.config.FactoryConfiguration;
 import org.apache.velocity.tools.config.XmlFactoryConfiguration;
+import org.apache.velocity.tools.model.context.ModelTool;
 import org.apache.velocity.tools.model.filter.Filter;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.naming.spi.InitialContextFactory;
 import javax.sql.DataSource;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.io.StringWriter;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
