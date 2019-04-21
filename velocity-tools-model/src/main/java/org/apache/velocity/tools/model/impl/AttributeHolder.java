@@ -56,6 +56,26 @@ public abstract class AttributeHolder implements Serializable
         return attributesMap.get(name); // TODO resolveCase?
     }
 
+    public ScalarAttribute getScalarAttribute(String name)
+    {
+        return (ScalarAttribute)getAttribute(name);
+    }
+
+    public RowAttribute getRowAttribute(String name)
+    {
+        return (RowAttribute)getAttribute(name);
+    }
+
+    public RowsetAttribute getRowsetAttribute(String name)
+    {
+        return (RowsetAttribute)getAttribute(name);
+    }
+
+    public Action getAction(String name)
+    {
+        return (Action)getAttribute(name);
+    }
+
     public Serializable evaluate(String name, Serializable... params) throws SQLException
     {
        Attribute attribute = getAttribute(name);
