@@ -24,7 +24,7 @@
     <parent>
         <artifactId>velocity-tools-parent</artifactId>
         <groupId>org.apache.velocity.tools</groupId>
-        <version>3.1-model-SNAPSHOT</version>
+        <version>3.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>velocity-tools-model</artifactId>
