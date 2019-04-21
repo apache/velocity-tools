@@ -245,7 +245,7 @@ public class BasicModelToolTests extends BaseBookshelfTests
     {
         DataSource dataSource = initDataSource();
         Properties velProps = new Properties();
-        velProps.put("introspector.uberspect.class", "org.apache.velocity.tools.model.ModelUberspector, org.apache.velocity.util.introspection.UberspectImpl");
+        velProps.put("introspector.uberspect.class", "org.apache.velocity.tools.model.context.ModelUberspector, org.apache.velocity.util.introspection.UberspectImpl");
         VelocityEngine engine = createVelocityEngine(velProps);
         ModelTool model = new ModelTool();
         Map<String, Object> props = new HashMap<>();
@@ -269,7 +269,7 @@ public class BasicModelToolTests extends BaseBookshelfTests
     {
         DataSource dataSource = initDataSource();
         Properties velProps = new Properties();
-        velProps.put("introspector.uberspect.class", "org.apache.velocity.tools.model.ModelUberspector,org.apache.velocity.util.introspection.UberspectImpl");
+        velProps.put("introspector.uberspect.class", "org.apache.velocity.tools.model.context.ModelUberspector,org.apache.velocity.util.introspection.UberspectImpl");
         velProps.put("model.datasource", dataSource);
         velProps.put("model.reverse", "extended");
         velProps.put("model.identifiers.mapping", "lowercase");
@@ -297,7 +297,7 @@ public class BasicModelToolTests extends BaseBookshelfTests
     {
         DataSource dataSource = initDataSource();
         Properties velProps = new Properties();
-        velProps.put("introspector.uberspect.class", "org.apache.velocity.tools.model.ModelUberspector,org.apache.velocity.util.introspection.UberspectImpl");
+        velProps.put("introspector.uberspect.class", "org.apache.velocity.tools.model.context.ModelUberspector,org.apache.velocity.util.introspection.UberspectImpl");
         velProps.put("model.datasource", dataSource);
         velProps.put("model.reverse", "extended");
         velProps.put("model.identifiers.mapping", "lowercase");

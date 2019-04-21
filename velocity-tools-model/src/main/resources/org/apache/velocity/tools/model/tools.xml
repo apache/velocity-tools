@@ -22,6 +22,6 @@
 <tools>
     <data type="boolean" key="MODEL_TOOL_AVAILABLE" value="true"/>
     <toolbox scope="application">
-        <tool class="org.apache.velocity.tools.model.ModelTool"/>
+        <tool class="org.apache.velocity.tools.model.context.ModelTool"/>
     </toolbox>
 </tools>
