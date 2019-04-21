@@ -79,7 +79,7 @@ public class ScalarAttribute extends Attribute
         return value;
     }
 
-    protected String getQueryMethodName()
+    public String getQueryMethodName()
     {
         return "evaluate";
     }

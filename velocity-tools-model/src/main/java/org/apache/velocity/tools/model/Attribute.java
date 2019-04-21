@@ -29,5 +29,5 @@ public abstract class Attribute extends BaseAttribute
         super(name, parent);
     }
 
-    protected abstract String getQueryMethodName();
+    public abstract String getQueryMethodName();
 }

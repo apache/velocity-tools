@@ -1,4 +1,4 @@
-package org.apache.velocity.tools.model;
+package org.apache.velocity.tools.model.context;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -23,6 +23,13 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.Map;
+
+import org.apache.velocity.tools.model.Attribute;
+import org.apache.velocity.tools.model.Entity;
+import org.apache.velocity.tools.model.Instance;
+import org.apache.velocity.tools.model.RowAttribute;
+import org.apache.velocity.tools.model.RowsetAttribute;
+import org.apache.velocity.tools.model.ScalarAttribute;
 
 public class EntityReference
 {

@@ -1,5 +1,6 @@
-package org.apache.velocity.tools.model;
+package org.apache.velocity.tools.model.context;
 
+import org.apache.velocity.tools.model.Attribute;
 import org.apache.velocity.tools.model.impl.AttributeHolder;
 import org.apache.velocity.util.introspection.AbstractChainableUberspector;
 import org.apache.velocity.util.introspection.Info;

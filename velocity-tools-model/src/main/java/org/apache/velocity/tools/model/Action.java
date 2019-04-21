@@ -52,7 +52,7 @@ public class Action extends Attribute
     }
 
     @Override
-    protected String getQueryMethodName()
+    public String getQueryMethodName()
     {
         return "perform";
     }

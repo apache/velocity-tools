@@ -1,5 +1,6 @@
-package org.apache.velocity.tools.model;
+package org.apache.velocity.tools.model.context;
 
+import org.apache.velocity.tools.model.Instance;
 import org.apache.velocity.tools.model.util.SlotMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

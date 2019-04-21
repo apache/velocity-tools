@@ -77,7 +77,7 @@ public class RowsetAttribute extends Attribute
         return iterator;
     }
 
-    protected String getQueryMethodName()
+    public String getQueryMethodName()
     {
         return "query";
     }

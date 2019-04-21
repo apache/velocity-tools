@@ -4,7 +4,7 @@ import org.apache.velocity.tools.XmlUtils;
 import org.apache.velocity.tools.config.ConfigurationException;
 import org.apache.velocity.tools.generic.ValueParser;
 import org.apache.velocity.tools.model.Model;
-import org.apache.velocity.tools.model.ModelTool;
+import org.apache.velocity.tools.model.context.ModelTool;
 import org.apache.velocity.tools.model.config.ConfigHelper;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;

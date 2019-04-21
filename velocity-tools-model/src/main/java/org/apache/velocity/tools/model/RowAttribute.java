@@ -75,7 +75,7 @@ public class RowAttribute extends Attribute
         return instance;
     }
 
-    protected String getQueryMethodName()
+    public String getQueryMethodName()
     {
         return "retrieve";
     }

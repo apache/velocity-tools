@@ -1,7 +1,10 @@
-package org.apache.velocity.tools.model;
+package org.apache.velocity.tools.model.context;
 
 import java.io.Serializable;
 import java.util.Map;
+
+import org.apache.velocity.tools.model.Instance;
+import org.apache.velocity.tools.model.context.InstanceReference;
 
 public class ActiveInstanceReference extends InstanceReference
 {

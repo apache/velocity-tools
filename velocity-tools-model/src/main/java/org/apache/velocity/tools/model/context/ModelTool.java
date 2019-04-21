@@ -1,4 +1,4 @@
-package org.apache.velocity.tools.model;
+package org.apache.velocity.tools.model.context;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -24,6 +24,13 @@ import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
 import org.apache.velocity.tools.generic.SafeConfig;
 import org.apache.velocity.tools.generic.ValueParser;
+import org.apache.velocity.tools.model.Attribute;
+import org.apache.velocity.tools.model.Entity;
+import org.apache.velocity.tools.model.Instance;
+import org.apache.velocity.tools.model.Model;
+import org.apache.velocity.tools.model.RowAttribute;
+import org.apache.velocity.tools.model.RowsetAttribute;
+import org.apache.velocity.tools.model.ScalarAttribute;
 import org.apache.velocity.tools.model.config.ConfigHelper;
 import org.apache.velocity.tools.model.config.Constants;
 
