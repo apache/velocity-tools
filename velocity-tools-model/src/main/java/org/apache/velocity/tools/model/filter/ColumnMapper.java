@@ -7,6 +7,12 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Node : For speed considerations, matching columns are calculated for each known column at configuration time. It means that
+ * unknown result set column names will only be applied the <b>default</b> column filter, aka *.*
+ * @param <T>
+ */
+
 public abstract class ColumnMapper<T extends Serializable> extends TableMapper<T>
 {
     public ColumnMapper(String configurationPrefix)
@@ -29,8 +35,8 @@ public abstract class ColumnMapper<T extends Serializable> extends TableMapper<T
             {
                 throw new ConfigurationException("invalid mappingEntry key: " + getConfigurationPrefix() + "." + key);
             }
-            String tablePattern = key.substring(0, dot);
-            String columnPattern = key.substring(dot + 1);
+            String tablePattern = key.substring(0, dot).replaceAll("\b_\b", "*");
+            String columnPattern = key.substring(dot + 1).replaceAll("\b_\b", "*");
             MappingEntry mappingEntry = new MappingEntry(columnPattern, leaf);
             addColumnMapping(tablePattern, columnPattern, mappingEntry);
         }
@@ -53,7 +59,7 @@ public abstract class ColumnMapper<T extends Serializable> extends TableMapper<T
 
         if ("*".equals(columnPattern) && "*".equals(tablePattern))
         {
-            defaultColumnLeaf = mappingEntry.getLeaf();
+            setDefaultColumnLeaf(mappingEntry.getLeaf());
         }
     }
 

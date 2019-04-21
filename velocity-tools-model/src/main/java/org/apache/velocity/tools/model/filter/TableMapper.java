@@ -4,12 +4,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Node : For speed considerations, filters are calculated for each known column at configuration time. It means that
- * unknown result set column names will only be applied the <b>default</b> column filter, aka *.*
- * @param <T>
- */
-
 public abstract class TableMapper<T extends Serializable> extends Mapper<T>
 {
     public TableMapper(String configurationPrefix)
