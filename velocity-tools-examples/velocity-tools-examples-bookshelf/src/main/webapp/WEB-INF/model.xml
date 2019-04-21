@@ -25,14 +25,4 @@
     </transaction>
 
     <!-- no need to declare entities: entities, key columns and foreign keys will be reverse enginered -->
-
-    <!--
-        Get user by credentials.
-        There is no encryption function in HSQL, otherwise, for instance with MySQL, you would do:
-        select * from user where login = <login/> and password = sha2(<password/>, 256);
-     -->
-    <row name="user_by_credentials" result="user">
-        select * from friend where login = <login/> and password = <password/>;
-    </row>
-
 </model>

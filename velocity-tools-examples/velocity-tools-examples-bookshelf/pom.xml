@@ -141,7 +141,7 @@
               -->
               <cargo.jvmargs>
                 <!-- enable remote debugging
-                -agentlib:jdwp=transport=dt_socket,server=n,suspend=n,address=5006
+                -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006
                 -->
 
                 <!-- enable Jetty debug log
