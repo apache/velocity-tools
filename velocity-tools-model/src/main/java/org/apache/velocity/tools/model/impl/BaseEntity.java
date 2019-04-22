@@ -86,7 +86,12 @@ public abstract class BaseEntity extends AttributeHolder
 
     public List<Entity.Column> getPrimaryKey()
     {
-        return primaryKey;
+        return Collections.unmodifiableList(primaryKey);
+    }
+
+    public boolean hasPrimaryKey()
+    {
+        return primaryKey != null && primaryKey.size() > 0;
     }
 
     public BitSet getPrimaryKeyMask()

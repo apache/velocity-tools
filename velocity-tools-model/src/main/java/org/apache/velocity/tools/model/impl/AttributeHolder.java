@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.Optional;
 import java.util.TreeMap;
 
 public abstract class AttributeHolder implements Serializable
@@ -58,22 +59,26 @@ public abstract class AttributeHolder implements Serializable
 
     public ScalarAttribute getScalarAttribute(String name)
     {
-        return (ScalarAttribute)getAttribute(name);
+        Attribute attr = getAttribute(name);
+        return attr instanceof ScalarAttribute ? (ScalarAttribute)attr : null;
     }
 
     public RowAttribute getRowAttribute(String name)
     {
-        return (RowAttribute)getAttribute(name);
+        Attribute attr = getAttribute(name);
+        return attr instanceof RowAttribute ? (RowAttribute)attr : null;
     }
 
     public RowsetAttribute getRowsetAttribute(String name)
     {
-        return (RowsetAttribute)getAttribute(name);
+        Attribute attr = getAttribute(name);
+        return attr instanceof RowsetAttribute ? (RowsetAttribute)attr : null;
     }
 
     public Action getAction(String name)
     {
-        return (Action)getAttribute(name);
+        Attribute attr = getAttribute(name);
+        return attr instanceof Action ? (Action)attr : null;
     }
 
     public Serializable evaluate(String name, Serializable... params) throws SQLException

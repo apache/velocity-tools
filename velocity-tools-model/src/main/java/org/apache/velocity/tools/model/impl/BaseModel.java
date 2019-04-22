@@ -88,7 +88,7 @@ public abstract class BaseModel extends AttributeHolder implements Constants
                 }
                 else if(flatMapping instanceof Map)
                 {
-                    getIdentifiers().setMapping((Map)flatMapping);
+                     getIdentifiers().setMapping((Map)flatMapping);
                 }
                 else
                 {
@@ -164,7 +164,7 @@ public abstract class BaseModel extends AttributeHolder implements Constants
         }
     }
 
-    public NavigableMap<String, Attribute> getConfig()
+    public NavigableMap<String, Attribute> getConfiguration()
     {
         return new TreeMap(); // TODO
     }
@@ -253,7 +253,7 @@ public abstract class BaseModel extends AttributeHolder implements Constants
         return getModel();
     }
 
-    protected void readDefinition(InputSource source) throws Exception
+    protected final void readDefinition(InputSource source) throws Exception
     {
         if (source == null)
         {
@@ -275,7 +275,7 @@ public abstract class BaseModel extends AttributeHolder implements Constants
         new ConfigDigester(doc, this).process();
     }
 
-    protected void connect() throws Exception
+    protected final void connect() throws Exception
     {
         if (dataSource == null)
         {
@@ -464,7 +464,7 @@ public abstract class BaseModel extends AttributeHolder implements Constants
         entitiesMap.put(entity.getName(), entity);
     }
 
-    protected void reverseEngineer() throws SQLException
+    private void reverseEngineer() throws SQLException
     {
         if (connectionPool == null)
         {

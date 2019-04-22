@@ -22,12 +22,12 @@ public class InstanceProducer
         this(resultEntity.getModel(), resultEntity);
     }
 
-    protected Model getModel()
+    public Model getModel()
     {
         return model;
     }
 
-    protected Entity getResultEntity()
+    public Entity getResultEntity()
     {
         return resultEntity;
     }
@@ -37,7 +37,7 @@ public class InstanceProducer
         this.resultEntity = resultEntity;
     }
 
-    protected Instance newResultInstance()
+    public Instance newResultInstance()
     {
         return resultEntity == null ?
             new Instance(getModel()) :

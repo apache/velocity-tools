@@ -62,8 +62,7 @@ public abstract class ColumnMapper<T extends Serializable> extends TableMapper<T
             setDefaultColumnLeaf(mappingEntry.getLeaf());
         }
     }
-
-
+    
     /* needed ?
     public List<MappingEntry> getColumnsMapping(String table)
     {
