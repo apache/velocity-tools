@@ -194,6 +194,10 @@
               <name>org.slf4j.simpleLogger.logFile</name>
               <value>${project.build.directory}/velocity-tools.log</value>
             </property>
+            <property>
+              <name>test.resources.dir</name>
+              <value>${project.build.testOutputDirectory}</value>
+            </property>
           </systemProperties>
         </configuration>
       </plugin>

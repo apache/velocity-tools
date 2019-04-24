@@ -106,7 +106,7 @@ public class ConfigurationUtils
 
     /**
      * <p>Returns a {@link FactoryConfiguration} including all default
-     * "VelocityView" tools available as well as the default "GenericTools".</p>
+     * "velocity-tools-view" tools available as well as the default "GenericTools".</p>
      * @return all default tools {@link FactoryConfiguration}
      * @throws ConfigurationException if a tools.xml is not found at the {@link #VIEW_DEFAULTS_PATH}.
      */

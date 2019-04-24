@@ -26,7 +26,6 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
 import org.apache.velocity.tools.generic.ContextTool;
 import org.apache.velocity.tools.generic.ValueParser;
-import org.apache.velocity.tools.view.ViewContext;
 
 /**
  * <p>Extension of {@link ContextTool} that includes keys and values

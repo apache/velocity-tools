@@ -32,9 +32,6 @@ import org.apache.velocity.tools.ToolboxFactory;
 import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.ToolManager;
 import org.apache.velocity.tools.config.FactoryConfiguration;
-import org.apache.velocity.tools.view.ServletUtils;
-import org.apache.velocity.tools.view.ViewContext;
-import org.apache.velocity.tools.view.ViewToolContext;
 
 /**
  * Manages tools for web applications. This simplifies the process
@@ -203,10 +200,13 @@ public class ViewToolManager extends ToolManager
     /**
      * Publish {@link Scope#APPLICATION} Toolbox.
      */
-    protected void publishApplicationTools()
+    public synchronized void publishApplicationTools()
     {
-        servletContext.setAttribute(this.toolboxKey, getApplicationToolbox());
-        appToolsPublished = true;
+        if (!appToolsPublished)
+        {
+            servletContext.setAttribute(this.toolboxKey, getApplicationToolbox());
+            appToolsPublished = true;
+        }
     }
 
     /**
@@ -242,9 +242,11 @@ public class ViewToolManager extends ToolManager
     protected void addToolboxes(ToolContext context)
     {
         super.addToolboxes(context);
-        if (hasSessionTools())
+        if (hasSessionTools() && context != null && context instanceof ViewToolContext)
         {
-            context.addToolbox(getSessionToolbox());
+            ViewToolContext viewContext = (ViewToolContext)context;
+            HttpSession session = viewContext.getSession();
+            context.addToolbox(getSessionToolbox(session));
         }
     }
 
@@ -291,7 +293,7 @@ public class ViewToolManager extends ToolManager
         }
     }
 
-    protected boolean hasSessionTools()
+    public boolean hasSessionTools()
     {
         return hasTools(Scope.SESSION);
     }
@@ -299,6 +301,11 @@ public class ViewToolManager extends ToolManager
     protected Toolbox getSessionToolbox()
     {
         return createToolbox(Scope.SESSION);
+    }
+
+    public Toolbox getSessionToolbox(HttpSession session)
+    {
+        return (Toolbox)session.getAttribute(this.toolboxKey);
     }
 
     /**

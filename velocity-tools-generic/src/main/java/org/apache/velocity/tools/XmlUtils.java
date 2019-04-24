@@ -35,6 +35,8 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.ref.SoftReference;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -89,26 +91,11 @@ public final class XmlUtils
 
     private static boolean canReuseBuilders = false;
 
-    private static final DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+    private static final DocumentBuilderFactory builderFactory = createDocumentBuilderFactory();
 
-    private static final ThreadLocal<DocumentBuilder> reusableBuilder
-        = new ThreadLocal<DocumentBuilder>() {
-        @Override
-        protected DocumentBuilder initialValue() {
-            try
+    public static final DocumentBuilderFactory createDocumentBuilderFactory()
             {
-                LOGGER.trace("Created a new document builder");
-                return builderFactory.newDocumentBuilder();
-            }
-            catch (ParserConfigurationException e)
-            {
-                throw new RuntimeException(e);
-            }
-        }
-    };
-
-    static
-    {
+        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
         // Namespace support is required for <os:> elements
         builderFactory.setNamespaceAware(true);
 
@@ -157,6 +144,27 @@ public final class XmlUtils
             LOGGER.info("Error parsing secure XML: ", e);
         }
 
+        return builderFactory;
+    }
+
+    private static final ThreadLocal<DocumentBuilder> reusableBuilder
+        = new ThreadLocal<DocumentBuilder>() {
+        @Override
+        protected DocumentBuilder initialValue() {
+            try
+            {
+                LOGGER.trace("Created a new document builder");
+                return builderFactory.newDocumentBuilder();
+            }
+            catch (ParserConfigurationException e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+    };
+
+    static
+    {
         try
         {
             DocumentBuilder builder = builderFactory.newDocumentBuilder();
@@ -246,7 +254,7 @@ public final class XmlUtils
 
     /**
      * Release the given document builder
-     * @param document builder
+     * @param builder document builder
      */
     private static synchronized void releaseBuilder(DocumentBuilder builder)
     {
@@ -384,18 +392,57 @@ public final class XmlUtils
         return parse(new StringReader(xml));
     }
 
-    public static NodeList search(String xpath, Node context)
+    /**
+     * Search for nodes using an XPath expression
+     * @param xpath XPath expression
+     * @param context evaluation context
+     * @return org.w3c.NodeList of found nodes
+     * @throws XPathExpressionException
+     */
+    public static NodeList search(String xpath, Node context) throws XPathExpressionException
     {
         NodeList ret = null;
-        try
-        {
             XPath xp = XPathFactory.newInstance().newXPath();
             XPathExpression exp = xp.compile(xpath);
             ret = (NodeList)exp.evaluate(context, XPathConstants.NODESET);
+        return ret;
         }
-        catch (XPathExpressionException xpe)
+
+    /**
+     * Search for nodes using an XPath expression
+     * @param xpath XPath expression
+     * @param context evaluation context
+     * @return List of found nodes
+     * @throws XPathExpressionException
+     */
+    public static List<Node> getNodes(String xpath, Node context) throws XPathExpressionException
         {
-            LOGGER.error("could not process xpath expression {}", xpath, xpe);
+        List<Node> ret = new ArrayList<>();
+        NodeList lst = search(xpath, context);
+        for (int i = 0; i < lst.getLength(); ++i)
+        {
+            ret.add(lst.item(i));
+        }
+        return ret;
+    }
+
+
+    /**
+     * Search for elements using an XPath expression
+     * @param xpath XPath expression
+     * @param context evaluation context
+     * @return List of found elements
+     * @throws XPathExpressionException
+     */
+    public static List<Element> getElements(String xpath, Node context) throws XPathExpressionException
+    {
+        List<Element> ret = new ArrayList<>();
+        NodeList lst = search(xpath, context);
+        for (int i = 0; i < lst.getLength(); ++i)
+        {
+            // will throw a ClassCastExpression if Node is not an Element,
+            // that's what we want
+            ret.add((Element)lst.item(i));
         }
         return ret;
     }

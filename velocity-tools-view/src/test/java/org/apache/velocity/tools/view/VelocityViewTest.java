@@ -45,45 +45,10 @@ import org.slf4j.LoggerFactory;
  * Tests {@link VelocityView}.
  *
  */
-public class VelocityViewTest
+public class VelocityViewTest extends BaseWebappMockTest
 {
 
     static Logger logger = LoggerFactory.getLogger(VelocityViewTest.class);
-
-    /**
-     * Unique point of passage for non-void calls
-     * @param value value to return
-     * @param <T> type of returned value
-     * @return value
-     */
-    static <T> IAnswer<T> eval(final T value)
-    {
-        return new IAnswer<T>()
-        {
-            public T answer() throws Throwable
-            {
-                String caller = null;
-                String callee = null;
-                StackTraceElement stackTrace[] = Thread.currentThread().getStackTrace();
-                String previous = null;
-                for (StackTraceElement line : stackTrace)
-                {
-                    String at = line.toString();
-                    if (at.contains("org.apache") && !at.contains("VelocityViewTest"))
-                    {
-                        caller = at;
-                        break;
-                    }
-                    previous = at;
-                }
-                if (caller != null) callee = previous;
-                else caller = callee = "???";
-                // good place for a breakpoint
-                logger.trace("[view] method {} called, expecting {}, at {}", value, caller);
-                return value;
-            }
-        };
-    }
 
     /**
      * Test method for {@link org.apache.velocity.tools.view.VelocityView#getTemplate(javax.servlet.http.HttpServletRequest)}.
@@ -103,18 +68,18 @@ public class VelocityViewTest
         Context context = createMock(Context.class);
 
         expect(config.getServletContext()).andAnswer(eval(servletContext));
-        expect(config.findInitParameter(VelocityView.USER_OVERWRITE_KEY)).andAnswer(eval((String)null));
+        expect(config.findInitParameter(VelocityView.USER_OVERWRITE_KEY)).andAnswer(eval(null));
         expect(config.findInitParameter(VelocityView.LOAD_DEFAULTS_KEY)).andAnswer(eval("false"));
-        expect(servletContext.getInitParameter(VelocityView.PROPERTIES_KEY)).andAnswer(eval((String)null));
+        expect(servletContext.getInitParameter(VelocityView.PROPERTIES_KEY)).andAnswer(eval(null));
         expect(servletContext.getResourceAsStream(VelocityView.USER_PROPERTIES_PATH))
             .andAnswer(eval(getClass().getResourceAsStream("/WEB-INF/velocity.properties")));
         String root = new File(getClass().getResource("/").getFile()).getAbsolutePath();
-        expect(config.getInitParameter(VelocityView.PROPERTIES_KEY)).andAnswer(eval((String)null));
-        expect(config.findInitParameter(VelocityView.CLEAN_CONFIGURATION_KEY)).andAnswer(eval((String)null));
-        expect(servletContext.getInitParameter(VelocityView.TOOLS_KEY)).andAnswer(eval((String)null));
-        expect(config.getInitParameter(VelocityView.TOOLS_KEY)).andAnswer(eval((String)null));
+        expect(config.getInitParameter(VelocityView.PROPERTIES_KEY)).andAnswer(eval(null));
+        expect(config.findInitParameter(VelocityView.CLEAN_CONFIGURATION_KEY)).andAnswer(eval(null));
+        expect(servletContext.getInitParameter(VelocityView.TOOLS_KEY)).andAnswer(eval(null));
+        expect(config.getInitParameter(VelocityView.TOOLS_KEY)).andAnswer(eval(null));
         expect(servletContext.getAttribute(ServletUtils.CONFIGURATION_KEY)).andAnswer(eval((String)null));
-        expect(servletContext.getResource(VelocityView.USER_TOOLS_PATH)).andAnswer(eval((URL)null));
+        expect(servletContext.getResource(VelocityView.USER_TOOLS_PATH)).andAnswer(eval(null));
         expect(request.getAttribute("javax.servlet.include.servlet_path")).andAnswer(eval("/charset-test.vm"));
         expect(request.getAttribute("javax.servlet.include.path_info")).andAnswer(eval((String)null));
 

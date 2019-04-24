@@ -41,6 +41,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
+import javax.xml.xpath.XPathExpressionException;
+
 /**
  * <p>Tool for reading/navigating XML files, with XPath expressions support.</p>
  *
@@ -571,7 +573,16 @@ public class XmlTool extends SafeConfig implements Serializable
         List<Node> found = new ArrayList<Node>();
         for (Node n : nodes)
         {
-            NodeList lst = XmlUtils.search(xpath, n);
+            NodeList lst;
+            try
+            {
+                lst = XmlUtils.search(xpath, n);
+            }
+            catch(XPathExpressionException xpee)
+            {
+                getLog().error("could not parse XML expression '{}'", xpath, xpee);
+                return null;
+            }
             if (lst != null)
             {
                 for (int i = 0; i < lst.getLength(); ++i)

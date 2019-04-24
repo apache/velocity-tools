@@ -38,6 +38,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
+
 import org.apache.velocity.util.ArrayIterator;
 import org.apache.velocity.util.EnumerationIterator;
 
@@ -336,7 +338,7 @@ public class ClassUtils
      * @return method object
      * @throws SecurityException if not granted
      */
-    public static Method findMethod(Class clazz, String name, Class[] params)
+    public static Method findMethod(Class clazz, String name, Class... params)
         throws SecurityException
     {
         try
@@ -359,7 +361,7 @@ public class ClassUtils
      * @return
      * @throws SecurityException if not allowed
      */
-    public static Method findDeclaredMethod(Class clazz, String name, Class[] params)
+    public static Method findDeclaredMethod(Class clazz, String name, Class... params)
         throws SecurityException
     {
         try
@@ -509,5 +511,71 @@ public class ClassUtils
         }
         return ret;
     }
+
+    public static Method findGetter(String getterName, Class clazz) throws NoSuchMethodException
+    {
+        return findGetter(getterName, clazz, true);
+    }
+
+    public static Method findGetter(String getterName, Class clazz, boolean mandatory) throws NoSuchMethodException
+    {
+        do
+        {
+            for (Method method : clazz.getDeclaredMethods())
+            {
+                // prefix matching: we allow a method name like setWriteAccess for a parameter like write="..."
+                if (method.getParameterCount() == 0 && method.getName().startsWith(getterName))
+                {
+                    return method;
+                }
+            }
+            clazz = clazz.getSuperclass();
+        }
+        while (clazz != Object.class);
+        if (mandatory)
+        {
+            throw new NoSuchMethodException(clazz.getName() + "::" + getterName);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public static Method findSetter(String setterName, Class clazz) throws NoSuchMethodException
+    {
+        return findSetter(setterName, clazz, x -> true);
+    }
+
+    public static Method findSetter(String setterName, Class clazz, Predicate<Class> argumentClassFilter) throws NoSuchMethodException
+    {
+        return findSetter(setterName, clazz, argumentClassFilter, true);
+    }
+
+    public static Method findSetter(String setterName, Class clazz, Predicate<Class> argumentClassFilter, boolean mandatory) throws NoSuchMethodException
+    {
+        do
+        {
+            for (Method method : clazz.getDeclaredMethods())
+            {
+                // prefix matching: we allow a method name like setWriteAccess for a parameter like write="..."
+                if (method.getParameterCount() == 1 && method.getName().startsWith(setterName) && argumentClassFilter.test(method.getParameterTypes()[0]))
+                {
+                    return method;
+                }
+            }
+            clazz = clazz.getSuperclass();
+        }
+        while (clazz != Object.class);
+        if (mandatory)
+        {
+            throw new NoSuchMethodException(clazz.getName() + "::" + setterName);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
 
 }
