@@ -52,7 +52,6 @@
   <modules>
     <module>velocity-tools-generic</module>
     <module>velocity-tools-view</module>
-    <module>velocity-tools-model</module>
     <module>velocity-tools-view-jsp</module>
     <module>velocity-tools-examples</module>
   </modules>

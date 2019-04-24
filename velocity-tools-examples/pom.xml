@@ -35,7 +35,6 @@
   <description>Examples to show how to use Velocity Tools</description>
 
   <modules>
-    <module>velocity-tools-examples-bookshelf</module>
     <module>velocity-tools-examples-showcase</module>
     <module>velocity-tools-examples-simple</module>
   </modules>
