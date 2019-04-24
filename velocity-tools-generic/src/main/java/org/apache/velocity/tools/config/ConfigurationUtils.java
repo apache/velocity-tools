@@ -47,8 +47,6 @@ public class ConfigurationUtils
         "/org/apache/velocity/tools/generic/tools.xml";
     public static final String VIEW_DEFAULTS_PATH =
         "/org/apache/velocity/tools/view/tools.xml";
-    public static final String MODEL_DEFAULTS_PATH =
-        "/org/apache/velocity/tools/model/tools.xml";
 
     public static final String AUTOLOADED_XML_PATH = "tools.xml";
     public static final String AUTOLOADED_PROPS_PATH = "tools.properties";
@@ -84,9 +82,6 @@ public class ConfigurationUtils
 
         // view tools may not be available
         config.read(VIEW_DEFAULTS_PATH, false);
-
-        // model tools may not be available
-        config.read(MODEL_DEFAULTS_PATH, false);
 
         // defaults should *always* be clean!
         clean(config);
@@ -126,26 +121,6 @@ public class ConfigurationUtils
         clean(config);
         return config;
     }
-
-    /**
-     * <p>Returns a {@link FactoryConfiguration} including all default
-     * "velocity-tools-view" and "velocity-tools-model" tools available as well as the default "GenericTools".</p>
-     * @return all default tools {@link FactoryConfiguration}
-     * @throws ConfigurationException if a tools.xml is not found at the {@link #VIEW_DEFAULTS_PATH}.
-     */
-    public static FactoryConfiguration getModelView()
-    {
-        FileFactoryConfiguration config =
-            new XmlFactoryConfiguration("ConfigurationUtils.getVelocityView()");
-        config.read(GENERIC_DEFAULTS_PATH);
-        config.read(VIEW_DEFAULTS_PATH);
-        config.read(MODEL_DEFAULTS_PATH);
-
-        // defaults should *always* be clean!
-        clean(config);
-        return config;
-    }
-
 
     /**
      * Returns a {@link FactoryConfiguration} loaded from the path specified
