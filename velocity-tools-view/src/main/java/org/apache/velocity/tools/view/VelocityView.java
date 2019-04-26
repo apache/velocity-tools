@@ -405,7 +405,7 @@ public class VelocityView extends ViewToolManager
             // add all available default tools
             getLog().trace("Loading default tools configuration...");
             // give a chance for subclasses to define their own default tools
-            addDefaultToolsConfiguration(factoryConfig);
+            factoryConfig.addConfiguration(getDefaultToolsConfiguration());
         }
 
         // check for application-wide user config in the context init params
@@ -461,9 +461,9 @@ public class VelocityView extends ViewToolManager
         configure(factoryConfig);
     }
 
-    protected void addDefaultToolsConfiguration(FactoryConfiguration factoryConfig)
+    protected FactoryConfiguration getDefaultToolsConfiguration()
     {
-        factoryConfig.addConfiguration(ConfigurationUtils.getDefaultTools());
+        return ConfigurationUtils.getDefaultTools();
     }
 
     private boolean setConfig(FactoryConfiguration factory, String path, boolean require)
