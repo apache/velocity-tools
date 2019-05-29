@@ -156,6 +156,7 @@ public class BreadcrumbTool extends LocaleConfig implements Iterable<BreadcrumbT
         String uri = request.getRequestURI();
         // infer extension
         String ext = getExtension(uri);
+        // deduce default index page
         String index = "index." + ext;
         if ("/".equals(uri)) uri = "/" + index;
         String elements[] = uri.split("/");
@@ -163,14 +164,33 @@ public class BreadcrumbTool extends LocaleConfig implements Iterable<BreadcrumbT
         StringBuilder builder = new StringBuilder();
         for (String elem : elements)
         {
+            // for each URI path element
             builder.append(elem);
             String currentPath = builder.toString();
             if (index.equals(elem)) continue;
             if (!elem.endsWith('.' + ext)) currentPath = currentPath + '/' + index;
             String name = builder.length() == 0 ? "home" : elem.replace('_', ' ').toLowerCase(getLocale());
-            navigationElements.add(new NavigationElement(currentPath, name));
+            NavigationElement navElem = new NavigationElement(currentPath, name);
+            // give a chance to subclasses to customize an item
+            if (customize(navElem, request))
+            {
+                navigationElements.add(navElem);
+            }
             builder.append('/');
         }
+    }
+
+    /**
+     * <p>Let the user customize programmatically the name and URL of a specific element.</p>
+     * <p>For instance, one can do use query parameters to customize the displayed name or target URL.</p>
+     * @param navElem navigation element
+     * @param request initial request
+     * @return true (default value) to include this navigation element, false to skip it
+     */
+    protected boolean customize(NavigationElement navElem, HttpServletRequest request)
+    {
+        // default implementation does nothing
+        return true;
     }
 
     /**
