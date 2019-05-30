@@ -51,6 +51,11 @@ import java.util.List;
  * </code></pre>
  * <p>where '<code>colors</code>' refers to the <code>/colors/</code> path element. The name and destination of the
  * root path element can be changed with '<code>home.name</code>' and '<code>home.url</code>'.</p>
+ * <p>If you provide a name property prefixed with '?', the breadcrumb tool will use the value of the corresponding
+ * query parameter as navigation element name, and will keep this query parameter in the navigation element URL.</p>
+ * <p>You can also define your own rules programmatically by subclassing BreadcrumbTool and override the
+ * <code>boolean customize(NavigationElement, HttpServletRequest)</code> method, which will be called for every
+ * navigation element. Returning false will skip this navigation element from the breadcrumb.</p>
  * <p>Inside a template, you would either render directly the default resulting HTML fragment with:</p>
  * <pre><code>$breadcrumb</code></pre>
  * <p>which would produce simething like:</p>
@@ -88,6 +93,11 @@ public class BreadcrumbTool extends LocaleConfig implements Iterable<BreadcrumbT
      * Navigation elements for the current URI
      */
     protected List<NavigationElement> navigationElements = null;
+
+    /**
+     * Current request
+     */
+    protected HttpServletRequest request = null;
 
     /**
      * Class representing a navigation element
@@ -153,6 +163,7 @@ public class BreadcrumbTool extends LocaleConfig implements Iterable<BreadcrumbT
      */
     public void setRequest(HttpServletRequest request)
     {
+        this.request = request;
         String uri = request.getRequestURI();
         // infer extension
         String ext = getExtension(uri);
@@ -209,9 +220,48 @@ public class BreadcrumbTool extends LocaleConfig implements Iterable<BreadcrumbT
             Object obj = config.get(elem.getName());
             if (obj != null && obj instanceof ValueParser)
             {
+                String queryParamName = null;
+                String queryParamValue = null;
                 ValueParser values = (ValueParser) obj;
-                elem.setName((String) values.getOrDefault("name", elem.getName()));
-                elem.setUrl((String) values.getOrDefault("url", elem.getUrl()));
+
+                // customize navigation element name
+                String newName = values.getString("name");
+                if (newName != null)
+                {
+                    if (newName.startsWith("?"))
+                    {
+                        queryParamName = newName.substring(1);
+                        queryParamValue = request.getParameter(queryParamName);
+                        if (queryParamValue != null)
+                        {
+                            elem.setName(queryParamValue);
+                        }
+                    }
+                    else
+                    {
+                        elem.setName(newName);
+                    }
+                }
+
+                // customize navigation element URL
+                String newURL = values.getString("url");
+                if (queryParamValue == null)
+                {
+                    if (newURL != null)
+                    {
+                        elem.setUrl(newURL);
+                    }
+                }
+                else
+                {
+                    if (newURL == null)
+                    {
+                        newURL = elem.getUrl();
+                    }
+                    newURL += newURL.indexOf('?') == -1 ? '?' : '&';
+                    newURL += queryParamName + '=' + queryParamValue;
+                    elem.setUrl(newURL);
+                }
             }
         }
     }
