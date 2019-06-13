@@ -236,7 +236,7 @@ public class VelocityViewServlet extends HttpServlet
             Template template = handleRequest(request, response, context);
 
             // merge the template and context into the response
-            mergeTemplate(template, context, response);
+            mergeTemplate(template, context, request, response);
         } catch (IOException e) {
             error(request, response, e);
             throw e;
@@ -305,12 +305,23 @@ public class VelocityViewServlet extends HttpServlet
         return getTemplate(request, response);
     }
 
+    /**
+     * Get a configured Velocity context for the current request and response
+     * @param request client request
+     * @param response client response
+     * @return configured context
+     */
     protected Context createContext(HttpServletRequest request,
                                     HttpServletResponse response)
     {
         return getVelocityView().createContext(request, response);
     }
 
+    /**
+     * Standard extension point to populate the context with additional entries
+     * @param context target context
+     * @param request client request
+     */
     protected void fillContext(Context context, HttpServletRequest request)
     {
         // this implementation does nothing
@@ -338,40 +349,88 @@ public class VelocityViewServlet extends HttpServlet
         response.setContentType(getVelocityView().getDefaultContentType());
     }
 
+    /**
+     * Get a template by client request and response
+     * @param request client request
+     * @param response client response
+     * @return found template
+     */
     protected Template getTemplate(HttpServletRequest request,
                                    HttpServletResponse response)
     {
         return getVelocityView().getTemplate(request);
     }
 
+    /**
+     * Get a template by name
+     * @param name template name
+     * @return found template
+     */
     protected Template getTemplate(String name)
     {
         return getVelocityView().getTemplate(name);
     }
 
-    protected void mergeTemplate(Template template, Context context,
-                                 HttpServletResponse response)
+    /**
+     * Merge template
+     * @param template input template
+     * @param context Velocity context
+     * @param request client request
+     * @param response client response
+     * @throws IOException
+     */
+    protected void mergeTemplate(Template template, Context context, HttpServletRequest request, HttpServletResponse response)
         throws IOException
+    {
+        Writer writer = getOutputWriter(request, response);
+        getVelocityView().merge(template, context, writer);
+        Boolean buffered = request == null ? Boolean.FALSE : (Boolean)request.getAttribute(BUFFER_OUTPUT_PARAM);
+        if (buffered != null && buffered)
+        {
+            response.getWriter().write(writer.toString());            
+        }
+    }
+
+    /**
+     * Get the output stream writer to use. If the writer is to be written afterwards to the response writer
+     * (as when <code>org.apache.velocity.tools.bufferOutput</code> is true), this method must set the
+     * <code>org.apache.velocity.tools.bufferOutput</code> request attribute to true.
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    protected Writer getOutputWriter(HttpServletRequest request, HttpServletResponse response)
+            throws IOException
     {
         Writer writer;
         if (this.bufferOutput)
         {
             writer = new StringWriter();
+            request.setAttribute(BUFFER_OUTPUT_PARAM, true);
         }
         else
         {
             writer = response.getWriter();
         }
-
-        getVelocityView().merge(template, context, writer);
-
-        if (this.bufferOutput)
-        {
-            response.getWriter().write(writer.toString());
-        }
+        return writer;
     }
 
-
+    /**
+     * Merge template
+     * @param template target template
+     * @param context client request
+     * @param response client response
+     * @throws IOException
+     * @deprecated see {{@link #mergeTemplate(Template, Context, HttpServletRequest, HttpServletResponse)}}
+     */
+    @Deprecated
+    protected void mergeTemplate(Template template, Context context, HttpServletResponse response)
+        throws IOException
+    {
+        mergeTemplate(template, context, null, response);
+    }
+    
     /**
      * Invoked when there is an error thrown in any part of doRequest() processing.
      * <br><br>
