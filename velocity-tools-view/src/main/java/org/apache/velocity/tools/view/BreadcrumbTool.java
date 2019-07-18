@@ -26,9 +26,12 @@ import org.apache.velocity.tools.generic.LocaleConfig;
 import org.apache.velocity.tools.generic.ValueParser;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * <p>Helper tool to display a navigation breadcrumb to the end user.</p>
@@ -164,7 +167,17 @@ public class BreadcrumbTool extends LocaleConfig implements Iterable<BreadcrumbT
     public void setRequest(HttpServletRequest request)
     {
         this.request = request;
+        String encoding = Optional.ofNullable(request.getCharacterEncoding()).orElse("UTF-8");
         String uri = request.getRequestURI();
+        try
+        {
+            uri = URLDecoder.decode(uri, encoding);
+        }
+        catch (UnsupportedEncodingException uee)
+        {
+            getLog().error("Cannot decode URI using encoding {}", encoding);
+            return;
+        }
         // infer extension
         String ext = getExtension(uri);
         // deduce default index page
