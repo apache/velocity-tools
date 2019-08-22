@@ -120,6 +120,10 @@ public class XmlFactoryConfiguration extends FileFactoryConfiguration
         {
             throw new RuntimeException("There was an error while parsing the InputStream", saxe);
         }
+        finally
+        {
+            BeanUtilsBean.getInstance().getPropertyUtils().resetBeanIntrospectors();
+        }
     }
 
 }
