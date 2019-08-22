@@ -21,6 +21,9 @@ package org.apache.velocity.tools.config;
 
 import java.io.IOException;
 import java.net.URL;
+
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.SuppressPropertiesBeanIntrospector;
 import org.xml.sax.SAXException;
 import org.apache.commons.digester3.Digester;
 import org.apache.commons.digester3.RuleSet;
@@ -99,6 +102,9 @@ public class XmlFactoryConfiguration extends FileFactoryConfiguration
      */
     protected void readImpl(URL url) throws IOException
     {
+        // since beanutils 1.9.4, we need to relax access to the 'class' method
+        BeanUtilsBean.getInstance().getPropertyUtils().removeBeanIntrospector(SuppressPropertiesBeanIntrospector.SUPPRESS_CLASS);
+
         Digester digester = new Digester();
         digester.setNamespaceAware(true);
         digester.setXIncludeAware(true);
