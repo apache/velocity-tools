@@ -379,185 +379,6 @@ public class ComparisonDateTool extends DateTool
         return new Comparison(ms, type, this.depth, false, null);
     }
 
-
-    /**
-     * @param ms The time in milliseconds
-     * @param type Whether the time should be represented as relative to "now",
-     *             relative to some other time, or as a mere difference.
-     * @param depth The maximum number of units deep to show
-     * @param abbr Whether the units should be abbreviated or not
-     * @param loc The locale to be used when looking up resources
-     * @return String representation
-     */
-    protected String toString(long ms, int type, int depth,
-                              boolean abbr, Locale loc)
-    {
-        // first check if there is a difference
-        if (ms == 0)
-        {
-            String sameKey = (abbr) ? ABBR_SUFFIX : "";
-            if (type == CURRENT_TYPE)
-            {
-                sameKey = CURRENT_PREFIX + EQUAL_KEY + sameKey;
-            }
-            else if (type == RELATIVE_TYPE)
-            {
-                sameKey = EQUAL_KEY + sameKey;
-            }
-            else
-            {
-                sameKey = ZERO_KEY + sameKey;
-            }
-            return getText(sameKey, loc);
-        }
-
-        boolean isBefore = false;
-        if (ms < 0)
-        {
-            isBefore = true;
-            // convert() only works with positive values
-            ms *= -1;
-        }
-
-        // get the base value
-        String friendly = toString(ms, depth, abbr, loc);
-
-        // if we only want the difference...
-        if (type == DIFF_TYPE)
-        {
-            // add the sign (if negative)
-            if (isBefore)
-            {
-                friendly = "-" + friendly;
-            }
-            // then return without direction suffix
-            return friendly;
-        }
-
-        // otherwise, get the appropriate direction key
-        String directionKey = (isBefore) ? BEFORE_KEY : AFTER_KEY;
-        if (type == CURRENT_TYPE)
-        {
-            directionKey = CURRENT_PREFIX + directionKey;
-
-            if (friendly != null && friendly.startsWith("1"))
-            {
-                // check for the corner case of "1 day ago" or "1 day away"
-                // and convert those to "yesterday" or "tomorrow"
-                String dayKey = (abbr) ? DAY_KEY + ABBR_SUFFIX : DAY_KEY;
-                if (friendly.equals("1 " + getText(dayKey, loc)))
-                {
-                    // add .day
-                    directionKey += ONE_DAY_SUFFIX;
-                    // and return only the value of this key
-                    // (which means we throw away the friendly value
-                    //  and don't bother abbreviating things)
-                    return getText(directionKey, loc);
-                }
-            }
-        }
-
-        // in the default bundle, this doesn't change anything.
-        // but in may in user-provided bundles
-        if (abbr)
-        {
-            directionKey += ABBR_SUFFIX;
-        }
-
-        // then combine them
-        return friendly +  " " + getText(directionKey, loc);
-    }
-
-
-    /**
-     * Converts the specified positive duration of milliseconds into larger
-     * units up to the specified number of positive units, beginning with the
-     * largest positive unit.  e.g.
-     * <code>toString(181453, 3, false, null)</code> will return
-     * "3 minutes 1 second 453 milliseconds",
-     * <code>toString(181453, 2, false, null)</code> will return
-     * "3 minutes 1 second", and
-     * <code>toString(180000, 2, true, null)</code> will return
-     * "3 min".
-     * @param diff milliseconds
-     * @param maxUnitDepth maximum unit depth
-     * @param abbreviate whether to abbreviate unit names
-     * @param locale locale to use
-     * @return string representation of the difference
-     */
-    protected String toString(long diff, int maxUnitDepth,
-                              boolean abbreviate, Locale locale)
-    {
-        // these cases should be handled elsewhere
-        if (diff <= 0)
-        {
-            return null;
-        }
-        // can't go any deeper than we have units
-        if (maxUnitDepth > timeUnits.size())
-        {
-            maxUnitDepth = timeUnits.size();
-        }
-
-        long value = 0;
-        long remainder = 0;
-
-        // determine the largest unit and calculate the value and remainder
-        Iterator i = timeUnits.keySet().iterator();
-        String unitKey = (String)i.next();
-        Long unit = (Long)timeUnits.get(unitKey);
-        while (i.hasNext())
-        {
-            // get the next unit
-            String nextUnitKey = (String)i.next();
-            Long nextUnit = (Long)timeUnits.get(nextUnitKey);
-
-            // e.g. if diff < <nextUnit>
-            if (diff < nextUnit.longValue())
-            {
-                // then we're working with <unit>
-                value = diff / unit.longValue();
-                remainder = diff - (value * unit.longValue());
-                break;
-            }
-
-            // shift to the next unit
-            unitKey = nextUnitKey;
-            unit = nextUnit;
-        }
-
-        // if it was years, then we haven't done the math yet
-        if (unitKey.equals(YEAR_KEY))
-        {
-            value = diff / unit.longValue();
-            remainder = diff - (value * unit.longValue());
-        }
-
-        // select proper pluralization
-        if (value != 1)
-        {
-            unitKey += PLURAL_SUFFIX;
-        }
-
-        if (abbreviate)
-        {
-            unitKey += ABBR_SUFFIX;
-        }
-
-        // combine the value and the unit
-        String output = value + " " + getText(unitKey, locale);
-
-        // recurse over the remainder if it exists and more units are allowed
-        if (maxUnitDepth > 1 && remainder > 0)
-        {
-            output += " " + toString(remainder, maxUnitDepth - 1,
-                                     abbreviate, locale);
-        }
-        return output;
-    }
-
-
-
     public class Comparison
     {
         private final long milliseconds;
@@ -745,17 +566,171 @@ public class ComparisonDateTool extends DateTool
         }
 
         /**
+         * Converts the specified positive duration of milliseconds into larger
+         * units up to the specified number of positive units, beginning with the
+         * largest positive unit.  e.g.
+         * <code>toString(181453, 3, false, null)</code> will return
+         * "3 minutes 1 second 453 milliseconds",
+         * <code>toString(181453, 2, false, null)</code> will return
+         * "3 minutes 1 second", and
+         * <code>toString(180000, 2, true, null)</code> will return
+         * "3 min".
+         * @param diff milliseconds
+         * @param maxUnitDepth maximum unit depth
+         * @return string representation of the difference
+         */
+        protected String toString(long diff, int maxUnitDepth)
+        {
+            // these cases should be handled elsewhere
+            if (diff <= 0)
+            {
+                return null;
+            }
+            // can't go any deeper than we have units
+            if (maxUnitDepth > timeUnits.size())
+            {
+                maxUnitDepth = timeUnits.size();
+            }
+
+            long value = 0;
+            long remainder = 0;
+
+            // determine the largest unit and calculate the value and remainder
+            Iterator i = timeUnits.keySet().iterator();
+            String unitKey = (String)i.next();
+            Long unit = (Long)timeUnits.get(unitKey);
+            while (i.hasNext())
+            {
+                // get the next unit
+                String nextUnitKey = (String)i.next();
+                Long nextUnit = (Long)timeUnits.get(nextUnitKey);
+
+                // e.g. if diff < <nextUnit>
+                if (diff < nextUnit.longValue())
+                {
+                    // then we're working with <unit>
+                    value = diff / unit.longValue();
+                    remainder = diff - (value * unit.longValue());
+                    break;
+                }
+
+                // shift to the next unit
+                unitKey = nextUnitKey;
+                unit = nextUnit;
+            }
+
+            // if it was years, then we haven't done the math yet
+            if (unitKey.equals(YEAR_KEY))
+            {
+                value = diff / unit.longValue();
+                remainder = diff - (value * unit.longValue());
+            }
+
+            // select proper pluralization
+            if (value != 1)
+            {
+                unitKey += PLURAL_SUFFIX;
+            }
+
+            if (abbreviate)
+            {
+                unitKey += ABBR_SUFFIX;
+            }
+
+            // combine the value and the unit
+            String output = value + " " + getText(unitKey, locale);
+
+            // recurse over the remainder if it exists and more units are allowed
+            if (maxUnitDepth > 1 && remainder > 0)
+            {
+                output += " " + toString(remainder, maxUnitDepth - 1);
+            }
+            return output;
+        }
+
+
+        /**
          * Renders this comparison to a String.
          * @return string representation
          */
         public String toString()
         {
-            return ComparisonDateTool.this.toString(this.milliseconds,
-                                                    this.type,
-                                                    this.maxUnitDepth,
-                                                    this.abbreviate,
-                                                    this.locale);
+            long ms = milliseconds;
+
+            // first check if there is a difference
+            if (ms == 0)
+            {
+                String sameKey = (abbreviate) ? ABBR_SUFFIX : "";
+                if (type == CURRENT_TYPE)
+                {
+                    sameKey = CURRENT_PREFIX + EQUAL_KEY + sameKey;
+                }
+                else if (type == RELATIVE_TYPE)
+                {
+                    sameKey = EQUAL_KEY + sameKey;
+                }
+                else
+                {
+                    sameKey = ZERO_KEY + sameKey;
+                }
+                return getText(sameKey, locale);
+            }
+
+            boolean isBefore = false;
+            if (ms < 0)
+            {
+                isBefore = true;
+                // convert() only works with positive values
+                ms *= -1;
+            }
+
+            // get the base value
+            String friendly = toString(ms, depth);
+
+            // if we only want the difference...
+            if (type == DIFF_TYPE)
+            {
+                // add the sign (if negative)
+                if (isBefore)
+                {
+                    friendly = "-" + friendly;
+                }
+                // then return without direction suffix
+                return friendly;
+            }
+
+            // otherwise, get the appropriate direction key
+            String directionKey = (isBefore) ? BEFORE_KEY : AFTER_KEY;
+            if (type == CURRENT_TYPE)
+            {
+                directionKey = CURRENT_PREFIX + directionKey;
+
+                if (friendly != null && friendly.startsWith("1"))
+                {
+                    // check for the corner case of "1 day ago" or "1 day away"
+                    // and convert those to "yesterday" or "tomorrow"
+                    String dayKey = (abbreviate) ? DAY_KEY + ABBR_SUFFIX : DAY_KEY;
+                    if (friendly.equals("1 " + getText(dayKey, locale)))
+                    {
+                        // add .day
+                        directionKey += ONE_DAY_SUFFIX;
+                        // and return only the value of this key
+                        // (which means we throw away the friendly value
+                        //  and don't bother abbreviating things)
+                        return getText(directionKey, locale);
+                    }
+                }
+            }
+
+            // in the default bundle, this doesn't change anything.
+            // but in may in user-provided bundles
+            if (abbreviate)
+            {
+                directionKey += ABBR_SUFFIX;
+            }
+
+            // then combine them
+            return friendly +  " " + getText(directionKey, locale);
         }
     }
-
 }
