@@ -214,7 +214,7 @@ public class GenericToolsTests {
         assertStringEquals("Bonjour Monde!", frenchHelloWorld);
     }
 
-    public @Test void testComparisonDateTool() { /* TODO still incomplete */
+    public @Test void testComparisonDateTool() {
         ComparisonDateTool dateTool = (ComparisonDateTool)toolbox.get("date");
         assertNotNull(dateTool);
         Calendar date1 = new GregorianCalendar(2007,0,2);
@@ -226,5 +226,17 @@ public class GenericToolsTests {
         assertEquals(44l, whenIs.getDays());
         // the toolbox config says to skip months, so this should be in weeks
         assertStringEquals("6 weeks later", whenIs);
+    }
+
+    public @Test void testComparisonDateTool2() {
+        ComparisonDateTool dateTool = (ComparisonDateTool)toolbox.get("date");
+        assertNotNull(dateTool);
+        Calendar date1 = new GregorianCalendar(1954,5,26);
+        Calendar date2 = new GregorianCalendar(2019,5,20);
+        /* test comparing */
+        ComparisonDateTool.Comparison whenIs = dateTool.timespan(date1, date2);
+        assertEquals(64l, whenIs.getYears());
+        assertEquals(11l, whenIs.getMonths());
+        assertEquals(25l, whenIs.getDays());
     }
 }

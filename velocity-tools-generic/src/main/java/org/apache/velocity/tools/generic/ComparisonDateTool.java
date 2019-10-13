@@ -19,6 +19,7 @@ package org.apache.velocity.tools.generic;
  * under the License.
  */
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -123,7 +124,7 @@ public class ComparisonDateTool extends DateTool
     protected static final Map TIME_UNITS;
     static
     {
-        Map units = new LinkedHashMap(8);
+        Map<String, Long> units = new LinkedHashMap<>(8);
         units.put(MILLISECOND_KEY, Long.valueOf(1));
         units.put(SECOND_KEY, Long.valueOf(MILLIS_PER_SECOND));
         units.put(MINUTE_KEY, Long.valueOf(MILLIS_PER_MINUTE));
@@ -149,10 +150,11 @@ public class ComparisonDateTool extends DateTool
     protected static final int CURRENT_TYPE = 0;
     protected static final int RELATIVE_TYPE = 1;
     protected static final int DIFF_TYPE = 2;
+    protected static final int EXACT_TYPE = 3;
 
     private String bundleName = DEFAULT_BUNDLE_NAME;
     private ResourceBundle defaultBundle;
-    private Map timeUnits = TIME_UNITS;
+    private Map<String, Long> timeUnits = TIME_UNITS;
     private int depth = 1;
 
 
@@ -178,7 +180,7 @@ public class ComparisonDateTool extends DateTool
         String[] skip = values.getStrings(SKIPPED_UNITS_KEY);
         if (skip != null)
         {
-            timeUnits = new LinkedHashMap(TIME_UNITS);
+            timeUnits = new LinkedHashMap<>(TIME_UNITS);
             for (int i=0; i < skip.length; i++)
             {
                 timeUnits.remove(skip[i]);
@@ -360,6 +362,21 @@ public class ComparisonDateTool extends DateTool
     }
 
     /**
+     * Returns a {@link Comparison} between the result of
+     * the second specified date and the first specified date.  The default
+     * rendering of that Comparison will be the decreasing sequence of bygone
+     * time units between the dates.
+     *
+     * @param now The date to use as representative of "now"
+     * @param then The secondary date
+     * @return {@link Comparison} object
+     */
+    public Comparison timespan(Object now, Object then)
+    {
+        return compare(now, then, EXACT_TYPE);
+    }
+
+    /**
      * Internal comparison method.
      * @param now The date to use as representative of "now"
      * @param then The secondary date
@@ -372,16 +389,37 @@ public class ComparisonDateTool extends DateTool
         Calendar calNow = toCalendar(now);
         if (calThen == null || calNow == null)
         {
+            getLog().warn("cannot compare date objects {} and {}", (now == null ? "null" : now.getClass().getName()), (then == null ? "null" : then.getClass().getName()));
             return null;
         }
 
-        long ms = calThen.getTimeInMillis() - calNow.getTimeInMillis();
-        return new Comparison(ms, type, this.depth, false, null);
+        return new Comparison(calNow, calThen, type, this.depth, false, null);
     }
+
+    // calendar fields for year, month, day of month, hours, minutes, seconds, milliseconds, for exact mode
+    protected static final int[] CALENDAR_FIELDS =
+    {
+        Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND, Calendar.MILLISECOND
+    };
+
+    // calendar fields maxima (year and day of month maxima not populated), for exact mode
+    protected static final int[] FIELD_MAXIMA =
+    {
+        0, 12, 0, 24, 60, 60, 1000
+    };
+
+    // unit keys for exact mode
+    protected static final String[] UNIT_KEYS =
+    {
+        YEAR_KEY, MONTH_KEY, DAY_KEY, HOUR_KEY, MINUTE_KEY, SECOND_KEY, MILLISECOND_KEY
+    };
 
     public class Comparison
     {
-        private final long milliseconds;
+        private final Calendar now;
+        private final Calendar then;
+        private final long milliseconds; // cached
+        private int[] exactDifference = null; // cached
         private final int type;
         private final int maxUnitDepth;
         private final boolean abbreviate;
@@ -389,15 +427,18 @@ public class ComparisonDateTool extends DateTool
 
         /**
          * Comparison object constructor
-         * @param ms milliseconds
+         * @param now The date to use as representative of "now"
+         * @param then The secondary date
          * @param type comparison type
          * @param depth units depth
          * @param abbr whether to abbreviate units
          * @param loc locale to use
          */
-        public Comparison(long ms, int type, int depth, boolean abbr, Locale loc)
+        public Comparison(Calendar now, Calendar then, int type, int depth, boolean abbr, Locale loc)
         {
-            this.milliseconds = ms;
+            this.now = now;
+            this.then = then;
+            this.milliseconds = then.getTimeInMillis() - now.getTimeInMillis();
             this.type = type;
             this.maxUnitDepth = depth;
             this.abbreviate = abbr;
@@ -412,7 +453,7 @@ public class ComparisonDateTool extends DateTool
          */
         public Comparison abbr(boolean abbr)
         {
-            return new Comparison(this.milliseconds, this.type,
+            return new Comparison(this.now, this.then, this.type,
                                   this.maxUnitDepth, abbr, this.locale);
         }
 
@@ -424,7 +465,7 @@ public class ComparisonDateTool extends DateTool
          */
         public Comparison depth(int depth)
         {
-            return new Comparison(this.milliseconds, this.type,
+            return new Comparison(this.now, this.then, this.type,
                                   depth, this.abbreviate, this.locale);
         }
 
@@ -438,26 +479,82 @@ public class ComparisonDateTool extends DateTool
          */
         public Comparison locale(Locale loc)
         {
-            return new Comparison(this.milliseconds, this.type,
+            return new Comparison(this.now, this.then, this.type,
                                   this.maxUnitDepth, this.abbreviate, loc);
         }
 
         /**
-         * Return the approximate number of years between the dates being compared.
+         * Internal helper returning a cached map of all
+         * exact bygone time units per field.
+         * @return cached exact difference holder, as a calendar object
+         */
+        protected final int[] getExactDifference()
+        {
+            if (exactDifference == null)
+            {
+                exactDifference = new int[CALENDAR_FIELDS.length];
+
+                // make sure we go from past to future in calculation
+                Calendar from = now, to = then;
+                if (milliseconds < 0)
+                {
+                    from = then;
+                    to = now;
+                }
+
+                // fields maxima from year to millisecond
+                int maxima[] = Arrays.copyOf(FIELD_MAXIMA, FIELD_MAXIMA.length);
+                // set day of month maximum
+                Calendar tmp = (Calendar)to.clone();
+                tmp.add(Calendar.MONTH, -1);
+                maxima[2] = tmp.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+                // milliseconds to months
+                int carry = 0;
+                for (int i = CALENDAR_FIELDS.length; i --> 1 ;)
+                {
+                    int start = from.get(CALENDAR_FIELDS[i]);
+                    int end = to.get(CALENDAR_FIELDS[i]);
+                    int diff = end - (start + carry);
+                    if (diff < 0)
+                    {
+                        diff += maxima[i];
+                        carry = 1;
+                    }
+                    else
+                    {
+                        carry = 0;
+                    }
+                    exactDifference[i] = diff;
+                }
+                // years
+                exactDifference[0] = to.get(Calendar.YEAR) - (from.get(Calendar.YEAR) + carry);
+            }
+            return exactDifference;
+        }
+
+        /**
+         * Return the approximate number of years between the dates being compared, or the bygone
+         * number of years in exact mode.
          * @return years
          */
         public long getYears()
         {
-            return ComparisonDateTool.toYears(this.milliseconds);
+            return type == EXACT_TYPE ?
+                getExactDifference()[0]
+                : ComparisonDateTool.toYears(this.milliseconds);
         }
 
         /**
-         * Return the approximate number of months between the dates being compared.
+         * Return the approximate number of months between the dates being compared, or the bygone
+         * number of months after the bygone number of years in exact mode.
          * @return months
          */
         public long getMonths()
         {
-            return ComparisonDateTool.toMonths(this.milliseconds);
+            return type == EXACT_TYPE ?
+                getExactDifference()[1]
+                : ComparisonDateTool.toMonths(this.milliseconds);
         }
 
         /**
@@ -466,6 +563,10 @@ public class ComparisonDateTool extends DateTool
          */
         public long getWeeks()
         {
+            if (type == EXACT_TYPE)
+            {
+                getLog().warn("Requesting weeks difference in exact mode still returns the totall relative number of weeks");
+            }
             return ComparisonDateTool.toWeeks(this.milliseconds);
         }
 
@@ -475,7 +576,9 @@ public class ComparisonDateTool extends DateTool
          */
         public long getDays()
         {
-            return ComparisonDateTool.toDays(this.milliseconds);
+            return type == EXACT_TYPE ?
+                getExactDifference()[2]
+                : ComparisonDateTool.toDays(this.milliseconds);
         }
 
         /**
@@ -484,7 +587,9 @@ public class ComparisonDateTool extends DateTool
          */
         public long getHours()
         {
-            return ComparisonDateTool.toHours(this.milliseconds);
+            return type == EXACT_TYPE ?
+                getExactDifference()[3]
+                : ComparisonDateTool.toHours(this.milliseconds);
         }
 
         /**
@@ -493,7 +598,9 @@ public class ComparisonDateTool extends DateTool
          */
         public long getMinutes()
         {
-            return ComparisonDateTool.toMinutes(this.milliseconds);
+            return type == EXACT_TYPE ?
+                getExactDifference()[4]
+                : ComparisonDateTool.toMinutes(this.milliseconds);
         }
 
         /**
@@ -502,7 +609,9 @@ public class ComparisonDateTool extends DateTool
          */
         public long getSeconds()
         {
-            return ComparisonDateTool.toSeconds(this.milliseconds);
+            return type == EXACT_TYPE ?
+                getExactDifference()[5]
+                : ComparisonDateTool.toSeconds(this.milliseconds);
         }
 
         /**
@@ -511,7 +620,9 @@ public class ComparisonDateTool extends DateTool
          */
         public long getMilliseconds()
         {
-            return this.milliseconds;
+            return type == EXACT_TYPE ?
+                getExactDifference()[6]
+                : this.milliseconds;
         }
 
         /**
@@ -536,7 +647,7 @@ public class ComparisonDateTool extends DateTool
          */
         public Comparison getDifference()
         {
-            return new Comparison(this.milliseconds, DIFF_TYPE,
+            return new Comparison(this.now, this.then, DIFF_TYPE,
                                   this.maxUnitDepth, this.abbreviate, this.locale);
         }
 
@@ -550,8 +661,22 @@ public class ComparisonDateTool extends DateTool
          */
         public Comparison getRelative()
         {
-            return new Comparison(this.milliseconds, RELATIVE_TYPE,
+            return new Comparison(this.now, this.then, RELATIVE_TYPE,
                                   this.maxUnitDepth, this.abbreviate, this.locale);
+        }
+
+        /**
+         * Sets this comparison to be rendered as if it where generated using
+         * the {@link ComparisonDateTool#timespan(Object now, Object then)} method.
+         * This effectively means that the comparison will render with a suffix
+         * to describe the relative position of the dates being compared (e.g. "later"
+         * or "ago").
+         * @return new Comparison object
+         */
+        public Comparison getExact()
+        {
+            return new Comparison(this.now, this.then, RELATIVE_TYPE,
+                this.maxUnitDepth, this.abbreviate, this.locale);
         }
 
         /**
@@ -575,55 +700,84 @@ public class ComparisonDateTool extends DateTool
          * "3 minutes 1 second", and
          * <code>toString(180000, 2, true, null)</code> will return
          * "3 min".
-         * @param diff milliseconds
+         * @param diff milliseconds, or, in exact mode, time unit index
          * @param maxUnitDepth maximum unit depth
          * @return string representation of the difference
          */
         protected String toString(long diff, int maxUnitDepth)
         {
-            // these cases should be handled elsewhere
-            if (diff <= 0)
-            {
-                return null;
-            }
+            long value = 0;
+            long remainder = 0;
+            String unitKey = null;
+
             // can't go any deeper than we have units
             if (maxUnitDepth > timeUnits.size())
             {
                 maxUnitDepth = timeUnits.size();
             }
 
-            long value = 0;
-            long remainder = 0;
-
-            // determine the largest unit and calculate the value and remainder
-            Iterator i = timeUnits.keySet().iterator();
-            String unitKey = (String)i.next();
-            Long unit = (Long)timeUnits.get(unitKey);
-            while (i.hasNext())
+            if (type == EXACT_TYPE)
             {
-                // get the next unit
-                String nextUnitKey = (String)i.next();
-                Long nextUnit = (Long)timeUnits.get(nextUnitKey);
-
-                // e.g. if diff < <nextUnit>
-                if (diff < nextUnit.longValue())
+                // diff is a time unit index
+                for (remainder = diff; remainder < CALENDAR_FIELDS.length; ++remainder)
                 {
-                    // then we're working with <unit>
-                    value = diff / unit.longValue();
-                    remainder = diff - (value * unit.longValue());
-                    break;
+                    long val = getExactDifference()[(int)remainder];
+                    if (value == 0)
+                    {
+                        value = val;
+                        unitKey = UNIT_KEYS[(int)remainder];
+                    }
+                    else if (val > 0)
+                    {
+                        break;
+                    }
+                }
+                remainder %= CALENDAR_FIELDS.length;
+
+                // these cases should be handled elsewhere
+                if (value == 0)
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                // these cases should be handled elsewhere
+                if (diff <= 0)
+                {
+                    return null;
                 }
 
-                // shift to the next unit
-                unitKey = nextUnitKey;
-                unit = nextUnit;
-            }
+                // determine the largest unit and calculate the value and remainder
+                Iterator<String> i = timeUnits.keySet().iterator();
+                unitKey = i.next();
+                long unit = timeUnits.get(unitKey);
+                while (i.hasNext())
+                {
+                    // get the next unit
+                    String nextUnitKey = (String)i.next();
+                    long nextUnit = timeUnits.get(nextUnitKey);
 
-            // if it was years, then we haven't done the math yet
-            if (unitKey.equals(YEAR_KEY))
-            {
-                value = diff / unit.longValue();
-                remainder = diff - (value * unit.longValue());
+                    // e.g. if diff < <nextUnit>
+                    if (diff < nextUnit)
+                    {
+                        // then we're working with <unit>
+                        value = diff / unit;
+                        remainder = diff % unit;
+                        break;
+                    }
+
+                    // shift to the next unit
+                    unitKey = nextUnitKey;
+                    unit = nextUnit;
+                }
+
+                // if it was years, then we haven't done the math yet
+                if (unitKey.equals(YEAR_KEY))
+                {
+                    value = diff / unit;
+                    remainder = diff % unit;
+                }
             }
 
             // select proper pluralization
@@ -685,7 +839,7 @@ public class ComparisonDateTool extends DateTool
             }
 
             // get the base value
-            String friendly = toString(ms, depth);
+            String friendly = toString(type == EXACT_TYPE ? 0 : ms , depth);
 
             // if we only want the difference...
             if (type == DIFF_TYPE)
