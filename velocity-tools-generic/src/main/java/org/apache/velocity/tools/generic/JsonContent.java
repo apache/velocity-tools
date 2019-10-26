@@ -188,8 +188,8 @@ public class JsonContent
     }
 
     /**
-     * Check if wrapped object is a JSONObject
-     * @return true if wrapped object is a JSONObject
+     * Check if wrapped object is a JsonObject
+     * @return true if wrapped object is a JsonObject
      */
     public boolean isObject()
     {
@@ -197,11 +197,30 @@ public class JsonContent
     }
 
     /**
-     * Check if wrapped object is a JSONArray
-     * @return true if wrapped object is a JSONArray
+     * Check if wrapped object is a JsonArray
+     * @return true if wrapped object is a JsonArray
      */
     public boolean isArray()
     {
         return jsonArray != null;
     }
+
+    /**
+     * Gives access to the wrapped JsonObject, if any
+     * @return JsonObject or null
+     */
+    public JsonObject getObject()
+    {
+        return jsonObject;
+    }
+
+    /**
+     * Gives acces to the wrapped JsonArray, if any
+     * @return JsonArray or null
+     */
+    public JsonArray getArray()
+    {
+        return jsonArray;
+    }
+
 }
