@@ -598,6 +598,40 @@ public class DateTool extends FormatConfig implements Serializable
 
     /**
      * Converts an object to an instance of {@link Date} using the
+     * format returned by {@link #getFormat()},the provided {@link Locale},
+     * and the {@link TimeZone} returned by
+     * {@link #getTimeZone()} if the object is not already an instance
+     * of Date, Calendar, or Long.
+     *
+     * @param obj the date to convert
+     * @param locale the {@link Locale}
+     * @return the object as a {@link Date} or <code>null</code> if no
+     *         conversion is possible
+     */
+    public Date toDate(Object obj, Locale locale)
+    {
+        return toDate(getFormat(), obj, locale, getTimeZone());
+    }
+
+    /**
+     * Converts an object to an instance of {@link Date} using the
+     * format returned by {@link #getFormat()},the provided {@link Locale},
+     * and {@link TimeZone} if the object is not already an instance
+     * of Date, Calendar, or Long.
+     *
+     * @param obj the date to convert
+     * @param locale the {@link Locale}
+     * @param timezone - the {@link TimeZone}
+     * @return the object as a {@link Date} or <code>null</code> if no
+     *         conversion is possible
+     */
+    public Date toDate(Object obj, Locale locale, TimeZone timezone)
+    {
+        return toDate(getFormat(), obj, locale, getTimeZone());
+    }
+
+    /**
+     * Converts an object to an instance of {@link Date} using the
      * specified format,the {@link Locale} returned by
      * {@link #getLocale()}, and the {@link TimeZone} returned by
      * {@link #getTimeZone()} if the object is not already an instance
@@ -653,28 +687,81 @@ public class DateTool extends FormatConfig implements Serializable
 
     /**
      * Converts an object to an instance of {@link Calendar} using the
-     * locale returned by {@link #getLocale()} if necessary.
+     * format returned by {@link #getFormat()}, the
+     * locale returned by {@link #getLocale()} and the time zone
+     * returned by {@link #getTimeZone()}.
      *
      * @param obj the date to convert
      * @return the converted date
-     * @see #toCalendar(Object obj, Locale locale)
+     * @see #toCalendar(String format, Object obj, Locale locale, TimeZone timezone)
      */
     public Calendar toCalendar(Object obj)
     {
-        return toCalendar(obj, getLocale());
+        return toCalendar(getFormat(), obj, getLocale(), getTimeZone());
     }
 
     /**
      * Converts an object to an instance of {@link Calendar} using the
-     * locale returned by {@link #getLocale()} if necessary.
+     * provided locale, the format returned by {@link #getFormat()} and
+     * the time zone returned by {@link #getTimeZone()}.
      *
+     * @param obj the date to convert
+     * @param locale the locale used
+     * @return the converted date
+     * @see #toCalendar(String format, Object obj, Locale locale, TimeZone timezone)
+     * @see Calendar
+     */
+    public Calendar toCalendar(Object obj, Locale locale)
+    {
+        return toCalendar(getFormat(), obj, locale, getTimeZone());
+    }
+
+    /**
+     * Converts an object to an instance of {@link Calendar} using the
+     * provided format, the locale returned by {@link #getLocale()} and
+     * the time zone returned by {@link #getTimeZone()}.
+     *
+     * @param format the format to use
+     * @param obj the date to convert
+     * @return the converted date
+     * @see #toCalendar(String format, Object obj, Locale locale, TimeZone timezone)
+     * @see Calendar
+     */
+    public Calendar toCalendar(String format, Object obj)
+    {
+        return toCalendar(format, obj, getLocale(), getTimeZone());
+    }
+
+    /**
+     * Converts an object to an instance of {@link Calendar} using the
+     * provided format and locale, and the time zone returned
+     * by {@link #getTimeZone()}.
+     *
+     * @param format the provided format
      * @param obj the date to convert
      * @param locale the locale used
      * @return the converted date
      * @see #toDate(String format, Object obj, Locale locale)
      * @see Calendar
      */
-    public Calendar toCalendar(Object obj, Locale locale)
+    public Calendar toCalendar(String format, Object obj, Locale locale)
+    {
+        return toCalendar(format, obj, locale, getTimeZone());
+    }
+
+    /**
+     * Converts an object to an instance of {@link Calendar} using the
+     * provided format, locale and time zone.
+     *
+     * @param format the provided format
+     * @param obj the date to convert
+     * @param locale the locale used
+     * @param timezone the time zone used
+     * @return the converted date
+     * @see #toDate(String format, Object obj, Locale locale)
+     * @see Calendar
+     */
+    public Calendar toCalendar(String format, Object obj, Locale locale, TimeZone timezone)
     {
         if (obj == null)
         {
@@ -685,7 +772,7 @@ public class DateTool extends FormatConfig implements Serializable
             return (Calendar)obj;
         }
         //try to get a date out of it
-        Date date = toDate(obj);
+        Date date = toDate(format, obj, locale, timezone);
         if (date == null)
         {
             return null;
