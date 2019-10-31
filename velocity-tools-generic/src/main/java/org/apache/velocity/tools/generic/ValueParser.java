@@ -390,6 +390,38 @@ public class ValueParser extends FormatConfig implements Map<String,Object>
 
     /**
      * @param key the desired parameter's key
+     * @return a {@link Long} for the specified key or
+     *         <code>null</code> if no matching parameter is found
+     */
+    public Long getLong(String key)
+    {
+        Object value = getValue(key);
+        if (value == null)
+        {
+            return null;
+        }
+        Number number = ConversionUtils.toNumber(value, getFormat(), getLocale());
+        return number == null ? null : number.longValue();
+    }
+
+    /**
+     * @param key the desired parameter's key
+     * @param alternate The alternate Long
+     * @return a Long for the specified key or the specified
+     *         alternate if no matching parameter is found
+     */
+    public Long getLong(String key, Long alternate)
+    {
+        Long num = getLong(key);
+        if (num == null)
+        {
+            return alternate;
+        }
+        return num;
+    }
+
+    /**
+     * @param key the desired parameter's key
      * @return a {@link Double} for the specified key or
      *         <code>null</code> if no matching parameter is found
      */
