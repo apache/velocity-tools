@@ -73,6 +73,24 @@ public class JsonTool extends org.apache.velocity.tools.generic.JsonTool
     }
 
     /**
+     * Check if a given content type is of JSON type
+     * @param contentType content type
+     * @return whether given content type is of JSON type
+     */
+    protected static boolean isJsonContentType(String contentType)
+    {
+        if (contentType != null)
+        {
+            int sep = contentType.indexOf(';');
+            String mimeType = sep == -1
+                ? contentType
+                : contentType.substring(0, sep).trim();
+            return isJsonMimeType(mimeType);
+        }
+        return false;
+    }
+
+    /**
      * Configuration. Parses request body if appropriate.
      * @param parser configuration values
      */
@@ -82,7 +100,7 @@ public class JsonTool extends org.apache.velocity.tools.generic.JsonTool
         if (root() == null)
         {
             ServletRequest request = (ServletRequest)parser.get(ViewContext.REQUEST);
-            if (request.getContentLength() > 0 && isJsonMimeType(request.getContentType()))
+            if (request.getContentLength() > 0 && isJsonContentType(request.getContentType()))
             {
                 try
                 {
