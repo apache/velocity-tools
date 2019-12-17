@@ -167,6 +167,40 @@ public class BreadcrumbTool extends LocaleConfig implements Iterable<BreadcrumbT
     public void setRequest(HttpServletRequest request)
     {
         this.request = request;
+    }
+
+    /**
+     * <p>Let the user customize programmatically the name and URL of a specific element.</p>
+     * <p>For instance, one can do use query parameters to customize the displayed name or target URL.</p>
+     * @param navElem navigation element
+     * @param request initial request
+     * @return true (default value) to include this navigation element, false to skip it
+     */
+    protected boolean customize(NavigationElement navElem, HttpServletRequest request)
+    {
+        // default implementation does nothing
+        return true;
+    }
+
+    /**
+     * Automatic default formatting of URI elements
+     */
+    protected String formatElementName(String elem)
+    {
+        return elem.replace('_', ' ').toLowerCase(getLocale());
+    }
+
+    /**
+     * Configuration
+     */
+    @Override
+    protected void configure(ValueParser config)
+    {
+        if (request == null)
+        {
+            getLog().warn("cannot build breadcrumb: no provided request");
+            return;
+        }
         String encoding = Optional.ofNullable(request.getCharacterEncoding()).orElse("UTF-8");
         String uri = request.getRequestURI();
         try
@@ -186,96 +220,80 @@ public class BreadcrumbTool extends LocaleConfig implements Iterable<BreadcrumbT
         String elements[] = uri.split("/");
         navigationElements = new ArrayList<NavigationElement>();
         StringBuilder builder = new StringBuilder();
+
         for (String elem : elements)
         {
             // for each URI path element
             builder.append(elem);
             String currentPath = builder.toString();
             if (index.equals(elem)) continue;
-            if (!elem.endsWith('.' + ext)) currentPath = currentPath + '/' + index;
-            String name = builder.length() == 0 ? "home" : elem.replace('_', ' ').toLowerCase(getLocale());
+            if (elem.endsWith('.' + ext))
+            {
+                elem = elem.substring(0, elem.length() - (ext.length() + 1));
+            }
+            else
+            {
+                currentPath = currentPath + '/' + index;
+                if (elem.length() == 0) elem = "home";
+            }
+            String name = builder.length() == 0 ? "home" : formatElementName(elem);
+
             NavigationElement navElem = new NavigationElement(currentPath, name);
+
             // give a chance to subclasses to customize an item
             if (customize(navElem, request))
             {
                 navigationElements.add(navElem);
-            }
-            builder.append('/');
-        }
-    }
 
-    /**
-     * <p>Let the user customize programmatically the name and URL of a specific element.</p>
-     * <p>For instance, one can do use query parameters to customize the displayed name or target URL.</p>
-     * @param navElem navigation element
-     * @param request initial request
-     * @return true (default value) to include this navigation element, false to skip it
-     */
-    protected boolean customize(NavigationElement navElem, HttpServletRequest request)
-    {
-        // default implementation does nothing
-        return true;
-    }
-
-    /**
-     * Configuration
-     */
-    @Override
-    protected void configure(ValueParser config)
-    {
-        if (navigationElements == null)
-        {
-            getLog().warn("cannot build breadcrumb: no provided request");
-            return;
-        }
-        for (NavigationElement elem : navigationElements)
-        {
-            Object obj = config.get(elem.getName());
-            if (obj != null && obj instanceof ValueParser)
-            {
-                String queryParamName = null;
-                String queryParamValue = null;
-                ValueParser values = (ValueParser) obj;
-
-                // customize navigation element name
-                String newName = values.getString("name");
-                if (newName != null)
+                // check configuration
+                Object obj = config.get(elem);
+                if (obj != null && obj instanceof ValueParser)
                 {
-                    if (newName.startsWith("?"))
+                    String queryParamName = null;
+                    String queryParamValue = null;
+                    ValueParser values = (ValueParser) obj;
+
+                    // customize navigation element name
+                    String newName = values.getString("name");
+                    if (newName != null)
                     {
-                        queryParamName = newName.substring(1);
-                        queryParamValue = request.getParameter(queryParamName);
-                        if (queryParamValue != null)
+                        if (newName.startsWith("?"))
                         {
-                            elem.setName(queryParamValue);
+                            queryParamName = newName.substring(1);
+                            queryParamValue = request.getParameter(queryParamName);
+                            if (queryParamValue != null)
+                            {
+                                navElem.setName(queryParamValue);
+                            }
+                        }
+                        else
+                        {
+                            navElem.setName(newName);
+                        }
+                    }
+
+                    // customize navigation element URL
+                    String newURL = values.getString("url");
+                    if (queryParamValue == null)
+                    {
+                        if (newURL != null)
+                        {
+                            navElem.setUrl(newURL);
                         }
                     }
                     else
                     {
-                        elem.setName(newName);
+                        if (newURL == null)
+                        {
+                            newURL = navElem.getUrl();
+                        }
+                        newURL += newURL.indexOf('?') == -1 ? '?' : '&';
+                        newURL += queryParamName + '=' + queryParamValue;
+                        navElem.setUrl(newURL);
                     }
-                }
-
-                // customize navigation element URL
-                String newURL = values.getString("url");
-                if (queryParamValue == null)
-                {
-                    if (newURL != null)
-                    {
-                        elem.setUrl(newURL);
-                    }
-                }
-                else
-                {
-                    if (newURL == null)
-                    {
-                        newURL = elem.getUrl();
-                    }
-                    newURL += newURL.indexOf('?') == -1 ? '?' : '&';
-                    newURL += queryParamName + '=' + queryParamValue;
-                    elem.setUrl(newURL);
                 }
             }
+            builder.append('/');
         }
     }
 
