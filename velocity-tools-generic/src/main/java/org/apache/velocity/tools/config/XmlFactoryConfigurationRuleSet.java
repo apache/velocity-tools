@@ -107,7 +107,7 @@ public class XmlFactoryConfigurationRuleSet extends RuleSetBase
         digester.addSetProperties("tools");
         digester.addSetProperties("tools/data");
         digester.addSetProperties("tools/toolbox");
-        digester.addSetProperties("tools/toolbox/tool");
+        digester.addSetProperties("tools/toolbox/tool", "class", "classname");
 
         // to add all attributes to config via setProperty(name,value)
         digester.addRule("tools", new PropertyAttributeRule());
