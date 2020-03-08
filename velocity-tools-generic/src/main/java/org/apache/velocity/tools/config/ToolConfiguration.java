@@ -65,11 +65,23 @@ public class ToolConfiguration extends Configuration
         }
     }
 
+    /**
+     * This method should be avoided, since considered unsafe
+     * by the security manager.
+     * @param clazz the Class
+     * @see #setClassname(String classname)
+     */
+    @Deprecated
     public void setClass(Class clazz)
     {
         setClassname(clazz.getName());
     }
 
+    public void setClass(String classname)            
+    {
+        setClassname(classname);
+    }    
+    
     public void setClassname(String classname)
     {
         this.classname = classname;
