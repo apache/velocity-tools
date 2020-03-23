@@ -206,7 +206,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <showDeprecation>true</showDeprecation>
-          <showWarning>true</showWarning>
+          <showWarnings>true</showWarnings>
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
         </configuration>
