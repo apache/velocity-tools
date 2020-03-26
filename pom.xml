@@ -139,6 +139,13 @@
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-digester3</artifactId>
         <version>3.2</version>
+        <!-- this dependency is unused, old, and easily conflits with others -->
+        <exclusions>
+          <exclusion>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
