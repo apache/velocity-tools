@@ -1,5 +1,7 @@
 Title: Apache Velocity Tools
 
+Note : the trunk branch is obsolete. Please use the master branch.
+
 # Apache Velocity Tools
 
 Welcome to the VelocityTools projects. This is a subproject of the 
