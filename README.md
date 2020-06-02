@@ -16,13 +16,13 @@ The VelocityTools project contains several subprojects:
 
 ## REQUIREMENTS
 
-Apache Velocity Tools will run with any Java runtime engine v1.7 or greater.
+Apache Velocity Tools 3.0 will run with any Java runtime engine v2+.
 
-Building from source requires Java development kit v1.7 or greater and Maven 3 (3.0.5+).
+Building from source requires Java development kit v1.8 or greater and Maven 3 (3.0.5+).
 
 Maven should fetch all needed dependencies for compile ant run time, which are:
 
-* velocity-engine-core v2.0 and its dependencies
+* velocity-engine-core v2.x and its dependencies
 * commons-beanutils v1.9.3
 * commons-digester3 v3.2
 * JSON.simple v1.1.1 (only at compile time)
