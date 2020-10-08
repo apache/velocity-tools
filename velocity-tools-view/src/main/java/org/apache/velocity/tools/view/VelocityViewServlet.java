@@ -460,7 +460,7 @@ public class VelocityViewServlet extends HttpServlet
             html.append("<head><title>Error</title></head>\n");
             html.append("<body>\n");
             html.append("<h2>VelocityView : Error processing a template for path '");
-            html.append(path);
+            html.append(StringEscapeUtils.escapeHtml4(path));
             html.append("'</h2>\n");
 
             Throwable cause = e;
