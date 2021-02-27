@@ -30,7 +30,7 @@
 
   <groupId>org.apache.velocity.tools</groupId>
   <artifactId>velocity-tools-parent</artifactId>
-  <version>3.1-SNAPSHOT</version>
+  <version>3.1</version>
   <packaging>pom</packaging>
 
   <name>VelocityTools</name>
@@ -60,7 +60,7 @@
     <connection>scm:git:https://gitbox.apache.org/repos/asf/velocity-tools.git</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/velocity-tools.git</developerConnection>
     <url>https://gitbox.apache.org/repos/asf?p=velocity-tools.git</url>
-    <tag>HEAD</tag>
+    <tag>3.1-RC1</tag>
   </scm>
   <issueManagement>
     <system>jira</system>
