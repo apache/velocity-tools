@@ -24,7 +24,19 @@
     <title>Changelog</title>
   </properties>
   <body>
-    <release version="3.1" date="Not yet released">
+    <release version="3.1" date="2021-02-27">
+      <action type="fix" dev="Jackson Henry">
+          Fix potential XSS vulterability in VelocityViewServlet error handling.
+      </action>
+      <action type="new" dev="cbrisson" due-to="mgrigorov">
+          Added Travis CI.
+      </action>        
+      <action type="add" dev="cbrisson">
+        Added an `exact` mode to ComparisonDateTool (which uses an actual dates/months difference rather than a global milliseconds difference)
+      </action>      
+      <action type="add" dev="cbrisson">
+        Added a new BreadcrumbTool meant to help displaying UI breadcrumb trails
+      </action>      
       <action type="add" dev="cbrisson">
         Added an optional 'factory' attribute to tools with the classname of a factory for creating new tools instances
       </action>
