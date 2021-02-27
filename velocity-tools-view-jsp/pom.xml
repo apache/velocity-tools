@@ -25,7 +25,7 @@
   <parent>
     <groupId>org.apache.velocity.tools</groupId>
     <artifactId>velocity-tools-parent</artifactId>
-    <version>3.1</version>
+    <version>3.2-SNAPSHOT</version>
   </parent>
 
   <artifactId>velocity-tools-view-jsp</artifactId>
