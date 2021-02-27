@@ -57,9 +57,10 @@
   </modules>
 
   <scm>
-    <connection>scm:svn:https://svn.apache.org/repos/asf/velocity/tools/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/velocity/tools/trunk</developerConnection>
-    <url>https://svn.apache.org/viewvc/velocity/tools/trunk</url>
+    <connection>scm:git:https://gitbox.apache.org/repos/asf/velocity-tools.git</connection>
+    <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/velocity-tools.git</developerConnection>
+    <url>https://gitbox.apache.org/repos/asf?p=velocity-tools.git</url>
+    <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>jira</system>
