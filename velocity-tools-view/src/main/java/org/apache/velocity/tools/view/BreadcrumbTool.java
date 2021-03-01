@@ -50,7 +50,7 @@ import java.util.Optional;
  * '<code>_</code>' replaced by spaces, transformed to lowercase.</p>
  * <p>You can customize this displayed name and the URL of every path element using tools properties:</p>
  * <pre><code>
- *     <tool key="breadcrumb" colors.name="My Colors" colors.url="/colors/all.vhtml"/>
+ *     &lt;tool key="breadcrumb" colors.name="My Colors" colors.url="/colors/all.vhtml"/&gt;
  * </code></pre>
  * <p>where '<code>colors</code>' refers to the <code>/colors/</code> path element. The name and destination of the
  * root path element can be changed with '<code>home.name</code>' and '<code>home.url</code>'.</p>
