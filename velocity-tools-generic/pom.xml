@@ -44,8 +44,8 @@
       <version>1.9.4</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-digester3</artifactId>
+      <groupId>commons-digester</groupId>
+      <artifactId>commons-digester</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>

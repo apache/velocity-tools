@@ -25,8 +25,8 @@ import java.net.URL;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.SuppressPropertiesBeanIntrospector;
 import org.xml.sax.SAXException;
-import org.apache.commons.digester3.Digester;
-import org.apache.commons.digester3.RuleSet;
+import org.apache.commons.digester.Digester;
+import org.apache.commons.digester.RuleSet;
 
 /**
  * <p>This reads in configuration info formatted as an XML file

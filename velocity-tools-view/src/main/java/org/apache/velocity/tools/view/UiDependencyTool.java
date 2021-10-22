@@ -37,8 +37,8 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import org.apache.commons.digester3.Digester;
-import org.apache.commons.digester3.Rule;
+import org.apache.commons.digester.Digester;
+import org.apache.commons.digester.Rule;
 import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
