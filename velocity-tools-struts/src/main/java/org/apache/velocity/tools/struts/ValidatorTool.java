@@ -721,7 +721,11 @@ public class ValidatorTool
             }
             methods.append("(form)");
         }
-        return methods.toString();
+        if(null == methods) {
+            return null;
+        } else {
+            return methods.toString();
+        }
     }
 
 
