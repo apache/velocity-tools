@@ -80,7 +80,7 @@ public class CompoundConfiguration<C extends Configuration>
 
     /**
      * @deprecated use addChildren(collection)
-    /**
+    **/
     @Deprecated
     protected void setChildren(Collection<C> kids)
     {
@@ -93,7 +93,7 @@ public class CompoundConfiguration<C extends Configuration>
 
     /**
      * @since 3.2
-    /**
+     **/
     protected void addChildren(Collection<C> kids)
     {
         for (C kid : kids)

@@ -471,7 +471,7 @@ public final class XmlUtils
             case Node.ATTRIBUTE_NODE:
                 parent = ((Attr) n).getOwnerElement();
                 break;
-            case Node.COMMENT_MODE:
+            case Node.COMMENT_NODE:
             case Node.ELEMENT_NODE:
             case Node.DOCUMENT_NODE:
                 parent = n.getParentNode();
