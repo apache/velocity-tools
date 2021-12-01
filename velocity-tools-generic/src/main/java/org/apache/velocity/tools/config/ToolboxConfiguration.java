@@ -99,7 +99,7 @@ public class ToolboxConfiguration
 
     public void setTools(Collection<ToolConfiguration> tools)
     {
-        setChildren(tools);
+        addChildren(tools);
     }
 
     @Override

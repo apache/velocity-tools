@@ -35,7 +35,7 @@ public class CompoundConfiguration<C extends Configuration>
 {
     private final SortedSet<C> children = new TreeSet<C>();
 
-    protected void addChild(C newKid)
+    protected C addChild(C newKid)
     {
         // check if we already have a matching child
         C child = getChild(newKid);
@@ -53,11 +53,13 @@ public class CompoundConfiguration<C extends Configuration>
                 // add newKid's values to childs (overwriting any dupes)
                 child.addConfiguration(newKid);
             }
+            return child;
         }
         else
         {
             // simply adopt the new kid
             children.add(newKid);
+            return newKid;
         }
     }
 
@@ -76,7 +78,23 @@ public class CompoundConfiguration<C extends Configuration>
         return children;
     }
 
+    /**
+     * @deprecated use addChildren(collection)
+    /**
+    @Deprecated
     protected void setChildren(Collection<C> kids)
+    {
+        
+        for (C kid : kids)
+        {
+            addChild(kid);
+        }
+    }
+
+    /**
+     * @since 3.2
+    /**
+    protected void addChildren(Collection<C> kids)
     {
         for (C kid : kids)
         {
@@ -99,7 +117,7 @@ public class CompoundConfiguration<C extends Configuration>
     public void addConfiguration(CompoundConfiguration<C> config)
     {
         // add config's children to our own
-        setChildren(config.getChildren());
+        addChildren(config.getChildren());
 
         // add config's properties to ours
         super.addConfiguration(config);

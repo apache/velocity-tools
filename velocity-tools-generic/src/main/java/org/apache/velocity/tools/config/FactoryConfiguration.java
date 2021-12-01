@@ -205,9 +205,9 @@ public class FactoryConfiguration
         }
     }
 
-    public void addToolbox(ToolboxConfiguration toolbox)
+    public ToolboxConfiguration addToolbox(ToolboxConfiguration toolbox)
     {
-        addChild(toolbox);
+        return addChild(toolbox);
     }
 
     public void removeToolbox(ToolboxConfiguration toolbox)
@@ -234,7 +234,7 @@ public class FactoryConfiguration
 
     public void setToolboxes(Collection<ToolboxConfiguration> toolboxes)
     {
-        setChildren(toolboxes);
+        addChildren(toolboxes);
     }
 
     public void addConfiguration(FactoryConfiguration config)

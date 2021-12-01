@@ -193,7 +193,7 @@ public class EasyFactoryConfiguration extends FactoryConfiguration
     {
         ToolboxConfiguration toolbox = new ToolboxConfiguration();
         toolbox.setScope(scope);
-        addToolbox(toolbox);
+        toolbox = addToolbox(toolbox);
         this.toolbox =
             new EasyWrap<ToolboxConfiguration>(toolbox, this);
         return this.toolbox;
