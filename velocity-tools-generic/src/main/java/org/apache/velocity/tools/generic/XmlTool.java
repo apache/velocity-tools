@@ -357,11 +357,26 @@ public class XmlTool extends SafeConfig implements Serializable
     }
 
     /**
+     * <p>Returns the XPath that identifies the first/sole {@link Node}
+     * represented by this instance.</p>
+     * <p>This function is deprecated. In future versions, this function will first try
+     * <code>get("path")</code> before resorting to <code>getNodePath()</code>.</p>
+     * @return xpath node path
+     * @deprecated use getNodePath()
+     */
+    @Deprecated
+    public String getPath()
+    {
+        return getNodePath();
+    }
+
+    /**
      * Returns the XPath that identifies the first/sole {@link Node}
      * represented by this instance.
+     * @since 3.2
      * @return xpath node path
      */
-    public String getPath()
+    public String getNodePath()
     {
         if (isEmpty())
         {
@@ -369,7 +384,7 @@ public class XmlTool extends SafeConfig implements Serializable
         }
         return XmlUtils.nodePath(node());
     }
-
+  
     /**
      * Returns the value of the specified attribute for the first/sole
      * {@link Node} in the internal Node list for this instance, if that
