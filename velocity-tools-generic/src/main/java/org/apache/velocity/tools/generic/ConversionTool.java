@@ -54,7 +54,7 @@ import org.apache.velocity.tools.config.SkipSetters;
  * @author Nathan Bubna
  * @version $Revision$ $Date: 2007-02-26 11:24:39 -0800 (Mon, 26 Feb 2007) $
  * @since VelocityTools 2.0
- * @deprecated use NumberTool for numbers formatting/parsing, DateTool for date/time formatting/parsing,
+ * @deprecated use NumberTool for numbers and booleans formatting/parsing, DateTool for date/time formatting/parsing,
  * or CollectionTool for toStrings().
  */
 

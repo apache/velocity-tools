@@ -66,5 +66,8 @@ $demo.thisPage.insert("#doclink( 'NumberTool' true )").
 #set( $desc = 'Converts an object to an instance of Number using the specified format and Localeif the object is not already an instance of Number.' )
 #demo3( 'number' 'toNumber' 4 $desc )
 
+#set( $desc = 'Converts an object to an instance of Boolean if the object is not already an instance of Boolean.' )
+#demo1( 'number' 'toBoolean' 4 $desc )
+
 #demoCustom( 'number' )
 </table>

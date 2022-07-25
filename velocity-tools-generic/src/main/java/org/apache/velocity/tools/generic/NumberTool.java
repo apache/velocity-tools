@@ -217,7 +217,7 @@ public class NumberTool extends FormatConfig implements Serializable
 
     /**
      * Converts an object to an instance of {@link Number} using the
-     * specified format and {@link Locale}if the object is not already
+     * specified format and {@link Locale} if the object is not already
      * an instance of Number.
      *
      * @param format - the format the number is in
@@ -232,4 +232,16 @@ public class NumberTool extends FormatConfig implements Serializable
         return ConversionUtils.toNumber(obj, format, locale);
     }
 
+    /**
+     * Converts an object to an instance of {@link Boolean} if the object
+     * is not already an instance of Boolean.
+     *
+     * @param value the object to be converted
+     * @return a {@link Boolean} object for the specified value or
+     *         <code>null</code> if the value is null or the conversion failed
+     */
+    public Boolean toBoolean(Object value)
+    {
+        return ConversionUtils.toBoolean(value);
+    }
 }
