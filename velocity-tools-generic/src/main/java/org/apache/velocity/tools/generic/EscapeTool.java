@@ -44,6 +44,9 @@ import org.apache.velocity.tools.config.ValidScope;
  *  $javascript                  -&gt; He didn't say, "Stop!"
  *  $esc.javascript($javascript) -&gt; He didn\'t say, \"Stop!\"
  *
+ *  $json                        -&gt; He didn't say, "Stop!"
+ *  $esc.json($json)             -&gt; He didn't say, \"Stop!\"
+ *
  *  $html                        -&gt; "bread" &amp; "butter"
  *  $esc.html($html)             -&gt; &amp;quot;bread&amp;quot; &amp;amp; &amp;quot;butter&amp;quot;
  *
@@ -299,6 +302,24 @@ public class EscapeTool extends SafeConfig implements Serializable
             return null;
         }
         return StringEscapeUtils.escapeEcmaScript(String.valueOf(string));
+    }
+
+    /**
+     * <p>Escapes the characters in a <code>String</code> using JSON String rules.</p>
+     * <p>Delegates the process to {@link StringEscapeUtils#escapeJson(String)}.</p>
+     *
+     * @param string the string to escape values, may be null
+     * @return String with escaped values, <code>null</code> if null string input
+     *
+     * @see StringEscapeUtils#escapeJson(String)
+     */
+    public String json(Object string)
+    {
+        if (string == null)
+        {
+            return null;
+        }
+        return StringEscapeUtils.escapeJson(String.valueOf(string));
     }
 
     /**
