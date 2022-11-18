@@ -306,20 +306,14 @@ public class EscapeTool extends SafeConfig implements Serializable
 
     /**
      * <p>Escapes the characters in a <code>String</code> using JSON String rules.</p>
-     * <p>Delegates the process to {@link StringEscapeUtils#escapeJson(String)}.</p>
+     * <p>Delegates the process to {@link #java(String)}.</p>
      *
      * @param string the string to escape values, may be null
      * @return String with escaped values, <code>null</code> if null string input
-     *
-     * @see StringEscapeUtils#escapeJson(String)
      */
     public String json(Object string)
     {
-        if (string == null)
-        {
-            return null;
-        }
-        return StringEscapeUtils.escapeJson(String.valueOf(string));
+        return java(string);
     }
 
     /**
