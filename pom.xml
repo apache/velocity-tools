@@ -57,9 +57,20 @@
     </properties>
 
     <build>
-      <defaultGoal>install</defaultGoal>
-      <outputDirectory>build/classes</outputDirectory>
-      <directory>dist</directory>
+        <defaultGoal>install</defaultGoal>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.0</version>
+                    <configuration>
+                        <useReleaseProfile>false</useReleaseProfile>
+                        <goals>deploy site-deploy</goals>
+                        <arguments>-Papache-release</arguments>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
       <plugins>
           <plugin>
               <groupId>org.apache.maven.plugins</groupId>
