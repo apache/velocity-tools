@@ -44,9 +44,9 @@ import org.apache.velocity.tools.generic.ResourceTool;
  */
 public class ConfigTests {
 
-    private static final String XML_PATH = "@test.conf.dir@/tools.test.xml";
-    private static final String OLD_XML_PATH = "@test.conf.dir@/toolbox.test.xml";
-    private static final String PROPS_PATH = "@test.conf.dir@/tools.test.properties";
+    private static final String XML_PATH = "tools.test.xml";
+    private static final String OLD_XML_PATH = "toolbox.test.xml";
+    private static final String PROPS_PATH = "tools.test.properties";
 
     protected FactoryConfiguration getBaseConfig()
     {

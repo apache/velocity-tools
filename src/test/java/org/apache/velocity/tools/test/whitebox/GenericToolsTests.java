@@ -52,7 +52,7 @@ import org.apache.velocity.tools.ToolContext;
 
 public class GenericToolsTests {
 
-    private static final String TOOLBOX_PATH = "@test.conf.dir@/whiteboxtest-toolbox.xml";
+    private static final String TOOLBOX_PATH = "whiteboxtest-toolbox.xml";
 
     private static ToolContext toolbox = null;
 
@@ -78,9 +78,9 @@ public class GenericToolsTests {
         assertEquals(disp,dateTool.format(date));
         assertEquals(disp2,dateTool.format("yyyy/MM/dd",date));
         /* test parsing */
-        assertEquals(2007,dateTool.getYear(disp));
-        assertEquals(0,dateTool.getMonth(disp));
-        assertEquals(2,dateTool.getDay(disp));
+        assertEquals(new Integer(2007),dateTool.getYear(disp));
+        assertEquals(new Integer(0),dateTool.getMonth(disp));
+        assertEquals(new Integer(2),dateTool.getDay(disp));
     }
 
     public @Test void testEscapeTool() {
@@ -147,24 +147,24 @@ public class GenericToolsTests {
         assertNotNull(mathTool);
         assertEquals(1,mathTool.abs(-1));
         assertEquals(2,mathTool.add(1,1));
-        assertEquals(3,mathTool.ceil(2.5));
+        assertEquals(new Integer(3),mathTool.ceil(2.5));
         assertEquals(4,mathTool.div(8,2));
-        assertEquals(5,mathTool.floor(5.1));
+        assertEquals(new Integer(5),mathTool.floor(5.1));
         assertEquals(6,mathTool.getAverage(new long[] {5,6,7}));
         /* getTotal() watches the type of its first argument, so assertEquals needs a long */
         assertEquals((long)7,mathTool.getTotal(new long[] {2,2,3}));
-        assertEquals(8,mathTool.idiv(130,16));
+        assertEquals(new Integer(8),mathTool.idiv(130,16));
         assertEquals(9,mathTool.max(9,-10));
         assertEquals(10,mathTool.min(10,20));
-        assertEquals(11,mathTool.mod(37,13));
+        assertEquals(new Integer(11),mathTool.mod(37,13));
         assertEquals(12,mathTool.mul(3,4));
-        assertEquals(13,mathTool.round(12.8));
-        assertEquals(14.2,mathTool.roundTo(1,14.18));
-        assertEquals(-5.0,mathTool.roundTo(2,-4.999));
+        assertEquals(new Integer(13),mathTool.round(12.8));
+        assertEquals(new Double(14.2),mathTool.roundTo(1,14.18));
+        assertEquals(new Double(-5.0),mathTool.roundTo(2,-4.999));
         assertEquals(15,mathTool.sub(30,15));
         assertEquals(16,mathTool.pow(4,2));
-        assertEquals(17,mathTool.toInteger("17"));
-        assertEquals(18.1,mathTool.toDouble("18.1"));
+        assertEquals(new Integer(17),mathTool.toInteger("17"));
+        assertEquals(new Double(18.1),mathTool.toDouble("18.1"));
     }
 
     public @Test void testNumberTool() {
