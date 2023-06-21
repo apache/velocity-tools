@@ -68,7 +68,7 @@ import org.apache.velocity.runtime.log.Log;
  *   <dt>org.apache.velocity.tools.shared.config</dt>
  *   <dd>By default, this is {@code true}. If set to {@code false}, then
  *     the {@link VelocityView} used by this servlet will not be shared
- *     with {@link VelocityViewFilter}s, other VelocityViewServlets or 
+ *     with {@link VelocityViewFilter}s, other VelocityViewServlets or
  *     {@link org.apache.velocity.tools.view.jsp.VelocityViewTag}s in the
  *     application.</dd>
  *   <dt>org.apache.velocity.tools.loadDefaults</dt>
@@ -344,7 +344,7 @@ public class VelocityViewServlet extends HttpServlet
             getLog().error("Error processing a template for path '" + path + "'", e);
             return;
         }
-        
+
         try
         {
             getLog().error("Error processing a template for path '" + path + "'", e);
@@ -353,7 +353,7 @@ public class VelocityViewServlet extends HttpServlet
             html.append("<head><title>Error</title></head>\n");
             html.append("<body>\n");
             html.append("<h2>VelocityView : Error processing a template for path '");
-            html.append(path);
+            html.append(StringEscapeUtils.escapeHtml(ServletUtils.getPath(request)));
             html.append("'</h2>\n");
 
             Throwable cause = e;
@@ -398,7 +398,7 @@ public class VelocityViewServlet extends HttpServlet
     /**
      * Manages the {@link ResourceNotFoundException} to send an HTTP 404 result
      * when needed.
-     * 
+     *
      * @param request The request object.
      * @param response The response object.
      * @param e The exception to check.
