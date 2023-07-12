@@ -25,11 +25,13 @@ import java.io.Reader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.HashMap;
-import javax.servlet.ServletContext;
+
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 import org.apache.velocity.util.ExtProperties;
+
+import jakarta.servlet.ServletContext;
 
 /**
  * Resource loader that uses the ServletContext of a webapp to

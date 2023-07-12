@@ -19,8 +19,6 @@ package org.apache.velocity.tools.test.blackbox;
  * under the License.
  */
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -29,6 +27,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * <p>Helper class for LinkToolTests class</p>

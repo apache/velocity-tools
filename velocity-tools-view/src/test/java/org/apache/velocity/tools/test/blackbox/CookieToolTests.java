@@ -19,18 +19,15 @@ package org.apache.velocity.tools.test.blackbox;
  * under the License.
  */
 
-import java.lang.reflect.Proxy;
 import java.lang.reflect.InvocationHandler;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.velocity.tools.view.CookieTool;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import static org.junit.Assert.*;
+import org.apache.velocity.tools.view.CookieTool;
 import org.junit.Test;
+
+import jakarta.servlet.http.Cookie;
 
 /**
  * <p>CookieTool tests.</p>

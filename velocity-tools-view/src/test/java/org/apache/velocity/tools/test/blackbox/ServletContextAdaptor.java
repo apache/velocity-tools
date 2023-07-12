@@ -19,12 +19,13 @@ package org.apache.velocity.tools.test.blackbox;
  * under the License.
  */
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import java.io.InputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.net.URL;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletContext;
 
 /**
  * <p>Helper class for LinkToolTests class</p>

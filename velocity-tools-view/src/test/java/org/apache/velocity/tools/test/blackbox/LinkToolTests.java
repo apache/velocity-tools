@@ -19,18 +19,19 @@ package org.apache.velocity.tools.test.blackbox;
  * under the License.
  */
 
-import java.lang.reflect.Proxy;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.apache.velocity.tools.generic.ValueParser;
 import org.apache.velocity.tools.view.LinkTool;
 import org.apache.velocity.tools.view.ViewContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * <p>LinkTool tests.</p>

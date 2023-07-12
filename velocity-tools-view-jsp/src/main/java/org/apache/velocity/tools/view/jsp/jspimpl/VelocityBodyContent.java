@@ -25,14 +25,14 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.BodyContent;
-
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.parser.node.ASTBlock;
+
+import jakarta.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.tagext.BodyContent;
 
 /**
  * Publishes a block inside a Velocity directive as a {@link BodyContent}.

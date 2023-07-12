@@ -26,16 +26,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.velocity.tools.generic.SafeConfig;
-import org.apache.velocity.tools.generic.ValueParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 
 import org.apache.commons.digester3.Digester;
 import org.apache.commons.digester3.Rule;
@@ -43,6 +33,15 @@ import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
+import org.apache.velocity.tools.generic.SafeConfig;
+import org.apache.velocity.tools.generic.ValueParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * <b>NOTE: This tool is considered "beta" quality due to lack of public testing

@@ -21,17 +21,19 @@ package org.apache.velocity.tools.view.jsp;
 
 import java.io.StringWriter;
 import java.io.Writer;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.BodyTagSupport;
+
 import org.apache.velocity.Template;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
 import org.apache.velocity.runtime.resource.util.StringResourceRepository;
 import org.apache.velocity.tools.view.ServletUtils;
-import org.apache.velocity.tools.view.ViewToolContext;
 import org.apache.velocity.tools.view.VelocityView;
+import org.apache.velocity.tools.view.ViewToolContext;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.tagext.BodyTagSupport;
 
 /**
  * <p>This tag enables use of Velocity and VelocityTools within JSP files and tags.

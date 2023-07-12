@@ -25,17 +25,19 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+
 import org.apache.velocity.tools.ClassUtils;
 import org.apache.velocity.tools.Toolbox;
 import org.apache.velocity.tools.config.FactoryConfiguration;
 import org.apache.velocity.tools.config.FileFactoryConfiguration;
 import org.apache.velocity.tools.config.PropertiesFactoryConfiguration;
 import org.apache.velocity.tools.config.XmlFactoryConfiguration;
+
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * <p>A set of utility methods for supporting and using

@@ -21,11 +21,12 @@ package org.apache.velocity.tools.view;
 
 import java.util.Collections;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * <p>Abstract view tool for doing "searching" and robust

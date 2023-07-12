@@ -19,13 +19,12 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
-import javax.servlet.ServletRequest;
-
-import org.apache.velocity.tools.generic.ValueParser;
-
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
+import org.apache.velocity.tools.generic.ValueParser;
+
+import jakarta.servlet.ServletRequest;
 
 /**
  * View version of {@link org.apache.velocity.tools.generic.JsonTool}. It adds an automatic parsing of the HTTP query

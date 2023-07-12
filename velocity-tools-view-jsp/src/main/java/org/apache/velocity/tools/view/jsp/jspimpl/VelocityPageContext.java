@@ -25,22 +25,24 @@ import java.io.Writer;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
-import javax.el.ELContext;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.Servlet;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.PageContext;
-
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.view.ViewContext;
+
+import jakarta.el.ELContext;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.Servlet;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.el.ExpressionEvaluator;
+import jakarta.servlet.jsp.el.VariableResolver;
 
 /**
  * Exposes a Velocity {@link Context}, a request and a response as a {@link PageContext}.
@@ -411,14 +413,14 @@ public class VelocityPageContext extends PageContext {
 
     @SuppressWarnings("deprecation")
     @Override
-    public javax.servlet.jsp.el.ExpressionEvaluator getExpressionEvaluator() {
+    public ExpressionEvaluator getExpressionEvaluator() {
     	// Really, who cares?
     	throw new UnsupportedOperationException("This class works only with JSP 2.1");
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public javax.servlet.jsp.el.VariableResolver getVariableResolver() {
+    public VariableResolver getVariableResolver() {
     	// Really, who cares?
     	throw new UnsupportedOperationException("This class works only with JSP 2.1");
     }

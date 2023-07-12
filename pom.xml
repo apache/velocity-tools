@@ -44,9 +44,17 @@
   <inceptionYear>2002</inceptionYear>
 
   <properties>
-    <slf4j.version>1.7.30</slf4j.version>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <commons-digester3.version>3.2</commons-digester3.version>
+    <commons-lang3.version>3.10</commons-lang3.version>
+    <easymock.version>5.1.0</easymock.version>
+    <jakarta.el-api.version>5.0.1</jakarta.el-api.version>
+    <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
+    <jakarta.servlet.jsp-api.version>3.1.1</jakarta.servlet.jsp-api.version>
+    <junit.version>4.13.2</junit.version>
+    <velocity-engine.version>2.3</velocity-engine.version>
+    <slf4j.version>2.0.7</slf4j.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
   </properties>
 
   <modules>
@@ -122,6 +130,9 @@
     <contributor>
       <name>Tim Colson</name>
     </contributor>
+    <contributor>
+      <name>Paul Podgorsek</name>
+    </contributor>
   </contributors>
 
   <dependencyManagement>
@@ -129,17 +140,17 @@
       <dependency>
         <groupId>org.apache.velocity</groupId>
         <artifactId>velocity-engine-core</artifactId>
-        <version>2.3</version>
+        <version>${velocity-engine.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
-        <version>3.10</version>
+        <version>${commons-lang3.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-digester3</artifactId>
-        <version>3.2</version>
+        <version>${commons-digester3.version}</version>
         <!-- this dependency is unused, old, and easily conflits with others -->
         <exclusions>
           <exclusion>
@@ -159,29 +170,31 @@
         <version>${slf4j.version}</version>
       </dependency>
       <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>javax.servlet-api</artifactId>
-        <version>3.1.0</version>
+        <groupId>jakarta.el</groupId>
+        <artifactId>jakarta.el-api</artifactId>
+        <version>${jakarta.el-api.version}</version>
       </dependency>
       <dependency>
-        <groupId>javax.servlet.jsp</groupId>
-        <artifactId>javax.servlet.jsp-api</artifactId>
-        <version>2.3.3</version>
+        <groupId>jakarta.servlet</groupId>
+        <artifactId>jakarta.servlet-api</artifactId>
+        <version>${jakarta.servlet-api.version}</version>
+        <scope>provided</scope>
       </dependency>
       <dependency>
-        <groupId>javax.el</groupId>
-        <artifactId>javax.el-api</artifactId>
-        <version>3.0.0</version>
+        <groupId>jakarta.servlet.jsp</groupId>
+        <artifactId>jakarta.servlet.jsp-api</artifactId>
+        <version>${jakarta.servlet.jsp-api.version}</version>
+        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.13.2</version>
+        <version>${junit.version}</version>
       </dependency>
       <dependency>
         <groupId>org.easymock</groupId>
         <artifactId>easymock</artifactId>
-        <version>4.2</version>
+        <version>${easymock.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -238,7 +251,7 @@
               <goal>aggregate</goal>
             </goals>
             <configuration>
-              <source>1.8</source>
+              <source>${maven.compiler.source}</source>
             </configuration>
           </execution>
         </executions>

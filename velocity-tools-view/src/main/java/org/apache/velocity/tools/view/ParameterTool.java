@@ -20,13 +20,15 @@ package org.apache.velocity.tools.view;
  */
 
 import java.lang.reflect.Array;
-import java.util.Map;
 import java.util.HashMap;
-import javax.servlet.ServletRequest;
+import java.util.Map;
+
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;
 import org.apache.velocity.tools.generic.ValueParser;
+
+import jakarta.servlet.ServletRequest;
 
 /**
  * <p>Utility class for easy parsing of {@link ServletRequest} parameters.</p>

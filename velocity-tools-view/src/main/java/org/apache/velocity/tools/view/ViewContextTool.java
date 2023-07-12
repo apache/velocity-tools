@@ -21,11 +21,13 @@ package org.apache.velocity.tools.view;
 
 import java.util.Enumeration;
 import java.util.Set;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.servlet.ServletContext;
+
 import org.apache.velocity.tools.generic.ContextTool;
 import org.apache.velocity.tools.generic.ValueParser;
+
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * <p>Extension of {@link ContextTool} that includes keys and values

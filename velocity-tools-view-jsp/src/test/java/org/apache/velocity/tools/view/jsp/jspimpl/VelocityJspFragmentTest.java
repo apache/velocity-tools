@@ -18,15 +18,14 @@ package org.apache.velocity.tools.view.jsp.jspimpl;
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertSame;
 
 import java.io.IOException;
 import java.io.Writer;
-
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
 
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.exception.MethodInvocationException;
@@ -34,6 +33,9 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.parser.node.ASTBlock;
 import org.junit.Test;
+
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.PageContext;
 
 /**
  * Tests {@link VelocityJspFragment}.

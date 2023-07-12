@@ -20,18 +20,28 @@ package org.apache.velocity.tools.view;
  */
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.StringTokenizer;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.*;
 
 import org.apache.velocity.tools.ConversionUtils;
-import static org.apache.velocity.tools.view.UAParser.*;
-
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
+import org.apache.velocity.tools.view.UAParser.DeviceType;
+import org.apache.velocity.tools.view.UAParser.UAEntity;
+import org.apache.velocity.tools.view.UAParser.UserAgent;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  *  <p>Browser sniffing tool (session or request scope requested, session scope advised).</p>

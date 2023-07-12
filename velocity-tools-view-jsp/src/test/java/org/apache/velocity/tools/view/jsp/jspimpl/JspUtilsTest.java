@@ -1,19 +1,15 @@
 package org.apache.velocity.tools.view.jsp.jspimpl;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertSame;
 
 import java.io.IOException;
 import java.io.StringWriter;
-
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.BodyTag;
-import javax.servlet.jsp.tagext.JspTag;
-import javax.servlet.jsp.tagext.SimpleTag;
-import javax.servlet.jsp.tagext.Tag;
-import javax.servlet.jsp.tagext.TagAdapter;
 
 import org.apache.velocity.context.Context;
 import org.apache.velocity.context.InternalContextAdapter;
@@ -23,6 +19,15 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.parser.node.ASTBlock;
 import org.apache.velocity.runtime.parser.node.Node;
 import org.junit.Test;
+
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.tagext.BodyTag;
+import jakarta.servlet.jsp.tagext.JspTag;
+import jakarta.servlet.jsp.tagext.SimpleTag;
+import jakarta.servlet.jsp.tagext.Tag;
+import jakarta.servlet.jsp.tagext.TagAdapter;
 
 /**
  * Tests {@link JspUtils}.

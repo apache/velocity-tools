@@ -19,19 +19,20 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
-import org.apache.velocity.tools.Scope;
-import org.apache.velocity.tools.config.DefaultKey;
-import org.apache.velocity.tools.config.ValidScope;
-import org.apache.velocity.tools.generic.LocaleConfig;
-import org.apache.velocity.tools.generic.ValueParser;
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+
+import org.apache.velocity.tools.Scope;
+import org.apache.velocity.tools.config.DefaultKey;
+import org.apache.velocity.tools.config.ValidScope;
+import org.apache.velocity.tools.generic.LocaleConfig;
+import org.apache.velocity.tools.generic.ValueParser;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * <p>Helper tool to display a navigation breadcrumb to the end user.</p>

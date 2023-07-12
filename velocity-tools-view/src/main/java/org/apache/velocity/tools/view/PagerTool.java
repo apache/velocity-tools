@@ -22,12 +22,14 @@ package org.apache.velocity.tools.view;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.InvalidScope;
 import org.apache.velocity.tools.generic.SafeConfig;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * <p>View tool for doing request-based pagination of

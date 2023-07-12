@@ -19,11 +19,12 @@ package org.apache.velocity.tools.view.jsp;
  * under the License.
  */
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.jsp.PageContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.tools.view.ViewToolContext;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.jsp.PageContext;
 
 /**
  * <p>Velocity context implementation specific to the JSP environment.</p>
