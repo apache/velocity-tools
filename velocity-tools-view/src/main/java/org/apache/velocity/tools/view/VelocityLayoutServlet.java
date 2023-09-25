@@ -196,9 +196,11 @@ public class VelocityLayoutServlet extends VelocityViewServlet
      * render for handling layouts
      * @param template {@link Template} object
      * @param context Velocity context
+     * @param request servlet request
      * @param response servlet response
+     * @throws IOException
      */
-    protected void mergeTemplate(Template template, Context context,
+    protected void mergeTemplate(Template template, Context context, HttpServletRequest request,
                                  HttpServletResponse response)
         throws IOException
     {
@@ -248,7 +250,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
         }
 
         // Render the layout template into the response
-        super.mergeTemplate(template, context, response);
+        super.mergeTemplate(template, context, request, response);
     }
 
 
@@ -288,7 +290,7 @@ public class VelocityLayoutServlet extends VelocityViewServlet
 
             // retrieve and render the error template
             Template et = getTemplate(errorTemplate);
-            mergeTemplate(et, ctx, response);
+            mergeTemplate(et, ctx, request, response);
 
         }
         catch (Exception e2)
