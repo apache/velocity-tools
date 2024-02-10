@@ -25,7 +25,7 @@
   <parent>
     <groupId>org.apache.velocity</groupId>
     <artifactId>velocity-master</artifactId>
-    <version>5</version>
+    <version>6</version>
   </parent>
 
   <groupId>org.apache.velocity.tools</groupId>
@@ -45,8 +45,6 @@
 
   <properties>
     <slf4j.version>1.7.30</slf4j.version>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
   <modules>
@@ -211,18 +209,7 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <showDeprecation>true</showDeprecation>
-          <showWarnings>true</showWarnings>
-          <source>${maven.compiler.source}</source>
-          <target>${maven.compiler.target}</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.0</version>
         <configuration>
           <excludePackageNames>org.apache.velocity.tools.examples</excludePackageNames>
           <detectLinks />
@@ -237,9 +224,6 @@
             <goals>
               <goal>aggregate</goal>
             </goals>
-            <configuration>
-              <source>1.8</source>
-            </configuration>
           </execution>
         </executions>
       </plugin>
