@@ -16,7 +16,7 @@ package org.apache.velocity.tools.generic;
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
- * under the License.    
+ * under the License.
  */
 
 import java.io.StringWriter;
@@ -66,10 +66,10 @@ public abstract class BaseTestCase extends TestCase
         engine.setProperty(RuntimeConstants.RUNTIME_LOG_INSTANCE, log);
 
         // use string resource loader by default, instead of file
-        engine.setProperty(RuntimeConstants.RESOURCE_LOADER, "file,string");
-        engine.addProperty("string.resource.loader.class", StringResourceLoader.class.getName());
-        engine.addProperty("string.resource.loader.repository.name", stringRepoName);
-        engine.addProperty("string.resource.loader.repository.static", "false");
+        engine.setProperty(RuntimeConstants.RESOURCE_LOADERS, "file,string");
+        engine.addProperty("resource.loader.string.class", StringResourceLoader.class.getName());
+        engine.addProperty("resource.loader.string.repository.name", stringRepoName);
+        engine.addProperty("resource.loader.string.repository.static", "false");
 
         setUpEngine(engine);
 
@@ -168,12 +168,12 @@ public abstract class BaseTestCase extends TestCase
      * Compare an expected string with the given loaded template
      */
     protected void assertTmplEquals(String expected, String template)
-    {        
+    {
         info("Expected:  " + expected + " from '" + template + "'");
 
         StringWriter writer = new StringWriter();
         try
-        {          
+        {
             engine.mergeTemplate(template, "utf-8", context, writer);
         }
         catch (RuntimeException re)
@@ -185,12 +185,12 @@ public abstract class BaseTestCase extends TestCase
         {
             info("Exception!", e);
             throw new RuntimeException(e);
-        }        
+        }
 
         info("Result:  " + writer.toString());
-        assertEquals(expected, writer.toString());  
+        assertEquals(expected, writer.toString());
     }
-    
+
     /**
      * Ensure that a context value is as expected.
      */
