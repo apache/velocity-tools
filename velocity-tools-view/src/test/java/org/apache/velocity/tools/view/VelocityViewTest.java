@@ -27,10 +27,10 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.context.Context;
@@ -52,7 +52,7 @@ public class VelocityViewTest extends BaseWebappMockTest
     static Logger logger = LoggerFactory.getLogger(VelocityViewTest.class);
 
     /**
-     * Test method for {@link org.apache.velocity.tools.view.VelocityView#getTemplate(javax.servlet.http.HttpServletRequest)}.
+     * Test method for {@link org.apache.velocity.tools.view.VelocityView#getTemplate(jakarta.servlet.http.HttpServletRequest)}.
      * Tests VELTOOLS-119
      * @throws IOException If something goes wrong.
      * @throws MethodInvocationException If something goes wrong.

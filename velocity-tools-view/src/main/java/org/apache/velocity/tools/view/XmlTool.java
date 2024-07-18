@@ -22,7 +22,7 @@ package org.apache.velocity.tools.view;
 import org.apache.velocity.tools.XmlUtils;
 import org.apache.velocity.tools.generic.ValueParser;
 
-import javax.servlet.ServletRequest;
+import jakarta.servlet.ServletRequest;
 
 /**
  * View version of {@link org.apache.velocity.tools.generic.XmlTool}. It adds an automatic parsing of the HTTP query

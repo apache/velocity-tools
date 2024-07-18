@@ -19,9 +19,9 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.ServletContext;
 import java.lang.reflect.InvocationTargetException;
 
 import org.slf4j.Logger;

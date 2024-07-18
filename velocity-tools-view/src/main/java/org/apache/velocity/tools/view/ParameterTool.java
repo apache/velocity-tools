@@ -22,7 +22,7 @@ package org.apache.velocity.tools.view;
 import java.lang.reflect.Array;
 import java.util.Map;
 import java.util.HashMap;
-import javax.servlet.ServletRequest;
+import jakarta.servlet.ServletRequest;
 import org.apache.velocity.tools.Scope;
 import org.apache.velocity.tools.config.DefaultKey;
 import org.apache.velocity.tools.config.ValidScope;

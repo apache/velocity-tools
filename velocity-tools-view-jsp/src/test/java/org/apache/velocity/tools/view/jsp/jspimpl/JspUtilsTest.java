@@ -6,14 +6,14 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.io.StringWriter;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.BodyTag;
-import javax.servlet.jsp.tagext.JspTag;
-import javax.servlet.jsp.tagext.SimpleTag;
-import javax.servlet.jsp.tagext.Tag;
-import javax.servlet.jsp.tagext.TagAdapter;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.tagext.BodyTag;
+import jakarta.servlet.jsp.tagext.JspTag;
+import jakarta.servlet.jsp.tagext.SimpleTag;
+import jakarta.servlet.jsp.tagext.Tag;
+import jakarta.servlet.jsp.tagext.TagAdapter;
 
 import org.apache.velocity.context.Context;
 import org.apache.velocity.context.InternalContextAdapter;
@@ -36,7 +36,7 @@ public class JspUtilsTest
     private final static String LATEST_TAG_ATTRIBUTE_NAME = "org.apache.velocity.tools.view.jsp.taglib.jspimpl.LATEST_TAG";
 
     /**
-     * Test method for {@link org.apache.velocity.tools.view.jsp.jspimpl.JspUtils#setLatestTag(org.apache.velocity.context.Context, javax.servlet.jsp.tagext.JspTag)}.
+     * Test method for {@link org.apache.velocity.tools.view.jsp.jspimpl.JspUtils#setLatestTag(org.apache.velocity.context.Context, jakarta.servlet.jsp.tagext.JspTag)}.
      */
     @Test
     public void testSetLatestTag()
@@ -68,7 +68,7 @@ public class JspUtilsTest
     }
 
     /**
-     * Test method for {@link org.apache.velocity.tools.view.jsp.jspimpl.JspUtils#wrapTag(javax.servlet.jsp.tagext.JspTag)}.
+     * Test method for {@link org.apache.velocity.tools.view.jsp.jspimpl.JspUtils#wrapTag(jakarta.servlet.jsp.tagext.JspTag)}.
      */
     @Test
     public void testWrapTag()
@@ -83,7 +83,7 @@ public class JspUtilsTest
     }
 
     /**
-     * Test method for {@link org.apache.velocity.tools.view.jsp.jspimpl.JspUtils#executeSimpleTag(org.apache.velocity.context.InternalContextAdapter, org.apache.velocity.runtime.parser.node.Node, javax.servlet.jsp.PageContext, javax.servlet.jsp.tagext.SimpleTag)}.
+     * Test method for {@link org.apache.velocity.tools.view.jsp.jspimpl.JspUtils#executeSimpleTag(org.apache.velocity.context.InternalContextAdapter, org.apache.velocity.runtime.parser.node.Node, jakarta.servlet.jsp.PageContext, jakarta.servlet.jsp.tagext.SimpleTag)}.
      * @throws IOException If something goes wrong.
      * @throws JspException If something goes wrong.
      */
@@ -106,7 +106,7 @@ public class JspUtilsTest
     }
 
     /**
-     * Test method for {@link org.apache.velocity.tools.view.jsp.jspimpl.JspUtils#executeTag(org.apache.velocity.context.InternalContextAdapter, org.apache.velocity.runtime.parser.node.Node, javax.servlet.jsp.PageContext, javax.servlet.jsp.tagext.Tag)}.
+     * Test method for {@link org.apache.velocity.tools.view.jsp.jspimpl.JspUtils#executeTag(org.apache.velocity.context.InternalContextAdapter, org.apache.velocity.runtime.parser.node.Node, jakarta.servlet.jsp.PageContext, jakarta.servlet.jsp.tagext.Tag)}.
      * @throws JspException If something goes wrong.
      * @throws IOException If something goes wrong.
      * @throws ParseErrorException If something goes wrong.

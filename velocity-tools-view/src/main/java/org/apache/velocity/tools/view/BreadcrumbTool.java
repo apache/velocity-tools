@@ -25,7 +25,7 @@ import org.apache.velocity.tools.config.ValidScope;
 import org.apache.velocity.tools.generic.LocaleConfig;
 import org.apache.velocity.tools.generic.ValueParser;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;

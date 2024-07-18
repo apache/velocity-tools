@@ -19,7 +19,7 @@ package org.apache.velocity.tools.view;
  * under the License.
  */
 
-import javax.servlet.ServletRequest;
+import jakarta.servlet.ServletRequest;
 
 import org.apache.velocity.tools.generic.ValueParser;
 

@@ -22,8 +22,8 @@ package org.apache.velocity.tools.test.blackbox;
 import org.apache.velocity.tools.ClassUtils;
 import org.junit.Assert;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
