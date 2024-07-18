@@ -3,8 +3,8 @@ package org.apache.velocity.tools.examples.showcase.sample;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
 
 public class SampleListInitializer implements ServletContextListener
 {

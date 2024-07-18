@@ -2,7 +2,7 @@ package org.apache.velocity.tools.examples.showcase;
 
 import org.apache.velocity.tools.view.VelocityLayoutServlet;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 public class ShowcaseLayoutServlet extends VelocityLayoutServlet
 {

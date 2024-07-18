@@ -25,7 +25,7 @@ import java.io.Reader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.HashMap;
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.loader.ResourceLoader;
@@ -67,7 +67,7 @@ public class WebappResourceLoader extends ResourceLoader
      *  <br>
      *  NOTE: this expects that the ServletContext has already
      *        been placed in the runtime's application attributes
-     *        under its full class name (i.e. "javax.servlet.ServletContext").
+     *        under its full class name (i.e. "jakarta.servlet.ServletContext").
      *
      * @param configuration the {@link ExtProperties} associated with
      *        this resource loader.

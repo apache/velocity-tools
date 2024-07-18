@@ -27,9 +27,9 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.context.Context;
@@ -51,7 +51,7 @@ public class VelocityViewTest extends BaseWebappMockTest
     static Logger logger = LoggerFactory.getLogger(VelocityViewTest.class);
 
     /**
-     * Test method for {@link org.apache.velocity.tools.view.VelocityView#getTemplate(javax.servlet.http.HttpServletRequest)}.
+     * Test method for {@link org.apache.velocity.tools.view.VelocityView#getTemplate(jakarta.servlet.http.HttpServletRequest)}.
      * Tests VELTOOLS-119
      * @throws IOException If something goes wrong.
      * @throws MethodInvocationException If something goes wrong.
@@ -80,8 +80,8 @@ public class VelocityViewTest extends BaseWebappMockTest
         expect(config.getInitParameter(VelocityView.TOOLS_KEY)).andAnswer(eval(null));
         expect(servletContext.getAttribute(ServletUtils.CONFIGURATION_KEY)).andAnswer(eval((String)null));
         expect(servletContext.getResource(VelocityView.USER_TOOLS_PATH)).andAnswer(eval(null));
-        expect(request.getAttribute("javax.servlet.include.servlet_path")).andAnswer(eval("/charset-test.vm"));
-        expect(request.getAttribute("javax.servlet.include.path_info")).andAnswer(eval((String)null));
+        expect(request.getAttribute("jakarta.servlet.include.servlet_path")).andAnswer(eval("/charset-test.vm"));
+        expect(request.getAttribute("jakarta.servlet.include.path_info")).andAnswer(eval((String)null));
 
         // This was necessary to verify the bug, now it is not called at all.
         // expect(response.getCharacterEncoding()).andReturn("ISO-8859-1");
