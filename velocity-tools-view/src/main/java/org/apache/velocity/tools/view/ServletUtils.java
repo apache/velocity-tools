@@ -26,6 +26,7 @@ import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import javax.servlet.FilterConfig;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -80,9 +81,9 @@ public class ServletUtils
         // will return the original (wrong) URI requested.  The following special
         // attribute holds the correct path.  See section 8.3 of the Servlet
         // 2.3 specification.
-        String path = (String)request.getAttribute("javax.servlet.include.servlet_path");
+        String path = (String)request.getAttribute(RequestDispatcher.INCLUDE_SERVLET_PATH);
         // also take into account the PathInfo stated on SRV.4.4 Request Path Elements
-        String info = (String)request.getAttribute("javax.servlet.include.path_info");
+        String info = (String)request.getAttribute(RequestDispatcher.INCLUDE_PATH_INFO);
         if (path == null)
         {
             path = request.getServletPath();

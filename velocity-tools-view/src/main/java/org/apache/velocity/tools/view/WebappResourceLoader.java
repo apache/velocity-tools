@@ -65,9 +65,9 @@ public class WebappResourceLoader extends ResourceLoader
     /**
      *  This is abstract in the base class, so we need it.
      *  <br>
-     *  NOTE: this expects that the ServletContext has already
+     *  NOTE: this expects that the {@link ServletContext} has already
      *        been placed in the runtime's application attributes
-     *        under its full class name (i.e. "javax.servlet.ServletContext").
+     *        under its full class name.
      *
      * @param configuration the {@link ExtProperties} associated with
      *        this resource loader.
