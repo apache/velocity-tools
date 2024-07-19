@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -80,8 +81,8 @@ public class VelocityViewTest extends BaseWebappMockTest
         expect(config.getInitParameter(VelocityView.TOOLS_KEY)).andAnswer(eval(null));
         expect(servletContext.getAttribute(ServletUtils.CONFIGURATION_KEY)).andAnswer(eval((String)null));
         expect(servletContext.getResource(VelocityView.USER_TOOLS_PATH)).andAnswer(eval(null));
-        expect(request.getAttribute("jakarta.servlet.include.servlet_path")).andAnswer(eval("/charset-test.vm"));
-        expect(request.getAttribute("jakarta.servlet.include.path_info")).andAnswer(eval((String)null));
+        expect(request.getAttribute(RequestDispatcher.INCLUDE_SERVLET_PATH)).andAnswer(eval("/charset-test.vm"));
+        expect(request.getAttribute(RequestDispatcher.INCLUDE_PATH_INFO)).andAnswer(eval((String)null));
 
         // This was necessary to verify the bug, now it is not called at all.
         // expect(response.getCharacterEncoding()).andReturn("ISO-8859-1");

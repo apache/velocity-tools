@@ -26,6 +26,7 @@ import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import jakarta.servlet.FilterConfig;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
@@ -80,9 +81,9 @@ public class ServletUtils
         // will return the original (wrong) URI requested.  The following special
         // attribute holds the correct path.  See section 8.3 of the Servlet
         // 2.3 specification.
-        String path = (String)request.getAttribute("jakarta.servlet.include.servlet_path");
+        String path = (String)request.getAttribute(RequestDispatcher.INCLUDE_SERVLET_PATH);
         // also take into account the PathInfo stated on SRV.4.4 Request Path Elements
-        String info = (String)request.getAttribute("jakarta.servlet.include.path_info");
+        String info = (String)request.getAttribute(RequestDispatcher.INCLUDE_PATH_INFO);
         if (path == null)
         {
             path = request.getServletPath();
