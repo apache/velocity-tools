@@ -32,6 +32,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.jsp.JspWriter;
 import jakarta.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.el.ExpressionEvaluator;
+import jakarta.servlet.jsp.el.VariableResolver;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.view.ViewContext;
 
@@ -406,6 +408,22 @@ public class VelocityPageContext extends PageContext {
     @Override
     public JspWriter getOut() {
         return jspWriter;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    @Deprecated(forRemoval = true)
+    public jakarta.servlet.jsp.el.ExpressionEvaluator getExpressionEvaluator() {
+    	// Really, who cares?
+    	throw new UnsupportedOperationException("This method is removed in jsp api version 4");
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    @Deprecated(forRemoval = true)
+    public jakarta.servlet.jsp.el.VariableResolver getVariableResolver() {
+    	// Really, who cares?
+    	throw new UnsupportedOperationException("This method is removed in jsp api version 4");
     }
 
     @Override
