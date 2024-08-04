@@ -20,7 +20,7 @@ package org.apache.velocity.tools.view;
  */
 
 import java.util.Enumeration;
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 /**
  * <p>Because sometimes you don't care about the difference between a
