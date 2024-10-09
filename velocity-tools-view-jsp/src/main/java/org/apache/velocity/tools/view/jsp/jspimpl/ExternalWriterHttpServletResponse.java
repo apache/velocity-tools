@@ -23,8 +23,8 @@ package org.apache.velocity.tools.view.jsp.jspimpl;
 
 import java.io.PrintWriter;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponseWrapper;
 
 /**
  * Copied from Tiles Request sandbox.

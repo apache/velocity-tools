@@ -20,7 +20,7 @@ package org.apache.velocity.tools.view.jsp.jspimpl;
 import java.io.IOException;
 import java.io.Writer;
 
-import javax.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.JspWriter;
 
 /**
  * Copied and modified from Tomcat 6.0.x source.

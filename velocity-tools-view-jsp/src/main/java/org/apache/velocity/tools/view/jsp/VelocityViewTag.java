@@ -21,10 +21,10 @@ package org.apache.velocity.tools.view.jsp;
 
 import java.io.StringWriter;
 import java.io.Writer;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.BodyTagSupport;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.tagext.BodyTagSupport;
 import org.apache.velocity.Template;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
@@ -66,8 +66,8 @@ public class VelocityViewTag extends BodyTagSupport
     /**
      * Release any per-invocation resources, resetting any resources or state
      * that should be cleared between successive invocations of
-     * {@link javax.servlet.jsp.tagext.Tag#doEndTag()} and
-     * {@link javax.servlet.jsp.tagext.Tag#doStartTag()}.
+     * {@link jakarta.servlet.jsp.tagext.Tag#doEndTag()} and
+     * {@link jakarta.servlet.jsp.tagext.Tag#doStartTag()}.
      */
     protected void reset()
     {
@@ -363,7 +363,7 @@ public class VelocityViewTag extends BodyTagSupport
      * Release any per-instance resources, releasing any resources or state
      * before this tag instance is disposed.
      *
-     * @see javax.servlet.jsp.tagext.Tag#release()
+     * @see jakarta.servlet.jsp.tagext.Tag#release()
      */
     @Override
     public void release()

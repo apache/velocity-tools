@@ -20,7 +20,7 @@ package org.apache.velocity.tools.view;
  */
 
 import java.util.Enumeration;
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 /**
  * Implements {@link JeeConfig} with only a {@link ServletContext}.

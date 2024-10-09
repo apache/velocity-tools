@@ -22,7 +22,7 @@ package org.apache.velocity.tools.view;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.Map;
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.tools.Scope;
