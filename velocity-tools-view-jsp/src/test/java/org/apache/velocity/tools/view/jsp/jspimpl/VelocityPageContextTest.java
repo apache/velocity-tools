@@ -26,13 +26,13 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Enumeration;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.PageContext;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.jsp.PageContext;
 
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.view.ViewContext;
@@ -423,34 +423,6 @@ public class VelocityPageContextTest
         replay(velocityWriter, request, response, servletContext);
         assertNotNull(pageContext.getOut());
         verify(velocityContext, velocityWriter, request, response, servletContext, viewContext);
-    }
-
-    /**
-     * Test method for {@link org.apache.velocity.tools.view.jsp.jspimpl.VelocityPageContext#getExpressionEvaluator()}.
-     */
-    @Test(expected=UnsupportedOperationException.class)
-    public void testGetExpressionEvaluator()
-    {
-        replay(velocityWriter, request, response, servletContext);
-        try {
-            pageContext.getExpressionEvaluator();
-        } finally {
-            verify(velocityContext, velocityWriter, request, response, servletContext, viewContext);
-        }
-    }
-
-    /**
-     * Test method for {@link org.apache.velocity.tools.view.jsp.jspimpl.VelocityPageContext#getVariableResolver()}.
-     */
-    @Test(expected=UnsupportedOperationException.class)
-    public void testGetVariableResolver()
-    {
-        replay(velocityWriter, request, response, servletContext);
-        try {
-            pageContext.getVariableResolver();
-        } finally {
-            verify(velocityContext, velocityWriter, request, response, servletContext, viewContext);
-        }
     }
 
     /**

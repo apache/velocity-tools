@@ -36,8 +36,8 @@
 
   <dependencies>
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -89,7 +89,7 @@
         <version>1.10.12</version>
         <configuration>
           <container>
-            <containerId>jetty9x</containerId>
+            <containerId>jetty11x</containerId>
           </container>
           <configuration>
             <files>
