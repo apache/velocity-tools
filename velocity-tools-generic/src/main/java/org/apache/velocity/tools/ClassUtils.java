@@ -237,10 +237,10 @@ public class ClassUtils
     private static URL getResourceImpl(final String name, final Object caller)
     {
         URL url = null;
-        ClassLoader contextLoader = getClassLoader();
+        ClassLoader contextLoader = getThreadContextLoader();
         if (contextLoader != null)
         {
-            url = getThreadContextLoader().getResource(name);
+            url = contextLoader.getResource(name);
         }
         if (url == null)
         {
