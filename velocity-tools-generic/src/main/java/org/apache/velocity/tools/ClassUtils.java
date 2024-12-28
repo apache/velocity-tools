@@ -91,21 +91,38 @@ public class ClassUtils
      */
     public static Class getClass(String name) throws ClassNotFoundException
     {
+        Class foundClass = null;
         try
         {
-            return getThreadContextLoader().loadClass(name);
+            ClassLoader contextLoader = getThreadContextLoader();
+            if (contextLoader != null)
+            {
+                foundClass = contextLoader.loadClass(name);
+            }
         }
         catch (ClassNotFoundException e)
         {
-            try
-            {
-                return Class.forName(name);
-            }
-            catch (ClassNotFoundException ex)
-            {
-                return getClassLoader().loadClass(name);
-            }
+            //ignore
         }
+        if (foundClass != null)
+        {
+            return foundClass;
+        }
+
+        try
+        {
+            foundClass = Class.forName(name);
+        }
+        catch (ClassNotFoundException e)
+        {
+            //ignore
+        }
+        if (foundClass != null)
+        {
+            return foundClass;
+        }
+
+        return getClassLoader().loadClass(name);
     }
 
     /**
@@ -219,7 +236,12 @@ public class ClassUtils
 
     private static URL getResourceImpl(final String name, final Object caller)
     {
-        URL url = getThreadContextLoader().getResource(name);
+        URL url = null;
+        ClassLoader contextLoader = getThreadContextLoader();
+        if (contextLoader != null)
+        {
+            url = contextLoader.getResource(name);
+        }
         if (url == null)
         {
             url = getClassLoader().getResource(name);
@@ -242,7 +264,12 @@ public class ClassUtils
 
     private static InputStream getResourceAsStreamImpl(final String name, final Object caller)
     {
-        InputStream inputStream = getThreadContextLoader().getResourceAsStream(name);
+        InputStream inputStream = null;
+        ClassLoader contextLoader = getThreadContextLoader();
+        if (contextLoader != null)
+        {
+            inputStream = contextLoader.getResourceAsStream(name);
+        }
         if (inputStream == null)
         {
             inputStream = getClassLoader().getResourceAsStream(name);
