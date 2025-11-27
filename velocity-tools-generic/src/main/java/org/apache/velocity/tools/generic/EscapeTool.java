@@ -190,6 +190,11 @@ public class EscapeTool extends SafeConfig implements Serializable
     private static final String[] MARKDOWN_CHARS = charParser("\\`*_{}[]<>()#+-.!|");
 
     /**
+     * The characters to escape for APT (Almost Plain Text). Backslash must be first.
+     */
+    private static final String[] APT_CHARS = charParser("\\~=-+*[]<>{}");
+
+    /**
      * A method to convert a string int an array single character strings.
      * @param charText the string of characters to convert.
      * @return an array of single character strings.
@@ -232,6 +237,15 @@ public class EscapeTool extends SafeConfig implements Serializable
         return escape(text, MARKDOWN_CHARS);
     }
 
+    /**
+     * Escapes a string for APT (almost plain text).
+     *
+     * @param text The text to escape.
+     * @return the text with the APT specific characters escaped.
+     */
+    public String apt(final String text) {
+        return escape(text, APT_CHARS);
+    }
 
     /**
      * <p>Escapes the characters in a <code>String</code> using Java String rules.</p>
