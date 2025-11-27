@@ -185,6 +185,55 @@ public class EscapeTool extends SafeConfig implements Serializable
     }
 
     /**
+     * The characters to escape for markdown.  Backslash must be first.
+     */
+    private static final String[] MARKDOWN_CHARS = charParser("\\`*_{}[]<>()#+-.!|");
+
+    /**
+     * A method to convert a string int an array single character strings.
+     * @param charText the string of characters to convert.
+     * @return an array of single character strings.
+     */
+    private static String[] charParser(final String charText) {
+        final char[] chars = charText.toCharArray();
+        final String[] result = new String[chars.length];
+        for (int i = 0; i < chars.length; i++) {
+            result[i] = String.valueOf(chars[i]);
+        }
+        return result;
+    }
+
+    /**
+     * Escapes a text string based on an array of strings.  Every matched pattern is
+     * escaped with a "\".
+     *
+     * @param text The text to escape.
+     * @param chars The characters (or strings) to escape.
+     * @return the escaped string.
+     */
+    private String escape(final String text, final String[] chars) {
+        if (text == null) {
+            return "";
+        }
+        String result = text;
+        for (final String chrStr : chars) {
+            result = result.replace(chrStr, "\\" + chrStr);
+        }
+        return result;
+    }
+
+    /**
+     * Escapes a string for markdown.
+     *
+     * @param text The text to escape.
+     * @return the text with the markdown specific characters escaped.
+     */
+    public String markdown(final String text) {
+        return escape(text, MARKDOWN_CHARS);
+    }
+
+
+    /**
      * <p>Escapes the characters in a <code>String</code> using Java String rules.</p>
      * <p>Delegates the process to {@link StringEscapeUtils#escapeJava(String)}.</p>
      *
