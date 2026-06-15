@@ -57,10 +57,5 @@ $br
 This is simple#if( $XHTML ) xhtml#end app version ${version}.
 #end
 
-$br
-$br
-
-Click <a href="index.jsp">here</a> to see the VelocityViewTag handle the same VTL markup.
-
 </body>
 </html>

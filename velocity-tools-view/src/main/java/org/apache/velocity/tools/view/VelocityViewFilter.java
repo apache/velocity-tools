@@ -64,8 +64,7 @@ import org.apache.velocity.tools.Toolbox;
  *   <dt>org.apache.velocity.tools.shared.config</dt>
  *   <dd>By default, this is {@code true}. If set to {@code false}, then
  *     the {@link VelocityView} used by this filter will not be shared
- *     with other VelocityViewFilters, {@link VelocityViewServlet}s or
- *     org.apache.velocity.tools.view.jsp.VelocityViewTag's in the
+ *     with other VelocityViewFilters or {@link VelocityViewServlet}s in the
  *     application.</dd>
  *   <dt>org.apache.velocity.tools.context.key</dt>
  *   <dd>If you set a value for this property, this filter will create

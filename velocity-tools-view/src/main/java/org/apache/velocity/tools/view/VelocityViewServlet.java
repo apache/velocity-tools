@@ -41,8 +41,8 @@ import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
- * <p>A servlet to process Velocity templates. This is comparable to the
- * the JspServlet for JSP-based applications.</p>
+ * <p>A servlet to process Velocity templates. Its default behavior is to map
+ * URIs to templates.</p>
  *
  * <p>The servlet provides the following features:</p>
  * <ul>
@@ -72,8 +72,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
  *   <dt>org.apache.velocity.tools.shared.config</dt>
  *   <dd>By default, this is {@code true}. If set to {@code false}, then
  *     the {@link VelocityView} used by this servlet will not be shared
- *     with {@link VelocityViewFilter}s, other VelocityViewServlets or
- *     org.apache.velocity.tools.view.jsp.VelocityViewTag's in the
+ *     with {@link VelocityViewFilter}s or other VelocityViewServlets in the
  *     application.</dd>
  *   <dt>org.apache.velocity.tools.loadDefaults</dt>
  *   <dd>By default, this is {@code true}. If set to {@code false}, then

@@ -52,7 +52,6 @@
   <modules>
     <module>velocity-tools-generic</module>
     <module>velocity-tools-view</module>
-    <module>velocity-tools-view-jsp</module>
     <module>velocity-tools-examples</module>
   </modules>
 
@@ -162,16 +161,6 @@
         <groupId>jakarta.servlet</groupId>
         <artifactId>jakarta.servlet-api</artifactId>
         <version>6.0.0</version>
-      </dependency>
-      <dependency>
-        <groupId>jakarta.servlet.jsp</groupId>
-        <artifactId>jakarta.servlet.jsp-api</artifactId>
-        <version>3.1.1</version>
-      </dependency>
-      <dependency>
-        <groupId>jakarta.el</groupId>
-        <artifactId>jakarta.el-api</artifactId>
-        <version>5.0.1</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
