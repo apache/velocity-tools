@@ -82,11 +82,11 @@ public class ViewToolManager extends ToolManager
         {
             throw new NullPointerException("ServletContext is required");
         }
+        this.servletContext = app;
         if (autoConfig)
         {
             autoConfigure(includeDefaults);
         }
-        this.servletContext = app;
     }
 
     @Override
