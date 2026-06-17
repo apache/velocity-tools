@@ -39,8 +39,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +64,7 @@ public class ConversionUtils
     private static final int STYLE_INTEGER      = 4;
 
     // cache custom formats
-    private static ConcurrentMap<String,NumberFormat> customFormatsCache = new ConcurrentHashMap<String,NumberFormat>();
+    private static final ThreadLocal<Map<String, NumberFormat>> CUSTOM_FORMATS_CACHE = ThreadLocal.withInitial(HashMap::new);
 
     private ConversionUtils() {}
 
@@ -102,11 +100,11 @@ public class ConversionUtils
         {
             // we have a custom format
             String cacheKey = format + "%" + locale.toString();
-            nf = customFormatsCache.get(cacheKey);
+            nf = CUSTOM_FORMATS_CACHE.get().get(cacheKey);
             if( nf == null )
             {
                 nf = new DecimalFormat(format, new DecimalFormatSymbols(locale));
-                customFormatsCache.put(cacheKey,nf);
+                CUSTOM_FORMATS_CACHE.get().put(cacheKey,nf);
             }
         }
         else
