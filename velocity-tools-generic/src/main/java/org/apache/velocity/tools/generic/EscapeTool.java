@@ -60,6 +60,9 @@ import org.apache.velocity.tools.config.ValidScope;
  *  $esc.url($url)               -&gt; hello+here+%26+there
  *  $esc.unurl($esc.url($url))   -&gt; hello here &amp; there
  *
+ *  $esc.unicode('20AC')         -&gt; &#8364;
+ *  $esc.unicode('&#92;u20AC')   -&gt; &#8364;
+ *
  *  $esc.dollar                  -&gt; $
  *  $esc.d                       -&gt; $
  *
@@ -369,7 +372,7 @@ public class EscapeTool extends SafeConfig implements Serializable
 
     /**
      * <p>Escapes the characters in a <code>String</code> using JSON String rules.</p>
-     * <p>Delegates the process to {@link #java(String)}.</p>
+     * <p>Delegates the process to {@link #java(Object)}.</p>
      *
      * @param string the string to escape values, may be null
      * @return String with escaped values, <code>null</code> if null string input
@@ -479,7 +482,7 @@ public class EscapeTool extends SafeConfig implements Serializable
      * translated within a template.  This is especially useful for those
      * creating unicode from a reference value, or injecting a unicode character
      * into a template with a version of Velocity prior to 1.6.</p>
-     * @param code the code to be translated/escaped, may be null
+     * @param code the hexadecimal Unicode code point to be translated, may be null
      * @return the unicode character for that code, {@code null} if input was null
      * @see Character#toChars(int codePoint)
      */
