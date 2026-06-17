@@ -394,20 +394,24 @@ public class ClassTool extends SafeConfig
     }
 
     /**
-     * Returns a {@link List} of {@link MethodSub}s for each
-     * method declared method in the inspected class. However,
-     * in safe mode (which *is* the default), this will only return
-     * the public methods.  You must configure safe mode to be off
-     * to receive a list of all methods.
+     * Returns a {@link List} of {@link MethodSub}s for the methods of the
+     * inspected class. In safe mode (which *is* the default), this returns the
+     * public methods, including those inherited from superclasses and interfaces.
+     * With safe mode off, it returns the methods declared directly on the class
+     * (all access levels, no inheritance).
      * @return methods inspectors list
      */
     public List<MethodSub> getMethods()
     {
         if (methods == null)
         {
-            Method[] declared = getType().getDeclaredMethods();
-            List<MethodSub> subs = new ArrayList<MethodSub>(declared.length);
-            for (Method method : declared)
+            // safe mode lists public methods incl. inherited (VELTOOLS-199); otherwise
+            // only the methods declared on the class itself, at any access level
+            Method[] available = isSafeMode()
+                                 ? getType().getMethods()
+                                 : getType().getDeclaredMethods();
+            List<MethodSub> subs = new ArrayList<MethodSub>(available.length);
+            for (Method method : available)
             {
                 MethodSub sub = new MethodSub(method);
                 if ((!isSafeMode() || sub.isPublic()) &&
