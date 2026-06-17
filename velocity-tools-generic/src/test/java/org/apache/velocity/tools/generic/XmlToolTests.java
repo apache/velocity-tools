@@ -333,6 +333,29 @@ public class XmlToolTests {
         assertEquals("  x  ", xml.find("./text()").toString());
     }
 
+    // VELTOOLS-188: prefixed XPath resolves with multiple namespaces
+    public @Test void multiNamespaceXPath() throws Exception
+    {
+        XmlTool xml = new XmlTool();
+        xml.configure(new ValueParser());
+        xml.parse("<b:book xmlns:b=\"http://book\" xmlns:a=\"http://author\">"
+                + "<b:author><a:name>Jane</a:name></b:author></b:book>");
+        XmlTool name = xml.find("./b:author/a:name");
+        assertNotNull(name);
+        assertEquals("Jane", name.getText());
+    }
+
+    // VELTOOLS-188: undeclared prefixes must stay permissive — no exception, empty result
+    public @Test void undeclaredPrefixIsPermissive() throws Exception
+    {
+        org.w3c.dom.Element root = org.apache.velocity.tools.XmlUtils.parse(
+            "<b:book xmlns:b=\"http://book\"><b:t>x</b:t></b:book>");
+        // 'z' is not declared in the document: search must not throw, just match nothing
+        org.w3c.dom.NodeList nl = org.apache.velocity.tools.XmlUtils.search("//z:t", root);
+        assertNotNull(nl);
+        assertEquals(0, nl.getLength());
+    }
+
 
 }
         

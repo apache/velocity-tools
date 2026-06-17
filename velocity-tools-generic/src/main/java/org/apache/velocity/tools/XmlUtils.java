@@ -36,11 +36,14 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import javax.xml.XMLConstants;
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -401,12 +404,13 @@ public final class XmlUtils
      */
     public static NodeList search(String xpath, Node context) throws XPathExpressionException
     {
-        NodeList ret = null;
-            XPath xp = XPathFactory.newInstance().newXPath();
-            XPathExpression exp = xp.compile(xpath);
-            ret = (NodeList)exp.evaluate(context, XPathConstants.NODESET);
-        return ret;
-        }
+        XPath xp = XPathFactory.newInstance().newXPath();
+        // resolve namespace prefixes from the document so prefixed XPath steps
+        // (e.g. "b:author/a:name") work with multiple namespaces (VELTOOLS-188)
+        xp.setNamespaceContext(new NodeNamespaceContext(context));
+        XPathExpression exp = xp.compile(xpath);
+        return (NodeList)exp.evaluate(context, XPathConstants.NODESET);
+    }
 
     /**
      * Search for nodes using an XPath expression
@@ -424,6 +428,66 @@ public final class XmlUtils
             ret.add(lst.item(i));
         }
         return ret;
+    }
+
+    /**
+     * A {@link NamespaceContext} resolving prefixes against a DOM node's in-scope namespace
+     * declarations, so that namespace-prefixed XPath expressions resolve (VELTOOLS-188).
+     */
+    private static class NodeNamespaceContext implements NamespaceContext
+    {
+        private static final String UNBOUND_PREFIX_NAMESPACE = "urn:org.apache.velocity.tools:unbound-prefix";
+
+        private final Node node;
+
+        NodeNamespaceContext(Node node)
+        {
+            this.node = node;
+        }
+
+        @Override
+        public String getNamespaceURI(String prefix)
+        {
+            if (prefix == null)
+            {
+                throw new IllegalArgumentException("prefix cannot be null");
+            }
+            if (XMLConstants.XML_NS_PREFIX.equals(prefix))
+            {
+                return XMLConstants.XML_NS_URI;
+            }
+            if (XMLConstants.XMLNS_ATTRIBUTE.equals(prefix))
+            {
+                return XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
+            }
+            if (prefix.isEmpty())
+            {
+                String def = node.lookupNamespaceURI(null);
+                return def == null ? XMLConstants.NULL_NS_URI : def;
+            }
+            String uri = node.lookupNamespaceURI(prefix);
+            // permissive: an unbound prefix resolves to a synthetic namespace, so the expression
+            // matches nothing rather than the engine throwing "Prefix must resolve to a namespace"
+            return uri != null ? uri : UNBOUND_PREFIX_NAMESPACE;
+        }
+
+        @Override
+        public String getPrefix(String namespaceURI)
+        {
+            if (namespaceURI == null)
+            {
+                throw new IllegalArgumentException("namespaceURI cannot be null");
+            }
+            return node.lookupPrefix(namespaceURI);
+        }
+
+        @Override
+        public Iterator<String> getPrefixes(String namespaceURI)
+        {
+            String prefix = getPrefix(namespaceURI);
+            return (prefix == null ? Collections.<String>emptyList()
+                                   : Collections.singletonList(prefix)).iterator();
+        }
     }
 
 
