@@ -760,12 +760,18 @@ public class XmlTool extends SafeConfig implements Serializable
             {
                 out.append(((Attr)n).getValue().trim());
             }
+            else if (n.getNodeType() == Node.TEXT_NODE || n.getNodeType() == Node.CDATA_SECTION_NODE)
+            {
+                // text/CDATA: return the unescaped text value, so find("./text()") matches
+                // getText() instead of re-escaping entities through XML serialization
+                out.append(n.getNodeValue());
+            }
             else
             {
                 out.append(XmlUtils.nodeToString(n));
             }
         }
-        return out.toString().trim();
+        return out.toString();
     }
 
 
