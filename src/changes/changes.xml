@@ -24,6 +24,16 @@
     <title>Changelog</title>
   </properties>
   <body>
+    <release version="4.0" date="TBD">
+      <action type="add" dev="cbrisson">
+        New module spring-mvc-velocity-view: a Spring Web MVC view layer (VelocityViewResolver,
+        VelocityToolboxView, VelocityConfigurer) backed by Velocity and the Velocity Tools toolbox,
+        for Spring 6/7 — reviving the tools-related part of the Velocity support removed from Spring 5.
+      </action>
+      <action type="fix" dev="cbrisson">
+        Fix NPE in the auto-configuring ViewToolManager(ServletContext) constructor
+      </action>
+    </release>
     <release version="3.1" date="2021-02-27">
       <action type="fix" dev="Jackson Henry">
           Fix potential XSS vulterability in VelocityViewServlet error handling.
