@@ -313,6 +313,26 @@ public class XmlToolTests {
         assertEquals("<baz>woogie</baz><baz>wiggie</baz>", baz.toString());
     }
 
+    // VELTOOLS-197: find("./text()") must match getText() (decoded), not re-escape entities
+    public @Test void findTextMatchesGetTextWhenAmpersand() throws Exception
+    {
+        XmlTool xml = new XmlTool();
+        xml.configure(new ValueParser());
+        xml.parse("<doc>a &amp; b</doc>");
+        assertEquals("a & b", xml.getText());
+        assertEquals(xml.getText(), xml.find("./text()").toString());
+        assertEquals("a & b", xml.find("./text()").toString());
+    }
+
+    // VELTOOLS-197: toString() returns the text as-is, without trimming
+    public @Test void toStringDoesNotTrimText() throws Exception
+    {
+        XmlTool xml = new XmlTool();
+        xml.configure(new ValueParser());
+        xml.parse("<doc>  x  </doc>");
+        assertEquals("  x  ", xml.find("./text()").toString());
+    }
+
 
 }
         
