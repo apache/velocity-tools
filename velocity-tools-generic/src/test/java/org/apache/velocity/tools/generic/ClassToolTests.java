@@ -163,6 +163,25 @@ public class ClassToolTests {
         //TODO: test contents of list?
     }
 
+    public static class Base199 { public void inheritedMethod() {} }
+    public static class Child199 extends Base199 { public void ownMethod() {} }
+
+    // VELTOOLS-199: in safe mode, getMethods() includes inherited public methods
+    public @Test void methodGetMethods_includesInherited() throws Exception
+    {
+        ClassTool classTool = new ClassTool();
+        classTool.setSafeMode(true);
+        classTool.setType(Child199.class);
+        boolean own = false, inherited = false;
+        for (ClassTool.MethodSub m : classTool.getMethods())
+        {
+            if ("ownMethod".equals(m.getName())) own = true;
+            if ("inheritedMethod".equals(m.getName())) inherited = true;
+        }
+        assertTrue("declared method should be listed", own);
+        assertTrue("inherited public method should be listed", inherited);
+    }
+
     //TODO: add MethodSub tests
 
     public @Test void methodGetTypes() throws Exception
