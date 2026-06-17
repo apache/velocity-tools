@@ -34,6 +34,10 @@
   <name>Apache Velocity Tools Examples - Showcase</name>
   <description>Showcase of features in Velocity Tools.</description>
 
+  <properties>
+    <jetty.version>12.1.7</jetty.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>jakarta.servlet</groupId>
@@ -84,67 +88,35 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.cargo</groupId>
-        <artifactId>cargo-maven3-plugin</artifactId>
-        <version>1.10.12</version>
+        <!-- Embedded Jetty 12 (Jakarta EE 10) serves the webapp for the integration test (requires JDK 17) -->
+        <groupId>org.eclipse.jetty.ee10</groupId>
+        <artifactId>jetty-ee10-maven-plugin</artifactId>
+        <version>${jetty.version}</version>
         <configuration>
-          <container>
-            <containerId>jetty11x</containerId>
-          </container>
-          <configuration>
-            <files>
-              <copy>
-                <file>${project.basedir}/src/main/policy/showcase.policy</file>
-                <todir>/</todir>
-                <configfile>true</configfile>
-              </copy>
-            </files>
-            <properties>
-              <!-- variables referenced in the showcase policy file -->
-              <!-- commented since broken on windows due to a cargo bug like MNG-6386
-              <cargo.container>${project.build.directory}/cargo/installs</cargo.container>
-              <cargo.repository>${settings.localRepository}</cargo.repository>
-              <cargo.webapp>${project.build.directory}/${project.artifactId}</cargo.webapp>
-              <cargo.velocity-engine.version>${velocity.engine.version}</cargo.velocity-engine.version>
-              <cargo.velocity-tools.version>${project.version}</cargo.velocity-tools.version>
-              <cargo.slf4j.version>${slf4j.version}</cargo.slf4j.version>
-              <cargo.webapp-slf4j-logger.version>${webapp-slf4j-logger.version}</cargo.webapp-slf4j-logger.version>
-              -->
-              <cargo.jvmargs>
-                <!-- enable remote debugging
-                -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006
-                -->
-
-                <!-- enable Jetty debug log
-                -Dorg.eclipse.jetty.LEVEL=DEBUG
-                -->
-
-                <!-- enable security manager
-                   (disabled for now, see above note about policy file)
-                -Djava.security.manager
-                -Djava.security.policy=${project.build.directory}/cargo/configurations/jetty9x/showcase.policy
-                 -->
-              </cargo.jvmargs>
-            </properties>
-          </configuration>
+          <webApp>
+            <contextPath>/velocity-tools-examples-showcase</contextPath>
+          </webApp>
+          <httpConnector>
+            <port>8080</port>
+          </httpConnector>
+          <stopKey>velocity-tools-showcase</stopKey>
+          <stopPort>8090</stopPort>
+          <scan>0</scan>
         </configuration>
         <executions>
           <execution>
-            <configuration>
-              <wait>false</wait>
-            </configuration>
-            <id>start-server</id>
+            <id>start-jetty</id>
+            <phase>pre-integration-test</phase>
             <goals>
               <goal>start</goal>
             </goals>
-            <phase>pre-integration-test</phase>
           </execution>
           <execution>
-            <id>stop-server</id>
+            <id>stop-jetty</id>
+            <phase>post-integration-test</phase>
             <goals>
               <goal>stop</goal>
             </goals>
-            <phase>post-integration-test</phase>
           </execution>
         </executions>
       </plugin>

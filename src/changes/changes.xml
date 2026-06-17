@@ -33,6 +33,10 @@
       <action type="fix" dev="cbrisson" due-to="eduarddrenth">
           switch 4.x branch from javax to jakarta, bump to jvm 11+
       </action>
+      <action type="update" dev="cbrisson">
+          Showcase example integration test now runs on an embedded Jetty 12 (Jakarta EE 10) via
+          jetty-ee10-maven-plugin instead of cargo; running integration tests now requires JDK 17.
+      </action>
     </release>
     <release version="3.1" date="2021-02-27">
       <action type="fix" dev="Jackson Henry">
