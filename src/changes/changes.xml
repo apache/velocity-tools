@@ -30,12 +30,66 @@
         VelocityToolboxView, VelocityConfigurer) backed by Velocity and the Velocity Tools toolbox,
         for Spring 6/7 — reviving the tools-related part of the Velocity support removed from Spring 5.
       </action>
-      <action type="fix" dev="cbrisson" due-to="eduarddrenth">
+      <action type="fix" dev="cbrisson" issue="VELTOOLS-202" due-to="eduarddrenth">
           switch 4.x branch from javax to jakarta, bump to jvm 11+
       </action>
-      <action type="update" dev="cbrisson">
+      <action type="update" dev="cbrisson" issue="VELTOOLS-216">
           Showcase example integration test now runs on an embedded Jetty 12 (Jakarta EE 10) via
           jetty-ee10-maven-plugin instead of cargo; running integration tests now requires JDK 17.
+      </action>
+      <action type="update" dev="cbrisson" issue="VELTOOLS-194">
+          XmlTool.getPath() now returns the "path" attribute or child element when present, before
+          falling back to the node path (mirroring getName()/getNodeName()), and is no longer deprecated.
+      </action>
+      <action type="fix" dev="cbrisson" issue="VELTOOLS-167">
+          ResourceTool now returns null for a missing key instead of a "???key???" placeholder, so that
+          strict mode throws and non-strict mode renders the reference literally (a warning is still logged).
+      </action>
+    </release>
+    <release version="3.2" date="TBD">
+      <action type="fix" dev="cbrisson" issue="VELTOOLS-143">
+          LinkTool no longer drops parameters on opaque (e.g. mailto:) URIs; param() values are merged
+          into the scheme-specific part, including any query already present in the URI.
+      </action>
+      <action type="add" dev="cbrisson" issue="VELTOOLS-184" due-to="David Walton">
+          EscapeTool: json() is now a synonym for java().
+      </action>
+      <action type="fix" dev="cbrisson" issue="VELTOOLS-186">
+          A failed shared VelocityView initialization is now cached, so dependent servlets, filters and
+          tags fail fast instead of each retrying the doomed initialization.
+      </action>
+      <action type="fix" dev="cbrisson" issue="VELTOOLS-188">
+          XmlTool: namespace-prefixed XPath expressions now resolve against the document's in-scope
+          namespace declarations.
+      </action>
+      <action type="update" dev="cbrisson" issue="VELTOOLS-194">
+          XmlTool.getPath() is deprecated in favor of getNodePath(), for homogeneity with
+          getName()/getNodeName().
+      </action>
+      <action type="fix" dev="cbrisson" issue="VELTOOLS-196">
+          MathTool now returns an integral result that exceeds the long range as a Double instead of
+          silently saturating to Long.MAX_VALUE.
+      </action>
+      <action type="fix" dev="cbrisson" issue="VELTOOLS-197">
+          XmlTool.toString() now decodes text and CDATA content and no longer trims it.
+      </action>
+      <action type="fix" dev="cbrisson" issue="VELTOOLS-198" due-to="odoral">
+          ConversionUtils is now thread-safe and caches its parsing helpers.
+      </action>
+      <action type="fix" dev="cbrisson" issue="VELTOOLS-199">
+          ClassTool now lists inherited public methods in safe mode.
+      </action>
+      <action type="update" dev="cbrisson" issue="VELTOOLS-201">
+          Documented $esc.unicode() in the javadoc.
+      </action>
+      <action type="fix" dev="cbrisson" issue="VELTOOLS-211" due-to="jghansell">
+          ClassUtils.getClass(String) no longer fails when the context class loader is null.
+      </action>
+      <action type="add" dev="cbrisson" issue="VELTOOLS-212" due-to="Claudenw">
+          EscapeTool: new markdown() method.
+      </action>
+      <action type="add" dev="cbrisson" issue="VELTOOLS-213" due-to="Claudenw">
+          EscapeTool: new apt() method.
       </action>
     </release>
     <release version="3.1" date="2021-02-27">
