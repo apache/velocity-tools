@@ -405,7 +405,7 @@ public class ClassTool extends SafeConfig
     {
         if (methods == null)
         {
-            // safe mode lists public methods incl. inherited (VELTOOLS-199); otherwise
+            // safe mode lists public methods incl. inherited; otherwise
             // only the methods declared on the class itself, at any access level
             Method[] available = isSafeMode()
                                  ? getType().getMethods()
