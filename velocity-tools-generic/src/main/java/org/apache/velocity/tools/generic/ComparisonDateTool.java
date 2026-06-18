@@ -197,41 +197,27 @@ public class ComparisonDateTool extends DateTool
     protected String getText(String key, Locale locale)
     {
         Locale defaultLocale = getLocale();
-        ResourceBundle bundle = null;
-        // if there is no locale or the specified locale equals the tool's default
-        if (locale == null || locale.equals(defaultLocale))
-        {
-            if (defaultBundle == null)
-            {
-                // load the bundle for the default locale
-                try
-                {
-                    // and cache it
-                    defaultBundle = ResourceBundle.getBundle(this.bundleName,
-                                                             defaultLocale);
-                }
-                catch (MissingResourceException e) {}
-            }
+        boolean isDefault = (locale == null || locale.equals(defaultLocale));
 
-            // use the default locale's bundle
-            bundle = defaultBundle;
-        }
-        else
+        // the default locale's bundle is cached; any other one is loaded on the fly
+        ResourceBundle bundle = isDefault ? defaultBundle : null;
+        if (bundle == null)
         {
-            // load the bundle for the specified locale
             try
             {
-                bundle = ResourceBundle.getBundle(this.bundleName, locale);
+                bundle = ResourceBundle.getBundle(this.bundleName, isDefault ? defaultLocale : locale);
             }
             catch (MissingResourceException e) {}
+            if (isDefault)
+            {
+                defaultBundle = bundle;
+            }
         }
 
-        // if we found a bundle...
         if (bundle != null)
         {
             try
             {
-                // try to return the specified key
                 return bundle.getString(key);
             }
             catch (MissingResourceException e) {}

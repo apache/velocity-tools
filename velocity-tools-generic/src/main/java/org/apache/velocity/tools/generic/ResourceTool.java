@@ -62,6 +62,10 @@ import org.apache.velocity.tools.config.DefaultKey;
  *    <li>the configured locale for the toolbox factory managing this tool</li>
  *    <li>the system locale, if none of the above</li>
  * </ul>
+ * <p>When a key cannot be found, a warning is logged and the reference resolves
+ *    to {@code null}: in the default (non-strict) engine mode it then renders
+ *    literally (e.g. {@code $text.missing}), a quiet reference {@code $!text.missing}
+ *    renders nothing, and in strict mode the engine throws.</p>
  * <p>Also, be aware that very few performance considerations have been made
  *    in this initial version.  It should do fine, but if you have performance
  *    issues, please report them to dev@velocity.apache.org, so we can make
@@ -450,6 +454,15 @@ public class ResourceTool extends LocaleConfig implements Serializable
             return ResourceTool.this.getKeys(this.key, this.bundles, this.locale);
         }
 
+        /**
+         * Renders the resource value, or returns {@code null} for a missing key (after
+         * logging a warning). Returning null hands the missing-key case to the engine's
+         * standard reference handling rather than emitting a placeholder: non-strict mode
+         * renders the reference literally (e.g. {@code $text.missing}), a quiet reference
+         * {@code $!text.missing} renders nothing, and strict mode throws. A direct Java
+         * call therefore also returns null when the key is missing.
+         * @return the rendered resource, or null if the key is missing
+         */
         public String toString()
         {
             if (this.key == null)
@@ -459,7 +472,7 @@ public class ResourceTool extends LocaleConfig implements Serializable
             if (!getExists())
             {
                 getLog().warn("missing key: {}", this.key);
-                return "???"+this.key+"???";
+                return null;
             }
             return ResourceTool.this.render(this.rawValue, this.args);
         }
