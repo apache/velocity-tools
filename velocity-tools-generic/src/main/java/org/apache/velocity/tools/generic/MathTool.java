@@ -43,6 +43,13 @@ import org.apache.velocity.tools.config.ValidScope;
  * thrown in template halt rendering.  It should be sufficient
  * debugging feedback that Velocity will render the reference
  * literally. (e.g. $math.div(1, 0) renders as '$math.div(1, 0)')</li>
+ *
+ * <li>Return types try to match numbers in Integer/Long/Double objects.
+ * But all arithmetic computation is done in double precision, so exactness is bounded by
+ * the double and the digits it can hold (~16 digits), not by the returned type.
+ * This class does <i>not</i> give correct results with values that would
+ * require BigInteger or BigDecimal representations, or with Long values having more digits
+ * than what Double can handle.</li>
  * </ul>
  * <p>Example tools.xml config:</p>
  * <pre>
@@ -552,22 +559,12 @@ public class MathTool extends FormatConfig implements Serializable
             return null;
         }
 
-        double diff = n2.doubleValue() - n1.doubleValue();
-        // multiply the difference by a pseudo-random double from
-        // 0.0 to 1.0, round to the nearest int, and add the first
-        // value to the random int and return as an Integer
-        double random = (diff * Math.random()) + n1.doubleValue();
-
         // check if either of the args were floating points
-        String in = n1.toString() + n2.toString();
-        if (in.indexOf('.') < 0)
-        {
-            // args were whole numbers, so return the same
-            return matchType(n1, n2, Math.floor(random));
-        }
-        // one of the args was a floating point,
-        // so don't floor the result
-        return new Double(random);
+        boolean decimalSeparator = n1.toString().indexOf('.') >= 0 || n2.toString().indexOf('.') >= 0;
+        double diff = n2.doubleValue() - n1.doubleValue();
+        double random = (diff * Math.random()) + n1.doubleValue();
+        // whole-number args yield a whole-number result; matchType narrows it (Double on overflow)
+        return decimalSeparator ? new Double(random) : matchType(n1, n2, Math.floor(random));
     }
 
 
@@ -683,11 +680,10 @@ public class MathTool extends FormatConfig implements Serializable
 
     /**
      * Takes the original argument(s) and returns the resulting value as
-     * an instance of the best matching type (Integer, Long, or Double).
-     * If either an argument or the result is not an integer (i.e. has no
-     * decimal when rendered) the result will be returned as a Double.
-     * If not and the result is &lt; -2147483648 or &gt; 2147483647, then a
-     * Long will be returned.  Otherwise, an Integer will be returned.
+     * an instance of the best matching type (Integer, Long or Double).
+     * The result is returned as a Double when either argument is non-integral,
+     * or when the integral result falls outside long range.
+     * Otherwise it is narrowed to Integer or Long.
      * @param out target number value
      * @param in wanted Number classes
      * @return wanted Number
@@ -718,7 +714,7 @@ public class MathTool extends FormatConfig implements Serializable
             }
         }
 
-        if (!isIntegral)
+        if (!isIntegral || out >= LONG_MAX_AS_DOUBLE || out < LONG_MIN_AS_DOUBLE)
         {
             return new Double(out);
         }
@@ -731,6 +727,9 @@ public class MathTool extends FormatConfig implements Serializable
             return Integer.valueOf((int)out);
         }
     }
+
+    private static final double LONG_MAX_AS_DOUBLE = (double) Long.MAX_VALUE;
+    private static final double LONG_MIN_AS_DOUBLE = (double) Long.MIN_VALUE;
 
     /**
      * @param value target value

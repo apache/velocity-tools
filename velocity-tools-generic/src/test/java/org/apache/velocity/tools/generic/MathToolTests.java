@@ -19,6 +19,8 @@ package org.apache.velocity.tools.generic;
  * under the License.    
  */
 
+import java.math.BigInteger;
+
 import org.apache.velocity.VelocityContext;
 
 /**
@@ -40,5 +42,29 @@ public class MathToolTests extends BaseTestCase
     {
         assertEvalEquals("4.0", "$math.max(4,3.5)");
         assertEvalEquals("4.0", "$math.max(4,3.5,3)");
+    }
+
+    public void testRandomIntegralType()
+    {
+        // integral args render without a decimal point: Integer/Long, never Double
+        assertEvalEquals("5", "$math.random(5,5)");
+    }
+
+    public void testRandomTypeNarrowing()
+    {
+        // VELTOOLS-196: ordinary ranges keep their type; beyond long falls back to Double
+        assertTrue(new MathTool().random(5, 5) instanceof Integer);
+        assertTrue(new MathTool().random(3000000000L, 3000000000L) instanceof Long);
+        BigInteger big = new BigInteger("99999999999999999999");
+        assertTrue(new MathTool().random(big, big) instanceof Double);
+    }
+
+    public void testMatchTypeOverflowNotCapped()
+    {
+        // VELTOOLS-196: an integral result beyond long must not saturate to Long.MAX;
+        // it comes back as an (approximate) Double, never the Long.MAX constant
+        Number r = new MathTool().mul(4000000000L, 4000000000L);   // 1.6e19 > Long.MAX
+        assertTrue("expected Double, got " + r.getClass(), r instanceof Double);
+        assertEquals(1.6e19, r.doubleValue(), 1.0e6);
     }
 }
