@@ -290,7 +290,7 @@ public class XmlTool extends SafeConfig implements Serializable
      * the given value to a {@link Number} and get the result of
      * {@link #get(Number)}.  If the number conversion fails,
      * then this will convert the object to a string. If that string
-     * does not contain a '/', it appends the result of {@link #getPath()}
+     * does not contain a '/', it appends the result of {@link #getNodePath()}
      * and a '/' to the front of it.  Finally, it delegates the string to the
      * {@link #find(String)} method and returns the result of that.
      * @param o attribute name, number, xpath relative expression
@@ -319,7 +319,7 @@ public class XmlTool extends SafeConfig implements Serializable
         }
         if (s.indexOf('/') < 0)
         {
-            s = getPath()+'/'+s;
+            s = getNodePath()+'/'+s;
         }
         return find(s);
     }
@@ -357,16 +357,18 @@ public class XmlTool extends SafeConfig implements Serializable
     }
 
     /**
-     * <p>Returns the XPath that identifies the first/sole {@link Node}
-     * represented by this instance.</p>
-     * <p>This function is deprecated. In future versions, this function will first try
-     * <code>get("path")</code> before resorting to <code>getNodePath()</code>.</p>
-     * @return xpath node path
-     * @deprecated use getNodePath()
+     * Asks {@link #get(Object)} for a "path" result.
+     * If none, this will return the result of {@link #getNodePath()}.
+     * @return found value or the xpath node path
      */
-    @Deprecated
     public String getPath()
     {
+        // give attributes and child elements priority
+        Object path = get("path");
+        if (path != null && !"".equals(path))
+        {
+            return String.valueOf(path);
+        }
         return getNodePath();
     }
 

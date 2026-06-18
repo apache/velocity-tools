@@ -195,6 +195,23 @@ public class XmlToolTests {
         assertEquals("baz", xml.getNodeName());
     }
 
+    public @Test void methodGetPath() throws Exception   // VELTOOLS-194
+    {
+        XmlTool xml = stringBased();
+        // with no "path" attribute, getPath() falls back to the node xpath,
+        // just as getName() falls back to getNodeName()
+        assertEquals(xml.getNodePath(), xml.getPath());
+        XmlTool bar = xml.find("bar");
+        assertEquals(bar.getNodePath(), bar.getPath());
+
+        // a "path" attribute takes priority, mirroring getName()/get("name")
+        XmlTool withPath = new XmlTool();
+        withPath.configure(new ValueParser());
+        withPath.parse("<doc path=\"/custom\"/>");
+        assertEquals("/custom", withPath.getPath());
+        assertFalse("/custom".equals(withPath.getNodePath()));
+    }
+
     public @Test void methodGetText() throws Exception
     {
         XmlTool xml = stringBased();
