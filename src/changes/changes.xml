@@ -25,7 +25,7 @@
   </properties>
   <body>
     <release version="4.0" date="TBD">
-      <action type="add" dev="cbrisson">
+      <action type="add" dev="cbrisson" issue="VELTOOLS-215">
         New module spring-mvc-velocity-view: a Spring Web MVC view layer (VelocityViewResolver,
         VelocityToolboxView, VelocityConfigurer) backed by Velocity and the Velocity Tools toolbox,
         for Spring 6/7 — reviving the tools-related part of the Velocity support removed from Spring 5.
