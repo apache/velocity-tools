@@ -102,6 +102,19 @@ public class LinkToolTests {
         assertTrue(link.isAbsolute());
     }
 
+    // VELTOOLS-143: param() on an opaque (mailto:) URI must be honored, not dropped
+    public @Test void methodOpaqueParams() throws Exception
+    {
+        LinkTool link = newInstance().uri("mailto:john@blah.com").param("subject", "foo");
+        assertEquals("mailto:john@blah.com?subject=foo", link.toString());
+
+        // a query already present in the opaque URI merges with later params; its values get
+        // url-encoded and joined with LinkTool's default XHTML query delimiter as they pass
+        // through the param map
+        LinkTool merged = newInstance().uri("mailto:john@blah.com?cc=jim@blah.com").param("subject", "foo");
+        assertEquals("mailto:john@blah.com?cc=jim%40blah.com&amp;subject=foo", merged.toString());
+    }
+
     public @Test void methodDuplicate() throws Exception
     {
         LinkTool link = newInstance("http://apache.org/foo.html");
