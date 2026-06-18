@@ -148,7 +148,16 @@ public class ServletUtils
         if (view == null)
         {
             // only create a new one if we don't already have one
-            view = createView(config);
+            try
+            {
+                view = createView(config);
+            }
+            catch (RuntimeException | Error e)
+            {
+                // mark the shared instance invalid for other servlets, filters or tags
+                application.setAttribute(VELOCITY_VIEW_KEY, e);
+                throw e;
+            }
 
             // and store it in the application attributes, so other
             // servlets, filters, or tags can use it
@@ -218,13 +227,21 @@ public class ServletUtils
      */
     public static VelocityView getVelocityView(ServletContext application,
                                                boolean createIfMissing) {
-        VelocityView view =
-            (VelocityView)application.getAttribute(VELOCITY_VIEW_KEY);
-        if (view == null && createIfMissing)
+        Object view = application.getAttribute(VELOCITY_VIEW_KEY);
+        if (view instanceof VelocityView)
+        {
+            return (VelocityView)view;
+        }
+        if (view instanceof Throwable)
+        {
+            // a previous initialization failed unrecoverably; fail fast, don't retry
+            throw new IllegalStateException("VelocityView initialization previously failed", (Throwable)view);
+        }
+        if (createIfMissing)
         {
             return getVelocityView(application);
         }
-        return view;
+        return null;
     }
 
 
