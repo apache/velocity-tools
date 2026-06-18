@@ -406,7 +406,7 @@ public final class XmlUtils
     {
         XPath xp = XPathFactory.newInstance().newXPath();
         // resolve namespace prefixes from the document so prefixed XPath steps
-        // (e.g. "b:author/a:name") work with multiple namespaces (VELTOOLS-188)
+        // (e.g. "b:author/a:name") work with multiple namespaces
         xp.setNamespaceContext(new NodeNamespaceContext(context));
         XPathExpression exp = xp.compile(xpath);
         return (NodeList)exp.evaluate(context, XPathConstants.NODESET);
@@ -432,7 +432,7 @@ public final class XmlUtils
 
     /**
      * A {@link NamespaceContext} resolving prefixes against a DOM node's in-scope namespace
-     * declarations, so that namespace-prefixed XPath expressions resolve (VELTOOLS-188).
+     * declarations, so that namespace-prefixed XPath expressions resolve.
      */
     private static class NodeNamespaceContext implements NamespaceContext
     {
