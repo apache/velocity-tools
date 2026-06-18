@@ -205,6 +205,21 @@ public class ToolboxFactory
         return globalProperties.get(name);
     }
 
+    /**
+     * Returns the value of a property for the given scope, falling back to the
+     * factory-global properties when that scope does not define it. This lets a
+     * scope-level setting (e.g. createSession on the session toolbox) be honored.
+     * @param scope toolbox scope
+     * @param name property name
+     * @return property value, or null if neither the scope nor the globals define it
+     */
+    public Object getProperty(String scope, String name)
+    {
+        Map<String,Object> props = scopedProperties.get(scope);
+        Object value = (props == null) ? null : props.get(name);
+        return (value != null) ? value : getGlobalProperty(name);
+    }
+
     public Map<String,Object> getData()
     {
         return data;

@@ -20,11 +20,16 @@ package org.apache.velocity.tools.view;
 
 import javax.servlet.ServletContext;
 
+import org.apache.velocity.tools.Scope;
+import org.apache.velocity.tools.config.FactoryConfiguration;
+import org.apache.velocity.tools.config.ToolboxConfiguration;
 import org.junit.Test;
 
 import static org.easymock.EasyMock.createNiceMock;
 import static org.easymock.EasyMock.replay;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Regression for the auto-configuring constructor: it used to call {@code autoConfigure()}
@@ -39,5 +44,28 @@ public class ViewToolManagerTest
         replay(app);
         ViewToolManager manager = new ViewToolManager(app);
         assertNotNull(manager);
+    }
+
+    // VELTOOLS-214: createSession="false" set on the session toolbox (as bundled and
+    // documented) must reach the manager, not be silently ignored.
+    @Test
+    public void sessionToolboxCreateSessionFalseIsHonored()
+    {
+        ServletContext app = createNiceMock(ServletContext.class);
+        replay(app);
+
+        ViewToolManager manager = new ViewToolManager(app, false, false);
+        assertTrue("createSession defaults to true", manager.getCreateSession());
+
+        FactoryConfiguration config = new FactoryConfiguration();
+        ToolboxConfiguration session = new ToolboxConfiguration();
+        session.setScope(Scope.SESSION);
+        // the toolbox-attribute form arrives as a String
+        session.setProperty(ViewToolManager.CREATE_SESSION_PROPERTY, "false");
+        config.addToolbox(session);
+        manager.configure(config);
+
+        assertFalse("session-toolbox createSession=\"false\" must be honored",
+                    manager.getCreateSession());
     }
 }

@@ -25,6 +25,9 @@
   </properties>
   <body>
     <release version="3.2" date="TBD">
+      <action type="fix" dev="cbrisson" issue="VELTOOLS-214">
+          tools's XML session scope createSesison="false" was ignored
+      </action>
       <action type="fix" dev="cbrisson" issue="VELTOOLS-143">
           LinkTool no longer drops parameters on opaque (e.g. mailto:) URIs; param() values are merged
           into the scheme-specific part, including any query already present in the URI.
