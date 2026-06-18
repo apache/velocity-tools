@@ -929,10 +929,19 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
         if (uri.isOpaque())
         {
             this.opaque = true;
-            if (uri.getSchemeSpecificPart() != null)
+            String ssp = uri.getSchemeSpecificPart();
+            if (ssp != null)
             {
+                // route any existing query (e.g. mailto headers) into the param map so it
+                // survives and merges with later param() calls; the rest is the ssp ("path")
+                int q = ssp.indexOf('?');
+                if (q >= 0)
+                {
+                    setQuery(ssp.substring(q + 1));
+                    ssp = ssp.substring(0, q);
+                }
                 // path is used as scheme-specific part
-                setPath(uri.getSchemeSpecificPart());
+                setPath(ssp);
             }
         }
         else
@@ -1010,12 +1019,14 @@ public class LinkTool extends SafeConfig implements Cloneable, Serializable
             {
                 if (opaque)
                 {
+                    // path is used as scheme-specific part; append the query to it, since an
+                    // opaque URI (e.g. mailto:) has no separate query component
+                    String ssp = (path == null) ? "" : path;
                     if (query != null && query.size() > 0)
                     {
-                        getLog().warn("Ignoring given parameters in opaque URI: {}", getQuery());
+                        ssp += "?" + toQuery(query);
                     }
-                    // path is used as scheme-specific part
-                    return new URI(scheme, path, fragment);
+                    return new URI(scheme, ssp, fragment);
                 }
                 else if (forceRelative)
                 {
