@@ -180,12 +180,15 @@ public class ViewToolManager extends ToolManager
      */
     protected void updateGlobalProperties()
     {
-        // check for a createSession setting
-        Boolean create =
-            (Boolean)this.factory.getGlobalProperty(CREATE_SESSION_PROPERTY);
+        // check for a createSession setting; it is honored at the session-toolbox level
+        // (where it naturally belongs and is bundled/documented), falling back to a
+        // factory-global property. The toolbox-attribute form arrives as a String.
+        Object create = this.factory.getProperty(Scope.SESSION, CREATE_SESSION_PROPERTY);
         if (create != null)
         {
-            setCreateSession(create);
+            setCreateSession(create instanceof Boolean
+                             ? (Boolean)create
+                             : Boolean.parseBoolean(create.toString()));
         }
 
         // check for a publishToolboxes setting
