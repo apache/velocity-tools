@@ -52,6 +52,14 @@ import javax.servlet.http.HttpServletRequest;
  * <li><b>IP address</b>: <i>IPAddress</i>
  * </ul>
  *
+ * <p>When the client sends <a href="https://wicg.github.io/ua-client-hints/">User-Agent
+ * Client Hints</a> (the <code>Sec-CH-UA*</code> request headers), they override the parsed
+ * User-Agent string, which modern browsers freeze or reduce. The low-entropy hints (browser
+ * brand and major version, platform, mobile flag) are sent by default over HTTPS; high-entropy
+ * ones (full version, platform version) reach the server only if it has asked for them with an
+ * <code>Accept-CH</code> response header. Client hints carry no rendering-engine information, so
+ * the engine-related tests keep relying on the User-Agent string.</p>
+ *
  * <p>Language properties are filtered by the languagesFilter tool param, if present, which is here to specify which languages are acceptable on the server side.
  * If no matching language is found, or if there is no
  * matching language, the tools defaut locale (or the first value of languagesFilter) is returned.
@@ -79,12 +87,6 @@ import javax.servlet.http.HttpServletRequest;
  *   <li>http://www.webapps-online.com/online-tools/user-agent-strings</li>
  *   <li>https://whichbrowser.net/data/</li>
  * </ul>
- * <p>TODO:</p>
- * <ul>
- *     <li>parse X-Wap-Profile header if present</li>
- *     <li>parse X-Requested-With header if present</li>
- * </ul>
- *
  * @author <a href="mailto:claude@renegat.net">Claude Brisson</a>
  * @since VelocityTools 2.0
  * @version $Revision$ $Date$
@@ -125,6 +127,21 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
         {
             setUserAgentString(request.getHeader("User-Agent"));
             setAcceptLanguage(request.getHeader("Accept-Language"));
+
+            /* User-Agent Client Hints override the (frozen/reduced) UA string when present.
+               The full version list is preferred over the major-only Sec-CH-UA. */
+            String brands = request.getHeader("Sec-CH-UA-Full-Version-List");
+            if (brands == null)
+            {
+                brands = request.getHeader("Sec-CH-UA");
+            }
+            String chMobile = request.getHeader("Sec-CH-UA-Mobile");
+            String chPlatform = request.getHeader("Sec-CH-UA-Platform");
+            if (brands != null || chMobile != null || chPlatform != null)
+            {
+                userAgent = UAParser.parseClientHints(userAgent, brands, chMobile, chPlatform,
+                                                      request.getHeader("Sec-CH-UA-Platform-Version"), getLog());
+            }
 
             /* Get IP Address */
             IPAddress = request.getHeader("X-FORWARDED-FOR");
@@ -270,7 +287,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
      */
     public boolean isTablet()
     {
-        return userAgent == null && userAgent.getDeviceType() == DeviceType.TABLET;
+        return userAgent != null && userAgent.getDeviceType() == DeviceType.TABLET;
     }
 
     /**
@@ -279,7 +296,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
      */
     public boolean isMobile()
     {
-        return userAgent == null && userAgent.getDeviceType() == DeviceType.MOBILE;
+        return userAgent != null && userAgent.getDeviceType() == DeviceType.MOBILE;
     }
 
     /**
@@ -288,7 +305,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
      */
     public boolean isDesktop()
     {
-        return userAgent == null && userAgent.getDeviceType() == DeviceType.DESKTOP;
+        return userAgent != null && userAgent.getDeviceType() == DeviceType.DESKTOP;
     }
 
     /**
@@ -297,7 +314,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
      */
     public boolean isTV()
     {
-        return userAgent == null && userAgent.getDeviceType() == DeviceType.TV;
+        return userAgent != null && userAgent.getDeviceType() == DeviceType.TV;
     }
 
     /**
@@ -344,6 +361,10 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
         return getRenderingEngine() != null && "KHTML".equals(getRenderingEngine().getName());
     }
 
+    /**
+     * @deprecated the Trident engine (Internet Explorer) is retired; can only match legacy UA strings.
+     */
+    @Deprecated
     public boolean isTrident()
     {
         return getRenderingEngine() != null && "Trident".equals(getRenderingEngine().getName());
@@ -354,11 +375,19 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
         return getRenderingEngine() != null && "Blink".equals(getRenderingEngine().getName());
     }
 
+    /**
+     * @deprecated the EdgeHTML engine (legacy Edge) is retired; modern Edge uses Blink.
+     */
+    @Deprecated
     public boolean isEdgeHTML()
     {
         return getRenderingEngine() != null && "EdgeHTML".equals(getRenderingEngine().getName());
     }
 
+    /**
+     * @deprecated the Presto engine (Opera &le; 12) is retired.
+     */
+    @Deprecated
     public boolean isPresto()
     {
         return getRenderingEngine() != null && "Presto".equals(getRenderingEngine().getName());
@@ -371,6 +400,10 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
         return getBrowser() != null && ("Chrome".equals(getBrowser().getName()) || "Chromium".equals(getBrowser().getName()));
     }
 
+    /**
+     * @deprecated Internet Explorer is retired; can only match legacy UA strings.
+     */
+    @Deprecated
     public boolean isMSIE()
     {
         return getBrowser() != null && "MSIE".equals(getBrowser().getName());
@@ -391,6 +424,10 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
         return getBrowser() != null && "Safari".equals(getBrowser().getName());
     }
 
+    /**
+     * @deprecated Netscape is retired; can only match legacy UA strings.
+     */
+    @Deprecated
     public boolean isNetscape()
     {
         return getBrowser() != null && "Netscape".equals(getBrowser().getName());
@@ -420,7 +457,10 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
 
     public boolean isOSX()
     {
-        return getOperatingSystem() != null && (getOperatingSystem().getName().equals("OS X") || getOperatingSystem().getName().equals("iOS"));
+        if (getOperatingSystem() == null) return false;
+        String name = getOperatingSystem().getName();
+        /* "macOS" is the canonical (client-hints) spelling; "OS X" is kept as an alias */
+        return name.equals("macOS") || name.equals("OS X") || name.equals("iOS");
     }
 
     private static Set<String> linuxDistros = null;
@@ -497,6 +537,11 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
     /* Since support of those features is often partial, the sniffer returns true
         when a consequent subset is supported. */
 
+    /**
+     * @deprecated every current browser supports CSS3; this is always true for live browsers.
+     */
+    @Deprecated
+    @SuppressWarnings("deprecation")
     public boolean getCss3()
     {
         return isTrident() && getRenderingEngine().getMajorVersion() >= 9 ||
@@ -507,6 +552,11 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
                 isPresto() && getRenderingEngine().getMajorVersion() >= 2;
     }
 
+    /**
+     * @deprecated every current browser supports DOM3; this is always true for live browsers.
+     */
+    @Deprecated
+    @SuppressWarnings("deprecation")
     public boolean getDom3()
     {
         return isEdgeHTML() ||

@@ -20,6 +20,7 @@ package org.apache.velocity.tools.view;
  */
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -30,6 +31,12 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import static org.apache.velocity.tools.view.UAParser.UAEntity;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+import static org.easymock.EasyMock.createNiceMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
 
 import org.junit.Test;
 
@@ -148,6 +155,96 @@ public class BrowserToolTests {
         BrowserTool tool = new BrowserTool();
         Map uas = readUAs("operating_systems.txt");
         checkOperatingSystems(tool, uas);
+    }
+
+    /* the is<Device>() booleans must agree with getDevice(), and a missing
+       User-Agent header must not throw */
+    public @Test void deviceBooleansAgreeWithDeviceString() throws Exception
+    {
+        BrowserTool tool = new BrowserTool();
+
+        tool.setUserAgentString(null);
+        assertFalse(tool.isMobile());
+        assertFalse(tool.isTablet());
+        assertFalse(tool.isDesktop());
+        assertFalse(tool.isTV());
+
+        tool.setUserAgentString("Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36");
+        assertEquals("mobile", tool.getDevice());
+        assertTrue(tool.isMobile());
+
+        tool.setUserAgentString("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
+        assertEquals("desktop", tool.getDevice());
+        assertTrue(tool.isDesktop());
+    }
+
+    private static HttpServletRequest requestWithHeaders(String... headerPairs)
+    {
+        HttpServletRequest req = createNiceMock(HttpServletRequest.class);
+        for (int i = 0; i < headerPairs.length; i += 2)
+        {
+            expect(req.getHeader(headerPairs[i])).andStubReturn(headerPairs[i + 1]);
+        }
+        replay(req);
+        return req;
+    }
+
+    /* a Firefox UA string but Chrome client hints: the hints win (alpha) */
+    public @Test void clientHintsOverrideUserAgentString() throws Exception
+    {
+        BrowserTool tool = new BrowserTool();
+        tool.setRequest(requestWithHeaders(
+            "User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0",
+            "Sec-CH-UA", "\"Chromium\";v=\"120\", \"Google Chrome\";v=\"120\", \"Not?A_Brand\";v=\"24\"",
+            "Sec-CH-UA-Mobile", "?0",
+            "Sec-CH-UA-Platform", "\"Windows\""));
+        assertEquals("Chrome", tool.getBrowser().getName());
+        assertEquals(120, tool.getBrowser().getMajorVersion());
+        assertEquals("Windows", tool.getOperatingSystem().getName());
+        assertTrue(tool.isChrome());
+        assertTrue(tool.isDesktop());
+        assertFalse(tool.isMobile());
+    }
+
+    public @Test void clientHintsMobileAndroid() throws Exception
+    {
+        BrowserTool tool = new BrowserTool();
+        tool.setRequest(requestWithHeaders(
+            "Sec-CH-UA", "\"Chromium\";v=\"120\", \"Google Chrome\";v=\"120\", \"Not?A_Brand\";v=\"24\"",
+            "Sec-CH-UA-Mobile", "?1",
+            "Sec-CH-UA-Platform", "\"Android\""));
+        assertEquals("mobile", tool.getDevice());
+        assertTrue(tool.isMobile());
+        assertEquals("Android", tool.getOperatingSystem().getName());
+    }
+
+    /* full version list is preferred (gives minor too); macOS is canonical, isOSX() aliases it */
+    public @Test void clientHintsMacosAndFullVersionList() throws Exception
+    {
+        BrowserTool tool = new BrowserTool();
+        tool.setRequest(requestWithHeaders(
+            "Sec-CH-UA", "\"Chromium\";v=\"120\", \"Google Chrome\";v=\"120\", \"Not?A_Brand\";v=\"24\"",
+            "Sec-CH-UA-Full-Version-List", "\"Chromium\";v=\"120.0.6099.71\", \"Google Chrome\";v=\"120.0.6099.71\", \"Not?A_Brand\";v=\"24.0.0.0\"",
+            "Sec-CH-UA-Mobile", "?0",
+            "Sec-CH-UA-Platform", "\"macOS\"",
+            "Sec-CH-UA-Platform-Version", "\"14.5.0\""));
+        assertEquals("Chrome", tool.getBrowser().getName());
+        assertEquals(120, tool.getBrowser().getMajorVersion());
+        assertEquals(0, tool.getBrowser().getMinorVersion());
+        assertEquals("macOS", tool.getOperatingSystem().getName());
+        assertTrue(tool.isOSX());
+    }
+
+    /* an Android device reporting "not mobile" is a tablet */
+    public @Test void clientHintsAndroidTablet() throws Exception
+    {
+        BrowserTool tool = new BrowserTool();
+        tool.setRequest(requestWithHeaders(
+            "Sec-CH-UA", "\"Chromium\";v=\"120\", \"Not?A_Brand\";v=\"24\"",
+            "Sec-CH-UA-Mobile", "?0",
+            "Sec-CH-UA-Platform", "\"Android\""));
+        assertEquals("tablet", tool.getDevice());
+        assertTrue(tool.isTablet());
     }
 
 }
