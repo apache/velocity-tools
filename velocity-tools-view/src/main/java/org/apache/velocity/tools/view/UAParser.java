@@ -97,6 +97,10 @@ public class UAParser
         browserTranslationMap = new HashMap<String,String>();
         browserTranslationMap.put("navigator","Netscape");
         browserTranslationMap.put("nokia5250", "Nokia Browser");
+        /* Chromium-based Edge reports Edg / EdgA / EdgiOS (legacy Edge was "Edge") */
+        browserTranslationMap.put("edg", "Edge");
+        browserTranslationMap.put("edga", "Edge");
+        browserTranslationMap.put("edgios", "Edge");
 
         osTranslationMap = new HashMap<String,String>();
         osTranslationMap.put("android", "Android");
@@ -111,8 +115,9 @@ public class UAParser
         osTranslationMap.put("ipod", "iOS");
         osTranslationMap.put("kfthwi", "Kindle");
         osTranslationMap.put("kftt", "Kindle");
-        osTranslationMap.put("mac os x", "OS X");
-        osTranslationMap.put("macos x", "OS X");
+        osTranslationMap.put("mac os x", "macOS");
+        osTranslationMap.put("macos x", "macOS");
+        osTranslationMap.put("os x", "macOS");
         osTranslationMap.put("nokiae", "Nokia");
         osTranslationMap.put("nokiax2", "Nokia");
         osTranslationMap.put("remi", "Fedora");
@@ -127,7 +132,7 @@ public class UAParser
         osTranslationMap.put("series 90", "Symbian");
         osTranslationMap.put("symbianos", "Symbian");
         osTranslationMap.put("symbos", "Symbian");
-        osTranslationMap.put("tigeros", "OS X");
+        osTranslationMap.put("tigeros", "macOS");
         osTranslationMap.put("tizen", "Tizen");
         osTranslationMap.put("tt", "Android");
         osTranslationMap.put("unix", "Unix");
@@ -173,6 +178,11 @@ public class UAParser
             if ("Navigator".equals(entity)) { entity = "Netscape"; }
             browser = new UAEntity(entity, major, minor, true);
             if ("Edge".equals(entity) && renderingEngine == null) { renderingEngine = new UAEntity("EdgeHTML", major, minor); }
+        }
+
+        protected void setBrowser(UAEntity browser)
+        {
+            this.browser = browser;
         }
 
         protected void setRenderingEngine(String entity, String major, String minor)
@@ -608,6 +618,125 @@ public class UAParser
         {
             log.error("Could not parse browser for User-Agent: {}", userAgentString, e);
             ua = null;
+        }
+        return ua;
+    }
+
+    /* User-Agent Client Hints (https://wicg.github.io/ua-client-hints/) */
+
+    /* a brand entry in Sec-CH-UA / Sec-CH-UA-Full-Version-List: "<brand>";v="<version>" */
+    private static Pattern brandPattern = Pattern.compile("\"([^\"]*)\"\\s*;\\s*v=\"([^\"]*)\"");
+
+    /* placeholder ("GREASE") brand the browser injects to break naive parsers, e.g.
+       "Not?A_Brand", "Not.A/Brand", ";Not A Brand" — always contains 'not' and 'brand' */
+    private static boolean isGreaseBrand(String brand)
+    {
+        String b = brand.toLowerCase();
+        return b.contains("not") && b.contains("brand");
+    }
+
+    private static String translateChBrand(String brand)
+    {
+        String b = brand.toLowerCase();
+        if (b.equals("google chrome")) return "Chrome";
+        if (b.equals("microsoft edge")) return "Edge";
+        if (b.equals("chromium")) return "Chromium";
+        if (b.equals("opera")) return "Opera";
+        return brand;
+    }
+
+    private static String translateChPlatform(String platform)
+    {
+        if (platform.equals("Chromium OS")) return "Chrome OS";
+        return platform; /* Android, Chrome OS, iOS, Linux, macOS, Windows kept verbatim */
+    }
+
+    private static String unquote(String s)
+    {
+        if (s != null && s.length() >= 2 && s.startsWith("\"") && s.endsWith("\""))
+        {
+            s = s.substring(1, s.length() - 1);
+        }
+        return s;
+    }
+
+    /**
+     * Overrides the relevant fields of a (UA-string-parsed) {@link UserAgent} with the values
+     * carried by User-Agent Client Hints headers, which are authoritative when present. The
+     * rendering engine and robot status are left untouched, as client hints don't carry them.
+     * @param base the UA-string-parsed user agent, or null
+     * @param brandList Sec-CH-UA-Full-Version-List, or Sec-CH-UA as a fallback
+     * @param mobile Sec-CH-UA-Mobile (?0 / ?1)
+     * @param platform Sec-CH-UA-Platform (quoted)
+     * @param platformVersion Sec-CH-UA-Platform-Version (quoted), or null
+     * @param log logger
+     * @return the patched (or freshly created) user agent
+     */
+    public static UserAgent parseClientHints(UserAgent base, String brandList, String mobile,
+                                             String platform, String platformVersion, Logger log)
+    {
+        UserAgent ua = base != null ? base : new UserAgent();
+        try
+        {
+            if (brandList != null)
+            {
+                String brand = null, version = null;
+                Matcher m = brandPattern.matcher(brandList);
+                while (m.find())
+                {
+                    String b = m.group(1);
+                    if (isGreaseBrand(b)) continue;
+                    /* keep the first real brand, but let a specific one win over bare 'Chromium' */
+                    if (brand == null || "Chromium".equalsIgnoreCase(brand))
+                    {
+                        brand = b;
+                        version = m.group(2);
+                    }
+                    if (!"Chromium".equalsIgnoreCase(b)) break;
+                }
+                if (brand != null)
+                {
+                    String[] v = version.split("\\.");
+                    String major = v.length > 0 && v[0].length() > 0 ? v[0] : null;
+                    String minor = v.length > 1 ? v[1] : null;
+                    /* a bare UAEntity (not the UA-string setter): no full-version wipe, no
+                       UA-string brand heuristics — client-hint brands are already clean */
+                    ua.setBrowser(new UAEntity(translateChBrand(brand), major, minor));
+                }
+            }
+            platform = unquote(platform);
+            if (platform != null && platform.length() > 0 && !platform.equals("Unknown"))
+            {
+                platformVersion = unquote(platformVersion);
+                String major = null, minor = null;
+                if (platformVersion != null && platformVersion.length() > 0)
+                {
+                    String[] v = platformVersion.split("\\.");
+                    major = v.length > 0 && v[0].length() > 0 ? v[0] : null;
+                    minor = v.length > 1 ? v[1] : null;
+                }
+                ua.setOperatingSystem(translateChPlatform(platform), major, minor);
+            }
+            if (mobile != null)
+            {
+                if (mobile.contains("?1"))
+                {
+                    ua.setDeviceType(DeviceType.MOBILE);
+                }
+                else if (ua.getOperatingSystem() != null && "Android".equals(ua.getOperatingSystem().getName()))
+                {
+                    /* an Android device that is not 'mobile' is a tablet */
+                    ua.setDeviceType(DeviceType.TABLET);
+                }
+                else
+                {
+                    ua.setDeviceType(DeviceType.DESKTOP);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            log.error("BrowserTool: could not parse client hints", e);
         }
         return ua;
     }
