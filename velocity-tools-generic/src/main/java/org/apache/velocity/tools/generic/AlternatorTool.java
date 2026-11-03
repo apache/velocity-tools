@@ -102,7 +102,7 @@ public class AlternatorTool extends SafeConfig implements Serializable
     }
 
     /**
-     * Make an automatic {@link Alternator} from the specifed objects.
+     * Make an automatic {@link Alternator} from the specified objects.
      * @param list values to alternate over
      * @return alternator
      */

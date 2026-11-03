@@ -249,7 +249,7 @@ public class BrowserTool extends BrowserToolDeprecatedMethods implements Seriali
     /**
      * <p>
      *   Get the client browser IP address. In the session scope, which is the default,
-     *   it corresponds to the <i>first</i> seen IP adress.
+     *   it corresponds to the <i>first</i> seen IP address.
      * </p>
      * <p>
      *   The tool tries to get the real IP address whenever the request has been proxied.
