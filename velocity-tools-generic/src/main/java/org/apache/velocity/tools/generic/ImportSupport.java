@@ -383,7 +383,7 @@ public class ImportSupport extends SafeConfig
      * Returns whether an URL is remote or local
      *
      * @param url the url to check out
-     * @return wether the URL is remote
+     * @return whether the URL is remote
      */
     public static boolean isRemoteURL(String url)
     {

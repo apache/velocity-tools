@@ -733,7 +733,7 @@ public class MathTool extends FormatConfig implements Serializable
 
     /**
      * @param value target value
-     * @return wether it contains a decimal separator (non locale-aware for now - TODO)
+     * @return whether it contains a decimal separator (non locale-aware for now - TODO)
      */
     protected boolean hasFloatingPoint(String value)
     {
