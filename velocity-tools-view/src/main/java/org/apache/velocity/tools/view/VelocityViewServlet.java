@@ -446,7 +446,7 @@ public class VelocityViewServlet extends HttpServlet
         String path = ServletUtils.getPath(request);
         if (response.isCommitted())
         {
-            getLog().error("An error occured but the response headers have already been sent.");
+            getLog().error("An error occurred but the response headers have already been sent.");
             getLog().error("Error processing a template for path '{}'", path, e);
             return;
         }
